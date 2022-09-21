@@ -1,0 +1,14 @@
+[Unit]
+Description=SeTA API
+After=network.target
+
+[Service]
+User=seta
+WorkingDirectory=/home/seta/seta-api/
+Environment="FLASK_ENV=development"
+Environment="FLASK_APP=SeTAserver.py"
+Environment="SCRIPT_NAME=/seta-api"
+ExecStart=/home/seta/venvs/seta-api/bin/gunicorn --workers=1 --threads=4 --capture-output --access-logfile ./logs/access.log --access-logformat "[dev.api] %(h)s %(l)s %(u)s %(t)s .%(r)s. %(s)s %(b)s .%(f)s. .%(a)s. aut=\"%({Authorization}i)s\""  --error-logfile ./logs/error.log --bind 0.0.0.0:8081 --name 'seta-api' --timeout 180 SeTAserver:app
+
+[Install]
+WantedBy=multi-user.target

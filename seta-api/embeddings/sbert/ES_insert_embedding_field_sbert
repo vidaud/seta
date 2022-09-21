@@ -1,0 +1,7 @@
+PUT /seta-embedding-000004/_mapping
+{
+"properties":{
+    "sbert_vector": {"type": "dense_vector",
+        "dims": 768}
+}
+}

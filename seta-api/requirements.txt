@@ -1,0 +1,56 @@
+#bs4
+beautifulsoup4
+#elasticsearch==7.17.1
+elasticsearch==8.2.0
+#elasticsearch-dsl
+#ln elasticsearch-dsl==7.0.0
+Flask==2.1.1
+#ln Flask==1.1.1
+Flask-Cors==3.0.10
+python-secrets==22.6.1
+# ln Flask-Cors==3.0.8
+flask_jwt_extended==4.3.1
+# ln flask_jwt_extended
+flask-restplus==0.13.0
+numpy==1.22.3
+# ln numpy==1.17.1
+scipy==1.8.0
+# ln scipy==1.3.1
+gensim==3.8.0
+pandas==1.4.1
+# ln pandas==0.25.1
+PyYAML==6.0
+# ln PyYAML==5.1.2
+#sklearn
+scikit-learn==1.0.2
+# ln sklearn==0.0
+tqdm==4.63.1
+Werkzeug==2.0.3
+nltk==3.7
+setproctitle==1.2.2
+# ln setproctitle
+gunicorn==20.1.0
+# ln gunicorn
+pymongo==4.0.2
+# ln pymongo
+pycryptodome==3.14.1
+# ln pycryptodome
+sentence-transformers==2.2.0
+# ln sentence-transformers
+textacy==0.12.0
+# ln textacy==0.6.2
+msgpack==1.0.3
+# ln msgpack
+lxml==4.8.0
+pathlib==1.0.1
+requests==2.27.1
+
+# ln tqdm==4.35.0
+# ln virtualenv==16.7.4
+# ln Werkzeug==0.15.5
+# ln nltk
+
+jsonschema==4.5.1
+# ln jsonschema
+flask-apscheduler==1.12.3
+# ln flask-aptscheduler
