@@ -1,0 +1,2204 @@
+[
+  {
+      "code": "MINUTES_DRAFT",
+      "label": "Draft minutes",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "ASSENT_REQ",
+      "label": "Request for assent",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "PROC_RULES",
+      "label": "Rules of procedure",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "ADD",
+      "label": "Addendum",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "LET_AMEND",
+      "label": "Letter of amendment",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "AMEND_PROP",
+      "label": "Amended proposal",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "DEC_DEL_DRAFT",
+      "label": "Draft delegated decision",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "JOINT_TEXT_RJ",
+      "label": "Rejected joint text",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "JOINT_IMPACT_ASSESS_SUM",
+      "label": "Joint impact assessment summary",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "",
+      "label": "Resource type",
+      "deprecated": "",
+      "definition": ""
+  },
+  {
+      "code": "ACT_OTHER",
+      "label": "Other acts",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "ANNOUNC",
+      "label": "Announcements",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "ARCHIVE_FILE",
+      "label": "Archive file",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "ASSENT",
+      "label": "Assent",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "COMMUNIC",
+      "label": "Communication",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "COMPOS",
+      "label": "Common position",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "CONS_TEXT",
+      "label": "Consolidated text",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "CORRIGENDUM",
+      "label": "Corrigendum",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "DATPRO",
+      "label": "Provisional data",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "DEC",
+      "label": "Decision",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "DEC_DRAFT",
+      "label": "Draft decision",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "DEC_ENTSCHEID",
+      "label": "Decision",
+      "deprecated": "true",
+      "definition": ""
+  },
+  {
+      "code": "DEC_NC",
+      "label": "Decision by national courts in the field of European Union law",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "IMPACT_ASSESS",
+      "label": "Impact assessment",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "INFO",
+      "label": "Information",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "INFO_JUDICIAL",
+      "label": "Judicial information",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "INFO_JUR",
+      "label": "Information",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "JUDG",
+      "label": "Judgment",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "MEAS_NATION_IMPL",
+      "label": "National transposition measures",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "NOTICE",
+      "label": "Notice",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "OJ",
+      "label": "Official Journal",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "OPIN_AG",
+      "label": "Opinion of the Advocate General",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "OPIN_AMEND_EP",
+      "label": "Opinion on the European Parliament’s amendments",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "OPIN_NO_PROP_AMEND",
+      "label": "Opinion not proposing amendment",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "OPIN_PROP_RJ",
+      "label": "Opinion proposing rejection",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "OWNINI_REPORT",
+      "label": "Own-initiative report",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "PROP_DEC",
+      "label": "Proposal for a decision",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "PROP_REG",
+      "label": "Proposal for a regulation",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "PUB_GEN",
+      "label": "General publications",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "QUEST_TIME",
+      "label": "Question at question time",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "QUEST_WRITTEN",
+      "label": "Written question",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "RECO_REG",
+      "label": "Recommendation for a regulation",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "REG_IMPL",
+      "label": "Implementing regulation",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "REPORT",
+      "label": "Report",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "STU",
+      "label": "Study",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "TOC_OJ",
+      "label": "Contents",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "TREATY",
+      "label": "Treaty",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "REG",
+      "label": "Regulation",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "AGREE_INTERNATION",
+      "label": "International agreement",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "CALL_PROP",
+      "label": "Call for proposals",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "EXCH_LET",
+      "label": "Exchange of letters",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "EXCH_RATE",
+      "label": "Exchange rate",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "INFO_COMMUNIC",
+      "label": "Information",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "LEGIS_SUM",
+      "label": "Summaries of EU legislation",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "NOTE_INFO",
+      "label": "Information note",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "OPIN",
+      "label": "Opinion",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "OPIN_PROP_AMEND",
+      "label": "Opinion proposing amendment",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "ORDER",
+      "label": "Order",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "PROT",
+      "label": "Protocol",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "RECO",
+      "label": "Recommendation",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "DIR",
+      "label": "Directive",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "OWNINI_RES",
+      "label": "Own-initiative resolution",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "PROP_DEC_NO_ADDRESSEE",
+      "label": "Proposal for a decision without addressee",
+      "deprecated": "true",
+      "definition": ""
+  },
+  {
+      "code": "PROP_RECO",
+      "label": "Proposal for a recommendation",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "RECRUIT",
+      "label": "Recruitment",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "COMMUNIC_POSIT",
+      "label": "Communication concerning the position of the Council",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "PROP_DIR",
+      "label": "Proposal for a directive",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "RES_LEGIS",
+      "label": "Legislative resolution",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "SIGN_OJ_ATC",
+      "label": "Signature file for the authentic Official Journal",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "AGREE_INTERNAL",
+      "label": "Internal agreement",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "DEC_IMPL",
+      "label": "Implementing decision",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "JOINT_ACTION",
+      "label": "Joint action",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "PROP_ACT",
+      "label": "Proposal for an act",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "CONCL",
+      "label": "Council conclusions",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "JOINT_SWD",
+      "label": "Joint staff working document",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "OWNINI_OPIN",
+      "label": "Own-initiative opinion",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "SWD",
+      "label": "Staff working document",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "COMPOS_AMEND",
+      "label": "Amendment to common position",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "RES",
+      "label": "Resolution",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "ACT_PREP",
+      "label": "Preparatory act",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "BUDGET",
+      "label": "Budget",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "COMPOS_ACCEPT",
+      "label": "Acceptance of common position",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "NOTICE_AWARD",
+      "label": "Award notice",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "NOTICE_CONTRACT",
+      "label": "Contract notice",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "NOTICE_READER",
+      "label": "Notice to readers",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "PROC_INTERNAL",
+      "label": "Rules of procedure",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "IMPACT_ASSESS_SUM",
+      "label": "Summary of impact assessment",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "RECO_DEC",
+      "label": "Recommendation for a decision",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "SUM",
+      "label": "Summary",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "SUM_JUR",
+      "label": "Summary",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "ACT_LEGIS",
+      "label": "Legislative acts",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "MINUTES",
+      "label": "Minutes",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "QUEST_ORAL",
+      "label": "Oral question",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "DECLAR",
+      "label": "Declaration",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "GUIDELINE",
+      "label": "Guideline",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "NOTE_COVER",
+      "label": "Cover note",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "NOTIF",
+      "label": "Notification",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "REG_DRAFT",
+      "label": "Draft regulation",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "STU_EVL_ANNEX",
+      "label": "Annex to an evaluation study",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "BALANCE",
+      "label": "Balance",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "BUDGET_SUPPL_AMEND",
+      "label": "Supplementary and amending budget",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "DEC_DEL",
+      "label": "Delegated decision",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "MEMORANDUM_UNDERST",
+      "label": "Memorandum of understanding",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "ITEM_I_NOTE",
+      "label": "‘I’ item note",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "REPORT_ANNUAL_DAS",
+      "label": "Annual report with the statement of assurance",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "WORK_DOC",
+      "label": "Working document",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "ROADMAP",
+      "label": "Roadmap",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "THIRDPARTY_PROCEED",
+      "label": "Third-party proceedings",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "ACT",
+      "label": "Act",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "JUDG_EXTRACT",
+      "label": "Judgment (extracts)",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "AGREE",
+      "label": "Agreement",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "JOINT_PROP_DEC",
+      "label": "Joint proposal for a decision",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "JOINT_PROP_REG",
+      "label": "Joint proposal for a regulation",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "AID_STATE",
+      "label": "State aid",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "REPORT_ANNUAL_SPECIF",
+      "label": "Specific annual report",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "NOTICE_MODEL_PP",
+      "label": "Model notice for public procurement",
+      "deprecated": "true",
+      "definition": ""
+  },
+  {
+      "code": "REPORT_ANNUAL",
+      "label": "Annual report",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "OWNINI_OPIN_ADDIT",
+      "label": "Additional own-initiative opinion",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "PAPER_WHITE",
+      "label": "White Paper",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "PROP_RES",
+      "label": "Proposal for a resolution",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "LIST",
+      "label": "List",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "NOTE",
+      "label": "Note",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "AMEND_PROP_DEC",
+      "label": "Amended proposal for a decision",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "ITEM_IA_NOTE",
+      "label": "‘I/A’ item note",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "PROP_DRAFT",
+      "label": "Draft proposal",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "REG_DEL",
+      "label": "Delegated regulation",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "BUDGET_DRAFT",
+      "label": "Draft budget",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "OPIN_EXPLOR",
+      "label": "Exploratory opinion",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "OPIN_NO_REPORT",
+      "label": "Opinion without report",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "CONVENTION",
+      "label": "Convention",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "DEC_FRAMW",
+      "label": "Framework decision",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "AMEND_PROP_DIR",
+      "label": "Amended proposal for a directive",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "REPORT_SPECIAL",
+      "label": "Special report",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "STU_EVL",
+      "label": "Evaluation study",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "STU_SUM_EXE",
+      "label": "Executive summary of a study",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "INI",
+      "label": "Initiative",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "RECO_RECO",
+      "label": "Recommendation for a recommendation",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "STU_ANNEX",
+      "label": "Annex to a study",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "AGREE_AMEND",
+      "label": "Amendment to an agreement",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "POSIT",
+      "label": "Position",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "RES_DRAFT",
+      "label": "Draft resolution",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "OPIN_QUAL_APR",
+      "label": "Opinion with qualified approval",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "JOINT_TEXT_APR",
+      "label": "Approved joint text",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "PAPER_GREEN",
+      "label": "Green Paper",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "AMEND_PROP_REG",
+      "label": "Amended proposal for a regulation",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "PROP_DEC_IMPL",
+      "label": "Proposal for an implementing decision",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "PROP_REG_IMPL",
+      "label": "Proposal for an implementing regulation",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "STU_EVL_SUM_EXE",
+      "label": "Executive summary of an evaluation study",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "OPIN_IMPACT_ASSESS",
+      "label": "Opinion on impact assessment",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "DIR_IMPL",
+      "label": "Implementing directive",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "PROC_ADMIN",
+      "label": "Administrative procedures",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "DIR_DEL",
+      "label": "Delegated directive",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "REG_IMPL_DRAFT",
+      "label": "Draft implementing regulation",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "VIEW_AG",
+      "label": "View of the Advocate General",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "PROGRAM",
+      "label": "Programme",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "RECO_DRAFT",
+      "label": "Draft recommendation",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "ARRANG",
+      "label": "Arrangement",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "OPIN_DISPUT_LB",
+      "label": "Opinion disputing a legal base",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "STATUTE",
+      "label": "Statute",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "DIR_DEL_DRAFT",
+      "label": "Draft delegated directive",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "DIR_DRAFT",
+      "label": "Draft directive",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "JOINT_REPORT",
+      "label": "Joint report",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "STAT",
+      "label": "Statement",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "STAT_REASON",
+      "label": "Statement of reasons",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "GARNISHEE_ORDER",
+      "label": "Attachment order",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "PROP_OPIN",
+      "label": "Proposal for an opinion",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "BUDGET_DRAFT_PRELIM_SUPPL",
+      "label": "Preliminary draft supplementary budget",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "JOINT_COMMUNIC",
+      "label": "Joint communication",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "OPIN_ADDIT",
+      "label": "Additional opinion",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "BUDGET_DRAFT_SUPPL_AMEND",
+      "label": "Draft supplementary and amending budget",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "REG_FINANC",
+      "label": "Financial regulation",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "DEC_IMPL_DRAFT",
+      "label": "Draft implementing decision",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "IMPACT_ASSESS_INCEP",
+      "label": "Inception impact assessment",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "GUIDELINE_GEN",
+      "label": "General guidelines",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "TRANSFER_APPROPR",
+      "label": "Transfer of appropriations",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "AGREE_PROT",
+      "label": "Protocol to the agreement",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "MEMORANDUM",
+      "label": "Memorandum",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "REG_DEL_DRAFT",
+      "label": "Draft delegated regulation",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "EXCH_RATE_MRO",
+      "label": "Interest rate — euro exchange rates",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "COMPOS_RJ",
+      "label": "Rejection of the common position",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "AGREE_INTERINSTIT",
+      "label": "Interinstitutional agreement",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "DIR_IMPL_DRAFT",
+      "label": "Draft implementing directive",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "OPIN_JUR",
+      "label": "Opinion of the Court",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "CALL_EXPR_INTEREST",
+      "label": "Call for expression of interest",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "ROADMAP_EFC",
+      "label": "Evaluation roadmap",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "STAT_REASON_DRAFT",
+      "label": "Draft statement of reasons",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "PROP_JOINT_ACTION",
+      "label": "Proposal for a joint action",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "PAPER_REFLEC",
+      "label": "Reflection paper",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "ANNEX",
+      "label": "Annex",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "DEC_REVIEW",
+      "label": "Decision to review",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "ITEM_A_NOTE",
+      "label": "‘A’ item note",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "BUDGET_DRAFT_PRELIM",
+      "label": "Preliminary draft budget",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "PROP_AMEND",
+      "label": "Amendments to the proposal",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "STRATEGY_COMMON",
+      "label": "Common strategy",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "JOINT_DEC",
+      "label": "Joint decision",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "JOINT_TEXT",
+      "label": "Joint text",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "GUIDELINE_LIGNES",
+      "label": "Guideline",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "REPORT_ANNUAL_EDF",
+      "label": "Annual report on the activities funded by the European Development Fund",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "ACT_DRAFT",
+      "label": "Draft act",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "ACKNOWLEDGE_RECP",
+      "label": "Acknowledgement receipt",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "ORDER_EXTRACT",
+      "label": "Order (extracts)",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "REPORT_ANNUAL_BUDGET",
+      "label": "Annual report on the EU general budget",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "COMMUNIC_DRAFT",
+      "label": "Draft communication",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "NOTICE_INFO",
+      "label": "Notice",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "LET",
+      "label": "Letter",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "JOINT_IMPACT_ASSESS",
+      "label": "Joint impact assessment",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "ABSTRACT_JUR",
+      "label": "Abstract",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "ACT_ADOPT_INTERNATION",
+      "label": "Acts adopted by bodies created by international agreements",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "ACT_LEGIS_NO",
+      "label": "Non-legislative acts",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "ADOPT_TEXT",
+      "label": "Texts adopted",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "AGREE_ADDIT",
+      "label": "Additional agreement",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "AGREE_EUMS",
+      "label": "Agreement between Member States",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "AGREE_EUMS_DRAFT",
+      "label": "Draft agreement between Member States",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "AGREE_INTERINSTIT_DRAFT",
+      "label": "Draft interinstitutional agreement",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "AGREE_INTERNATION_DRAFT",
+      "label": "Draft international agreement",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "AGREE_UBEREINKOM",
+      "label": "Agreement between Member States",
+      "deprecated": "true",
+      "definition": ""
+  },
+  {
+      "code": "AGREE_UBEREINKOM_DRAFT",
+      "label": "Draft agreement",
+      "deprecated": "true",
+      "definition": ""
+  },
+  {
+      "code": "AGREE_VEREINB",
+      "label": "Agreement",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "ANNEX_SUM",
+      "label": "Annex summary",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "CASE",
+      "label": "Case",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "CASE_LAW",
+      "label": "Reports of cases",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "CENSURE",
+      "label": "Censure",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "CENSURE_RJ",
+      "label": "Rejected motion of censure",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "CENSURE_WDW",
+      "label": "Withdrawn motion of censure",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "CITIZ_SUM",
+      "label": "Citizens’ summary",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "COMPOS_DRAFT",
+      "label": "Draft common position",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "COMPOS_RJ_CONFIRM",
+      "label": "Confirmation of the rejection of the common position",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "DECLAR_DRAFT",
+      "label": "Draft declaration",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "DEC_FRAMW_DRAFT",
+      "label": "Draft framework decision",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "FORM_OJ_TOC",
+      "label": "Request form for the table of contents of the Official Journal",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "FORM_PPF",
+      "label": "Form for print production file",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "FORM_REQ_PRE_PRESS",
+      "label": "Request form for pre-press of publication",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "FORM_REQ_PUB",
+      "label": "Request form for publication",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "FORM_REQ_PUB_ACCEPT",
+      "label": "Request form for the acceptance of publication",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "FORM_REQ_PUB_REFUS",
+      "label": "Request form for the refusal of publication",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "FORM_REQ_READY_PRESS",
+      "label": "Request form for the ready-for-press of publication",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "GLOS_TERM",
+      "label": "Glossary term",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "INFO_GEN",
+      "label": "General information",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "INFO_SPECIAL",
+      "label": "Special information",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "INFO_SUPPL",
+      "label": "Supplementary information",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "INTRO_TEXT",
+      "label": "Introductory text",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "ITEM_A_LIST",
+      "label": "List of ‘A’ items",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "ITEM_A_LIST_ADP",
+      "label": "List of adopted ‘A’ items",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "ITEM_A_LIST_PROVIS",
+      "label": "Provisional list of ‘A’ items",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "JOINT_ACTION_DRAFT",
+      "label": "Draft joint action",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "JOINT_PAPER_GREEN",
+      "label": "Joint Green Paper",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "JOINT_PAPER_WHITE",
+      "label": "Joint White Paper",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "JOINT_PROP_DIR",
+      "label": "Joint proposal for a directive",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "OJ_SPECIAL",
+      "label": "Special edition of the Official Journal",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "OPIN_CASE",
+      "label": "Advocate general’s opinion",
+      "deprecated": "true",
+      "definition": ""
+  },
+  {
+      "code": "OP_DATPRO",
+      "label": "Provisional data",
+      "deprecated": "",
+      "definition": ""
+  },
+  {
+      "code": "PETITION",
+      "label": "Petition",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "PLANNING_DOC",
+      "label": "Planning document",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "POSIT_ACCEPT",
+      "label": "Acceptance of position",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "POSIT_AMEND",
+      "label": "Amendment to position",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "POSIT_RJ",
+      "label": "Rejection of position",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "POSIT_RJ_CONF",
+      "label": "Confirmation of the rejection of the position",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "PRESS_REL",
+      "label": "Press release",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "PROCEED_MINUTES",
+      "label": "Minutes of proceeding",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "PROC_JURIS",
+      "label": "Jurisdictional procedure",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "PROP_COMPOS",
+      "label": "Proposal for a common position",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "PROP_DECLAR",
+      "label": "Proposal for a declaration",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "PROP_DEC_FRAMW",
+      "label": "Proposal for a framework decision",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "PROP_DIR_IMPL",
+      "label": "Proposal for an implementing directive",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "PROT_DRAFT",
+      "label": "Draft protocol",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "RECO_DIR",
+      "label": "Recommendation for a directive",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "RECO_OPIN",
+      "label": "Recommendation for an opinion",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "RECO_RES",
+      "label": "Recommendation for a resolution",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "REFERRAL_LET",
+      "label": "Referral letter",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "REPLY_OPIN_NP",
+      "label": "Reply to national Parliaments’ opinion",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "REPORT_AAR",
+      "label": "Annual activity report",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "REPORT_PERIOD",
+      "label": "Periodic report",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "REPORT_SEMEST",
+      "label": "Six-monthly report",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "REPORT_SPECIF",
+      "label": "Specific report",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "REPORT_VALID",
+      "label": "Validation report",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "RULING",
+      "label": "Ruling",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "TOC_OJ_SPECIAL",
+      "label": "Contents of the special edition of the Official Journal",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "TREATY_DRAFT",
+      "label": "Draft treaty",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "VIEW",
+      "label": "View",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "VIEWPOINT",
+      "label": "Viewpoint",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "WARN",
+      "label": "Warning",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "WEBPAGE",
+      "label": "Webpage",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "WEBSITE",
+      "label": "Website",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "WORK_BUNDLE",
+      "label": "Work bundle",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "JOINT_IMPL_PLAN",
+      "label": "Joint implementation plan",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "SYNOPSIS_REPORT_CONSULT",
+      "label": "Synopsis report of the public consultation",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "EVL",
+      "label": "Evaluation",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "FC",
+      "label": "Fitness check",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "IMPL_PLAN",
+      "label": "Implementation plan",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "STAKEHOLDER_FEEDBACK",
+      "label": "Stakeholder feedback",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "JOINT_EVL",
+      "label": "Joint evaluation",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "JOINT_EVL_SUM_EXE",
+      "label": "Executive summary of the joint evaluation",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "EVL_SUM_EXE",
+      "label": "Executive summary of the evaluation",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "FC_SUM_EXE",
+      "label": "Executive summary of the fitness check",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "JOINT_SYNOPSIS_REPORT_CONSULT",
+      "label": "Joint synopsis report of the public consultation",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "FACT_SUM_REPORT_CONSULT",
+      "label": "Factual summary report of the public consultation",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "JOINT_FC_SUM_EXE",
+      "label": "Executive summary of the joint fitness check",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "CONSULT_STRATEGY",
+      "label": "Consultation strategy",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "JOINT_FC",
+      "label": "Joint fitness check",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "JOINT_STAKEHOLDER_FEEDBACK",
+      "label": "Joint stakeholder feedback",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "MOTION_RES",
+      "label": "Motion for a resolution",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "JOINT_MOTION_RES",
+      "label": "Joint motion for a resolution",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "OPIN_REAS_NP",
+      "label": "Reasoned opinion of national Parliament",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "OPIN_PROVIS",
+      "label": "Provisional opinion",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "OPIN_EXPLOR_ADOP",
+      "label": "Adopted exploratory opinion",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "OPIN_EXPLOR_PROVIS",
+      "label": "Provisional exploratory opinion",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "VOTING_RES",
+      "label": "Voting result",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "OPIN_ADOP",
+      "label": "Adopted opinion",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "WEBSITE_ARCH",
+      "label": "Archived website",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "ACTS_ADOPT",
+      "label": "Adopted acts",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "OWNINI_OPIN_ADOP",
+      "label": "Adopted own-initiative opinion",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "OWNINI_OPIN_PROVIS",
+      "label": "Provisional own-initiative opinion",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "OPIN_DRAFT_NATION_LEGIS",
+      "label": "Opinion on draft national legislation",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "PROP_ACT_LEGIS",
+      "label": "Proposal for a legislative act",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "WITHD_AGREE",
+      "label": "Withdrawal agreement",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "OPIN_EVL",
+      "label": "Opinion on evaluation",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "EXPL_MEMORANDUM",
+      "label": "Explanatory memorandum",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "CONTRIB_CONSULT",
+      "label": "Contributions to the consultation",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "ANNEX_CONTRIB_CONSULT",
+      "label": "Documents annexed to contributions",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "BACKGROUND_DOC",
+      "label": "Background document",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "OPIN_FC",
+      "label": "Opinion on fitness check",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "FORM_REQ_COMM_DOC",
+      "label": "Request form for communication post about a document",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "FORM_REQ_COMM_OJ",
+      "label": "Request form for communication post about Official Journal",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "TWD",
+      "label": "Technical working document",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "CFE_IMPACT_ASSESS",
+      "label": "Call for evidence for an impact assessment",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "CALL_FOR_EVIDENCE",
+      "label": "Call for evidence for an initiative",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "BRIEFING_CONSIL",
+      "label": "Council briefing",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "CFE_EVL_FC",
+      "label": "Call for evidence for an evaluation or fitness check",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "INTERNAL_DOC_CONSIL",
+      "label": "Council internal document",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "CFE_COMBINED",
+      "label": "Call for evidence for an evaluation and impact",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "ACT_DEL_DRAFT",
+      "label": "Draft delegated act",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "PROG_WORK_COM",
+      "label": "Commission work programme",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "ACT_IMPL_DRAFT",
+      "label": "Draft implementing act",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "ANNOUNC_NEWS",
+      "label": "News announcement",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "REPORT_PROGRESS",
+      "label": "Progress report",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "NOTICE_STAKEHOLDER",
+      "label": "Notice to stakeholders",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "PLAN_STRATEGIC",
+      "label": "Strategic plan",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "ACT_DEL",
+      "label": "Delegated act",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "ARTICLE_NEWS",
+      "label": "News article",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "SCHEDULE",
+      "label": "Schedule",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "PLAN_MANAGEMENT",
+      "label": "Management plan",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "PRESENTATION",
+      "label": "Presentation",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "RECO_ADOPT_INTERNATION",
+      "label": "Recommendation adopted by bodies created by international agreements",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "REG_ADOPT_INTERNATION",
+      "label": "Regulation adopted by bodies created by international agreements",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "DEC_ADOPT_INTERNATION",
+      "label": "Decision adopted by bodies created by international agreements",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "QUESTIONNAIRE",
+      "label": "Questionnaire",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "FORECAST",
+      "label": "Forecast",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "PAPER_SCIENTIFIC",
+      "label": "Scientific paper",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "EXCH_INFO_EUMS",
+      "label": "Member State information exchange",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "ACTION_DOC",
+      "label": "Action document",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "PROG_WORK_DEP",
+      "label": "Department work programme",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "PLAN_NATIONAL",
+      "label": "National plan",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "REPORT_ANNUAL_MAN_PERFORM",
+      "label": "Annual management and performance report",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "AGENDA",
+      "label": "Agenda",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "DRAFT_NATION_LEGIS",
+      "label": "Draft national legislation",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "FACTSHEET",
+      "label": "Factsheet",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "OPIN_EXP",
+      "label": "Expert opinion",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "PROCUREMENT_NOTICE",
+      "label": "Procurement notice",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "OWNINI_OPIN_DRAFT_NATION_LEGIS",
+      "label": "Own-initiative opinion on draft national legislation",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "NEWSLETTER",
+      "label": "Newsletter",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "NOTE_GUID",
+      "label": "Guidance note",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "SPEECH",
+      "label": "Speech",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "MAGAZINE",
+      "label": "Magazine",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "MATERIAL_PROM",
+      "label": "Promotional material",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "BUDGET_DISCHARGE",
+      "label": "Budgetary discharge",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "GLOSSARY",
+      "label": "Glossary",
+      "deprecated": "false",
+      "definition": ""
+  },
+  {
+      "code": "REQ_OPIN",
+      "label": "Request for an opinion",
+      "deprecated": "false",
+      "definition": ""
+  }
+]

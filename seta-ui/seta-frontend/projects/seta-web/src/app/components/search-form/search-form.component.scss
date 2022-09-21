@@ -1,0 +1,76 @@
+@import '../../../variables.scss';
+.dropdown-menu {
+	position: absolute;
+}
+
+
+
+.home-dropdown.show {
+	padding: unset;
+}
+.dropdown-item {
+	padding: 0.4em;
+	&:active {
+		color: #000000;
+		background-color: $ec-white;
+	}
+	&:hover{
+		background-color: $ec-grey-10;
+	}
+}
+
+home-form {
+	box-sizing: inherit;
+}
+
+.home-dropdown {
+	width: calc(100%);
+}
+
+#button-addon5 {
+	border: none;
+	background-color: $ec-white;
+	&:hover {
+		color: #868e96;
+	}
+}
+
+.input-group.input-group-lg {
+	border: 1px solid #ced4da;
+	border-radius: 0.3rem;
+	box-shadow: 0 1px 6px rgba(0, 0, 0, 0.06);
+	&:hover {
+		box-shadow: 0 1px 6px 0 rgba(32, 33, 36, 0.28);
+		border-color: rgba(223, 225, 229, 0);
+	}
+	&:focus {
+		box-shadow: 0 1px 6px 0 rgba(32, 33, 36, 0.28);
+		border-color: rgba(223, 225, 229, 0);
+	}
+}
+.form-control {
+	border: none;
+}
+::placeholder {
+	font-size: 0.95rem;
+	color: #aaa;
+	font-style: italic;
+}
+
+.h-grp-append {
+	border: none;
+	border-radius: 0.3rem;
+	background-color: $ec-white;
+}
+
+.w-95 {
+	width: calc(95%);
+}
+
+.w-94 {
+	width: calc(94%);
+}
+
+.w-90 {
+	width: calc(90%);
+}

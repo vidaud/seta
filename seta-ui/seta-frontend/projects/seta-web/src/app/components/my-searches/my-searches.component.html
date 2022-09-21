@@ -1,0 +1,30 @@
+<ngx-datatable #myTable class="material" [rows]="rows"
+  expandAllRows="true" [columnMode]="ColumnMode.flex"
+  [headerHeight]="40" [footerHeight]="40" [limit]="10"
+  rowHeight="auto">
+
+  <ngx-datatable-column name="Name">
+    <ng-template let-column="column"
+      ngx-datatable-header-template> Name </ng-template>
+    <ng-template let-row="row" ngx-datatable-cell-template>
+      <strong>{{ row.key }}</strong>
+    </ng-template>
+  </ngx-datatable-column>
+
+  <ngx-datatable-column name="Terms">
+    <ng-template let-column="column"
+      ngx-datatable-header-template> Terms </ng-template>
+    <ng-template let-row="row" ngx-datatable-cell-template>
+
+
+      <span *ngFor="let res of row?.value?.termCorpus"
+        class="pl-2">{{ res?.display }}</span>
+
+
+    </ng-template>
+  </ngx-datatable-column>
+
+
+
+
+</ngx-datatable>

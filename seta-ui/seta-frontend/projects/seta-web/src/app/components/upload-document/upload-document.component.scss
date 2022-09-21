@@ -1,0 +1,24 @@
+@import "../../../variables.scss";
+@import "../../../ec-styles.scss";
+
+:host {
+
+  .btn.btn-outline-secondary {
+    background-color: #ffffff;
+    &.searchbar-info {
+      border: none;
+      border-color: #868e96;
+      font-size: 0.9em;
+      
+        &:hover {
+          color: #868e96;
+        }
+        &:focus {
+          border: none;
+          box-shadow: none;
+        }
+    }
+    
+  }
+
+}

@@ -1,0 +1,36 @@
+{
+  "JSON": {
+    "snippets": [
+      {
+        "documentId": "CORDIS:fp5-53597",
+        "rowId": "32",
+        "text": "Cases of successful uses of particular representations for certain discovery tasks are stored and provide users with an adaptive interface to information."
+      },
+      {
+        "documentId": "CORDIS:fp5-64708",
+        "rowId": "11",
+        "text": "Securing data against intruders attacking implicit sensitive information is an open research problem."
+      },
+      {
+        "documentId": "CORDIS:h2020-199559",
+        "rowId": "150",
+        "text": "We aim to tackle some of the most important problems in Data Mining --- our goal is to develop a systematic theoretical understanding of certain simple algorithms that, in spite of being at the core of today's web industry, are not yet well understood in terms of their properties and performances, and to develop new simple algorithms for fundamental problems in this domain that have so far escaped a satisfactory solution."
+      },
+      {
+        "documentId": "CORDIS:fp5-58376",
+        "rowId": "225",
+        "text": "Using directly the obtained results as input for more complex numerical analysis, they allow a considerable reduction of such method computational cost."
+      },
+      {
+        "documentId": "cellar:00132518-ce7c-487a-8b06-ba294a4fb500",
+        "rowId": "65",
+        "text": "Privacy Preserving Data Mining : a data quality approach."
+      },
+      {
+        "documentId": "PUBSY:JRC49010",
+        "rowId": "4500",
+        "text": "The bridge between academic methods and industrial constraints is systematically discussed throughout. "
+      }
+    ]
+  }
+}

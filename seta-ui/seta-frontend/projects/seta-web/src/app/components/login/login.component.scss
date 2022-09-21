@@ -1,0 +1,52 @@
+// @import "../../../styles.scss";
+@import "../../../ec-styles.scss";
+@import "../../../variables.scss";
+@import "~node_modules/ngx-chips/core/styles/core/_core.scss";
+
+:host {
+    .log-in-out-link {
+        float: right;
+        clear: both;
+    }
+    #dropdownProfile {
+        &:focus,
+        &:focus-visible {
+            outline: none;
+        }
+        &:after {
+            content: "";
+        }
+    }
+    .dropdown-toggle::after {
+        border: none;
+    }
+
+    .invert {
+        color: white;
+        border: none;
+        background: none;
+    }
+
+    .test-button {
+        float: right;
+        clear: both;
+    }
+
+    [aria-current="page"] {
+        pointer-events: none;
+        cursor: default;
+        text-decoration: none;
+        color: black;
+    }
+
+    .my-account {
+        font-family: inherit;
+        font-size: 100%;
+        line-height: 1.15;
+    }
+
+    
+    // <div class="mydivouter">
+    // <button type="button" class="mybuttonoverlap btn btn-info">Read More</button>
+    // </div>
+}

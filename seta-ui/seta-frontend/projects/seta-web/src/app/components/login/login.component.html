@@ -1,0 +1,34 @@
+<div class="header-user-info">
+
+  <div ngbDropdown class="log-in-out-link">
+    <button id="dropdownProfile" class="invert"
+      ngbDropdownToggle>
+      <fa-icon [icon]="faUser" size="2x">
+      </fa-icon>
+      <!-- <fa-layers [fixedWidth]="true" size="2x">
+            <fa-icon [icon]="faSquare"></fa-icon>
+            <fa-layers-text content="Yo" style="color: black;" transform="shrink-4"></fa-layers-text>
+          </fa-layers> -->
+    </button>
+    <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+      <button
+        *ngIf="currentUser !== null && currentUser.username"
+        (click)="navigateTo($event, 'myaccount')"
+        ngbDropdownItem>{{ 'Hi, ' +
+        currentUser.firstName }}</button>
+      <button (click)="goToLink($event, '/seta-ui/login')"
+        *ngIf="currentUser === null" ngbDropdownItem>Log
+        in</button>
+      <button
+        *ngIf="currentUser !== null && currentUser.username"
+        (click)="logout()" ngbDropdownItem>Log out of
+        SETA</button>
+      <div
+        *ngIf="displayEcasLogoutLink && currentUser !== null && currentUser.username">
+        <button (click)="goToLink($event, '/seta-ui/logout')"
+          ngbDropdownItem>Log out of ECAS</button>
+        <button (click)="generateRsaKeys($event)"
+          ngbDropdownItem>Generate Rsa Keys DEMO</button>
+      </div>
+    </div>
+  </div>

@@ -1,0 +1,33 @@
+:host {
+	li.ecl-card {
+		background-color: white;
+		padding: 0.5rem;
+		border-bottom: 1px solid #ebebeb;
+		border-top: none;
+		border-left: none;
+		border-right: none;
+		cursor: pointer;
+	}
+
+	li.ecl-card > :last-child {
+		margin-bottom: 0;
+	}
+
+	.list-group {
+		max-height: 100vh;
+		overflow: auto;
+	}
+
+	.list-group-item {
+		cursor: pointer;
+	}
+
+	li.ecl-card:hover {
+		background-color: #f5f5f5;
+	}
+
+	#terms-box li {
+		cursor: pointer;
+	}
+
+}

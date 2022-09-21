@@ -1,0 +1,54 @@
+<p-tree [value]="files" [draggableNodes]="true"
+  [droppableNodes]="true" draggableScope="self"
+  droppableScope="self" [validateDrop]="true"
+  (onNodeDrop)="onDrop($event)" selectionMode="single"
+  [(selection)]="selectedFile"
+  (onNodeSelect)="nodeSelect($event)"
+  (onNodeUnselect)="nodeUnselect($event)">
+  <!-- (onNodeContextMenuSelect)="getContextMenu($event)" [contextMenu]="cm"  -->
+  <ng-template let-node pTemplate="default">
+    <button pButton type="button" label="{{ node.label }}"
+      class="p-button-plain p-button-text"></button>
+    <button pButton ngbTooltip="Edit" container="body"
+      type="button" *ngIf="node.label !== 'My queries'"
+      (click)="editNode(node)" icon="pi pi-pencil"
+      iconPos="right"
+      class="p-button-plain p-button-text"></button>
+    <button *ngIf="node.label !== 'My queries'" pButton
+      ngbTooltip="Delete" container="body" type="button"
+      icon="pi pi-trash" (click)="open(node)"
+      class="p-button-plain p-button-text"></button>
+    <button pButton ngbTooltip="Add folder" container="body"
+      type="button" *ngIf="!node.leaf" icon="pi pi-plus"
+      (click)="addFolder(node)"
+      class="p-button-plain p-button-text"></button>
+    <button pButton ngbTooltip="Save current query"
+      container="body" type="button" *ngIf="!node.leaf"
+      icon="pi pi-save"
+      (click)="addQuery(node);$event.stopPropagation()"
+      class="p-button-plain p-button-text"></button>
+  </ng-template>
+  <ng-template let-node pTemplate="edit">
+    <div class="p-inputgroup">
+      <input pInputText [(ngModel)]="node.label"
+        (keyup.enter)="saveEdit(node);$event.stopPropagation();" />
+      <button (click)="
+        saveEdit(node);$event.stopPropagation();" type="button"
+        pButton pRipple icon="pi pi-save"
+        class="p-button-secondary"></button>
+    </div>
+  </ng-template>
+  <ng-template let-node pTemplate="newchild">
+    <div class="p-inputgroup">
+      <input pInputText [(ngModel)]="node.label"
+        (keyup.enter)="saveNewNode(node);$event.stopPropagation();" />
+      <button
+        (click)="saveNewNode(node);$event.stopPropagation();"
+        type="button" pButton pRipple icon="pi pi-save"
+        class="p-button-secondary"></button>
+    </div>
+  </ng-template>
+</p-tree>
+
+<!-- <p-contextMenu #cm [model]="items" appendTo="body" (onHide)="$event.stopPropagation();">
+</p-contextMenu> -->

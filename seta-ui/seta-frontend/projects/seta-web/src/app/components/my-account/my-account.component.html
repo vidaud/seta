@@ -1,0 +1,63 @@
+<!-- <div id="overlay"
+  class="d-flex justify-content-center align-items-center"
+  *ngIf="loading">
+  <div class="spinner-grow" role="status">
+    <span class="sr-only">Loading...</span>
+  </div>
+</div> -->
+
+<div class="homeContainer">
+  <div class="list-group" *ngIf="user && user !== null">
+    <a href="#myaccount"
+      class="list-group-item list-group-item-action"
+      *ngFor="let item of user | keyvalue "
+      style="cursor: default;">
+      <div class="d-flex w-100 justify-content-betweenX">
+        <h5 class="mb-1">{{item.key}}</h5>
+      </div>
+      <p class="mb-1" *ngIf="item.key !== 'Public key'">
+        {{item.value}}</p>
+    </a>
+    <a href="#myaccount"
+      class="list-group-item list-group-item-action"
+      style="cursor: default;">
+      <div class="d-flex w-100 justify-content-betweenX">
+        <h5 class="mb-1">Public key</h5>
+        <div>
+          <span class="pull-right">
+            <span
+              class="btn btn-outline-secondary searchbar-info pt-3 rsa-key-button"
+              (click)="deleteRsaKey($event)">
+              <fa-icon [icon]="faTrashAlt">
+              </fa-icon>
+            </span>
+          </span>
+          <button
+            class="btn btn-outline-secondary searchbar-info pt-3 rsa-key-button"
+            type="button" (click)="generateRsaKeys($event)">
+            <fa-icon [icon]="faRedo">
+            </fa-icon>
+          </button>
+          <br />
+          <div class="rsa-key">
+            {{ publicKey }}
+          </div>
+        </div>
+      </div>
+    </a>
+    <a href="#myaccount"
+      class="list-group-item list-group-item-action">
+      <div class="d-flex w-100">
+        <button *ngIf="userData && userData.username"
+          type="button" (click)="open()" ngbDropdownItem><strong
+            class="mb-1">Delete
+            account</strong>&nbsp;<fa-icon [icon]="faUserSlash">
+          </fa-icon></button>
+        <br />
+
+      </div>
+    </a>
+
+
+  </div>
+</div>

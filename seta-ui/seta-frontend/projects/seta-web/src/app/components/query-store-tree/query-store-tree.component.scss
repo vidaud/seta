@@ -1,0 +1,20 @@
+:host {
+  ::ng-deep {
+    .p-tree {
+      border: none;
+      background: #ffffff;
+      color: #495057;
+      padding: 0;
+      border-radius: 0;
+    }
+
+    .p-tree .p-tree-container .p-treenode .p-treenode-content {
+      border-radius: 3px;
+      transition: box-shadow 0.2s;
+      padding: 0;
+  }
+  }
+  // span.ng-star-inserted > * {
+  //   vertical-align: middle;
+  // }
+}

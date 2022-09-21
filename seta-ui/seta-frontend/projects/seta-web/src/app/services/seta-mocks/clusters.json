@@ -1,0 +1,43 @@
+{
+	"JSON": {
+		"clusters": [
+			{
+				"cluster": "Unclustered",
+				"words": [
+					"text_mining",
+					"knowledge_discovery",
+					"data_integration",
+					"data_analysis",
+					"information_retrieval",
+					"visual_analytics",
+					"knowledge_extraction",
+					"data_fusion",
+					"data_visualisation",
+					"information_extraction",
+					"visualisation",
+					"natural_language_processing"
+				]
+			},
+			{
+				"cluster": "0",
+				"words": [
+					"machine_learning",
+					"data_analytics",
+					"pattern_recognition",
+					"analytics",
+					"deep_learning",
+					"artificial_intelligence",
+					"big_data",
+					"image_processing"
+				]
+			}
+		],
+		"n_terms": 20
+	},
+	"Response Payload": {
+		"EDITOR_CONFIG": {
+			"text": "{\"clusters\":[{\"cluster\":\"Unclustered\",\"words\":[\"text_mining\",\"knowledge_discovery\",\"data_integration\",\"data_analysis\",\"information_retrieval\",\"visual_analytics\",\"knowledge_extraction\",\"data_fusion\",\"data_visualisation\",\"information_extraction\",\"visualisation\",\"natural_language_processing\"]},{\"cluster\":\"0\",\"words\":[\"machine_learning\",\"data_analytics\",\"pattern_recognition\",\"analytics\",\"deep_learning\",\"artificial_intelligence\",\"big_data\",\"image_processing\"]}],\"n_terms\":20}\n",
+			"mode": "application/json"
+		}
+	}
+}

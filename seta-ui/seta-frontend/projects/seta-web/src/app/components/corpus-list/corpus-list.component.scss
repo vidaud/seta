@@ -1,0 +1,241 @@
+@import "../../../variables.scss";
+// @import "../../../ec-styles.scss";
+:host {
+  a {
+    word-wrap: break-word; /* Internet Explorer 5.5+ */
+  }
+
+  .form-control:focus {
+    border-color: unset;
+  }
+
+  .form-group.hidden {
+    width: 0;
+    margin: 0;
+    border: none;
+    padding: 0;
+    .form-control {
+      border: none;
+    }
+  }
+  .custom-day {
+    text-align: center;
+    padding: 0.185rem 0.25rem;
+    display: inline-block;
+    height: 2rem;
+    width: 2rem;
+  }
+  .custom-day.focused {
+    background-color: #e6e6e6;
+  }
+  .custom-day.range,
+  .custom-day:hover {
+    background-color: rgb(2, 117, 216);
+    color: white;
+  }
+  .custom-day.faded {
+    background-color: rgba(2, 117, 216, 0.5);
+  }
+
+  .my-narrow-input {
+    max-width: 800px;
+  }
+
+  .datatable-row-group {
+    will-change: transform;
+  }
+
+  .metadata {
+    font-size: small;
+  }
+
+  .pdf {
+    color: #c50606;
+  }
+
+  .html {
+    color: #147af3;
+  }
+
+  .cogs {
+    color: #868e96;
+  }
+
+  .custom-switch {
+    padding-left: 2rem;
+  }
+
+  .Arched_x0020_Green {
+    fill: url(#SVGID_1_);
+    stroke: #ffffff;
+    stroke-width: 0.25;
+    stroke-miterlimit: 1;
+  }
+
+  .st0 {
+    opacity: 0.5;
+    fill: #0099cc;
+  }
+
+  .st1 {
+    opacity: 0.5;
+    fill: #659ad2;
+  }
+
+  .st2 {
+    fill: #659ad2;
+  }
+
+  .st3 {
+    fill: #4a8ecc;
+  }
+
+  .st4 {
+    opacity: 0.5;
+    fill: #4a8ecc;
+  }
+
+  .st5 {
+    fill: #0099cc;
+  }
+
+  .st6 {
+    fill: #034ea2;
+  }
+
+  .st7 {
+    fill: #ffdd00;
+  }
+
+  .st8 {
+    fill: #727d84;
+  }
+
+  .btn.btn-outline-secondary.peek-document {
+    border: none;
+    border-color: #868e96;
+    &:hover {
+      color: #868e96;
+      background-color: #eee;
+    }
+  }
+
+  .btn.btn-light.peek-document {
+    background-color: $ec-white;
+    &:hover {
+      color: #868e96;
+    }
+  }
+
+  .semanticDocument {
+    color: #868e96;
+    cursor: pointer;
+  }
+
+  .selectedRow {
+    background: #ffc91f;
+  }
+
+  .fa-brain {
+    color: white;
+  }
+
+  ::ng-deep .ngx-datatable div {
+    .datatable-body .datatable-scroll {
+      display: inherit;
+    }
+
+    .datatable-body .datatable-row-detail {
+      overflow: hidden;
+    }
+
+    .datatable-header .datatable-header-cell .datatable-header-cell-template-wrap {
+      display: flex !important;
+      flex-flow: row;
+    }
+
+    .datatable-header .datatable-header-cell .sort-btn {
+      display: flex !important;
+      align-self: flex-start;
+      order: 2;
+    }
+
+    datatable-footer {
+      overflow: hidden;
+    }
+
+    datatable-body-row > div .datatable-row-detail .ng-star-inserted {
+      overflow: hidden;
+    }
+
+    .datatable-header .datatable-header-cell .resize-handle {
+      display: none;
+    }
+
+    // .ngx-datatable.material .datatable-body .datatable-body-row .datatable-body-cell.right_align {
+    //   text-align: right;
+    // }
+  }
+
+  ::ng-deep .ngx-datatable.detail_table div {
+    .datatable-body {
+      max-height: 300px !important;
+      overflow: hidden auto;
+    }
+
+    .datatable-body .datatable-body-row .datatable-body-cell {
+      padding: 3px !important;
+    }
+
+    .datatable-body .datatable-body-row .datatable-body-cell:nth-child(1) {
+      text-align: right;
+    }
+    .datatable-body .datatable-body-row .datatable-body-cell:nth-child(3) {
+      text-align: left;
+    }
+
+    .datatable-body .datatable-body-row .datatable-body-cell:nth-child(2) {
+      vertical-align: middle !important;
+      text-align: center !important;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+
+  ::ng-deep .ngx-datatable.material .datatable-body .datatable-row-detail {
+    border-bottom: 10px solid #dee2e6;
+    background: #ffffff;
+  }
+
+  // #concordanceBody {
+  //   max-height: 300px !important;
+  //   overflow: scroll auto;
+  // }
+
+  .table-responsive {
+    background: white;
+    border: none;
+    max-height: 300px;
+    overflow-y: scroll;
+
+    thead tr:nth-child(1) th {
+      background: white;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .table th,
+    .table td {
+      padding: 0.15rem;
+      vertical-align: top;
+      border-top: none;
+      font-size: small;
+    }
+
+    .table > tbody > tr > td {
+      vertical-align: middle;
+    }
+  }
+}

@@ -1,0 +1,112 @@
+{
+	"JSON": {
+		"words": [
+			{
+				"cardinality": "5328",
+				"similar_word": "machine learning",
+				"similarity": "0.78"
+			},
+			{
+				"cardinality": "2186",
+				"similar_word": "data analytics",
+				"similarity": "0.75"
+			},
+			{
+				"cardinality": "1312",
+				"similar_word": "text mining",
+				"similarity": "0.75"
+			},
+			{
+				"cardinality": "3409",
+				"similar_word": "pattern recognition",
+				"similarity": "0.72"
+			},
+			{
+				"cardinality": "1007",
+				"similar_word": "knowledge discovery",
+				"similarity": "0.72"
+			},
+			{
+				"cardinality": "8651",
+				"similar_word": "analytics",
+				"similarity": "0.71"
+			},
+			{
+				"cardinality": "2239",
+				"similar_word": "data integration",
+				"similarity": "0.70"
+			},
+			{
+				"cardinality": "1426",
+				"similar_word": "deep learning",
+				"similarity": "0.69"
+			},
+			{
+				"cardinality": "20255",
+				"similar_word": "data analysis",
+				"similarity": "0.69"
+			},
+			{
+				"cardinality": "3128",
+				"similar_word": "information retrieval",
+				"similarity": "0.68"
+			},
+			{
+				"cardinality": "735",
+				"similar_word": "visual analytics",
+				"similarity": "0.68"
+			},
+			{
+				"cardinality": "16251",
+				"similar_word": "artificial intelligence",
+				"similarity": "0.64"
+			},
+			{
+				"cardinality": "482",
+				"similar_word": "knowledge extraction",
+				"similarity": "0.64"
+			},
+			{
+				"cardinality": "1754",
+				"similar_word": "data fusion",
+				"similarity": "0.64"
+			},
+			{
+				"cardinality": "932",
+				"similar_word": "data visualisation",
+				"similarity": "0.64"
+			},
+			{
+				"cardinality": "21907",
+				"similar_word": "big data",
+				"similarity": "0.63"
+			},
+			{
+				"cardinality": "743",
+				"similar_word": "information extraction",
+				"similarity": "0.63"
+			},
+			{
+				"cardinality": "12580",
+				"similar_word": "visualisation",
+				"similarity": "0.63"
+			},
+			{
+				"cardinality": "6861",
+				"similar_word": "image processing",
+				"similarity": "0.63"
+			},
+			{
+				"cardinality": "1632",
+				"similar_word": "natural language processing",
+				"similarity": "0.63"
+			}
+		]
+	},
+	"Response Payload": {
+		"EDITOR_CONFIG": {
+			"text": "{\"words\":[{\"cardinality\":\"5328\",\"similar_word\":\"machine learning\",\"similarity\":\"0.78\"},{\"cardinality\":\"2186\",\"similar_word\":\"data analytics\",\"similarity\":\"0.75\"},{\"cardinality\":\"1312\",\"similar_word\":\"text mining\",\"similarity\":\"0.75\"},{\"cardinality\":\"3409\",\"similar_word\":\"pattern recognition\",\"similarity\":\"0.72\"},{\"cardinality\":\"1007\",\"similar_word\":\"knowledge discovery\",\"similarity\":\"0.72\"},{\"cardinality\":\"8651\",\"similar_word\":\"analytics\",\"similarity\":\"0.71\"},{\"cardinality\":\"2239\",\"similar_word\":\"data integration\",\"similarity\":\"0.70\"},{\"cardinality\":\"1426\",\"similar_word\":\"deep learning\",\"similarity\":\"0.69\"},{\"cardinality\":\"20255\",\"similar_word\":\"data analysis\",\"similarity\":\"0.69\"},{\"cardinality\":\"3128\",\"similar_word\":\"information retrieval\",\"similarity\":\"0.68\"},{\"cardinality\":\"735\",\"similar_word\":\"visual analytics\",\"similarity\":\"0.68\"},{\"cardinality\":\"16251\",\"similar_word\":\"artificial intelligence\",\"similarity\":\"0.64\"},{\"cardinality\":\"482\",\"similar_word\":\"knowledge extraction\",\"similarity\":\"0.64\"},{\"cardinality\":\"1754\",\"similar_word\":\"data fusion\",\"similarity\":\"0.64\"},{\"cardinality\":\"932\",\"similar_word\":\"data visualisation\",\"similarity\":\"0.64\"},{\"cardinality\":\"21907\",\"similar_word\":\"big data\",\"similarity\":\"0.63\"},{\"cardinality\":\"743\",\"similar_word\":\"information extraction\",\"similarity\":\"0.63\"},{\"cardinality\":\"12580\",\"similar_word\":\"visualisation\",\"similarity\":\"0.63\"},{\"cardinality\":\"6861\",\"similar_word\":\"image processing\",\"similarity\":\"0.63\"},{\"cardinality\":\"1632\",\"similar_word\":\"natural language processing\",\"similarity\":\"0.63\"}]}\n",
+			"mode": "application/json"
+		}
+	}
+}
