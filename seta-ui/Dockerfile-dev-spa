@@ -1,0 +1,22 @@
+FROM python:3.9.10-bullseye
+
+RUN apt update -y && apt-get install -y nodejs npm && useradd -m seta
+
+ARG ROOT=/home/seta
+
+RUN mkdir -p $ROOT/seta-frontend && mkdir -p $ROOT/seta-flask-server && mkdir -p $ROOT/models
+
+RUN npm install -g npm@latest 
+RUN npm update -g
+RUN npm install -g @angular/cli@13.3.1 
+#RUN ng update 
+
+WORKDIR $ROOT/seta-frontend
+
+COPY ./seta-frontend/package.json $ROOT/seta-frontend/package.json
+RUN npm install
+
+CMD chdir /home/seta/seta-frontend/ \
+#    && npm install \
+    && ng build seta-web -c=docker --watch --output-path=/home/seta/seta-flask-server/seta-ui/ 
+
