@@ -1,9 +1,6 @@
 from datetime import datetime, timedelta
-import pymongo
 from pymongo.results import DeleteResult
-
-import config
-from db_config import getDb
+from db.db_config import getDb
 
 db = getDb()
 

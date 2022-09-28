@@ -1,7 +1,7 @@
 from datetime import datetime
 import time
 
-from db_config import getDb
+from db.db_config import getDb
 
 db = getDb()
 

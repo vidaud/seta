@@ -16,7 +16,4 @@ WORKDIR $ROOT/seta-frontend
 COPY ./seta-frontend/package.json $ROOT/seta-frontend/package.json
 RUN npm install
 
-CMD chdir /home/seta/seta-frontend/ \
-#    && npm install \
-    && ng build seta-web -c=docker --watch --output-path=/home/seta/seta-flask-server/seta-ui/ 
-
+CMD chdir /home/seta/seta-frontend/ && ng build seta-web -c=docker --watch --output-path=/home/seta/seta-flask-server/seta-ui/

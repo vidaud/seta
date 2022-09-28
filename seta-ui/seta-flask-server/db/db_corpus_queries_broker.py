@@ -1,4 +1,4 @@
-from db_config import getDb
+from db.db_config import getDb
 
 db = getDb()
 

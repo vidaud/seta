@@ -1,16 +1,22 @@
 FROM python:3.9.10-bullseye
 
-RUN apt update -y && useradd -m seta
+RUN apt update -y
 
 ARG ROOT=/home/seta
 
-RUN mkdir -p $ROOT/seta-frontend && mkdir -p $ROOT/seta-flask-server && mkdir -p $ROOT/models
+RUN mkdir -p $ROOT/seta-flask-server && mkdir -p $ROOT/models
 COPY ./seta-flask-server/requirements.txt $ROOT/seta-flask-server/requirements.txt
 WORKDIR $ROOT/seta-flask-server
 RUN pip install -r requirements.txt
+RUN pip install ptvsd debugpy
 
-CMD chdir /home/seta/seta-flask-server \
-    && export FLASK_RUN_PORT=8080 \
-    && export FLASK_APP=app.py \
-    && export FLASK_ENV=development \
-    && python -m debugpy --listen 0.0.0.0:5678 --wait-for-client -m flask run -h "0.0.0.0" 
+ENV FLASK_ENV="development"
+ENV FLASK_APP=app.py
+ENV FLASK_RUN_PORT=8080
+ENV FLASK_DEBUG=1
+# Keeps Python from generating .pyc files in the container
+ENV PYTHONDONTWRITEBYTECODE 1
+# Turns off buffering for easier container logging
+ENV PYTHONUNBUFFERED 1
+
+CMD python -m debugpy --listen 0.0.0.0:5678 --wait-for-client -m flask run -h "0.0.0.0" 

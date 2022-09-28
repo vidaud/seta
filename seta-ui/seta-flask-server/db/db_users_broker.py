@@ -3,7 +3,7 @@ from datetime import datetime, timedelta
 
 from pymongo.results import DeleteResult, InsertManyResult
 
-from db_config import getDb
+from db.db_config import getDb
 
 db = getDb()
 

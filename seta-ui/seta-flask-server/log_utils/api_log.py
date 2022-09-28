@@ -1,5 +1,5 @@
 from pymongo import MongoClient
-from db_config import getDb
+from db.db_config import getDb
 from log_utils.log_line import LogLine
 
 

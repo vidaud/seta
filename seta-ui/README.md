@@ -83,3 +83,6 @@ Deployment procedure
     - systemctl restart seta-ui
     - systemctl status seta-ui (just to check that guinorn is restarted)
 
+Before docker build:
+ng build seta-web -c="docker" --output-path="..\seta-flask-server\seta-ui"
+

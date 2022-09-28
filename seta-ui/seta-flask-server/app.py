@@ -11,16 +11,19 @@ from flask_jwt_extended import JWTManager, decode_token, get_jwt_identity
 from flask_jwt_extended.view_decorators import jwt_required
 
 import config
-from base_routes import base_routes
-from db_revoked_tokens_broker import (addRevokedToken, deleteRevokedTokens,
+
+from db.db_revoked_tokens_broker import (addRevokedToken, deleteRevokedTokens,
                                       isTokenRevoked)
-from db_users_broker import (addDbUser, deleteUserDataOlderThanThreeWeeks,
+from db.db_users_broker import (addDbUser, deleteUserDataOlderThanThreeWeeks,
                              getDbUser)
-from ecas import ecas
+
+from blueprints.base_routes import base_routes
+from blueprints.ecas import ecas
+from blueprints.rest import rest
+from blueprints.rsa import rsa
+
 from log_utils.api_log import ApiLog
 from log_utils.log_line import LogLine
-from rest import rest
-from rsa import rsa
 
 app = Flask(__name__)
 app.config.from_object(config)

@@ -16,12 +16,14 @@ from flask_jwt_extended import (create_access_token, create_refresh_token,
                                 get_jwt_identity, jwt_required)
 
 import config
-from auth import authenticateJwt
-from db_revoked_tokens_broker import (addRevokedToken, deleteRevokedTokens,
+from infrastructure.auth import authenticateJwt
+from infrastructure.decorators import pop_session
+
+from db.db_revoked_tokens_broker import (addRevokedToken, deleteRevokedTokens,
                                       getAllUserRevokedTokensDb,
                                       isTokenRevoked)
-from db_users_broker import addDbUser, getDbUser
-from decorators import pop_session
+from db.db_users_broker import addDbUser, getDbUser
+
 
 ecas = Blueprint("ecas", __name__)
 

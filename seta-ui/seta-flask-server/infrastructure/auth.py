@@ -6,7 +6,7 @@ from flask import request
 from flask import current_app as app
 
 import config
-from db_revoked_tokens_broker import isTokenRevoked
+from db.db_revoked_tokens_broker import isTokenRevoked
 
 
 # Check if JWT is genuine and belongs to the user for which the resource is requested

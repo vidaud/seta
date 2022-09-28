@@ -9,10 +9,10 @@ from Crypto.Signature import pkcs1_15
 from flask import Blueprint, json, request, session
 from flask_jwt_extended import jwt_required
 
-import constants
-from auth import authenticateJwt
-from db_config import getDb
-from db_rsa_keys_broker import (deleteAllRsaKeysForUser, getDbRsaKey,
+import infrastructure.constants
+from infrastructure.auth import authenticateJwt
+from db.db_config import getDb
+from db.db_rsa_keys_broker import (deleteAllRsaKeysForUser, getDbRsaKey,
                                 setDbRsaKey)
 
 db = getDb()
