@@ -10,6 +10,7 @@ services:
       - seta-network
     volumes: 
       - seta-mongo:/data/db
+
   seta-es:
     container_name: seta-es
     restart: always
@@ -27,7 +28,6 @@ services:
       - discovery.type=single-node
       - xpack.security.http.ssl.enabled=false
       - xpack.security.transport.ssl.enabled=false
-
 
   seta-api:
     container_name: seta-api

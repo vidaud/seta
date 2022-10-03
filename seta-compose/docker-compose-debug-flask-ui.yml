@@ -79,12 +79,10 @@ services:
 
   seta-ui-spa:
     container_name: seta-ui-spa
-    restart: always
+    restart: "no"
     build: 
        context: ../seta-ui
        dockerfile: Dockerfile-dev-spa
-    depends_on:
-      - "seta-api"
     expose:
       - "8080"
     volumes: 

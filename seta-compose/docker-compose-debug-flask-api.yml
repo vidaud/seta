@@ -28,7 +28,6 @@ services:
       - xpack.security.http.ssl.enabled=false
       - xpack.security.transport.ssl.enabled=false
 
-
   seta-api:
     container_name: seta-api
     restart: always
@@ -79,20 +78,16 @@ services:
 
   seta-ui-spa:
     container_name: seta-ui-spa
-    restart: always
+    restart: "no"
     build: 
        context: ../seta-ui
        dockerfile: Dockerfile-dev-spa
-    depends_on:
-      - "seta-api"
     expose:
       - "8080"
     volumes: 
       - ../seta-ui:/home/seta/
     networks: 
       - seta-network
-
-
 
 networks:
   seta-network:

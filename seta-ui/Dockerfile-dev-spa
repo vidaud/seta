@@ -1,6 +1,6 @@
 FROM python:3.9.10-bullseye
 
-RUN apt update -y && apt-get install -y nodejs npm && useradd -m seta
+RUN apt update -y && apt-get install -y nodejs npm
 
 ARG ROOT=/home/seta
 
@@ -16,4 +16,4 @@ WORKDIR $ROOT/seta-frontend
 COPY ./seta-frontend/package.json $ROOT/seta-frontend/package.json
 RUN npm install
 
-CMD chdir /home/seta/seta-frontend/ && ng build seta-web -c=docker --watch --output-path=/home/seta/seta-flask-server/seta-ui/
+CMD ng build seta-web -c=docker --output-path=/home/seta/seta-flask-server/seta-ui/

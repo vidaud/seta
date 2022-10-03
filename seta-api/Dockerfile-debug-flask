@@ -7,14 +7,9 @@ RUN apt install -y openjdk-11-jre
 RUN apt install -y nodejs 
 RUN apt install -y npm 
 RUN npm install elasticdump -g
-RUN useradd -M seta 
 
 ARG ROOT=/home/seta
 WORKDIR $ROOT
-
-RUN chown -R seta /home/seta 
-
-#USER seta
 
 RUN mkdir $ROOT/tika
 WORKDIR $ROOT/tika
@@ -28,15 +23,19 @@ WORKDIR $ROOT
 
 COPY requirements.txt $ROOT/requirements.txt
 RUN pip install -r $ROOT/requirements.txt
+RUN pip install ptvsd debugpy
+
 RUN python -m nltk.downloader punkt
 RUN python -c 'from sentence_transformers import SentenceTransformer; SentenceTransformer("all-distilroberta-v1")'
 
-ADD . .
+ENV FLASK_ENV="development"
+ENV FLASK_APP=main.py
+ENV FLASK_RUN_PORT=8081
+ENV FLASK_DEBUG=1
+# Keeps Python from generating .pyc files in the container
+ENV PYTHONDONTWRITEBYTECODE 1
+# Turns off buffering for easier container logging
+ENV PYTHONUNBUFFERED 1
 
-#COPY ./ ./
 
-CMD export FLASK_RUN_PORT=8081 \
- &&  export FLASK_APP=main.py \
- && export FLASK_ENV=development \
- && chdir /home/seta \
- && python -m debugpy --listen 0.0.0.0:5678 --wait-for-client -m flask run --host 0.0.0.0 --no-reload --with-threads
+CMD python -m debugpy --listen 0.0.0.0:5678 --wait-for-client -m flask run --host 0.0.0.0 --no-reload --with-threads

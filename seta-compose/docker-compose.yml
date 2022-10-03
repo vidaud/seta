@@ -3,13 +3,14 @@ services:
   seta-mongo:
     container_name: seta-mongo
     restart: always
-    build: ../seta-mongo
-    expose:
-      - "27017"
+    build: ../seta-mongo    
+    ports:
+      - "27017:27017"
     networks: 
       - seta-network
     volumes: 
       - seta-mongo:/data/db
+      
   seta-es:
     container_name: seta-es
     restart: always
