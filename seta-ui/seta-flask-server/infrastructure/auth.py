@@ -5,7 +5,6 @@ import jwt
 from flask import request
 from flask import current_app as app
 
-import config
 from db.db_revoked_tokens_broker import isTokenRevoked
 
 

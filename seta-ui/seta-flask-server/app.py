@@ -12,10 +12,8 @@ from flask_jwt_extended.view_decorators import jwt_required
 
 import config
 
-from db.db_revoked_tokens_broker import (addRevokedToken, deleteRevokedTokens,
-                                      isTokenRevoked)
-from db.db_users_broker import (addDbUser, deleteUserDataOlderThanThreeWeeks,
-                             getDbUser)
+from db.db_revoked_tokens_broker import (deleteRevokedTokens, isTokenRevoked)
+from db.db_users_broker import (deleteUserDataOlderThanThreeWeeks, getDbUser)
 
 from blueprints.base_routes import base_routes
 from blueprints.ecas import ecas
@@ -25,8 +23,14 @@ from blueprints.rsa import rsa
 from log_utils.api_log import ApiLog
 from log_utils.log_line import LogLine
 
+FLASK_ENV = os.environ.get('FLASK_ENV', 'development')
+
 app = Flask(__name__)
-app.config.from_object(config)
+
+if FLASK_ENV == "production":    
+    app.config.from_object(config.ProdConfig())
+else: 
+    app.config.from_object(config.DevConfig())
 
 jwt = JWTManager(app)
 
@@ -59,7 +63,7 @@ def job2():
 
 
 # if you don't wanna use a config, you can set options here:
-sch.api_enabled = app.config["SCHEDULER_API_ENABLED"]
+#sch.api_enabled = app.config["SCHEDULER_API_ENABLED"]
 sch.init_app(app)
 sch.start()
 
@@ -68,7 +72,7 @@ app.register_blueprint(base_routes, url_prefix="/seta-ui/")
 app.register_blueprint(ecas, url_prefix="/seta-ui/")
 app.register_blueprint(rsa, url_prefix="/seta-ui/")
 
-if config.FLASK_ENV == "dev" or config.FLASK_ENV == "serve":
+if FLASK_ENV == "dev" or FLASK_ENV == "serve":
     cors = CORS(app, resources={r"/*": {"origins": "*"}})
 
 
@@ -87,10 +91,10 @@ app.json_encoder = JSONEncoder
 
 app.cas_client = CASClient(
     version=3,
-    service_url=app.config["FLASK_PATH"] +
+    service_url = app.config["FLASK_PATH"] +
     "/seta-ui/login",  # ?next=%2Fseta-ui%2Fseta
     # server_url='https://django-cas-ng-demo-server.herokuapp.com/cas/'
-    server_url="https://webgate.ec.europa.eu/cas/",
+    server_url = app.config["AUTH_CAS_URL"],
 )
 
 

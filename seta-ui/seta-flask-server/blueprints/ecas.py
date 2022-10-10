@@ -15,7 +15,6 @@ from flask_jwt_extended import (create_access_token, create_refresh_token,
                                 decode_token, get_jti, get_jwt,
                                 get_jwt_identity, jwt_required)
 
-import config
 from infrastructure.auth import authenticateJwt
 from infrastructure.decorators import pop_session
 
