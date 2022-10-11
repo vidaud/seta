@@ -1,8 +1,7 @@
 import requests
-from flask import Blueprint, Flask, Response
+from flask import Blueprint, Response
 from flask import current_app as app
 from flask import request, send_from_directory
-from flask_jwt_extended import jwt_required
 
 base_routes = Blueprint("base_routes", __name__)
 

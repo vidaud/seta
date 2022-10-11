@@ -1,8 +1,9 @@
 import os
 import time
+from xml.etree.ElementInclude import include
 
 from bson import ObjectId, datetime
-from flask import (Flask, json, session)
+from flask import (Flask, session)
 
 from flask_cors import CORS
 from flask_jwt_extended import JWTManager, get_jwt_identity
@@ -18,7 +19,9 @@ from blueprints.ecas import ecas
 from blueprints.rest import rest
 from blueprints.rsa import rsa
 
-from log_utils.api_log import ApiLog
+#from log_utils.api_log import ApiLog
+from infrastructure.helpers import JSONEncoder
+import logging
 
 FLASK_ENV = os.environ.get('FLASK_ENV', 'development')
 FLASK_DEBUG = os.environ.get('FLASK_DEBUG', False)
@@ -37,8 +40,6 @@ else:
     app.config.from_object(config.DevConfig())
 
 jwt = JWTManager(app)
-
-api_log = ApiLog()
 
 # if you don't wanna use a config, you can set options here:
 #scheduler.api_enabled = app.config["SCHEDULER_API_ENABLED"]
@@ -59,20 +60,9 @@ with app.app_context():
         
     from infrastructure.cas_client import cas_client
     app.cas_client = cas_client    
+    #api_log = ApiLog()
 
-
-class JSONEncoder(json.JSONEncoder):
-    """extend json-encoder class"""
-
-    def default(self, o):
-        if isinstance(o, ObjectId):
-            return str(o)
-        if isinstance(o, datetime.datetime):
-            return str(o)
-        return json.JSONEncoder.default(self, o)
-
-
-app.json_encoder = JSONEncoder
+app.json_encoder= JSONEncoder
 
 
 # Callback function to check if a JWT exists
@@ -89,7 +79,7 @@ def add_claims_to_access_token(identity):
         current_user = session["username"]
     else:
         current_user = get_jwt_identity()
-    print(current_user)
+    
     iat = time.time()
     additional_claims = {
         "user": getDbUser(current_user),

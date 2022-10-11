@@ -1,7 +1,4 @@
-import binascii
-from hashlib import sha512
 
-from Crypto.Cipher import PKCS1_OAEP
 from Crypto.PublicKey import RSA
 
 keyPair = RSA.generate(bits=4096)

@@ -10,3 +10,4 @@ setproctitle==1.2.2
 pycryptodome==3.14.1
 flask_apscheduler==1.12.3
 python-secrets==22.6.1
+flask-pymongo==2.4.0

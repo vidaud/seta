@@ -5,12 +5,14 @@ from os.path import exists
 import secrets
 
 
-MONGO_DB = "mongodb://seta-mongo:27017/"
+#MONGO_DB = "mongodb://seta-mongo:27017/"
     
 class Config:
     """Common configuration"""  
     FLASK_ENV = "docker"
     AUTH_CAS_URL = "https://webgate.ec.europa.eu/cas/"
+    
+    MONGO_URI = "mongodb://seta-mongo:27017/seta"
     
     SECRET_KEY_PATH = "/home/seta/models/key.txt"
     SECRET_KEY = "" 

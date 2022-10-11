@@ -1,15 +1,12 @@
-from pymongo import MongoClient
-from db.db_config import getDb
 from log_utils.log_line import LogLine
 
+from db.db_config import get_db
+from werkzeug.local import LocalProxy
+
+db = LocalProxy(get_db)
 
 class ApiLog:
     def __init__(self):
-        # config = yaml.load(open("config.yaml"), Loader=yaml.FullLoader)
-        # connection_string = config['connection_string']
-        # client = MongoClient(connection_string)
-        # db = client.seta
-        db = getDb()
         self.collection = db.logs
 
     def write_log(self, log_line: LogLine):

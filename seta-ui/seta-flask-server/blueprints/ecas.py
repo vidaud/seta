@@ -1,26 +1,18 @@
-import os
-import time
 from contextlib import nullcontext
 from datetime import datetime
-from functools import wraps
 
 import jwt
-import requests
-from cas import CASClient
-from flask import Blueprint, Flask, Response
+from flask import Blueprint
 from flask import current_app as app
-from flask import (json, redirect, request, send_from_directory, session,
+from flask import (json, redirect, request, session,
                    url_for)
 from flask_jwt_extended import (create_access_token, create_refresh_token,
-                                decode_token, get_jti, get_jwt,
+                                get_jti, get_jwt,
                                 get_jwt_identity, jwt_required)
 
-from infrastructure.auth import authenticateJwt
 from infrastructure.decorators import pop_session
 
-from db.db_revoked_tokens_broker import (addRevokedToken, deleteRevokedTokens,
-                                      getAllUserRevokedTokensDb,
-                                      isTokenRevoked)
+from db.db_revoked_tokens_broker import (addRevokedToken, getAllUserRevokedTokensDb)
 from db.db_users_broker import addDbUser, getDbUser
 
 

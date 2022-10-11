@@ -1,10 +1,9 @@
 from flask import Blueprint, json, request
 from flask_jwt_extended import jwt_required
 
-from infrastructure.auth import authenticateJwt, checkIfAuthorized
 from db.db_corpus_queries_broker import getAllCorpusQueries
 from db.db_states_broker import addDbState, deleteDbState, getDbState, setDbState
-from db.db_users_broker import deleteAllDbUserData, getDbUser, moveDocuments, updateDbUser
+from db.db_users_broker import getDbUser, moveDocuments, updateDbUser
 
 
 rest = Blueprint("rest", __name__)

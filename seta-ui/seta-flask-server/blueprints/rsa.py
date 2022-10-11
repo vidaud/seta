@@ -1,21 +1,11 @@
-import binascii
-from base64 import b64encode
-from hashlib import sha512
 
-from Crypto.Cipher import PKCS1_OAEP
-from Crypto.Hash import SHA256
 from Crypto.PublicKey import RSA
-from Crypto.Signature import pkcs1_15
-from flask import Blueprint, json, request, session
+from flask import Blueprint, json, request
 from flask_jwt_extended import jwt_required
 
-import infrastructure.constants
-from infrastructure.auth import authenticateJwt
-from db.db_config import getDb
+import infrastructure.constants as constants
 from db.db_rsa_keys_broker import (deleteAllRsaKeysForUser, getDbRsaKey,
                                 setDbRsaKey)
-
-db = getDb()
 
 rsa = Blueprint("rsa", __name__)
 

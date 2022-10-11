@@ -1,8 +1,10 @@
 from datetime import datetime, timedelta
 from pymongo.results import DeleteResult
-from db.db_config import getDb
 
-db = getDb()
+from db.db_config import get_db
+from werkzeug.local import LocalProxy
+
+db = LocalProxy(get_db)
 
 
 def addRevokedToken(username, jti, t):
