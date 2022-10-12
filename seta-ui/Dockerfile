@@ -30,6 +30,12 @@ RUN rm -r  /home/seta/seta-frontend/*
 
 RUN chown -R seta /home/seta 
 
+ENV FLASK_ENV="production"
+ENV FLASK_APP=app.py
+ENV FLASK_RUN_PORT=8080
+ENV FLASK_DEBUG=0
+ENV FLASK_PATH="https://seta-test.emm4u.eu"
+ENV API_TARGET_PATH="seta-api:8081/seta-api/api/v1"
 
 CMD ["gunicorn", "--conf", "/home/seta/seta-flask-server/gunicorn_conf.py", "--bind", "0.0.0.0:8080", "--capture-output" , "--access-logformat", "[seta.ui] %(h)s %(l)s %(u)s %(t)s %(r)s %(s)s %(b)s | %(f)s | %(a)s", "--chdir", "/home/seta/seta-flask-server", "app:app"]
 
