@@ -1,11 +1,12 @@
 import time
-from xml.etree.ElementInclude import include
+from datetime import datetime as dt
+import logging
 
-from flask import (Flask, session)
+from flask import (Flask, session, request)
 from flask_jwt_extended import get_jwt_identity
 from flask_cors import CORS
 
-from infrastructure.extensions import (scheduler)
+from infrastructure.extensions import (scheduler, jwt, logs)
 from db.db_revoked_tokens_broker import (isTokenRevoked)
 from db.db_users_broker import (getDbUser)
 
@@ -14,9 +15,7 @@ from blueprints.ecas import ecas
 from blueprints.rest import rest
 from blueprints.rsa import rsa
 
-#from log_utils.api_log import ApiLog
 from infrastructure.helpers import JSONEncoder
-from infrastructure.extensions import (scheduler, jwt)
 
 from cas import CASClient
 
@@ -47,11 +46,28 @@ def create_app(config_object):
     with app.app_context():
         if is_debug_mode():
             CORS(app, resources={r"/*": {"origins": "*"}})        
-        else:
+        
+        if app.config['SCHEDULER_ENABLED']:
             from infrastructure.scheduler import (tasks, events)            
             scheduler.start()
-            
-        #api_log = ApiLog() 
+                
+    @app.after_request
+    def after_request(response):
+        """ Logging after every request. """
+        logger = logging.getLogger("app.access")
+        logger.info(
+            "%s [%s] %s %s %s %s %s %s %s",
+            request.remote_addr,
+            dt.utcnow().strftime("%d/%b/%Y:%H:%M:%S.%f")[:-3],
+            request.method,
+            request.path,
+            request.scheme,
+            response.status,
+            response.content_length,
+            request.referrer,
+            request.user_agent,
+        )
+        return response
         
     return app
     
@@ -64,6 +80,7 @@ def register_blueprints(app):
 def register_extensions(app):
     scheduler.init_app(app)
     jwt.init_app(app)
+    logs.init_app(app)
     
 # Callback function to check if a JWT exists
 @jwt.token_in_blocklist_loader

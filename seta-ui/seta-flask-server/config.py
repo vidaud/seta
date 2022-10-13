@@ -19,7 +19,8 @@ class Config:
     JWT_IDENTITY_CLAIM="username"
     JWT_EXPIRY_INTERVAL = float(3600)
     
-    SCHEDULER_API_ENABLED= False
+    SCHEDULER_ENABLED = False
+    SCHEDULER_API_ENABLED = False
     
     FLASK_ENV = "development"
     DEBUG = False
@@ -41,9 +42,19 @@ class Config:
             
         self.JWT_SECRET_KEY = self.SECRET_KEY
         
-        """Read environment variables"""        
+        """Read flask environment variables"""
+        #self.FLASK_ENV = os.environ.get('FLASK_ENV', 'development')
         self.FLASK_PATH = os.environ.get('FLASK_PATH', 'http://localhost')
         self.API_TARGET_PATH = os.environ.get('FLASK_PATH', 'seta-api:8081/seta-api/api/v1')
+        
+        """Read logging environment variables"""
+        self.LOG_TYPE = os.environ.get("LOG_TYPE", "stream")
+        self.LOG_LEVEL = os.environ.get("LOG_LEVEL", "INFO")
+        self.LOG_DIR = os.environ.get("LOG_DIR", "/data/logs")
+        self.APP_LOG_NAME = os.environ.get("APP_LOG_NAME", "app.log")
+        self.WWW_LOG_NAME = os.environ.get("WWW_LOG_NAME", "www.log")
+        self.LOG_MAX_BYTES = os.environ.get("LOG_MAX_BYTES", 100_000_000)  # 100MB in bytes
+        self.LOG_COPIES = os.environ.get("LOG_COPIES", 5)
         
             
 class DevConfig(Config):
@@ -62,7 +73,8 @@ class TestConfig(Config):
     
 class ProdConfig(Config):
     Config.FLASK_ENV = "production"
-    Config.DEBUG = False
+    Config.DEBUG = False  
+    Config.SCHEDULER_ENABLED = True
     #API_TARGET_PATH = "seta-test.emm4u.eu/seta-api/seta/api/v1"
     JWT_ACCESS_TOKEN_EXPIRES = timedelta(minutes=15)
     JWT_REFRESH_TOKEN_EXPIRES = timedelta(days=6)
