@@ -16,10 +16,6 @@ def generateRsaKeys():
 
     r = json.loads(request.data.decode("UTF-8"))
     username = r["username"]
-    # authentication = authenticateJwt(username)
-
-    # if not authentication["authenticated"]:
-    #     return authentication
 
     keyPair = RSA.generate(bits=4096)
 
@@ -44,17 +40,11 @@ def generateRsaKeys():
     }
 
     response = json.jsonify(response)
-
-    response.headers.add("Access-Control-Allow-Origin", "*")
     return response
 
 # GET - get the public RSA key
 @rsa.route("/rsa/get-public-rsa-key/<username>")
 def getPublicRsaKey(username):
-    # authentication = authenticateJwt(username)
-
-    # if not authentication["authenticated"]:
-    #     return authentication
 
     key = getDbRsaKey(username, True)
     
@@ -69,8 +59,6 @@ def getPublicRsaKey(username):
     }
 
     response = json.jsonify(response)
-
-    response.headers.add("Access-Control-Allow-Origin", "*")
     return response
 
 @rsa.route("/rsa/delete-rsa-keys", methods=["POST"])
@@ -79,10 +67,6 @@ def deleteRsaKeys():
 
     r = json.loads(request.data.decode("UTF-8"))
     username = r["username"]
-    # authentication = authenticateJwt(username)
-
-    # if not authentication["authenticated"]:
-    #     return authentication
 
     deleteAllRsaKeysForUser(username)
 
@@ -91,8 +75,6 @@ def deleteRsaKeys():
     }
 
     response = json.jsonify(response)
-
-    response.headers.add("Access-Control-Allow-Origin", "*")
     return response
 
     

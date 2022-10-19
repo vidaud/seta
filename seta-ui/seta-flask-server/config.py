@@ -18,6 +18,7 @@ class Config:
     JWT_SECRET_KEY = ""    
     JWT_IDENTITY_CLAIM="username"
     JWT_EXPIRY_INTERVAL = float(3600)
+    JWT_COOKIE_CSRF_PROTECT = False #TODO: set this to True when client sends the 'X-CSRF-TOKEN' header
     
     SCHEDULER_ENABLED = False
     SCHEDULER_API_ENABLED = False
@@ -70,6 +71,7 @@ class TestConfig(Config):
     #API_TARGET_PATH = "seta-api:8081/seta-api/api/v1"
     JWT_ACCESS_TOKEN_EXPIRES = timedelta(minutes=15)
     JWT_REFRESH_TOKEN_EXPIRES = timedelta(hours=24)    
+    JWT_COOKIE_SECURE = True
     
 class ProdConfig(Config):
     Config.FLASK_ENV = "production"
@@ -78,7 +80,7 @@ class ProdConfig(Config):
     #API_TARGET_PATH = "seta-test.emm4u.eu/seta-api/seta/api/v1"
     JWT_ACCESS_TOKEN_EXPIRES = timedelta(minutes=15)
     JWT_REFRESH_TOKEN_EXPIRES = timedelta(days=6)
-
+    JWT_COOKIE_SECURE = True
 """
 if "serve" == FLASK_ENV:
     ANGULAR_PATH = "http://localhost:4200"

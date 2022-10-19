@@ -36,4 +36,4 @@ ENV PYTHONDONTWRITEBYTECODE 1
 # Turns off buffering for easier container logging
 ENV PYTHONUNBUFFERED 1
 
-CMD flask run --host 0.0.0.0 --no-reload --with-threads
+CMD flask run --host 0.0.0.0

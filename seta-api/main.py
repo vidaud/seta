@@ -1111,8 +1111,8 @@ def corpus(term, n_docs, from_doc, sources, collection, reference, eurovoc_conce
                                            "reference": is_field_in_doc(document['_source'], "reference"),
                                            "author": is_field_in_doc(document['_source'], "author"),
                                            "eurovoc_concept": is_field_in_doc(document['_source'], "eurovoc_concept"),
-                                           "eurovoc_dom": is_field_in_doc(document['_source'], "eurovoc_domain"),
-                                           "eurovoc_mth": is_field_in_doc(document['_source'], "eurovoc_mth"),
+                                           #"eurovoc_dom": is_field_in_doc(document['_source'], "eurovoc_domain"),
+                                           #"eurovoc_mth": is_field_in_doc(document['_source'], "eurovoc_mth"),
                                            "ec_priority": is_field_in_doc(document['_source'], "ec_priority"),
                                            "sdg_domain": is_field_in_doc(document['_source'], "sdg_domain"),
                                            "sdg_subdomain": is_field_in_doc(document['_source'], "sdg_subdomain"),
@@ -1556,7 +1556,8 @@ def build_search_query_json(search_term):
         if 'AND' in search_term or 'OR' in search_term:
             search_term = search_term.replace('"', '\\"')
             query_string = '{"bool": {"must": [{"query_string": {"fields": ["title^10","abstract^3","chunk_text"],"query": "' \
-                           + search_term + '","type": "phrase" }},"type": "cross_fields" }}]}}'
+                           + search_term + '","type": "phrase" }}]}}'
+            
             query = json.loads(query_string)
         else:
             search_term_best, search_term_phrase = parse_search_term(search_term)
@@ -1613,7 +1614,8 @@ def build_corpus_request(term, n_docs, from_doc, sources, collection, reference,
     if sort:
         sort_list = build_sort_body(sort)
 
-    body = {
+    print(query_to_use)
+    body = {       
         "size": n_docs,
         "from": from_doc,
         "track_total_hits": True,

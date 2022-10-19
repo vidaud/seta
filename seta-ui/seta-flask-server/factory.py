@@ -2,18 +2,19 @@ import time
 from datetime import datetime as dt
 import logging
 
-from flask import (Flask, session, request)
-from flask_jwt_extended import get_jwt_identity
+from flask import (Flask, request)
 from flask_cors import CORS
 
 from infrastructure.extensions import (scheduler, jwt, logs)
-from db.db_revoked_tokens_broker import (isTokenRevoked)
+#from db.db_revoked_tokens_broker import (isTokenRevoked)
 from db.db_users_broker import (getDbUser)
 
 from blueprints.base_routes import base_routes
 from blueprints.ecas import ecas
 from blueprints.rest import rest
 from blueprints.rsa import rsa
+
+from blueprints.login import login_bp
 
 from infrastructure.helpers import JSONEncoder
 
@@ -29,23 +30,26 @@ def create_app(config_object):
     
     app.cas_client = CASClient(
         version=3,
-        service_url = app.config["FLASK_PATH"] +
-        "/seta-ui/login",  # ?next=%2Fseta-ui%2Fseta
+        service_url = app.config["FLASK_PATH"] + "/seta-ui/login",  # ?next=%2Fseta-ui%2Fseta
         server_url = app.config["AUTH_CAS_URL"],
-    )    
+    )
+    app.home_root = app.config['FLASK_PATH'] + "/seta-ui/#/home"   
     
     register_extensions(app)
     register_blueprints(app)
     
+    '''
     def is_debug_mode():
         """Get app debug status."""
         if not app.config['DEBUG']:
             return app.config['FLASK_ENV'] == "development"
         return app.config['DEBUG'].lower() not in ("0", "false", "no")
+    '''
     
     with app.app_context():
-        if is_debug_mode():
-            CORS(app, resources={r"/*": {"origins": "*"}})        
+        #if is_debug_mode():
+        #    CORS(app, resources={r"/*": {"origins": "*"}})
+        CORS(app, origins=[app.config["FLASK_PATH"]])      
         
         if app.config['SCHEDULER_ENABLED']:
             from infrastructure.scheduler import (tasks, events)            
@@ -77,31 +81,37 @@ def register_blueprints(app):
     app.register_blueprint(ecas, url_prefix="/seta-ui/")
     app.register_blueprint(rsa, url_prefix="/seta-ui/")
     
+    app.register_blueprint(login_bp)   
+    
 def register_extensions(app):
     scheduler.init_app(app)
     jwt.init_app(app)
     logs.init_app(app)
-    
+
+'''
 # Callback function to check if a JWT exists
 @jwt.token_in_blocklist_loader
 def check_if_token_is_revoked(jwt_header, jwt_payload):
     jti = jwt_payload["jti"]
     isRevoked = isTokenRevoked(jti)
     return isRevoked
-
+'''
 
 @jwt.additional_claims_loader
 def add_claims_to_access_token(identity):
+    '''
     if session.get("username") != None:
         current_user = session["username"]
     else:
         current_user = get_jwt_identity()
+    '''
     
     iat = time.time()
+    user = getDbUser(identity)
     additional_claims = {
-        "user": getDbUser(current_user),
+        "user": {"username": user["username"], "first_name": user["first_name"], "last_name": user["last_name"], "email": user["email"]},
         "iat": iat,
         "iss": "SETA Flask server",
-        "sub": current_user,
+        "sub": identity,
     }
     return additional_claims   

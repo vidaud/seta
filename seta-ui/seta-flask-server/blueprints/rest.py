@@ -1,4 +1,5 @@
 from flask import Blueprint, json, request
+from flask import current_app as app
 from flask_jwt_extended import jwt_required
 
 from db.db_corpus_queries_broker import getAllCorpusQueries
@@ -9,26 +10,14 @@ from db.db_users_broker import getDbUser, moveDocuments, updateDbUser
 rest = Blueprint("rest", __name__)
 
 
-@rest.before_request
-@jwt_required()
-def before_request():
-    print("in before_request")
-    pass
-
-
 # GET - Get user (by username)
 @rest.route("/rest/user/get/<username>")
 @jwt_required()
 def getUserData(username):
-    # authentication = authenticateJwt(username)
-
-    # if not authentication["authenticated"]:
-    #     return authentication
-
     user = getDbUser(username)
 
     if user == None:
-        print("User not found in DB")
+        app.logger.warning("User not found in DB")
 
         response = {
             "authenticated": True,
@@ -44,8 +33,6 @@ def getUserData(username):
         }
 
     response = json.jsonify(response)
-
-    response.headers.add("Access-Control-Allow-Origin", "*")
     return response
 
 
@@ -53,15 +40,10 @@ def getUserData(username):
 @rest.route("/rest/user/set/<username>", methods=["POST"])
 @jwt_required()
 def setUserData(username):
-    # authentication = authenticateJwt(username)
-
-    # if not authentication["authenticated"]:
-    #     return authentication
-
     user = getDbUser(username)
 
     if user == None:
-        print("User not found in DB")
+        app.logger.warning("User not found in DB")
 
         response = {
             "authenticated": True,
@@ -86,7 +68,6 @@ def setUserData(username):
         }
 
     response = json.jsonify(response)
-    response.headers.add("Access-Control-Allow-Origin", "*")
     return response
 
 # POST - Delete user (by username)
@@ -97,16 +78,11 @@ def setUserData(username):
 def deleteUserAccount():
     r = json.loads(request.data.decode("UTF-8"))
     username = r["username"]
-
-    # authentication = authenticateJwt(username)
-
-    # if not authentication["authenticated"]:
-    #     return authentication
-
+    
     user = getDbUser(username)
 
     if user == None:
-        print("User not found in DB")
+        app.logger.warning("User not found in DB")
 
         response = {
             "authenticated": True,
@@ -127,8 +103,6 @@ def deleteUserAccount():
         }
 
     response = json.jsonify(response)
-
-    response.headers.add("Access-Control-Allow-Origin", "*")
     return response
 
 
@@ -136,15 +110,11 @@ def deleteUserAccount():
 @rest.route("/rest/state/<username>/<key>")
 @jwt_required()
 def getState(username, key):
-    # authentication = authenticateJwt(username)
-
-    # if not authentication["authenticated"]:
-    #     return authentication
 
     state = getDbState(username, key)
 
     if state == None:
-        print("No state with key " + key + " found for user.")
+        app.logger.warning("No state with key " + key + " found for user.")
 
         response = {
             "authenticated": True,
@@ -160,8 +130,6 @@ def getState(username, key):
         }
 
     response = json.jsonify(response)
-
-    response.headers.add("Access-Control-Allow-Origin", "*")
     return response
 
 
@@ -169,15 +137,10 @@ def getState(username, key):
 @rest.route("/rest/state/<username>", methods=["POST"])
 @jwt_required()
 def setState(username):
-    # authentication = authenticateJwt(username)
-
-    # if not authentication["authenticated"]:
-    #     return authentication
-
     user = getDbUser(username)
 
     if user == None:
-        print("User not found in DB")
+        app.logger.warning("User not found in DB")
 
         response = json.jsonify(
             {
@@ -217,7 +180,6 @@ def setState(username):
                 }
             )
 
-    response.headers.add("Access-Control-Allow-Origin", "*")
     return response
 
 # POST
@@ -230,16 +192,10 @@ def deleteUserState():
     username = r["username"]
     key = r["key"]
 
-    # authentication = authenticateJwt(username)
-
-    # if not authentication["authenticated"]:
-    #     return authentication
-
-    # user = getDbUser(username)
     state = getDbState(username, key)
 
     if state == None:
-        print("State not found in DB")
+        app.logger.warning("State not found in DB")
 
         response = {
             "authenticated": True,
@@ -258,9 +214,6 @@ def deleteUserState():
         }
 
     response = json.jsonify(response)
-
-    response.headers.add("Access-Control-Allow-Origin", "*")
-
     return response
 
 # Custom non-pure REST calls:
@@ -271,15 +224,11 @@ def deleteUserState():
 @rest.route("/rest/state/<username>/queries")
 @jwt_required()
 def getQueries(username):
-    # authentication = authenticateJwt(username)
-
-    # if not authentication["authenticated"]:
-    #     return authentication
 
     queries = getAllCorpusQueries(username)
 
     if queries == None:
-        print("No queries have been found for this user.")
+        app.logger.warning("No queries have been found for this user.")
 
         response = {
             "authenticated": True,
@@ -295,35 +244,4 @@ def getQueries(username):
         }
 
     response = json.jsonify(response)
-
-    response.headers.add("Access-Control-Allow-Origin", "*")
-    return response
-
-
-# Try to get a restricted resource
-@rest.route("/rest/ec-restricted/<username>/<resource>")
-@jwt_required()
-def getEcRestrictedResource(username="", resource=""):
-    # authentication = authenticateJwt(username)
-
-    # if not authentication["authenticated"]:
-    #     return authentication
-
-    # authorized = checkIfAuthorized(authentication["decodedToken"], resource)
-
-    # if authorized:
-    response = json.jsonify(
-        {
-            "status": "OK",
-            "message": "You are authorized.",
-            "resource": "some very restricted resource",
-        }
-    )
-
-    # else:
-    #     response = json.jsonify(
-    #         {"status": "error", "message": "You are not authorized."}
-    #     )
-
-    response.headers.add("Access-Control-Allow-Origin", "*")
     return response

@@ -123,10 +123,6 @@ def logout():
 
     req = json.loads(request.data.decode("UTF-8"))
 
-    # If request is valid and authorized, also revoke the token for future access, before its
-    # normal expiry moment. Revoke by adding it to the MongoDB collection of revoked tokens:
-    # if authenticateJwt(req["username"]):
-    #     addRevokedToken(req["username"], req["jwt"], str(datetime.now()))
     jti_refresh = get_jwt()["jti"]
     try:
         jti_access = get_jti(req['accessToken'])
@@ -142,7 +138,6 @@ def logout():
     # session.pop("user_attributes", None)
 
     response = json.jsonify({"status": "ok"})
-    response.headers.add("Access-Control-Allow-Origin", "*")
     return response
 
 
@@ -174,5 +169,4 @@ def getAllRevokedTokens():
     tokens = getAllUserRevokedTokensDb()
 
     response = json.jsonify({"tokens": tokens, "status": "ok"})
-    response.headers.add("Access-Control-Allow-Origin", "*")
     return response

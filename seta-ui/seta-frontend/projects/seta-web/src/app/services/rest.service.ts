@@ -23,12 +23,6 @@ export class RestService {
     return this.http.get(url);
   }
 
-  public getRestrictedItem(username) {
-    let url = this.baseUrl + 'ec-restricted/' + username + '/someRestrictedResource';
-
-    return this.httpGetCall(url);
-  }
-
   public getUserData(username) {
     let url = this.baseUrl + 'user/' + username;
 
