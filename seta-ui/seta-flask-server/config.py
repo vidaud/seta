@@ -54,6 +54,7 @@ class Config:
         self.LOG_DIR = os.environ.get("LOG_DIR", "/data/logs")
         self.APP_LOG_NAME = os.environ.get("APP_LOG_NAME", "app.log")
         self.WWW_LOG_NAME = os.environ.get("WWW_LOG_NAME", "www.log")
+        self.WWW_LOG_NAME = os.environ.get("SCHEDULER_LOG_NAME", "sched.log")
         self.LOG_MAX_BYTES = os.environ.get("LOG_MAX_BYTES", 100_000_000)  # 100MB in bytes
         self.LOG_COPIES = os.environ.get("LOG_COPIES", 5)
         

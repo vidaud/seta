@@ -6,7 +6,6 @@ from flask import (Flask, request)
 from flask_cors import CORS
 
 from infrastructure.extensions import (scheduler, jwt, logs)
-#from db.db_revoked_tokens_broker import (isTokenRevoked)
 from db.db_users_broker import (getDbUser)
 
 from blueprints.base_routes import base_routes
@@ -87,15 +86,6 @@ def register_extensions(app):
     scheduler.init_app(app)
     jwt.init_app(app)
     logs.init_app(app)
-
-'''
-# Callback function to check if a JWT exists
-@jwt.token_in_blocklist_loader
-def check_if_token_is_revoked(jwt_header, jwt_payload):
-    jti = jwt_payload["jti"]
-    isRevoked = isTokenRevoked(jti)
-    return isRevoked
-'''
 
 @jwt.additional_claims_loader
 def add_claims_to_access_token(identity):

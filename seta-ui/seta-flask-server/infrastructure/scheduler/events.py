@@ -1,3 +1,7 @@
+import logging
+
+logger = logging.getLogger("flask_apscheduler")
+
 """Log scheduler events."""
 
 from apscheduler.events import (
@@ -10,12 +14,12 @@ from infrastructure.extensions import scheduler
 def job_error(event):
     """Job error event."""
     with scheduler.app.app_context():
-        print(event)
+        logger.exception(f"{repr(event)} failed")
         
 def job_executed(event):
     """Job executed event."""
     with scheduler.app.app_context():
-        print(event)       
+        logger.info(f"{repr(event)} executed")
         
 scheduler.add_listener(job_error, EVENT_JOB_ERROR)        
 scheduler.add_listener(job_executed, EVENT_JOB_EXECUTED)

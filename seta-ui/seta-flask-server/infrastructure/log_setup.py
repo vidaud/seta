@@ -19,10 +19,12 @@ class LogSetup(object):
                 log_directory = app.config["LOG_DIR"]
                 app_log_file_name = app.config["APP_LOG_NAME"]
                 access_log_file_name = app.config["WWW_LOG_NAME"]
+                scheduler_log_file = app.config["SCHEDULER_LOG_NAME"]
             except KeyError as e:
                 exit(code="{} is a required parameter for log_type '{}'".format(e, log_type))
             app_log = "/".join([log_directory, app_log_file_name])
             www_log = "/".join([log_directory, access_log_file_name])
+            scheduler_log = "/".join([log_directory, scheduler_log_file])
 
         if log_type == "stream":
             logging_policy = "logging.StreamHandler"
@@ -50,6 +52,9 @@ class LogSetup(object):
                     "handlers": ["access_logs"],
                     "propagate": False,
                 },
+                "flask_apscheduler":{"level": logging_level, 
+                    "handlers": ["apscheduler_logs"], 
+                    "propagate": False},
                 "root": {"level": logging_level, "handlers": ["default"]},
             }
         }
@@ -65,6 +70,11 @@ class LogSetup(object):
                         "level": logging_level,
                         "class": logging_policy,
                         "formatter": "access",
+                    },
+                    "apscheduler_logs": {
+                        "level": logging_level,
+                        "class": logging_policy,
+                        "formatter": "default",
                     },
                 }
             }
@@ -83,6 +93,13 @@ class LogSetup(object):
                         "class": logging_policy,
                         "filename": www_log,
                         "formatter": "access",
+                        "delay": True,
+                    },
+                    "apscheduler_logs": {
+                        "level": logging_level,
+                        "class": logging_policy,
+                        "filename": scheduler_log,
+                        "formatter": "default",
                         "delay": True,
                     },
                 }
@@ -106,6 +123,15 @@ class LogSetup(object):
                         "backupCount": log_copies,
                         "maxBytes": log_max_bytes,
                         "formatter": "access",
+                        "delay": True,
+                    },
+                    "apscheduler_logs": {
+                        "level": logging_level,
+                        "class": logging_policy,
+                        "filename": scheduler_log,
+                        "backupCount": log_copies,
+                        "maxBytes": log_max_bytes,
+                        "formatter": "default",
                         "delay": True,
                     },
                 }
