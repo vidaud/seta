@@ -10,7 +10,7 @@ WORKDIR $ROOT/seta-flask-server
 RUN pip install -r requirements.txt
 
 ENV FLASK_ENV="development"
-ENV FLASK_APP=app.py
+ENV FLASK_APP=app_dev.py
 ENV FLASK_RUN_PORT=8080
 ENV FLASK_DEBUG=1
 ENV FLASK_PATH="http://localhost"

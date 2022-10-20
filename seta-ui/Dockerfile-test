@@ -30,8 +30,8 @@ RUN rm -r  /home/seta/seta-frontend/*
 
 RUN chown -R seta /home/seta 
 
-ENV FLASK_ENV="production"
-ENV FLASK_APP=app.py
+ENV FLASK_ENV="test"
+ENV FLASK_APP=app_test.py
 ENV FLASK_RUN_PORT=8080
 ENV FLASK_DEBUG=0
 ENV FLASK_PATH="https://seta-test.emm4u.eu"

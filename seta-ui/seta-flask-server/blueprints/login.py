@@ -4,7 +4,7 @@ from datetime import timezone
 
 from flask import Blueprint
 from flask import current_app as app
-from flask import (jsonify, redirect, request, make_response, url_for)
+from flask import (jsonify, redirect, request, make_response, url_for, session)
 
 from flask_jwt_extended import create_access_token, create_refresh_token
 from flask_jwt_extended import jwt_required
@@ -47,6 +47,8 @@ def login():
     else:  # Login successful, redirect according to `next` query parameter.              
         if not getDbUser(attributes["uid"]):
             addDbUser(attributes)
+            
+        session["username"] = user
             
         access_token = create_access_token(user, fresh=True)
         refresh_token = create_refresh_token(user)

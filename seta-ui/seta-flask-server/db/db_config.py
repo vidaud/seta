@@ -12,6 +12,8 @@ def get_db():
     if db is None:
         db = g._database = PyMongo(current_app).db
         
+        """Create indexes here"""
+        
     return db
     
 '''

@@ -51,7 +51,7 @@ class Config:
         """Read logging environment variables"""
         self.LOG_TYPE = os.environ.get("LOG_TYPE", "stream")
         self.LOG_LEVEL = os.environ.get("LOG_LEVEL", "INFO")
-        self.LOG_DIR = os.environ.get("LOG_DIR", "/data/logs")
+        self.LOG_DIR = os.environ.get("LOG_DIR", "/var/log")
         self.APP_LOG_NAME = os.environ.get("APP_LOG_NAME", "app.log")
         self.WWW_LOG_NAME = os.environ.get("WWW_LOG_NAME", "www.log")
         self.WWW_LOG_NAME = os.environ.get("SCHEDULER_LOG_NAME", "sched.log")

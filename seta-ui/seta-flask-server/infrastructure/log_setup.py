@@ -1,4 +1,5 @@
 from logging.config import dictConfig
+from log4mongo.handlers import MongoHandler, BufferedMongoHandler
 
 """
 We have options in python for stdout (streamhandling) and file logging
@@ -55,6 +56,11 @@ class LogSetup(object):
                 "flask_apscheduler":{"level": logging_level, 
                     "handlers": ["apscheduler_logs"], 
                     "propagate": False},
+                "mongo": {
+                    "level": logging_level,
+                    "handlers": ["default", "mongo_logs"],
+                    "propagate": False,
+                },
                 "root": {"level": logging_level, "handlers": ["default"]},
             }
         }
@@ -76,6 +82,14 @@ class LogSetup(object):
                         "class": logging_policy,
                         "formatter": "default",
                     },
+                    "mongo_logs": {
+                        "level": logging_level,
+                        "class": 'log4mongo.handlers.MongoHandler',
+                        "host": "seta-mongo", 
+                        "port": 27017,
+                        "database_name": "seta-logs",
+                        "collection": "logs",                        
+                    }
                 }
             }
         elif log_type == "watched":
@@ -101,7 +115,15 @@ class LogSetup(object):
                         "filename": scheduler_log,
                         "formatter": "default",
                         "delay": True,
-                    },
+                    },                    
+                    "mongo_logs": {
+                        "level": logging_level,
+                        "class": 'log4mongo.handlers.BufferedMongoHandler',
+                        "host": "seta-mongo", 
+                        "port": 27017,
+                        "database_name": "seta-logs",
+                        "collection": "logs",
+                    }
                 }
             }
         else:
@@ -133,7 +155,17 @@ class LogSetup(object):
                         "maxBytes": log_max_bytes,
                         "formatter": "default",
                         "delay": True,
-                    },
+                    },                                       
+                    "mongo_logs": {
+                        "level": logging_level,
+                        "class": 'log4mongo.handlers.BufferedMongoHandler',
+                        "host": "seta-mongo", 
+                        "port": 27017,
+                        "database_name": "seta-logs",
+                        "collection": "logs",
+                        "capped": True,
+                        "capped_size": 1000000
+                    }
                 }
             }
 

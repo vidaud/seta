@@ -2,11 +2,12 @@ import time
 from datetime import datetime as dt
 import logging
 
-from flask import (Flask, request)
+from flask import (Flask, request, session)
 from flask_cors import CORS
 
 from infrastructure.extensions import (scheduler, jwt, logs)
 from db.db_users_broker import (getDbUser)
+from flask_jwt_extended import get_jwt_identity, verify_jwt_in_request
 
 from blueprints.base_routes import base_routes
 from blueprints.ecas import ecas
@@ -37,26 +38,30 @@ def create_app(config_object):
     register_extensions(app)
     register_blueprints(app)
     
-    '''
     def is_debug_mode():
         """Get app debug status."""
         if not app.config['DEBUG']:
             return app.config['FLASK_ENV'] == "development"
         return app.config['DEBUG'].lower() not in ("0", "false", "no")
-    '''
     
     with app.app_context():
-        #if is_debug_mode():
-        #    CORS(app, resources={r"/*": {"origins": "*"}})
-        CORS(app, origins=[app.config["FLASK_PATH"]])      
+        if is_debug_mode():
+            CORS(app, resources={r"/*": {"origins": "*"}})
+        #CORS(app, origins=[app.config["FLASK_PATH"]])
         
         if app.config['SCHEDULER_ENABLED']:
             from infrastructure.scheduler import (tasks, events)            
             scheduler.start()
-                
+         
+    '''        
     @app.after_request
     def after_request(response):
         """ Logging after every request. """
+        
+        user = session["username"]
+        if not user:
+            user="None"
+        
         logger = logging.getLogger("app.access")
         logger.info(
             "%s [%s] %s %s %s %s %s %s %s",
@@ -70,7 +75,23 @@ def create_app(config_object):
             request.referrer,
             request.user_agent,
         )
+                
+        logger_db = logging.getLogger("mongo")
+        if logger_db:
+            logger_db.info("seta-ui request", 
+                           extra={
+                               "username": user,
+                               "address": request.remote_addr, 
+                                "method": request.method,
+                                "path": request.path,
+                                "status": response.status,
+                                "content_length": response.content_length,
+                                "referrer": request.referrer,
+                                "user_agent": repr(request.user_agent),
+                                })
+        
         return response
+    '''
         
     return app
     

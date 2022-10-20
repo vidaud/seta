@@ -1,7 +1,5 @@
 from contextlib import nullcontext
-from datetime import datetime
 
-import jwt
 from flask import Blueprint
 from flask import current_app as app
 from flask import (json, redirect, request, session,
@@ -11,8 +9,6 @@ from flask_jwt_extended import (create_access_token, create_refresh_token,
                                 get_jwt_identity, jwt_required)
 
 from infrastructure.decorators import pop_session
-
-from db.db_revoked_tokens_broker import (addRevokedToken, getAllUserRevokedTokensDb)
 from db.db_users_broker import addDbUser, getDbUser
 
 
@@ -29,25 +25,10 @@ def seta(method=["GET"]):
     jawt = nullcontext
 
     if "username" in session:
-        """ iat = time.time()
-        additional_claims = {
-            "user": session["user_attributes"],
-            "iat": iat,
-            "iss": "SETA Flask server",
-            "sub": session["username"],
-        } """
         jawt = create_access_token(
             identity=session["username"])
         refresh_token = create_refresh_token(
             identity=session["username"])
-        # jawt = jwt.encode(additional_claims, app.config['JWT_SECRET_KEY'], algorithm="HS256")
-
-        # return json.jsonify(access_token=jawt)
-        """ redir = redirect(root + "seta-ui/#/home")
-        redir.headers = {'Authorization': 'Bearer ' + jawt}
-        return redir """
-
-        # return redirect(root + "seta-ui/#/home?accessToken=" + jawt)
 
     return redirect(root + "seta-ui/#/home" + "?accessToken=" + jawt + '&' + 'refreshToken=' + refresh_token)
 
@@ -121,52 +102,22 @@ def logoutEcas():
 @pop_session()
 def logout():
 
+    '''
     req = json.loads(request.data.decode("UTF-8"))
 
     jti_refresh = get_jwt()["jti"]
     try:
         jti_access = get_jti(req['accessToken'])
-        if jti_access is not None:
-            addRevokedToken(req["username"], jti_access, str(datetime.now()))
     except jwt.ExpiredSignatureError as e:
         app.logger.debug("Token is expired : %s", e)
     except Exception as e:
         app.logger.debug(e)
-
-    addRevokedToken(req["username"], jti_refresh, str(datetime.now()))
-    # session.pop("username", None)
-    # session.pop("user_attributes", None)
+    '''
 
     response = json.jsonify({"status": "ok"})
     return response
-
-
-""" @ecas.route("/logout", methods=["POST"])
-@jwt_required(refresh=True)
-def post(self):
-    jti_access = get_raw_jwt()['jti']
-    data = logout_parser.parse_args()
-     jti_refresh = get_jti(data['refresh_token'])
-      current_user = get_jwt_identity()
-
-       try:
-            [RevokedTokenModel(jti=jti, msisdn=current_user).add()
-             for jti in [jti_access, jti_refresh]]
-            return {'message': 'Access and refresh tokens have been revoked'}, 200
-        except:
-            return {'message': 'Internal error'}, 500 """
-
 
 @ecas.route("/logoutCallback")
 def logoutCallback():
     session.pop("username", None)
     return redirect(url_for("ecas.seta"))
-
-
-@ecas.route("/revoked-tokens/all")
-def getAllRevokedTokens():
-
-    tokens = getAllUserRevokedTokensDb()
-
-    response = json.jsonify({"tokens": tokens, "status": "ok"})
-    return response
