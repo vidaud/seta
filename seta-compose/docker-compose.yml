@@ -74,7 +74,7 @@ services:
 
   seta-ui:
     container_name: seta-ui
-    restart: "no"
+    restart: always
     build: 
        context: ../seta-ui
        dockerfile: Dockerfile-dev-flask

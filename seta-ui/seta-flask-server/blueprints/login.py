@@ -12,10 +12,11 @@ from flask_jwt_extended import set_access_cookies, set_refresh_cookies, unset_jw
 from flask_jwt_extended import get_jwt_identity, get_jwt
 
 from db.db_users_broker import addDbUser, getDbUser
+from urllib.parse import urlparse
 
-login_bp = Blueprint("login_bp", __name__, url_prefix="/seta-ui/v2")
+login_bp = Blueprint("login_bp", __name__)
 
-@login_bp.route('/login', methods=["POST"])
+@login_bp.route('/login', methods=["GET"])
 def login():
     """
     ECAS authentication
@@ -56,14 +57,18 @@ def login():
         #TODO: verify 'next' domain before redirect, replace with home_route if anything suspicious
         if not next:
             next = app.home_route
-        
+            
+        next = next + "?action=login"
+                    
         response = make_response(redirect(next))
+        
+        #response.set_cookie('user_auth', user)
         set_access_cookies(response, access_token)
         set_refresh_cookies(response, refresh_token)            
         
         return response
    
-@login_bp.route("/logout/ecas", methods=["POST"])
+@login_bp.route("/logout/ecas", methods=["GET"])
 @jwt_required()
 def logout_ecas():
     """
@@ -86,8 +91,7 @@ def logout_callback():
     unset_jwt_cookies(response)
     return response
 
-@login_bp.route("/logout", methods=["POST"])
-@jwt_required()
+@login_bp.route("/logout", methods=["POST","GET"])
 def logout_local():
     """
     Remove tokens from cookies, but third-party cookies will remain
@@ -97,9 +101,11 @@ def logout_local():
     unset_jwt_cookies(response)
     return response
 
-@login_bp.route("/user", methods=["GET"])
+@login_bp.route("/user-info", methods=["GET"])
 @jwt_required()
 def user_details():
+    """ Returns json with user details"""
+    
     identity = get_jwt_identity()
     user = getDbUser(identity)
     
@@ -108,12 +114,12 @@ def user_details():
     
     return jsonify({
                     "username": user["username"], 
-                    "first_name": user["first_name"], 
-                    "last_name": user["last_name"], 
+                    "firstName": user["first_name"], 
+                    "lastName": user["last_name"], 
                     "email": user["email"]
                 }), 200
 
-'''
+
 @login_bp.route('/refresh', methods=('POST',))
 @jwt_required(refresh=True)
 def refresh():
@@ -124,6 +130,7 @@ def refresh():
   set_access_cookies(response, access_token)
 
   return response, 204
+
 '''
 
 @login_bp.after_request
@@ -147,3 +154,4 @@ def refresh_expiring_jwts(response):
         # Case where there is not a valid JWT. Just return the original response
         app.logger.warning("Could not refresh the expiring token.")
         return response
+'''

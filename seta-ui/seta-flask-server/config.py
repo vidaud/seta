@@ -19,6 +19,7 @@ class Config:
     JWT_IDENTITY_CLAIM="username"
     JWT_EXPIRY_INTERVAL = float(3600)
     JWT_COOKIE_CSRF_PROTECT = False #TODO: set this to True when client sends the 'X-CSRF-TOKEN' header
+    JWT_TOKEN_LOCATION=["headers", "cookies"]
     
     SCHEDULER_ENABLED = False
     SCHEDULER_API_ENABLED = False
@@ -59,25 +60,44 @@ class Config:
         self.LOG_COPIES = os.environ.get("LOG_COPIES", 5)
         
             
-class DevConfig(Config):
-    Config.FLASK_ENV = "development"
-    Config.DEBUG = True
+class DevConfig(Config):  
+    
+    def __init__(self) -> None:
+        super().__init__() 
+        
+           
+        self.FLASK_ENV = "development"
+        self.DEBUG = True
+        self.LOG_LEVEL = "INFO"
+        
     #API_TARGET_PATH = "seta-api:8081/seta-api/api/v1"
     JWT_ACCESS_TOKEN_EXPIRES = timedelta(minutes=5)
     JWT_REFRESH_TOKEN_EXPIRES = timedelta(hours=1)
     
+    
 class TestConfig(Config):
-    Config.FLASK_ENV = "test"
-    Config.DEBUG = True
+    
+    def __init__(self) -> None:
+        super().__init__() 
+                   
+        self.FLASK_ENV = "test"
+        self.DEBUG = True        
+    
     #API_TARGET_PATH = "seta-api:8081/seta-api/api/v1"
     JWT_ACCESS_TOKEN_EXPIRES = timedelta(minutes=15)
     JWT_REFRESH_TOKEN_EXPIRES = timedelta(hours=24)    
     JWT_COOKIE_SECURE = True
     
 class ProdConfig(Config):
-    Config.FLASK_ENV = "production"
-    Config.DEBUG = False  
-    Config.SCHEDULER_ENABLED = True
+    
+    def __init__(self) -> None:
+        super().__init__() 
+                   
+        self.FLASK_ENV = "production"
+        self.DEBUG = False  
+        self.SCHEDULER_ENABLED = True
+    
+    
     #API_TARGET_PATH = "seta-test.emm4u.eu/seta-api/seta/api/v1"
     JWT_ACCESS_TOKEN_EXPIRES = timedelta(minutes=15)
     JWT_REFRESH_TOKEN_EXPIRES = timedelta(days=6)

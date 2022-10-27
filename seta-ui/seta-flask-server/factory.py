@@ -25,24 +25,27 @@ def create_app(config_object):
     
     app = Flask(__name__)
     app.config.from_object(config_object)
-    
+        
     app.json_encoder= JSONEncoder
     
     app.cas_client = CASClient(
         version=3,
+        #service_url = app.config["FLASK_PATH"] + "/seta-ui/v2/login"
         service_url = app.config["FLASK_PATH"] + "/seta-ui/login",  # ?next=%2Fseta-ui%2Fseta
         server_url = app.config["AUTH_CAS_URL"],
     )
-    app.home_root = app.config['FLASK_PATH'] + "/seta-ui/#/home"   
+    app.home_route = app.config['FLASK_PATH'] + "/seta-ui/#/home"   
     
     register_extensions(app)
     register_blueprints(app)
     
+    #app.logger.debug(app.url_map)
+            
     def is_debug_mode():
         """Get app debug status."""
         if not app.config['DEBUG']:
             return app.config['FLASK_ENV'] == "development"
-        return app.config['DEBUG'].lower() not in ("0", "false", "no")
+        return app.config['DEBUG']
     
     with app.app_context():
         if is_debug_mode():
@@ -92,6 +95,7 @@ def create_app(config_object):
         
         return response
     '''
+       
         
     return app
     
@@ -101,7 +105,7 @@ def register_blueprints(app):
     app.register_blueprint(ecas, url_prefix="/seta-ui/")
     app.register_blueprint(rsa, url_prefix="/seta-ui/")
     
-    app.register_blueprint(login_bp)   
+    app.register_blueprint(login_bp, url_prefix="/seta-ui/v2/")   
     
 def register_extensions(app):
     scheduler.init_app(app)

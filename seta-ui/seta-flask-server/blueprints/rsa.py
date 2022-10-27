@@ -1,6 +1,7 @@
 
 from Crypto.PublicKey import RSA
 from flask import Blueprint, json, request
+from flask import current_app as app
 from flask_jwt_extended import jwt_required
 
 import infrastructure.constants as constants
@@ -44,8 +45,8 @@ def generateRsaKeys():
 
 # GET - get the public RSA key
 @rsa.route("/rsa/get-public-rsa-key/<username>")
+@jwt_required()
 def getPublicRsaKey(username):
-
     key = getDbRsaKey(username, True)
     
     #print("fetched key is:")
