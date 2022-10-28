@@ -47,4 +47,4 @@ ENV FLASK_APP=main.py
 ENV FLASK_ENV=development 
 
 CMD chdir /home/seta \
- && flask run --host 0.0.0.0 --no-reload --with-threads
+ && flask run --host 0.0.0.0

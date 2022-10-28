@@ -7,14 +7,13 @@ from flask_cors import CORS
 
 from infrastructure.extensions import (scheduler, jwt, logs)
 from db.db_users_broker import (getDbUser)
-from flask_jwt_extended import get_jwt_identity, verify_jwt_in_request
 
 from blueprints.base_routes import base_routes
 from blueprints.ecas import ecas
 from blueprints.rest import rest
 from blueprints.rsa import rsa
 
-from blueprints.login import login_bp
+from blueprints.login import login_bp, refresh_expiring_jwts
 
 from infrastructure.helpers import JSONEncoder
 
@@ -39,7 +38,7 @@ def create_app(config_object):
     register_extensions(app)
     register_blueprints(app)
     
-    #app.logger.debug(app.url_map)
+    app.logger.debug(app.url_map)
             
     def is_debug_mode():
         """Get app debug status."""
@@ -55,6 +54,10 @@ def create_app(config_object):
         if app.config['SCHEDULER_ENABLED']:
             from infrastructure.scheduler import (tasks, events)            
             scheduler.start()
+            
+        @app.after_request
+        def refresh_jwts(response):
+            return refresh_expiring_jwts(response)
          
     '''        
     @app.after_request

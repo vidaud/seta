@@ -47,4 +47,4 @@ ENV FLASK_APP=main.py
 ENV FLASK_ENV=development 
 
 CMD chdir /home/seta \
- && python -m debugpy --listen 0.0.0.0:5678 --wait-for-client -m flask run --host 0.0.0.0 --no-reload --with-threads
+ && python -m debugpy --listen 0.0.0.0:5678 --wait-for-client -m flask run --host 0.0.0.0

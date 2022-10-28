@@ -7,7 +7,7 @@ from flask import current_app as app
 from flask import (jsonify, redirect, request, make_response, url_for, session)
 
 from flask_jwt_extended import create_access_token, create_refresh_token
-from flask_jwt_extended import jwt_required
+from flask_jwt_extended import jwt_required, verify_jwt_in_request
 from flask_jwt_extended import set_access_cookies, set_refresh_cookies, unset_jwt_cookies
 from flask_jwt_extended import get_jwt_identity, get_jwt
 
@@ -131,27 +131,38 @@ def refresh():
 
   return response, 204
 
-'''
-
-@login_bp.after_request
 def refresh_expiring_jwts(response):
     try:
-        exp_timestamp = get_jwt()["exp"]
-        now = datetime.now(timezone.utc)        
-        
-        expire_minutes = app.config['JWT_ACCESS_TOKEN_EXPIRES'].total_minutes() // 2
-        delta = timedelta(minutes=expire_minutes)
-        
-        target_timestamp = datetime.timestamp(now + delta)
-        if target_timestamp > exp_timestamp:
-            username = get_jwt_identity()
+        token_expires = app.config['JWT_ACCESS_TOKEN_EXPIRES']
+                
+        if token_expires is None:
+            app.logger.debug("set token_expires to 15 min")
+            token_expires = timedelta(minutes=15)
+                
+        verify_result = verify_jwt_in_request(optional=True)
+        if verify_result is not None:        
+            exp_timestamp = get_jwt()["exp"]
+            now = datetime.now(timezone.utc)        
+                    
+            expire_minutes = (token_expires.total_seconds() / 60) // 2
+            delta = timedelta(minutes=expire_minutes)
             
-            access_token = create_access_token(identity=username, fresh=False)
-            set_access_cookies(response, access_token)
-            
-        return response
-    except (RuntimeError, KeyError):
+            target_timestamp = datetime.timestamp(now + delta)
+            if target_timestamp > exp_timestamp:
+                            
+                username = get_jwt_identity()
+                
+                access_token = create_access_token(identity=username, fresh=False)
+                set_access_cookies(response, access_token)
+                
+                
+                app.logger.debug("target_timestamp: " 
+                            + str(datetime.fromtimestamp(target_timestamp)) 
+                            + ", exp_timestamp: " 
+                            + str(datetime.fromtimestamp(exp_timestamp)))
+                app.logger.debug("Expiring access token was refreshed.")            
+    except:
         # Case where there is not a valid JWT. Just return the original response
-        app.logger.warning("Could not refresh the expiring token.")
+        app.logger.exception("Could not refresh the expiring token.")        
+    finally:
         return response
-'''

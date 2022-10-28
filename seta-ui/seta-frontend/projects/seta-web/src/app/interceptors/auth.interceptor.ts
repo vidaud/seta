@@ -22,17 +22,15 @@ export class AuthInterceptor implements HttpInterceptor {
       const csrf_token = this.getCookie('csrf_access_token');
       req = req.clone({withCredentials: true, headers: req.headers.set('X-CSRF-TOKEN', csrf_token)});
     }
-
-    return next.handle(req);
-
     return next.handle(req).pipe(
       catchError((error) => {
         if (
           error instanceof HttpErrorResponse &&
-          !req.url.includes('/login') &&
+          !req.url.includes('/login') && !req.url.includes('/seta-api') &&
           error.status === 401
         ) {
-          return this.handle401Error(req, next, error);
+          this.authService.setaLogout();
+          //return this.handle401Error(req, next, error);
         }
 
         return throwError(() => error);
