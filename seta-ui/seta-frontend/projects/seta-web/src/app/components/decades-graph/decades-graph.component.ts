@@ -23,7 +23,7 @@ export class DecadesGraphComponent implements OnInit {
         d3.select(`#decadesChart`).remove();
         const margin = { top: 20, right: 20, bottom: 70, left: 40 };
         const width =
-          (document.querySelector(`#decadesChartContainer`) as HTMLElement).offsetWidth -
+          (document.querySelector(`#decadesChartContainer`) as HTMLElement)?.offsetWidth -
           margin.left -
           margin.right;
         const height = 282;

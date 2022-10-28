@@ -8,12 +8,12 @@ export class EurlexFormModel extends Resource {
     selectedErovocConcepts: EurovocThesaurusModel[]
     selectedInfoForce: string
     selectedResourceTypes: string[],
-    selectedDirectoryConcepts: string[],
+    // selectedDirectoryConcepts: string[],
     selectedBeforeDate: string,
     selectedAfterDate: string,
   }
   eurovocTreeNode: string[]
-  directoryTreeNode: string[]
+  // directoryTreeNode: string[]
 
   constructor(data?: Partial<EurlexFormModel>) {
     super();

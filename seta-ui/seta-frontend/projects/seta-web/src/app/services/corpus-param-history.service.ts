@@ -14,7 +14,7 @@ export class EurlexFormLastExecutionState {
     selectedErovocConcepts: EurovocThesaurusModel[]
     selectedInfoForce: string
     selectedResourceTypes: string[]
-    selectedDirectoryConcepts: string[]
+    //selectedDirectoryConcepts: string[]
     selectedBeforeDate: string
     selectedAfterDate: string
   }
@@ -107,7 +107,7 @@ export class CorpusParamHistoryService {
           }
         }
       } */
-      if (firstState.info_force !== secondState.info_force) {
+      if (firstState.in_force !== secondState.in_force) {
         result = false;
       }
       if (firstState.semantic_sort_id !== secondState.semantic_sort_id) {
@@ -116,16 +116,16 @@ export class CorpusParamHistoryService {
       if (result !== false) {
         for (const key of [
           `source`,
-          `sector`,
-          `subject`,
-          `res_type`,
+          `reference`,
+          `collection`,
           `eurovoc_dom`,
           `eurovoc_mth`,
           `eurovoc_tt`,
           `eurovoc_concept`,
-          `conc_dir_1`,
-          `conc_dir_2`,
-          `conc_dir_3`]) {
+          `ec_priority`,
+          `sdg_domain`,
+          `sdg_subdomain`,
+          `euro_sci_voc`]) {
           result = this.checkStringList(firstState, secondState, key);
           if (!result) {
             break;

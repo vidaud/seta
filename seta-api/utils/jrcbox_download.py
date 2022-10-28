@@ -16,7 +16,6 @@ import time
 from elasticsearch import Elasticsearch
 import json
 
-
 #config = ""
 
 def getsha256(filename):
@@ -31,6 +30,7 @@ def getsha256(filename):
 
 
 def wait_for_es(config):
+    print('waiting', flush=True)
     try:
         res = requests.get("http://" + config['es-host'] + "/_cluster/health?pretty")
         if res.ok:
@@ -47,7 +47,7 @@ def wait_for_es(config):
 
 def seta_init(config):
     wait_for_es(config)
-
+    print('es-init-data-config-file', flush=True)
     if download_seta_file(config['es-init-data-config-file'],config):
         es_session = requests.Session()
         es_session.trust_env = False
@@ -71,7 +71,7 @@ def seta_init(config):
             print (resp.content)
     else:
         print("ES has index.")
-        
+    print('es-init-data-dump-file')    
     if download_seta_file(config['es-init-data-dump-file'],config):
         models_path = config['models-path']
         fn = ""

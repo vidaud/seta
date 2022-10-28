@@ -73,11 +73,13 @@ export class SetaApiService {
     const endpoint = `corpus`;
     return this.httpClient.get(`${this.API}${endpoint}`, { params: queryOptions }).pipe(
       map((response: any) => {
-        const corpus = new SetaCorpus();
-        const documents = this.convert<SetaDocument>(response.documents, new SetaDocumentSerializer());
-        corpus.documents = [...documents];
-        corpus.total_docs = response.total_docs;
-        return corpus;
+        if (response){
+          const corpus = new SetaCorpus();
+          const documents = this.convert<SetaDocument>(response.documents, new SetaDocumentSerializer());
+          corpus.documents = [...documents];
+          corpus.total_docs = response.total_docs;
+          return corpus;
+        }
       })
     );
   }
@@ -96,11 +98,13 @@ export class SetaApiService {
       })
     }).pipe(
       map((response: any) => {
-        const corpus = new SetaCorpus();
-        const documents = this.convert<SetaDocument>(response.documents, new SetaDocumentSerializer());
-        corpus.documents = [...documents];
-        corpus.total_docs = response.total_docs;
-        return corpus;
+        if (response){
+          const corpus = new SetaCorpus();
+          const documents = this.convert<SetaDocument>(response.documents, new SetaDocumentSerializer());
+          corpus.documents = [...documents];
+          corpus.total_docs = response.total_docs;
+          return corpus;
+        }
       })
     );
   }
@@ -222,7 +226,9 @@ export class SetaApiService {
   }
 
   public convert<T>(items: any, serializer: Serializer): T[] {
-    return items.map(item => serializer.fromJson(item));
+    if (items) {
+      return items.map(item => serializer.fromJson(item));
+    }
   }
 
   private getServerErrorMessage(error: HttpErrorResponse): string {

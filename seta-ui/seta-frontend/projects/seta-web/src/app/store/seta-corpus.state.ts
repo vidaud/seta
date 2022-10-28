@@ -22,12 +22,11 @@ const SETA_STATE_TOKEN = new StateToken<SetaStateCorpusModel>(`seta_corpus`);
       source: [],
       ndocs: null,
       from_doc: null,
-      sector: new Set<string>(),
-      subject: [],
-      res_type: new Set<string>(),
+      collection: new Set<string>(),
+      reference: new Set<string>(),
       eurovoc_dom: [],
       eurovoc_mth: [],
-      info_force: null,
+      in_force: null,
       sort: [],
       semantic_sort_id: ``,
     }),
@@ -97,13 +96,15 @@ export class SetaStateCorpus {
         : [new Term({ display: ctxcm.getState().term, value: ctxcm.getState().term })],
     })
     this.setaService.corpus(httpParams).subscribe((response) => {
-      const state = ctxcm.getState();
-      ctxcm.setState({
-        ...state,
-        corpusDocuments: response.documents,
-        total_docs: response.total_docs,
-        corpusSearchPayload: new CorpusSearchPayload({ ...corpusSearchPayload }),
-      });
+      if (response){
+        const state = ctxcm.getState();
+        ctxcm.setState({
+          ...state,
+          corpusDocuments: response.documents,
+          total_docs: response.total_docs,
+          corpusSearchPayload: new CorpusSearchPayload({ ...corpusSearchPayload }),
+        });
+      }
     });
   }
 

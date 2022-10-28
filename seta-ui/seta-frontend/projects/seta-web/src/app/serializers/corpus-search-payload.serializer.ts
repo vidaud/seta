@@ -16,23 +16,23 @@ export class CorpusSearchPayloadSerializer implements Serializer {
       searchPayload = searchPayload + `\"term\": ${JSON.stringify(resource.getSelectedTerms(resource.termCorpus))},`
       // searchPayload = searchPayload + `\"term\": \"${encodeURIComponent(resource.getSelectedTerms(resource.termCorpus))}\",`
     }
-    if (resource.source && resource.source.length > 0) {
-      searchPayload = searchPayload + `\"source\": ${JSON.stringify(resource.source)},`
-    }
     if (resource.ndocs) {
       searchPayload = searchPayload + `\"n_docs\": ${resource.ndocs},`
     }
     if (resource.from_doc) {
       searchPayload = searchPayload + `\"from_doc\": ${resource.from_doc},`
     }
-    if (resource.sector && resource.sector.size > 0) {
-      searchPayload = searchPayload + `\"sector\": ${JSON.stringify(Array.from(resource.sector))},`
+    if (resource.search_type && resource.search_type !== '') {
+      searchPayload = searchPayload + `\"search_type\": \"${resource.search_type}\",`
     }
-    if (resource.subject && resource.subject.length > 0) {
-      searchPayload = searchPayload + `\"subject\": ${JSON.stringify(resource.subject)},`
+    if (resource.source && resource.source.length > 0) {
+      searchPayload = searchPayload + `\"source\": ${JSON.stringify(resource.source)},`
     }
-    if (resource.res_type && resource.res_type.size > 0) {
-      searchPayload = searchPayload + `\"res_type\": ${JSON.stringify(Array.from(resource.res_type))},`
+    if (resource.reference && resource.reference.size > 0) {
+      searchPayload = searchPayload + `\"reference\": ${JSON.stringify(resource.reference)},`
+    }
+    if (resource.collection && resource.collection.size > 0) {
+      searchPayload = searchPayload + `\"collection\": ${JSON.stringify(resource.collection)},`
     }
     if (resource.eurovoc_dom && resource.eurovoc_dom.length > 0) {
       searchPayload = searchPayload + `\"eurovoc_dom\": ${JSON.stringify(resource.eurovoc_dom)},`
@@ -46,17 +46,20 @@ export class CorpusSearchPayloadSerializer implements Serializer {
     if (resource.eurovoc_concept && resource.eurovoc_concept.length > 0) {
       searchPayload = searchPayload + `\"eurovoc_concept\": ${JSON.stringify(resource.eurovoc_concept)},`
     }
-    if (resource.conc_dir_1 && resource.conc_dir_1.length > 0) {
-      searchPayload = searchPayload + `\"conc_dir_1\": ${JSON.stringify(resource.conc_dir_1)},`
+    if (resource.ec_priority && resource.ec_priority.length > 0) {
+      searchPayload = searchPayload + `\"ec_priority\": ${JSON.stringify(resource.ec_priority)},`
     }
-    if (resource.conc_dir_2 && resource.conc_dir_2.length > 0) {
-      searchPayload = searchPayload + `\"conc_dir_2\": ${JSON.stringify(resource.conc_dir_2)},`
+    if (resource.sdg_domain && resource.sdg_domain.length > 0) {
+      searchPayload = searchPayload + `\"sdg_domain\": ${JSON.stringify(resource.sdg_domain)},`
     }
-    if (resource.conc_dir_3 && resource.conc_dir_3.length > 0) {
-      searchPayload = searchPayload + `\"conc_dir_3\": ${JSON.stringify(resource.conc_dir_3)},`
+    if (resource.sdg_subdomain && resource.sdg_subdomain.length > 0) {
+      searchPayload = searchPayload + `\"sdg_subdomain\": ${JSON.stringify(resource.sdg_subdomain)},`
     }
-    if (resource.info_force) {
-      searchPayload = searchPayload + `\"info_force\": ${resource.info_force},`
+    if (resource.euro_sci_voc && resource.euro_sci_voc.length > 0) {
+      searchPayload = searchPayload + `\"euro_sci_voc\": ${JSON.stringify(resource.euro_sci_voc)},`
+    }
+    if (resource.in_force) {
+      searchPayload = searchPayload + `\"in_force\": ${resource.in_force},`
     }
     if (resource.sort && resource.sort.length > 0) {
       searchPayload = searchPayload + `\"sort\": ${JSON.stringify(resource.sort)},`
@@ -65,12 +68,14 @@ export class CorpusSearchPayloadSerializer implements Serializer {
       searchPayload = searchPayload + `\"semantic_sort_id\": \"${resource.semantic_sort_id}\",`
     }
     if (resource.vector && resource.vector.length > 0) {
-      searchPayload = searchPayload + `\"emb_vector\":  ${JSON.stringify(resource.vector)},`
+      searchPayload = searchPayload + `\"sbert_embedding\":  ${JSON.stringify(resource.vector)},`
     }
     if (resource.date_range && resource.date_range.length > 0) {
       searchPayload = searchPayload + `\"date_range\": ${JSON.stringify(resource.date_range)},`
     }
-
+    if (resource.aggs && resource.aggs !== '') {
+      searchPayload = searchPayload + `\"aggs\": \"${resource.aggs}\",`
+    }
     searchPayload = searchPayload.replace(/.$/, "")
 
     return searchPayload + '}'

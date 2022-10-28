@@ -1,38 +1,46 @@
-FROM python:3.9.10-bullseye
+FROM ubuntu:20.04
+
+RUN echo "Acquire::http::Proxy \""$HTTP_PROXY"\";" >> /etc/apt/apt.conf
+ENV https_proxy=$HTTP_PROXY
+ENV http_proxy=$HTTP_PROXY
+ENV no_proxy="seta_es,seta-mongo,seta-api,seta-nginx,seta-ui,seta-ui-spa"
 
 RUN apt update -y
-RUN apt install -y curl
-RUN apt install -y openjdk-11-jre
-#RUN curl -sL https://rpm.nodesource.com/setup_10.x | bash -
-RUN apt install -y nodejs 
-RUN apt install -y npm 
+RUN apt install -y  --no-install-recommends curl
+RUN apt install -y  --no-install-recommends wget
+RUN apt install -y  --no-install-recommends openjdk-11-jre
+RUN apt install -y  --no-install-recommends nodejs 
+RUN apt install -y  --no-install-recommends npm
+RUN apt install -y  --no-install-recommends gnupg
+RUN apt install -y  --no-install-recommends python3-pip
+RUN apt install -y  --no-install-recommends python3-dev
+
 RUN npm install elasticdump -g
-RUN useradd -M seta 
+RUN useradd seta 
 
 ARG ROOT=/home/seta
 WORKDIR $ROOT
 
 RUN chown -R seta /home/seta 
 
-#USER seta
-
 RUN mkdir $ROOT/tika
 WORKDIR $ROOT/tika
-RUN wget https://dlcdn.apache.org/tika/2.4.1/tika-app-2.4.1.jar
-RUN wget https://downloads.apache.org/tika/2.4.1/tika-app-2.4.1.jar.asc
-RUN wget https://downloads.apache.org/tika/KEYS
-RUN gpg --import KEYS
-RUN gpg --verify tika-app-2.4.1.jar.asc tika-app-2.4.1.jar
+RUN wget https://archive.apache.org/dist/tika/2.4.1/tika-app-2.4.1.jar \
+    && wget https://archive.apache.org/dist/tika/2.4.1/tika-app-2.4.1.jar.asc \
+    && wget https://archive.apache.org/dist/tika/KEYS \
+    && gpg --import KEYS \
+    && gpg --verify tika-app-2.4.1.jar.asc tika-app-2.4.1.jar
+
 WORKDIR $ROOT
-
-
 COPY requirements.txt $ROOT/requirements.txt
-RUN pip install -r $ROOT/requirements.txt
-RUN python -m nltk.downloader punkt
-RUN python -c 'from sentence_transformers import SentenceTransformer; SentenceTransformer("all-distilroberta-v1")'
+RUN pip3 install -r $ROOT/requirements.txt 
+RUN  python3 -m nltk.downloader punkt 
+RUN python3 -c 'from sentence_transformers import SentenceTransformer; SentenceTransformer("all-distilroberta-v1")'
 
-ADD . .
-
-#COPY ./ ./
+ADD ./*.py ./
+ADD ./*.yaml ./
+ADD ./utils ./utils
+ADD ./rsa-keys ./rsa-keys
+ADD ./log_utils ./log_utils
 
 CMD ["gunicorn", "--conf", "/home/seta/gunicorn_conf.py", "--bind", "0.0.0.0:8081", "--capture-output" , "--access-logformat", "[seta.api] %(h)s %(l)s %(u)s %(t)s. %(r)s. %(s)s %(b)s. %(f)s. %(a)s", "--chdir", "/home/seta", "main:app"]

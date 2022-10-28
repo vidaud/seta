@@ -6,7 +6,8 @@ import { TreeNode } from 'primeng/api';
 import { Observable } from 'rxjs';
 import { AdvancedFiltersModel } from '../../models/advanced-filters.model';
 import { SubjectType } from '../../models/document.model';
-import { ActCategoryDto, DirectoryConceptsDto, DocumentSector, EurlexMetadataDto, ResourceTypeDto, TreeDatum } from '../../models/eurlexMetadataDto.model';
+// import { ActCategoryDto, DirectoryConceptsDto, DocumentSector, EurlexMetadataDto, ResourceTypeDto, TreeDatum } from '../../models/eurlexMetadataDto.model';
+import { ActCategoryDto, DocumentSector, EurlexMetadataDto, ResourceTypeDto, TreeDatum } from '../../models/eurlexMetadataDto.model';
 import { EurovocThesaurusModel } from '../../models/eurovoc-thesaurus.model';
 import { CorpusCentralService } from '../../services/corpus-central.service';
 import { CorpusSearchPayload } from '../../store/corpus-search-payload';
@@ -48,8 +49,8 @@ export class EurlexFiltersComponent implements OnInit {
   eurovocNodes: TreeNode[] = [];
   selectedEurovocNodes: TreeDatum[] = [];
 
-  directoryNodes: TreeDatum[] = [];
-  selectedDirectoryNodes: TreeDatum[] = [];
+  // directoryNodes: TreeDatum[] = [];
+  // selectedDirectoryNodes: TreeDatum[] = [];
   eurlexMetadataFiltersValues: any;
 
   year: number;
@@ -85,9 +86,9 @@ export class EurlexFiltersComponent implements OnInit {
     return this.eurlexMetadataFilters.get(`selectedInfoForce`) as FormControl;
   }
 
-  get selectedDirectoryConcepts() {
-    return this.eurlexMetadataFilters.get(`selectedDirectoryConcepts`) as FormControl;
-  }
+  // get selectedDirectoryConcepts() {
+  //   return this.eurlexMetadataFilters.get(`selectedDirectoryConcepts`) as FormControl;
+  // }
 
   get selectedBeforeDate() {
     return this.eurlexMetadataFilters.get(`selectedBeforeDate`) as FormControl;
@@ -187,38 +188,38 @@ export class EurlexFiltersComponent implements OnInit {
     this.updateEurovocNodes()
   }
   // ------------------------------------------
-  directoryNodeSelect(event) {
-    this.updateDirectorycNodes()
-  }
+  // directoryNodeSelect(event) {
+  //   this.updateDirectorycNodes()
+  // }
 
-  updateDirectorycNodes() {
-    let newDirectoryCodes: DirectoryConceptsDto[] = []
-    const realNewDirectoryCodes: TreeDatum[] = this.treverseListForFathers(this.selectedDirectoryNodes)
-    realNewDirectoryCodes.map((node) => {
-      newDirectoryCodes.push(this.selectDirectoryCodes(node))
-    })
-    this.selectedDirectoryConcepts.patchValue(newDirectoryCodes, { emitEvent: true })
-  }
+  // updateDirectorycNodes() {
+  //   let newDirectoryCodes: DirectoryConceptsDto[] = []
+  //   const realNewDirectoryCodes: TreeDatum[] = this.treverseListForFathers(this.selectedDirectoryNodes)
+  //   realNewDirectoryCodes.map((node) => {
+  //     newDirectoryCodes.push(this.selectDirectoryCodes(node))
+  //   })
+  //   this.selectedDirectoryConcepts.patchValue(newDirectoryCodes, { emitEvent: true })
+  // }
 
-  directoryNodeUnselect(event) {
-    this.updateDirectorycNodes()
-  }
+  // directoryNodeUnselect(event) {
+  //   this.updateDirectorycNodes()
+  // }
 
-  selectDirectoryCodes(node: TreeDatum): DirectoryConceptsDto {
-    const newDirectoryNode = new DirectoryConceptsDto()
-    switch (node.type) {
-      case `1`:
-        newDirectoryNode.conc_dir_1 = node.data
-        break;
-      case `2`:
-        newDirectoryNode.conc_dir_2 = node.data
-        break;
-      case `3`:
-        newDirectoryNode.conc_dir_3 = node.data
-        break;
-    }
-    return newDirectoryNode
-  }
+  // selectDirectoryCodes(node: TreeDatum): DirectoryConceptsDto {
+  //   const newDirectoryNode = new DirectoryConceptsDto()
+  //   switch (node.type) {
+  //     case `1`:
+  //       newDirectoryNode.conc_dir_1 = node.data
+  //       break;
+  //     case `2`:
+  //       newDirectoryNode.conc_dir_2 = node.data
+  //       break;
+  //     case `3`:
+  //       newDirectoryNode.conc_dir_3 = node.data
+  //       break;
+  //   }
+  //   return newDirectoryNode
+  // }
 
   // ------------------------------------------
 
@@ -240,7 +241,7 @@ export class EurlexFiltersComponent implements OnInit {
             this.actCategoriesDto.map((choice) => new FormControl(false))
           ),
           selectedErovocConcepts: [],
-          selectedDirectoryConcepts: [],
+          //selectedDirectoryConcepts: [],
           selectedInfoForce: ``,
           selectedResourceTypes: [],
           selectedBeforeDate: `0`,
@@ -248,9 +249,9 @@ export class EurlexFiltersComponent implements OnInit {
         }
       )
       this.selectedEurovocNodes = []
-      this.selectedDirectoryNodes = []
+      //this.selectedDirectoryNodes = []
       this.updateEurovocNodes();
-      this.updateDirectorycNodes();
+      //this.updateDirectorycNodes();
     });
 
     this.eurlexMetadata$.subscribe(((eurlexMetadata: EurlexMetadataDto) => {
@@ -273,9 +274,9 @@ export class EurlexFiltersComponent implements OnInit {
         tempEuroTree.map((node) => { this.traverseTreeForFathers(node) })
         this.eurovocNodes = tempEuroTree
 
-        let tempDirectoryTree = this.traverseTree(eurlexMetadata.directoryTree)
-        tempDirectoryTree.map((node) => { this.traverseTreeForFathers(node) })
-        this.directoryNodes = tempDirectoryTree
+        // let tempDirectoryTree = this.traverseTree(eurlexMetadata.directoryTree)
+        // tempDirectoryTree.map((node) => { this.traverseTreeForFathers(node) })
+        // this.directoryNodes = tempDirectoryTree
 
         for (const key of Object.keys(eurlexMetadata.eurovocDomMapDto)) {
           this.eurovocDomMapDto[eurlexMetadata.eurovocDomMapDto[key]] = key;
@@ -295,12 +296,12 @@ export class EurlexFiltersComponent implements OnInit {
             []))
         }
 
-        if (this.corpusCentral.directoryTreeNode.value.length > 0) {
-          this.selectedDirectoryNodes.push(...this.traverseTreeForSelection(
-            this.corpusCentral.directoryTreeNode.value,
-            this.directoryNodes,
-            []))
-        }
+        // if (this.corpusCentral.directoryTreeNode.value.length > 0) {
+        //   this.selectedDirectoryNodes.push(...this.traverseTreeForSelection(
+        //     this.corpusCentral.directoryTreeNode.value,
+        //     this.directoryNodes,
+        //     []))
+        // }
 
         this.corpusCentral.eurlexFilters.subscribe((eurlexFilters: CorpusSearchPayload) => {
           this.eurlexFilters = new CorpusSearchPayload({ ...eurlexFilters });
@@ -425,16 +426,16 @@ export class EurlexFiltersComponent implements OnInit {
             :
             []
         ,
-        selectedDirectoryConcepts:
-          formM.selectedDirectoryConcepts && formM.selectedDirectoryConcepts !== null ?
-            [
-              formM.selectedDirectoryConcepts.map((concept) => {
-                return concept
-              })
-            ]
-            :
-            []
-        ,
+        // selectedDirectoryConcepts:
+        //   formM.selectedDirectoryConcepts && formM.selectedDirectoryConcepts !== null ?
+        //     [
+        //       formM.selectedDirectoryConcepts.map((concept) => {
+        //         return concept
+        //       })
+        //     ]
+        //     :
+        //     []
+        // ,
         selectedInfoForce:
           formM.selectedInfoForce && formM.selectedInfoForce !== null ?
             formM.selectedInfoForce
@@ -466,7 +467,7 @@ export class EurlexFiltersComponent implements OnInit {
           this.actCategoriesDto.map((choice) => new FormControl(false))
         ),
         selectedErovocConcepts: [],
-        selectedDirectoryConcepts: [],
+        //selectedDirectoryConcepts: [],
         selectedInfoForce: ``,
         selectedResourceTypes: new FormControl({ value: [], disabled: false }),
         selectedBeforeDate: new FormControl(),
@@ -480,15 +481,15 @@ export class EurlexFiltersComponent implements OnInit {
     if (this.eurlexMetadataFiltersValues) {
       const values = this.eurlexMetadataFiltersValues
 
-      const idSectors = new Set<string>();
+      const idCollections = new Set<string>();
       const resources = new Set<string>();
       const eurovocDomValues: string[] = [];
       const eurovocMthValues: string[] = [];
       const eurovocTTValues: string[] = [];
       const eurovocConceptValues: string[] = [];
-      const conc_dir_1: string[] = [];
-      const conc_dir_2: string[] = [];
-      const conc_dir_3: string[] = [];
+      // const conc_dir_1: string[] = [];
+      // const conc_dir_2: string[] = [];
+      // const conc_dir_3: string[] = [];
       const actCategoryDto = [];
       const data_range: string[] = []
       for (let index = 0; index < values.actCategories.length; index++) {
@@ -502,8 +503,9 @@ export class EurlexFiltersComponent implements OnInit {
           if (filter.filterName === `listResourceType`) {
             filter.filterValues.forEach((val) => resources.add(val));
 
-          } else if (filter.filterName === `idSector`) {
-            filter.filterValues.forEach((val) => idSectors.add(val));
+          } else 
+          if (filter.filterName === `idCollection`) {
+            filter.filterValues.forEach((val) => idCollections.add(val));
 
           }
         }
@@ -515,8 +517,8 @@ export class EurlexFiltersComponent implements OnInit {
       } else {
         newEurlexFilters = new CorpusSearchPayload()
       }
-      newEurlexFilters.res_type = resources;
-      newEurlexFilters.sector = idSectors;
+      newEurlexFilters.reference = resources;
+      newEurlexFilters.collection = idCollections;
 
       if (values.selectedErovocConcepts) {
         values.selectedErovocConcepts.map((concept: EurovocThesaurusModel) => {
@@ -538,22 +540,22 @@ export class EurlexFiltersComponent implements OnInit {
         this.corpusCentral.eurovocTreeNode.next(this.selectedEurovocNodes.map((node) => node.uuid))
       }
 
-      if (values.selectedDirectoryConcepts) {
-        values.selectedDirectoryConcepts.map((concept: DirectoryConceptsDto) => {
-          if (concept.conc_dir_1) {
-            conc_dir_1.push(concept.conc_dir_1);
-          } else if (concept.conc_dir_2) {
-            conc_dir_2.push(concept.conc_dir_2);
-          } else if (concept.conc_dir_3) {
-            conc_dir_3.push(concept.conc_dir_3);
-          }
-        });
-        newEurlexFilters.conc_dir_1 = conc_dir_1;
-        newEurlexFilters.conc_dir_2 = conc_dir_2;
-        newEurlexFilters.conc_dir_3 = conc_dir_3;
-        // Save selected notes into data structure that can me easily serialized
-        this.corpusCentral.directoryTreeNode.next(this.selectedDirectoryNodes.map((node) => node.uuid))
-      }
+      // if (values.selectedDirectoryConcepts) {
+      //   values.selectedDirectoryConcepts.map((concept: DirectoryConceptsDto) => {
+      //     if (concept.conc_dir_1) {
+      //       conc_dir_1.push(concept.conc_dir_1);
+      //     } else if (concept.conc_dir_2) {
+      //       conc_dir_2.push(concept.conc_dir_2);
+      //     } else if (concept.conc_dir_3) {
+      //       conc_dir_3.push(concept.conc_dir_3);
+      //     }
+      //   });
+      //   newEurlexFilters.conc_dir_1 = conc_dir_1;
+      //   newEurlexFilters.conc_dir_2 = conc_dir_2;
+      //   newEurlexFilters.conc_dir_3 = conc_dir_3;
+      //   // Save selected notes into data structure that can me easily serialized
+      //   this.corpusCentral.directoryTreeNode.next(this.selectedDirectoryNodes.map((node) => node.uuid))
+      // }
 
       if (values.selectedBeforeDate && values.selectedBeforeDate !== null && values.selectedBeforeDate !== `0`) {
         data_range.push(`lte:${values.selectedBeforeDate}`)
@@ -565,9 +567,9 @@ export class EurlexFiltersComponent implements OnInit {
       newEurlexFilters.date_range = data_range;
 
       (values.selectedInfoForce && values.selectedInfoForce !== ``) ?
-        newEurlexFilters.info_force = values.selectedInfoForce === `true` ? true : false
+        newEurlexFilters.in_force = values.selectedInfoForce === `true` ? true : false
         :
-        newEurlexFilters.info_force = null
+        newEurlexFilters.in_force = null
 
       this.corpusCentral.eurlexFilters.next(new CorpusSearchPayload({ ...this.eurlexFilters, ...newEurlexFilters }));
     }

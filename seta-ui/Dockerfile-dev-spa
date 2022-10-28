@@ -1,22 +1,20 @@
 FROM python:3.9.10-bullseye
 
+RUN echo "Acquire::http::Proxy \""$HTTP_PROXY"\";" >> /etc/apt/apt.conf
+ENV https_proxy=$HTTP_PROXY
+ENV http_proxy=$HTTP_PROXY
+ENV no_proxy="seta_es,seta-mongo,seta-api,seta-nginx,seta-ui,seta-ui-spa"
+
 RUN apt update -y && apt-get install -y nodejs npm && useradd -m seta
 
 ARG ROOT=/home/seta
-
-RUN mkdir -p $ROOT/seta-frontend && mkdir -p $ROOT/seta-flask-server && mkdir -p $ROOT/models
 
 RUN npm install -g npm@latest 
 RUN npm update -g
 RUN npm install -g @angular/cli@13.3.1 
 #RUN ng update 
 
-WORKDIR $ROOT/seta-frontend
-
-COPY ./seta-frontend/package.json $ROOT/seta-frontend/package.json
-RUN npm install
-
 CMD chdir /home/seta/seta-frontend/ \
-#    && npm install \
-    && ng build seta-web -c=docker --watch --output-path=/home/seta/seta-flask-server/seta-ui/ 
+    && npm install \
+    && ng build seta-web -c=docker --watch --build-optimizer=false --aot=false --optimization=false --output-path=/home/seta/seta-flask-server/seta-ui/ 
 

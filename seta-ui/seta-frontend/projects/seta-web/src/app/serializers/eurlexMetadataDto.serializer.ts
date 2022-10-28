@@ -19,7 +19,7 @@ export class EurlexMetadataDtoSerializer implements Serializer {
     eurlexMetadataDto.eurovocThesaurusConcepts = json.eurovocThesaurusConceptDtos.map((voc) => new EurovocThesaurusModel(voc));
     eurlexMetadataDto.eurovocTree = this.traverseEurovocTreeInit(json.eurovocTree.data, 0, [])
     eurlexMetadataDto.eurovocTree.map((tree) => this.traverseTree(tree))
-    eurlexMetadataDto.directoryTree = this.traverseTreeDirectory(json.directoryTree.data, 1)
+    //eurlexMetadataDto.directoryTree = this.traverseTreeDirectory(json.directoryTree.data, 1)
     eurlexMetadataDto.resourceTypeDtos = json.resourceTypeDtos.map((res: any) => new ResourceTypeDto(res));
     eurlexMetadataDto.documentSectors = json.documentSectorAndTypes.map((doc: any) => new DocumentSector(doc));
     eurlexMetadataDto.subjectTypes = json.subjectTypes.map((sub: any) => new SubjectType(sub));

@@ -46,19 +46,19 @@
                 <div
                   class="d-flex justify-content-start metadata">
                   <strong>Collection:</strong><span class="pl-2"
-                    *ngIf="row.idSector">{{
-                    docSectors[row.idSector] }}</span>
+                    *ngIf="row.idCollection">{{
+                    docSectors[row.idCollection] }}</span>
                 </div>
               </div>
               <div class="col-md-6">
                 <div
                   class="d-flex justify-content-start metadata">
                   <strong>Document reference:</strong>
-                  <span *ngFor="let res of row?.listResourceType"
+                  <span *ngFor="let res of row?.reference"
                     class="pl-2">{{ res?.label }}</span>
                 </div>
               </div>
-              <div class="col-md-6">
+              <!-- <div class="col-md-6">
                 <div
                   class="d-flex justify-content-start metadata">
                   <strong>Subject Type:</strong>
@@ -70,7 +70,7 @@
                       *ngIf="!last">,&nbsp;</span>
                   </span>
                 </div>
-              </div>
+              </div> -->
               <div class="col-md-6">
                 <div
                   class="d-flex justify-content-start metadata">
@@ -446,8 +446,8 @@
           </ng-template>
           <ng-template let-row="row" let-value="value"
             ngx-datatable-cell-template>
-            <strong *ngIf="row.idSector">{{
-              docSectors[row.idSector] }}</strong>
+            <strong *ngIf="row.idCollection">{{
+              docSectors[row.idCollection] }}</strong>
           </ng-template>
         </ngx-datatable-column>
         <ngx-datatable-column
@@ -460,7 +460,7 @@
           </ng-template>
           <ng-template let-row="row" let-value="value"
             ngx-datatable-cell-template>
-            <strong *ngFor="let res of row?.listResourceType">{{
+            <strong *ngFor="let res of row?.reference">{{
               res?.label
               }}</strong>
           </ng-template>

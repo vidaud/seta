@@ -2,22 +2,31 @@ import { EmbeddingsModel } from './embeddings.model';
 import { Resource } from './resource.model';
 
 export class SetaDocument extends Resource {
+  public _id: string;
   public id: string;
+  public id_alias: string;
+  public document_id: string;
   public title: string;
-  public score: number;
+  public abstract: string;
+  public chunk_text: string;
+  // public celex_links?: CelexLink[];
+  public date: string[];
   public source: string;
-  public date: string;
-  public isDocInModel: boolean;
+  public score: number;
+  public language: string;
+  public in_force?: string;
+  public idCollection?: string;
+  public reference?: ResourceType[];
+  public author: string;
+  public eurovoc_dom?: DomainsModel;
+  public eurovoc_mth?: DomainsModel;
+  public ec_priority?: DomainsModel;
+  public sdg_domain?: DomainsModel;
+  public sdg_subdomain?: DomainsModel;
+  public euro_sci_voc?: DomainsModel;
+  public keywords?: string;
+  public other?: string;
   public highlight?: SetaHighLight;
-  public celex_links?: CelexLink[];
-  public infoForce?: string;
-  public dateYear?: string;
-  public idSector?: string;
-  public docType?: string[];
-  public listResourceType?: ResourceType[];
-  public eurovocDom?: ResourceType[];
-  public eurovocMth?: ResourceType[];
-  public subjectMatter?: SubjectType[];
   public concordance?: ConcordancePermutation[];
   public embeddings?: EmbeddingsModel;
   
@@ -128,6 +137,18 @@ export class ConcordancePermutation extends Resource {
   public contextRx: string;
 
   constructor(data?: Partial<ConcordancePermutation>) {
+    super();
+    Object.assign(this, data);
+  }
+}
+
+export class DomainsModel extends Resource {
+  public classifier: string;
+  public label: string;
+  public validated: string;
+  public version: string;
+
+  constructor(data?: Partial<DomainsModel>) {
     super();
     Object.assign(this, data);
   }
