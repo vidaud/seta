@@ -1,10 +1,7 @@
 import requests
-from flask import Blueprint, Flask, Response
+from flask import Blueprint, Response
 from flask import current_app as app
 from flask import request, send_from_directory
-from flask_jwt_extended import jwt_required
-
-import config
 
 base_routes = Blueprint("base_routes", __name__)
 
@@ -27,7 +24,9 @@ def proxy(path):
     protocol = "https"
     if app.config['FLASK_ENV'] == "dev" or app.config['FLASK_ENV'] == "docker":
         protocol = "http"
-    print(f'Before: {request.url}', flush=True)
+        
+    app.logger.debug(f'Before: {request.url}')
+    
     url = (
         protocol
         + "://"
@@ -37,7 +36,9 @@ def proxy(path):
         # + "?"
         # + request.query_string.decode("utf-8")
     )
-    print(f'After: {url}', flush=True)
+    
+    app.logger.debug(f'After: {url}')
+    
     if (request.method == 'GET'):
         r = requests.get(url + f'?{request.query_string.decode("utf-8")}',
                          headers={"Authorization": request.headers["Authorization"]})

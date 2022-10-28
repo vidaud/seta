@@ -3,13 +3,14 @@ services:
   seta-mongo:
     container_name: seta-mongo
     restart: always
-    build: ../seta-mongo
-    expose:
-      - "27017"
+    build: ../seta-mongo    
+    ports:
+      - "27017:27017"
     networks: 
       - seta-network
     volumes: 
       - seta-mongo:/data/db
+      
   seta-es:
     container_name: seta-es
     restart: always
@@ -28,15 +29,17 @@ services:
       - xpack.security.http.ssl.enabled=false
       - xpack.security.transport.ssl.enabled=false
 
-
   seta-api:
     container_name: seta-api
     restart: always
-    build: ../seta-api
+    build:
+      context: ../seta-api
+      dockerfile: Dockerfile-dev-flask
     expose:
       - "8081"
     mem_limit: "8g"
     volumes: 
+      - ../seta-api:/home/seta
       - seta-models2:/home/seta/models
     networks: 
       - seta-network
@@ -56,19 +59,34 @@ services:
     networks: 
       - seta-network
 
+  seta-ui-spa:
+    container_name: seta-ui-spa
+    restart: "no"
+    build: 
+       context: ../seta-ui
+       dockerfile: Dockerfile-dev-spa
+    expose:
+      - "8080"
+    volumes: 
+      - ../seta-ui:/home/seta/
+    networks: 
+      - seta-network
+
   seta-ui:
     container_name: seta-ui
     restart: always
-    build: ../seta-ui
+    build: 
+       context: ../seta-ui
+       dockerfile: Dockerfile-dev-flask
     depends_on:
       - "seta-api"
     expose:
       - "8080"
     volumes: 
+      - ../seta-ui:/home/seta/
       - seta-models2:/home/seta/models
     networks: 
       - seta-network
-
 
 networks:
   seta-network:

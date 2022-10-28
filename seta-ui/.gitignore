@@ -1,7 +1,3 @@
-
-# Created by https://www.toptal.com/developers/gitignore/api/visualstudiocode,intellij+all,maven,angular,java-web,java
-# Edit at https://www.toptal.com/developers/gitignore?templates=visualstudiocode,intellij+all,maven,angular,java-web,java
-
 ### Angular ###
 ## Angular ##
 # compiled output
@@ -9,6 +5,8 @@ dist/
 tmp/
 app/**/*.js
 app/**/*.js.map
+seta-flask-server/seta-ui/
+seta-flask-server/__pycache__/
 
 # dependencies
 node_modules/
@@ -188,4 +186,3 @@ buildNumber.properties
 # Ignore all local history of files
 .history
 
-# End of https://www.toptal.com/developers/gitignore/api/visualstudiocode,intellij+all,maven,angular,java-web,java

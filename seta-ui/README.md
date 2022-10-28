@@ -82,4 +82,3 @@ Deployment procedure
     - insert admin password
     - systemctl restart seta-ui
     - systemctl status seta-ui (just to check that guinorn is restarted)
-

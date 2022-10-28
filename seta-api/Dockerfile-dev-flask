@@ -16,12 +16,9 @@ RUN apt install -y  --no-install-recommends python3-pip
 RUN apt install -y  --no-install-recommends python3-dev
 
 RUN npm install elasticdump -g
-RUN useradd seta 
 
 ARG ROOT=/home/seta
 WORKDIR $ROOT
-
-RUN chown -R seta /home/seta 
 
 RUN mkdir $ROOT/tika
 WORKDIR $ROOT/tika

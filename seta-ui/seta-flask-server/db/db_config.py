@@ -1,9 +1,22 @@
-from flask.helpers import get_debug_flag
-import pymongo
-import config
+from flask import current_app, g
+from flask_pymongo import PyMongo
 
 
-def getDb():
+def get_db():
+    """
+    Configuration method to return db instance
+    """
+    
+    db = getattr(g, "_database", None)
+
+    if db is None:
+        db = g._database = PyMongo(current_app).db
+        
+        """Create indexes here"""
+        
+    return db
+    
+'''
     myclient = pymongo.MongoClient(config.MONGO_DB)
     mydb = myclient["seta"]
     # Create database
@@ -16,3 +29,4 @@ def getDb():
                 mydict = { "test": "test" }
                 x = mydb[name].insert_one(mydict)
     return mydb
+'''    

@@ -1,113 +1,67 @@
-import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from "@angular/common/http";
+import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpXsrfTokenExtractor } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { MessageService } from "primeng/api";
 import { BehaviorSubject, Observable, throwError } from "rxjs";
-import { catchError, filter, retry, switchMap, take } from "rxjs/operators";
+import { catchError, switchMap } from "rxjs/operators";
 import { environment } from "../../environments/environment";
 import { AuthenticationService } from "../services/authentication.service";
-import { TokenStorageService } from "../token-storage.service";
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
 
   private isRefreshing = false;
-  private refreshTokenSubject: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   baseUrl = environment.baseUrl + environment.baseApplicationContext
 
-  constructor(private tokenService: TokenStorageService,
-    private authService: AuthenticationService, private messageService: MessageService) { }
+  constructor(private authService: AuthenticationService) { }
 
-  intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<Object>> {
-    let token = this.tokenService.getToken();
-    switch (req.url) {
-      case this.baseUrl + 'refresh':
-        break;
-      case this.baseUrl + 'logout':
-        token = this.tokenService.getRefreshToken();
-        req = this.addTokenHeader(req, token);
-        break;
-      default:
-        if (token != null) {
-          req = this.addTokenHeader(req, token);
-        }
-        break;
+  intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<Object>> {    
+    if(req.url.includes('/refresh')){
+      const refresh_csrf_token = this.getCookie('refresh_token_cookie');
+      req = req.clone({withCredentials: true, headers: req.headers.set('X-CSRF-TOKEN', refresh_csrf_token)});
+    }
+    else{
+      const csrf_token = this.getCookie('csrf_access_token');
+      req = req.clone({withCredentials: true, headers: req.headers.set('X-CSRF-TOKEN', csrf_token)});
     }
 
-    return next.handle(req).pipe(
-      retry(1),
-      catchError(error => {
-        let errorMessage = null;
+    return next.handle(req);
 
-        if (error.error instanceof ErrorEvent) {
-          errorMessage = `Error: ${error.error.message}`;
-        } else if (error instanceof HttpErrorResponse) {
-          errorMessage = `Error Status ${error.status}: ${error.error.error} - ${error.error.message}`;
-          return this.handleServerSideError(error, req, next);
+    return next.handle(req).pipe(
+      catchError((error) => {
+        if (
+          error instanceof HttpErrorResponse &&
+          !req.url.includes('/login') &&
+          error.status === 401
+        ) {
+          return this.handle401Error(req, next, error);
         }
-        return throwError(error);
+
+        return throwError(() => error);
       })
     );
   }
 
-  private handleServerSideError(error: HttpErrorResponse,
-    request: HttpRequest<any>,
-    next: HttpHandler): Observable<HttpEvent<any>> {
-    switch (error.status) {
-      case 401:
-      case 403:
-      case 422:
-        switch (request.url) {
-          case this.baseUrl + 'refresh':
-            this.isRefreshing = false;
-            this.authService.setaLogout()
-            return throwError(error);
-          case this.baseUrl + 'logout':
-            return throwError(error);
-          default:
-            return this.handle401Error(request, next)
-        }
-      default:
-        this.messageService.add({
-          key: 'tl',
-          severity: 'error',
-          summary: 'Error',
-          detail: error.message,
-        });
-        return throwError(error);
-    }
+  private getCookie(name: string): string {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) 
+      return parts.pop().split(';').shift();
 
+    return '';
   }
 
-  private handle401Error(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+  private handle401Error(request: HttpRequest<any>, next: HttpHandler, originalError: any): Observable<HttpEvent<any>> {
     if (!this.isRefreshing) {
       this.isRefreshing = true;
-      this.refreshTokenSubject.next(null);
-      const token = this.tokenService.getRefreshToken();
-      if (token) {
-        return this.authService.getRefreshedAccessToken(token)
-          .pipe(
-            switchMap((res: any) => {
-              this.isRefreshing = false;
-              this.tokenService.saveToken(res.jawt);
-              this.refreshTokenSubject.next(res.jawt);
 
-              return next.handle(this.addTokenHeader(request, res.jawt));
-            })
-          );
-      }
-
+      return this.authService.refreshCookie().pipe(
+        switchMap(() => {
+          return next.handle(request);
+        }),
+        catchError((error) => {  
+          //this.authService.setaLogout();
+          return throwError(() => originalError);
+        })
+      );
     }
-    return this.refreshTokenSubject.pipe(
-      filter(token => token !== null),
-      take(1),
-      switchMap((token) => next.handle(this.addTokenHeader(request, token)))
-    );
-  }
-  private addTokenHeader(request: HttpRequest<any>, token: string) {
-    return request.clone({
-      setHeaders: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
   }
 }

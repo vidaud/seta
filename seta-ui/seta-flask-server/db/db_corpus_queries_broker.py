@@ -1,7 +1,7 @@
-from db_config import getDb
+from db.db_config import get_db
+from werkzeug.local import LocalProxy
 
-db = getDb()
-
+db = LocalProxy(get_db)
 
 def getAllCorpusQueries(username):
     

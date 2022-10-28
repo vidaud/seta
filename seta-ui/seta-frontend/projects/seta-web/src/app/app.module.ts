@@ -1,5 +1,5 @@
 import { CommonModule } from "@angular/common";
-import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
+import { HttpClientModule, HTTP_INTERCEPTORS, HttpClientXsrfModule } from "@angular/common/http";
 import { NgModule } from "@angular/core";
 import { FormsModule, NG_VALIDATORS, ReactiveFormsModule } from "@angular/forms";
 import { BrowserModule } from "@angular/platform-browser";
@@ -141,8 +141,11 @@ import { SetaState } from "./store/seta.state";
     DropdownModule,
     ContextMenuModule,
     DialogModule,
-    tmodule
-
+    tmodule,
+    /*HttpClientXsrfModule.withOptions({
+      cookieName: 'csrf_access_token',
+      headerName: 'X-CSRF-TOKEN',
+    })*/
   ],
   providers: [
     {
@@ -154,7 +157,8 @@ import { SetaState } from "./store/seta.state";
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
       multi: true
-    }, CanActivateUserGuard,
+    },
+    CanActivateUserGuard,
     MessageService
   ],
   bootstrap: [AppComponent]
