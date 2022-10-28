@@ -18,7 +18,7 @@ class Config:
     JWT_SECRET_KEY = ""    
     JWT_IDENTITY_CLAIM="username"
     JWT_EXPIRY_INTERVAL = float(3600)
-    JWT_COOKIE_CSRF_PROTECT = False #TODO: set this to True when client sends the 'X-CSRF-TOKEN' header
+    JWT_COOKIE_CSRF_PROTECT = True #TODO: set this to True when client sends the 'X-CSRF-TOKEN' header
     JWT_TOKEN_LOCATION=["headers", "cookies"]
     
     SCHEDULER_ENABLED = False

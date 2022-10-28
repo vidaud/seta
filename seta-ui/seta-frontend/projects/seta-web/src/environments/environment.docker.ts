@@ -11,7 +11,6 @@ export const environment = {
   restEndPoint: `rest/`,
   _regex: new RegExp(`_`, `g`),
   baseFlaskBackendUrl: "http://localhost:8080",
-  loginTokenExpiryInterval: 60 // In minutes
   api_target_path: `http://localhost/seta-api/api/v1/`,
   loginTokenExpiryInterval: 60, // In minutes
   token_key: 'accessToken',

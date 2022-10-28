@@ -14,6 +14,7 @@ export class ToastModel {
   type?: ToastType
   header?: string | TemplateRef<any>;
   options?: any
+  delay: 5000
 
   constructor(data?: Partial<ToastModel>) {
     Object.assign(this, data);

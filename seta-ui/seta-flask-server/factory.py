@@ -30,8 +30,8 @@ def create_app(config_object):
     
     app.cas_client = CASClient(
         version=3,
-        #service_url = app.config["FLASK_PATH"] + "/seta-ui/v2/login"
-        service_url = app.config["FLASK_PATH"] + "/seta-ui/login",  # ?next=%2Fseta-ui%2Fseta
+        service_url = app.config["FLASK_PATH"] + "/seta-ui/v2/login",
+        #service_url = app.config["FLASK_PATH"] + "/seta-ui/login",  # ?next=%2Fseta-ui%2Fseta
         server_url = app.config["AUTH_CAS_URL"],
     )
     app.home_route = app.config['FLASK_PATH'] + "/seta-ui/#/home"   

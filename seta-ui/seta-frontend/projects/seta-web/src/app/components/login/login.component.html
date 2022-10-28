@@ -16,7 +16,7 @@
         (click)="navigateTo($event, 'myaccount')"
         ngbDropdownItem>{{ 'Hi, ' +
         currentUser.firstName }}</button>
-      <button (click)="goToLink($event, '/seta-ui/login')"
+      <button (click)="goToLink($event, '/seta-ui/v2/login')"
         *ngIf="currentUser === null" ngbDropdownItem>Log
         in</button>
       <button
@@ -27,8 +27,6 @@
         *ngIf="displayEcasLogoutLink && currentUser !== null && currentUser.username">
         <button (click)="goToLink($event, '/seta-ui/logout')"
           ngbDropdownItem>Log out of ECAS</button>
-        <button (click)="generateRsaKeys($event)"
-          ngbDropdownItem>Generate Rsa Keys DEMO</button>
       </div>
     </div>
   </div>
