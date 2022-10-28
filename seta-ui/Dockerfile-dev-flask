@@ -1,6 +1,21 @@
-FROM python:3.9.10-bullseye
+FROM ubuntu:20.04
 
-RUN apt update -y && apt-get install -y nodejs npm && useradd -m seta
+RUN echo "Acquire::http::Proxy \""$HTTP_PROXY"\";" >> /etc/apt/apt.conf
+ENV https_proxy=$HTTP_PROXY
+ENV http_proxy=$HTTP_PROXY
+ENV no_proxy="seta_es,seta-mongo,seta-api,seta-nginx,seta-ui,seta-ui-spa"
+
+RUN apt update -y
+RUN apt install -y  --no-install-recommends curl
+RUN apt install -y  --no-install-recommends wget
+RUN apt install -y  --no-install-recommends openjdk-11-jre
+RUN apt install -y  --no-install-recommends nodejs 
+RUN apt install -y  --no-install-recommends npm
+RUN apt install -y  --no-install-recommends gnupg
+RUN apt install -y  --no-install-recommends python3-pip
+RUN apt install -y  --no-install-recommends python3-dev
+
+RUN useradd -m seta
 
 ARG ROOT=/home/seta
 

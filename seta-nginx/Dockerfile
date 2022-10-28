@@ -1,5 +1,9 @@
 FROM nginx:1.20.2
 
+ENV https_proxy=$HTTP_PROXY
+ENV http_proxy=$HTTP_PROXY
+ENV no_proxy="seta_es,seta-mongo,seta-api,seta-nginx,seta-ui,seta-ui-spa"
+
 RUN rm /etc/nginx/nginx.conf
 COPY nginx.conf /etc/nginx/
 RUN rm /etc/nginx/conf.d/default.conf

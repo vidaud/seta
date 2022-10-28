@@ -91,15 +91,15 @@ export class MetadataTreeNode implements TreeNode<any> {
 
 
 
-export class DirectoryConceptsDto {
-  public conc_dir_1: string;
-  public conc_dir_2: string;
-  public conc_dir_3: string;
+// export class DirectoryConceptsDto {
+//   public conc_dir_1: string;
+//   public conc_dir_2: string;
+//   public conc_dir_3: string;
   
-  constructor(data?: Partial<DirectoryConceptsDto>) {
-    Object.assign(this, data);
-  }
-}
+//   constructor(data?: Partial<DirectoryConceptsDto>) {
+//     Object.assign(this, data);
+//   }
+// }
 
 export class EurovocMthMapDto {
   [index: string]: string;
@@ -156,7 +156,7 @@ export class EurlexMetadataDto extends Resource {
   public eurovocMthMapDto: EurovocMthMapDto = {};
   public eurovocDomMapDto: EurovocMthMapDto = {};
   public eurovocTree: TreeNode[] = null;
-  public directoryTree: TreeNode[] = null;
+  //public directoryTree: TreeNode[] = null;
   public selectedBeforeDate: string;
   public selectedAfterDate: string;
 

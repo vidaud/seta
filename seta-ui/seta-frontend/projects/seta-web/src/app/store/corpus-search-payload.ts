@@ -5,33 +5,37 @@ import { Operators, Term, TermType } from '../models/term.model';
 export class CorpusSearchPayload extends Resource {
 
   public id?: number | string;
+  public _id?: number | string;
   public termCorpus: Term[];
-  public source?: string[];
   public ndocs?: number;
   public from_doc?: number;
-  public sector?: Set<string>;
-  public subject?: string[];
-  public res_type?: Set<string>;
+  public search_type?: string;
+  public source?: string[];
+  public reference?: Set<string>;
+  public collection?: Set<string>;
   public eurovoc_dom?: string[];
   public eurovoc_mth?: string[];
   public eurovoc_tt?: string[];
+  public ec_priority?: string[];
   public eurovoc_concept?: string[];
-  public conc_dir_1?: string[];
-  public conc_dir_2?: string[];
-  public conc_dir_3?: string[];
-  public info_force?: boolean;
+  public sdg_domain?: string[];
+  public sdg_subdomain?: string[];
+  public euro_sci_voc?: string[];
+  // public conc_dir_1?: string[];
+  // public conc_dir_2?: string[];
+  // public conc_dir_3?: string[];
+  public in_force?: boolean;
   public sort?: string[];
   public semantic_sort_id?: string;
   public vector?: number[];
+  public author?: string;
   public date_range?: string[];
+  public aggs?: string;
 
   prepareCorpusParams(): HttpParams {
     let httpParams = new HttpParams();
     if (this.termCorpus && this.termCorpus.length > 0) {
       httpParams = httpParams.set(`term`, this.getSelectedTerms(this.termCorpus));
-    }
-    if (this.source && this.source.length > 0) {
-      httpParams = httpParams.set(`source`, this.source.join(`,`));
     }
     if (this.ndocs) {
       httpParams = httpParams.set(`n_docs`, this.ndocs.toString());
@@ -39,14 +43,17 @@ export class CorpusSearchPayload extends Resource {
     if (this.from_doc && this.from_doc != null) {
       httpParams = httpParams.set(`from_doc`, this.from_doc.toString());
     }
-    if (this.sector && this.sector.size > 0) {
-      httpParams = httpParams.set(`sector`, [...this.sector].join(`,`));
+    if (this.search_type && this.search_type !== ``) {
+      httpParams = httpParams.set(`search_type`, this.search_type);
     }
-    if (this.subject && this.subject.length > 0) {
-      httpParams = httpParams.set(`subject`, this.subject.join(`,`));
+    if (this.source && this.source.length > 0) {
+      httpParams = httpParams.set(`source`, this.source.join(`,`));
     }
-    if (this.res_type && this.res_type.size > 0) {
-      httpParams = httpParams.set(`res_type`, [...this.res_type].join(`,`));
+    if (this.reference && this.reference.size > 0) {
+      httpParams = httpParams.set(`reference`, [...this.reference].join(`,`));
+    }
+    if (this.collection && this.collection.size > 0) {
+      httpParams = httpParams.set(`collection`, [...this.collection].join(`,`));
     }
     if (this.eurovoc_dom && this.eurovoc_dom.length > 0) {
       httpParams = httpParams.set(`eurovoc_dom`, this.eurovoc_dom.join(`,`));
@@ -60,17 +67,20 @@ export class CorpusSearchPayload extends Resource {
     if (this.eurovoc_concept && this.eurovoc_concept.length > 0) {
       httpParams = httpParams.set(`eurovoc_concept`, this.eurovoc_concept.join(`,`));
     }
-    if (this.conc_dir_1 && this.conc_dir_1.length > 0) {
-      httpParams = httpParams.set(`conc_dir_1`, this.conc_dir_1.join(`,`));
+    if (this.ec_priority && this.ec_priority.length > 0) {
+      httpParams = httpParams.set(`ec_priority`, this.ec_priority.join(`,`));
     }
-    if (this.conc_dir_2 && this.conc_dir_2.length > 0) {
-      httpParams = httpParams.set(`conc_dir_2`, this.conc_dir_2.join(`,`));
+    if (this.sdg_domain && this.sdg_domain.length > 0) {
+      httpParams = httpParams.set(`sdg_domain`, this.sdg_domain.join(`,`));
     }
-    if (this.conc_dir_3 && this.conc_dir_3.length > 0) {
-      httpParams = httpParams.set(`conc_dir_3`, this.conc_dir_3.join(`,`));
+    if (this.sdg_subdomain && this.sdg_subdomain.length > 0) {
+      httpParams = httpParams.set(`sdg_subdomain`, this.sdg_subdomain.join(`,`));
     }
-    if (this.info_force !== undefined && this.info_force !== null) {
-      httpParams = httpParams.set(`info_force`, this.info_force.toString());
+    if (this.euro_sci_voc && this.euro_sci_voc.length > 0) {
+      httpParams = httpParams.set(`euro_sci_voc`, this.euro_sci_voc.join(`,`));
+    }
+    if (this.in_force !== undefined && this.in_force !== null) {
+      httpParams = httpParams.set(`in_force`, this.in_force.toString());
     }
     if (this.sort && this.sort.length > 0) {
       httpParams = httpParams.set(`sort`, this.sort.join(`,`));
@@ -79,10 +89,16 @@ export class CorpusSearchPayload extends Resource {
       httpParams = httpParams.set(`semantic_sort_id`, this.semantic_sort_id);
     }
     if (this.vector && this.vector.length > 0) {
-      httpParams = httpParams.set(`emb_vector`, this.vector.map((vec) => vec.toString()).join(`,`));
+      httpParams = httpParams.set(`sbert_embedding`, this.vector.map((vec) => vec.toString()).join(`,`));
+    }
+    if (this.author && this.author !== ``) {
+      httpParams = httpParams.set(`author`, this.author);
     }
     if (this.date_range && this.date_range.length > 0) {
       httpParams = httpParams.set(`date_range`, this.date_range.join(`,`));
+    }
+    if (this.aggs && this.aggs !== ``) {
+      httpParams = httpParams.set(`aggs`, this.aggs);
     }
     return httpParams;
   }

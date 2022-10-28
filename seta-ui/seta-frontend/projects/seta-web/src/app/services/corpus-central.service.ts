@@ -32,8 +32,8 @@ export class CorpusCentralService {
   public eurovocTreeNode = new BehaviorSubject<string[]>([]);
   public partialSelectedEurovoc = new BehaviorSubject<string[]>([]);
 
-  public directoryTreeNode = new BehaviorSubject<string[]>([]);
-  public partialSelectedDirectory = new BehaviorSubject<string[]>([]);
+  // public directoryTreeNode = new BehaviorSubject<string[]>([]);
+  // public partialSelectedDirectory = new BehaviorSubject<string[]>([]);
 
   private _dynamicQuery = new BehaviorSubject<Term[]>([]);
   public _dynamicQuery$ = this._dynamicQuery.asObservable();
@@ -139,7 +139,7 @@ export class CorpusCentralService {
         eurlexForm: new EurlexFormModel({
           eurlexMetadataFilters: { ...filters.eurlexForm.eurlexMetadataFilters },
           eurovocTreeNode: [...filters.eurlexForm.eurovocTreeNode],
-          directoryTreeNode: [...filters.eurlexForm.directoryTreeNode],
+          // directoryTreeNode: [...filters.eurlexForm.directoryTreeNode],
         })
       }
     );
@@ -179,7 +179,7 @@ export class CorpusCentralService {
               :
               undefined,
           eurovocTreeNode: this.corpusHistoryService.eurlexForm_lastExecutionState.eurlexForm.eurovocTreeNode,
-          directoryTreeNode: this.corpusHistoryService.eurlexForm_lastExecutionState.eurlexForm.directoryTreeNode
+          //directoryTreeNode: this.corpusHistoryService.eurlexForm_lastExecutionState.eurlexForm.directoryTreeNode
         },
         selectedRepositoryTypes:
           this.corpusHistoryService.eurlexForm_lastExecutionState.selectedRepositoryTypes ?
@@ -188,11 +188,11 @@ export class CorpusCentralService {
             undefined
       });
       this.eurovocTreeNode.next([...this.corpusHistoryService.eurlexForm_lastExecutionState?.eurlexForm?.eurovocTreeNode]);
-      this.directoryTreeNode.next([...this.corpusHistoryService.eurlexForm_lastExecutionState?.eurlexForm?.directoryTreeNode])
+      //this.directoryTreeNode.next([...this.corpusHistoryService.eurlexForm_lastExecutionState?.eurlexForm?.directoryTreeNode])
     } else {
       this.formMemory.next(null);
       this.eurovocTreeNode.next([]);
-      this.directoryTreeNode.next([])
+      //this.directoryTreeNode.next([])
     }
   }
 
@@ -225,14 +225,14 @@ export class CorpusCentralService {
       const nR = eurlexMetadataFilters.selectedResourceTypes && eurlexMetadataFilters.selectedResourceTypes.length > 0 ? 1 : 0;
       const nA = eurlexMetadataFilters.actCategories && eurlexMetadataFilters.actCategories.reduce(reducer) ? 1 : 0;
       const nE = eurlexMetadataFilters.selectedErovocConcepts && eurlexMetadataFilters.selectedErovocConcepts.length > 0 ? 1 : 0;
-      const nD = eurlexMetadataFilters.selectedDirectoryConcepts && eurlexMetadataFilters.selectedDirectoryConcepts.length > 0 ? 1 : 0;
+      //const nD = eurlexMetadataFilters.selectedDirectoryConcepts && eurlexMetadataFilters.selectedDirectoryConcepts.length > 0 ? 1 : 0;
       const nI = eurlexMetadataFilters.selectedInfoForce && eurlexMetadataFilters.selectedInfoForce !== `` ? 1 : 0;
       const nDate = (eurlexMetadataFilters.selectedAfterDate || eurlexMetadataFilters.selectedBeforeDate)
         && (eurlexMetadataFilters.selectedAfterDate !== `` || eurlexMetadataFilters.selectedBeforeDate !== ``) ? 1 : 0
-      if (nR === 1 || nA === 1) {
-        filterCounter = 1 + nI + nE + nD + nDate;
+        if (nR === 1 || nA === 1) {
+        filterCounter = 1 + nI + nE + nDate;
       } else {
-        filterCounter = nI + nE + nD + nDate;
+        filterCounter = nI + nE + nDate;
       }
       this.filterCounter.next(filterCounter);
     }
@@ -260,41 +260,41 @@ export class CorpusCentralService {
     }
 
 
-    result = result && (lastState.info_force !== corpusSearchPayload.info_force)
+    result = result && (lastState.in_force !== corpusSearchPayload.in_force)
 
     if (
-      (lastState.res_type === undefined || lastState.res_type === null)
+      (lastState.reference === undefined || lastState.reference === null)
       &&
-      (corpusSearchPayload.res_type === undefined || corpusSearchPayload.res_type === null)
+      (corpusSearchPayload.reference === undefined || corpusSearchPayload.reference === null)
     ) {
       return result
     } else {
-      result = result && (lastState.res_type.size !== corpusSearchPayload.res_type.size)
+      result = result && (lastState.reference.size !== corpusSearchPayload.reference.size)
       if (result) {
-        for (const currentValue of lastState.res_type) {
+        for (const currentValue of lastState.reference) {
           if (!result) {
             break
           }
-          result = result && [...corpusSearchPayload.res_type].every((value) => value !== currentValue);
+          result = result && [...corpusSearchPayload.reference].every((value) => value !== currentValue);
         }
       }
     }
 
 
     if (
-      (lastState.sector === undefined || lastState.sector === null)
+      (lastState.collection === undefined || lastState.collection === null)
       &&
-      (corpusSearchPayload.sector === undefined || corpusSearchPayload.sector === null)
+      (corpusSearchPayload.collection === undefined || corpusSearchPayload.collection === null)
     ) {
       return result
     } else {
-      result = result && (lastState.sector.size !== corpusSearchPayload.sector.size)
+      result = result && (lastState.collection.size !== corpusSearchPayload.collection.size)
       if (result) {
-        for (const currentValue of lastState.sector) {
+        for (const currentValue of lastState.collection) {
           if (!result) {
             break
           }
-          result = result && [...corpusSearchPayload.sector].every((value) => value !== currentValue);
+          result = result && [...corpusSearchPayload.collection].every((value) => value !== currentValue);
         }
       }
     }
@@ -312,7 +312,7 @@ export class CorpusCentralService {
     var subject = new Subject<TreeNode[]>();
     this.rest.getQueries(this.currentUser.username).subscribe(
       (response: any) => {
-          console.log(response);
+        console.log(response);
           let qms: TreeNode[] 
           if (response?.status === 'OK' && response?.state?.value) {
             qms = JSON.parse(response.state.value);
@@ -336,11 +336,11 @@ export class CorpusCentralService {
           payload:
           {
             ...qm.payload,
-            sector: qm.payload.sector ?
-              new Set([...qm.payload.sector]) :
+            collection: qm.payload.collection ?
+              new Set([...qm.payload.collection]) :
               new Set([]),
-            res_type: qm.payload.res_type ?
-              new Set([...qm.payload.res_type])
+            reference: qm.payload.reference ?
+              new Set([...qm.payload.reference])
               :
               new Set([])
           }
@@ -354,11 +354,11 @@ export class CorpusCentralService {
     this.eurlexFilters.next(new CorpusSearchPayload(
       {
         ...savedQuery.payload,
-        sector: savedQuery.payload.sector ?
-          new Set([...savedQuery.payload.sector]) :
+        collection: savedQuery.payload.collection ?
+          new Set([...savedQuery.payload.collection]) :
           new Set([]),
-        res_type: savedQuery.payload.res_type ?
-          new Set([...savedQuery.payload.res_type])
+          reference: savedQuery.payload.reference ?
+          new Set([...savedQuery.payload.reference])
           :
           new Set([])
       }))
@@ -369,15 +369,15 @@ export class CorpusCentralService {
       } else {
         this.eurovocTreeNode.next([])
       }
-      if (savedQuery.filters?.eurlexForm?.directoryTreeNode) {
-        this.directoryTreeNode.next(savedQuery.filters.eurlexForm.directoryTreeNode)
-      } else {
-        this.directoryTreeNode.next([])
-      }
+      // if (savedQuery.filters?.eurlexForm?.directoryTreeNode) {
+      //   this.directoryTreeNode.next(savedQuery.filters.eurlexForm.directoryTreeNode)
+      // } else {
+      //   this.directoryTreeNode.next([])
+      // }
     } else {
       this.formMemory.next(null)
       this.eurovocTreeNode.next([])
-      this.directoryTreeNode.next([])
+      //this.directoryTreeNode.next([])
     }
     this.search()
   }

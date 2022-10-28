@@ -584,7 +584,7 @@ query_corpus_post_data = ns.model(
         'in_force': fields.Boolean(description='eurlex metadata info_force'),
         'sort': fields.List(fields.String, description='sort results field:order'),
         'semantic_sort_id': fields.String(description='sort results by semantic distance among documents'),
-        'emb_vector': fields.List(fields.Float, description='embeddings vector'),
+        'sbert_embedding': fields.List(fields.Float, description='embeddings vector'),
         'author': fields.String(description='author'),
         'date_range': fields.List(fields.String,
                                   description='examples: gte:yyyy-mm-dd,lte:yyyy-mm-dd,gt:yyyy-mm-dd,lt:yyyy-mm-dd'),
@@ -611,20 +611,20 @@ inputSchemaCorpusPut = {"type": "object",
                             "mime_type": {"type": "string"},
                             "in_force": {"type": "string"},
                             "language": {"type": "string"},
-                            "eurovoc_concept": {"label": {"type": "string"}, "validated": {"type": "string"},
-                                                "classifier": {"type": "string"}, "version": {"type": "string"}},
-                            "eurovoc_domain": {"label": {"type": "string"}, "validated": {"type": "string"},
-                                               "classifier": {"type": "string"}, "version": {"type": "string"}},
-                            "eurovoc_mth": {"label": {"type": "string"}, "validated": {"type": "string"},
-                                            "classifier": {"type": "string"}, "version": {"type": "string"}},
-                            "ec_priority": {"label": {"type": "string"}, "validated": {"type": "string"},
-                                            "classifier": {"type": "string"}, "version": {"type": "string"}},
-                            "sdg_domain": {"label": {"type": "string"}, "validated": {"type": "string"},
-                                           "classifier": {"type": "string"}, "version": {"type": "string"}},
-                            "sdg_subdomain": {"label": {"type": "string"}, "validated": {"type": "string"},
-                                              "classifier": {"type": "string"}, "version": {"type": "string"}},
-                            "euro_sci_voc": {"label": {"type": "string"}, "validated": {"type": "string"},
-                                             "classifier": {"type": "string"}, "version": {"type": "string"}},
+                            "eurovoc_concept": [{"label": {"type": "string"}, "validated": {"type": "string"},
+                                                "classifier": {"type": "string"}, "version": {"type": "string"}}],
+                            "eurovoc_domain": [{"label": {"type": "string"}, "validated": {"type": "string"},
+                                               "classifier": {"type": "string"}, "version": {"type": "string"}}],
+                            "eurovoc_mth": [{"label": {"type": "string"}, "validated": {"type": "string"},
+                                            "classifier": {"type": "string"}, "version": {"type": "string"}}],
+                            "ec_priority": [{"label": {"type": "string"}, "validated": {"type": "string"},
+                                            "classifier": {"type": "string"}, "version": {"type": "string"}}],
+                            "sdg_domain": [{"label": {"type": "string"}, "validated": {"type": "string"},
+                                           "classifier": {"type": "string"}, "version": {"type": "string"}}],
+                            "sdg_subdomain": [{"label": {"type": "string"}, "validated": {"type": "string"},
+                                              "classifier": {"type": "string"}, "version": {"type": "string"}}],
+                            "euro_sci_voc": [{"label": {"type": "string"}, "validated": {"type": "string"},
+                                             "classifier": {"type": "string"}, "version": {"type": "string"}}],
                             "keywords": {"keyword": {"type": "string"}, "score": {"type": "number"}},
                             "other": {"type": "object"}
                         },
@@ -705,7 +705,7 @@ class CorpusQuery(Resource):
         args = request.get_json(force=True)
         print(args)
         if is_field_in_doc(args, 'term') or is_field_in_doc(args, 'semantic_sort_id') \
-                or is_field_in_doc(args, 'emb_vector') or is_field_in_doc(args, 'aggs') \
+                or is_field_in_doc(args, 'sbert_embedding') or is_field_in_doc(args, 'aggs') \
                 or is_field_in_doc(args, 'source'):
             return corpus(is_field_in_doc(args, 'term'), is_field_in_doc(args, 'n_docs'),
                           is_field_in_doc(args, 'from_doc'), is_field_in_doc(args, 'source'),
@@ -715,7 +715,7 @@ class CorpusQuery(Resource):
                           is_field_in_doc(args, 'sdg_domain'), is_field_in_doc(args, 'sdg_subdomain'),
                           is_field_in_doc(args, 'euro_sci_voc'), is_field_in_doc(args, 'in_force'),
                           is_field_in_doc(args, 'sort'), is_field_in_doc(args, 'semantic_sort_id'),
-                          is_field_in_doc(args, 'emb_vector'), is_field_in_doc(args, 'author'),
+                          is_field_in_doc(args, 'sbert_embedding'), is_field_in_doc(args, 'author'),
                           is_field_in_doc(args, 'date_range'), is_field_in_doc(args, 'aggs'),
                           is_field_in_doc(args, 'search_type'))
 
@@ -987,7 +987,7 @@ class ComputeEmb(Resource):
             fin = request.files['file']
             if fin:
                 fin.seek(0)
-                p = Popen(['java', '-jar', 'tika/tika-app-2.3.0.jar', '--text'], stdout=PIPE, stdin=PIPE, stderr=PIPE)
+                p = Popen(['java', '-jar', 'tika/tika-app-2.4.1.jar', '--text'], stdout=PIPE, stdin=PIPE, stderr=PIPE)
                 parsed_file = p.communicate(input=fin.read())[0]
                 return compute_embeddings(parsed_file.decode('utf-8'))
         response = jsonify('No text provided.')
@@ -1602,7 +1602,7 @@ def build_corpus_request(term, n_docs, from_doc, sources, collection, reference,
             return response
         query_to_use = {"script_score": {
             "query": query, "script": {
-                "source": "1 / (1 + l1norm(params.queryVector, doc['sbert_embedding']))",
+                "source": "1 / (1 + l1norm(params.queryVector, 'sbert_embedding'))",
                 "params": {"queryVector": vector}}}}
     else:
         query_to_use = query

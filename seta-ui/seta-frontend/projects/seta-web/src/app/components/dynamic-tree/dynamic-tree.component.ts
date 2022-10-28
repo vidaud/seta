@@ -118,10 +118,9 @@ export class DynamicTreeComponent implements OnInit, AfterViewInit, OnDestroy {
         payload:
         {
           ...qm.payload,
-          // res_type and sector are Set types and have to be serialized as string[]
-          sector: qm.payload.sector ? [...qm.payload.sector] : [],
-          res_type: qm.payload.res_type ? [...qm.payload.res_type] : []
-        }
+          // res_type and collection are Set types and have to be serialized as string[]
+          collection: qm.payload.collection ? [...qm.payload.collection] : [],
+          reference: qm.payload.reference ? [...qm.payload.reference] : []        }
       }
       const leafName = prompt('Please enter leaf name');
       if (leafName && leafName !== null) {

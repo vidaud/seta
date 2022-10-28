@@ -178,8 +178,8 @@ export class QueryStoreTreeComponent implements OnInit {
         {
           ...qm.payload,
           // res_type and sector are Set types and have to be serialized as string[]
-          sector: qm.payload.sector ? [...qm.payload.sector] : [],
-          res_type: qm.payload.res_type ? [...qm.payload.res_type] : []
+          collection: qm.payload.collection ? [...qm.payload.collection] : [],
+          reference: qm.payload.reference ? [...qm.payload.reference] : []
         }
       }
       node.data = queryModel

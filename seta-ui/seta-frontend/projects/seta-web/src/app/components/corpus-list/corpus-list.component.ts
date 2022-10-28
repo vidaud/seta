@@ -6,7 +6,7 @@ import { NgbDate, NgbDateParserFormatter } from '@ng-bootstrap/ng-bootstrap';
 import { Select, Store } from '@ngxs/store';
 import { ColumnMode, DatatableComponent, SelectionType, SortType } from '@swimlane/ngx-datatable';
 import { Observable } from 'rxjs';
-import { CelexLink, ConcordancePermutation, ResourceType, SetaDocument, SetaElement, SetaHighLight, SubjectType } from '../../models/document.model';
+import { CelexLink, ConcordancePermutation, DomainsModel, ResourceType, SetaDocument, SetaElement, SetaHighLight, SubjectType } from '../../models/document.model';
 import { DocumentSector, EurlexMetadataDto } from '../../models/eurlexMetadataDto.model';
 import { EurovocThesaurusModel } from '../../models/eurovoc-thesaurus.model';
 import { Term, TermType } from '../../models/term.model';
@@ -38,8 +38,8 @@ class ConcordanceWidth {
 }
 
 enum PropToKeywords {
-  documentReference = `list_ressource_type.keyword`,
-  collection = `id_sector.keyword`,
+  documentReference = `reference.keyword`,
+  collection = `collection.keyword`,
   title = `title.keyword`,
   repository = `source.keyword`,
 }
@@ -198,6 +198,7 @@ export class CorpusListComponent implements OnInit, AfterViewChecked {
 
   public placement = `bottom`;
 
+  public docAuthors: { [x: string]: string; } = {};
   public docSectors: { [x: string]: string; } = {};
   public eurovocMthMapDto: { [x: string]: string; } = {};
   public eurovocDomMapDto: { [x: string]: string; } = {};
@@ -241,8 +242,8 @@ export class CorpusListComponent implements OnInit, AfterViewChecked {
 
 
   public filterIdSector(d: SetaDocument, filterIdSectors: string[], isSelectedSector: boolean): boolean {
-    if (d.idSector) {
-      if (filterIdSectors.indexOf(d.idSector) >= 0) {
+    if (d.idCollection) {
+      if (filterIdSectors.indexOf(d.idCollection) >= 0) {
         isSelectedSector = true;
       } else {
         isSelectedSector = false;
@@ -254,8 +255,8 @@ export class CorpusListComponent implements OnInit, AfterViewChecked {
   }
 
   public filterResourceTypes(d: SetaDocument, resourceCodes: string[], isSelectedResourceTypes: boolean): boolean {
-    if (d.listResourceType) {
-      const resTcodes = d.listResourceType.map((resTd) => resTd.code);
+    if (d.reference) {
+      const resTcodes = d.reference.map((resTd) => resTd.code);
       for (const res of resTcodes) {
         if (resourceCodes.indexOf(res) >= 0) {
           isSelectedResourceTypes = true;
@@ -327,21 +328,19 @@ export class CorpusListComponent implements OnInit, AfterViewChecked {
       this.isDataTableLoading--;
       this.corpusDocuments = docList;
       this.rows = this.corpusDocuments.map((tempdoc: SetaDocument) => {
+        console.log(this.rows);
         return new SetaDocument({
           ...tempdoc,
-          celex_links: tempdoc.celex_links ?
-            this.celex_links_type_model.map((model) => new CelexLink(tempdoc.celex_links.find((link) => link.type === model)))
-            : undefined,
-          docType: tempdoc.docType ? [...tempdoc.docType] : undefined,
-          eurovocMth: tempdoc.eurovocMth ? tempdoc.eurovocMth.map(
-            (data) => new ResourceType(data),
-          ) : undefined,
+          // celex_links: tempdoc.celex_links ?
+          //   this.celex_links_type_model.map((model) => new CelexLink(tempdoc.celex_links.find((link) => link.type === model)))
+          //   : undefined,
+          // docType: tempdoc.docType ? [...tempdoc.docType] : undefined,
+          // eurovoc_mth: tempdoc.eurovoc_mth ? tempdoc.eurovoc_mth.map(
+          //   (data) => new ResourceType(data),
+          // ) : undefined,
           highlight: tempdoc.highlight ? new SetaHighLight({ text: tempdoc.highlight.text, title: tempdoc.highlight.title }) : undefined,
-          listResourceType: tempdoc.listResourceType ? tempdoc.listResourceType.map(
+          reference: tempdoc.reference ? tempdoc.reference.map(
             (data) => new ResourceType(data),
-          ) : undefined,
-          subjectMatter: tempdoc.subjectMatter ? tempdoc.subjectMatter.map(
-            (data) => new SubjectType(data),
           ) : undefined,
           concordance: [...tempdoc.concordance].map((data) => {
             return new ConcordancePermutation({ ...data })
@@ -358,7 +357,7 @@ export class CorpusListComponent implements OnInit, AfterViewChecked {
       this.temp = [...this.rows];
     });
 
-    this.simpleItems = [`Date`, 'Sector'];
+    this.simpleItems = [`Date`, 'Collection'];
 
     this.corpusCentral.eurlexFilters.subscribe((eurlexFilters) => {
       this.eurlexFilters = new CorpusSearchPayload({ ...eurlexFilters });
@@ -492,11 +491,11 @@ export class CorpusListComponent implements OnInit, AfterViewChecked {
                 isOperator: false,
                 document: new SetaDocument({ ...documentsSelected[0] })
               })],
-            semantic_sort_id: id !== null ? id : null
-          }
-        ));
-      this.corpusCentral.search()
-      this.corpusCentral.sortByDocument(id)
+              semantic_sort_id: documentsSelected[0]._id !== null ? documentsSelected[0]._id : null
+            }
+          ));
+        this.corpusCentral.search()
+        this.corpusCentral.sortByDocument(documentsSelected[0]._id)
     }
 
   }

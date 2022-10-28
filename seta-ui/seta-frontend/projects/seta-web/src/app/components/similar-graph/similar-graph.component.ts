@@ -37,8 +37,8 @@ export class SimilarGraphComponent implements OnInit {
         // const gCopy = Object.assign({}, graph)
         const gCopy = JSON.parse(JSON.stringify(graph));
         d3.select(`#myChart`).remove();
-        const width = (document.querySelector(`#myChartContainer`) as HTMLElement).offsetWidth;
-        const height = (document.querySelector(`#myChartContainer`) as HTMLElement).offsetHeight;
+        const width = (document.querySelector(`#myChartContainer`) as HTMLElement)?.offsetWidth;
+        const height = (document.querySelector(`#myChartContainer`) as HTMLElement)?.offsetHeight;
 
 
 

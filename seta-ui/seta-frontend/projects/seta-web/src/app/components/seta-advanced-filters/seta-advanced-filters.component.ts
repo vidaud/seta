@@ -68,7 +68,7 @@ export class SetaAdvancedFiltersComponent implements OnInit {
           eurlexForm: { 
             eurlexMetadataFilters: result.eurlexMetadataFilters, 
             eurovocTreeNode: this.corpusCentral.eurovocTreeNode.getValue(),
-            directoryTreeNode: this.corpusCentral.directoryTreeNode.getValue()
+            //directoryTreeNode: this.corpusCentral.directoryTreeNode.getValue()
           }
         }
       )
