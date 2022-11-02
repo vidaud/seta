@@ -193,7 +193,7 @@ else:
     f1.close()
 #app.config["JWT_SECRET_KEY"] = config['secret-key']
 
-app.config["JWT_COOKIE_CSRF_PROTECT"] = True #client has to send the 'X-CSRF-TOKEN' header
+app.config["JWT_COOKIE_CSRF_PROTECT"] = False #client has to send the 'X-CSRF-TOKEN' header
 app.config["JWT_TOKEN_LOCATION"]=["headers", "cookies"]
 
 app.config["PROPAGATE_EXCEPTIONS"] = True
@@ -258,7 +258,6 @@ def custom_validator(role=None):
         def decorator(*args, **kwargs):                       
             verify_jwt_in_request()
             claims = get_jwt()
-            print(claims)
             
             if role:
                 if not (claims['role'] == role):

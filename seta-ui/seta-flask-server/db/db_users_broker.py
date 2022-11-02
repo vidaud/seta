@@ -13,7 +13,7 @@ db = LocalProxy(get_db)
 def addDbUser(u):
 
     usersCollection = db["users"]
-    if u["email"] in os.environ.get("ROOT_USERS"):
+    if u["email"].lower() in os.environ.get("ROOT_USERS"):
         role = "admin"
     else:
         role = "user"

@@ -48,10 +48,11 @@ def login():
     else:  # Login successful, redirect according to `next` query parameter.              
         if not getDbUser(attributes["uid"]):
             addDbUser(attributes)
-            
-        session["username"] = user
-            
-        access_token = create_access_token(user, fresh=True)
+        usr = getDbUser(attributes["uid"])
+        additional_claims = {"role": usr["role"]} 
+        session["username"] = usr["username"]
+
+        access_token = create_access_token(user, fresh=True, additional_claims=additional_claims)
         refresh_token = create_refresh_token(user)
         
         #TODO: verify 'next' domain before redirect, replace with home_route if anything suspicious
@@ -116,7 +117,8 @@ def user_details():
                     "username": user["username"], 
                     "firstName": user["first_name"], 
                     "lastName": user["last_name"], 
-                    "email": user["email"]
+                    "email": user["email"],
+                    "role": user["role"]
                 }), 200
 
 
@@ -124,7 +126,9 @@ def user_details():
 @jwt_required(refresh=True)
 def refresh():
   username = get_jwt_identity()
-  access_token = create_access_token(identity = username, fresh=False)
+  usr = getDbUser(username)
+  additional_claims = {"role": usr["role"]} 
+  access_token = create_access_token(identity = username, fresh=False, additional_claims=additional_claims)
 
   response = jsonify()
   set_access_cookies(response, access_token)
@@ -152,7 +156,9 @@ def refresh_expiring_jwts(response):
                             
                 username = get_jwt_identity()
                 
-                access_token = create_access_token(identity=username, fresh=False)
+                usr = getDbUser(username)    
+                additional_claims = {"role": usr["role"]} 
+                access_token = create_access_token(identity=username, fresh=False, additional_claims=additional_claims)
                 set_access_cookies(response, access_token)
                 
                 
