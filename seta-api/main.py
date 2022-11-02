@@ -192,6 +192,10 @@ else:
     f1.write(token)
     f1.close()
 #app.config["JWT_SECRET_KEY"] = config['secret-key']
+
+app.config["JWT_COOKIE_CSRF_PROTECT"] = True #client has to send the 'X-CSRF-TOKEN' header
+app.config["JWT_TOKEN_LOCATION"]=["headers", "cookies"]
+
 app.config["PROPAGATE_EXCEPTIONS"] = True
 app.config["SWAGGER_UI_JSONEDITOR"] = True
 app.config['MAX_CONTENT_LENGTH'] = 50 * 1000 * 1000  # 50M
@@ -251,30 +255,19 @@ mongodb_seta = client.seta
 def custom_validator(role=None):
     def wrapper(fn):
         @wraps(fn)
-        def decorator(*args, **kwargs):
-            #disable token authorization for the moment
-            return fn(*args, **kwargs)
-            
+        def decorator(*args, **kwargs):                       
             verify_jwt_in_request()
             claims = get_jwt()
             print(claims)
-            token_str = request.headers['Authorization']
-            revoked_token = mongodb_seta.users.find_one({"username": claims['sub'],
-                                                         "is-revoked-token": True,
-                                                         "jwt": token_str})
+            
             if role:
                 if not (claims['role'] == role):
                     response = jsonify({"msg": "Unauthorized access"})
                     response.status_code = 403
                     return response
-            print('revoked', revoked_token)
-
-            if not revoked_token:
-                return fn(*args, **kwargs)
-            else:
-                response = jsonify({"msg": "Roveked token"})
-                response.status_code = 403
-                return response
+            
+            return fn(*args, **kwargs)
+           
         return decorator
     return wrapper
 

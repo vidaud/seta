@@ -126,10 +126,14 @@ def add_claims_to_access_token(identity):
     
     iat = time.time()
     user = getDbUser(identity)
+    role = "Reader"
+    if "role" in user:
+        role = user["role"]
     additional_claims = {
         "user": {"username": user["username"], "first_name": user["first_name"], "last_name": user["last_name"], "email": user["email"]},
         "iat": iat,
         "iss": "SETA Flask server",
         "sub": identity,
+        "role": role
     }
     return additional_claims   
