@@ -5,6 +5,7 @@ from pymongo.results import DeleteResult, InsertManyResult
 
 from db.db_config import get_db
 from werkzeug.local import LocalProxy
+import os
 
 db = LocalProxy(get_db)
 
@@ -12,6 +13,10 @@ db = LocalProxy(get_db)
 def addDbUser(u):
 
     usersCollection = db["users"]
+    if u["email"] in os.environ.get("ROOT_USERS"):
+        role = "admin"
+    else:
+        role = "user"
 
     u = {
         "username": u["uid"],
@@ -19,6 +24,7 @@ def addDbUser(u):
         "last_name": u["lastName"],
         "email": u["email"],
         "domain": u["domain"],
+        "role": role,
         "created-at": str(datetime.now())
     }
 
@@ -114,8 +120,7 @@ def deleteAllDbUserData(username):
 def moveDocuments(sourceCollection: str, targetCollection: str, filter: dict):
     sc = db[sourceCollection]
     tc = db[targetCollection]
-    print("Moving " + str(sc.find(filter).count()) +
-          " documents from " + sourceCollection + " to " + targetCollection)
+#    print("Moving " + str(sc.find(filter).count()) + " documents from " + sourceCollection + " to " + targetCollection)
     # trova gli id da copiare su sc
     sourceDocs = sc.find(filter)
     result: InsertManyResult = tc.insert_many(sourceDocs, False, True)

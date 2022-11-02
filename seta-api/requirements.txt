@@ -50,7 +50,7 @@ requests==2.27.1
 # ln Werkzeug==0.15.5
 # ln nltk
 
-jsonschema==4.5.1
+jsonschema==4.16.0
 # ln jsonschema
 flask-apscheduler==1.12.3
 # ln flask-aptscheduler

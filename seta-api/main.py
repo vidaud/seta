@@ -489,7 +489,7 @@ class Corpus(Resource):
             responses={200: 'Success', 404: 'Not Found Error'},
             security='apikey')
     def delete(self, id):
-        return delete_doc(id, config['index_private'])
+        return delete_doc(id, config['index_public'])
 
 
 corpus_parser = reqparse.RequestParser()
@@ -598,7 +598,7 @@ inputSchemaCorpusPut = {"type": "object",
                             "text": {"type": "string"},
                             "collection": {"type": "string"},
                             "reference": {"type": "string"},
-                            "author": {"type": "string"},
+                            "author": [{"type": "string"}],
                             "date": {"type": "string"},
                             "link_origin": {"type": "string"},
                             "link_alias": {"type": "string"},
@@ -607,20 +607,20 @@ inputSchemaCorpusPut = {"type": "object",
                             "mime_type": {"type": "string"},
                             "in_force": {"type": "string"},
                             "language": {"type": "string"},
-                            "eurovoc_concept": [{"label": {"type": "string"}, "validated": {"type": "string"},
-                                                "classifier": {"type": "string"}, "version": {"type": "string"}}],
-                            "eurovoc_domain": [{"label": {"type": "string"}, "validated": {"type": "string"},
-                                               "classifier": {"type": "string"}, "version": {"type": "string"}}],
-                            "eurovoc_mth": [{"label": {"type": "string"}, "validated": {"type": "string"},
-                                            "classifier": {"type": "string"}, "version": {"type": "string"}}],
-                            "ec_priority": [{"label": {"type": "string"}, "validated": {"type": "string"},
-                                            "classifier": {"type": "string"}, "version": {"type": "string"}}],
-                            "sdg_domain": [{"label": {"type": "string"}, "validated": {"type": "string"},
-                                           "classifier": {"type": "string"}, "version": {"type": "string"}}],
-                            "sdg_subdomain": [{"label": {"type": "string"}, "validated": {"type": "string"},
-                                              "classifier": {"type": "string"}, "version": {"type": "string"}}],
-                            "euro_sci_voc": [{"label": {"type": "string"}, "validated": {"type": "string"},
-                                             "classifier": {"type": "string"}, "version": {"type": "string"}}],
+                            "eurovoc_concept": {"label": {"type": "string"}, "validated": {"type": "string"},
+                                                "classifier": {"type": "string"}, "version": {"type": "string"}},
+                            "eurovoc_domain": {"label": {"type": "string"}, "validated": {"type": "string"},
+                                               "classifier": {"type": "string"}, "version": {"type": "string"}},
+                            "eurovoc_mth": {"label": {"type": "string"}, "validated": {"type": "string"},
+                                            "classifier": {"type": "string"}, "version": {"type": "string"}},
+                            "ec_priority": {"label": {"type": "string"}, "validated": {"type": "string"},
+                                            "classifier": {"type": "string"}, "version": {"type": "string"}},
+                            "sdg_domain": {"label": {"type": "string"}, "validated": {"type": "string"},
+                                           "classifier": {"type": "string"}, "version": {"type": "string"}},
+                            "sdg_subdomain": {"label": {"type": "string"}, "validated": {"type": "string"},
+                                              "classifier": {"type": "string"}, "version": {"type": "string"}},
+                            "euro_sci_voc": {"label": {"type": "string"}, "validated": {"type": "string"},
+                                             "classifier": {"type": "string"}, "version": {"type": "string"}},
                             "keywords": {"keyword": {"type": "string"}, "score": {"type": "number"}},
                             "other": {"type": "object"}
                         },
@@ -721,16 +721,18 @@ class CorpusQuery(Resource):
     @ns.expect(corpus_put_data)
     def put(self):
         args = request.get_json(force=True)
-        try:
-            validate(instance=args, schema=inputSchemaCorpusPut)
-        except jsonschema.ValidationError as err:
-            return err.message
-        if check_user_limit(config["index_private"]):
-            return insert_doc(args, config["index_private"])
-        else:
-            response = jsonify('Index documents limit exeded!')
-            response.status_code = 404
-            return response
+#        try:
+#            print (args)
+#            validate(instance=args, schema=inputSchemaCorpusPut)
+#        except jsonschema.ValidationError as err:
+#            return err.message
+##        if check_user_limit(config["index_private"]):
+##            return insert_doc(args, config["index_private"])
+        return insert_doc(args, config["index_public"])
+##        else:
+##            response = jsonify('Index documents limit exeded!')
+##            response.status_code = 404
+##            return response
 
     @ns.expect(corpus_parser)
     @custom_validator()

@@ -26,6 +26,8 @@ share/python-wheels/
 .installed.cfg
 *.egg
 MANIFEST
+seta-ui/seta-frontend/package-lock.json
+package-lock.json
 
 # PyInstaller
 #  Usually these files are written by a python script from a template
@@ -127,4 +129,3 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
-.vscode/settings.json
