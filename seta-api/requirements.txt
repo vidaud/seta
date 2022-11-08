@@ -54,3 +54,8 @@ jsonschema==4.16.0
 # ln jsonschema
 flask-apscheduler==1.12.3
 # ln flask-aptscheduler
+
+#mongo client:
+flask-pymongo==2.3.0
+#log client for mongo db:
+log4mongo==1.7.0

@@ -39,11 +39,12 @@ ADD ./*.yaml ./
 ADD ./utils ./utils
 ADD ./rsa-keys ./rsa-keys
 ADD ./log_utils ./log_utils
+ADD ./infrastructure ./infrastructure
 
 ENV PYTHONUNBUFFERED=1
 ENV FLASK_DEBUG=1
-ENV FLASK_RUN_PORT=8081 
-ENV FLASK_APP=main.py 
+ENV FLASK_RUN_PORT=8081
+ENV FLASK_APP=app_dev.py 
 ENV FLASK_ENV=development 
 
 CMD chdir /home/seta \

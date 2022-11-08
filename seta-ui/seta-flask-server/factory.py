@@ -1,9 +1,8 @@
 import time
 from datetime import datetime as dt
-import logging
 
 from flask import (Flask, request, session)
-from flask_cors import CORS
+#from flask_cors import CORS
 
 from infrastructure.extensions import (scheduler, jwt, logs)
 from db.db_users_broker import (getDbUser)
@@ -26,30 +25,34 @@ def create_app(config_object):
     app.config.from_object(config_object)
         
     app.json_encoder= JSONEncoder
-    
+      
+     #the service_url will be changed before ECAS redirect with 'request.url'
     app.cas_client = CASClient(
         version=3,
         service_url = app.config["FLASK_PATH"] + "/seta-ui/v2/login",
-        #service_url = app.config["FLASK_PATH"] + "/seta-ui/login",  # ?next=%2Fseta-ui%2Fseta
+        #service_url = "",
         server_url = app.config["AUTH_CAS_URL"],
     )
-    app.home_route = app.config['FLASK_PATH'] + "/seta-ui/#/home"   
+    app.home_route = "/seta-ui/#/home"   
     
     register_extensions(app)
     register_blueprints(app)
     
     app.logger.debug(app.url_map)
-            
+      
+    '''
     def is_debug_mode():
         """Get app debug status."""
         if not app.config['DEBUG']:
             return app.config['FLASK_ENV'] == "development"
         return app.config['DEBUG']
+    '''      
     
     with app.app_context():
-        if is_debug_mode():
-            CORS(app, resources={r"/*": {"origins": "*"}})
-        #CORS(app, origins=[app.config["FLASK_PATH"]])
+        #if is_debug_mode():
+        #    CORS(app, resources={r"/*": {"origins": "*"}})
+        #else
+            #CORS(app, origins=[app.config["FLASK_PATH"]])
         
         if app.config['SCHEDULER_ENABLED']:
             from infrastructure.scheduler import (tasks, events)            
@@ -126,14 +129,19 @@ def add_claims_to_access_token(identity):
     
     iat = time.time()
     user = getDbUser(identity)
-    role = "Reader"
+    
+    role = "user"
     if "role" in user:
         role = user["role"]
+    # TODO update source and limit with mongodb fields
+    source_limit = {"source": user["username"], "limit": 5}
+    
     additional_claims = {
         "user": {"username": user["username"], "first_name": user["first_name"], "last_name": user["last_name"], "email": user["email"]},
         "iat": iat,
         "iss": "SETA Flask server",
         "sub": identity,
-        "role": role
+        "role": role,
+        "source_limit": source_limit
     }
     return additional_claims   

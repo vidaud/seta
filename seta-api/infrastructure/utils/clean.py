@@ -1,6 +1,7 @@
 import re
 from itertools import groupby
-from textacy.preprocessing import preprocess_text
+from textacy import preprocessing
+
 
 def clean(text):
     if not text:
@@ -41,8 +42,11 @@ def clean(text):
 
 
 def sentenced(text):
-    return clean(
-        preprocess_text(text, fix_unicode=True, lowercase=False, transliterate=True, no_urls=True,
-                                           no_emails=True, no_phone_numbers=True, no_numbers=False,
-                                           no_currency_symbols=False, no_punct=False, no_contractions=True,
-                                           no_accents=True))
+    preproc = preprocessing.make_pipeline( preprocessing.normalize.unicode
+                                         , preprocessing.normalize.whitespace
+                                         , preprocessing.remove.accents
+                                         , preprocessing.replace.urls
+                                         , preprocessing.replace.emails
+                                         , preprocessing.replace.phone_numbers )
+#    return clean(preproc(text))
+    return preproc(text)

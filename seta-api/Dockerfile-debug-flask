@@ -39,6 +39,7 @@ ADD ./*.yaml ./
 ADD ./utils ./utils
 ADD ./rsa-keys ./rsa-keys
 ADD ./log_utils ./log_utils
+ADD ./infrastructure ./infrastructure
 
 ENV PYTHONUNBUFFERED 1
 ENV FLASK_DEBUG=1

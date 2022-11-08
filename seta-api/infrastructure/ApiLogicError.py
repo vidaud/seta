@@ -1,0 +1,2 @@
+class ApiLogicError(Exception):
+    pass

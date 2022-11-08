@@ -29,6 +29,7 @@ def login():
     
     if not ticket:
         # No ticket, the request come from end user, send to CAS login
+        app.cas_client.service_url = request.url #redirect to the same path after ECAS login
         cas_login_url = app.cas_client.get_login_url()
         app.logger.debug("CAS login URL: %s", cas_login_url)
         return redirect(cas_login_url)
@@ -46,18 +47,20 @@ def login():
     if not user:
         return jsonify({"message": "Failed to verify ticket."}), 401
     else:  # Login successful, redirect according to `next` query parameter.              
-        if not getDbUser(attributes["uid"]):
-            addDbUser(attributes)
         usr = getDbUser(attributes["uid"])
-        additional_claims = {"role": usr["role"]} 
+        if not usr:
+            addDbUser(attributes)
+            usr = getDbUser(attributes["uid"])
+                 
         session["username"] = usr["username"]
 
-        access_token = create_access_token(user, fresh=True, additional_claims=additional_claims)
+        #additional_claims are added via additional_claims_loader method: factory->add_claims_to_access_token
+        access_token = create_access_token(user, fresh=True)
         refresh_token = create_refresh_token(user)
         
         #TODO: verify 'next' domain before redirect, replace with home_route if anything suspicious
         if not next:
-            next = app.home_route
+            next = request.host_url + app.home_route
             
         next = next + "?action=login"
                     
@@ -88,7 +91,7 @@ def logout_callback():
     Redirect from CAS logout request after CAS logout successfully.
     """
     
-    response = make_response(redirect(app.home_route))
+    response = make_response(redirect(request.host_url + app.home_route))
     unset_jwt_cookies(response)
     return response
 
@@ -113,12 +116,15 @@ def user_details():
     if not user:
         return jsonify({"message" : "User not found in the database!"}), 404
     
+    role = "user"
+    if "role" in user:
+        role = user["role"]
     return jsonify({
                     "username": user["username"], 
                     "firstName": user["first_name"], 
                     "lastName": user["last_name"], 
                     "email": user["email"],
-                    "role": user["role"]
+                    "role": role
                 }), 200
 
 
