@@ -1,4 +1,5 @@
 import time
+import logging
 from datetime import datetime
 
 from elasticsearch import Elasticsearch
@@ -9,7 +10,8 @@ from infrastructure.utils.jrcbox_download import seta_init
 
 from flask import (Flask, request, g, Response)
 from flask_cors import CORS
-from flask_jwt_extended import decode_token
+from werkzeug.middleware.proxy_fix import ProxyFix
+from flask_jwt_extended import get_jwt_identity, verify_jwt_in_request
 
 from infrastructure.extensions import (scheduler, jwt, logs)
 
@@ -17,8 +19,11 @@ def create_app(config_object):
     """Main app factory"""
     
     app = Flask(__name__)
+    #Tell Flask it is Behind a Proxy
+    app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_host=1)
+    
     app.config.from_object(config_object)
-    app.logger.debug(app.config)
+    #app.logger.debug(app.config)
     
     register_extensions(app)
     init(app)
@@ -38,37 +43,54 @@ def create_app(config_object):
             
             suggestion_update_job()
             scheduler.start()
-            
-        ''' Log requests
+           
+        #Log requests
         @app.before_request
         def before_request():
             g.start = time.time()
 
         @app.after_request
         def after_request(response: Response):
-            diff = time.time() - g.start
-            header = request.headers
-            username = None
-            if "Authorization" in header:
-                token = str.replace(request.headers['Authorization'], 'Bearer ','')
-                try:
-                    username = decode_token(token)['sub']
-                except:
-                    pass
-
+            verify_result = verify_jwt_in_request(optional=True)
+            if verify_result is None:
+                return response
+                                    
+            username = get_jwt_identity()
+            diff = time.time() - g.start                    
             error_message = None
-
             if response.status_code != 200 and response.json:
                 if 'error' in response.json:
                     error_message = response.json["error"]
-                if 'msg' in response.json:
+                elif 'msg' in response.json:
                     error_message = response.json["msg"]
+                elif 'message' in response.json:
+                    error_message = response.json["message"]
 
+            '''
             line = LogLine(username, str(datetime.datetime.now()), request.remote_addr, request.full_path, response.status_code,
                         diff, error_message)
             app.api_log.write_log(line)
+            '''
+            
+            logger_db = logging.getLogger("mongo")
+            if logger_db:
+                logger_db.info("seta-api request", 
+                            extra={
+                                "username": username,
+                                "address": request.remote_addr, 
+                                "method": request.method,
+                                "path": request.full_path,
+                                "status": response.status,
+                                "content_length": response.content_length,
+                                "referrer": request.referrer,
+                                "error_message": error_message,
+                                "execution_time": diff,
+                                "user_agent": repr(request.user_agent),
+                            })
+            
+            
             return response
-        '''
+        
     return app    
             
 def init(app):

@@ -1,8 +1,10 @@
 import time
+import logging
 from datetime import datetime as dt
 
 from flask import (Flask, request, session)
 #from flask_cors import CORS
+from werkzeug.middleware.proxy_fix import ProxyFix
 
 from infrastructure.extensions import (scheduler, jwt, logs)
 from db.db_users_broker import (getDbUser)
@@ -22,8 +24,10 @@ def create_app(config_object):
     """Main app factory"""
     
     app = Flask(__name__)
-    app.config.from_object(config_object)
-        
+    #Tell Flask it is Behind a Proxy
+    app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_host=1)
+    
+    app.config.from_object(config_object)        
     app.json_encoder= JSONEncoder
       
      #the service_url will be changed before ECAS redirect with 'request.url'
@@ -61,15 +65,23 @@ def create_app(config_object):
         @app.after_request
         def refresh_jwts(response):
             return refresh_expiring_jwts(response)
-         
-    '''        
+        
+            
     @app.after_request
     def after_request(response):
         """ Logging after every request. """
+        ignore_list = ['.js', '.css', '.png']
+        #if list(filter(response.path.endswith, ignore_list)) != []:
+        #    return response
+        if request.path.endswith(tuple(ignore_list)):
+            return response
         
         user = session["username"]
         if not user:
             user="None"
+        
+        '''
+        #seta-nginx is logging the access
         
         logger = logging.getLogger("app.access")
         logger.info(
@@ -84,6 +96,7 @@ def create_app(config_object):
             request.referrer,
             request.user_agent,
         )
+        '''
                 
         logger_db = logging.getLogger("mongo")
         if logger_db:
@@ -92,16 +105,14 @@ def create_app(config_object):
                                "username": user,
                                "address": request.remote_addr, 
                                 "method": request.method,
-                                "path": request.path,
+                                "path": request.full_path,
                                 "status": response.status,
                                 "content_length": response.content_length,
                                 "referrer": request.referrer,
                                 "user_agent": repr(request.user_agent),
                                 })
         
-        return response
-    '''
-       
+        return response       
         
     return app
     
