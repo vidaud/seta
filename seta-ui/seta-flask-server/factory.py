@@ -76,7 +76,8 @@ def create_app(config_object):
         if request.path.endswith(tuple(request_ignore_list)):
             return response
         
-        user = session["username"]
+#        user = session["username"]
+        user = session.get("username")
         if not user:
             user="None"
         

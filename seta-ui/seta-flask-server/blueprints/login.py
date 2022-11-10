@@ -176,5 +176,6 @@ def refresh_expiring_jwts(response):
     except:
         # Case where there is not a valid JWT. Just return the original response
         app.logger.exception("Could not refresh the expiring token.")        
+        return response
     finally:
         return response
