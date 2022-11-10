@@ -26,5 +26,5 @@ class Suggestions(Resource):
         if n_suggestions is None:
             n_suggestions = app.config["DEFAULT_SUGGESTION"]
         
-        suggestions = get_word_suggestions(app, args['chars'], args['n_suggestions'])
-        jsonify({"words": suggestions})
+        suggestions = get_word_suggestions(app, args['chars'], args['n_suggestions'])        
+        return jsonify({"words": suggestions})
