@@ -34,7 +34,7 @@ class Ontology(Resource):
             graphjs = build_graph(args['term'], current_app=app)
             return jsonify(graphjs)
         except Exception as ex:
-            return jsonify({"msg": str(ex)}), 404
+            abort(404, str(ex))
         
 @ontology_api.route(app.api_root + "/ontology-list")
 @ontology_api.doc(description='Return a list of lists of similar terms that describes the ontology of the specified term. '

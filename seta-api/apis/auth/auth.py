@@ -1,5 +1,5 @@
 from flask_restx import Namespace, Resource, fields
-from flask import current_app as app, jsonify, request
+from flask import current_app as app, jsonify, request, abort
 from flask_jwt_extended import create_access_token
 import datetime
 import time
@@ -31,11 +31,10 @@ class JWTtoken(Resource):
         
         exists, role, public, source_limit = getDbUser(args['username'])
         if not exists:
-            return jsonify({"error": "Invalid Username"}), 501
+            abort(501, "Invalid Username")
         
         if not validate_public_key(public, args['rsa_original_message'], args['rsa_message_signature']):
-            return jsonify({"error": "Invalid Signature"}), 502
-        
+            abort(502, "Invalid Signature")        
        
         additional_claims = {"role": role, "source_limit": source_limit}
         access_token = "Bearer " + create_access_token(identity=args['username'],

@@ -1,12 +1,13 @@
-from flask_restx import Namespace, Resource, fields, abort
-from flask import current_app as app, jsonify, request
-
-from infrastructure.auth_validator import auth_validator
+import json
+from flask import current_app as app
+from flask import jsonify, request
+from flask_restx import Namespace, Resource, abort, fields
 from infrastructure.ApiLogicError import ApiLogicError
-from .corpus_logic import docbyid, delete_doc, insert_doc, corpus
-from .variables import corpus_parser, metadata, keywords
-
+from infrastructure.auth_validator import auth_validator
 from infrastructure.helpers import is_field_in_doc
+
+from .corpus_logic import corpus, delete_doc, docbyid, insert_doc
+from .variables import corpus_parser, keywords, metadata
 
 corpus_api = Namespace('seta-api', description='Corpus')
 
@@ -36,7 +37,7 @@ class Corpus(Resource):
     def delete(self, id):
         try:
             delete_doc(id, current_app=app)
-            return jsonify({"deleted document id": id}), 200
+            return jsonify({"deleted document id": id})
         except ApiLogicError as aex:
             abort(404, str(aex))
         except:
@@ -183,7 +184,7 @@ class CorpusQuery(Resource):
             security='apikey')
     def get(self):
         args = corpus_parser.parse_args()
-        print("args: ", args)
+        
         if args['term'] or args['semantic_sort_id'] or args['aggs'] or args['source']:
             try:
                 documents = corpus(args['term'], args['n_docs'], args['from_doc'], args['source'], args['collection'],
@@ -191,9 +192,9 @@ class CorpusQuery(Resource):
                           args['ec_priority'], args['sdg_domain'], args['sdg_subdomain'], args['euro_sci_voc'],
                           args['in_force'], args['sort'], args['semantic_sort_id'], None, args['author'],
                           args['date_range'], args['aggs'], args['search_type'], 
-                          current_app=app)
+                          current_app=app)                
                 
-                return jsonify(documents), 200
+                return jsonify(documents)
             except ApiLogicError as aex:
                 abort(404, str(aex))
             except:

@@ -51,8 +51,10 @@ def create_app(config_object):
 
         @app.after_request
         def after_request(response: Response):
-            verify_result = verify_jwt_in_request(optional=True)
-            if verify_result is None:
+            try:
+                verify_jwt_in_request()
+            except:
+                #return orginal response if jwt verification failed
                 return response
                                     
             username = get_jwt_identity()

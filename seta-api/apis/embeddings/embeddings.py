@@ -32,7 +32,7 @@ class ComputeEmb(Resource):
                 emb = compute_embeddings(args['text'], current_app=app)
                 return jsonify(emb)
             except Exception as ex:
-                return jsonify({"msg": str(ex)}), 404
+                abort(404, str(ex))
             
         if 'file' in request.files:
             fin = request.files['file']

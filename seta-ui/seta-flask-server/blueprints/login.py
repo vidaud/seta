@@ -2,7 +2,7 @@ from datetime import datetime
 from datetime import timedelta
 from datetime import timezone
 
-from flask import Blueprint
+from flask import Blueprint, abort
 from flask import current_app as app
 from flask import (jsonify, redirect, request, make_response, url_for, session)
 
@@ -45,7 +45,7 @@ def login():
         'CAS verify ticket response: user: %s, attributes: %s, pgtiou: %s', user, attributes, pgtiou)
     
     if not user:
-        return jsonify({"message": "Failed to verify ticket."}), 401
+        abort(401, "Failed to verify ticket.")
     else:  # Login successful, redirect according to `next` query parameter.              
         usr = getDbUser(attributes["uid"])
         if not usr:
@@ -114,7 +114,7 @@ def user_details():
     user = getDbUser(identity)
     
     if not user:
-        return jsonify({"message" : "User not found in the database!"}), 404
+        abort(404, "User not found in the database!")
     
     role = "user"
     if "role" in user:

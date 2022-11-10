@@ -11,7 +11,9 @@ def auth_validator(role=None):
             
             if role:
                 if not (claims['role'] == role):
-                    return jsonify({"msg": "Unauthorized access"}), 403                    
+                    response = jsonify({"message": "Unauthorized access"})
+                    response.status_code = 403
+                    return response
             
             return fn(*args, **kwargs)
            
