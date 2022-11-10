@@ -35,10 +35,6 @@ RUN  python3 -m nltk.downloader punkt
 RUN python3 -c 'from sentence_transformers import SentenceTransformer; SentenceTransformer("all-distilroberta-v1")'
 
 ADD ./*.py ./
-ADD ./*.yaml ./
-ADD ./utils ./utils
-ADD ./rsa-keys ./rsa-keys
-ADD ./log_utils ./log_utils
 ADD ./infrastructure ./infrastructure
 
 ENV PYTHONUNBUFFERED=1

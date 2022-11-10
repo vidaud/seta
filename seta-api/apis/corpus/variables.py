@@ -1,4 +1,4 @@
-from flask_restplus import reqparse, fields, inputs
+from flask_restx import reqparse, fields, inputs
 
 corpus_parser = reqparse.RequestParser()
 corpus_parser.add_argument('term')

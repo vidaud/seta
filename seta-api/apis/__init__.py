@@ -1,3 +1,4 @@
+'''
 # This is a required workaround for flask_restplus
 import werkzeug
 import flask
@@ -5,7 +6,8 @@ import werkzeug.utils
 werkzeug.cached_property = werkzeug.utils.cached_property
 import flask.scaffold
 flask.helpers._endpoint_from_view_func = flask.scaffold._endpoint_from_view_func
-from flask_restplus import Api
+'''
+from flask_restx import Api
 
 from .examples import ex_api
 from .auth.auth import auth_api

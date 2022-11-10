@@ -1,4 +1,4 @@
-from flask_restplus import Namespace, Resource, fields, abort
+from flask_restx import Namespace, Resource, fields, abort
 from flask import current_app as app, jsonify, request
 
 from infrastructure.auth_validator import auth_validator

@@ -1,5 +1,5 @@
-from flask_restplus import Namespace, Resource, reqparse
-from flask import current_app as app, jsonify
+from flask_restx import Namespace, Resource, reqparse
+from flask import current_app as app
 from infrastructure.auth_validator import auth_validator
 from infrastructure.helpers import word_exists
 

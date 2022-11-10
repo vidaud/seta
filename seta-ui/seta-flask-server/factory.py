@@ -51,7 +51,7 @@ def create_app(config_object):
             return app.config['FLASK_ENV'] == "development"
         return app.config['DEBUG']
     '''      
-    
+    request_ignore_list = ['.js', '.css', '.png', '.ico', '.svg', '.map']
     with app.app_context():
         #if is_debug_mode():
         #    CORS(app, resources={r"/*": {"origins": "*"}})
@@ -64,16 +64,16 @@ def create_app(config_object):
             
         @app.after_request
         def refresh_jwts(response):
+            if request.path.endswith(tuple(request_ignore_list)):
+                return response
+            
             return refresh_expiring_jwts(response)
         
             
     @app.after_request
     def after_request(response):
         """ Logging after every request. """
-        ignore_list = ['.js', '.css', '.png']
-        #if list(filter(response.path.endswith, ignore_list)) != []:
-        #    return response
-        if request.path.endswith(tuple(ignore_list)):
+        if request.path.endswith(tuple(request_ignore_list)):
             return response
         
         user = session["username"]

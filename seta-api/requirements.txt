@@ -11,7 +11,8 @@ python-secrets==22.6.1
 # ln Flask-Cors==3.0.8
 flask_jwt_extended==4.3.1
 # ln flask_jwt_extended
-flask-restplus==0.13.0
+#flask-restplus==0.13.0
+flask-restx==1.0.3
 numpy==1.22.3
 # ln numpy==1.17.1
 scipy==1.8.0

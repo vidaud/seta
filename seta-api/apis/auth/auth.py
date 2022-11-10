@@ -1,4 +1,4 @@
-from flask_restplus import Namespace, Resource, fields
+from flask_restx import Namespace, Resource, fields
 from flask import current_app as app, jsonify, request
 from flask_jwt_extended import create_access_token
 import datetime
