@@ -38,6 +38,15 @@ RUN  python3 -m nltk.downloader punkt
 RUN python3 -c 'from sentence_transformers import SentenceTransformer; SentenceTransformer("all-distilroberta-v1")'
 
 ADD ./*.py ./
+ADD ./apis ./apis
 ADD ./infrastructure ./infrastructure
+ADD ./static ./static
+
+ENV FLASK_DEBUG=0
+ENV FLASK_RUN_PORT=8081
+ENV FLASK_APP=app.py 
+ENV FLASK_ENV=production
+#log setup
+ENV LOG_TYPE="watched"
 
 CMD ["gunicorn", "--conf", "/home/seta/gunicorn_conf.py", "--bind", "0.0.0.0:8081", "--capture-output" , "--access-logformat", "[seta.api] %(h)s %(l)s %(u)s %(t)s. %(r)s. %(s)s %(b)s. %(f)s. %(a)s", "--chdir", "/home/seta", "app:app"]

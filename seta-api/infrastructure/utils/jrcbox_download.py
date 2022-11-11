@@ -38,7 +38,7 @@ def wait_for_es(config):
 
 def seta_init(config):
     wait_for_es(config)
-    print('ES_INIT_DATA_CONFIG_FILE', flush=True)
+    print('seta_init', flush=True)
     if download_seta_file(config['ES_INIT_DATA_CONFIG_FILE'],config):
         es_session = requests.Session()
         es_session.trust_env = False
