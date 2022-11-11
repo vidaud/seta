@@ -6,6 +6,8 @@ services:
     build: ../seta-mongo
     expose:
       - "27017"
+    ports:
+      - "27017:27017"
     networks: 
       - seta-network
     volumes: 

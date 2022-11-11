@@ -7,6 +7,7 @@ app/**/*.js
 app/**/*.js.map
 seta-flask-server/seta-ui/
 seta-flask-server/__pycache__/
+seta-frontend/package-lock.json
 
 # dependencies
 node_modules/

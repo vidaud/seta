@@ -5,7 +5,7 @@ from pymongo.results import DeleteResult, InsertManyResult
 
 from db.db_config import get_db
 from werkzeug.local import LocalProxy
-import os
+from flask import current_app as app
 
 db = LocalProxy(get_db)
 
@@ -13,10 +13,9 @@ db = LocalProxy(get_db)
 def addDbUser(u):
 
     usersCollection = db["users"]
-    if u["email"].lower() in os.environ.get("ROOT_USERS"):
+    role = "user"
+    if u["email"].lower() in app.config["ROOT_USERS"]:
         role = "admin"
-    else:
-        role = "user"
 
     u = {
         "username": u["uid"],
@@ -37,7 +36,7 @@ def getDbUser(username):
     uq = {"username": username, "email":{"$exists" : True}}
 
     user = usersCollection.find_one(uq)
-    if user == None:
+    if user is None:
         return None
     else:
         return user

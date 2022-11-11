@@ -16,7 +16,7 @@ def send_index():
 def send_js(path):
     return send_from_directory("./seta-ui/", path)
 
-
+'''
 @base_routes.route("/rest/<path:path>", methods=["GET", "POST"])
 def proxy(path):
     # print(request.__dict__.items())
@@ -45,3 +45,4 @@ def proxy(path):
     else:
         r = requests.post(url, data=request.data, headers={"Authorization": request.headers["Authorization"]})
     return Response(r.content, mimetype=mimetype)
+'''

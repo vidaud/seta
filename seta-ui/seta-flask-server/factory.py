@@ -1,9 +1,10 @@
 import time
-from datetime import datetime as dt
 import logging
+from datetime import datetime as dt
 
 from flask import (Flask, request, session)
-from flask_cors import CORS
+#from flask_cors import CORS
+from werkzeug.middleware.proxy_fix import ProxyFix
 
 from infrastructure.extensions import (scheduler, jwt, logs)
 from db.db_users_broker import (getDbUser)
@@ -23,33 +24,39 @@ def create_app(config_object):
     """Main app factory"""
     
     app = Flask(__name__)
-    app.config.from_object(config_object)
-        
-    app.json_encoder= JSONEncoder
+    #Tell Flask it is Behind a Proxy
+    app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_host=1)
     
+    app.config.from_object(config_object)        
+    app.json_encoder= JSONEncoder
+      
+     #the service_url will be changed before ECAS redirect with 'request.url'
     app.cas_client = CASClient(
         version=3,
         service_url = app.config["FLASK_PATH"] + "/seta-ui/v2/login",
-        #service_url = app.config["FLASK_PATH"] + "/seta-ui/login",  # ?next=%2Fseta-ui%2Fseta
+        #service_url = "",
         server_url = app.config["AUTH_CAS_URL"],
     )
-    app.home_route = app.config['FLASK_PATH'] + "/seta-ui/#/home"   
+    app.home_route = "/seta-ui/#/home"   
     
     register_extensions(app)
     register_blueprints(app)
     
     app.logger.debug(app.url_map)
-            
+      
+    '''
     def is_debug_mode():
         """Get app debug status."""
         if not app.config['DEBUG']:
             return app.config['FLASK_ENV'] == "development"
         return app.config['DEBUG']
-    
+    '''      
+    request_ignore_list = ['.js', '.css', '.png', '.ico', '.svg', '.map']
     with app.app_context():
-        if is_debug_mode():
-            CORS(app, resources={r"/*": {"origins": "*"}})
-        #CORS(app, origins=[app.config["FLASK_PATH"]])
+        #if is_debug_mode():
+        #    CORS(app, resources={r"/*": {"origins": "*"}})
+        #else
+            #CORS(app, origins=[app.config["FLASK_PATH"]])
         
         if app.config['SCHEDULER_ENABLED']:
             from infrastructure.scheduler import (tasks, events)            
@@ -57,16 +64,25 @@ def create_app(config_object):
             
         @app.after_request
         def refresh_jwts(response):
+            if request.path.endswith(tuple(request_ignore_list)):
+                return response
+            
             return refresh_expiring_jwts(response)
-         
-    '''        
+        
+            
     @app.after_request
     def after_request(response):
         """ Logging after every request. """
+        if request.path.endswith(tuple(request_ignore_list)):
+            return response
         
-        user = session["username"]
+#        user = session["username"]
+        user = session.get("username")
         if not user:
             user="None"
+        
+        '''
+        #seta-nginx is logging the access
         
         logger = logging.getLogger("app.access")
         logger.info(
@@ -81,6 +97,7 @@ def create_app(config_object):
             request.referrer,
             request.user_agent,
         )
+        '''
                 
         logger_db = logging.getLogger("mongo")
         if logger_db:
@@ -89,16 +106,14 @@ def create_app(config_object):
                                "username": user,
                                "address": request.remote_addr, 
                                 "method": request.method,
-                                "path": request.path,
+                                "path": request.full_path,
                                 "status": response.status,
                                 "content_length": response.content_length,
                                 "referrer": request.referrer,
                                 "user_agent": repr(request.user_agent),
                                 })
         
-        return response
-    '''
-       
+        return response       
         
     return app
     
@@ -126,14 +141,19 @@ def add_claims_to_access_token(identity):
     
     iat = time.time()
     user = getDbUser(identity)
-    role = "Reader"
+    
+    role = "user"
     if "role" in user:
         role = user["role"]
+    # TODO update source and limit with mongodb fields
+    source_limit = {"source": user["username"], "limit": 5}
+    
     additional_claims = {
         "user": {"username": user["username"], "first_name": user["first_name"], "last_name": user["last_name"], "email": user["email"]},
         "iat": iat,
         "iss": "SETA Flask server",
         "sub": identity,
-        "role": role
+        "role": role,
+        "source_limit": source_limit
     }
     return additional_claims   

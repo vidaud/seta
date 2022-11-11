@@ -1,5 +1,0 @@
--file seta-api.service is located here /etc/systemd/system
--proxy ngnix conf (default-ngnix) is located here /etc/nginx/sites-available default file is used
--ngxin.conf file is located here /etc/nginx I added this line client_max_body_size 20M; to avoid
-"413 Request Entity Too Large" error in compute-embeddings api and following lines to avoid timeout
-    on 11 April 2022 changed to client_max_body_size 50M and added proxy_temp_file_write_size 50M;
