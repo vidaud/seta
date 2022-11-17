@@ -16,7 +16,7 @@ def suggestion_update_job():
         crc = open(models_path + app.config['MODELS_WORD2VEC_FILE_CRC'], 'r').read()
     else:
         crc = getsha256(models_path + app.config['MODELS_WORD2VEC_FILE'])
-        f = open(models_path + app.config['mMODELS_WORD2VEC_FILE_CRC'],mode='w')
+        f = open(models_path + app.config['MODELS_WORD2VEC_FILE_CRC'],mode='w')
         f.write(crc)
         f.close()
 

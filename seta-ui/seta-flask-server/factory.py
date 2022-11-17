@@ -98,9 +98,9 @@ def create_app(config_object):
             request.user_agent,
         )
         '''
-                
-        logger_db = logging.getLogger("mongo")
-        if logger_db:
+        try:
+          logger_db = logging.getLogger("mongo")
+          if logger_db:
             logger_db.info("seta-ui request", 
                            extra={
                                "username": user,
@@ -112,7 +112,8 @@ def create_app(config_object):
                                 "referrer": request.referrer,
                                 "user_agent": repr(request.user_agent),
                                 })
-        
+        except:
+               app.logger.exception("seta-api logger db exception")        
         return response       
         
     return app

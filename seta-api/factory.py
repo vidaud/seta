@@ -74,9 +74,10 @@ def create_app(config_object):
             app.api_log.write_log(line)
             '''
             
-            logger_db = logging.getLogger("mongo")
-            if logger_db:
-                logger_db.info("seta-api request", 
+            try:
+              logger_db = logging.getLogger("mongo")
+              if logger_db:
+                 logger_db.info("seta-api request", 
                             extra={
                                 "username": username,
                                 "address": request.remote_addr, 
@@ -89,7 +90,8 @@ def create_app(config_object):
                                 "execution_time": diff,
                                 "user_agent": repr(request.user_agent),
                             })
-            
+            except: 
+               app.logger.exception("seta-api logger db exception")
             
             return response
         

@@ -41,7 +41,7 @@ def seta_init(config):
     print('seta_init', flush=True)
     if download_seta_file(config['ES_INIT_DATA_CONFIG_FILE'],config):
         es_session = requests.Session()
-        es_session.trust_env = False
+#        es_session.trust_env = False
         headers = {"Content-Type": "application/json"}
         fn = config['MODELS_PATH'] + config['ES_INIT_DATA_CONFIG_FILE']
         f = open(fn,'r')
@@ -71,7 +71,7 @@ def seta_init(config):
         else:
           fn = models_path + dump_file
         ed_input = "--input=" + fn
-        ed_output = "--output=http://" + config['"ES_HOST"']
+        ed_output = "--output=http://" + config["ES_HOST"]
         # elasticdump --input=../data/export10000.json --output=http://localhost:9200 --type=data
         subprocess.call(["elasticdump", ed_input, ed_output, "--type=data"])
         print("ES has been ingested.")
@@ -84,9 +84,9 @@ def seta_init(config):
             zip_ref.extractall(models_path)
 
 def download_seta_file(fl,config):
-
+    print('downoding seta file',fl, flush=True)
     session = requests.Session()
-    session.trust_env = False
+#    session.trust_env = False
     
     BLOCKSIZE = 65536
     

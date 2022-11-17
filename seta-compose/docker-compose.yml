@@ -6,9 +6,9 @@ services:
     build: ../seta-mongo
     expose:
       - "27017"
-    networks: 
+    networks:
       - seta-network
-    volumes: 
+    volumes:
       - seta-mongo:/data/db
   seta-es:
     container_name: seta-es
@@ -17,17 +17,17 @@ services:
     expose:
       - "9200"
       - "9300"
-    mem_limit: "6g"
-    volumes: 
+    mem_limit: "32g"
+    volumes:
       - seta-es2:/usr/share/elasticsearch/data
-    networks: 
+    networks:
       - seta-network
     environment:
       - xpack.security.enabled=false
       - discovery.type=single-node
       - xpack.security.http.ssl.enabled=false
       - xpack.security.transport.ssl.enabled=false
-
+      - ingest.geoip.downloader.enabled=false
 
   seta-api:
     container_name: seta-api
@@ -35,10 +35,10 @@ services:
     build: ../seta-api
     expose:
       - "8081"
-    mem_limit: "8g"
-    volumes: 
+    mem_limit: "32g"
+    volumes:
       - seta-models2:/home/seta/models
-    networks: 
+    networks:
       - seta-network
     depends_on:
       - "seta-mongo"
@@ -53,7 +53,7 @@ services:
     depends_on:
       - "seta-api"
       - "seta-ui"
-    networks: 
+    networks:
       - seta-network
 
   seta-ui:
@@ -64,9 +64,9 @@ services:
       - "seta-api"
     expose:
       - "8080"
-    volumes: 
+    volumes:
       - seta-models2:/home/seta/models
-    networks: 
+    networks:
       - seta-network
 
 

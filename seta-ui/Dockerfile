@@ -41,7 +41,7 @@ ENV FLASK_ENV="production"
 ENV FLASK_APP=app.py
 ENV FLASK_RUN_PORT=8080
 ENV FLASK_DEBUG=0
-ENV FLASK_PATH="http://localhost"
+ENV FLASK_PATH="https://seta-dev.jrc.cec.eu.int"
 ENV API_TARGET_PATH="seta-api:8081/seta-api/api/v1"
 #log setup
 ENV LOG_TYPE="watched"
