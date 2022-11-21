@@ -186,6 +186,11 @@ def concordance(ci, phrase, width=150, lines=25, width_add=10):
                 break
             ii = 0
             for y in range(plen):
+                #TODO: review logic
+                if (tlen <= i + y) or (plen <= y):
+                    print(f"concordance for y in range(plen) break on tlen:{tlen}, plen:{plen}, y:{y}, i:{i}")
+                    break
+                
                 if ci._tokens[i + y].lower() == ptokens[y]:
                     if y + 1 == plen:
                         if i - context < 0:

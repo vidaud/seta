@@ -24,10 +24,8 @@ class SimilarWords(Resource):
     def get(self):
         args = similar_parser.parse_args()
         
-        try:
-            app.logger.info('Get similar words for ' + args['term'])
+        try:            
             words = get_similar_words(args['term'], args['n_term'], current_app=app)
-            app.logger.info("Number of words: " + len(words))
             return jsonify(words)
         except ApiLogicError as aex:
             abort(404, str(aex))

@@ -43,5 +43,6 @@ ENV FLASK_RUN_PORT=8081
 ENV FLASK_APP=app_dev.py 
 ENV FLASK_ENV=development 
 
-CMD chdir /home/seta \
- && flask run --host 0.0.0.0
+CMD ["gunicorn", "--conf", "/home/seta/gunicorn_conf.py", "--reload", "--bind", "0.0.0.0:8081", "--capture-output" , "--access-logformat", "[seta.api] %(h)s %(l)s %(u)s %(t)s. %(r)s. %(s)s %(b)s. %(f)s. %(a)s", "--chdir", "/home/seta", "app_dev:app"]
+#CMD chdir /home/seta \
+    # && flask run --host 0.0.0.0

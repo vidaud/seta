@@ -73,7 +73,7 @@ def create_app(config_object):
                         diff, error_message)
             app.api_log.write_log(line)
             '''
-            '''
+            
             try:
               logger_db = logging.getLogger("mongo")
               if logger_db:
@@ -92,7 +92,7 @@ def create_app(config_object):
                             })
             except: 
                app.logger.exception("seta-api logger db exception")
-            '''
+            
             
             return response
         
