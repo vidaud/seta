@@ -11,4 +11,4 @@ def semantic_distance(w1, w2, current_app):
     if not word_exists(current_app.terms_model, w2):
         raise ApiLogicError('Term 2 out of vocabulary.')
 
-    dist = {'distance': current_app.terms_model.wv.distance(w1, w2)}
+    return {'distance': current_app.terms_model.wv.distance(w1, w2)}    
