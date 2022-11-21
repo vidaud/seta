@@ -83,16 +83,12 @@ services:
     build: 
        context: ../seta-ui
        dockerfile: Dockerfile-dev-spa
-    depends_on:
-      - "seta-api"
     expose:
       - "8080"
     volumes: 
       - ../seta-ui:/home/seta/
     networks: 
       - seta-network
-
-
 
 networks:
   seta-network:

@@ -3,7 +3,7 @@ FROM python:3.9.10-bullseye
 RUN echo "Acquire::http::Proxy \""$HTTP_PROXY"\";" >> /etc/apt/apt.conf
 ENV https_proxy=$HTTP_PROXY
 ENV http_proxy=$HTTP_PROXY
-ENV no_proxy="seta_es,seta-mongo,seta-api,seta-nginx,seta-ui,seta-ui-spa"
+ENV no_proxy="seta-es,seta-mongo,seta-api,seta-nginx,seta-ui,seta-ui-spa"
 
 RUN apt update -y && apt-get install -y nodejs npm && useradd -m seta
 

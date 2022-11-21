@@ -14,6 +14,9 @@ class LogSetup(object):
     def init_app(self, app):
         log_type = app.config["LOG_TYPE"]
         logging_level = app.config["LOG_LEVEL"]
+        db_host = app.config["DB_HOST"]
+        db_port = app.config["DB_PORT"]
+
         if log_type != "stream":
             try:
                 log_directory = app.config["LOG_DIR"]
@@ -84,10 +87,12 @@ class LogSetup(object):
                     "mongo_logs": {
                         "level": logging_level,
                         "class": 'log4mongo.handlers.MongoHandler',
-                        "host": "seta-mongo", 
-                        "port": 27017,
+                        "host": db_host, 
+                        "port": db_port,
                         "database_name": "seta-logs",
-                        "collection": "logs",                        
+                        "collection": "logs",
+                        "reuse": False,
+                        "connect": False                      
                     }
                 }
             }
@@ -118,10 +123,11 @@ class LogSetup(object):
                     "mongo_logs": {
                         "level": logging_level,
                         "class": 'log4mongo.handlers.BufferedMongoHandler',
-                        "host": "seta-mongo", 
-                        "port": 27017,
+                        "host": db_host, 
+                        "port": db_port,
                         "database_name": "seta-logs",
                         "collection": "logs",
+                        "reuse": False
                     }
                 }
             }
@@ -158,12 +164,13 @@ class LogSetup(object):
                     "mongo_logs": {
                         "level": logging_level,
                         "class": 'log4mongo.handlers.BufferedMongoHandler',
-                        "host": "seta-mongo", 
-                        "port": 27017,
+                        "host": db_host, 
+                        "port": db_port,
                         "database_name": "seta-logs",
                         "collection": "logs",
                         "capped": True,
-                        "capped_size": 1000000
+                        "capped_size": 1000000,
+                        "reuse": False
                     }
                 }
             }
