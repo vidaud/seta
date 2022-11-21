@@ -9,14 +9,17 @@ import secrets
 class Config:
     """Common configuration"""
         
-    AUTH_CAS_URL = "https://webgate.ec.europa.eu/cas/"    
-    MONGO_URI = "mongodb://seta-mongo:27017/seta"
+    AUTH_CAS_URL = "https://webgate.ec.europa.eu/cas/"
+    DB_HOST="seta-mongo"
+    DB_PORT=27017
+    MONGO_URI = ""
+    #MONGO_URI = "mongodb://seta-mongo:27017/seta"
     
     #JWT variables
     SECRET_KEY_PATH = "/home/seta/models/key.txt"
     JWT_SECRET_KEY = ""    
     JWT_IDENTITY_CLAIM="username"
-    JWT_COOKIE_CSRF_PROTECT = False
+    JWT_COOKIE_CSRF_PROTECT = True
     JWT_TOKEN_LOCATION=["headers", "cookies"]
     
     #Scheduler variables
@@ -50,6 +53,8 @@ class Config:
             
             with open(Config.SECRET_KEY_PATH, "w") as f1:
                 f1.write(self.SECRET_KEY)
+
+        Config.MONGO_URI = f"mongodb://{Config.DB_HOST}:{Config.DB_PORT}/seta"        
             
         Config.JWT_SECRET_KEY = self.SECRET_KEY
         
@@ -80,7 +85,7 @@ class DevConfig(Config):
     SCHEDULER_ENABLED = False
     
     #JWT variables
-    JWT_ACCESS_TOKEN_EXPIRES = timedelta(minutes=30)
+    JWT_ACCESS_TOKEN_EXPIRES = timedelta(minutes=60)
     JWT_REFRESH_TOKEN_EXPIRES = timedelta(hours=2)
     JWT_COOKIE_SECURE = False
     
@@ -105,7 +110,7 @@ class ProdConfig(Config):
     SCHEDULER_ENABLED = True
     
     #JWT variables
-    JWT_ACCESS_TOKEN_EXPIRES = timedelta(minutes=15)
+    JWT_ACCESS_TOKEN_EXPIRES = timedelta(minutes=60)
     JWT_REFRESH_TOKEN_EXPIRES = timedelta(days=2)
     JWT_COOKIE_SECURE = True
     

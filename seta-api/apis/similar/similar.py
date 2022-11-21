@@ -23,8 +23,17 @@ class SimilarWords(Resource):
     @similar_api.expect(similar_parser)
     def get(self):
         args = similar_parser.parse_args()
-        words = get_similar_words(args['term'], args['n_term'], current_app=app)
-        return jsonify(words)
+        
+        try:
+            app.logger.info('Get similar words for ' + args['term'])
+            words = get_similar_words(args['term'], args['n_term'], current_app=app)
+            app.logger.info("Number of words: " + len(words))
+            return jsonify(words)
+        except ApiLogicError as aex:
+            abort(404, str(aex))
+        except:
+            app.logger.exception("SimilarWords->get")
+            abort(500, "Internal server error")
 
 most_similar_parser = reqparse.RequestParser()
 most_similar_parser.add_argument('term', required=True)

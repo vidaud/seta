@@ -98,6 +98,7 @@ def create_app(config_object):
             request.user_agent,
         )
         '''
+        '''
         try:
           logger_db = logging.getLogger("mongo")
           if logger_db:
@@ -113,7 +114,9 @@ def create_app(config_object):
                                 "user_agent": repr(request.user_agent),
                                 })
         except:
-               app.logger.exception("seta-api logger db exception")        
+               app.logger.exception("seta-api logger db exception")    
+         '''
+             
         return response       
         
     return app

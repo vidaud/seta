@@ -7,8 +7,10 @@ import secrets
     
 class Config:
     """Common configuration"""
-    
-    MONGO_URI = "mongodb://seta-mongo:27017/seta"
+    DB_HOST="seta-mongo"
+    DB_PORT=27017
+    MONGO_URI = ""
+    #MONGO_URI = "mongodb://seta-mongo:27017/seta"
     API_ROOT = "/api/v1"
     
     #JWT variables
@@ -62,7 +64,7 @@ class Config:
     
     EXAMPLE_GUEST = "example_get-token_guest.py"
     EXAMPLE_USER = "example_get-token_user.py"
-    JRCBOX_ID = "RIDmCxbRmK2PBuK"
+    JRCBOX_ID = "DbdH9B1dc5hD0TM"
     JRCBOX_PATH = "https://jrcbox.jrc.ec.europa.eu/index.php/s/"
     JRCBOX_PASS = "Op-next-seta-2022-14-14"
     JRCBOX_WEBDAV = "https://jrcbox.jrc.ec.europa.eu/public.php/webdav/"
@@ -79,6 +81,8 @@ class Config:
             
             with open(Config.SECRET_KEY_PATH, "w") as f1:
                 f1.write(self.SECRET_KEY)
+
+        Config.MONGO_URI = f"mongodb://{Config.DB_HOST}:{Config.DB_PORT}/seta"
             
         Config.JWT_SECRET_KEY = self.SECRET_KEY
         
@@ -128,5 +132,5 @@ class ProdConfig(Config):
     SCHEDULER_ENABLED = True
     
     #JWT variables
-    JWT_ACCESS_TOKEN_EXPIRES = timedelta(minutes=15)
+    JWT_ACCESS_TOKEN_EXPIRES = timedelta(minutes=60)
     JWT_REFRESH_TOKEN_EXPIRES = timedelta(days=2)
