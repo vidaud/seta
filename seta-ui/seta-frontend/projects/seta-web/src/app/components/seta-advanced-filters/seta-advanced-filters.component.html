@@ -1,0 +1,89 @@
+<div class="modal-header">
+  <h4 class="modal-title">Metadata filters</h4>
+  <button type="button" class="close" aria-label="Close"
+    (click)="closeModal()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <form [formGroup]="advancedFilters">
+
+    <div class="row">
+      <div class="col-md-12">
+        <h4 class="card-title m-0 pl-3">
+          Repositories</h4>
+        <div>
+          <div class="card">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-md-8">
+                  <ng-select
+                    [ngClass]="{'danger': selectedRepositoryTypes.errors && selectedRepositoryTypes.errors.required}"
+                    #repositorySelect id="repositoryType"
+                    [items]="repositories" [multiple]="true"
+                    [closeOnSelect]="false"
+                    placeholder="+ Add new item..."
+                    [addTag]="false"
+                    formControlName="selectedRepositoryTypes"
+                    bindLabel="label" bindValue="value">
+                    <ng-template ng-label-tmp let-item="item"
+                      let-clear="clear">
+                      <span class="ng-value-label">
+                        {{item.label}}
+                      </span>
+                    </ng-template>
+                  </ng-select>
+                  <div class="row"
+                    *ngIf="selectedRepositoryTypes.invalid">
+                    <div class="col-md-12">
+                      <div
+                        class="search-custom-select alert alert-danger">
+                        <div>
+                          Repository is required.
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+
+
+    </div>
+
+
+
+    <app-eurlex-filters
+      [saveFilters]="saveFilters.asObservable()"
+      [cleanFilters]="cleanFilters.asObservable()"
+      [fatherGroup]="advancedFilters">
+    </app-eurlex-filters>
+  </form>
+</div>
+<div class="modal-footer">
+  <button type="button" (click)="resetAdvancedFilters()"
+    class="ecl-button ecl-button--call rounded mr-3"
+    style="background-color: #868e96;" type="button">
+    <span class="ecl-button__container"><span
+        class="ecl-button__label" data-ecl-label="true">Reset
+        <fa-layers>
+          <fa-icon transform="right-7 shrink-3" [inverse]="false"
+            [icon]="faTimesCircle"></fa-icon>
+          <fa-icon transform="up-3" [icon]="faFilter"></fa-icon>
+        </fa-layers>
+      </span></span>
+
+  </button>
+  <button type="button"
+    class="ecl-button ecl-button--call rounded"
+    (click)="applyFilters()"><span
+      class="ecl-button__container"><span
+        class="ecl-button__label"
+        data-ecl-label="true">Save</span></span></button>
+</div>

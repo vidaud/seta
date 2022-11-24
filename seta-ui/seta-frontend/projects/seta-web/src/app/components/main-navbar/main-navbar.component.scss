@@ -1,0 +1,65 @@
+// @import '../../../ec-styles.scss';
+@import "../../../variables.scss";
+
+:host {
+    .logo {
+        width: 20rem;
+    }
+
+    .logo_title {
+        font-size: 2em;
+    }
+
+    nav.navbar.seta-nav {
+        background-color: $ec-blue-100;
+        padding: 0;
+//        padding-bottom: 70px;
+//        padding-top: 70px;
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-link {
+            color: $ec-white;
+            display: flex;
+            font: normal normal 400 1rem/1.25rem Arial, sans-serif;
+            font-weight: 800;
+            justify-content: space-between;
+            padding-bottom: 0;
+            padding-top: 0;
+            position: relative;
+            text-decoration: none;
+        }
+        .nav-link:hover,
+        .nav-link:focus,
+        .nav-link:active {
+            color: $ec-white;
+            text-decoration: underline;
+        }
+        .nav-link:focus {
+            text-decoration: underline;
+        }
+    }
+
+    overlay {
+        position: fixed; /* Sit on top of the page content */
+        display: none; /* Hidden by default */
+        width: 100%; /* Full width (cover the whole page) */
+        height: 100%; /* Full height (cover the whole page) */
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.2); /* Black background with opacity */
+        z-index: 2; /* Specify a stack order in case you're using a different order for other elements */
+        cursor: pointer; /* Add a pointer on hover */
+      }
+}
+
+// app-login {
+//     flex: 1;
+//     display: flex;
+//     justify-content: flex-end;
+// }

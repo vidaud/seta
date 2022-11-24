@@ -1,0 +1,37 @@
+// @import '../../../ec-styles.scss';
+@import "../../../variables.scss";
+
+:host {
+  .container-footer {
+    height: calc(((100vh - 165.594px) /6));
+    background-color: $ec-blue;
+
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+  /* Set the fixed height of the footer here */
+    height: 100px;
+//    line-height: 60px;
+   
+    padding-top: 0px;
+    padding-bottom: 0px;
+    
+    .card {
+      background-color: inherit;
+      border: unset;
+      border-radius: unset;
+      box-shadow: unset;
+      margin: 0em;
+      padding: 0em;
+    }
+  }
+
+  li {
+    list-style-type: none;
+  }
+
+  a {
+    color: $ec-white;
+  }
+
+}

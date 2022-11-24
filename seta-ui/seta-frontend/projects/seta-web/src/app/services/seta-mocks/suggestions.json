@@ -1,0 +1,18 @@
+{
+	"JSON": {
+		"words": [
+			"data_mining",
+			"data_mining_methods",
+			"data_mining_project",
+			"data_mining_tools",
+			"data_mining_techniques",
+			"data_mining_services"
+		]
+	},
+	"Response Payload": {
+		"EDITOR_CONFIG": {
+			"text": "{\"words\":[\"data_mining\",\"data_mining_methods\",\"data_mining_project\",\"data_mining_tools\",\"data_mining_techniques\",\"data_mining_services\"]}\n",
+			"mode": "application/json"
+		}
+	}
+}

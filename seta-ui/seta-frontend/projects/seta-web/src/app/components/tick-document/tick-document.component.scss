@@ -1,0 +1,90 @@
+@import '../../../ec-styles.scss';
+@import "../../../variables.scss";
+@import "~node_modules/ngx-chips/core/styles/core/_core.scss";
+
+:host {
+  .btn.btn-outline-secondary.searchbar-info {
+    border: none;
+    border-color: #868e96;
+    font-size: 0.9em;
+    background-color: $ec-white;
+      &:hover {
+        color: #868e96;
+      }
+    }
+
+    .btn.btn-outline-secondary.peek-document {
+      border: none;
+      border-color: #868e96;
+        &:hover {
+          color: #868e96;
+          background-color: #eee;
+        }
+    }
+  
+    .btn.btn-light.peek-document {
+      border: none;
+      background-color: $ec-white;
+        &:hover {
+          color: #868e96;
+        }
+    }
+
+    .pdf {
+      color: #c50606;
+    }
+  
+    .html {
+      color: #147af3;
+    }
+
+    .Arched_x0020_Green {
+      fill: url(#SVGID_1_);
+      stroke: #FFFFFF;
+      stroke-width: 0.25;
+      stroke-miterlimit: 1;
+    }
+
+    .st0 {
+      opacity: 0.5;
+      fill: #0099cc;
+    }
+
+    .st1 {
+      opacity: 0.5;
+      fill: #659AD2;
+    }
+
+    .st2 {
+      fill: #659AD2;
+    }
+
+    .st3 {
+      fill: #4A8ECC;
+    }
+
+    .st4 {
+      opacity: 0.5;
+      fill: #4A8ECC;
+    }
+
+    .st5 {
+      fill: #0099cc;
+    }
+
+    .st6 {
+      fill: #034EA2;
+    }
+
+    .st7 {
+      fill: #FFDD00;
+    }
+
+    .st8 {
+      fill: #727D84;
+    }
+
+    .key_document_warning {
+      border: 2px dashed $ec-yellow-100;
+    }
+}

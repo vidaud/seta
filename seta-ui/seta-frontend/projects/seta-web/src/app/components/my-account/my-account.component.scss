@@ -1,0 +1,54 @@
+@import "../../../ec-styles.scss";
+@import "../../../variables.scss";
+:host {
+
+  .homeContainer {
+    min-height: calc(((100vh - 165.594px) / 6) * 5);
+    padding: calc(((100vh - 165.594px) / 100) * 1) 0 0 0;
+    margin: 0;
+  }
+
+  .btn.btn-outline-secondary {
+    background-color: #f7f7f7;
+    &.searchbar-info {
+      border: none;
+      border-color: #868e96;
+      color: #868e96;
+      font-size: 0.9em;
+
+      &:hover {
+        color: #868e96;
+        cursor: pointer;
+      }
+      &:focus {
+        border: none;
+        box-shadow: none;
+      }
+      &:active {
+        box-shadow: none;
+      }
+    }
+  }
+
+  #overlay {
+    position: fixed; /* Sit on top of the page content */
+    display: none; /* Hidden by default */
+    width: 100%; /* Full width (cover the whole page) */
+    height: 100%; /* Full height (cover the whole page) */
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.2); /* Black background with opacity */
+    z-index: 2; /* Specify a stack order in case you're using a different order for other elements */
+    cursor: pointer; /* Add a pointer on hover */
+  }
+
+  .rsa-key {
+    float: left;
+  }
+
+  .rsa-key-button {
+    padding-top: 0!important;
+  }
+}

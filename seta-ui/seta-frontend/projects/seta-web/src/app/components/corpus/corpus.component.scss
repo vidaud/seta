@@ -1,0 +1,20 @@
+// @import '../../styles.scss';
+@import '../../../variables.scss';
+
+:host {
+	li.ecl-card {
+		background-color: white;
+		padding: 0.5rem;
+		border-bottom: 1px solid #ebebeb;
+		border-top: none;
+		border-left: none;
+		border-right: none;
+	}
+	
+	.list-group {
+		max-height: 50vh;
+    overflow: auto;
+	}
+
+}
+

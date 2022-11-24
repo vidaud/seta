@@ -1,0 +1,46 @@
+:host {
+  display: flex;
+
+  tree-root {
+    min-height: 41px;
+
+    .node-content-wrapper {
+      display: flex;
+
+      .name {
+        margin-top: auto;
+        margin-bottom: auto;
+        margin-right: 10px;
+      }
+
+      .icon-action {
+        width: 30px;
+        height: 30px;
+
+        img {
+          display: flex;
+          margin: auto;
+          height: inherit;
+        }
+      }
+    }
+  }
+
+  ::ng-deep {
+    .toggle-children {
+      height: 30px !important;
+      width: 30px !important;
+      top: 2px !important;
+      transform: none !important;
+    }
+
+    .toggle-children-wrapper-expanded .toggle-children {
+      background-image: url('/assets/img/folder-open.png');
+    }
+
+    .toggle-children-wrapper-collapsed .toggle-children {
+      background-image: url('/assets/img/folder-close.png');
+    }
+  }
+
+}

@@ -1,0 +1,47 @@
+@import "../../../variables.scss";
+:host {
+  position: fixed;
+  top: 0;
+  right: 0;
+  margin: 2em;
+  z-index: 1200;
+
+  ::ng-deep {
+    ngb-toast {
+      // flex-basis: 350px;
+      min-width: 350px;
+      max-width: 350px;
+      font-size: 0.875rem;
+      background-color: rgba(255, 255, 255, 0.85);
+      background-clip: padding-box;
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      box-shadow: 0 0.25rem 0.75rem rgb(0 0 0 / 10%);
+      opacity: 0;
+      border-radius: 0.25rem;
+    }
+    .error {
+      div.toast-header.ng-star-inserted {
+        background-color: $ec-red;
+        color: #000;
+      }
+    }
+    .success {
+      div.toast-header.ng-star-inserted {
+        background-color: $ec-green;
+        color: #000;
+      }
+    }
+    .info {
+      div.toast-header.ng-star-inserted {
+        background-color: $ec-blue-100;
+        color: #000;
+      }
+    }
+    .warning {
+      div.toast-header.ng-star-inserted {
+        background-color: $ec-orange;
+        color: #000;
+      }
+    }
+  }
+}

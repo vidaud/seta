@@ -1,0 +1,92 @@
+<ng-template #errorTpl let-data="data">
+  {{ data.body }}
+</ng-template>
+
+<ng-template #successTpl let-data="data">
+  {{ data.body }}
+</ng-template>
+
+<ng-template #infoTpl let-data="data">
+  {{ data.body }}
+</ng-template>
+
+<ng-template #warninTpl let-data="data">
+  {{ data.body }}
+</ng-template>
+
+<!-- [class]="toastTypeClass[toast.type]" -->
+<ngb-toast *ngFor="let toast of toasts" [autohide]="true"
+  [delay]="toast.delay || 5000"
+  (hidden)="toastService.remove(toast)"
+  [class]="toastTypeClass[toast.type]">
+
+  <!-- HEADER -->
+
+  <ng-template ngbToastHeader >
+<!-- className="bg-danger text-light" -->
+
+    <span *ngIf="toast.type && toast.type === 'errorTpl'">
+      <fa-icon [icon]="faTimesCircle" class="mr-1"></fa-icon>
+      <strong *ngIf="toast.header">{{ toast.header }}</strong>
+      <strong *ngIf="!toast.header">Error</strong>
+    </span>
+
+    <span *ngIf="toast.type && toast.type === 'successTpl'">
+      <fa-icon [icon]="faCheck" class="mr-1"></fa-icon>
+      <strong *ngIf="toast.header">{{ toast.header }}</strong>
+      <strong *ngIf="!toast.header">Success</strong>
+    </span>
+
+    <span *ngIf="toast.type && toast.type === 'infoTpl'">
+      <fa-icon [icon]="faInfoCircle" class="mr-1"></fa-icon>
+      <strong *ngIf="toast.header">{{ toast.header }}</strong>
+      <strong *ngIf="!toast.header">Info</strong>
+    </span>
+
+    <span *ngIf="toast.type && toast.type === 'warninTpl'">
+      <fa-icon [icon]="faExclamationTriangle" class="mr-1">
+      </fa-icon>
+      <strong *ngIf="toast.header">{{ toast.header }}</strong>
+      <strong *ngIf="!toast.header">Warning</strong>
+    </span>
+
+
+
+  </ng-template>
+
+
+  <!-- BODY -->
+
+  <!-- <ng-template [ngIf]="isTemplate(toast)" [ngIfElse]="text">
+    <ng-template [ngTemplateOutlet]="toast.textOrTpl"></ng-template>
+  </ng-template> -->
+
+  <ng-container *ngIf="toast.type;else default">
+    <ng-template [ngTemplateOutlet]="infoTpl"
+      [ngTemplateOutletContext]="{ data: toast }">
+    </ng-template>
+  </ng-container>
+  <ng-template #default>
+    <ng-container *ngIf="isTemplate(toast.body);else text">
+      <ng-template [ngTemplateOutlet]="toast.body">
+      </ng-template>
+    </ng-container>
+  </ng-template>
+  <ng-template #text>{{ toast.body }}</ng-template>
+
+
+  <!-- <ng-template [ngIf]="toast.type" [ngIfElse]="default">
+    <ng-template [ngTemplateOutlet]="getTemplate(toast)"
+      [ngTemplateOutletContext]="{ data: toast }">
+    </ng-template>
+  </ng-template>
+
+  <ng-template #default [ngIf]="isTemplate(toast.body)"
+    [ngIfElse]="text">
+    <ng-template [ngTemplateOutlet]="toast.body">
+    </ng-template>
+  </ng-template>
+  <ng-template #text>{{ toast.body }}</ng-template> -->
+
+
+</ngb-toast>

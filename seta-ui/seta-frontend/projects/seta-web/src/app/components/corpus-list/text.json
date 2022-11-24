@@ -1,0 +1,4131 @@
+{
+  "resourceTypeDtos": [
+    {
+      "code": "MINUTES_DRAFT",
+      "label": "Draft minutes",
+      "definition": ""
+    },
+    {
+      "code": "ASSENT_REQ",
+      "label": "Request for assent",
+      "definition": ""
+    },
+    {
+      "code": "PROC_RULES",
+      "label": "Rules of procedure",
+      "definition": "Ce concept est utilisé conformément au traité: «La Cour de justice établit son règlement de procédure. Ce règlement est soumis à l’approbation du Conseil.»"
+    },
+    {
+      "code": "ADD",
+      "label": "Addendum",
+      "definition": "This concept is used when, for example, ‘Addendum to (provisional) list of ‘A’ items’ indicates that the new items are added to the agenda/‘A’ items list."
+    },
+    {
+      "code": "LET_AMEND",
+      "label": "Letter of amendment",
+      "definition": "Letter sent by the Commission to propose amendments to the draft EU budget."
+    },
+    {
+      "code": "AMEND_PROP",
+      "label": "Amended proposal",
+      "definition": ""
+    },
+    {
+      "code": "DEC_DEL_DRAFT",
+      "label": "Draft delegated decision",
+      "definition": "1) Article 290 of the Treaty on the Functioning of the European Union allows the legislator to delegate to the Commission the power to adopt non-legislative acts of general application to supplement or amend certain non-essential elements of a legislative act (quasi-legislative acts).2) TFEU Art. 290 refers to delegated "
+    },
+    {
+      "code": "JOINT_TEXT_RJ",
+      "label": "Rejected joint text",
+      "definition": ""
+    },
+    {
+      "code": "JOINT_IMPACT_ASSESS_SUM",
+      "label": "Joint impact assessment summary",
+      "definition": ""
+    },
+    {
+      "code": "ACT_OTHER",
+      "label": "Other acts",
+      "definition": "Other acts shall be adopted on the basis of a Commission proposal where the Treaties so provide. This concept is used for publication in the Official Journal L, section L III and in the Official Journal C, section V (e)."
+    },
+    {
+      "code": "ANNOUNC",
+      "label": "Announcements",
+      "definition": "This concept is used for publication in the Official Journal C, section C V."
+    },
+    {
+      "code": "ARCHIVE_FILE",
+      "label": "Archive file",
+      "definition": "Ensemble des documents réunis pour la conduite ou le traitement d’une affaire par une personne physique ou morale dans l’exercice de ses activités. Le dossier est ordinairement l’unité de base à l’intérieur d’une série organique."
+    },
+    {
+      "code": "ASSENT",
+      "label": "Assent",
+      "definition": ""
+    },
+    {
+      "code": "COMMUNIC",
+      "label": "Communication",
+      "definition": "The "
+    },
+    {
+      "code": "COMPOS",
+      "label": "Common position",
+      "definition": "Position adopted by the Council in the context of the co-decision procedure (Article 251 TEC), where the Council did not approve all the European Parliament’s amendments to a legislative proposal; or position adopted by the Council in the context of the cooperation procedure (Article 252 TEC). Following the entry into force of the Treaty of Lisbon, replaced in the ordinary legislative procedure by ‘position at first reading’, in this case the code to be used is "
+    },
+    {
+      "code": "CONS_TEXT",
+      "label": "Consolidated text",
+      "definition": "Consolidation consists of the integration in a legal act of its successive amendments."
+    },
+    {
+      "code": "CORRIGENDUM",
+      "label": "Corrigendum",
+      "definition": "Term used in English, in the context of EU legislation, for corrections made to a text after its adoption."
+    },
+    {
+      "code": "DATPRO",
+      "label": "Provisional data",
+      "definition": ""
+    },
+    {
+      "code": "DEC",
+      "label": "Decision",
+      "definition": "To exercise the Union’s competences, the institutions adopt regulations, directives, decisions, recommendations and opinions.A decision is binding in its entirety. A decision which specifies those to whom it is addressed is binding only on them.Decisions are published in the Official Journal L, section L I (c) and section (d)."
+    },
+    {
+      "code": "DEC_DRAFT",
+      "label": "Draft decision",
+      "definition": "Acts adopted under "
+    },
+    {
+      "code": "DEC_ENTSCHEID",
+      "label": "Decision",
+      "definition": ""
+    },
+    {
+      "code": "DEC_NC",
+      "label": "Decision by national courts in the field of European Union law",
+      "definition": "Decision made by national courts in the field of European Union law."
+    },
+    {
+      "code": "IMPACT_ASSESS",
+      "label": "Impact assessment",
+      "definition": "Before the European Commission proposes a new initiative, it evaluates the potential economic, social and environmental consequences. An impact assessment gives decision-makers evidence regarding the need for EU action and the advantages and disadvantages of alternative policy choices. It may also find that no action should be taken at EU level. Impact assessments are currently published on EUR-Lex, but not for delegated, implementing or RPS (regulatory procedure with scrutiny) acts."
+    },
+    {
+      "code": "INFO",
+      "label": "Information",
+      "definition": ""
+    },
+    {
+      "code": "INFO_JUDICIAL",
+      "label": "Judicial information",
+      "definition": ""
+    },
+    {
+      "code": "INFO_JUR",
+      "label": "Information",
+      "definition": "Ce concept est utilisé pour désigner les informations sur les décisions non publiées."
+    },
+    {
+      "code": "JUDG",
+      "label": "Judgment",
+      "definition": ""
+    },
+    {
+      "code": "MEAS_NATION_IMPL",
+      "label": "National transposition measures",
+      "definition": "Mesures prises par les États membres pour transposer une directive de l’Union européenne dans le droit national."
+    },
+    {
+      "code": "NOTICE",
+      "label": "Notice",
+      "definition": ""
+    },
+    {
+      "code": "OJ",
+      "label": "Official Journal",
+      "definition": "The Official Journal of the European Union is the authoritative source of EU law and it is published every day from Tuesday to Saturday in the official EU languages. There are 2 series: L (legislation) and C (information and notices). Subseries CA, with the same number as the C series published on the same day, contains calls for expressions of interest, vacancy notices, etc. The subseries I (LI and CI) was introduced on 1 January 2016. This allows for greater flexibility in the event of a change in the planned content of the Official Journal. Effective 1 July 2013, the electronic edition of the OJ is authentic and produces legal effects."
+    },
+    {
+      "code": "OPIN_AG",
+      "label": "Opinion of the Advocate General",
+      "definition": ""
+    },
+    {
+      "code": "OPIN_AMEND_EP",
+      "label": "Opinion on the European Parliament’s amendments",
+      "definition": ""
+    },
+    {
+      "code": "OPIN_NO_PROP_AMEND",
+      "label": "Opinion not proposing amendment",
+      "definition": ""
+    },
+    {
+      "code": "OPIN_PROP_RJ",
+      "label": "Opinion proposing rejection",
+      "definition": ""
+    },
+    {
+      "code": "OWNINI_REPORT",
+      "label": "Own-initiative report",
+      "definition": "Report adopted without being requested to do so by an EU institution."
+    },
+    {
+      "code": "PROP_DEC",
+      "label": "Proposal for a decision",
+      "definition": ""
+    },
+    {
+      "code": "PROP_REG",
+      "label": "Proposal for a regulation",
+      "definition": ""
+    },
+    {
+      "code": "PUB_GEN",
+      "label": "General publications",
+      "definition": "Non-legal publications used for promotion, information and reference purposes."
+    },
+    {
+      "code": "QUEST_TIME",
+      "label": "Question at question time",
+      "definition": ""
+    },
+    {
+      "code": "QUEST_WRITTEN",
+      "label": "Written question",
+      "definition": ""
+    },
+    {
+      "code": "RECO_REG",
+      "label": "Recommendation for a regulation",
+      "definition": ""
+    },
+    {
+      "code": "REG_IMPL",
+      "label": "Implementing regulation",
+      "definition": "Les États membres prennent toutes les mesures de droit interne nécessaires pour la mise en œuvre des actes juridiquement contraignants de l’Union. Lorsque des conditions uniformes d’exécution des actes juridiquement contraignants de l’Union sont nécessaires, ces actes confèrent des compétences d’exécution à la Commission ou, dans des cas spécifiques dûment justifiés et dans les cas prévus aux articles 24 et 26 du traité sur l’Union européenne, au Conseil."
+    },
+    {
+      "code": "REPORT",
+      "label": "Report",
+      "definition": ""
+    },
+    {
+      "code": "STU",
+      "label": "Study",
+      "definition": "A study is a document resulting from intellectual services necessary to support the institution"
+    },
+    {
+      "code": "TOC_OJ",
+      "label": "Contents",
+      "definition": "Liste des titres et des sous-titres des parties d’un document, dans l’ordre dans lequel elles se présentent avec indication des pages ou des colonnes où ces parties commencent."
+    },
+    {
+      "code": "TREATY",
+      "label": "Treaty",
+      "definition": ""
+    },
+    {
+      "code": "REG",
+      "label": "Regulation",
+      "definition": "Pour exercer les compétences de l’Union, les institutions adoptent des règlements, des directives, des décisions, des recommandations et des avis. Le règlement a une portée générale. Il est obligatoire dans tous ses éléments et il est directement applicable dans tout État membre. Les règlements sont publiés au Journal officiel L, section L I (a) et section L II (b)."
+    },
+    {
+      "code": "AGREE_INTERNATION",
+      "label": "International agreement",
+      "definition": "The concept "
+    },
+    {
+      "code": "CALL_PROP",
+      "label": "Call for proposals",
+      "definition": ""
+    },
+    {
+      "code": "EXCH_LET",
+      "label": "Exchange of letters",
+      "definition": "Method whereby states express their consent to be bound by exchanging signed letters."
+    },
+    {
+      "code": "EXCH_RATE",
+      "label": "Exchange rate",
+      "definition": "Ratio at which the principal unit of two currencies may be traded, whether arbitrarily established by government action or based on the relative capacity of each currency to buy on a free market."
+    },
+    {
+      "code": "INFO_COMMUNIC",
+      "label": "Information",
+      "definition": "This concept is used for describing section II in OJ C; it is usually in the plural form."
+    },
+    {
+      "code": "LEGIS_SUM",
+      "label": "Summaries of EU legislation",
+      "definition": "A text of +/- 3500 characters, summarising main aspects of a specific law or a legal aspect of a specific EU policy."
+    },
+    {
+      "code": "NOTE_INFO",
+      "label": "Information note",
+      "definition": "Council document containing a text coming from the Council but also another document coming from another author (EU or Member States)."
+    },
+    {
+      "code": "OPIN",
+      "label": "Opinion",
+      "definition": "This concept is used for secondary legislation and for preparatory acts."
+    },
+    {
+      "code": "OPIN_PROP_AMEND",
+      "label": "Opinion proposing amendment",
+      "definition": ""
+    },
+    {
+      "code": "ORDER",
+      "label": "Order",
+      "definition": ""
+    },
+    {
+      "code": "PROT",
+      "label": "Protocol",
+      "definition": ""
+    },
+    {
+      "code": "RECO",
+      "label": "Recommendation",
+      "definition": "Pour exercer les compétences de l’Union, les institutions adoptent des règlements, des directives, des décisions, des recommandations et des avis.Les recommandations et les avis ne lient pas.Les recommandations sont publiées au Journal officiel L, section L II (e), et au Journal officiel C, section C I. Les avis sont publiés dans la section C I."
+    },
+    {
+      "code": "DIR",
+      "label": "Directive",
+      "definition": "To exercise the Union’s competences, the institutions adopt regulations, directives, decisions, recommendations and opinions.A directive is binding, as to the result to be achieved, upon each Member State to which it is addressed, but leaves to the national authorities the choice of form and methods.Directives are published in the Official Journal L, section L I (b) and section L II (c)."
+    },
+    {
+      "code": "OWNINI_RES",
+      "label": "Own-initiative resolution",
+      "definition": "Resolution adopted without being requested to do so by an EU institution."
+    },
+    {
+      "code": "PROP_DEC_NO_ADDRESSEE",
+      "label": "Proposal for a decision without addressee",
+      "definition": ""
+    },
+    {
+      "code": "PROP_RECO",
+      "label": "Proposal for a recommendation",
+      "definition": ""
+    },
+    {
+      "code": "RECRUIT",
+      "label": "Recruitment",
+      "definition": "This concept is used for documents usually published in OJ C (a) under the administrative announcements part."
+    },
+    {
+      "code": "COMMUNIC_POSIT",
+      "label": "Communication concerning the position of the Council",
+      "definition": ""
+    },
+    {
+      "code": "PROP_DIR",
+      "label": "Proposal for a directive",
+      "definition": ""
+    },
+    {
+      "code": "RES_LEGIS",
+      "label": "Legislative resolution",
+      "definition": "A legislative resolution is European Parliament’s position on a given draft legislative act."
+    },
+    {
+      "code": "SIGN_OJ_ATC",
+      "label": "Signature file for the authentic Official Journal",
+      "definition": "A digital signature in the Commission model is a standalone signature file related to (typically) one OJ, special edition of the OJ or Court of Justice report with all its expressions and PDF manifestations (full and TOC) as well as all its acts. It is a plain vanilla work with the only special relationship "
+    },
+    {
+      "code": "AGREE_INTERNAL",
+      "label": "Internal agreement",
+      "definition": "Ce concept est utilisé dans les types de documents d’EUR-Lex, secteur 3Q."
+    },
+    {
+      "code": "DEC_IMPL",
+      "label": "Implementing decision",
+      "definition": "Member States adopt all measures of national law necessary to implement legally binding Union acts.Where uniform conditions for implementing legally binding Union acts are needed, those acts confer implementing powers on the Commission, or, in duly justified specific cases and in the cases provided for in Articles 24 and 26 of the Treaty on European Union, on the Council."
+    },
+    {
+      "code": "JOINT_ACTION",
+      "label": "Joint action",
+      "definition": "Legal instrument under Title V of the Treaty on European Union (common foreign and security policy (CFSP)).The Treaty of Lisbon amended Articles 12 and 14 TEU, replacing joint actions by Council decisions."
+    },
+    {
+      "code": "PROP_ACT",
+      "label": "Proposal for an act",
+      "definition": ""
+    },
+    {
+      "code": "CONCL",
+      "label": "Conclusions",
+      "definition": "Conclusions reached by Councils in different configurations."
+    },
+    {
+      "code": "JOINT_SWD",
+      "label": "Joint staff working document",
+      "definition": "Staff working documents are factual and informative documents, transmitted by the European Commission to one or more of the other European Union institutions, that do not have any legal effect and do not require approval by the College of Commissioners. ‘Joint’ means that the document is presented by the Commission and the High Representative of the Union for Foreign Affairs and Security Policy together."
+    },
+    {
+      "code": "OWNINI_OPIN",
+      "label": "Own-initiative opinion",
+      "definition": "Opinion adopted without being requested to do so by an EU institution."
+    },
+    {
+      "code": "SWD",
+      "label": "Staff working document",
+      "definition": "Factual and informative document, transmitted by the European Commission to one or more of the other European Union institutions, that does not have any legal effect and does not require approval by the College of Commissioners."
+    },
+    {
+      "code": "COMPOS_AMEND",
+      "label": "Amendment to common position",
+      "definition": ""
+    },
+    {
+      "code": "RES",
+      "label": "Resolution",
+      "definition": ""
+    },
+    {
+      "code": "ACT_PREP",
+      "label": "Preparatory act",
+      "definition": "Ce concept est utilisé pour la publication au Journal officiel C, section C III, et dans les types de documents d’EUR-Lex, secteur 5."
+    },
+    {
+      "code": "BUDGET",
+      "label": "Budget",
+      "definition": "This concept is used for publication in the Official Journal L, section L I (d) and is used in the types of documents of EUR-Lex, sector 5 BP."
+    },
+    {
+      "code": "COMPOS_ACCEPT",
+      "label": "Acceptance of common position",
+      "definition": ""
+    },
+    {
+      "code": "NOTICE_AWARD",
+      "label": "Award notice",
+      "definition": "Notice of the results of an award procedure, to be issued by contracting authorities which have awarded a public contract or concluded a framework agreement."
+    },
+    {
+      "code": "NOTICE_CONTRACT",
+      "label": "Contract notice",
+      "definition": "Individual notice whereby contracting authorities make known their intention to award a particular public contract or framework agreement and which includes essential information on the public contract or framework agreement."
+    },
+    {
+      "code": "NOTICE_READER",
+      "label": "Notice to readers",
+      "definition": ""
+    },
+    {
+      "code": "PROC_INTERNAL",
+      "label": "Rules of procedure",
+      "definition": "This concept is used in accordance with Article 15(3) TFEU: ‘Each institution, body, office or agency shall ensure that its proceedings are transparent and shall elaborate in its own Rules of Procedure specific provisions regarding access to its documents, in accordance with the regulations referred to in the second subparagraph.’"
+    },
+    {
+      "code": "IMPACT_ASSESS_SUM",
+      "label": "Summary of impact assessment",
+      "definition": "Document that should: (a) present a summary of the problem description and the objectives; (b) present the analysis of subsidiarity; (c) list the range of options identified and the options assessed in detail; (d) present the main economic, social and environmental impacts of each option and, where relevant; (e) the result of the comparison of the options, indicating the criteria for comparison."
+    },
+    {
+      "code": "RECO_DEC",
+      "label": "Recommendation for a decision",
+      "definition": ""
+    },
+    {
+      "code": "SUM",
+      "label": "Summary",
+      "definition": ""
+    },
+    {
+      "code": "SUM_JUR",
+      "label": "Summary",
+      "definition": ""
+    },
+    {
+      "code": "ACT_LEGIS",
+      "label": "Legislative acts",
+      "definition": "EU legal act adopted by legislative procedure (Article 289(3) TFEU). As mentioned in Article 289(2) TFUE, it can be adopted either by the ordinary legislative procedure (defined in Article 294 TFEU) or a special legislative procedure. Legislative acts are published in section L I of the Official Journal."
+    },
+    {
+      "code": "MINUTES",
+      "label": "Minutes",
+      "definition": ""
+    },
+    {
+      "code": "QUEST_ORAL",
+      "label": "Oral question",
+      "definition": ""
+    },
+    {
+      "code": "DECLAR",
+      "label": "Declaration",
+      "definition": "Act under international law, which may or may not be legally binding, in which a state or states note the existence of a situation that is recognised and accepted by the international community, or seek its recognition or acceptance."
+    },
+    {
+      "code": "GUIDELINE",
+      "label": "Guideline",
+      "definition": "Orientations de la BCE publiées au Journal officiel, section L II (f)."
+    },
+    {
+      "code": "NOTE_COVER",
+      "label": "Cover note",
+      "definition": "Document du Conseil contenant seulement un document élaboré par un autre auteur (institutions de l’UE ou des États membres, organes et agences). Par conséquent, ce type de document peut être multilingue."
+    },
+    {
+      "code": "NOTIF",
+      "label": "Notification",
+      "definition": "This concept is used in the domain of competition and published in OJ C with a specific identifier which is not a Celex number (e.g. C2014/021/07). This should not be confused with notification made by a third party, for example a Member State (preparatory or secondary legislation) published in OJ L or in OJ C."
+    },
+    {
+      "code": "REG_DRAFT",
+      "label": "Draft regulation",
+      "definition": "Acts adopted under "
+    },
+    {
+      "code": "STU_EVL_ANNEX",
+      "label": "Annex to an evaluation study",
+      "definition": ""
+    },
+    {
+      "code": "BALANCE",
+      "label": "Balance",
+      "definition": ""
+    },
+    {
+      "code": "BUDGET_SUPPL_AMEND",
+      "label": "Supplementary and amending budget",
+      "definition": ""
+    },
+    {
+      "code": "DEC_DEL",
+      "label": "Delegated decision",
+      "definition": "Un acte législatif peut déléguer à la Commission le pouvoir d’adopter des actes non législatifs de portée générale qui complètent ou modifient certains éléments non essentiels de l’acte législatif."
+    },
+    {
+      "code": "MEMORANDUM_UNDERST",
+      "label": "Memorandum of understanding",
+      "definition": "Less formal international instrument than a typical treaty or international agreement, often used to set out operational arrangements under a framework international agreement, or to specify technical or detailed matters."
+    },
+    {
+      "code": "ITEM_I_NOTE",
+      "label": "‘I’ item note",
+      "definition": ""
+    },
+    {
+      "code": "REPORT_ANNUAL_DAS",
+      "label": "Annual report with the statement of assurance",
+      "definition": ""
+    },
+    {
+      "code": "WORK_DOC",
+      "label": "Working document",
+      "definition": ""
+    },
+    {
+      "code": "ROADMAP",
+      "label": "Roadmap",
+      "definition": "In so-called Roadmaps [a generic term covering several specific templates], the European Commission informs stakeholders and citizens about new initiatives. The standard Roadmap template is used for new major initiatives without impact assessment. They describe the problem to be tackled and the objectives to be achieved, justify the need for EU action and its added value and outline alternative policy options, while also explaining why a formal impact assessment is not necessary."
+    },
+    {
+      "code": "THIRDPARTY_PROCEED",
+      "label": "Third-party proceedings",
+      "definition": ""
+    },
+    {
+      "code": "ACT",
+      "label": "Act",
+      "definition": "Ce terme est utilisé pour décrire le concept général d’un acte; la formule au singulier est d’application. Les actes législatifs et les actes non législatifs sont décrits séparément."
+    },
+    {
+      "code": "JUDG_EXTRACT",
+      "label": "Judgment (extracts)",
+      "definition": "Ce concept est utilisé pour les arrêts faisant l’objet d’une publication par extraits au Recueil."
+    },
+    {
+      "code": "AGREE",
+      "label": "Agreement",
+      "definition": ""
+    },
+    {
+      "code": "JOINT_PROP_DEC",
+      "label": "Joint proposal for a decision",
+      "definition": "Proposal for a decision adopted jointly by the High Representative of the Union for Foreign Affairs and Security Policy and the Commission."
+    },
+    {
+      "code": "JOINT_PROP_REG",
+      "label": "Joint proposal for a regulation",
+      "definition": "Proposal for a regulation adopted jointly by the High Representative of the Union for Foreign Affairs and Security Policy and the Commission."
+    },
+    {
+      "code": "AID_STATE",
+      "label": "State aid",
+      "definition": ""
+    },
+    {
+      "code": "REPORT_ANNUAL_SPECIF",
+      "label": "Specific annual report",
+      "definition": "This term is used to define the European Court of Auditors Specific Annual Reports (around 50) on the annual financial audits of the EU’s agencies, joint undertakings and other decentralised bodies."
+    },
+    {
+      "code": "NOTICE_MODEL_PP",
+      "label": "Model notice for public procurement",
+      "definition": "Notice models used as a template by contracting authorities for sending public procurement notices."
+    },
+    {
+      "code": "REPORT_ANNUAL",
+      "label": "Annual report",
+      "definition": ""
+    },
+    {
+      "code": "OWNINI_OPIN_ADDIT",
+      "label": "Additional own-initiative opinion",
+      "definition": ""
+    },
+    {
+      "code": "PAPER_WHITE",
+      "label": "White Paper",
+      "definition": "Commission White Papers are documents containing proposals for EU action in a specific area. In some cases they follow a Green Paper published to launch a consultation process at European level. When a White Paper is favourably received by the Council, it can lead to an action programme for the Union in the area concerned."
+    },
+    {
+      "code": "PROP_RES",
+      "label": "Proposal for a resolution",
+      "definition": ""
+    },
+    {
+      "code": "LIST",
+      "label": "List",
+      "definition": ""
+    },
+    {
+      "code": "NOTE",
+      "label": "Note",
+      "definition": ""
+    },
+    {
+      "code": "AMEND_PROP_DEC",
+      "label": "Amended proposal for a decision",
+      "definition": ""
+    },
+    {
+      "code": "ITEM_IA_NOTE",
+      "label": "‘I/A’ item note",
+      "definition": ""
+    },
+    {
+      "code": "PROP_DRAFT",
+      "label": "Draft proposal",
+      "definition": ""
+    },
+    {
+      "code": "REG_DEL",
+      "label": "Delegated regulation",
+      "definition": "A legislative act may delegate to the Commission the power to adopt non-legislative acts of general application to supplement or amend certain non-essential elements of the legislative act."
+    },
+    {
+      "code": "BUDGET_DRAFT",
+      "label": "Draft budget",
+      "definition": ""
+    },
+    {
+      "code": "OPIN_EXPLOR",
+      "label": "Exploratory opinion",
+      "definition": "Opinion in which the European Economic and Social Committee, at the request of a European institution, reflects and makes suggestions on a given subject."
+    },
+    {
+      "code": "OPIN_NO_REPORT",
+      "label": "Opinion without report",
+      "definition": ""
+    },
+    {
+      "code": "CONVENTION",
+      "label": "Convention",
+      "definition": ""
+    },
+    {
+      "code": "DEC_FRAMW",
+      "label": "Framework decision",
+      "definition": "Framework decisions were used to approximate (align) the laws and regulations of the Member States. Proposals are made on the initiative of the Commission or a Member State and they have to be adopted unanimously. They are binding on the Member States as to the result to be achieved but leave the choice of form and methods to the national authorities."
+    },
+    {
+      "code": "AMEND_PROP_DIR",
+      "label": "Amended proposal for a directive",
+      "definition": ""
+    },
+    {
+      "code": "REPORT_SPECIAL",
+      "label": "Special report",
+      "definition": "In case of the European Court of Auditors, this term is used to define its Special Reports (SRs) setting out the results of selected performance and compliance audits of specific budgetary areas or management topics. The ECA produces around 20 SRs each year."
+    },
+    {
+      "code": "STU_EVL",
+      "label": "Evaluation study",
+      "definition": ""
+    },
+    {
+      "code": "STU_SUM_EXE",
+      "label": "Executive summary of a study",
+      "definition": ""
+    },
+    {
+      "code": "INI",
+      "label": "Initiative",
+      "definition": ""
+    },
+    {
+      "code": "RECO_RECO",
+      "label": "Recommendation for a recommendation",
+      "definition": ""
+    },
+    {
+      "code": "STU_ANNEX",
+      "label": "Annex to a study",
+      "definition": ""
+    },
+    {
+      "code": "AGREE_AMEND",
+      "label": "Amendment to an agreement",
+      "definition": ""
+    },
+    {
+      "code": "POSIT",
+      "label": "Position",
+      "definition": "This code has to be used for the Council"
+    },
+    {
+      "code": "RES_DRAFT",
+      "label": "Draft resolution",
+      "definition": ""
+    },
+    {
+      "code": "OPIN_QUAL_APR",
+      "label": "Opinion with qualified approval",
+      "definition": ""
+    },
+    {
+      "code": "JOINT_TEXT_APR",
+      "label": "Approved joint text",
+      "definition": ""
+    },
+    {
+      "code": "PAPER_GREEN",
+      "label": "Green Paper",
+      "definition": "Green Papers are documents published by the European Commission to stimulate discussion on given topics at European level. They invite the relevant parties (bodies or individuals) to participate in a consultation process and debate on the basis of the proposals they put forward. Green Papers may give rise to legislative developments that are then outlined in White Papers."
+    },
+    {
+      "code": "AMEND_PROP_REG",
+      "label": "Amended proposal for a regulation",
+      "definition": ""
+    },
+    {
+      "code": "PROP_DEC_IMPL",
+      "label": "Proposal for an implementing decision",
+      "definition": ""
+    },
+    {
+      "code": "PROP_REG_IMPL",
+      "label": "Proposal for an implementing regulation",
+      "definition": ""
+    },
+    {
+      "code": "STU_EVL_SUM_EXE",
+      "label": "Executive summary of an evaluation study",
+      "definition": ""
+    },
+    {
+      "code": "OPIN_IMPACT_ASSESS",
+      "label": "Opinion on impact assessment",
+      "definition": "Assessment of the quality of draft impact assessment. It contains recommendations on how the draft report should be improved by the Commission services."
+    },
+    {
+      "code": "DIR_IMPL",
+      "label": "Implementing directive",
+      "definition": "Member States shall adopt all measures of national law necessary to implement legally binding Union acts.Where uniform conditions for implementing legally binding Union acts are needed, those acts shall confer implementing powers on the Commission, or, in duly justified specific cases and in the cases provided for in Articles 24 and 26 of the Treaty on European Union, on the Council."
+    },
+    {
+      "code": "PROC_ADMIN",
+      "label": "Administrative procedures",
+      "definition": "This concept is used for describing the section V (a) in OJ C; it is usually in the plural form."
+    },
+    {
+      "code": "DIR_DEL",
+      "label": "Delegated directive",
+      "definition": "Un acte législatif peut déléguer à la Commission le pouvoir d"
+    },
+    {
+      "code": "REG_IMPL_DRAFT",
+      "label": "Draft implementing regulation",
+      "definition": "1) Measures that implement provisions of the basic legal act, which are referred to as "
+    },
+    {
+      "code": "VIEW_AG",
+      "label": "View of the Advocate General",
+      "definition": ""
+    },
+    {
+      "code": "PROGRAM",
+      "label": "Programme",
+      "definition": ""
+    },
+    {
+      "code": "RECO_DRAFT",
+      "label": "Draft recommendation",
+      "definition": ""
+    },
+    {
+      "code": "ARRANG",
+      "label": "Arrangement",
+      "definition": ""
+    },
+    {
+      "code": "OPIN_DISPUT_LB",
+      "label": "Opinion disputing a legal base",
+      "definition": ""
+    },
+    {
+      "code": "STATUTE",
+      "label": "Statute",
+      "definition": ""
+    },
+    {
+      "code": "DIR_DEL_DRAFT",
+      "label": "Draft delegated directive",
+      "definition": "1) Article 290 of the Treaty on the Functioning of the European Union allows the legislator to delegate to the Commission the power to adopt non-legislative acts of general application to supplement or amend certain non-essential elements of a legislative act (quasi-legislative acts).2) TFEU Art. 290 refers to delegated "
+    },
+    {
+      "code": "DIR_DRAFT",
+      "label": "Draft directive",
+      "definition": "Acts adopted under "
+    },
+    {
+      "code": "JOINT_REPORT",
+      "label": "Joint report",
+      "definition": ""
+    },
+    {
+      "code": "STAT",
+      "label": "Statement",
+      "definition": "Chacun des membres du Conseil et la Commission peuvent exprimer leur opinion à l’occasion de l’approbation des points «A» de l’ordre du jour provisoire du Conseil et faire inscrire des déclarations au procès-verbal. Les déclarations sont rendus publiques."
+    },
+    {
+      "code": "STAT_REASON",
+      "label": "Statement of reasons",
+      "definition": "L’exposé des motifs est le document qui accompagne la position du Conseil en première lecture et par lequel le Conseil informe pleinement le Parlement des raisons qui l’ont amené à s’écarter de la position de ce dernier et qui l’ont conduit à adopter sa propre position en première lecture. La version finale de l’exposé des motifs est publiée au Journal officiel C, section C III."
+    },
+    {
+      "code": "GARNISHEE_ORDER",
+      "label": "Attachment order",
+      "definition": "A legal device through which a tax collector may obtain an order permitting the collection of tax from assets or income of the defaulter other than on the assets or income upon which the tax is based."
+    },
+    {
+      "code": "PROP_OPIN",
+      "label": "Proposal for an opinion",
+      "definition": "This concept is meant to be used for the proposal made by the Commission pursuant to Article 9(4) of Regulation (EU) No 473/2013 (OJ L 140, 27.5.2013, p. 20)."
+    },
+    {
+      "code": "BUDGET_DRAFT_PRELIM_SUPPL",
+      "label": "Preliminary draft supplementary budget",
+      "definition": ""
+    },
+    {
+      "code": "JOINT_COMMUNIC",
+      "label": "Joint communication",
+      "definition": ""
+    },
+    {
+      "code": "OPIN_ADDIT",
+      "label": "Additional opinion",
+      "definition": ""
+    },
+    {
+      "code": "BUDGET_DRAFT_SUPPL_AMEND",
+      "label": "Draft supplementary and amending budget",
+      "definition": ""
+    },
+    {
+      "code": "REG_FINANC",
+      "label": "Financial regulation",
+      "definition": "Regulation which lays down the rules applicable to the establishment and implementation of the general budget of the European Communities, currently Regulation (EU, Euratom) No 966/2012 of the European Parliament and of the Council on the financial rules applicable to the general budget of the Union (CELEX: 32012R0966)."
+    },
+    {
+      "code": "DEC_IMPL_DRAFT",
+      "label": "Draft implementing decision",
+      "definition": "1) Measures that implement provisions of the basic legal act, which are referred to as "
+    },
+    {
+      "code": "IMPACT_ASSESS_INCEP",
+      "label": "Inception impact assessment",
+      "definition": "If an impact assessment is planned for an initiative, the standard Roadmap is replaced by an inception impact assessment (template), which sets out in greater detail the description of the problem, issues related to subsidiarity, the policy objectives and options as well as the likely impacts of each option. All initiatives likely to have significant economic, environmental or social impacts should undergo impact assessment."
+    },
+    {
+      "code": "GUIDELINE_GEN",
+      "label": "General guidelines",
+      "definition": ""
+    },
+    {
+      "code": "TRANSFER_APPROPR",
+      "label": "Transfer of appropriations",
+      "definition": ""
+    },
+    {
+      "code": "AGREE_PROT",
+      "label": "Protocol to the agreement",
+      "definition": ""
+    },
+    {
+      "code": "MEMORANDUM",
+      "label": "Memorandum",
+      "definition": ""
+    },
+    {
+      "code": "REG_DEL_DRAFT",
+      "label": "Draft delegated regulation",
+      "definition": "1) Article 290 of the Treaty on the Functioning of the European Union allows the legislator to delegate to the Commission the power to adopt non-legislative acts of general application to supplement or amend certain non-essential elements of a legislative act (quasi-legislative acts).2) TFEU Art. 290 refers to delegated "
+    },
+    {
+      "code": "EXCH_RATE_MRO",
+      "label": "Interest rate — euro exchange rates",
+      "definition": "Interest rate applied by the European Central Bank to its main refinancing operations (MRO)."
+    },
+    {
+      "code": "COMPOS_RJ",
+      "label": "Rejection of the common position",
+      "definition": ""
+    },
+    {
+      "code": "AGREE_INTERINSTIT",
+      "label": "Interinstitutional agreement",
+      "definition": "Ce concept est utilisé pour la publication au Journal officiel C, section C II (a)."
+    },
+    {
+      "code": "DIR_IMPL_DRAFT",
+      "label": "Draft implementing directive",
+      "definition": "1) Measures that implement provisions of the basic legal act, which are referred to as "
+    },
+    {
+      "code": "OPIN_JUR",
+      "label": "Opinion of the Court",
+      "definition": "Un État membre, le Parlement européen, le Conseil ou la Commission peuvent recueillir l’avis de la Cour de justice sur la compatibilité d’un accord envisagé avec les traités. En cas d’avis négatif de la Cour, l’accord envisagé ne peut entrer en vigueur, sauf modification de celui-ci ou révision des traités."
+    },
+    {
+      "code": "CALL_EXPR_INTEREST",
+      "label": "Call for expression of interest",
+      "definition": ""
+    },
+    {
+      "code": "ROADMAP_EFC",
+      "label": "Evaluation roadmap",
+      "definition": "The evaluation roadmap outlines 1) the context of the evaluation briefly describing the expected role and original objectives of the EU intervention(s) being evaluated. It also explains why the intervention(s) is (are) being evaluated (e.g. legal requirement); 2) the purpose and scope of the evaluation, explaining what the evaluation will deliver and how its results will be used. The scope should set out clearly what actions, time period and geographical area will be covered by the evaluation and what will not (with any associated justification for excluding e.g. certain articles, covering only a shorter period or not all EU Member States)."
+    },
+    {
+      "code": "STAT_REASON_DRAFT",
+      "label": "Draft statement of reasons",
+      "definition": "Le projet d’exposé des motifs est la version du document soumis pour approbation au Conseil."
+    },
+    {
+      "code": "PROP_JOINT_ACTION",
+      "label": "Proposal for a joint action",
+      "definition": ""
+    },
+    {
+      "code": "PAPER_REFLEC",
+      "label": "Reflection paper",
+      "definition": ""
+    },
+    {
+      "code": "ANNEX",
+      "label": "Annex",
+      "definition": ""
+    },
+    {
+      "code": "DEC_REVIEW",
+      "label": "Decision to review",
+      "definition": ""
+    },
+    {
+      "code": "ITEM_A_NOTE",
+      "label": "‘A’ item note",
+      "definition": ""
+    },
+    {
+      "code": "BUDGET_DRAFT_PRELIM",
+      "label": "Preliminary draft budget",
+      "definition": ""
+    },
+    {
+      "code": "PROP_AMEND",
+      "label": "Amendments to the proposal",
+      "definition": "The adoption of amendments by the European Parliament (EP) represents only a step in the procedure (i.e. the legislative procedure is not finalised yet and the legislative resolution has not been put to the vote at the EP Plenary session). So the amendments do not represent the final position of EP. When the dossier comes back to the Plenary session, accompanied (or not) by new amendments, the legislative resolution will be voted and the EP"
+    },
+    {
+      "code": "STRATEGY_COMMON",
+      "label": "Common strategy",
+      "definition": "An instrument of the common foreign and security policy introduced by the Treaty of Amsterdam. The Treaty of Lisbon amended Articles 12 and 13 TEU, removing all references to common strategies."
+    },
+    {
+      "code": "JOINT_DEC",
+      "label": "Joint decision",
+      "definition": ""
+    },
+    {
+      "code": "JOINT_TEXT",
+      "label": "Joint text",
+      "definition": "The code/concept "
+    },
+    {
+      "code": "GUIDELINE_LIGNES",
+      "label": "Guideline",
+      "definition": "A document providing guidance, advice, or explanation to functional area specialists, in particular for the Commission, in the field of health."
+    },
+    {
+      "code": "REPORT_ANNUAL_EDF",
+      "label": "Annual report on the activities funded by the European Development Fund",
+      "definition": "This term is used to define the European Court of Auditors Annual Reports on the European Development Funds. The ECA Annual Reports mainly comprise the annual statements of assurance but also cover performance issues. They are published in November each year."
+    },
+    {
+      "code": "ACT_DRAFT",
+      "label": "Draft act",
+      "definition": ""
+    },
+    {
+      "code": "ACKNOWLEDGE_RECP",
+      "label": "Acknowledgement receipt",
+      "definition": "Ce concept est utilisé pour prendre acte de la communication d’un texte."
+    },
+    {
+      "code": "ORDER_EXTRACT",
+      "label": "Order (extracts)",
+      "definition": "Ce concept est utilisé pour les ordonnances faisant l’objet d’une publication par extraits au Recueil."
+    },
+    {
+      "code": "REPORT_ANNUAL_BUDGET",
+      "label": "Annual report on the EU general budget",
+      "definition": "This term is used to define the European Court of Auditors Annual Reports on the EU general budget. The ECA Annual Reports mainly comprise the annual statements of assurance but also cover performance issues. They are published in November each year."
+    },
+    {
+      "code": "COMMUNIC_DRAFT",
+      "label": "Draft communication",
+      "definition": ""
+    },
+    {
+      "code": "NOTICE_INFO",
+      "label": "Notice",
+      "definition": ""
+    },
+    {
+      "code": "LET",
+      "label": "Letter",
+      "definition": ""
+    },
+    {
+      "code": "JOINT_IMPACT_ASSESS",
+      "label": "Joint impact assessment",
+      "definition": ""
+    },
+    {
+      "code": "ABSTRACT_JUR",
+      "label": "Abstract",
+      "definition": ""
+    },
+    {
+      "code": "ACT_ADOPT_INTERNATION",
+      "label": "Acts adopted by bodies created by international agreements",
+      "definition": "Ce concept est utilisé pour la publication au Journal officiel L, section L II (h), et dans les types de documents d’EUR-Lex, secteur 2D."
+    },
+    {
+      "code": "ACT_LEGIS_NO",
+      "label": "Non-legislative acts",
+      "definition": "EU legal act which is not a legislative act for not being adopted by legislative procedure (by a reading a contrario of the Article 289(3) TFEU). Non-legislative acts include inter alia delegated acts (Article 290 TFEU) and implementing acts (Article 291 TFEU). They are published in section L II of the Official Journal."
+    },
+    {
+      "code": "ADOPT_TEXT",
+      "label": "Texts adopted",
+      "definition": "[For legislative proposals:] The text of the proposal as approved by Parliament and the accompanying resolution shall be forwarded to the Council and the Commission by the President as Parliament"
+    },
+    {
+      "code": "AGREE_ADDIT",
+      "label": "Additional agreement",
+      "definition": "This concept is used for a ‘codicil’ that is usually a supplement of addition to a will. It is rarely used in other contexts."
+    },
+    {
+      "code": "AGREE_EUMS",
+      "label": "Agreement between Member States",
+      "definition": "The concept "
+    },
+    {
+      "code": "AGREE_EUMS_DRAFT",
+      "label": "Draft agreement between Member States",
+      "definition": "Le concept "
+    },
+    {
+      "code": "AGREE_INTERINSTIT_DRAFT",
+      "label": "Draft interinstitutional agreement",
+      "definition": ""
+    },
+    {
+      "code": "AGREE_INTERNATION_DRAFT",
+      "label": "Draft international agreement",
+      "definition": "Le concept "
+    },
+    {
+      "code": "AGREE_UBEREINKOM",
+      "label": "Agreement between Member States",
+      "definition": ""
+    },
+    {
+      "code": "AGREE_UBEREINKOM_DRAFT",
+      "label": "Draft agreement",
+      "definition": ""
+    },
+    {
+      "code": "AGREE_VEREINB",
+      "label": "Agreement",
+      "definition": ""
+    },
+    {
+      "code": "ANNEX_SUM",
+      "label": "Annex summary",
+      "definition": ""
+    },
+    {
+      "code": "CASE",
+      "label": "Case",
+      "definition": ""
+    },
+    {
+      "code": "CASE_LAW",
+      "label": "Reports of cases",
+      "definition": ""
+    },
+    {
+      "code": "CENSURE",
+      "label": "Censure",
+      "definition": ""
+    },
+    {
+      "code": "CENSURE_RJ",
+      "label": "Rejected motion of censure",
+      "definition": ""
+    },
+    {
+      "code": "CENSURE_WDW",
+      "label": "Withdrawn motion of censure",
+      "definition": ""
+    },
+    {
+      "code": "CITIZ_SUM",
+      "label": "Citizens’ summary",
+      "definition": "Citizens’ summaries are short, straightforward summaries of major policy initiatives designed for people not familiar with the EU."
+    },
+    {
+      "code": "COMPOS_DRAFT",
+      "label": "Draft common position",
+      "definition": ""
+    },
+    {
+      "code": "COMPOS_RJ_CONFIRM",
+      "label": "Confirmation of the rejection of the common position",
+      "definition": ""
+    },
+    {
+      "code": "DECLAR_DRAFT",
+      "label": "Draft declaration",
+      "definition": ""
+    },
+    {
+      "code": "DEC_FRAMW_DRAFT",
+      "label": "Draft framework decision",
+      "definition": ""
+    },
+    {
+      "code": "FORM_OJ_TOC",
+      "label": "Request form for the table of contents of the Official Journal",
+      "definition": "OJ TOC form is used to inform the Publications Office about the current status (list of documents, pagination, etc.) of a given OJ."
+    },
+    {
+      "code": "FORM_PPF",
+      "label": "Form for print production file",
+      "definition": ""
+    },
+    {
+      "code": "FORM_REQ_PRE_PRESS",
+      "label": "Request form for pre-press of publication",
+      "definition": "Request for the publication of a single document. It is used both for daily and extra OJs. A pre-press request concerns a single document. This means that it may contain one or more TOC entries."
+    },
+    {
+      "code": "FORM_REQ_PUB",
+      "label": "Request form for publication",
+      "definition": "Request form for the publication of an extra OJ."
+    },
+    {
+      "code": "FORM_REQ_PUB_ACCEPT",
+      "label": "Request form for the acceptance of publication",
+      "definition": "Acceptance form used to inform the Publications Office about the acceptance to publish an extra OJ."
+    },
+    {
+      "code": "FORM_REQ_PUB_REFUS",
+      "label": "Request form for the refusal of publication",
+      "definition": "Refusal form used to inform the Publications Office about the refusal to publish an extra OJ."
+    },
+    {
+      "code": "FORM_REQ_READY_PRESS",
+      "label": "Request form for the ready-for-press of publication",
+      "definition": "Ready-for-press request is sent to confirm the publication and the print run of a given OJ (extra and daily)."
+    },
+    {
+      "code": "GLOS_TERM",
+      "label": "Glossary term",
+      "definition": "A term that is often used in the summaries."
+    },
+    {
+      "code": "INFO_GEN",
+      "label": "General information",
+      "definition": ""
+    },
+    {
+      "code": "INFO_SPECIAL",
+      "label": "Special information",
+      "definition": ""
+    },
+    {
+      "code": "INFO_SUPPL",
+      "label": "Supplementary information",
+      "definition": "Supplementary information (e.g. table, corrected image, corrected manuscript, etc.). In the context of the Official Journal publication, this concept is used for the production of the final document."
+    },
+    {
+      "code": "INTRO_TEXT",
+      "label": "Introductory text",
+      "definition": "A short text that explains a specific topic under which certain summaries are grouped on EUR-Lex."
+    },
+    {
+      "code": "ITEM_A_LIST",
+      "label": "List of ‘A’ items",
+      "definition": ""
+    },
+    {
+      "code": "ITEM_A_LIST_ADP",
+      "label": "List of adopted ‘A’ items",
+      "definition": ""
+    },
+    {
+      "code": "ITEM_A_LIST_PROVIS",
+      "label": "Provisional list of ‘A’ items",
+      "definition": ""
+    },
+    {
+      "code": "JOINT_ACTION_DRAFT",
+      "label": "Draft joint action",
+      "definition": ""
+    },
+    {
+      "code": "JOINT_PAPER_GREEN",
+      "label": "Joint Green Paper",
+      "definition": ""
+    },
+    {
+      "code": "JOINT_PAPER_WHITE",
+      "label": "Joint White Paper",
+      "definition": ""
+    },
+    {
+      "code": "JOINT_PROP_DIR",
+      "label": "Joint proposal for a directive",
+      "definition": "Proposal for a directive adopted jointly by the High Representative of the Union for Foreign Affairs and Security Policy and the Commission."
+    },
+    {
+      "code": "OJ_SPECIAL",
+      "label": "Special edition of the Official Journal",
+      "definition": "L’édition spéciale du Journal officiel contient le droit dérivé en vigueur à la date d’adhésion de l’État membre concerné."
+    },
+    {
+      "code": "OPIN_CASE",
+      "label": "Advocate general’s opinion",
+      "definition": ""
+    },
+    {
+      "code": "OP_DATPRO",
+      "label": "Provisional data",
+      "definition": ""
+    },
+    {
+      "code": "PETITION",
+      "label": "Petition",
+      "definition": "The right of petition is the right of any citizen of the Union, and any natural or legal person residing or having its registered office in a Member State, to submit a request or complaint to the European Parliament on a matter which comes within the Union’s fields of activity and which affects him, her or it directly (Article 227 TFEU)."
+    },
+    {
+      "code": "PLANNING_DOC",
+      "label": "Planning document",
+      "definition": "Document containing a list of all upcoming delegated and implementing acts and RPS (regulatory procedure with scrutiny) measures submitted for public feedback."
+    },
+    {
+      "code": "POSIT_ACCEPT",
+      "label": "Acceptance of position",
+      "definition": ""
+    },
+    {
+      "code": "POSIT_AMEND",
+      "label": "Amendment to position",
+      "definition": ""
+    },
+    {
+      "code": "POSIT_RJ",
+      "label": "Rejection of position",
+      "definition": ""
+    },
+    {
+      "code": "POSIT_RJ_CONF",
+      "label": "Confirmation of the rejection of the position",
+      "definition": ""
+    },
+    {
+      "code": "PRESS_REL",
+      "label": "Press release",
+      "definition": ""
+    },
+    {
+      "code": "PROCEED_MINUTES",
+      "label": "Minutes of proceeding",
+      "definition": ""
+    },
+    {
+      "code": "PROC_JURIS",
+      "label": "Jurisdictional procedure",
+      "definition": ""
+    },
+    {
+      "code": "PROP_COMPOS",
+      "label": "Proposal for a common position",
+      "definition": ""
+    },
+    {
+      "code": "PROP_DECLAR",
+      "label": "Proposal for a declaration",
+      "definition": ""
+    },
+    {
+      "code": "PROP_DEC_FRAMW",
+      "label": "Proposal for a framework decision",
+      "definition": ""
+    },
+    {
+      "code": "PROP_DIR_IMPL",
+      "label": "Proposal for an implementing directive",
+      "definition": ""
+    },
+    {
+      "code": "PROT_DRAFT",
+      "label": "Draft protocol",
+      "definition": ""
+    },
+    {
+      "code": "RECO_DIR",
+      "label": "Recommendation for a directive",
+      "definition": ""
+    },
+    {
+      "code": "RECO_OPIN",
+      "label": "Recommendation for an opinion",
+      "definition": ""
+    },
+    {
+      "code": "RECO_RES",
+      "label": "Recommendation for a resolution",
+      "definition": ""
+    },
+    {
+      "code": "REFERRAL_LET",
+      "label": "Referral letter",
+      "definition": ""
+    },
+    {
+      "code": "REPLY_OPIN_NP",
+      "label": "Reply to national Parliaments’ opinion",
+      "definition": ""
+    },
+    {
+      "code": "REPORT_AAR",
+      "label": "Annual activity report",
+      "definition": ""
+    },
+    {
+      "code": "REPORT_PERIOD",
+      "label": "Periodic report",
+      "definition": ""
+    },
+    {
+      "code": "REPORT_SEMEST",
+      "label": "Six-monthly report",
+      "definition": ""
+    },
+    {
+      "code": "REPORT_SPECIF",
+      "label": "Specific report",
+      "definition": ""
+    },
+    {
+      "code": "REPORT_VALID",
+      "label": "Validation report",
+      "definition": ""
+    },
+    {
+      "code": "RULING",
+      "label": "Ruling",
+      "definition": ""
+    },
+    {
+      "code": "TOC_OJ_SPECIAL",
+      "label": "Contents of the special edition of the Official Journal",
+      "definition": "A listing of the parts of a special edition of the Official Journal in the order they are presented."
+    },
+    {
+      "code": "TREATY_DRAFT",
+      "label": "Draft treaty",
+      "definition": ""
+    },
+    {
+      "code": "VIEW",
+      "label": "View",
+      "definition": ""
+    },
+    {
+      "code": "VIEWPOINT",
+      "label": "Viewpoint",
+      "definition": ""
+    },
+    {
+      "code": "WARN",
+      "label": "Warning",
+      "definition": "1) When significant risks to the achievement of the objective in Article 3(1) of the Regulation (EU) No 1092/2010 are identified, the European Systemic Risk Board (ESRB) shall provide warnings and, where appropriate, issue recommendations for remedial action, including, where appropriate, for legislative initiatives.2) Warnings or recommendations issued by the ESRB in accordance with Article 3(2)(c) and (d) may be of either a general or a specific nature and shall be addressed in particular to the Union as a whole or to one or more Member States, or to one or more of the European Supervisory Authorities (ESAs), or to one or more of the national supervisory authorities."
+    },
+    {
+      "code": "WEBPAGE",
+      "label": "Webpage",
+      "definition": "A single page resource available from the World Wide Web."
+    },
+    {
+      "code": "WEBSITE",
+      "label": "Website",
+      "definition": "A collection of related web resources, grouped by common elements in the URL (web address)."
+    },
+    {
+      "code": "WORK_BUNDLE",
+      "label": "Work bundle",
+      "definition": "Compilation of works, possibly by different persons, or corporate bodies, treated for some purpose as a single work. A WORK_BUNDLE should have one or more collective titles. The individual works contained in this WORK_BUNDLE can, but do not have to, also exist as individual works"
+    },
+    {
+      "code": "JOINT_IMPL_PLAN",
+      "label": "Joint implementation plan",
+      "definition": "Implementation plan jointly prepared by the European Commission and the High Representative of the Union for Foreign Affairs and Security."
+    },
+    {
+      "code": "SYNOPSIS_REPORT_CONSULT",
+      "label": "Synopsis report of the public consultation",
+      "definition": "The synopsis report summarises the results of all the consultation activities in relation to a particular initiative, and gives a qualitative analytical overview of these results. Its aim is twofold: to inform policymaking on the outcome of all consultation activities; to inform stakeholders on how their input has been taken into account and to explain why certain suggestions could not be taken up."
+    },
+    {
+      "code": "EVL",
+      "label": "Evaluation",
+      "definition": "Evaluation is a process that gathers evidence to provide an objective judgement of the performance of existing EU policies, legislation and spending programmes (EU interventions or EU activities)."
+    },
+    {
+      "code": "FC",
+      "label": "Fitness check",
+      "definition": "A fitness check is a comprehensive evaluation of a policy area that usually addresses how several related legislative acts have contributed (or otherwise) to the attainment of policy objectives. Fitness checks are particularly well-suited to identify overlaps, inconsistencies synergies and the cumulative impacts of regulation. Their findings serve as a basis for deciding whether the regulation in place for a given sector needs to be adapted in future."
+    },
+    {
+      "code": "IMPL_PLAN",
+      "label": "Implementation plan",
+      "definition": "The implementation plan aims at facilitating the timely and effective application of law by the Member States. It should list the various actions which are needed to implement the legislative act and identify the main implementation challenges."
+    },
+    {
+      "code": "STAKEHOLDER_FEEDBACK",
+      "label": "Stakeholder feedback",
+      "definition": "Stakeholder feedback received on a legislative proposal."
+    },
+    {
+      "code": "JOINT_EVL",
+      "label": "Joint evaluation",
+      "definition": "Evaluation jointly prepared by the European Commission and the High Representative of the Union for Foreign Affairs and Security."
+    },
+    {
+      "code": "JOINT_EVL_SUM_EXE",
+      "label": "Executive summary of the joint evaluation",
+      "definition": "Executive summary of an evaluation jointly prepared by the European Commission and the High Representative of the Union for Foreign Affairs and Security."
+    },
+    {
+      "code": "EVL_SUM_EXE",
+      "label": "Executive summary of the evaluation",
+      "definition": "Executive summary of an evaluation."
+    },
+    {
+      "code": "FC_SUM_EXE",
+      "label": "Executive summary of the fitness check",
+      "definition": "Executive summary of a fitness check."
+    },
+    {
+      "code": "JOINT_SYNOPSIS_REPORT_CONSULT",
+      "label": "Joint synopsis report of the public consultation",
+      "definition": "Synopsis report for Commission initiatives without impact assessment or evaluation jointly prepared by the European Commission and the High Representative of the Union for Foreign Affairs and Security."
+    },
+    {
+      "code": "FACT_SUM_REPORT_CONSULT",
+      "label": "Factual summary report of the public consultation",
+      "definition": "Factual information on the input received from stakeholders during a specific consultation activity."
+    },
+    {
+      "code": "JOINT_FC_SUM_EXE",
+      "label": "Executive summary of the joint fitness check",
+      "definition": "Executive summary of a fitness check jointly prepared by the European Commission and the High Representative of the Union for Foreign Affairs and Security."
+    },
+    {
+      "code": "CONSULT_STRATEGY",
+      "label": "Consultation strategy",
+      "definition": "The purpose of the consultation strategy is to design an effective and efficient consultation approach for a Commission initiative. The consultation strategy should cover the following key elements: consultation scope and objectives, identification of stakeholders, envisaged consultation activities, their timing and language regime."
+    },
+    {
+      "code": "JOINT_FC",
+      "label": "Joint fitness check",
+      "definition": "Fitness check jointly prepared by the European Commission and the High Representative of the Union for Foreign Affairs and Security."
+    },
+    {
+      "code": "JOINT_STAKEHOLDER_FEEDBACK",
+      "label": "Joint stakeholder feedback",
+      "definition": "Stakeholder feedback received on a legislative proposal jointly prepared by the European Commission and the High Representative of the Union for Foreign Affairs and Security."
+    },
+    {
+      "code": "MOTION_RES",
+      "label": "Motion for a resolution",
+      "definition": "A draft resolution tabled by a committee, a political group or a minimum number of Members as defined in the European Parliament’s Rules of Procedure. It includes proposals for certain decisions tabled by the Conference of Presidents."
+    },
+    {
+      "code": "JOINT_MOTION_RES",
+      "label": "Joint motion for a resolution",
+      "definition": "A draft resolution tabled jointly by different authors, as defined in the European Parliament’s Rules of Procedure."
+    },
+    {
+      "code": "OPIN_REAS_NP",
+      "label": "Reasoned opinion of national Parliament",
+      "definition": "Opinion sent by a national Parliament to Presidents of the European Parliament, the Council and the Commission, stating why it considers that a draft legislative act does not comply with the principle of subsidiarity."
+    },
+    {
+      "code": "OPIN_PROVIS",
+      "label": "Provisional opinion",
+      "definition": "It is the version of the European Economic and Social Committee (EESC) opinion as approved by the competent Section of the EESC (internally named "
+    },
+    {
+      "code": "OPIN_EXPLOR_ADOP",
+      "label": "Adopted exploratory opinion",
+      "definition": "It is the version of an exploratory opinion as adopted by the European Economic and Social Committee (EESC) at the Plenary Session (having the acronym "
+    },
+    {
+      "code": "OPIN_EXPLOR_PROVIS",
+      "label": "Provisional exploratory opinion",
+      "definition": "It is the version of an exploratory opinion as approved by the competent Section of the European Economic and Social Committee (internally named "
+    },
+    {
+      "code": "VOTING_RES",
+      "label": "Voting result",
+      "definition": "Information note in all official EU languages setting out the voting results on a legislative act adopted at a Council meeting."
+    },
+    {
+      "code": "OPIN_ADOP",
+      "label": "Adopted opinion",
+      "definition": "It is the version of an opinion as adopted by the EESC at the Plenary Session (having the acronym "
+    },
+    {
+      "code": "WEBSITE_ARCH",
+      "label": "Archived website",
+      "definition": "An archived website is the result of web archiving (harvesting with a web crawler), the process of creating an archival copy of a website. An archived website is a snapshot of how an original website looked at a particular point in time. It contains as much as possible from the original website, including text, images, audio, videos, and PDF files but due to web archiving limitations certain parts of the original website might not exist in the archived website."
+    },
+    {
+      "code": "ACTS_ADOPT",
+      "label": "Adopted acts",
+      "definition": "This concept is used in the context of Commission internal procedures leading to the adoption of delegated/implementing/PRAC acts. The act adopted by the Commission is sent to EP and Council and if during the so-called objection period (usually 2 months) none of the institutions raised any objections, the adopted act is published in the Official Journal of the EU and becomes legally binding."
+    },
+    {
+      "code": "OWNINI_OPIN_ADOP",
+      "label": "Adopted own-initiative opinion",
+      "definition": "It is the version of an own-initiative opinion as adopted by the European Economic and Social Committee at the Plenary Session (having the acronym "
+    },
+    {
+      "code": "OWNINI_OPIN_PROVIS",
+      "label": "Provisional own-initiative opinion",
+      "definition": "It is the version of an own-initiative opinion as approved by the competent Section of the European Economic and Social Committee (internally named "
+    },
+    {
+      "code": "OPIN_DRAFT_NATION_LEGIS",
+      "label": "Opinion on draft national legislation",
+      "definition": "Opinion delivered by the European Central Bank (ECB) concerning the draft national legislation. EU Member States need to ensure that the ECB is consulted at an appropriate stage enabling the authority initiating the draft legislative provision to take into consideration the ECB’s opinion before taking its decision on the substance."
+    },
+    {
+      "code": "PROP_ACT_LEGIS",
+      "label": "Proposal for a legislative act",
+      "definition": "Proposal for an act to be adopted by a legislative procedure and thus to become a legislative act."
+    },
+    {
+      "code": "WITHD_AGREE",
+      "label": "Withdrawal agreement",
+      "definition": "Accord négocié et conclu entre l’Union européenne et un État membre qui a décidé de se retirer de l’Union, fixant les modalités de retrait de l’État en question en tenant compte du cadre de ses relations futures avec l’Union."
+    },
+    {
+      "code": "OPIN_EVL",
+      "label": "Opinion on evaluation",
+      "definition": "Assessment of the quality of a draft major evaluation report. It contains recommendations on how the draft report should be improved by the Commission services."
+    },
+    {
+      "code": "EXPL_MEMORANDUM",
+      "label": "Explanatory memorandum",
+      "definition": "Document which accompanies all Commission proposals submitted to the Council or to the European Parliament and the Council. It explains the context, justifications and foreseen impact of the Commission"
+    },
+    {
+      "code": "CONTRIB_CONSULT",
+      "label": "Contributions to the consultation",
+      "definition": "Contributions received during a public consultation."
+    },
+    {
+      "code": "ANNEX_CONTRIB_CONSULT",
+      "label": "Documents annexed to contributions",
+      "definition": "Documents annexed to contributions received during a public consultation."
+    },
+    {
+      "code": "BACKGROUND_DOC",
+      "label": "Background document",
+      "definition": "Background document related to a public consultation."
+    },
+    {
+      "code": "OPIN_FC",
+      "label": "Opinion on fitness check",
+      "definition": "Assessment of the quality of a draft fitness check report. It contains recommendations on how the draft report should be improved by the Commission services."
+    },
+    {
+      "code": "FORM_REQ_COMM_DOC",
+      "label": "Request form for communication post about a document",
+      "definition": "Request form for communication post about a document is used to exchange some supplementary information with the contractor concerning a document. The Publications Office or the contractor can initiate this exchange."
+    },
+    {
+      "code": "FORM_REQ_COMM_OJ",
+      "label": "Request form for communication post about Official Journal",
+      "definition": "Request form for communication post about Official Journal (OJ) is used to exchange some supplementary information with the contractor concerning an OJ. The Publications Office or the contractor can initiate this exchange."
+    },
+    {
+      "code": "TWD",
+      "label": "Technical working document",
+      "definition": "Technical working document contains drafting proposals produced in connection with an ECB opinion."
+    },
+    {
+      "code": "ACT_DEL_DRAFT",
+      "label": "Draft delegated act",
+      "definition": ""
+    },
+    {
+      "code": "PROG_WORK_COM",
+      "label": "Commission work programme",
+      "definition": "The Commission work programme shows how the Commission plans to give practical effect to the political priorities set out by the President. It provides a multiannual overview to help stakeholders and the other EU institutions plan their work with the Commission."
+    },
+    {
+      "code": "ACT_IMPL_DRAFT",
+      "label": "Draft implementing act",
+      "definition": ""
+    },
+    {
+      "code": "ANNOUNC_NEWS",
+      "label": "News announcement",
+      "definition": "A news announcement is a brief published text summarising and drawing attention to developments and initiatives with recent or immediate temporal relevance."
+    },
+    {
+      "code": "REPORT_PROGRESS",
+      "label": "Progress report",
+      "definition": "A progress report provides updates on the Commission"
+    },
+    {
+      "code": "NOTICE_STAKEHOLDER",
+      "label": "Notice to stakeholders",
+      "definition": "A notice to stakeholders aims at preparing citizens and stakeholders for major developments, such as the withdrawal of the United Kingdom from the European Union, and sets out the consequences in a range of policy areas."
+    },
+    {
+      "code": "PLAN_STRATEGIC",
+      "label": "Strategic plan",
+      "definition": "Strategic plans are planning documents where departments describe how they will contribute to the Commission"
+    },
+    {
+      "code": "ACT_DEL",
+      "label": "Delegated act",
+      "definition": "A delegated act is a legally binding act that enables the Commission to supplement or amend non‑essential parts of EU legislative acts, for example, in order to define detailed measures."
+    },
+    {
+      "code": "ARTICLE_NEWS",
+      "label": "News article",
+      "definition": "A news article is an article whose content reports news or provides background context and supporting materials for understanding the news."
+    },
+    {
+      "code": "SCHEDULE",
+      "label": "Schedule",
+      "definition": "A schedule is a list of planned activities or things to be done showing the times or dates when they are intended to happen or be done. Examples include schedules of upcoming events and published agendas of public figures."
+    },
+    {
+      "code": "PLAN_MANAGEMENT",
+      "label": "Management plan",
+      "definition": "Management plans outline department activities for the year ahead and how they contribute to meeting the objectives set in their strategic plan. Every department of the European Commission has a management plan for the year to come."
+    },
+    {
+      "code": "PRESENTATION",
+      "label": "Presentation",
+      "definition": "A presentation is a slide deck illustrating bits of information in support of a formal talk."
+    },
+    {
+      "code": "RECO_ADOPT_INTERNATION",
+      "label": "Recommendation adopted by bodies created by international agreements",
+      "definition": "The recommendation adopted by bodies created by international agreements is a type of document used in the public international law context."
+    },
+    {
+      "code": "REG_ADOPT_INTERNATION",
+      "label": "Regulation adopted by bodies created by international agreements",
+      "definition": "The regulation adopted by bodies created by international agreements is a type of document used in the public international law context."
+    },
+    {
+      "code": "DEC_ADOPT_INTERNATION",
+      "label": "Decision adopted by bodies created by international agreements",
+      "definition": "The decision adopted by bodies created by international agreements is a type of document used in the public international law context."
+    },
+    {
+      "code": "QUESTIONNAIRE",
+      "label": "Questionnaire",
+      "definition": "A questionnaire is a set questions with a choice of answers, devised for the purposes of a survey or statistical study."
+    },
+    {
+      "code": "FORECAST",
+      "label": "Forecast",
+      "definition": "A forecast is a document presenting informed estimates that are predictive in determining the direction of future trends."
+    },
+    {
+      "code": "PAPER_SCIENTIFIC",
+      "label": "Scientific paper",
+      "definition": "A scientific paper refers to contributions to periodicals, conferences or book chapters written on a specific scientific subject."
+    },
+    {
+      "code": "EXCH_INFO_EUMS",
+      "label": "Member state information exchange",
+      "definition": "Member state information exchange refers to information exchanged between European institutions and bodies and EU Member States and EFTA countries in relation to a specific topic."
+    },
+    {
+      "code": "ACTION_DOC",
+      "label": "Action document",
+      "definition": "An action document is a document detailing support for a certain activity or sector and providing details of objectives, allocated budget, expected outcome etc."
+    },
+    {
+      "code": "PROG_WORK_DEP",
+      "label": "Department work programme",
+      "definition": "A department work programme is an annual or multiannual planning document explaining how the budget allocated for certain policies or funding programmes will be spent by a department of the European Commission."
+    },
+    {
+      "code": "PLAN_NATIONAL",
+      "label": "National plan",
+      "definition": "A national plan describes measures a government has initiated in order to achieve national targets and how country-specific recommendations given by the EU have been taken into consideration."
+    },
+    {
+      "code": "REPORT_ANNUAL_MAN_PERFORM",
+      "label": "Annual management and performance report",
+      "definition": "An annual management and performance report produced by the Commission provides an overview of the results achieved by the EU budget and explains how it was managed and protected."
+    },
+    {
+      "code": "AGENDA",
+      "label": "Agenda",
+      "definition": "An agenda is a list of items to be discussed at a formal meeting."
+    },
+    {
+      "code": "DRAFT_NATION_LEGIS",
+      "label": "Draft national legislation",
+      "definition": ""
+    },
+    {
+      "code": "FACTSHEET",
+      "label": "Factsheet",
+      "definition": "A factsheet refers to a presentation of data showing the most important or relevant facts in a simple, easy-to-read manner. This concept also covers presentation of data in dynamic or interactive infographic formats."
+    },
+    {
+      "code": "OPIN_EXP",
+      "label": "Expert opinion",
+      "definition": "An expert opinion is advice provided by an independent panel of experts on a particular subject."
+    },
+    {
+      "code": "PROCUREMENT_NOTICE",
+      "label": "Procurement notice",
+      "definition": "The procurement notice is a type of document that is used in the public procurement context."
+    },
+    {
+      "code": "OWNINI_OPIN_DRAFT_NATION_LEGIS",
+      "label": "Own-initiative opinion on draft national legislation",
+      "definition": ""
+    },
+    {
+      "code": "NEWSLETTER",
+      "label": "Newsletter",
+      "definition": "A newsletter is a publication with information about the recent activities of an organisation, sent regularly to its members or stakeholders."
+    },
+    {
+      "code": "NOTE_GUID",
+      "label": "Guidance note",
+      "definition": "A guidance note is a publication aiming to answer certain questions that have been brought to the Commission’s attention providing guidance on the application of certain provisions."
+    },
+    {
+      "code": "SPEECH",
+      "label": "Speech",
+      "definition": "A speech is a published summary or transcript of a formal address or discourse delivered to an audience."
+    },
+    {
+      "code": "MAGAZINE",
+      "label": "Magazine",
+      "definition": "A magazine refers to a periodical publication, on a tangible medium or in an electronic format, containing articles and illustrations, typically covering a particular subject or area of interest."
+    },
+    {
+      "code": "MATERIAL_PROM",
+      "label": "Promotional material",
+      "definition": "Promotional material refers to a publication containing descriptive or public awareness raising material formatted for both online and print distribution, e.g. brochures, leaflets and posters."
+    },
+    {
+      "code": "BUDGET_DISCHARGE",
+      "label": "Budgetary discharge",
+      "definition": "When the European Parliament decides to grant the discharge to the way the Commission has implemented the EU budget in a given year, it leads to the formal closure of the accounts of the institution for that year."
+    },
+    {
+      "code": "GLOSSARY",
+      "label": "Glossary",
+      "definition": "A glossary refers to a list of terms in a special subject, field or area of usage, with accompanying definitions."
+    },
+    {
+      "code": "REQ_OPIN",
+      "label": "Request for an opinion",
+      "definition": "A request for an opinion is a request for advice (mandate) made by the European Commission to an independent group of experts."
+    }
+  ],
+  "documentSectorAndTypes": [
+    {
+      "sectorCode": "1",
+      "sectorLabel": "Treaties",
+      "typeCode": "A",
+      "typeLabel": "Treaty establishing the European Atomic Energy Community (EURATOM Treaty) (1957); EURATOM Treaty consolidated versions (2010, 2012)"
+    },
+    {
+      "sectorCode": "1",
+      "sectorLabel": "Treaties",
+      "typeCode": "B",
+      "typeLabel": "Accession Treaty 1972 (UK, Denmark, Ireland, Norway)"
+    },
+    {
+      "sectorCode": "1",
+      "sectorLabel": "Treaties",
+      "typeCode": "C",
+      "typeLabel": "Treaty of Nice 2001"
+    },
+    {
+      "sectorCode": "1",
+      "sectorLabel": "Treaties",
+      "typeCode": "D",
+      "typeLabel": "Treaty of Amsterdam 1997"
+    },
+    {
+      "sectorCode": "1",
+      "sectorLabel": "Treaties",
+      "typeCode": "E",
+      "typeLabel": "Treaty establishing the European Economic Community (EEC Treaty) (1957); EC Treaty Maastricht consolidated version 1992; EC Treaty Amsterdam consolidated version 1997; EC Treaty Nice consolidated version 2002; EC Treaty Athens consolidated version 2006; Treaty on the Functioning of the European Union consolidated versions (2008, 2010, 2012)"
+    },
+    {
+      "sectorCode": "1",
+      "sectorLabel": "Treaties",
+      "typeCode": "F",
+      "typeLabel": "Merger Treaty 1965; Treaty amending budgetary provisions 1970"
+    },
+    {
+      "sectorCode": "1",
+      "sectorLabel": "Treaties",
+      "typeCode": "G",
+      "typeLabel": "Greenland Treaty 1985"
+    },
+    {
+      "sectorCode": "1",
+      "sectorLabel": "Treaties",
+      "typeCode": "H",
+      "typeLabel": "Accession Treaty 1979 (Greece)"
+    },
+    {
+      "sectorCode": "1",
+      "sectorLabel": "Treaties",
+      "typeCode": "I",
+      "typeLabel": "Accession Treaty 1985 (Spain, Portugal)"
+    },
+    {
+      "sectorCode": "1",
+      "sectorLabel": "Treaties",
+      "typeCode": "J",
+      "typeLabel": "Accession Treaty 2012 (Croatia)"
+    },
+    {
+      "sectorCode": "1",
+      "sectorLabel": "Treaties",
+      "typeCode": "K",
+      "typeLabel": "Treaty establishing the European Coal and Steel Community (ECSC Treaty) (1951)"
+    },
+    {
+      "sectorCode": "1",
+      "sectorLabel": "Treaties",
+      "typeCode": "L",
+      "typeLabel": "Treaty of Lisbon 2007"
+    },
+    {
+      "sectorCode": "1",
+      "sectorLabel": "Treaties",
+      "typeCode": "M",
+      "typeLabel": "Treaty on the European Union, Maastricht (1992); EU Treaty Amsterdam consolidated version 1997; EU Treaty Nice consolidated version 2002; EU Treaty Athens consolidated version 2006; EU Treaty Lisbon consolidated versions (2008, 2010, 2012)"
+    },
+    {
+      "sectorCode": "1",
+      "sectorLabel": "Treaties",
+      "typeCode": "N",
+      "typeLabel": "Accession Treaty 1994 (Austria, Sweden, Finland, Norway)"
+    },
+    {
+      "sectorCode": "1",
+      "sectorLabel": "Treaties",
+      "typeCode": "P",
+      "typeLabel": "Charter of Fundamental Rights of the European Union (2007, 2010, 2012)"
+    },
+    {
+      "sectorCode": "1",
+      "sectorLabel": "Treaties",
+      "typeCode": "R",
+      "typeLabel": "Treaty amending certain financial provisions 1975; Treaty amending certain provisions of the protocol on the statute of the European Investment Bank 1975"
+    },
+    {
+      "sectorCode": "1",
+      "sectorLabel": "Treaties",
+      "typeCode": "S",
+      "typeLabel": "Accession Treaty 2005 (Bulgaria, Romania)"
+    },
+    {
+      "sectorCode": "1",
+      "sectorLabel": "Treaties",
+      "typeCode": "T",
+      "typeLabel": "Accession Treaty 2003 (Czech Republic, Estonia, Cyprus, Latvia, Lithuania, Hungary, Malta, Poland, Slovenia, Slovakia)"
+    },
+    {
+      "sectorCode": "1",
+      "sectorLabel": "Treaties",
+      "typeCode": "U",
+      "typeLabel": "Single European Act 1986"
+    },
+    {
+      "sectorCode": "1",
+      "sectorLabel": "Treaties",
+      "typeCode": "V",
+      "typeLabel": "Treaty establishing a Constitution for Europe (2004)"
+    },
+    {
+      "sectorCode": "1",
+      "sectorLabel": "Treaties",
+      "typeCode": "W",
+      "typeLabel": "Withdrawal"
+    },
+    {
+      "sectorCode": "2",
+      "sectorLabel": "International agreements",
+      "typeCode": "P",
+      "typeLabel": "Acts of parliamentary bodies created by international agreements"
+    },
+    {
+      "sectorCode": "2",
+      "sectorLabel": "International agreements",
+      "typeCode": "A",
+      "typeLabel": "Agreements with non-member States or international organisations"
+    },
+    {
+      "sectorCode": "2",
+      "sectorLabel": "International agreements",
+      "typeCode": "D",
+      "typeLabel": "Acts of bodies created by international agreements"
+    },
+    {
+      "sectorCode": "2",
+      "sectorLabel": "International agreements",
+      "typeCode": "X",
+      "typeLabel": "Other acts"
+    },
+    {
+      "sectorCode": "3",
+      "sectorLabel": "Legal acts",
+      "typeCode": "A",
+      "typeLabel": "Opinions"
+    },
+    {
+      "sectorCode": "3",
+      "sectorLabel": "Legal acts",
+      "typeCode": "B",
+      "typeLabel": "Budget"
+    },
+    {
+      "sectorCode": "3",
+      "sectorLabel": "Legal acts",
+      "typeCode": "C",
+      "typeLabel": "Declarations"
+    },
+    {
+      "sectorCode": "3",
+      "sectorLabel": "Legal acts",
+      "typeCode": "D",
+      "typeLabel": "Decisions (with or without addressee)"
+    },
+    {
+      "sectorCode": "3",
+      "sectorLabel": "Legal acts",
+      "typeCode": "E",
+      "typeLabel": "CFSP: common positions; joint actions; common strategies (pre-Lisbon title V of EU Treaty)"
+    },
+    {
+      "sectorCode": "3",
+      "sectorLabel": "Legal acts",
+      "typeCode": "F",
+      "typeLabel": "Police and judicial co-operation in criminal matters (pre-Lisbon title VI of EU Treaty)"
+    },
+    {
+      "sectorCode": "3",
+      "sectorLabel": "Legal acts",
+      "typeCode": "G",
+      "typeLabel": "Resolutions"
+    },
+    {
+      "sectorCode": "3",
+      "sectorLabel": "Legal acts",
+      "typeCode": "H",
+      "typeLabel": "Recommendations"
+    },
+    {
+      "sectorCode": "3",
+      "sectorLabel": "Legal acts",
+      "typeCode": "J",
+      "typeLabel": "Non-opposition to a notified joint venture"
+    },
+    {
+      "sectorCode": "3",
+      "sectorLabel": "Legal acts",
+      "typeCode": "K",
+      "typeLabel": "ECSC recommendations"
+    },
+    {
+      "sectorCode": "3",
+      "sectorLabel": "Legal acts",
+      "typeCode": "L",
+      "typeLabel": "Directives"
+    },
+    {
+      "sectorCode": "3",
+      "sectorLabel": "Legal acts",
+      "typeCode": "M",
+      "typeLabel": "Non-opposition to a notified concentration"
+    },
+    {
+      "sectorCode": "3",
+      "sectorLabel": "Legal acts",
+      "typeCode": "O",
+      "typeLabel": "ECB guidelines"
+    },
+    {
+      "sectorCode": "3",
+      "sectorLabel": "Legal acts",
+      "typeCode": "Q",
+      "typeLabel": "Institutional arrangements: Rules of procedure; Internal agreements"
+    },
+    {
+      "sectorCode": "3",
+      "sectorLabel": "Legal acts",
+      "typeCode": "R",
+      "typeLabel": "Regulations"
+    },
+    {
+      "sectorCode": "3",
+      "sectorLabel": "Legal acts",
+      "typeCode": "S",
+      "typeLabel": "ECSC Decisions of general interest"
+    },
+    {
+      "sectorCode": "3",
+      "sectorLabel": "Legal acts",
+      "typeCode": "X",
+      "typeLabel": "Other documents published in OJ L (or pre-1967)"
+    },
+    {
+      "sectorCode": "3",
+      "sectorLabel": "Legal acts",
+      "typeCode": "Y",
+      "typeLabel": "Other documents published in OJ C"
+    },
+    {
+      "sectorCode": "4",
+      "sectorLabel": "Complementary legislation",
+      "typeCode": "A",
+      "typeLabel": "Agreements between Member States"
+    },
+    {
+      "sectorCode": "4",
+      "sectorLabel": "Complementary legislation",
+      "typeCode": "D",
+      "typeLabel": "Decisions of the representatives of the governments of the Member States"
+    },
+    {
+      "sectorCode": "4",
+      "sectorLabel": "Complementary legislation",
+      "typeCode": "X",
+      "typeLabel": "Other acts published in OJ L"
+    },
+    {
+      "sectorCode": "4",
+      "sectorLabel": "Complementary legislation",
+      "typeCode": "Y",
+      "typeLabel": "Other acts published in OJ C"
+    },
+    {
+      "sectorCode": "5",
+      "sectorLabel": "Preparatory documents",
+      "typeCode": "XX",
+      "typeLabel": "Other documents"
+    },
+    {
+      "sectorCode": "5",
+      "sectorLabel": "Preparatory documents",
+      "typeCode": "DP",
+      "typeLabel": "Internal decisions of the EP"
+    },
+    {
+      "sectorCode": "5",
+      "sectorLabel": "Preparatory documents",
+      "typeCode": "M",
+      "typeLabel": "Merger control documents"
+    },
+    {
+      "sectorCode": "5",
+      "sectorLabel": "Preparatory documents",
+      "typeCode": "BP",
+      "typeLabel": "Budget (EP)"
+    },
+    {
+      "sectorCode": "5",
+      "sectorLabel": "Preparatory documents",
+      "typeCode": "SA",
+      "typeLabel": "ECA Special reports"
+    },
+    {
+      "sectorCode": "5",
+      "sectorLabel": "Preparatory documents",
+      "typeCode": "SC",
+      "typeLabel": "SEC and SWD documents"
+    },
+    {
+      "sectorCode": "5",
+      "sectorLabel": "Preparatory documents",
+      "typeCode": "KG",
+      "typeLabel": "Council assents (ECSC Treaty)"
+    },
+    {
+      "sectorCode": "5",
+      "sectorLabel": "Preparatory documents",
+      "typeCode": "GC",
+      "typeLabel": "Proposals of codified versions of decisions"
+    },
+    {
+      "sectorCode": "5",
+      "sectorLabel": "Preparatory documents",
+      "typeCode": "IE",
+      "typeLabel": "EESC Own-initiative opinions"
+    },
+    {
+      "sectorCode": "5",
+      "sectorLabel": "Preparatory documents",
+      "typeCode": "IG",
+      "typeLabel": "Member States – initiatives"
+    },
+    {
+      "sectorCode": "5",
+      "sectorLabel": "Preparatory documents",
+      "typeCode": "EC",
+      "typeLabel": "Proposals of codified versions of regulations"
+    },
+    {
+      "sectorCode": "5",
+      "sectorLabel": "Preparatory documents",
+      "typeCode": "AA",
+      "typeLabel": "ECA Opinions"
+    },
+    {
+      "sectorCode": "5",
+      "sectorLabel": "Preparatory documents",
+      "typeCode": "AB",
+      "typeLabel": "ECB Opinions"
+    },
+    {
+      "sectorCode": "5",
+      "sectorLabel": "Preparatory documents",
+      "typeCode": "AC",
+      "typeLabel": "EESC Opinions"
+    },
+    {
+      "sectorCode": "5",
+      "sectorLabel": "Preparatory documents",
+      "typeCode": "AE",
+      "typeLabel": "EESC Opinions on consultation"
+    },
+    {
+      "sectorCode": "5",
+      "sectorLabel": "Preparatory documents",
+      "typeCode": "AG",
+      "typeLabel": "Council positions and statement of reasons"
+    },
+    {
+      "sectorCode": "5",
+      "sectorLabel": "Preparatory documents",
+      "typeCode": "IP",
+      "typeLabel": "Other resolutions and declarations of the EP"
+    },
+    {
+      "sectorCode": "5",
+      "sectorLabel": "Preparatory documents",
+      "typeCode": "XA",
+      "typeLabel": "Other documents of the ECA"
+    },
+    {
+      "sectorCode": "5",
+      "sectorLabel": "Preparatory documents",
+      "typeCode": "IR",
+      "typeLabel": "CoR Own-initiative opinions"
+    },
+    {
+      "sectorCode": "5",
+      "sectorLabel": "Preparatory documents",
+      "typeCode": "XB",
+      "typeLabel": "Other documents of the ECB"
+    },
+    {
+      "sectorCode": "5",
+      "sectorLabel": "Preparatory documents",
+      "typeCode": "AK",
+      "typeLabel": "ECSC Consultative Committee Opinions"
+    },
+    {
+      "sectorCode": "5",
+      "sectorLabel": "Preparatory documents",
+      "typeCode": "XC",
+      "typeLabel": "Other documents of the Commission"
+    },
+    {
+      "sectorCode": "5",
+      "sectorLabel": "Preparatory documents",
+      "typeCode": "TA",
+      "typeLabel": "ECA Reports"
+    },
+    {
+      "sectorCode": "5",
+      "sectorLabel": "Preparatory documents",
+      "typeCode": "XE",
+      "typeLabel": "Other documents of the EESC"
+    },
+    {
+      "sectorCode": "5",
+      "sectorLabel": "Preparatory documents",
+      "typeCode": "XG",
+      "typeLabel": "Other documents of the Council or the Member States"
+    },
+    {
+      "sectorCode": "5",
+      "sectorLabel": "Preparatory documents",
+      "typeCode": "AP",
+      "typeLabel": "Legislative resolutions of the EP"
+    },
+    {
+      "sectorCode": "5",
+      "sectorLabel": "Preparatory documents",
+      "typeCode": "AR",
+      "typeLabel": "CoR Opinions on consultation"
+    },
+    {
+      "sectorCode": "5",
+      "sectorLabel": "Preparatory documents",
+      "typeCode": "PC",
+      "typeLabel": "COM – legislative proposals, and documents related"
+    },
+    {
+      "sectorCode": "5",
+      "sectorLabel": "Preparatory documents",
+      "typeCode": "XK",
+      "typeLabel": "Other documents of the ECSC Committee"
+    },
+    {
+      "sectorCode": "5",
+      "sectorLabel": "Preparatory documents",
+      "typeCode": "XP",
+      "typeLabel": "Other documents of the EP"
+    },
+    {
+      "sectorCode": "5",
+      "sectorLabel": "Preparatory documents",
+      "typeCode": "JC",
+      "typeLabel": "JOIN documents"
+    },
+    {
+      "sectorCode": "5",
+      "sectorLabel": "Preparatory documents",
+      "typeCode": "HB",
+      "typeLabel": "ECB Recommendations"
+    },
+    {
+      "sectorCode": "5",
+      "sectorLabel": "Preparatory documents",
+      "typeCode": "XR",
+      "typeLabel": "Other documents of the CoR"
+    },
+    {
+      "sectorCode": "5",
+      "sectorLabel": "Preparatory documents",
+      "typeCode": "FC",
+      "typeLabel": "Proposals of codified versions of directives"
+    },
+    {
+      "sectorCode": "5",
+      "sectorLabel": "Preparatory documents",
+      "typeCode": "DC",
+      "typeLabel": "Other COM documents (green papers, white papers, communications, reports, etc.)"
+    },
+    {
+      "sectorCode": "6",
+      "sectorLabel": "EU case-law",
+      "typeCode": "TT",
+      "typeLabel": "Third party proceeding"
+    },
+    {
+      "sectorCode": "6",
+      "sectorLabel": "EU case-law",
+      "typeCode": "FJ",
+      "typeLabel": "Judgment"
+    },
+    {
+      "sectorCode": "6",
+      "sectorLabel": "EU case-law",
+      "typeCode": "FN",
+      "typeLabel": "Communication: new case"
+    },
+    {
+      "sectorCode": "6",
+      "sectorLabel": "EU case-law",
+      "typeCode": "FO",
+      "typeLabel": "Order"
+    },
+    {
+      "sectorCode": "6",
+      "sectorLabel": "EU case-law",
+      "typeCode": "FT",
+      "typeLabel": "Third party proceeding"
+    },
+    {
+      "sectorCode": "6",
+      "sectorLabel": "EU case-law",
+      "typeCode": "CA",
+      "typeLabel": "Communication: judgment"
+    },
+    {
+      "sectorCode": "6",
+      "sectorLabel": "EU case-law",
+      "typeCode": "CB",
+      "typeLabel": "Communication: order"
+    },
+    {
+      "sectorCode": "6",
+      "sectorLabel": "EU case-law",
+      "typeCode": "CC",
+      "typeLabel": "Opinion of the Advocate-General"
+    },
+    {
+      "sectorCode": "6",
+      "sectorLabel": "EU case-law",
+      "typeCode": "CD",
+      "typeLabel": "Decision"
+    },
+    {
+      "sectorCode": "6",
+      "sectorLabel": "EU case-law",
+      "typeCode": "CG",
+      "typeLabel": "Communication: opinion"
+    },
+    {
+      "sectorCode": "6",
+      "sectorLabel": "EU case-law",
+      "typeCode": "CJ",
+      "typeLabel": "Judgment"
+    },
+    {
+      "sectorCode": "6",
+      "sectorLabel": "EU case-law",
+      "typeCode": "CN",
+      "typeLabel": "Communication: new case"
+    },
+    {
+      "sectorCode": "6",
+      "sectorLabel": "EU case-law",
+      "typeCode": "CO",
+      "typeLabel": "Order"
+    },
+    {
+      "sectorCode": "6",
+      "sectorLabel": "EU case-law",
+      "typeCode": "CP",
+      "typeLabel": "View"
+    },
+    {
+      "sectorCode": "6",
+      "sectorLabel": "EU case-law",
+      "typeCode": "TA",
+      "typeLabel": "Communication: judgment"
+    },
+    {
+      "sectorCode": "6",
+      "sectorLabel": "EU case-law",
+      "typeCode": "TB",
+      "typeLabel": "Communication: order"
+    },
+    {
+      "sectorCode": "6",
+      "sectorLabel": "EU case-law",
+      "typeCode": "TC",
+      "typeLabel": "Opinion of the Advocate-General"
+    },
+    {
+      "sectorCode": "6",
+      "sectorLabel": "EU case-law",
+      "typeCode": "CS",
+      "typeLabel": "Seizure"
+    },
+    {
+      "sectorCode": "6",
+      "sectorLabel": "EU case-law",
+      "typeCode": "CT",
+      "typeLabel": "Third party proceeding"
+    },
+    {
+      "sectorCode": "6",
+      "sectorLabel": "EU case-law",
+      "typeCode": "CU",
+      "typeLabel": "Communication: request for an opinion"
+    },
+    {
+      "sectorCode": "6",
+      "sectorLabel": "EU case-law",
+      "typeCode": "CV",
+      "typeLabel": "Opinion"
+    },
+    {
+      "sectorCode": "6",
+      "sectorLabel": "EU case-law",
+      "typeCode": "CX",
+      "typeLabel": "Ruling"
+    },
+    {
+      "sectorCode": "6",
+      "sectorLabel": "EU case-law",
+      "typeCode": "TJ",
+      "typeLabel": "Judgment"
+    },
+    {
+      "sectorCode": "6",
+      "sectorLabel": "EU case-law",
+      "typeCode": "TN",
+      "typeLabel": "Communication: new case"
+    },
+    {
+      "sectorCode": "6",
+      "sectorLabel": "EU case-law",
+      "typeCode": "TO",
+      "typeLabel": "Order"
+    },
+    {
+      "sectorCode": "6",
+      "sectorLabel": "EU case-law",
+      "typeCode": "FA",
+      "typeLabel": "Communication: judgment"
+    },
+    {
+      "sectorCode": "6",
+      "sectorLabel": "EU case-law",
+      "typeCode": "FB",
+      "typeLabel": "Communication: order"
+    },
+    {
+      "sectorCode": "7",
+      "sectorLabel": "National transposition",
+      "typeCode": "F",
+      "typeLabel": ""
+    },
+    {
+      "sectorCode": "7",
+      "sectorLabel": "National transposition",
+      "typeCode": "L",
+      "typeLabel": "National measures to transpose directives"
+    },
+    {
+      "sectorCode": "8",
+      "sectorLabel": "References to national case-law concerning EU law",
+      "typeCode": "XX",
+      "typeLabel": "Other countries, EFTA Court, European Court of Human Rights"
+    },
+    {
+      "sectorCode": "8",
+      "sectorLabel": "References to national case-law concerning EU law",
+      "typeCode": "DE",
+      "typeLabel": "Germany"
+    },
+    {
+      "sectorCode": "8",
+      "sectorLabel": "References to national case-law concerning EU law",
+      "typeCode": "NO",
+      "typeLabel": "Norway"
+    },
+    {
+      "sectorCode": "8",
+      "sectorLabel": "References to national case-law concerning EU law",
+      "typeCode": "BE",
+      "typeLabel": "Belgium"
+    },
+    {
+      "sectorCode": "8",
+      "sectorLabel": "References to national case-law concerning EU law",
+      "typeCode": "FI",
+      "typeLabel": "Finland"
+    },
+    {
+      "sectorCode": "8",
+      "sectorLabel": "References to national case-law concerning EU law",
+      "typeCode": "PT",
+      "typeLabel": "Portugal"
+    },
+    {
+      "sectorCode": "8",
+      "sectorLabel": "References to national case-law concerning EU law",
+      "typeCode": "BG",
+      "typeLabel": "Bulgaria"
+    },
+    {
+      "sectorCode": "8",
+      "sectorLabel": "References to national case-law concerning EU law",
+      "typeCode": "DK",
+      "typeLabel": "Denmark"
+    },
+    {
+      "sectorCode": "8",
+      "sectorLabel": "References to national case-law concerning EU law",
+      "typeCode": "LT",
+      "typeLabel": "Lithuania"
+    },
+    {
+      "sectorCode": "8",
+      "sectorLabel": "References to national case-law concerning EU law",
+      "typeCode": "LU",
+      "typeLabel": "Luxembourg"
+    },
+    {
+      "sectorCode": "8",
+      "sectorLabel": "References to national case-law concerning EU law",
+      "typeCode": "HR",
+      "typeLabel": "Croatia"
+    },
+    {
+      "sectorCode": "8",
+      "sectorLabel": "References to national case-law concerning EU law",
+      "typeCode": "LV",
+      "typeLabel": "Latvia"
+    },
+    {
+      "sectorCode": "8",
+      "sectorLabel": "References to national case-law concerning EU law",
+      "typeCode": "FR",
+      "typeLabel": "France"
+    },
+    {
+      "sectorCode": "8",
+      "sectorLabel": "References to national case-law concerning EU law",
+      "typeCode": "HU",
+      "typeLabel": "Hungary"
+    },
+    {
+      "sectorCode": "8",
+      "sectorLabel": "References to national case-law concerning EU law",
+      "typeCode": "SE",
+      "typeLabel": "Sweden"
+    },
+    {
+      "sectorCode": "8",
+      "sectorLabel": "References to national case-law concerning EU law",
+      "typeCode": "SI",
+      "typeLabel": "Slovenia"
+    },
+    {
+      "sectorCode": "8",
+      "sectorLabel": "References to national case-law concerning EU law",
+      "typeCode": "UK",
+      "typeLabel": "United Kingdom"
+    },
+    {
+      "sectorCode": "8",
+      "sectorLabel": "References to national case-law concerning EU law",
+      "typeCode": "SK",
+      "typeLabel": "Slovakia"
+    },
+    {
+      "sectorCode": "8",
+      "sectorLabel": "References to national case-law concerning EU law",
+      "typeCode": "IE",
+      "typeLabel": "Ireland"
+    },
+    {
+      "sectorCode": "8",
+      "sectorLabel": "References to national case-law concerning EU law",
+      "typeCode": "EE",
+      "typeLabel": "Estonia"
+    },
+    {
+      "sectorCode": "8",
+      "sectorLabel": "References to national case-law concerning EU law",
+      "typeCode": "CH",
+      "typeLabel": "Switzerland"
+    },
+    {
+      "sectorCode": "8",
+      "sectorLabel": "References to national case-law concerning EU law",
+      "typeCode": "EL",
+      "typeLabel": "Greece"
+    },
+    {
+      "sectorCode": "8",
+      "sectorLabel": "References to national case-law concerning EU law",
+      "typeCode": "MT",
+      "typeLabel": "Malta"
+    },
+    {
+      "sectorCode": "8",
+      "sectorLabel": "References to national case-law concerning EU law",
+      "typeCode": "IS",
+      "typeLabel": "Iceland"
+    },
+    {
+      "sectorCode": "8",
+      "sectorLabel": "References to national case-law concerning EU law",
+      "typeCode": "IT",
+      "typeLabel": "Italy"
+    },
+    {
+      "sectorCode": "8",
+      "sectorLabel": "References to national case-law concerning EU law",
+      "typeCode": "ES",
+      "typeLabel": "Spain"
+    },
+    {
+      "sectorCode": "8",
+      "sectorLabel": "References to national case-law concerning EU law",
+      "typeCode": "AT",
+      "typeLabel": "Austria"
+    },
+    {
+      "sectorCode": "8",
+      "sectorLabel": "References to national case-law concerning EU law",
+      "typeCode": "CY",
+      "typeLabel": "Cyprus"
+    },
+    {
+      "sectorCode": "8",
+      "sectorLabel": "References to national case-law concerning EU law",
+      "typeCode": "CZ",
+      "typeLabel": "Czech Republic"
+    },
+    {
+      "sectorCode": "8",
+      "sectorLabel": "References to national case-law concerning EU law",
+      "typeCode": "PL",
+      "typeLabel": "Poland"
+    },
+    {
+      "sectorCode": "8",
+      "sectorLabel": "References to national case-law concerning EU law",
+      "typeCode": "RO",
+      "typeLabel": "Romania"
+    },
+    {
+      "sectorCode": "8",
+      "sectorLabel": "References to national case-law concerning EU law",
+      "typeCode": "NL",
+      "typeLabel": "Netherlands"
+    },
+    {
+      "sectorCode": "9",
+      "sectorLabel": "Parliamentary questions",
+      "typeCode": "E",
+      "typeLabel": "Written questions"
+    },
+    {
+      "sectorCode": "9",
+      "sectorLabel": "Parliamentary questions",
+      "typeCode": "H",
+      "typeLabel": "Questions at question time"
+    },
+    {
+      "sectorCode": "9",
+      "sectorLabel": "Parliamentary questions",
+      "typeCode": "O",
+      "typeLabel": "Oral questions"
+    },
+    {
+      "sectorCode": "0",
+      "sectorLabel": "Consolidated texts",
+      "typeCode": "0",
+      "typeLabel": "Consolidated texts: non-official documents integrating legal acts with their amendments and corrections"
+    },
+    {
+      "sectorCode": "C",
+      "sectorLabel": "Other documents published in the Official Journal C series",
+      "typeCode": "C",
+      "typeLabel": "Other documents published in the Official Journal C series"
+    },
+    {
+      "sectorCode": "E",
+      "sectorLabel": "EFTA documents",
+      "typeCode": "P",
+      "typeLabel": "Pending cases of the EFTA Court"
+    },
+    {
+      "sectorCode": "E",
+      "sectorLabel": "EFTA documents",
+      "typeCode": "A",
+      "typeLabel": "Agreements between EFTA Member States"
+    },
+    {
+      "sectorCode": "E",
+      "sectorLabel": "EFTA documents",
+      "typeCode": "C",
+      "typeLabel": "Acts of the EFTA Surveillance Authority"
+    },
+    {
+      "sectorCode": "E",
+      "sectorLabel": "EFTA documents",
+      "typeCode": "G",
+      "typeLabel": "Acts of the EFTA Standing Committee"
+    },
+    {
+      "sectorCode": "E",
+      "sectorLabel": "EFTA documents",
+      "typeCode": "X",
+      "typeLabel": "Information and communications"
+    },
+    {
+      "sectorCode": "E",
+      "sectorLabel": "EFTA documents",
+      "typeCode": "J",
+      "typeLabel": "Decisions, orders, consultative opinions of the EFTA Court"
+    },
+    {
+      "sectorCode": "E",
+      "sectorLabel": "EFTA documents",
+      "typeCode": "O",
+      "typeLabel": "Other acts"
+    }
+  ],
+  "actCategoryDtos": [
+    {
+      "resourceSector": "Regulation",
+      "filters": [
+        {
+          "filterName": "listResourceType",
+          "filterValues": [
+            "REG",
+            "REG_DEL",
+            "REG_FINANC",
+            "REG_IMPL"
+          ]
+        }
+      ]
+    },
+    {
+      "resourceSector": "Decision",
+      "filters": [
+        {
+          "filterName": "listResourceType",
+          "filterValues": [
+            "DIR",
+            "DIR_IMPL",
+            "DIR_DEL"
+          ]
+        }
+      ]
+    },
+    {
+      "resourceSector": "Directive",
+      "filters": [
+        {
+          "filterName": "listResourceType",
+          "filterValues": [
+            "DIR",
+            "DIR_IMPL",
+            "DIR_DEL"
+          ]
+        }
+      ]
+    },
+    {
+      "resourceSector": "Treaties",
+      "filters": [
+        {
+          "filterName": "idSector",
+          "filterValues": [
+            "1"
+          ]
+        }
+      ]
+    },
+    {
+      "resourceSector": "International Agreements",
+      "filters": [
+        {
+          "filterName": "idSector",
+          "filterValues": [
+            "2"
+          ]
+        }
+      ]
+    },
+    {
+      "resourceSector": "Consolidated Legislation",
+      "filters": [
+        {
+          "filterName": "idSector",
+          "filterValues": [
+            "0"
+          ]
+        }
+      ]
+    },
+    {
+      "resourceSector": "Preparatory Acts",
+      "filters": [
+        {
+          "filterName": "idSector",
+          "filterValues": [
+            "5"
+          ]
+        }
+      ]
+    },
+    {
+      "resourceSector": "Legislation",
+      "filters": [
+        {
+          "filterName": "idSector",
+          "filterValues": [
+            "3",
+            "4"
+          ]
+        }
+      ]
+    },
+    {
+      "resourceSector": "EU Court Case",
+      "filters": [
+        {
+          "filterName": "idSector",
+          "filterValues": [
+            "6"
+          ]
+        }
+      ]
+    }
+  ],
+  "subjectTypes": [
+    {
+      "code": "COPT",
+      "label": "economic, financial and technical cooperation with third countries"
+    },
+    {
+      "code": "TDCA",
+      "label": "Customs duties: speed-up decisions"
+    },
+    {
+      "code": "FD",
+      "label": "Hard fibres"
+    },
+    {
+      "code": "REACH",
+      "label": "REACH"
+    },
+    {
+      "code": "ACP",
+      "label": "African, Caribbean and Pacific States (ACP)"
+    },
+    {
+      "code": "ADH",
+      "label": "Accession"
+    },
+    {
+      "code": "AELE",
+      "label": "European Free Trade Association (EFTA)"
+    },
+    {
+      "code": "AGRI",
+      "label": "Agriculture and Fisheries"
+    },
+    {
+      "code": "AIDE",
+      "label": "State aids"
+    },
+    {
+      "code": "ASSO",
+      "label": "Association Agreement"
+    },
+    {
+      "code": "BOV",
+      "label": "Beef and veal"
+    },
+    {
+      "code": "CAC",
+      "label": "Cocoa"
+    },
+    {
+      "code": "CDEV",
+      "label": "Development cooperation"
+    },
+    {
+      "code": "CERE",
+      "label": "Cereals"
+    },
+    {
+      "code": "CIT",
+      "label": "Citizenship of the Union"
+    },
+    {
+      "code": "COJP",
+      "label": "judicial cooperation in criminal matters"
+    },
+    {
+      "code": "CONC",
+      "label": "Competition"
+    },
+    {
+      "code": "CONT",
+      "label": "Quotas - third countries"
+    },
+    {
+      "code": "COOP",
+      "label": "Cooperation"
+    },
+    {
+      "code": "D-AL",
+      "label": "Foodstuffs"
+    },
+    {
+      "code": "ENTR",
+      "label": "Agreements, decisions and concerted practices"
+    },
+    {
+      "code": "ENV",
+      "label": "Environment"
+    },
+    {
+      "code": "EXT",
+      "label": "External relations"
+    },
+    {
+      "code": "FEOG",
+      "label": "European Agricultural Guidance and Guarantee Fund (EAGGF)"
+    },
+    {
+      "code": "FIN",
+      "label": "Financial provisions"
+    },
+    {
+      "code": "FISC",
+      "label": "Taxation"
+    },
+    {
+      "code": "GATT",
+      "label": "General Agreement on Tariffs and Trade (GATT)"
+    },
+    {
+      "code": "INFO",
+      "label": "Information and verification"
+    },
+    {
+      "code": "INST",
+      "label": "Provisions governing the Institutions"
+    },
+    {
+      "code": "J-AI",
+      "label": "Justice and home affairs"
+    },
+    {
+      "code": "LAIT",
+      "label": "Milk products"
+    },
+    {
+      "code": "LCM",
+      "label": "Free movement of goods"
+    },
+    {
+      "code": "LCT",
+      "label": "Free movement of workers"
+    },
+    {
+      "code": "LES",
+      "label": "Freedom of establishment"
+    },
+    {
+      "code": "MARI",
+      "label": "Internal market - Principles"
+    },
+    {
+      "code": "MERG",
+      "label": "Concentrations between undertakings"
+    },
+    {
+      "code": "MGRA",
+      "label": "Oils and fats"
+    },
+    {
+      "code": "PCOM",
+      "label": "Commercial policy"
+    },
+    {
+      "code": "PECH",
+      "label": "Fisheries policy"
+    },
+    {
+      "code": "PESC",
+      "label": "Common foreign and security policy"
+    },
+    {
+      "code": "PME",
+      "label": "Small and medium-sized enterprises"
+    },
+    {
+      "code": "PROT",
+      "label": "Consumer protection"
+    },
+    {
+      "code": "PTOM",
+      "label": "Overseas countries and territories"
+    },
+    {
+      "code": "RAPL",
+      "label": "Approximation of laws"
+    },
+    {
+      "code": "RDT",
+      "label": "Research and technological development"
+    },
+    {
+      "code": "RECO",
+      "label": "Judicial proceedings"
+    },
+    {
+      "code": "RIZ",
+      "label": "Rice"
+    },
+    {
+      "code": "SANT",
+      "label": "public health"
+    },
+    {
+      "code": "SERV",
+      "label": "Freedom to provide services"
+    },
+    {
+      "code": "SESO",
+      "label": "Social security for migrant workers"
+    },
+    {
+      "code": "SIDE",
+      "label": "Steel industry"
+    },
+    {
+      "code": "SOPO",
+      "label": "Social Policy"
+    },
+    {
+      "code": "STAT",
+      "label": "Staff regulations and employment conditions - EC"
+    },
+    {
+      "code": "TDC",
+      "label": "Common customs tariff"
+    },
+    {
+      "code": "TDCM",
+      "label": "CCT: derogations"
+    },
+    {
+      "code": "TRAN",
+      "label": "Transport"
+    },
+    {
+      "code": "TVA",
+      "label": "Value added tax"
+    },
+    {
+      "code": "TXTL",
+      "label": "Textiles"
+    },
+    {
+      "code": "UD",
+      "label": "Customs Union"
+    },
+    {
+      "code": "VA",
+      "label": "Value for customs purposes"
+    },
+    {
+      "code": "VETE",
+      "label": "Veterinary legislation"
+    },
+    {
+      "code": "VIN",
+      "label": "Wine"
+    },
+    {
+      "code": "AL-A",
+      "label": "Animal feedingstuffs"
+    },
+    {
+      "code": "ALIM",
+      "label": "Food aid"
+    },
+    {
+      "code": "CECA",
+      "label": "ECSC matters"
+    },
+    {
+      "code": "COJC",
+      "label": "judicial cooperation in civil matters"
+    },
+    {
+      "code": "COMP",
+      "label": "Accession compensatory amounts"
+    },
+    {
+      "code": "DDLH",
+      "label": "Human rights"
+    },
+    {
+      "code": "ELSJ",
+      "label": "area of freedom, security and justice"
+    },
+    {
+      "code": "ENER",
+      "label": "Energy"
+    },
+    {
+      "code": "ETAB",
+      "label": "Right of establishment"
+    },
+    {
+      "code": "ETEC",
+      "label": "Technical barriers"
+    },
+    {
+      "code": "F-L",
+      "label": "Fruit and vegetables"
+    },
+    {
+      "code": "FSE",
+      "label": "European Social Fund (ESF)"
+    },
+    {
+      "code": "IMMI",
+      "label": "Immigration and asylum policy"
+    },
+    {
+      "code": "INDU",
+      "label": "Industry"
+    },
+    {
+      "code": "LCP",
+      "label": "Free movement of persons"
+    },
+    {
+      "code": "MARQ",
+      "label": "Trade marks"
+    },
+    {
+      "code": "PHYT",
+      "label": "Plant health legislation"
+    },
+    {
+      "code": "PRIN",
+      "label": "Principles, objectives and tasks of the Treaties"
+    },
+    {
+      "code": "PROP",
+      "label": "Intellectual, industrial and commercial property"
+    },
+    {
+      "code": "QUOT",
+      "label": "Production quotas"
+    },
+    {
+      "code": "RPRO",
+      "label": "Own resources"
+    },
+    {
+      "code": "RTR",
+      "label": "Trans-European networks"
+    },
+    {
+      "code": "SOCI",
+      "label": "Social provisions"
+    },
+    {
+      "code": "STRA",
+      "label": "Agricultural structures"
+    },
+    {
+      "code": "TDCC",
+      "label": "Customs duties: Community tariff quotas"
+    },
+    {
+      "code": "TECN",
+      "label": "Technology"
+    },
+    {
+      "code": "TEEQ",
+      "label": "Charges having an equivalent effect"
+    },
+    {
+      "code": "TELE",
+      "label": "Telecommunications"
+    },
+    {
+      "code": "UEM",
+      "label": "Economic and Monetary Union"
+    },
+    {
+      "code": "ADMI",
+      "label": "Common customs tariff: temporary importation"
+    },
+    {
+      "code": "ASSI",
+      "label": "Assistance"
+    },
+    {
+      "code": "COES",
+      "label": "economic, social and territorial cohesion"
+    },
+    {
+      "code": "COOR",
+      "label": "Coordination of structural instruments"
+    },
+    {
+      "code": "CULT",
+      "label": "culture"
+    },
+    {
+      "code": "EFPJ",
+      "label": "Education, vocational training and youth"
+    },
+    {
+      "code": "ENTC",
+      "label": "Joint undertakings"
+    },
+    {
+      "code": "IMPL",
+      "label": "Provisions under Article 235 EEC"
+    },
+    {
+      "code": "INV",
+      "label": "Investments"
+    },
+    {
+      "code": "LIEG",
+      "label": "Cork"
+    },
+    {
+      "code": "MEEQ",
+      "label": "Measures having equivalent effect"
+    },
+    {
+      "code": "MIN",
+      "label": "Ore"
+    },
+    {
+      "code": "PREG",
+      "label": "Regional policy"
+    },
+    {
+      "code": "PRIX",
+      "label": "Prices"
+    },
+    {
+      "code": "SAUV",
+      "label": "Protective measures"
+    },
+    {
+      "code": "SEME",
+      "label": "Seeds and seedlings"
+    },
+    {
+      "code": "TDCN",
+      "label": "Customs duties: national tariff quotas"
+    },
+    {
+      "code": "BCE",
+      "label": "European Central Bank (ECB)"
+    },
+    {
+      "code": "BUDG",
+      "label": "Budget"
+    },
+    {
+      "code": "CHDF",
+      "label": "Charter of Fundamental Rights"
+    },
+    {
+      "code": "DFON",
+      "label": "Fundamental rights"
+    },
+    {
+      "code": "DISC",
+      "label": "anti-discrimination"
+    },
+    {
+      "code": "HARM",
+      "label": "Harmonisation of laws"
+    },
+    {
+      "code": "IMPK",
+      "label": "Provisions implementing Article 95 - ECSC"
+    },
+    {
+      "code": "LCC",
+      "label": "Free movement of capital"
+    },
+    {
+      "code": "OVIN",
+      "label": "Sheepmeat and goatmeat"
+    },
+    {
+      "code": "PRET",
+      "label": "Loans and subsidies"
+    },
+    {
+      "code": "RECH",
+      "label": "Research and training"
+    },
+    {
+      "code": "SECU",
+      "label": "Safety at work and elsewhere"
+    },
+    {
+      "code": "ALCO",
+      "label": "Alcohol"
+    },
+    {
+      "code": "CECC",
+      "label": "Brussels Convention of 27 September 1968"
+    },
+    {
+      "code": "CLUG",
+      "label": "Lugano Convention"
+    },
+    {
+      "code": "DUMP",
+      "label": "Dumping"
+    },
+    {
+      "code": "EMPL",
+      "label": "Employment"
+    },
+    {
+      "code": "FINC",
+      "label": "Financial provisions ECSC"
+    },
+    {
+      "code": "IRDA",
+      "label": "Integration of the German Democratic Republic (GDR)"
+    },
+    {
+      "code": "MARC",
+      "label": "public procurement in the European Union"
+    },
+    {
+      "code": "RDOU",
+      "label": "Customs procedures"
+    },
+    {
+      "code": "RPRE",
+      "label": "Preferential systems"
+    },
+    {
+      "code": "DGEN",
+      "label": "General provisions"
+    },
+    {
+      "code": "PORC",
+      "label": "Pigmeat"
+    },
+    {
+      "code": "POSI",
+      "label": "Dominant position"
+    },
+    {
+      "code": "PRAT",
+      "label": "Concerted practices"
+    },
+    {
+      "code": "SUCR",
+      "label": "Sugar"
+    },
+    {
+      "code": "ACTE",
+      "label": "Acts of the institutions"
+    },
+    {
+      "code": "HARO",
+      "label": "Harmonisation of customs law: origin of goods"
+    },
+    {
+      "code": "MONA",
+      "label": "Monetary measures in the field of agriculture"
+    },
+    {
+      "code": "ASIL",
+      "label": "asylum policy"
+    },
+    {
+      "code": "ESPA",
+      "label": "space"
+    },
+    {
+      "code": "HOUB",
+      "label": "Hops"
+    },
+    {
+      "code": "NUCL",
+      "label": "Nuclear common market"
+    },
+    {
+      "code": "PECO",
+      "label": "Economic policy"
+    },
+    {
+      "code": "RSTR",
+      "label": "Quantitative restrictions"
+    },
+    {
+      "code": "RTRA",
+      "label": "Community transit systems"
+    },
+    {
+      "code": "TDCF",
+      "label": "CCT: franchise"
+    },
+    {
+      "code": "ADAP",
+      "label": "Adjustment"
+    },
+    {
+      "code": "CONJ",
+      "label": "Conjunctural policy"
+    },
+    {
+      "code": "PEM",
+      "label": "Economic and monetary policy"
+    },
+    {
+      "code": "POLL",
+      "label": "Pollution"
+    },
+    {
+      "code": "FRON",
+      "label": "Border checks"
+    },
+    {
+      "code": "DROIT",
+      "label": "General principles of Community law"
+    },
+    {
+      "code": "OMC",
+      "label": "World Trade Organization"
+    },
+    {
+      "code": "P-F",
+      "label": "Plants and flowers"
+    },
+    {
+      "code": "SANI",
+      "label": "Health and safety"
+    },
+    {
+      "code": "COMB",
+      "label": "Fuels"
+    },
+    {
+      "code": "TABA",
+      "label": "Tobacco"
+    },
+    {
+      "code": "EAMA",
+      "label": "Associated African States and Madagascar"
+    },
+    {
+      "code": "BREV",
+      "label": "Patents"
+    },
+    {
+      "code": "OBT",
+      "label": "Plant varieties"
+    },
+    {
+      "code": "PDON",
+      "label": "Data protection"
+    },
+    {
+      "code": "FEAGA",
+      "label": "European Agricultural Guarantee Fund"
+    },
+    {
+      "code": "DEMO",
+      "label": "Designs"
+    },
+    {
+      "code": "HOUI",
+      "label": "Hard coal"
+    },
+    {
+      "code": "CAFE",
+      "label": "Coffee"
+    },
+    {
+      "code": "INDR",
+      "label": "Indirect taxation"
+    },
+    {
+      "code": "SECR",
+      "label": "Security system"
+    },
+    {
+      "code": "FEADER",
+      "label": "Agricultural structural funds"
+    },
+    {
+      "code": "CROM",
+      "label": "Rome Convention of 19 June 1980"
+    },
+    {
+      "code": "CEDH",
+      "label": "European Convention on Human Rights"
+    },
+    {
+      "code": "DADV",
+      "label": "Copyright and related rights"
+    },
+    {
+      "code": "HARX",
+      "label": "Harmonisation of customs law: various"
+    },
+    {
+      "code": "IME",
+      "label": "European Monetary Institute"
+    },
+    {
+      "code": "PIM",
+      "label": "Integrated Mediterranean programmes (IMP)"
+    },
+    {
+      "code": "HARE",
+      "label": "Harmonisation of customs law: warehouses, free zones"
+    },
+    {
+      "code": "PCIV",
+      "label": "civil protection"
+    },
+    {
+      "code": "HARD",
+      "label": "Harmonisation of customs law: customs territory"
+    },
+    {
+      "code": "CRBM",
+      "label": "conservation of marine biological resources"
+    },
+    {
+      "code": "RQME",
+      "label": "Quantitative restrictions and measures of equivalent effect"
+    },
+    {
+      "code": "CEEA",
+      "label": "Euratom matters"
+    },
+    {
+      "code": "PENU",
+      "label": "Shortage"
+    },
+    {
+      "code": "ORIG",
+      "label": "Rules of origin"
+    },
+    {
+      "code": "ACIE",
+      "label": "Steel"
+    },
+    {
+      "code": "DOUA",
+      "label": "Customs Cooperation"
+    },
+    {
+      "code": "ENCO",
+      "label": "Agreements and concentrations"
+    },
+    {
+      "code": "HORS",
+      "label": "Non-Annex II EEC Treaty products"
+    },
+    {
+      "code": "LPRA",
+      "label": "Free circulation"
+    },
+    {
+      "code": "MEXT",
+      "label": "Products from third countries"
+    },
+    {
+      "code": "FEDE",
+      "label": "European Regional Development Fund (ERDF)"
+    },
+    {
+      "code": "FLT",
+      "label": "Processed fruit and vegetables"
+    },
+    {
+      "code": "PDET",
+      "label": "Potatoes"
+    },
+    {
+      "code": "PREL",
+      "label": "Levies and loans"
+    },
+    {
+      "code": "V-LG",
+      "label": "Rabbit meat and farmed game meat"
+    },
+    {
+      "code": "BEI",
+      "label": "European Investment Bank (EIB)"
+    },
+    {
+      "code": "EURO",
+      "label": "Euro"
+    },
+    {
+      "code": "EXCL",
+      "label": "Exclusive agreements"
+    },
+    {
+      "code": "INTE",
+      "label": "Internal taxation"
+    },
+    {
+      "code": "SILV",
+      "label": "Forestry"
+    },
+    {
+      "code": "ACCD",
+      "label": "Access to documents"
+    },
+    {
+      "code": "DECH",
+      "label": "Waste"
+    },
+    {
+      "code": "HART",
+      "label": "Harmonisation of customs law: Community transit"
+    },
+    {
+      "code": "NAT",
+      "label": "Non-discrimination on grounds of nationality"
+    },
+    {
+      "code": "PERE",
+      "label": "Scrap equalisation"
+    },
+    {
+      "code": "COMT",
+      "label": "Brussels Convention of 27 September 1968 - Jurisdiction"
+    },
+    {
+      "code": "DDES",
+      "label": "Right of entry and residence"
+    },
+    {
+      "code": "EXEC",
+      "label": "Brussels Convention of 27 September 1968 - Enforcement"
+    },
+    {
+      "code": "HUMA",
+      "label": "humanitarian aid"
+    },
+    {
+      "code": "POIS",
+      "label": "Peas and field beans"
+    },
+    {
+      "code": "PRIV",
+      "label": "Privileges and immunities"
+    },
+    {
+      "code": "SEBC",
+      "label": "European system of central banks"
+    },
+    {
+      "code": "FEVT",
+      "label": "Eur Foundation Improvement of Living and Working Conditions"
+    },
+    {
+      "code": "PIND",
+      "label": "Industrial policy"
+    },
+    {
+      "code": "FED",
+      "label": "European Development Fund (EDF)"
+    },
+    {
+      "code": "HARV",
+      "label": "Harmonisation of customs law: value for customs purposes"
+    },
+    {
+      "code": "BPAI",
+      "label": "Balance of payments"
+    },
+    {
+      "code": "BANA",
+      "label": "Bananas"
+    },
+    {
+      "code": "TDCS",
+      "label": "Customs duties: suspensions"
+    },
+    {
+      "code": "CTEM",
+      "label": "Quotas between Member States"
+    },
+    {
+      "code": "O-V",
+      "label": "Eggs and poultry"
+    },
+    {
+      "code": "DOM",
+      "label": "French overseas departments"
+    },
+    {
+      "code": "RESP",
+      "label": "Non-contractual liability"
+    },
+    {
+      "code": "SPOR",
+      "label": "sport"
+    },
+    {
+      "code": "TOUR",
+      "label": "Tourism"
+    },
+    {
+      "code": "COAD",
+      "label": "administrative cooperation"
+    },
+    {
+      "code": "OCM",
+      "label": "Common organisation of agricultural markets"
+    },
+    {
+      "code": "PROC",
+      "label": "Procedural provisions"
+    },
+    {
+      "code": "COTO",
+      "label": "Cotton"
+    },
+    {
+      "code": "DIFF",
+      "label": "Dissemination of information"
+    },
+    {
+      "code": "INFQ",
+      "label": "Electronic data processing"
+    },
+    {
+      "code": "ACIN",
+      "label": "international agreements"
+    },
+    {
+      "code": "IDST",
+      "label": "Scientific and technical information and documentation"
+    },
+    {
+      "code": "COPO",
+      "label": "police cooperation"
+    },
+    {
+      "code": "FDES",
+      "label": "Dry fodder"
+    },
+    {
+      "code": "ACCE",
+      "label": "Accession to agreement"
+    },
+    {
+      "code": "L-CH",
+      "label": "Flax and hemp"
+    },
+    {
+      "code": "VSOI",
+      "label": "Silkworms"
+    },
+    {
+      "code": "COHE",
+      "label": "Cohesion Fund"
+    },
+    {
+      "code": "DIPL",
+      "label": "external action by the Union"
+    },
+    {
+      "code": "EMPR",
+      "label": "Loans contracted by the ECSC"
+    },
+    {
+      "code": "APPR",
+      "label": "Supply agency"
+    },
+    {
+      "code": "MNOP",
+      "label": "State monopolies of a commercial character"
+    },
+    {
+      "code": "TUC",
+      "label": "ECSC unified common tariff"
+    },
+    {
+      "code": "MECA",
+      "label": "Medium-sized firms, distributive trades and craft industries"
+    },
+    {
+      "code": "TDCD",
+      "label": "Customs duties: authorisation to defer application of CCT"
+    },
+    {
+      "code": "CHAR",
+      "label": "Coal"
+    },
+    {
+      "code": "ANCO",
+      "label": "Non-trade agreement"
+    },
+    {
+      "code": "CORE",
+      "label": "Closer cooperation"
+    },
+    {
+      "code": "HARP",
+      "label": "Harmonisation of customs law: inward processing"
+    },
+    {
+      "code": "SOLD",
+      "label": "Products of Annex II EEC Treaty and Regulation No 827/68"
+    },
+    {
+      "code": "COPE",
+      "label": "European political cooperation"
+    },
+    {
+      "code": "TIN",
+      "label": "Tin"
+    },
+    {
+      "code": "ACCI",
+      "label": "Excise duties"
+    },
+    {
+      "code": "SUBV",
+      "label": "Subsidies and aids of the High Authority"
+    },
+    {
+      "code": "CAO",
+      "label": "Rubber"
+    },
+    {
+      "code": "BT",
+      "label": "Tropical timber"
+    },
+    {
+      "code": "SOLI",
+      "label": "solidarity clause"
+    },
+    {
+      "code": "OP_DATPRO",
+      "label": "Provisional data"
+    },
+    {
+      "code": "FER",
+      "label": "Iron"
+    },
+    {
+      "code": "COKE",
+      "label": "Coke"
+    },
+    {
+      "code": "ACSP",
+      "label": "Special steels"
+    },
+    {
+      "code": "FERR",
+      "label": "Scrap"
+    },
+    {
+      "code": "AUTH",
+      "label": "Authentication"
+    },
+    {
+      "code": "ECU",
+      "label": "Conversion rates for the ECU"
+    },
+    {
+      "code": "FONT",
+      "label": "Pig iron"
+    },
+    {
+      "code": "c_02507fc0",
+      "label": "Monetary, financial institutions and markets statistics"
+    },
+    {
+      "code": "c_0e6e516f",
+      "label": "Foreign exchange and Foreign reserves"
+    },
+    {
+      "code": "c_206cfcfa",
+      "label": "Cooperation in the field of banking supervision"
+    },
+    {
+      "code": "c_29b3ace8",
+      "label": "Rules of procedure"
+    },
+    {
+      "code": "c_38e22180",
+      "label": "Monetary income"
+    },
+    {
+      "code": "c_3e1e305a",
+      "label": "Financial assistance"
+    },
+    {
+      "code": "c_4e12d83d",
+      "label": "Exchange of information and public access to documents"
+    },
+    {
+      "code": "c_594e5232",
+      "label": "Temporary framework"
+    },
+    {
+      "code": "c_6365150f",
+      "label": "General statistics"
+    },
+    {
+      "code": "c_68aa4a7e",
+      "label": "Euro banknotes production"
+    },
+    {
+      "code": "c_69c82520",
+      "label": "Data protection matters"
+    },
+    {
+      "code": "c_6f402b92",
+      "label": "External relations matters"
+    },
+    {
+      "code": "c_726ab1b3",
+      "label": "General framework"
+    },
+    {
+      "code": "c_7ca072c7",
+      "label": "Coin issuance"
+    },
+    {
+      "code": "c_8a588fbc",
+      "label": "Significance assessments"
+    },
+    {
+      "code": "c_8c4a6e26",
+      "label": "Monetary financing prohibition"
+    },
+    {
+      "code": "c_962003de",
+      "label": "Legal framework of the ESCB"
+    },
+    {
+      "code": "c_b1a922fd",
+      "label": "Financial market stability"
+    },
+    {
+      "code": "c_b21ec68a",
+      "label": "Transparency"
+    },
+    {
+      "code": "c_c3e5c068",
+      "label": "Monetary policy and Operations"
+    },
+    {
+      "code": "c_cc640542",
+      "label": "Confidentiality"
+    },
+    {
+      "code": "c_cd441130",
+      "label": "Payment and settlement systems"
+    },
+    {
+      "code": "c_cd594a3b",
+      "label": "Fraud prevention"
+    },
+    {
+      "code": "c_d7a89aa3",
+      "label": "Microprudential tasks"
+    },
+    {
+      "code": "c_d82c4c81",
+      "label": "ECB institutional provisions"
+    },
+    {
+      "code": "c_db8034fd",
+      "label": "Close cooperation"
+    },
+    {
+      "code": "c_f7fa4b33",
+      "label": "Euro short term rate"
+    },
+    {
+      "code": "c_04b171e5",
+      "label": "Financial accounts"
+    },
+    {
+      "code": "c_05d7dbed",
+      "label": "Supervisory powers and tasks"
+    },
+    {
+      "code": "c_06daf249",
+      "label": "Organisational principles"
+    },
+    {
+      "code": "c_12480e7d",
+      "label": "Monetary policy instruments"
+    },
+    {
+      "code": "c_18755e4d",
+      "label": "Exchange rate mechanism (ERM II)"
+    },
+    {
+      "code": "c_23d62986",
+      "label": "Reporting"
+    },
+    {
+      "code": "c_3ad55b09",
+      "label": "Minimum reserves"
+    },
+    {
+      "code": "c_40b2d24f",
+      "label": "Procurement"
+    },
+    {
+      "code": "c_491cdcaa",
+      "label": "Oversight"
+    },
+    {
+      "code": "c_5cd67341",
+      "label": "Euro banknotes issuance"
+    },
+    {
+      "code": "c_625f1587",
+      "label": "Securities holdings statistics"
+    },
+    {
+      "code": "c_64a25727",
+      "label": "Accounting and reporting"
+    },
+    {
+      "code": "c_64b94fae",
+      "label": "Cash changeover"
+    },
+    {
+      "code": "c_6c9bbb79",
+      "label": "Capital of the ECB"
+    },
+    {
+      "code": "c_714f9151",
+      "label": "Foreign exchange"
+    },
+    {
+      "code": "c_76b44336",
+      "label": "Banking supervision"
+    },
+    {
+      "code": "c_7b45b05f",
+      "label": "Auditing"
+    },
+    {
+      "code": "c_8e12de2a",
+      "label": "Statistics"
+    },
+    {
+      "code": "c_964d98cc",
+      "label": "Institutional structure and Governance"
+    },
+    {
+      "code": "c_9e589776",
+      "label": "Trans-European Automated Real-time Gross settlement Express Transfer system (TARGET2)"
+    },
+    {
+      "code": "c_abd72d0f",
+      "label": "External transactions and positions"
+    },
+    {
+      "code": "c_ac4906db",
+      "label": "Supervisory fees"
+    },
+    {
+      "code": "c_adb3ab0f",
+      "label": "Capital requirements"
+    },
+    {
+      "code": "c_af796aa3",
+      "label": "Eurosystem reserve management services"
+    },
+    {
+      "code": "c_c47bf652",
+      "label": "TARGET2-Securities (T2S)"
+    },
+    {
+      "code": "c_c55af8ef",
+      "label": "Banknotes and coins, means of payment and currency matters"
+    },
+    {
+      "code": "c_eb901451",
+      "label": "Foreign reserves"
+    },
+    {
+      "code": "c_eef03101",
+      "label": "Sanctions"
+    },
+    {
+      "code": "c_f3f2224d",
+      "label": "Conditions of employment"
+    },
+    {
+      "code": "c_f6ee40b4",
+      "label": "Protection of the euro"
+    }
+  ]
+}

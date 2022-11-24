@@ -1,0 +1,179 @@
+<div *ngIf="actCategoriesDto">
+  <div [formGroup]="eurlexMetadataFilters">
+
+    <div class="row">
+      <div class="col-md-12">
+        <h4 class="card-title m-0 pl-3">
+          Document reference</h4>
+        <div id="eurlexsubset">
+          <div class="card">
+            <div class="card-body">
+              <div class="row eurlexActs">
+                <div class="col-md-4"
+                  *ngFor="let control of actCategories.controls; let i = index; trackBy: trackByResourceSector;">
+                  <div class="form-check form-check-inline">
+                    <input type="checkbox"
+                      id="actCategories_{{i}}"
+                      [formControl]="control"
+                      class="form-check-input">
+                    <label class="form-check-label badge"
+                      style="color: #000000;"
+                      for="actCategories_{{i}}"><strong>{{
+                        actCategoriesDto[i].resourceSector
+                        }}</strong></label>
+                    <button type="button" placement="top"
+                      ngbTooltip="{{actCategoriesDto[i].resourceSectorInfo}}"
+                      title="{{actCategoriesDto[i].resourceSectorInfo}}"
+                      class="btn btn-outline-secondary align-self-center checkbox-info">
+                      <fa-icon [icon]="faQuestionCircle">
+                      </fa-icon>
+                    </button>
+                  </div>
+
+                </div>
+
+                <div class="col-md-8">
+
+                  <ng-select id="resourceTypes"
+                    [items]="resourceTypeDtos" [multiple]="true"
+                    bindLabel="label" [closeOnSelect]="true"
+                    bindValue="code"
+                    placeholder="+ Add new item..."
+                    [addTag]="false"
+                    formControlName="selectedResourceTypes">
+                    <ng-template ng-label-tmp let-item="item"
+                      let-clear="clear">
+                      <span class="ng-value-label">
+                        {{item.label}}
+                      </span>
+                    </ng-template>
+                  </ng-select>
+
+
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+
+
+
+    </div>
+
+    <div class="row">
+      <div class="col-md-4">
+
+        <h5 class="card-title m-0 pl-3">In
+          force</h5>
+
+
+        <div class="card">
+          <div class="card-body">
+            <ng-select id="infoTypes" [items]="infoForceValues"
+              [multiple]="false" bindLabel="label"
+              bindValue="value"
+              formControlName="selectedInfoForce">
+            </ng-select>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="col-md-8">
+
+        <h5 class="card-title m-0">Date</h5>
+
+
+        <div class="card">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="input-group mb-3 mt-2">
+                  <div class="input-group-prepend">
+                    <label class="input-group-text"
+                      for="inputGroupSelect01">From</label>
+                  </div>
+                  <select formControlName="selectedAfterDate"
+                    class="custom-select"
+                    id="inputGroupSelect01">
+                    <option [ngValue]="null"></option>
+                    <!-- <option value="Choose a year..." selected>Choose a year...</option> -->
+                    <option *ngFor="let date of range"
+                      [ngValue]="date">{{date}}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="input-group mb-3 mt-2">
+                  <div class="input-group-prepend">
+                    <label class="input-group-text"
+                      for="inputGroupSelect02">To</label>
+                  </div>
+                  <select formControlName="selectedBeforeDate"
+                    class="custom-select"
+                    id="inputGroupSelect02">
+                    <option [ngValue]="null"></option>
+                    <option *ngFor="let date of range"
+                      [ngValue]="date">{{date}}
+                    </option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+
+
+
+
+
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-12" *ngIf="eurovocNodes">
+        <h5>Themes</h5>
+        <div class="card">
+          <div class="card-body">
+            <p-accordion>
+              <p-accordionTab header="EuroVoc thesaurus">
+                <p-tree [value]="eurovocNodes"
+                  selectionMode="checkbox"
+                  (onNodeSelect)="eurovocNodeSelect($event)"
+                  (onNodeUnselect)="eurovocNodeUnselect($event)"
+                  [propagateSelectionDown]="true"
+                  [propagateSelectionUp]="true"
+                  [(selection)]="selectedEurovocNodes">
+                </p-tree>
+              </p-accordionTab>
+              <!-- <p-accordionTab header="Directory codes">
+                <p-tree [value]="directoryNodes"
+                  selectionMode="checkbox"
+                  (onNodeSelect)="directoryNodeSelect($event)"
+                  (onNodeUnselect)="directoryNodeUnselect($event)"
+                  [propagateSelectionDown]="true"
+                  [propagateSelectionUp]="true"
+                  [(selection)]="selectedDirectoryNodes">
+                </p-tree>
+              </p-accordionTab> -->
+            </p-accordion>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+
+
+  </div>
+
+</div>

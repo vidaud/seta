@@ -1,0 +1,48 @@
+<form [formGroup]="semanticDocUp"
+  (ngSubmit)="uploadFormSubject$.next($event)">
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-title">Document / text
+      upload</h4>
+    <button type="button" class="btn-close"
+      aria-label="Close button" aria-describedby="modal-title"
+      (click)="modal.dismiss('Cross click')"><span
+        aria-hidden="true">&times;</span></button>
+  </div>
+  <div class="modal-body">
+    <p>
+      <ngb-alert [dismissible]="false"
+        *ngIf="embeddings && text.value !== '' ">
+        <strong>Warning!</strong> If both file and text are
+        provided, only text will be taken into account
+      </ngb-alert>
+    </p>
+    <div class="input-group mb-3">
+      <div class="custom-file">
+        <input type="file" name="file" id="customFile" [ngClass]="{'is-invalid': submitted && file.invalid}"
+          (change)="handleFileInput($event.target.files)">
+        <input formControlName="file" type="text" style="display: none;">
+        <label class="custom-file-label"
+          for="customFile">{{fileToUpload ? fileToUpload.name :
+          'Choose file'}}</label>
+      </div>
+    </div>
+    <p-progressBar *ngIf="uploadProgress != null"
+      [value]="uploadProgress"></p-progressBar>
+
+    <label for="comment">Paste here text to include in your
+      search</label>
+    <div class="input-group mb-3">
+      <textarea formControlName="text"
+        [ngClass]="{'form-control': true, 'is-invalid': submitted && text.invalid}"
+        rows="5" id="comment"></textarea>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="submit" [disabled]="!semanticDocUp.valid"
+      class="ecl-button ecl-button--call rounded"><span
+        class="ecl-button__container"><span
+          class="ecl-button__label" data-ecl-label="true">
+          Search
+        </span></span></button>
+  </div>
+</form>
