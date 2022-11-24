@@ -7,13 +7,11 @@ import { User } from '../models/user.model';
 
 import { StorageService } from './storage.service';
 
-const AUTH_API = environment.baseUrl + environment.baseApplicationContext + 'v2/';
-
 @Injectable({ providedIn: 'root' })
 export class AuthenticationService {
 
   getRefreshedAccessToken(token: string) {
-    return this.http.post(AUTH_API + 'refresh', {});
+    return this.http.post('/refresh', {});
   }
 
   public currentUserSubject: BehaviorSubject<User> = new BehaviorSubject<User>(null)
@@ -56,7 +54,7 @@ export class AuthenticationService {
   }
 
   setaLogout() {
-    this.http.post(AUTH_API + 'logout', {}).subscribe({
+    this.http.post('/logout', {}).subscribe({
       next: () => {
         this.currentUserSubject.next(null);
         this.storageService.clean();        
@@ -69,10 +67,10 @@ export class AuthenticationService {
   }
 
   profile(): Observable<User> {
-    return this.http.get<User>(AUTH_API + 'user-info');
+    return this.http.get<User>('/rest/user-info');
   }
 
   refreshCookie() {
-    return this.http.post(AUTH_API + 'refresh', {});
+    return this.http.post('/refresh', {});
   }
 }

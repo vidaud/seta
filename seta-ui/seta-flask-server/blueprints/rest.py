@@ -1,6 +1,6 @@
-from flask import Blueprint, json, request
+from flask import Blueprint, json, request, abort, jsonify
 from flask import current_app as app
-from flask_jwt_extended import jwt_required
+from flask_jwt_extended import jwt_required, get_jwt_identity
 
 from db.db_corpus_queries_broker import getAllCorpusQueries
 from db.db_states_broker import addDbState, deleteDbState, getDbState, setDbState
@@ -11,7 +11,7 @@ rest = Blueprint("rest", __name__)
 
 
 # GET - Get user (by username)
-@rest.route("/rest/user/get/<username>")
+@rest.route("/user/get/<username>")
 @jwt_required()
 def getUserData(username):
     user = getDbUser(username)
@@ -37,7 +37,7 @@ def getUserData(username):
 
 
 # POST - Set user data (by username, field name, and value)
-@rest.route("/rest/user/set/<username>", methods=["POST"])
+@rest.route("/user/set/<username>", methods=["POST"])
 @jwt_required()
 def setUserData(username):
     user = getDbUser(username)
@@ -73,7 +73,7 @@ def setUserData(username):
 # POST - Delete user (by username)
 
 
-@rest.route("/rest/user/delete", methods=["POST"])
+@rest.route("/user/delete", methods=["POST"])
 @jwt_required()
 def deleteUserAccount():
     r = json.loads(request.data.decode("UTF-8"))
@@ -107,7 +107,7 @@ def deleteUserAccount():
 
 
 # GET - Get state (by username and key)
-@rest.route("/rest/state/<username>/<key>")
+@rest.route("/state/<username>/<key>")
 @jwt_required()
 def getState(username, key):
 
@@ -134,7 +134,7 @@ def getState(username, key):
 
 
 # POST - Set state, given the username, key and value
-@rest.route("/rest/state/<username>", methods=["POST"])
+@rest.route("/state/<username>", methods=["POST"])
 @jwt_required()
 def setState(username):
     user = getDbUser(username)
@@ -185,7 +185,7 @@ def setState(username):
 # POST
 
 
-@rest.route("/rest/state/delete", methods=["POST"])
+@rest.route("/state/delete", methods=["POST"])
 @jwt_required()
 def deleteUserState():
     r = json.loads(request.data.decode("UTF-8"))
@@ -221,7 +221,7 @@ def deleteUserState():
 # GET - get all queries
 
 
-@rest.route("/rest/state/<username>/queries")
+@rest.route("/state/<username>/queries")
 @jwt_required()
 def getQueries(username):
 
@@ -245,3 +245,25 @@ def getQueries(username):
 
     response = json.jsonify(response)
     return response
+
+@rest.route("/user-info", methods=["GET"])
+@jwt_required()
+def user_details():
+    """ Returns json with user details"""
+    
+    identity = get_jwt_identity()
+    user = getDbUser(identity)
+    
+    if not user:
+        abort(404, "User not found in the database!")
+    
+    role = "user"
+    if "role" in user:
+        role = user["role"]
+    return jsonify({
+                    "username": user["username"], 
+                    "firstName": user["first_name"], 
+                    "lastName": user["last_name"], 
+                    "email": user["email"],
+                    "role": role
+                }), 200

@@ -10,11 +10,11 @@ from infrastructure.extensions import (scheduler, jwt, logs)
 from db.db_users_broker import (getDbUser)
 
 from blueprints.base_routes import base_routes
-from blueprints.ecas import ecas
+from blueprints.auth_ecas import auth_ecas
 from blueprints.rest import rest
 from blueprints.rsa import rsa
 
-from blueprints.login import login_bp, refresh_expiring_jwts
+from blueprints.auth import auth, refresh_expiring_jwts
 
 from infrastructure.helpers import JSONEncoder
 
@@ -33,7 +33,7 @@ def create_app(config_object):
      #the service_url will be changed before ECAS redirect with 'request.url'
     app.cas_client = CASClient(
         version=3,
-        service_url = app.config["FLASK_PATH"] + "/seta-ui/v2/login",
+        service_url = app.config["FLASK_PATH"] + "/login_callback_ecas",
         #service_url = "",
         server_url = app.config["AUTH_CAS_URL"],
     )
@@ -76,7 +76,6 @@ def create_app(config_object):
         if request.path.endswith(tuple(request_ignore_list)):
             return response
         
-#        user = session["username"]
         user = session.get("username")
         if not user:
             user="None"
@@ -102,7 +101,7 @@ def create_app(config_object):
         try:
           logger_db = logging.getLogger("mongo")
           if logger_db:
-            logger_db.info("seta-ui request", 
+            logger_db.info("seta-ui request " + request.path, 
                            extra={
                                "username": user,
                                "address": request.remote_addr, 
@@ -121,12 +120,12 @@ def create_app(config_object):
     return app
     
 def register_blueprints(app):
-    app.register_blueprint(rest, url_prefix="/seta-ui/")
-    app.register_blueprint(base_routes, url_prefix="/seta-ui/")
-    app.register_blueprint(ecas, url_prefix="/seta-ui/")
+    app.register_blueprint(rest, url_prefix="/rest")
+    app.register_blueprint(base_routes, url_prefix="/seta-ui/")    
     app.register_blueprint(rsa, url_prefix="/seta-ui/")
     
-    app.register_blueprint(login_bp, url_prefix="/seta-ui/v2/")   
+    app.register_blueprint(auth, url_prefix="/")
+    app.register_blueprint(auth_ecas, url_prefix="/")
     
 def register_extensions(app):
     scheduler.init_app(app)
@@ -134,14 +133,7 @@ def register_extensions(app):
     logs.init_app(app)
 
 @jwt.additional_claims_loader
-def add_claims_to_access_token(identity):
-    '''
-    if session.get("username") != None:
-        current_user = session["username"]
-    else:
-        current_user = get_jwt_identity()
-    '''
-    
+def add_claims_to_access_token(identity):    
     iat = time.time()
     user = getDbUser(identity)
     

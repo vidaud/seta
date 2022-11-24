@@ -16,7 +16,7 @@
         (click)="navigateTo($event, 'myaccount')"
         ngbDropdownItem>{{ 'Hi, ' +
         currentUser.firstName }}</button>
-      <button (click)="goToLink($event, '/seta-ui/v2/login')"
+      <button (click)="goToLink($event, '/login/ecas')"
         *ngIf="currentUser === null" ngbDropdownItem>Log
         in</button>
       <button
@@ -25,8 +25,8 @@
         SETA</button>
       <div
         *ngIf="displayEcasLogoutLink && currentUser !== null && currentUser.username">
-        <button (click)="goToLink($event, '/seta-ui/logout')"
-          ngbDropdownItem>Log out of ECAS</button>
+        <button (click)="goToLink($event, '/logout')"
+          ngbDropdownItem>Log out of SETA</button>
       </div>
     </div>
   </div>

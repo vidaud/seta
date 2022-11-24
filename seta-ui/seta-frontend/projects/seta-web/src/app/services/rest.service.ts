@@ -77,7 +77,7 @@ export class RestService {
 
     if (this.currentUser !== null) {
 
-      let url = environment.baseUrl + '/seta-ui/rest/state/delete';
+      let url = environment.baseUrl + '/rest/state/delete';
 
       let body = {
         username: username,
@@ -93,7 +93,7 @@ export class RestService {
 
       let un = this.currentUser.username;
 
-      let url = environment.baseUrl + '/seta-ui/rest/user/delete';
+      let url = environment.baseUrl + '/rest/user/delete';
       let body = {
         username: un
       };
