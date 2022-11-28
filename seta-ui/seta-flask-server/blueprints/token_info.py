@@ -20,10 +20,11 @@ def decode_token_info():
     decoded_token = None
     try:
         decoded_token = decode_token(token)
+        
+        
+        #TODO: get user resource scopes
+        decoded_token["scopes"] = {"rid":"_all_public_", "scope":"/seta/resources/read/public"}
     except NoAuthorizationError as e:
         abort(401, str(e))
         
-    #TODO: get user resource scopes
-    
-    #app.logger.debug("decoded_token: " + str(decoded_token))    
-    return jsonify(decoded_token = decoded_token, scopes = {})
+    return jsonify(decoded_token)

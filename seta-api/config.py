@@ -10,15 +10,15 @@ class Config:
     DB_HOST="seta-mongo"
     DB_PORT=27017
     MONGO_URI = ""
-    #MONGO_URI = "mongodb://seta-mongo:27017/seta"
-    API_ROOT = "/api/v1"
+    
     
     #JWT variables
     SECRET_KEY_PATH = "/home/seta/models/key.txt"
-    JWT_SECRET_KEY = ""    
+    JWT_SECRET_KEY = "no-need-for-secret"    
     JWT_IDENTITY_CLAIM="username"
     JWT_COOKIE_CSRF_PROTECT = False
     JWT_TOKEN_LOCATION=["headers", "cookies"]
+    JWT_TOKEN_INFO_URL="http://seta-ui:8080/authorization/v1/token_info"
     
     #Scheduler variables
     SCHEDULER_API_ENABLED = True
@@ -73,6 +73,7 @@ class Config:
         """Read environment variables"""               
         
         #read key from the key.txt file
+        '''
         if exists(Config.SECRET_KEY_PATH):
             with open(Config.SECRET_KEY_PATH, "r") as fobj:
                 self.SECRET_KEY = fobj.readline()
@@ -81,10 +82,12 @@ class Config:
             
             with open(Config.SECRET_KEY_PATH, "w") as f1:
                 f1.write(self.SECRET_KEY)
-
-        Config.MONGO_URI = f"mongodb://{Config.DB_HOST}:{Config.DB_PORT}/seta"
-            
+                
         Config.JWT_SECRET_KEY = self.SECRET_KEY
+        '''                
+
+        Config.MONGO_URI = f"mongodb://{Config.DB_HOST}:{Config.DB_PORT}/seta"            
+        
         
         #Read flask environment variables
         Config.FLASK_PATH = os.environ.get('FLASK_PATH', 'http://localhost')
