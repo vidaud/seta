@@ -11,7 +11,7 @@ from db.db_rsa_keys_broker import (deleteAllRsaKeysForUser, getDbRsaKey,
 rsa = Blueprint("rsa", __name__)
 
 
-@rsa.route("/rsa/generate-rsa-keys", methods=["POST"])
+@rsa.route("/generate-rsa-keys", methods=["POST"])
 @jwt_required()
 def generateRsaKeys():
 
@@ -44,7 +44,7 @@ def generateRsaKeys():
     return response
 
 # GET - get the public RSA key
-@rsa.route("/rsa/get-public-rsa-key/<username>")
+@rsa.route("/get-public-rsa-key/<username>")
 @jwt_required()
 def getPublicRsaKey(username):
     key = getDbRsaKey(username, True)
@@ -62,7 +62,7 @@ def getPublicRsaKey(username):
     response = json.jsonify(response)
     return response
 
-@rsa.route("/rsa/delete-rsa-keys", methods=["POST"])
+@rsa.route("/delete-rsa-keys", methods=["POST"])
 @jwt_required()
 def deleteRsaKeys():
 

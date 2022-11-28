@@ -13,6 +13,8 @@ from blueprints.base_routes import base_routes
 from blueprints.auth_ecas import auth_ecas
 from blueprints.rest import rest
 from blueprints.rsa import rsa
+from blueprints.token_auth import token_auth
+from blueprints.token_info import token_info
 
 from blueprints.auth import auth, refresh_expiring_jwts
 
@@ -51,7 +53,7 @@ def create_app(config_object):
             return app.config['FLASK_ENV'] == "development"
         return app.config['DEBUG']
     '''      
-    request_ignore_list = ['.js', '.css', '.png', '.ico', '.svg', '.map']
+    request_ignore_list = ['.js', '.css', '.png', '.ico', '.svg', '.map', '.json', 'doc']
     with app.app_context():
         #if is_debug_mode():
         #    CORS(app, resources={r"/*": {"origins": "*"}})
@@ -120,12 +122,15 @@ def create_app(config_object):
     return app
     
 def register_blueprints(app):
-    app.register_blueprint(rest, url_prefix="/rest")
+    app.register_blueprint(rest, url_prefix="/rest/v1/")
     app.register_blueprint(base_routes, url_prefix="/seta-ui/")    
-    app.register_blueprint(rsa, url_prefix="/seta-ui/")
+    app.register_blueprint(rsa, url_prefix="/rsa/v1/")
     
     app.register_blueprint(auth, url_prefix="/")
     app.register_blueprint(auth_ecas, url_prefix="/")
+    
+    app.register_blueprint(token_auth, url_prefix="/authentication/v1/")
+    app.register_blueprint(token_info, url_prefix="/authorization/v1/")
     
 def register_extensions(app):
     scheduler.init_app(app)
@@ -136,6 +141,17 @@ def register_extensions(app):
 def add_claims_to_access_token(identity):    
     iat = time.time()
     user = getDbUser(identity)
+    
+    if user is None:
+        #guest claims
+        return {
+            "user": {"username": identity},
+            "iat": iat,
+            "iss": "SETA Flask server",
+            "sub": identity,
+            "role": "guest",
+            "source_limit": 5
+        }
     
     role = "user"
     if "role" in user:

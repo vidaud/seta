@@ -3,12 +3,12 @@ from flask import current_app as app
 from infrastructure.auth_validator import auth_validator
 from infrastructure.helpers import word_exists
 
-term_api = Namespace('seta-api', description='Term exists')
+term_api = Namespace('seta-api-term', description='Term exists')
 
 term_parser = reqparse.RequestParser()
 term_parser.add_argument('term', required=True)
 
-@term_api.route(app.api_root + "/term-exists")
+@term_api.route("/term-exists")
 @term_api.doc(description='Return True if the word exists in the trained model else False',
         params={'term': 'The term'},
         security='apikey')

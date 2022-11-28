@@ -1,13 +1,9 @@
-from datetime import datetime
-from datetime import timedelta
-from datetime import timezone
 
 from flask import Blueprint, abort
 from flask import current_app as app
 from flask import (redirect, request, make_response, url_for, session)
 
 from flask_jwt_extended import create_access_token, create_refresh_token
-from flask_jwt_extended import jwt_required
 from flask_jwt_extended import set_access_cookies, set_refresh_cookies
 
 from db.db_users_broker import addDbUser, getDbUser
@@ -77,7 +73,6 @@ def login_callback_ecas():
         return response
 
 @auth_ecas.route("/logout/ecas")
-#@jwt_required()
 def logout_ecas():
     redirect_url = url_for("auth.logout_callback", _external=True)
     cas_logout_url = app.cas_client.get_logout_url(redirect_url)

@@ -2,6 +2,10 @@ from bson import json_util, SON
 from flask import json as flask_json
 from six import iteritems, string_types
 from bson.json_util import RELAXED_JSON_OPTIONS
+from Crypto.Hash import SHA256
+from Crypto.PublicKey import RSA
+from Crypto.Signature import pkcs1_15
+import binascii
 
 class JSONEncoder(flask_json.JSONEncoder):
 
@@ -40,4 +44,13 @@ class JSONEncoder(flask_json.JSONEncoder):
         if isinstance(o, datetime.datetime):
             return str(o)
         return json.JSONEncoder.default(self, o)
-'''            
+'''     
+
+def validate_public_key(public, message, signature):        
+    public_key = RSA.import_key(public)
+    digest = SHA256.new(message.encode())
+    try:
+        pkcs1_15.new(public_key).verify(digest, binascii.unhexlify(signature))
+    except Exception as e:
+        return False
+    return True

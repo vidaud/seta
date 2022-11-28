@@ -4,11 +4,11 @@ from datetime import timezone
 
 from flask import Blueprint
 from flask import current_app as app
-from flask import (jsonify, redirect, request, make_response, url_for)
+from flask import (jsonify, redirect, request, make_response)
 
-from flask_jwt_extended import create_access_token, create_refresh_token
+from flask_jwt_extended import create_access_token
 from flask_jwt_extended import jwt_required, verify_jwt_in_request
-from flask_jwt_extended import set_access_cookies, set_refresh_cookies, unset_jwt_cookies
+from flask_jwt_extended import set_access_cookies, unset_jwt_cookies
 from flask_jwt_extended import get_jwt_identity, get_jwt
 
 from db.db_users_broker import getDbUser
@@ -41,14 +41,12 @@ def logout_local():
 @jwt_required(refresh=True)
 def refresh():
   username = get_jwt_identity()
-  usr = getDbUser(username)
-  additional_claims = {"role": usr["role"]} 
-  access_token = create_access_token(identity = username, fresh=False, additional_claims=additional_claims)
+  access_token = create_access_token(identity = username, fresh=False)
 
-  response = jsonify()
+  response = jsonify({"status": "success"})
   set_access_cookies(response, access_token)
 
-  return response, 204
+  return response
 
 def refresh_expiring_jwts(response):
     try:

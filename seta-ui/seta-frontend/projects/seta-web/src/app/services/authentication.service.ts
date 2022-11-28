@@ -67,7 +67,7 @@ export class AuthenticationService {
   }
 
   profile(): Observable<User> {
-    return this.http.get<User>('/rest/user-info');
+    return this.http.get<User>('/rest/v1/user-info');
   }
 
   refreshCookie() {

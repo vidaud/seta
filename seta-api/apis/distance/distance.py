@@ -4,14 +4,14 @@ from infrastructure.auth_validator import auth_validator
 from infrastructure.ApiLogicError import ApiLogicError
 from .distance_logic import semantic_distance
 
-distance_api = Namespace('seta-api', description='Distance')
+distance_api = Namespace('seta-api-distance', description='Distance')
 
 distance_parser = reqparse.RequestParser()
 distance_parser.add_argument('term1', required=True)
 distance_parser.add_argument('term2', required=True)
 
 
-@distance_api.route(app.api_root + "/distance")
+@distance_api.route("/distance")
 @distance_api.doc(description='Return the semantic distance (cosine distance of vectors) between two terms.',
         params={'term1': 'First term', 'term2': 'Second term'},
         responses={200: 'Success', 404: 'Not Found Error'},

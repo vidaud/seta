@@ -9,9 +9,9 @@ from infrastructure.helpers import is_field_in_doc
 from .corpus_logic import corpus, delete_doc, docbyid, insert_doc
 from .variables import corpus_parser, keywords, metadata
 
-corpus_api = Namespace('seta-api', description='Corpus')
+corpus_api = Namespace('seta-api-corpus', description='Corpus')
 
-@corpus_api.route(app.api_root + "/corpus/<string:id>", methods=['GET', 'DELETE'])
+@corpus_api.route("/corpus/<string:id>", methods=['GET', 'DELETE'])
 class Corpus(Resource):
     @auth_validator()
     @corpus_api.doc(description='Given the elasticsearch unique _id, the relative document from EU corpus is shown.'
@@ -108,7 +108,7 @@ query_corpus_post_data = corpus_api.model(
     }
 )      
         
-@corpus_api.route(app.api_root + "/corpus", methods=['POST', 'GET', 'PUT'])
+@corpus_api.route("/corpus", methods=['POST', 'GET', 'PUT'])
 class CorpusQuery(Resource):
     @auth_validator()
     @corpus_api.doc(description='Retrieve documents related to a term from EU corpus.'

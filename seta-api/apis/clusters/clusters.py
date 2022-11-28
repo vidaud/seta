@@ -10,9 +10,9 @@ cluster_parser = reqparse.RequestParser()
 cluster_parser.add_argument('term', required=True)
 cluster_parser.add_argument('n_terms', type=int)
 
-cluster_api = Namespace('seta-api', description='Clusters')
+cluster_api = Namespace('seta-api-clusters', description='Clusters')
 
-@cluster_api.route(app.api_root + "/clusters")
+@cluster_api.route("/clusters")
 @cluster_api.doc(description='Given a term, the 20 most similar terms are extracted. '
                     'Terms are then clustered using the algorithm DBSCAN. '
                     'Clusters may not exist and some terms can be unclustered.'

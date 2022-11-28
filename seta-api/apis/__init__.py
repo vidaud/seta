@@ -10,7 +10,7 @@ flask.helpers._endpoint_from_view_func = flask.scaffold._endpoint_from_view_func
 from flask_restx import Api
 
 from .examples import ex_api
-from .auth.auth import auth_api
+#from .auth.auth import auth_api
 from .clusters.clusters import cluster_api
 from .suggestions.suggestions import suggestions_api
 from .corpus.corpus import corpus_api
@@ -47,16 +47,16 @@ api = Api(version='beta',
          authorizations=authorizations
          )
 
-
-api.add_namespace(ex_api)
-api.add_namespace(auth_api)
-api.add_namespace(cluster_api)
-api.add_namespace(suggestions_api)
-api.add_namespace(corpus_api)
-api.add_namespace(wiki_api)
-api.add_namespace(similar_api)
-api.add_namespace(ontology_api)
-api.add_namespace(decade_api)
-api.add_namespace(term_api)
-api.add_namespace(distance_api)
-api.add_namespace(emb_api)
+api_root = "/seta-api/api/v1"
+#api.add_namespace(ex_api, path=api_root)
+#api.add_namespace(auth_api, path=api_root)
+api.add_namespace(cluster_api, path=api_root)
+api.add_namespace(suggestions_api, path=api_root)
+api.add_namespace(corpus_api, path=api_root)
+api.add_namespace(similar_api, path=api_root)
+api.add_namespace(ontology_api, path=api_root)
+api.add_namespace(decade_api, path=api_root)
+api.add_namespace(term_api, path=api_root)
+api.add_namespace(distance_api, path=api_root)
+api.add_namespace(emb_api, path=api_root)
+api.add_namespace(wiki_api, path=api_root)

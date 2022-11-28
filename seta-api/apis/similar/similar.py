@@ -4,7 +4,7 @@ from infrastructure.auth_validator import auth_validator
 from infrastructure.ApiLogicError import ApiLogicError
 from .similar_logic import get_similar_words, most_similar
 
-similar_api = Namespace('seta-api', description='Similar')
+similar_api = Namespace('seta-api-similar', description='Similar')
 
 similar_parser = reqparse.RequestParser()
 similar_parser.add_argument('term', required=True)
@@ -17,7 +17,7 @@ similar_parser.add_argument('n_term', type=int)
                 'n_term': 'Number of similar terms to be extracted (default 20).'},
         responses={200: 'Success', 404: 'Not Found Error'},
         security='apikey')
-@similar_api.route(app.api_root + "/similar")
+@similar_api.route("/similar")
 class SimilarWords(Resource):
     @auth_validator()
     @similar_api.expect(similar_parser)
@@ -39,7 +39,7 @@ most_similar_parser.add_argument('term_list', required=True, action='split')
 most_similar_parser.add_argument('top_n', type=int)
 
 
-@similar_api.route(app.api_root + "/most-similar")
+@similar_api.route("/most-similar")
 @similar_api.doc(description='Given a term and a list of terms (comma separated list), '
                     'return the 3 terms in the list that are more similar with the initial term.'
                     'Similarities are computed using semantic distance.',

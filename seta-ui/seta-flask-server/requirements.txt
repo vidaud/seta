@@ -12,3 +12,4 @@ flask_apscheduler==1.12.3
 python-secrets==22.6.1
 flask-pymongo==2.3.0
 log4mongo==1.7.0
+flask-restx==1.0.3

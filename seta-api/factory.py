@@ -99,9 +99,7 @@ def create_app(config_object):
     return app    
             
 def init(app):
-    seta_init(app.config)
-    app.api_root = '/api/v1'
-    
+    seta_init(app.config)    
     app.es = Elasticsearch("http://" + app.config["ES_HOST"], verify_certs=False, request_timeout=30)    
     total = app.es.count(index=app.config["INDEX"][0])['count']
     app.logger.info(f"Total number of documents indexed by Elastic: {total}")

@@ -4,12 +4,12 @@ from infrastructure.auth_validator import auth_validator
 
 from .decade_logic import build_decade_graph
 
-decade_api = Namespace('seta-api', description='Decade')
+decade_api = Namespace('seta-api-decade', description='Decade')
 
 term_parser = reqparse.RequestParser()
 term_parser.add_argument('term', required=True)
 
-@decade_api.route(app.api_root + "/decade")
+@decade_api.route("/decade")
 @decade_api.doc(description='Return data that describes how documents are placed among decades.',
         params={'term': 'The term'},
         security='apikey')

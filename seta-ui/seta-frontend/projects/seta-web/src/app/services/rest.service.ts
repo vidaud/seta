@@ -77,7 +77,7 @@ export class RestService {
 
     if (this.currentUser !== null) {
 
-      let url = environment.baseUrl + '/rest/state/delete';
+      let url = environment.baseUrl + '/rest/v1/state/delete';
 
       let body = {
         username: username,
@@ -93,7 +93,7 @@ export class RestService {
 
       let un = this.currentUser.username;
 
-      let url = environment.baseUrl + '/rest/user/delete';
+      let url = environment.baseUrl + '/rest/v1/user/delete';
       let body = {
         username: un
       };
@@ -109,7 +109,7 @@ export class RestService {
   public generateRsaKeys(): Observable<any> {
     let un = this.currentUser.username;
 
-    let url = environment.baseUrl + '/seta-ui/rsa/generate-rsa-keys';
+    let url = environment.baseUrl + '/rsa/v1/generate-rsa-keys';
     let body = {
       username: un
     };
@@ -121,7 +121,7 @@ export class RestService {
   public deleteRsaKeys() {
     let un = this.currentUser.username;
 
-    let url = environment.baseUrl + '/seta-ui/rsa/delete-rsa-keys';
+    let url = environment.baseUrl + '/rsa/v1/delete-rsa-keys';
     let body = {
       username: un
     };
@@ -132,7 +132,7 @@ export class RestService {
 
   public getPublicRsaKey(username: string): Observable<any> {
 
-    let url = environment.baseUrl + `/seta-ui/rsa/get-public-rsa-key/${username}`;
+    let url = environment.baseUrl + `/rsa/v1/get-public-rsa-key/${username}`;
 
     return this.http.get<any>(url)
 

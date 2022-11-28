@@ -1,7 +1,7 @@
 from flask_restx import Namespace, Resource
 from flask import current_app as app, send_from_directory
 
-ex_api = Namespace('seta-api', description='Get token examples')
+ex_api = Namespace('seta-api-examples', description='Get token examples')
 
 @ex_api.route('/example_get-token_guest.py')
 class ExampleGuest(Resource):

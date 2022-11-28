@@ -7,7 +7,7 @@ import time
 from infrastructure.db.db_users_broker import getDbUser
 from .auth_logic import validate_public_key
 
-auth_api = Namespace('seta-api', description='JWT token')
+auth_api = Namespace('seta-api-auth', description='JWT token')
 
 auth_data = auth_api.model(
     "get_token_params",
@@ -17,7 +17,7 @@ auth_data = auth_api.model(
      }
 )
 
-@auth_api.route(app.api_root + "/get-token", methods=['POST', 'GET'])
+@auth_api.route("/get-token", methods=['POST', 'GET'])
 class JWTtoken(Resource):
     @auth_api.doc(description="JWT token for users, expiration 1 day.\n"
                         'Python example <a href="example_get-token_user.py" target="_blank" download="example_get-token_user.py">here</a>',

@@ -4,14 +4,14 @@ from flask import current_app as app, jsonify
 from infrastructure.auth_validator import auth_validator
 from .suggestions_logic import get_word_suggestions
 
-suggestions_api = Namespace('seta-api', description='Suggestions')
+suggestions_api = Namespace('seta-api-suggestions', description='Suggestions')
 
 suggestions_parser = reqparse.RequestParser()
 suggestions_parser.add_argument('chars', required=True)
 suggestions_parser.add_argument('n_suggestions', type=int)
 
 
-@suggestions_api.route(app.api_root + "/suggestions")
+@suggestions_api.route("/suggestions")
 @suggestions_api.doc(description="Retrieve terms by initial letters. By default it returns 6 terms,"
                     " with the parameter n_suggestions is possible to set the number of suggestions to be shown.",
         params={'chars': 'Initial letters.', 'n_suggestions': 'Number of terms to be returned (default 6).'},
