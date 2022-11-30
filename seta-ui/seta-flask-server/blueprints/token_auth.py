@@ -14,21 +14,20 @@ auth_api = Api(token_auth,
                version="1.0",
                title="JWT token authentication",
                doc="/doc",
-               description="JWT authetication for user and guests",
-               default="authentication",
-               default_label="Authentication endpoints"
+               description="JWT authetication for user and guests"
                )
+ns_auth = auth_api.namespace("", "Authentication endpoints")
 
 
-auth_data = auth_api.model(
+auth_data = ns_auth.model(
     "token_params",
-    {'username': fields.String(description="Username"),
-     'rsa_original_message': fields.String(description="Original message"),
-     'rsa_message_signature': fields.String(description="Signature using hex format, string of hexadecimal numbers.")
+    {'username': fields.String(required=True, description="Username"),
+     'rsa_original_message': fields.String(required=True, description="Original message"),
+     'rsa_message_signature': fields.String(required=True, description="Signature using hex format, string of hexadecimal numbers.")
      }
 )
 
-@auth_api.route("/user/token", methods=['POST'])
+@ns_auth.route("/user/token", methods=['POST'])
 class JWTUserToken(Resource):
     @auth_api.doc(description="JWT token for users",
             responses={200: 'Success',
@@ -53,7 +52,7 @@ class JWTUserToken(Resource):
         
         return jsonify(access_token=access_token, refresh_token=refresh_token)
     
-@auth_api.route("/user/guest", methods=['POST'])
+@ns_auth.route("/user/guest", methods=['POST'])
 class JWTGuestToken(Resource):
     @auth_api.doc(description="JWT token for guests",
             responses={200: 'Success'})
@@ -76,7 +75,12 @@ class JWTGuestToken(Resource):
         
         return jsonify(access_token=access_token, refresh_token=refresh_token)
     
-@auth_api.route("/refresh", methods=['POST'])    
+refresh_parser = ns_auth.parser()
+refresh_parser.add_argument("Authorization", location="headers", required=False, type="apiKey")
+refresh_parser.add_argument("X-CSRF-TOKEN", location="headers", required=False, type="string")
+
+@ns_auth.route("/refresh", methods=['POST']) 
+@ns_auth.expect(refresh_parser)   
 class JWTRefreshToekn(Resource):
     @auth_api.doc(description="JWT refresh access token",
             responses={200: 'Success', 401: "Refresh token verification failed"})

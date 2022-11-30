@@ -53,7 +53,9 @@ def create_app(config_object):
             return app.config['FLASK_ENV'] == "development"
         return app.config['DEBUG']
     '''      
-    request_ignore_list = ['.js', '.css', '.png', '.ico', '.svg', '.map', '.json', 'doc']
+    request_endswith_ignore_list = ['.js', '.css', '.png', '.ico', '.svg', '.map', '.json', 'doc']
+    request_starts_with_ignore_list = ['/authorization', '/authentication', '/login', '/logout', '/refresh']
+    
     with app.app_context():
         #if is_debug_mode():
         #    CORS(app, resources={r"/*": {"origins": "*"}})
@@ -66,16 +68,24 @@ def create_app(config_object):
             
         @app.after_request
         def refresh_jwts(response):
-            if request.path.endswith(tuple(request_ignore_list)):
+            app.logger.debug(request.path)
+            
+            if request.path.endswith(tuple(request_endswith_ignore_list)):
                 return response
+            
+            if request.path.startswith(tuple(request_starts_with_ignore_list)):
+                return response
+            
+            app.logger.debug("refresh_expiring_jwts")
             
             return refresh_expiring_jwts(response)
         
             
     @app.after_request
-    def after_request(response):
+    def after_request(response):        
+        
         """ Logging after every request. """
-        if request.path.endswith(tuple(request_ignore_list)):
+        if request.path.endswith(tuple(request_endswith_ignore_list)):
             return response
         
         user = session.get("username")
