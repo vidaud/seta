@@ -1,9 +1,13 @@
+from calendar import timegm
+import datetime
 from json import JSONDecodeError
 from flask_jwt_extended import JWTManager
 from flask_jwt_extended.config import config
+from flask_jwt_extended.exceptions import CSRFError
+from flask_jwt_extended.exceptions import JWTDecodeError
+from jwt import DecodeError, ExpiredSignatureError, InvalidAudienceError, MissingRequiredClaimError
 import requests
-import jwt
-from jwt import ExpiredSignatureError
+from hmac import compare_digest
 from flask import current_app
 
 class SetaJWTManager(JWTManager):
@@ -22,10 +26,33 @@ class SetaJWTManager(JWTManager):
             json = {"token": encoded_token}
             
             r = requests.post(url=url,json=json, headers=headers)
-            response_json = r.json()
+            decoded_token = r.json()
             
-            current_app.logger.debug(response_json)
-            return response_json
+            current_app.logger.debug(decoded_token)
+            
+            #verification copied from flask_jwt_extended.tokens.py->_decode_token
+            if config.identity_claim_key not in decoded_token:
+                raise JWTDecodeError("Missing claim: {}".format(config.identity_claim_key))
+            
+            if "type" not in decoded_token:
+                decoded_token["type"] = "access"
+
+            if "fresh" not in decoded_token:
+                decoded_token["fresh"] = False
+
+            if "jti" not in decoded_token:
+                decoded_token["jti"] = None
+                
+            if csrf_value:
+                current_app.logger.debug("Verify csrf " + csrf_value)
+                
+                if "csrf" not in decoded_token:
+                    raise JWTDecodeError("Missing claim: csrf")
+                if not compare_digest(decoded_token["csrf"], csrf_value):
+                    raise CSRFError("CSRF double submit tokens do not match")
+            #end _decode_token verification
+            
+            return decoded_token
         except ConnectionError as ce:
             current_app.logger.exception(str(ce))
         except JSONDecodeError as je:
