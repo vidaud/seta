@@ -5,15 +5,17 @@ from flask import current_app as app
 from flask_jwt_extended import jwt_required
 
 import infrastructure.constants as constants
-from db.db_rsa_keys_broker import (deleteAllRsaKeysForUser, getDbRsaKey,
-                                setDbRsaKey)
+from repository.interfaces import IRsaKeysBroker
+
+from injector import inject
 
 rsa = Blueprint("rsa", __name__)
 
 
 @rsa.route("/generate-rsa-keys", methods=["POST"])
 @jwt_required()
-def generateRsaKeys():
+@inject
+def generateRsaKeys(rsaKeyBroker: IRsaKeysBroker):
 
     r = json.loads(request.data.decode("UTF-8"))
     username = r["username"]
@@ -29,7 +31,7 @@ def generateRsaKeys():
     privKeyPEM = keyPair.exportKey()
     decodedPrivKeyPEM = privKeyPEM.decode('ascii')
 
-    setDbRsaKey(username, False, decodedPubKeyPEM)
+    rsaKeyBroker.set_rsa_key(username, False, decodedPubKeyPEM)
     # setDbRsaKey(username, True, decodedPrivKeyPEM)
 
     response = {
@@ -44,10 +46,11 @@ def generateRsaKeys():
     return response
 
 # GET - get the public RSA key
-@rsa.route("/get-public-rsa-key/<username>")
 @jwt_required()
-def getPublicRsaKey(username):
-    key = getDbRsaKey(username, True)
+@inject
+@rsa.route("/get-public-rsa-key/<username>")
+def getPublicRsaKey(username, rsaKeyBroker: IRsaKeysBroker):
+    key = rsaKeyBroker.get_rsa_key(username, True)
     
     #print("fetched key is:")
     #print(key)
@@ -64,12 +67,13 @@ def getPublicRsaKey(username):
 
 @rsa.route("/delete-rsa-keys", methods=["POST"])
 @jwt_required()
-def deleteRsaKeys():
+@inject
+def deleteRsaKeys(rsaKeyBroker: IRsaKeysBroker):
 
     r = json.loads(request.data.decode("UTF-8"))
     username = r["username"]
 
-    deleteAllRsaKeysForUser(username)
+    rsaKeyBroker.delete_by_username(username)
 
     response = {
         "status": "ok"

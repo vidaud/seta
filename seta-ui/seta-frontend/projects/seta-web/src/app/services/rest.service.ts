@@ -15,18 +15,12 @@ export class RestService {
     this.authService.currentUserSubject.asObservable().subscribe((currentUser: User) => this.currentUser = currentUser)
   }
 
-  public baseUrl = `${environment.baseUrl}${environment.baseApplicationContext}${environment.restEndPoint}`;
+  public baseUrl = `${environment.baseUrl}${environment.restEndPoint}`;
 
   // HTTP GET:
 
   private httpGetCall(url) {
     return this.http.get(url);
-  }
-
-  public getUserData(username) {
-    let url = this.baseUrl + 'user/' + username;
-
-    return this.httpGetCall(url);
   }
 
   public getState(username, stateKey) {

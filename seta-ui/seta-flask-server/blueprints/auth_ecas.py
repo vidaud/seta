@@ -6,7 +6,8 @@ from flask import (redirect, request, make_response, url_for, session)
 from flask_jwt_extended import create_access_token, create_refresh_token
 from flask_jwt_extended import set_access_cookies, set_refresh_cookies
 
-from db.db_users_broker import addDbUser, getDbUser
+from injector import inject
+from repository.interfaces import IUsersBroker
 
 
 auth_ecas = Blueprint("auth_ecas", __name__)
@@ -29,7 +30,8 @@ def login():
    
     
 @auth_ecas.route('/login/callback/ecas', methods=["GET"])
-def login_callback_ecas():
+@inject
+def login_callback_ecas(userBroker: IUsersBroker):
     next = request.args.get("next")
     ticket = request.args.get("ticket")
     
@@ -47,10 +49,10 @@ def login_callback_ecas():
         abort(401, "Failed to verify ticket.")
     else:  # Login successful, redirect according to `next` query parameter. 
         #add db user from ecas result             
-        usr = getDbUser(attributes["uid"])
+        usr = userBroker.get_user_by_username(attributes["uid"])
         if not usr:
-            addDbUser(attributes)
-            usr = getDbUser(attributes["uid"])
+            userBroker.add_user(attributes)
+            usr = userBroker.get_user_by_username(attributes["uid"])
                  
         session["username"] = usr["username"]
 

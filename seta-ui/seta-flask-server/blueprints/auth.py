@@ -11,8 +11,6 @@ from flask_jwt_extended import jwt_required, verify_jwt_in_request
 from flask_jwt_extended import set_access_cookies, unset_jwt_cookies
 from flask_jwt_extended import get_jwt_identity, get_jwt
 
-from db.db_users_broker import getDbUser
-
 auth = Blueprint("auth", __name__)
     
 @auth.route('/logout/callback')
@@ -69,9 +67,7 @@ def refresh_expiring_jwts(response):
                             
                 username = get_jwt_identity()
                 
-                usr = getDbUser(username)    
-                additional_claims = {"role": usr["role"]} 
-                access_token = create_access_token(identity=username, fresh=False, additional_claims=additional_claims)
+                access_token = create_access_token(identity=username, fresh=False)
                 set_access_cookies(response, access_token)
                 
                 

@@ -7,7 +7,6 @@ from flask import (Flask, request, session)
 from werkzeug.middleware.proxy_fix import ProxyFix
 
 from infrastructure.extensions import (scheduler, jwt, logs)
-from db.db_users_broker import (getDbUser)
 
 from blueprints.base_routes import base_routes
 from blueprints.auth_ecas import auth_ecas
@@ -21,6 +20,11 @@ from blueprints.auth import auth, refresh_expiring_jwts
 from infrastructure.helpers import JSONEncoder
 
 from cas import CASClient
+
+from flask_injector import FlaskInjector
+
+from repository.interfaces import IUsersBroker
+from dependency import MongoDbClientModule
 
 def create_app(config_object):
     """Main app factory"""
@@ -43,9 +47,7 @@ def create_app(config_object):
     
     register_extensions(app)
     register_blueprints(app)
-    
-    app.logger.debug(app.url_map)
-      
+          
     '''
     def is_debug_mode():
         """Get app debug status."""
@@ -56,19 +58,15 @@ def create_app(config_object):
     request_endswith_ignore_list = ['.js', '.css', '.png', '.ico', '.svg', '.map', '.json', 'doc']
     request_starts_with_ignore_list = ['/authorization', '/authentication', '/login', '/logout', '/refresh']
     
-    with app.app_context():
+    with app.app_context():             
         #if is_debug_mode():
         #    CORS(app, resources={r"/*": {"origins": "*"}})
         #else
-            #CORS(app, origins=[app.config["FLASK_PATH"]])
-        
-        if app.config['SCHEDULER_ENABLED']:
-            from infrastructure.scheduler import (tasks, events)            
-            scheduler.start()
+            #CORS(app, origins=[app.config["FLASK_PATH"]])                    
             
         @app.after_request
         def refresh_jwts(response):
-            app.logger.debug(request.path)
+            #app.logger.debug(request.path)
             
             if request.path.endswith(tuple(request_endswith_ignore_list)):
                 return response
@@ -125,10 +123,53 @@ def create_app(config_object):
                                 "user_agent": repr(request.user_agent),
                                 })
         except:
-               app.logger.exception("seta-api logger db exception")        
+            app.logger.exception("seta-api logger db exception")        
              
-        return response       
+        return response 
+    
+    @jwt.additional_claims_loader   
+    def add_claims_to_access_token(identity):    
+        iat = time.time()
+        #user = getDbUser(identity)        
+        usersBroker = app_injector.injector.get(IUsersBroker)
+        user = usersBroker.get_user_by_username(identity)
         
+        if user is None:
+            #guest claims
+            return {
+                "user": {"username": identity},
+                "iat": iat,
+                "iss": "SETA Flask server",
+                "sub": identity,
+                "role": "guest",
+                "source_limit": 5
+            }
+        
+        role = "user"
+        if "role" in user:
+            role = user["role"]
+        # TODO update source and limit with mongodb fields
+        source_limit = {"source": user["username"], "limit": 5}
+        
+        additional_claims = {
+            "user": {"username": user["username"], "first_name": user["first_name"], "last_name": user["last_name"], "email": user["email"]},
+            "iat": iat,
+            "iss": "SETA Flask server",
+            "sub": identity,
+            "role": role,
+            "source_limit": source_limit
+        }
+        return additional_claims
+        
+    app_injector = FlaskInjector(
+        app=app,
+        modules=[MongoDbClientModule()],
+    )
+    
+    if app.config['SCHEDULER_ENABLED']:            
+        from infrastructure.scheduler import (tasks, events)            
+        scheduler.start()
+    
     return app
     
 def register_blueprints(app):
@@ -145,36 +186,4 @@ def register_blueprints(app):
 def register_extensions(app):
     scheduler.init_app(app)
     jwt.init_app(app)
-    logs.init_app(app)
-
-@jwt.additional_claims_loader
-def add_claims_to_access_token(identity):    
-    iat = time.time()
-    user = getDbUser(identity)
-    
-    if user is None:
-        #guest claims
-        return {
-            "user": {"username": identity},
-            "iat": iat,
-            "iss": "SETA Flask server",
-            "sub": identity,
-            "role": "guest",
-            "source_limit": 5
-        }
-    
-    role = "user"
-    if "role" in user:
-        role = user["role"]
-    # TODO update source and limit with mongodb fields
-    source_limit = {"source": user["username"], "limit": 5}
-    
-    additional_claims = {
-        "user": {"username": user["username"], "first_name": user["first_name"], "last_name": user["last_name"], "email": user["email"]},
-        "iat": iat,
-        "iss": "SETA Flask server",
-        "sub": identity,
-        "role": role,
-        "source_limit": source_limit
-    }
-    return additional_claims   
+    logs.init_app(app)   

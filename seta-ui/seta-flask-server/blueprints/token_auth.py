@@ -6,8 +6,8 @@ from flask_jwt_extended import get_jwt_identity, jwt_required
 import time
 from infrastructure.helpers import validate_public_key
 
-from db.db_users_broker import getDbUser
-from db.db_rsa_keys_broker import getDbRsaKey
+from injector import inject
+from repository.interfaces import IUsersBroker, IRsaKeysBroker
 
 token_auth = Blueprint('token_auth', __name__)
 auth_api = Api(token_auth, 
@@ -34,16 +34,23 @@ class JWTUserToken(Resource):
                        501: 'Invalid Username',
                        502: 'Invalid Signature'})
     @auth_api.expect(auth_data)
+    
+    @inject
+    def __init__(self, usersBroker: IUsersBroker, rsaBroker: IRsaKeysBroker, api=None, *args, **kwargs):
+        self.usersBroker = usersBroker
+        self.rsaBroker = rsaBroker
+        super().__init__(api, *args, **kwargs)
 
+    @inject
     def post(self):
         args = request.get_json(force=True)
         
         username = args['username']
-        user = getDbUser(username)
+        user = self.usersBroker.get_user_by_username(username)
         if not user:
             abort(501, "Invalid Username")
             
-        public = getDbRsaKey(username, True)        
+        public = self.rsaBroker.get_rsa_key(username, True)        
         if not validate_public_key(public, args['rsa_original_message'], args['rsa_message_signature']):
             abort(502, "Invalid Signature")        
        
