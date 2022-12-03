@@ -7,7 +7,7 @@ from repository.interfaces.config import IDbConfig
 
 import time
 from datetime import datetime, timedelta
-from pymongo.results import DeleteResult, InsertManyResult
+from pymongo.results import InsertManyResult
 
 class UsersBroker(implements(IUsersBroker)):
     @inject
@@ -21,8 +21,8 @@ class UsersBroker(implements(IUsersBroker)):
 
         u = {
             "username": user["uid"],
-            "first_name": user["firstName"],
-            "last_name": user["lastName"],
+            "first_name": user["first_name"],
+            "last_name": user["last_name"],
             "email": user["email"],
             "domain": user["domain"],
             "role": user["role"],
@@ -47,7 +47,7 @@ class UsersBroker(implements(IUsersBroker)):
 
         updateParameter = {"$set": {field: value, "modified-at": str(time.time())}}
 
-        usersCollection.update({"username": username}, updateParameter)
+        usersCollection.update_one({"username": username}, updateParameter)
 
     
     def delete_user(self, username: str):

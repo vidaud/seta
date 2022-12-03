@@ -217,7 +217,8 @@ def user_details(usersBroker: IUsersBroker):
     identity = get_jwt_identity()
     user = usersBroker.get_user_by_username(identity)
     
-    if not user:
+    if user is None:
+        app.logger.error(f"User {identity} not found in the database!")
         abort(404, "User not found in the database!")
     
     role = "user"

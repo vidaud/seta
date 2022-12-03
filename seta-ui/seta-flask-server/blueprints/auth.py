@@ -4,7 +4,7 @@ from datetime import timezone
 
 from flask import Blueprint
 from flask import current_app as app
-from flask import (jsonify, redirect, request, make_response)
+from flask import (jsonify, redirect, request, make_response, session)
 
 from flask_jwt_extended import create_access_token
 from flask_jwt_extended import jwt_required, verify_jwt_in_request
@@ -29,7 +29,7 @@ def logout_local():
     """
     Remove tokens from cookies, but third-party cookies will remain
     """
-    
+    session.pop("username", None)
     response = jsonify({"status": "success"})
     unset_jwt_cookies(response)
     return response

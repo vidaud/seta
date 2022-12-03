@@ -89,6 +89,10 @@ class DevConfig(Config):
     JWT_REFRESH_TOKEN_EXPIRES = timedelta(hours=2)
     JWT_COOKIE_SECURE = False
     
+    GITHUB_CLIENT_ID = "ea09540bb092bd7af2f4"
+    GITHUB_CLIENT_SECRET = "b9e76828307f1bb849f7b47a97c1b7c9ca3361df"
+    
+    
     
 class TestConfig(Config):
     """Test config"""

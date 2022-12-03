@@ -16,3 +16,4 @@ flask-restx==1.0.3
 python-interface==1.6.1
 injector==0.20.1
 flask-injector==0.14.0
+github-flask==3.2.0

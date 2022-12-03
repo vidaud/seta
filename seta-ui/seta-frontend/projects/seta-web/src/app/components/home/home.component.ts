@@ -79,8 +79,8 @@ export class HomeComponent implements OnInit {
     event.preventDefault();
   }
 
-  goToEcas(event: any, link: string) {
-    window.location.href = `${environment.baseUrl}${link}`;
+  goToLogin(event: any, link: string) {
+    window.location.href = `${link}`;
     event.preventDefault();
   }
 
