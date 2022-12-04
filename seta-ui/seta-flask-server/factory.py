@@ -3,7 +3,7 @@ import logging
 from datetime import datetime as dt
 
 from flask import (Flask, request, session)
-#from flask_cors import CORS
+from flask_cors import CORS
 from werkzeug.middleware.proxy_fix import ProxyFix
 
 from infrastructure.extensions import (scheduler, jwt, logs, github)
@@ -39,22 +39,11 @@ def create_app(config_object):
     
     register_extensions(app)
     register_blueprints(app)
-          
-    '''
-    def is_debug_mode():
-        """Get app debug status."""
-        if not app.config['DEBUG']:
-            return app.config['FLASK_ENV'] == "development"
-        return app.config['DEBUG']
-    '''      
+           
     request_endswith_ignore_list = ['.js', '.css', '.png', '.ico', '.svg', '.map', '.json', 'doc']
     request_starts_with_ignore_list = ['/authorization', '/authentication', '/login', '/logout', '/refresh']
     
-    with app.app_context():             
-        #if is_debug_mode():
-        #    CORS(app, resources={r"/*": {"origins": "*"}})
-        #else
-            #CORS(app, origins=[app.config["FLASK_PATH"]])                    
+    with app.app_context():                  
             
         @app.after_request
         def refresh_jwts(response):
@@ -120,9 +109,7 @@ def create_app(config_object):
         return response 
     
     @jwt.additional_claims_loader   
-    def add_claims_to_access_token(identity):    
-        iat = time.time()
-        #user = getDbUser(identity)        
+    def add_claims_to_access_token(identity):  
         usersBroker = app_injector.injector.get(IUsersBroker)
         user = usersBroker.get_user_by_username(identity)
         
@@ -130,7 +117,6 @@ def create_app(config_object):
             #guest claims
             return {
                 "user": {"username": identity},
-                "iat": iat,
                 "iss": "SETA Flask server",
                 "sub": identity,
                 "role": "guest",
@@ -145,7 +131,6 @@ def create_app(config_object):
         
         additional_claims = {
             "user": {"username": user["username"], "first_name": user["first_name"], "last_name": user["last_name"], "email": user["email"]},
-            "iat": iat,
             "iss": "SETA Flask server",
             "sub": identity,
             "role": role,
@@ -174,6 +159,7 @@ def register_blueprints(app):
     app.register_blueprint(auth_github, url_prefix="/")
     
     app.register_blueprint(token_auth, url_prefix="/authentication/v1/")
+    CORS(token_auth) #enable CORS on token_auth
     app.register_blueprint(token_info, url_prefix="/authorization/v1/")
     
 def register_extensions(app):
@@ -181,11 +167,10 @@ def register_extensions(app):
     app.cas_client = CASClient(
         version=3,
         service_url = app.config["FLASK_PATH"] + "/login_callback_ecas",
-        #service_url = "",
         server_url = app.config["AUTH_CAS_URL"],
     )
     
     github.init_app(app)
     scheduler.init_app(app)
     jwt.init_app(app)
-    logs.init_app(app)   
+    logs.init_app(app)

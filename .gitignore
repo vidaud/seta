@@ -129,3 +129,4 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+requirements_seta_ui.txt
