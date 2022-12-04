@@ -9,6 +9,7 @@ from infrastructure.extensions import github
 
 from injector import inject
 from repository.interfaces import IUsersBroker
+from flask_github import GitHubError
 
 auth_github = Blueprint("auth_github", __name__)
 
@@ -19,7 +20,7 @@ def login():
     """
     next = request.args.get("next", None)
     
-    return github.authorize(scope="read:user", redirect_uri=next)
+    return github.authorize(scope="read:user,user:email", redirect_uri=next)
 
 @github.access_token_getter
 def token_getter():
@@ -50,17 +51,25 @@ def login_callback_github(access_token, userBroker: IUsersBroker):
         last_name = ""
     
     user = userBroker.get_user_by_username(username)
-    if user is None:        
+    if user is None:
+        email = github_user["email"]
+        
+        if email is None:
+            email = _get_user_email()
+                
+        if email is None:
+            abort(401, "GitHub email request failed")
+        
         user = {
             "uid": username,
             "first_name": first_name,
             "last_name": last_name,
-            "email": github_user["email"],
+            "email": email,
             "domain": github_user["company"],
             "role": "user"
         }
         
-        if github_user["email"] is not None and github_user["email"].lower() in app.config["ROOT_USERS"]:
+        if email.lower() in app.config["ROOT_USERS"]:
             user["role"] = "admin"
         
         userBroker.add_user(user)
@@ -89,3 +98,20 @@ def login_callback_github(access_token, userBroker: IUsersBroker):
     set_refresh_cookies(response, refresh_token)            
     
     return response
+
+def _get_user_email() -> str:
+    try:
+        #emails = github.get("/user/emails", kwargs={'headers':{'Accept':'application/vnd.github+json'}})
+        emails = github.get("/user/emails")
+        app.logger.debug(str(emails))
+        
+        if len(emails) > 0:
+            for e in emails:
+                if e["primary"]:
+                    return e["email"]
+                
+            return emails[0]["email"]                
+    except GitHubError as ge:
+        app.logger.exception(str(ge))        
+        
+    return None
