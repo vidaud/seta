@@ -106,6 +106,9 @@ class TestConfig(Config):
     JWT_REFRESH_TOKEN_EXPIRES = timedelta(hours=24)    
     JWT_COOKIE_SECURE = True
     
+    GITHUB_CLIENT_ID = "ea09540bb092bd7af2f4"
+    GITHUB_CLIENT_SECRET = "b9e76828307f1bb849f7b47a97c1b7c9ca3361df"
+    
 class ProdConfig(Config):
     """Production config"""
     
@@ -118,59 +121,5 @@ class ProdConfig(Config):
     JWT_REFRESH_TOKEN_EXPIRES = timedelta(days=2)
     JWT_COOKIE_SECURE = True
     
-    
-"""
-if "serve" == FLASK_ENV:
-    ANGULAR_PATH = "http://localhost:4200"
-    FLASK_PATH = "http://localhost:8080"
-    API_TARGET_PATH = "seta-test.emm4u.eu/seta-api/seta/api/v1"
-    JWT_SECRET_KEY = SECRET_KEY
-    JWT_EXPIRY_INTERVAL = 3600
-    JWT_ACCESS_TOKEN_EXPIRES = LOGIN_EXPIRY_DEV
-    MONGO_DB = "mongodb://localhost:27017/"
-    JWT_REFRESH_TOKEN_EXPIRES = REFRESH_EXPIRY_DEV
-
-
-if "dev" == FLASK_ENV:
-    FLASK_PATH = "http://localhost:8080"
-    API_TARGET_PATH = "seta-test.emm4u.eu/seta-api/seta/api/v1"
-    JWT_SECRET_KEY = SECRET_KEY
-    JWT_EXPIRY_INTERVAL = 3600
-    JWT_ACCESS_TOKEN_EXPIRES = LOGIN_EXPIRY_DEV
-    MONGO_DB = "mongodb://localhost:27017/"
-    JWT_REFRESH_TOKEN_EXPIRES = REFRESH_EXPIRY_DEV
-
-if "docker" == FLASK_ENV:
-    FLASK_PATH = "http://localhost"
-#    API_TARGET_PATH = "host.docker.internal/seta-api/api/v1"
-    API_TARGET_PATH = "seta-api:8081/seta-api/api/v1"
-    JWT_SECRET_KEY = SECRET_KEY
-    JWT_EXPIRY_INTERVAL = 3600
-    JWT_ACCESS_TOKEN_EXPIRES = LOGIN_EXPIRY_DEV
-    JWT_REFRESH_TOKEN_EXPIRES = REFRESH_EXPIRY_TEST
-#    MONGO_DB = "mongodb://host.docker.internal:27017/"
-    MONGO_DB = "mongodb://seta-mongo:27017/"
-
-
-if "test" == FLASK_ENV:
-    FLASK_PATH = "https://seta-test.emm4u.eu"
-    API_TARGET_PATH = "seta-test.emm4u.eu/seta-api/seta/api/v1"
-    JWT_SECRET_KEY = SECRET_KEY
-    JWT_EXPIRY_INTERVAL = 3600
-    JWT_ACCESS_TOKEN_EXPIRES = LOGIN_EXPIRY_TEST
-    JWT_REFRESH_TOKEN_EXPIRES = REFRESH_EXPIRY_TEST
-    MONGO_DB = "mongodb://localhost:27017/"
-
-
-
-if "production" == FLASK_ENV:
-    FLASK_PATH = "https://seta.emm4u.eu"
-    API_TARGET_PATH = "seta-test.emm4u.eu/seta-api/seta/api/v1"
-    JWT_SECRET_KEY = SECRET_KEY
-    JWT_EXPIRY_INTERVAL = 3600
-    JWT_ACCESS_TOKEN_EXPIRES = LOGIN_EXPIRY_PROD
-    JWT_REFRESH_TOKEN_EXPIRES = REFRESH_EXPIRY_PROD
-    MONGO_DB = "mongodb://seta-mongo:27017/"
-
-JWT_EXPIRY_INTERVAL = float(JWT_EXPIRY_INTERVAL)
-"""
+    GITHUB_CLIENT_ID = "ea09540bb092bd7af2f4"
+    GITHUB_CLIENT_SECRET = "b9e76828307f1bb849f7b47a97c1b7c9ca3361df"

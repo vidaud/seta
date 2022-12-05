@@ -5,7 +5,7 @@ from injector import inject
 from repository.interfaces.config import IDbConfig
 
 from datetime import datetime
-import time
+from datetime import timezone
 
 from repository.interfaces.rsa_keys_broker import IRsaKeysBroker
 
@@ -32,6 +32,7 @@ class RsaKeysBroker(implements(IRsaKeysBroker)):
         }
 
         key = c.find_one(q)
+        now = datetime.now(timezone.utc)
         if key is None: 
             msg = "There is no such key, so it will be added."
             s = {
@@ -40,7 +41,7 @@ class RsaKeysBroker(implements(IRsaKeysBroker)):
                 "is-private-key": isPrivateKey, 
                 "is-public-key": not isPrivateKey,
                 "value": value,
-                "created-at": str(datetime.now())
+                "created-at": str(now)
             }
             c.insert_one(s)
         else:
@@ -52,7 +53,7 @@ class RsaKeysBroker(implements(IRsaKeysBroker)):
                 "is-public-key": not isPrivateKey
                 
             }
-            uq = {"$set": {"value": value, "modified-at": str(time.time())}}
+            uq = {"$set": {"value": value, "modified-at": str(now)}}
             c.update_one(sq, uq)
 
         print(msg)

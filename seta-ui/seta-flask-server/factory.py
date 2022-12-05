@@ -1,5 +1,4 @@
 import logging
-from datetime import datetime as dt
 
 from flask import (Flask, request, session)
 from werkzeug.middleware.proxy_fix import ProxyFix

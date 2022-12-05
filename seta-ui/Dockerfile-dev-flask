@@ -19,6 +19,12 @@ RUN useradd -m seta
 
 ARG ROOT=/home/seta
 
+#set UTC timezone
+RUN apt-get update && \
+    apt-get install -yq tzdata && \
+    ln -fs /usr/share/zoneinfo/UTC /etc/localtime && \
+    dpkg-reconfigure -f noninteractive tzdata
+
 RUN mkdir -p $ROOT/seta-flask-server && mkdir -p $ROOT/models
 COPY ./seta-flask-server/requirements.txt $ROOT/seta-flask-server/requirements.txt
 WORKDIR $ROOT/seta-flask-server

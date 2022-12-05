@@ -6,7 +6,7 @@ from injector import inject
 from repository.interfaces.config import IDbConfig
 
 import time
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from pymongo.results import InsertManyResult
 
 class UsersBroker(implements(IUsersBroker)):
@@ -70,7 +70,8 @@ class UsersBroker(implements(IUsersBroker)):
     
     def delete_old_user(self):
         ar = self.db["archive"]
-        nowMinusThreeWeeks = str(datetime.now() - timedelta(weeks=3))
+        now = datetime.now(timezone.utc)
+        nowMinusThreeWeeks = str(now - timedelta(weeks=3))
         r = ar.delete_many({
             "$or": [
                 {"created-at": {"$lt":  nowMinusThreeWeeks}},

@@ -1,5 +1,4 @@
-from datetime import datetime
-import time
+from datetime import datetime, timezone
 from typing import Any
 
 from injector import inject
@@ -30,13 +29,14 @@ class StatesBroker(implements(IStatesBroker)):
 
         state = c.find_one(q)
         is_new = False
+        now = datetime.now(timezone.utc)
         if state is None:
             is_new = True
-            s = {"username": username, "key": key, "value": value, "created-at": str(datetime.now())}
+            s = {"username": username, "key": key, "value": value, "created-at": str(now)}
             c.insert_one(s)
         else:
             sq = {"username": username, "key": key}
-            sv = {"$set": {"value": value, "modified-at": str(time.time())}}
+            sv = {"$set": {"value": value, "modified-at": str(now)}}
             c.update_one(sq, sv)
 
         return is_new

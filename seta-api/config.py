@@ -1,9 +1,7 @@
 """seta-ui flask configuration."""
 
 from datetime import timedelta
-from os.path import exists
 import os
-import secrets
     
 class Config:
     """Common configuration"""
