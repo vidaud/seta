@@ -40,8 +40,7 @@ def setUserData(username, userBroker: IUsersBroker):
             "user": user
         }
 
-    response = json.jsonify(response)
-    return response
+    return jsonify(response)
 
 # POST - Delete user (by username)
 
@@ -75,9 +74,8 @@ def deleteUserAccount(userBroker: IUsersBroker):
             "All user data successfully deleted.",
             "username": username
         }
-
-    response = json.jsonify(response)
-    return response
+    
+    return jsonify(response)
 
 # GET - get all queries
 
@@ -104,9 +102,8 @@ def getQueries(username, statesBroker: IStatesBroker):
             "status": "OK",
             "state": queries
         }
-
-    response = json.jsonify(response)
-    return response
+    
+    return jsonify(response)
 
 # GET - Get state (by username and key)
 @rest.route("/state/<username>/<key>")
@@ -131,9 +128,8 @@ def getState(username, key, statesBroker: IStatesBroker):
             "status": "OK",
             "state": state
         }
-
-    response = json.jsonify(response)
-    return response
+    
+    return jsonify(response)
 
 
 # POST - Set state, given the username, key and value
@@ -146,7 +142,7 @@ def setState(username, userBroker: IUsersBroker, statesBroker: IStatesBroker):
     if user is None:
         app.logger.warning("User not found in DB")
 
-        response = json.jsonify(
+        response = jsonify(
             {
                 "authenticated": True,
                 "status": "error",
@@ -164,7 +160,7 @@ def setState(username, userBroker: IUsersBroker, statesBroker: IStatesBroker):
         
         state = statesBroker.get_state(username, r["key"])
         
-        response = json.jsonify(
+        response = jsonify(
                 {
                     "authenticated": True,
                     "status": "OK",
@@ -204,8 +200,7 @@ def deleteUserState(statesBroker: IStatesBroker):
             "key": key
         }
 
-    response = json.jsonify(response)
-    return response
+    return jsonify(response)
 
 # Custom non-pure REST calls:
 @rest.route("/user-info", methods=["GET"])
@@ -230,4 +225,4 @@ def user_details(usersBroker: IUsersBroker):
                     "lastName": user["last_name"], 
                     "email": user["email"],
                     "role": role
-                }), 200
+                })

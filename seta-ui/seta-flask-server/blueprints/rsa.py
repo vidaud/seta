@@ -1,7 +1,6 @@
 
 from Crypto.PublicKey import RSA
 from flask import Blueprint, json, request
-from flask import current_app as app
 from flask_jwt_extended import jwt_required
 
 import infrastructure.constants as constants
@@ -42,8 +41,7 @@ def generateRsaKeys(rsaKeyBroker: IRsaKeysBroker):
         "publicKey": decodedPubKeyPEM
     }
 
-    response = json.jsonify(response)
-    return response
+    return json.jsonify(response)
 
 # GET - get the public RSA key
 @jwt_required()
@@ -62,8 +60,7 @@ def getPublicRsaKey(username, rsaKeyBroker: IRsaKeysBroker):
         "value": key['value'] if key is not None else constants.defaultNoPublicKeyMessage
     }
 
-    response = json.jsonify(response)
-    return response
+    return json.jsonify(response)
 
 @rsa.route("/delete-rsa-keys", methods=["POST"])
 @jwt_required()
@@ -79,8 +76,8 @@ def deleteRsaKeys(rsaKeyBroker: IRsaKeysBroker):
         "status": "ok"
     }
 
-    response = json.jsonify(response)
-    return response
+    
+    return json.jsonify(response)
 
     
 
