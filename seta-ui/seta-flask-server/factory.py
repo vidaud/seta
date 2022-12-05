@@ -1,9 +1,7 @@
-import time
 import logging
 from datetime import datetime as dt
 
 from flask import (Flask, request, session)
-from flask_cors import CORS
 from werkzeug.middleware.proxy_fix import ProxyFix
 
 from infrastructure.extensions import (scheduler, jwt, logs, github)
@@ -35,7 +33,7 @@ def create_app(config_object):
     
     app.config.from_object(config_object)        
     app.json_encoder= JSONEncoder        
-    app.home_route = "/seta-ui/#/home"   
+    app.home_route = "/seta-ui/#/home"
     
     register_extensions(app)
     register_blueprints(app)
@@ -159,7 +157,6 @@ def register_blueprints(app):
     app.register_blueprint(auth_github, url_prefix="/")
     
     app.register_blueprint(token_auth, url_prefix="/authentication/v1/")
-    CORS(token_auth) #enable CORS on token_auth
     app.register_blueprint(token_info, url_prefix="/authorization/v1/")
     
 def register_extensions(app):

@@ -3,6 +3,7 @@ from flask import Blueprint
 from flask import jsonify, request, abort
 from flask_jwt_extended import create_access_token, create_refresh_token
 from flask_jwt_extended import get_jwt_identity, jwt_required
+from flask_cors import CORS
 import time
 from infrastructure.helpers import validate_public_key
 
@@ -10,6 +11,8 @@ from injector import inject
 from repository.interfaces import IUsersBroker, IRsaKeysBroker
 
 token_auth = Blueprint('token_auth', __name__)
+CORS(token_auth)
+
 auth_api = Api(token_auth, 
                version="1.0",
                title="JWT token authentication",
@@ -41,7 +44,6 @@ class JWTUserToken(Resource):
         self.rsaBroker = rsaBroker
         super().__init__(api, *args, **kwargs)
 
-    @inject
     def post(self):
         args = request.get_json(force=True)
         
