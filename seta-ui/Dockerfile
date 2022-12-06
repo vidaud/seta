@@ -50,7 +50,7 @@ RUN rm -r  /home/seta/seta-frontend/*
 
 RUN chown -R seta /home/seta
 
-ENV ROOT_USERS=["vidas.daudaravicius@ec.europa.eu","lucia.noce@ext.ec.europa.eu"] 
+ENV ROOT_USERS="vidas.daudaravicius@ec.europa.eu;lucia.noce@ext.ec.europa.eu"
 ENV FLASK_ENV="production"
 ENV FLASK_APP=app.py
 ENV FLASK_RUN_PORT=8080

@@ -59,8 +59,12 @@ class Config:
         Config.JWT_SECRET_KEY = self.SECRET_KEY
         
         #Read admin users and change values to lower
-        admins = os.environ.get('ROOT_USERS', [])
-        Config.ROOT_USERS = list(map(str.lower,admins))
+        root_users = os.environ.get('ROOT_USERS')
+        #print("ROOT_USERS " + str(root_users))
+        if root_users is not None:
+            admins = root_users.split(sep=";")
+            Config.ROOT_USERS = list(map(str.lower,admins))
+            #print("ROOT_USERS after split: " + str(Config.ROOT_USERS))
         
         #Read flask environment variables
         Config.FLASK_PATH = os.environ.get('FLASK_PATH', 'http://localhost')
