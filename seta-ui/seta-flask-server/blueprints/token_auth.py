@@ -31,29 +31,32 @@ auth_data = ns_auth.model(
 )
 
 @ns_auth.route("/user/token", methods=['POST'])
-class JWTUserToken(Resource):
-    @auth_api.doc(description="JWT token for users",
-            responses={200: 'Success',
-                       501: 'Invalid Username',
-                       502: 'Invalid Signature'})
-    @auth_api.expect(auth_data)
-    
+class JWTUserToken(Resource):    
     @inject
     def __init__(self, usersBroker: IUsersBroker, rsaBroker: IRsaKeysBroker, api=None, *args, **kwargs):
         self.usersBroker = usersBroker
         self.rsaBroker = rsaBroker
         super().__init__(api, *args, **kwargs)
 
+    @ns_auth.doc(description="JWT token for users",
+            responses={200: 'Success',
+                       501: 'Invalid Username',
+                       502: 'Invalid Signature',
+                       503: 'Public Key Unset'})
+    @ns_auth.expect(auth_data, validate=True)
     def post(self):
-        args = request.get_json(force=True)
+        args = auth_api.payload
         
         username = args['username']
         user = self.usersBroker.get_user_by_username(username)
         if not user:
             abort(501, "Invalid Username")
             
-        public = self.rsaBroker.get_rsa_key(username, True)        
-        if not validate_public_key(public, args['rsa_original_message'], args['rsa_message_signature']):
+        public = self.rsaBroker.get_rsa_key(username, True)
+        if public is None or public["value"] is None:
+            abort(503, "Public Key Unset")
+            
+        if not validate_public_key(public["value"], args['rsa_original_message'], args['rsa_message_signature']):
             abort(502, "Invalid Signature")        
        
         access_token = create_access_token(identity=username, fresh=True)
@@ -63,7 +66,7 @@ class JWTUserToken(Resource):
     
 @ns_auth.route("/user/guest", methods=['POST'])
 class JWTGuestToken(Resource):
-    @auth_api.doc(description="JWT token for guests",
+    @ns_auth.doc(description="JWT token for guests",
             responses={200: 'Success'})
     
     def post(self):
@@ -90,8 +93,8 @@ refresh_parser.add_argument("X-CSRF-TOKEN", location="headers", required=False, 
 
 @ns_auth.route("/refresh", methods=['POST']) 
 @ns_auth.expect(refresh_parser)   
-class JWTRefreshToekn(Resource):
-    @auth_api.doc(description="JWT refresh access token",
+class JWTRefreshToken(Resource):
+    @ns_auth.doc(description="JWT refresh access token",
             responses={200: 'Success', 401: "Refresh token verification failed"})
     
     @jwt_required(refresh=True)
