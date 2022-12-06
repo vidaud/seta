@@ -15,7 +15,7 @@ export class RestService {
     this.authService.currentUserSubject.asObservable().subscribe((currentUser: User) => this.currentUser = currentUser)
   }
 
-  public baseUrl = `${environment.baseUrl}${environment.baseApplicationContext}${environment.restEndPoint}`;
+  public baseUrl = `${environment.baseUrl}${environment.restEndPoint}`;
 
   // HTTP GET:
 
