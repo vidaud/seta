@@ -44,8 +44,11 @@ class JWTUserToken(Resource):
         if not user:
             abort(501, "Invalid Username")
             
-        public = getDbRsaKey(username, True)        
-        if not validate_public_key(public, args['rsa_original_message'], args['rsa_message_signature']):
+        public = getDbRsaKey(username, True)
+        if public is None or public["value"] is None:
+           abort(502, "User has no public key")
+        
+        if not validate_public_key(public["value"], args['rsa_original_message'], args['rsa_message_signature']):
             abort(502, "Invalid Signature")        
        
         access_token = create_access_token(identity=username, fresh=True)
@@ -75,11 +78,15 @@ class JWTGuestToken(Resource):
         refresh_token = create_refresh_token(identity=username, additional_claims=additional_claims)
         
         return jsonify(access_token=access_token, refresh_token=refresh_token)
-    
+
+refresh_parser = auth_api.parser()
+refresh_parser.add_argument("Authorization", location="headers", required=False, type="apiKey")
+   
 @auth_api.route("/refresh", methods=['POST'])    
 class JWTRefreshToekn(Resource):
     @auth_api.doc(description="JWT refresh access token",
             responses={200: 'Success', 401: "Refresh token verification failed"})
+    @auth_api.expect(refresh_parser) 
     
     @jwt_required(refresh=True)
     def post(self):
