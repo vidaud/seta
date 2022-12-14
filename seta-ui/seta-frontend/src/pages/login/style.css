@@ -1,0 +1,41 @@
+.card-position {
+    text-align: -webkit-center;
+}
+.p-button.github {
+    background: linear-gradient(to left, var(--bluegray-700) 50%, var(--bluegray-800) 50%);
+    background-size: 200% 100%;
+    background-position: right bottom;
+    transition: background-position 0.5s ease-out;
+    color: #fff;
+    border-color: var(--bluegray-800);
+    /* margin-top: 3%; */
+}
+.p-button.github:hover {
+    background-position: left bottom;
+}
+.p-button.github i {
+    background-color: var(--bluegray-800);
+}
+.p-button.github:focus {
+    box-shadow: 0 0 0 1px var(--bluegray-500);
+}
+.card-style {
+    width: 30%;
+    margin: 2%;
+}
+/* .p-button {
+    display: inline !important;
+} */
+
+@media screen and (max-width: 960px) {
+    .card-position .p-button {
+        margin-bottom: 0.5rem;
+    }
+    .card-position .p-button:not(.p-button-icon-only) {
+        display: flex;
+        width: 100%;
+    }
+    .card-position .p-buttonset .p-button {
+        margin-bottom: 0;
+    }
+}
