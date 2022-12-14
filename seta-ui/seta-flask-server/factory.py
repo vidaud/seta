@@ -16,7 +16,8 @@ from blueprints.token_info import token_info
 
 from infrastructure.helpers import JSONEncoder
 
-from cas import CASClient
+#from cas import CASClient
+from infrastructure.cas_client import SetaCasClient
 
 from flask_injector import FlaskInjector
 
@@ -107,30 +108,14 @@ def create_app(config_object):
     
     @jwt.additional_claims_loader   
     def add_claims_to_access_token(identity):  
-        usersBroker = app_injector.injector.get(IUsersBroker)
-        user = usersBroker.get_user_by_username(identity)
-        
-        if user is None:
-            #guest claims
-            return {
-                "user": {"username": identity},
-                "iss": "SETA Flask server",
-                "sub": identity,
-                "role": "guest",
-                "source_limit": 5
-            }
-        
-        role = "user"
-        if "role" in user:
-            role = user["role"]
         # TODO update source and limit with mongodb fields
-        source_limit = {"source": user["username"], "limit": 5}
+        #usersBroker = app_injector.injector.get(IUsersBroker)            
+        
+        source_limit = {"source": identity["user_id"], "limit": 5}
         
         additional_claims = {
-            "user": {"username": user["username"], "first_name": user["first_name"], "last_name": user["last_name"], "email": user["email"]},
             "iss": "SETA Flask server",
-            "sub": identity,
-            "role": role,
+            "sub": identity["user_id"],
             "source_limit": source_limit
         }
         return additional_claims
@@ -160,9 +145,9 @@ def register_blueprints(app):
     
 def register_extensions(app):
     #the service_url will be changed before ECAS redirect with 'request.url'
-    app.cas_client = CASClient(
-        version=3,
-        service_url = app.config["FLASK_PATH"] + "/login_callback_ecas",
+    app.cas_client = SetaCasClient(
+        #version=3,
+        service_url = app.config["FLASK_PATH"] + "/login/callback/ecas",
         server_url = app.config["AUTH_CAS_URL"],
     )
     

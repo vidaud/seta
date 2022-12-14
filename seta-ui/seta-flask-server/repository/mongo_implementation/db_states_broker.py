@@ -1,4 +1,5 @@
-from datetime import datetime, timezone
+from datetime import datetime
+import pytz
 from typing import Any
 
 from injector import inject
@@ -12,37 +13,42 @@ class StatesBroker(implements(IStatesBroker)):
     def __init__(self, config: IDbConfig) -> None:
        self.db = config.get_db()
     
-    def get_state(self, username: str, key: str):
+    def get_state(self, user_id: str, key: str):
         usersCollection = self.db["users"]
 
-        q = {"username": username, "key": key}
+        q = {"user_id": user_id, "query_key": key}
 
-        return usersCollection.find_one(q)
+        result = usersCollection.find_one(q)
+        
+        if result is None:
+            return None
+        
+        return result
     
-    def get_corpus_queries(self, username: str):
-        return self.get_state(username, "corpus-payload")
+    def get_corpus_queries(self, user_id: str):
+        return self.get_state(user_id, "corpus-payload")
     
-    def set_state(self, username: str, key: str, value: Any):
+    def set_state(self, user_id: str, key: str, value: Any):
         c = self.db["users"]
 
-        q = {"username": username, "key": key}
+        q = {"user_id": user_id, "query_key": key}
 
         state = c.find_one(q)
         is_new = False
-        now = datetime.now(timezone.utc)
+        now = datetime.now(pytz.utc)
+        
         if state is None:
             is_new = True
-            s = {"username": username, "key": key, "value": value, "created-at": str(now)}
+            s = {"user_id": user_id, "query_key": key, "query_value": value, "created_at": now}
             c.insert_one(s)
         else:
-            sq = {"username": username, "key": key}
-            sv = {"$set": {"value": value, "modified-at": str(now)}}
+            sq = {"user_id": user_id, "query_key": key}
+            sv = {"$set": {"query_value": value, "modified_at": now}}
             c.update_one(sq, sv)
 
         return is_new
     
-    def delete_state(self, username: str, key: str):
+    def delete_state(self, user_id: str, key: str):
         c = self.db["users"]
-        sq = {"username": username, "key": key}
+        sq = {"user_id": user_id, "query_key": key}
         c.delete_one(sq)
-        return "ok"

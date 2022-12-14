@@ -29,7 +29,7 @@ def logout_local():
     """
     Remove tokens from cookies, but third-party cookies will remain
     """
-    session.pop("username", None)
+    #session.pop("username", None)
     response = jsonify({"status": "success"})
     unset_jwt_cookies(response)
     return response

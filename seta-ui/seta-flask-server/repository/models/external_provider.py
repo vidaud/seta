@@ -2,7 +2,7 @@ import json
 
 class ExternalProvider:
     
-    def __init__(self, user_id, provider_uid, provider, first_name, last_name, domain) -> None:
+    def __init__(self, user_id, provider_uid, provider, first_name, last_name, domain = None) -> None:
         self.user_id = user_id
         self.provider_uid = provider_uid
         self.provider = provider
@@ -28,3 +28,12 @@ class ExternalProvider:
 
     def to_json(self):
         return dict(self)
+    
+    @classmethod 
+    def from_db_json(cls, json_dict):
+        return cls(json_dict["user_id"],
+                   json_dict["provider_uid"],
+                   json_dict["provider"],
+                   json_dict["first_name"],
+                   json_dict["last_name"],
+                   json_dict["domain"])

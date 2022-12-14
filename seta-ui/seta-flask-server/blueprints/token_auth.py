@@ -47,20 +47,25 @@ class JWTUserToken(Resource):
     def post(self):
         args = auth_api.payload
         
-        username = args['username']
-        user = self.usersBroker.get_user_by_username(username)
+        user_id = args['username']
+        user = self.usersBroker.get_user_by_id(user_id)
         if not user:
             abort(501, "Invalid Username")
             
-        public = self.rsaBroker.get_rsa_key(username, True)
-        if public is None or public["value"] is None:
+        public_key = self.rsaBroker.get_rsa_key(user_id, True)
+        if public_key is None:
             abort(503, "Public Key Unset")
             
-        if not validate_public_key(public["value"], args['rsa_original_message'], args['rsa_message_signature']):
-            abort(502, "Invalid Signature")        
+        if not validate_public_key(public_key, args['rsa_original_message'], args['rsa_message_signature']):
+            abort(502, "Invalid Signature") 
+            
+        identity = user.to_identity_json()
+        additional_claims = {
+                "role": user.role
+            }       
        
-        access_token = create_access_token(identity=username, fresh=True)
-        refresh_token = create_refresh_token(identity=username)
+        access_token = create_access_token(identity=identity, fresh=True, additional_claims=additional_claims)
+        refresh_token = create_refresh_token(identity=identity, additional_claims=additional_claims)
         
         return jsonify(access_token=access_token, refresh_token=refresh_token)
     
@@ -71,19 +76,14 @@ class JWTGuestToken(Resource):
     
     def post(self):
         iat = time.time()
-        username = "guest-" + str(iat)
+        identity = {"user_id": "guest-" + str(iat)}
         
         additional_claims = {
-            "user": {"username": username},
-            "iat": iat,
-            "iss": "SETA Flask server",
-            "sub": username,
             "role": "guest",
-            "source_limit": 5
         }     
        
-        access_token = create_access_token(identity=username, fresh=True, additional_claims=additional_claims)
-        refresh_token = create_refresh_token(identity=username, additional_claims=additional_claims)
+        access_token = create_access_token(identity=identity, fresh=True, additional_claims=additional_claims)
+        refresh_token = create_refresh_token(identity=identity, additional_claims=additional_claims)
         
         return jsonify(access_token=access_token, refresh_token=refresh_token)
     
@@ -94,13 +94,29 @@ refresh_parser.add_argument("X-CSRF-TOKEN", location="headers", required=False, 
 @ns_auth.route("/refresh", methods=['POST']) 
 @ns_auth.expect(refresh_parser)   
 class JWTRefreshToken(Resource):
+    @inject
+    def __init__(self, usersBroker: IUsersBroker, api=None, *args, **kwargs):
+        self.usersBroker = usersBroker
+        super().__init__(api, *args, **kwargs)
+    
+    
     @ns_auth.doc(description="JWT refresh access token",
             responses={200: 'Success', 401: "Refresh token verification failed"})
     
     @jwt_required(refresh=True)
     def post(self):
-        identity = get_jwt_identity()
-        access_token = create_access_token(identity=identity, fresh=False)
+        identity = get_jwt_identity()              
+        
+        user = self.usersBroker.get_user_by_id(identity["user_id"])
+            
+        if user is None:
+            abort(501, "Invalid Username")
+            
+        additional_claims = {
+                "role": user.role
+            }
+        
+        access_token = create_access_token(identity=identity, fresh=False, additional_claims=additional_claims)
         return jsonify(access_token=access_token)        
     
 

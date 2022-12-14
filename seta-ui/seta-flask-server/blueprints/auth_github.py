@@ -11,6 +11,8 @@ from injector import inject
 from repository.interfaces import IUsersBroker
 from flask_github import GitHubError
 
+from repository.models import SetaUser
+
 auth_github = Blueprint("auth_github", __name__)
 
 @auth_github.route('/login/github', methods=["GET"])
@@ -41,48 +43,28 @@ def login_callback_github(access_token, userBroker: IUsersBroker):
     github_user = github.get('/user')
     
     app.logger.debug(str(github_user))
-    
-    username = github_user['login']
-    name = str(github_user["name"]).split(maxsplit=1)
-    first_name = name[0]
-    if len(name) > 1:
-        last_name = name[1]
-    else:
-        last_name = ""
-    
-    user = userBroker.get_user_by_username(username)
-    if user is None:
-        email = github_user["email"]
         
-        if email is None:
-            email = _get_user_email()
-                
-        if email is None:
-            abort(401, "GitHub email request failed")
-        
-        user = {
-            "uid": username,
-            "first_name": first_name,
-            "last_name": last_name,
-            "email": email,
-            "domain": github_user["company"],
-            "role": "user"
-        }
-        
-        if email.lower() in app.config["ROOT_USERS"]:
-            user["role"] = "admin"
-        
-        userBroker.add_user(user)
-    else:
-        if user["first_name"] != first_name:
-            userBroker.update_user(username, "first_name", first_name)
-        if user["last_name"] != first_name:
-            userBroker.update_user(username, "last_name", last_name)
+    if github_user["email"] is None:
+        github_user["email"] = _get_user_email()        
             
-    session["username"] = username
-    #additional_claims are added via additional_claims_loader method: factory->add_claims_to_access_token
-    access_token = create_access_token(username, fresh=True)
-    refresh_token = create_refresh_token(username)
+    #set dummy email
+    if github_user["email"] is None:
+        github_user["email"] = github_user["login"] + "_no_reply@github.com"
+        
+    admins = app.config["ROOT_USERS"]
+    github_user["is_admin"] = github_user["email"] in admins
+        
+    seta_user = SetaUser.from_github_json(github_user)
+    auth_user = userBroker.authenticate_user(seta_user)    
+                        
+    #additional_claims are added via additional_claims_loader method: factory->add_claims_to_access_token    
+    identity = auth_user.to_identity_json()
+    additional_claims = {
+            "role": auth_user.role
+        }
+    
+    access_token = create_access_token(identity, fresh=True, additional_claims=additional_claims)
+    refresh_token = create_refresh_token(identity, additional_claims=additional_claims)
     
     next = request.args.get("next")
     #TODO: verify 'next' domain before redirect, replace with home_route if anything suspicious
@@ -101,7 +83,7 @@ def login_callback_github(access_token, userBroker: IUsersBroker):
 
 def _get_user_email() -> str:
     try:
-        #emails = github.get("/user/emails", kwargs={'headers':{'Accept':'application/vnd.github+json'}})
+        #emails = github.get("/user/emails", headers={'Accept':'application/vnd.github+json'})
         emails = github.get("/user/emails")
         app.logger.debug(str(emails))
         

@@ -9,7 +9,8 @@ import secrets
 class Config:
     """Common configuration"""
         
-    AUTH_CAS_URL = "https://ecas.ec.europa.eu/cas/login"
+    #AUTH_CAS_URL = "https://ecas.ec.europa.eu/cas/"
+    AUTH_CAS_URL = "https://webgate.ec.europa.eu/cas/"
     DB_HOST="seta-mongo"
     DB_PORT=27017
     MONGO_URI = ""

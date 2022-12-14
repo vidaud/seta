@@ -31,4 +31,10 @@ class UserClaim:
     @classmethod
     def create_default_role_claim(cls, user_id: str):
         return cls(user_id, ClaimTypeConstants.RoleClaimType, UserRoleConstants.User)
+    
+    @classmethod 
+    def from_db_json(cls, json_dict):
+        return cls(json_dict["user_id"],
+                   json_dict["claim_type"],
+                   json_dict["claim_value"])
         

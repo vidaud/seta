@@ -1,7 +1,7 @@
 
 from Crypto.PublicKey import RSA
 from flask import Blueprint, json, request
-from flask_jwt_extended import jwt_required
+from flask_jwt_extended import jwt_required, get_jwt_identity
 
 import infrastructure.constants as constants
 from repository.interfaces import IRsaKeysBroker
@@ -16,8 +16,9 @@ rsa = Blueprint("rsa", __name__)
 @inject
 def generateRsaKeys(rsaKeyBroker: IRsaKeysBroker):
 
-    r = json.loads(request.data.decode("UTF-8"))
-    username = r["username"]
+    #r = json.loads(request.data.decode("UTF-8"))
+    #username = r["username"]
+    identity = get_jwt_identity() 
 
     keyPair = RSA.generate(bits=4096)
 
@@ -30,8 +31,7 @@ def generateRsaKeys(rsaKeyBroker: IRsaKeysBroker):
     privKeyPEM = keyPair.exportKey()
     decodedPrivKeyPEM = privKeyPEM.decode('ascii')
 
-    rsaKeyBroker.set_rsa_key(username, False, decodedPubKeyPEM)
-    # setDbRsaKey(username, True, decodedPrivKeyPEM)
+    rsaKeyBroker.set_rsa_key(identity["user_id"], decodedPubKeyPEM)
 
     response = {
         "authenticated": True,
@@ -44,20 +44,21 @@ def generateRsaKeys(rsaKeyBroker: IRsaKeysBroker):
     return json.jsonify(response)
 
 # GET - get the public RSA key
+@rsa.route("/get-public-rsa-key/<username>")
 @jwt_required()
 @inject
-@rsa.route("/get-public-rsa-key/<username>")
 def getPublicRsaKey(username, rsaKeyBroker: IRsaKeysBroker):
-    key = rsaKeyBroker.get_rsa_key(username, True)
+    identity = get_jwt_identity()
+    key = rsaKeyBroker.get_rsa_key(identity["user_id"])
     
     #print("fetched key is:")
     #print(key)
 
     response = {
-        "username": username,
+        "username": identity["user_id"],
         "is-rsa-key": True,
         "rsa-key-exists": True if key is not None else False,
-        "value": key['value'] if key is not None else constants.defaultNoPublicKeyMessage
+        "value": key if key is not None else constants.defaultNoPublicKeyMessage
     }
 
     return json.jsonify(response)
@@ -66,11 +67,8 @@ def getPublicRsaKey(username, rsaKeyBroker: IRsaKeysBroker):
 @jwt_required()
 @inject
 def deleteRsaKeys(rsaKeyBroker: IRsaKeysBroker):
-
-    r = json.loads(request.data.decode("UTF-8"))
-    username = r["username"]
-
-    rsaKeyBroker.delete_by_username(username)
+    identity = get_jwt_identity()
+    rsaKeyBroker.delete_by_user_id(identity["user_id"])
 
     response = {
         "status": "ok"

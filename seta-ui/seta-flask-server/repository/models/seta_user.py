@@ -5,12 +5,13 @@ import shortuuid
 from infrastructure.constants import ExternalProviderConstants
 from .user_claim import UserClaim
 from .external_provider import ExternalProvider
+from infrastructure.constants import ClaimTypeConstants, UserRoleConstants
 
 class SetaUser:
     
-    def __init__(self, user_id, email, user_type, status, created_at, modified_at) -> None:
+    def __init__(self, user_id, email, user_type, status, created_at = None, modified_at = None) -> None:
         self.user_id = user_id
-        self.email = email
+        self.email = email.lower()
         self.user_type = user_type
         self.status = status
         self.created_at = created_at
@@ -37,35 +38,78 @@ class SetaUser:
         return self.__str__()
 
     def to_json(self) -> dict:
-        return dict(self)
+       return dict(self)
+   
+    def to_identity_json(self) -> dict:
+        if self.authenticated_provider is None:
+           return {"user_id": self.user_id}
+
+        return {"user_id": self.user_id,
+            "provider": self.authenticated_provider.provider,
+            "provider_uid": self.authenticated_provider.provider_uid
+        }
+       
     
-    def set_authenticated_provider(self, provider: ExternalProvider) -> None:
-        self._authenticated_provider = provider
+    def to_json_complete(self) -> dict:
+        to_return = dict(self)
+        
+        to_return["role"] = self.role
+        
+        if self._authenticated_provider is not None:
+            to_return["provider"] = self._authenticated_provider.to_json()        
+        
+        return to_return
+    
+    @property
+    def authenticated_provider(self):
+        return self._authenticated_provider
+    
+    @authenticated_provider.setter
+    def authenticated_provider(self, value: ExternalProvider):
+        self._authenticated_provider = value
+        
+    @property
+    def claims(self) -> list[UserClaim]:
+        return self._claims
+    
+    @claims.setter
+    def claims(self, value: list[UserClaim]):
+        self._claims = value
         
     def add_claim(self, claim: UserClaim) -> None:
         self._claims.append(claim)
         
+    @property
+    def external_providers(self) -> list[ExternalProvider]:
+        return self._external_providers
+    
+    @external_providers.setter
+    def external_providers(self, value: list[ExternalProvider]):
+        self._external_providers = value
+        
     def add_external_provider(self, provider: ExternalProvider) -> None:
         self._external_providers.append(provider)
+            
+    @property
+    def role(self) -> str:
+        for uc in self._claims:
+            if uc.claim_type == ClaimTypeConstants.RoleClaimType:
+                return uc.claim_value
         
-    def set_claims(self, claims: list[UserClaim]) -> None:
-        self._claims = claims
-        
-    def set_external_providers(self, providers: list[ExternalProvider]) -> None:
-        self._external_providers = providers
+        return UserRoleConstants.User
         
     @staticmethod
     def generate_uuid() -> str:
-        return shortuuid.ShortUUID().random(length=20)
+        return shortuuid.ShortUUID().random(length=20)        
     
-    @classmethod
-    def from_json(cls, json_dct):
-      return cls(json_dct['user_id'],
-                   json_dct['email'], 
-                   json_dct['user_type'],
-                   json_dct['status'],
-                   json_dct['created_at'],
-                   json_dct['modified_at'])
+    @classmethod 
+    def from_db_json(cls, json_dict):
+        return cls(json_dict["user_id"],
+                   json_dict["email"],
+                   json_dict["user_type"],
+                   json_dict["status"],
+                   json_dict["created_at"],
+                   json_dict["modified_at"])
       
     @classmethod
     def from_ecas_json(cls, json_dct):
@@ -78,15 +122,15 @@ class SetaUser:
                    datetime.datetime.now(tz=pytz.utc),
                    None)
         
-        user._authenticated_provider = ExternalProvider(user_id, json_dct['uid'], ExternalProviderConstants.ECAS, 
-                                                        json_dct['first_name'], json_dct['last_name']
+        user.authenticated_provider = ExternalProvider(user_id, json_dct['uid'], ExternalProviderConstants.ECAS, 
+                                                        json_dct['firstName'], json_dct['lastName']
                                                         ,json_dct['domain'])
         
-        role = json_dct.get('role')
-        if role is None:
+        is_admin = json_dct.get('is_admin')
+        if not is_admin:
             user.add_claim(UserClaim.create_default_role_claim(user_id))
         else:
-            user.add_claim(UserClaim.create_role_claim(user_id, role))
+            user.add_claim(UserClaim.create_role_claim(user_id, UserRoleConstants.Admin))
         
         return user
     
@@ -112,10 +156,10 @@ class SetaUser:
                                                         first_name, last_name
                                                         ,json_dct['company'])
         
-        role = json_dct.get('role')
-        if role is None:
+        is_admin = json_dct.get('is_admin')
+        if not is_admin:
             user.add_claim(UserClaim.create_default_role_claim(user_id))
         else:
-            user.add_claim(UserClaim.create_role_claim(user_id, role))
+            user.add_claim(UserClaim.create_role_claim(user_id, UserRoleConstants.Admin))
         
         return user

@@ -1,11 +1,10 @@
-from typing import Any
 from interface import implements
 
 from injector import inject
 from repository.interfaces.config import IDbConfig
 
 from datetime import datetime
-from datetime import timezone
+import pytz
 
 from repository.interfaces.rsa_keys_broker import IRsaKeysBroker
 
@@ -14,52 +13,43 @@ class RsaKeysBroker(implements(IRsaKeysBroker)):
     def __init__(self, config: IDbConfig) -> None:
        self.db = config.get_db()
     
-    def get_rsa_key(self, username: str, isPublicKey: bool):
+    def get_rsa_key(self, user_id: str):
         usersCollection = self.db["users"]
 
-        q = {"username": username, "is-rsa-key": True, "is-public-key": isPublicKey}
+        q = {"user_id": user_id, "rsa_value": {"$exists" : True}}
 
-        return usersCollection.find_one(q)
+        result = usersCollection.find_one(q)
+        
+        if result is None:
+            return None
+        
+        return result["rsa_value"]
     
-    def set_rsa_key(self, username: str, isPrivateKey: bool, value: Any):
+    def set_rsa_key(self, user_id: str, value: str):
         c = self.db["users"]
 
-        q = {
-            "username": username, 
-            "is-rsa-key": True, 
-            "is-private-key": isPrivateKey,
-            "is-public-key": not isPrivateKey
-        }
+        q = {"user_id": user_id, "rsa_value": {"$exists" : True}}
 
         key = c.find_one(q)
-        now = datetime.now(timezone.utc)
+        now = datetime.now(tz=pytz.utc)
+        
         if key is None: 
             msg = "There is no such key, so it will be added."
             s = {
-                "username": username, 
-                "is-rsa-key": True, 
-                "is-private-key": isPrivateKey, 
-                "is-public-key": not isPrivateKey,
-                "value": value,
-                "created-at": str(now)
+                "user_id": user_id, 
+                "rsa_value": value,
+                "created_at": now
             }
             c.insert_one(s)
         else:
             msg = "Key is found, so it will be updated to the new value."
-            sq = {
-                "username": username, 
-                "is-rsa-key": True, 
-                "is-private-key": isPrivateKey,
-                "is-public-key": not isPrivateKey
-                
-            }
-            uq = {"$set": {"value": value, "modified-at": str(now)}}
+            sq = {"user_id": user_id, "rsa_value": {"$exists" : True}}
+            uq = {"$set": {"rsa_value": value, "modified_at": now}}
             c.update_one(sq, uq)
 
-        print(msg)
         return msg
     
-    def delete_by_username(self, username: str):
+    def delete_by_user_id(self, user_id: str):
         c = self.db["users"]
-        sq = {"username": username, "is-rsa-key": True}
-        c.delete_many(sq)        
+        q = {"user_id": user_id, "rsa_value": {"$exists" : True}}
+        c.delete_many(q)

@@ -9,6 +9,7 @@ from repository.interfaces import IUsersBroker, IStatesBroker
 rest = Blueprint("rest", __name__)
 
 # POST - Set user data (by username, field name, and value)
+'''
 @rest.route("/user/set/<username>", methods=["POST"])
 @jwt_required()
 @inject
@@ -41,6 +42,7 @@ def setUserData(username, userBroker: IUsersBroker):
         }
 
     return jsonify(response)
+'''
 
 # POST - Delete user (by username)
 
@@ -49,10 +51,9 @@ def setUserData(username, userBroker: IUsersBroker):
 @jwt_required()
 @inject
 def deleteUserAccount(userBroker: IUsersBroker):
-    r = json.loads(request.data.decode("UTF-8"))
-    username = r["username"]
+    identity = get_jwt_identity()
     
-    user = userBroker.get_user_by_username(username)
+    user = userBroker.get_user_by_id(identity["user_id"])
 
     if user is None:
         app.logger.warning("User not found in DB")
@@ -63,8 +64,7 @@ def deleteUserAccount(userBroker: IUsersBroker):
             "message": "User not found in DB."
         }
     else:
-        userBroker.move_documents("users", "archive", {"username": username})
-        # deleteAllDbUserData(username)
+        userBroker.move_documents("users", "archive", {"user_id": user.user_id})
 
         # Return response
         response = {
@@ -72,7 +72,7 @@ def deleteUserAccount(userBroker: IUsersBroker):
             "status": "OK",
             "message":
             "All user data successfully deleted.",
-            "username": username
+            "user_id": user.user_id
         }
     
     return jsonify(response)
@@ -84,8 +84,8 @@ def deleteUserAccount(userBroker: IUsersBroker):
 @jwt_required()
 @inject
 def getQueries(username, statesBroker: IStatesBroker):
-
-    queries = statesBroker.get_corpus_queries(username)
+    identity = get_jwt_identity()
+    queries = statesBroker.get_corpus_queries(identity["user_id"])
 
     if queries is None:
         app.logger.warning("No queries have been found for this user.")
@@ -100,7 +100,11 @@ def getQueries(username, statesBroker: IStatesBroker):
         response = {
             "authenticated": True,
             "status": "OK",
-            "state": queries
+            "state": {
+                "username": queries["user_id"],
+                "key": queries["query_key"],
+                "value": queries["query_value"]
+            }
         }
     
     return jsonify(response)
@@ -110,8 +114,8 @@ def getQueries(username, statesBroker: IStatesBroker):
 @jwt_required()
 @inject
 def getState(username, key, statesBroker: IStatesBroker):
-
-    state = statesBroker.get_state(username, key)
+    identity = get_jwt_identity()
+    state = statesBroker.get_state(identity["user_id"], key)
 
     if state is None:
         app.logger.warning("No state with key " + key + " found for user.")
@@ -126,7 +130,11 @@ def getState(username, key, statesBroker: IStatesBroker):
         response = {
             "authenticated": True,
             "status": "OK",
-            "state": state
+            "state": {
+                "username": state["user_id"],
+                "key": state["query_key"],
+                "value": state["query_value"]
+            }
         }
     
     return jsonify(response)
@@ -136,38 +144,30 @@ def getState(username, key, statesBroker: IStatesBroker):
 @rest.route("/state/<username>", methods=["POST"])
 @jwt_required()
 @inject
-def setState(username, userBroker: IUsersBroker, statesBroker: IStatesBroker):
-    user = userBroker.get_user_by_username(username)
-
-    if user is None:
-        app.logger.warning("User not found in DB")
-
-        response = jsonify(
+def setState(username, statesBroker: IStatesBroker):
+    identity = get_jwt_identity()
+    
+    r = json.loads(request.data.decode("UTF-8"))
+    app.logger.debug(r["value"])
+    
+    is_new = statesBroker.set_state(identity["user_id"], r["key"], r["value"])
+    if is_new:
+        msg = "New state is successfully added."
+    else:
+        msg = "State updated correctly."
+        
+    response = jsonify(
             {
                 "authenticated": True,
-                "status": "error",
-                "message": "User not found in DB."
-            }
-        )
-    else:
-        r = json.loads(request.data.decode("UTF-8"))
-        print(r["value"])
-        is_new = statesBroker.set_state(username, r["key"])
-        if is_new:
-            msg = "New state is successfully added."
-        else:
-            msg = "State updated correctly."
-        
-        state = statesBroker.get_state(username, r["key"])
-        
-        response = jsonify(
-                {
-                    "authenticated": True,
-                    "status": "OK",
-                    "message": msg,
-                    "state": state,
+                "status": "OK",
+                "message": msg,
+                "state": {
+                    "username": identity["user_id"],
+                    "key": r["key"],
+                    "value":  r["value"],
                 }
-        )
+            }
+    )
         
     return response
 
@@ -175,30 +175,20 @@ def setState(username, userBroker: IUsersBroker, statesBroker: IStatesBroker):
 @jwt_required()
 @inject
 def deleteUserState(statesBroker: IStatesBroker):
+    identity = get_jwt_identity()
+    
     r = json.loads(request.data.decode("UTF-8"))
-    username = r["username"]
     key = r["key"]
 
-    state = statesBroker.get_state(username, key)
+    statesBroker.delete_state(identity["user_id"], key)
 
-    if state is None:
-        app.logger.warning("State not found in DB")
-
-        response = {
-            "authenticated": True,
-            "status": "error",
-            "message": "State not found in DB."
-        }
-    else:
-        statesBroker.delete_state(username, key)
-
-        # Return response
-        response = {
-            "authenticated": True,
-            "status": "OK",
-            "message": "State successfully deleted.",
-            "key": key
-        }
+    # Return response
+    response = {
+        "authenticated": True,
+        "status": "OK",
+        "message": "State successfully deleted.",
+        "key": key
+    }
 
     return jsonify(response)
 
@@ -209,20 +199,17 @@ def deleteUserState(statesBroker: IStatesBroker):
 def user_details(usersBroker: IUsersBroker):
     """ Returns json with user details"""
     
-    identity = get_jwt_identity()
-    user = usersBroker.get_user_by_username(identity)
+    identity = get_jwt_identity()    
+    user = usersBroker.get_user_by_id_and_provider(user_id=identity["user_id"], provider_uid=identity["provider_uid"], provider=identity["provider"])
     
     if user is None:
-        app.logger.error(f"User {identity} not found in the database!")
+        app.logger.error(f"User {str(identity)} not found in the database!")
         abort(404, "User not found in the database!")
-    
-    role = "user"
-    if "role" in user:
-        role = user["role"]
+
     return jsonify({
-                    "username": user["username"], 
-                    "firstName": user["first_name"], 
-                    "lastName": user["last_name"], 
-                    "email": user["email"],
-                    "role": role
-                })
+            "username": user.user_id, 
+            "firstName": user.authenticated_provider.first_name, 
+            "lastName": user.authenticated_provider.last_name,
+            "email": user.email,
+            "role": user.role
+            })

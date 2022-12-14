@@ -9,6 +9,8 @@ from flask_jwt_extended import set_access_cookies, set_refresh_cookies
 from injector import inject
 from repository.interfaces import IUsersBroker
 
+from repository.models import SetaUser
+
 
 auth_ecas = Blueprint("auth_ecas", __name__)
 
@@ -40,25 +42,33 @@ def login_callback_ecas(userBroker: IUsersBroker):
     app.logger.debug('ticket: %s', ticket)
     app.logger.debug('next: %s', next)
     
-    user, attributes, pgtiou = app.cas_client.verify_ticket(ticket)
+    try:
+        app.logger.debug("cas_client.verify_ticket_Start")
+        user, attributes, pgtiou = app.cas_client.verify_ticket(ticket)
+        app.logger.debug("cas_client.verify_ticket_end")
+    except:
+        app.logger.exception("Failed to verify ticket.")
+        abort(401, "Failed to verify ticket.")
     
-    app.logger.debug(
-        'CAS verify ticket response: user: %s, attributes: %s, pgtiou: %s', user, attributes, pgtiou)
+    app.logger.debug('CAS verify ticket response: user: %s, attributes: %s, pgtiou: %s', user, attributes, pgtiou)
     
     if not user:
         abort(401, "Failed to verify ticket.")
     else:  # Login successful, redirect according to `next` query parameter. 
-        #add db user from ecas result             
-        usr = userBroker.get_user_by_username(attributes["uid"])
-        if not usr:
-            userBroker.add_user(attributes)
-            usr = userBroker.get_user_by_username(attributes["uid"])
-                 
-        session["username"] = usr["username"]
-
+        admins = app.config["ROOT_USERS"]
+        attributes["is_admin"] = attributes["email"] in admins
+        
+        seta_user = SetaUser.from_ecas_json(attributes)
+        auth_user = userBroker.authenticate_user(seta_user)                
+                
         #additional_claims are added via additional_claims_loader method: factory->add_claims_to_access_token
-        access_token = create_access_token(user, fresh=True)
-        refresh_token = create_refresh_token(user)
+        identity = auth_user.to_identity_json()
+        additional_claims = {
+            "role": auth_user.role
+        }
+        
+        access_token = create_access_token(identity, fresh=True, additional_claims=additional_claims)
+        refresh_token = create_refresh_token(identity, additional_claims=additional_claims)
         
         #TODO: verify 'next' domain before redirect, replace with home_route if anything suspicious
         if not next:

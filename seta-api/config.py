@@ -13,7 +13,7 @@ class Config:
     #JWT variables
     SECRET_KEY_PATH = "/home/seta/models/key.txt"
     JWT_SECRET_KEY = "no-need-for-secret"    
-    JWT_IDENTITY_CLAIM="username"
+    JWT_IDENTITY_CLAIM="sub"
     JWT_COOKIE_CSRF_PROTECT = False
     JWT_TOKEN_LOCATION=["headers", "cookies"]
     JWT_TOKEN_INFO_URL="http://seta-ui:8080/authorization/v1/token_info"
