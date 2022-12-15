@@ -2,21 +2,14 @@ import { Menubar } from 'primereact/menubar';
 import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
 import './style.css';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import axios from 'axios';
 import storageService from '../../services/storage.service';
+import { TieredMenu } from 'primereact/tieredmenu';
 
 const Header = () => {
+    const dashboard = useRef<any>(null) ;
     const [authenticated, setauthenticated] = useState<boolean>();
-    //const [currentTime, setCurrentTime] = useState(null);
-
-    // useEffect(() => {
-    //     axios.get('/login/')
-    //     .then(res => {
-    //         const persons = res.data;
-    //         setCurrentTime(persons);
-    //   })
-    // }, []);
     useEffect(() => {
         if(storageService.isLoggedIn()){
             setauthenticated(true);
@@ -27,12 +20,6 @@ const Header = () => {
         }
     }, []);
     const items_seta = [
-        // {
-        //     label: '',
-        //     className: 'seta-item',
-        //     url: '/',
-        //     icon: () => <img alt="logo" src="https://raw.githubusercontent.com/AdrianaLleshi/new_deck.gl/master/images/SeTA-logocut-negative.png" height="40" className="mr-2"></img>
-        // },
         {
             label: 'Search',
             className: 'seta-item',
@@ -50,11 +37,32 @@ const Header = () => {
             url: '/seta-ui/contact',
         }
     ];
+    const dashboard_menu = [
+        {
+            label:'Profile',
+            icon:'pi pi-fw pi-user',
+            url: '/seta-ui/profile',
+        },
+        {
+            label:'Dashboard',
+            icon:'pi pi-fw pi-wrench',
+            url: '/seta-ui/dashboard',
+        },
+        {
+            separator:true
+        },
+        {
+            label:'Sign Out',
+            icon:'pi pi-fw pi-sign-out',
+            url: '/logout/ecas',
+        }
+    ];
     // const start = <img alt="logo" src="https://ec.europa.eu/info/sites/default/themes/europa/images/svg/logo/logo--en.svg" height="40" className="mr-2"></img>;
     const start_seta = <img alt="logo" src="https://raw.githubusercontent.com/AdrianaLleshi/new_deck.gl/master/images/SeTA-logocut-negative.png" height="40" className="mr-2"></img>;
     // const end = <InputText placeholder="Search" type="text" />;
-    const end_seta = <a href='/seta-ui/login-options'><span className="p-menuitem-icon pi pi-user p-menuitem p-menuitem-link" /></a>
-    const logout = <a href='/logout/ecas'><span className="p-menuitem-icon pi pi-power-off p-menuitem p-menuitem-link" /></a>
+    const end_seta = <a href='/seta-ui/login-options'><span className="p-menuitem-icon pi pi-sign-in p-menuitem p-menuitem-link" /></a>
+    const logout = <div><TieredMenu model={dashboard_menu} popup ref={dashboard} id="overlay_tmenu" />
+    <Button icon="pi pi-user" onClick={(event) => dashboard.current.toggle(event)} aria-haspopup aria-controls="overlay_tmenu"/></div>
 
     return (
         <div>

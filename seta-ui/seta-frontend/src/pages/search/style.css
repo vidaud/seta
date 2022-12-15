@@ -57,10 +57,14 @@
 .tab-filter > .card > .p-tabmenu .p-tabmenu-nav .p-tabmenuitem {
     width: 50%;
 }
-.pi-user {
+/* button > .pi-user {
+    color: white !important;
+} */
+
+.pi-power-off {
     color: white !important;
 }
 
-.pi-power-off {
+.pi-sign-in {
     color: white !important;
 }

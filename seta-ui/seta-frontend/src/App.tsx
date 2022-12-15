@@ -12,6 +12,7 @@ import Profile from './pages/profile/profile';
 import Login from './pages/login/login';
 import NotFoundPage from './pages/not-found/not-found';
 import storageService from './services/storage.service';
+import Dashboard from './pages/dashboard/dashboard';
 import { environment } from './environments/environment';
 import axios from 'axios';
 
@@ -55,6 +56,7 @@ function App() {
           <Route path="*" element={<NotFoundPage />} />
           <Route path="/seta-ui/search" element={<Search />} />
           <Route path="/seta-ui/profile" element={<Profile />} />
+          <Route path="/seta-ui/dashboard" element={<Dashboard />} />
           <Route path="/seta-ui/about" element={<About />} />
           <Route path="/seta-ui/contact" element={<Contact />} />
           <Route path="/seta-ui/login-options" element={<Login />} />
