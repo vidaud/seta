@@ -4,14 +4,12 @@ from datetime import timezone
 
 from flask import Blueprint
 from flask import current_app as app
-from flask import (jsonify, redirect, request, make_response)
+from flask import (jsonify, redirect, request, make_response, session)
 
 from flask_jwt_extended import create_access_token
 from flask_jwt_extended import jwt_required, verify_jwt_in_request
 from flask_jwt_extended import set_access_cookies, unset_jwt_cookies
 from flask_jwt_extended import get_jwt_identity, get_jwt
-
-from db.db_users_broker import getDbUser
 
 auth = Blueprint("auth", __name__)
     
@@ -31,7 +29,7 @@ def logout_local():
     """
     Remove tokens from cookies, but third-party cookies will remain
     """
-    
+    #session.pop("username", None)
     response = jsonify({"status": "success"})
     unset_jwt_cookies(response)
     return response
@@ -57,21 +55,25 @@ def refresh_expiring_jwts(response):
             token_expires = timedelta(minutes=15)
                 
         verify_result = verify_jwt_in_request(optional=True)
-        if verify_result is not None:        
-            exp_timestamp = get_jwt()["exp"]
+        if verify_result is not None:
+            jwt = get_jwt()      
+            exp_timestamp = jwt["exp"]
             now = datetime.now(timezone.utc)        
                     
             expire_minutes = (token_expires.total_seconds() / 60) // 2
             delta = timedelta(minutes=expire_minutes)
             
             target_timestamp = datetime.timestamp(now + delta)
+            app.logger.debug("Refresh token only if " + str(target_timestamp) + " > " + str(exp_timestamp))
             if target_timestamp > exp_timestamp:
                             
-                username = get_jwt_identity()
+                identity = get_jwt_identity()
+                additional_claims = None
+                role = jwt.get("role", None)
+                if role is not None:
+                    additional_claims = {"role": role}
                 
-                usr = getDbUser(username)    
-                additional_claims = {"role": usr["role"]} 
-                access_token = create_access_token(identity=username, fresh=False, additional_claims=additional_claims)
+                access_token = create_access_token(identity=identity, fresh=False, additional_claims=additional_claims)
                 set_access_cookies(response, access_token)
                 
                 

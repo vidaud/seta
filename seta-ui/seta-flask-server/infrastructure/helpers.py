@@ -46,10 +46,10 @@ class JSONEncoder(flask_json.JSONEncoder):
         return json.JSONEncoder.default(self, o)
 '''     
 
-def validate_public_key(public, message, signature):        
-    public_key = RSA.import_key(public)
-    digest = SHA256.new(message.encode())
+def validate_public_key(public, message, signature):
     try:
+        public_key = RSA.import_key(public)
+        digest = SHA256.new(message.encode())
         pkcs1_15.new(public_key).verify(digest, binascii.unhexlify(signature))
     except Exception as e:
         return False

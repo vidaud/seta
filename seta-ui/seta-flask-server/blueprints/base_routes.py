@@ -1,7 +1,6 @@
 import requests
-from flask import Blueprint, Response
-from flask import current_app as app
-from flask import request, send_from_directory
+from flask import Blueprint
+from flask import send_from_directory
 
 base_routes = Blueprint("base_routes", __name__)
 

@@ -1,16 +1,4 @@
-'''
-# This is a required workaround for flask_restplus
-import werkzeug
-import flask
-import werkzeug.utils
-werkzeug.cached_property = werkzeug.utils.cached_property
-import flask.scaffold
-flask.helpers._endpoint_from_view_func = flask.scaffold._endpoint_from_view_func
-'''
 from flask_restx import Api
-
-from .examples import ex_api
-#from .auth.auth import auth_api
 from .clusters.clusters import cluster_api
 from .suggestions.suggestions import suggestions_api
 from .corpus.corpus import corpus_api
@@ -48,8 +36,7 @@ api = Api(version='beta',
          )
 
 api_root = "/seta-api/api/v1"
-#api.add_namespace(ex_api, path=api_root)
-#api.add_namespace(auth_api, path=api_root)
+
 api.add_namespace(cluster_api, path=api_root)
 api.add_namespace(suggestions_api, path=api_root)
 api.add_namespace(corpus_api, path=api_root)
