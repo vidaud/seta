@@ -24,7 +24,7 @@ ns_auth = auth_api.namespace("", "Authentication endpoints")
 
 auth_data = ns_auth.model(
     "token_params",
-    {'username': fields.String(required=True, description="Username"),
+    {'user_id': fields.String(required=True, description="SETA generated user id"),
      'rsa_original_message': fields.String(required=True, description="Original message"),
      'rsa_message_signature': fields.String(required=True, description="Signature using hex format, string of hexadecimal numbers.")
      }
@@ -40,19 +40,19 @@ class JWTUserToken(Resource):
 
     @ns_auth.doc(description="JWT token for users",
             responses={200: 'Success',
-                       501: 'Invalid Username',
+                       501: 'Invalid User',
                        502: 'Invalid Signature',
                        503: 'Public Key Unset'})
     @ns_auth.expect(auth_data, validate=True)
     def post(self):
         args = auth_api.payload
         
-        user_id = args['username']
+        user_id = args['user_id']
         user = self.usersBroker.get_user_by_id(user_id)
         if not user:
-            abort(501, "Invalid Username")
+            abort(501, "Invalid User")
             
-        public_key = self.rsaBroker.get_rsa_key(user_id, True)
+        public_key = self.rsaBroker.get_rsa_key(user_id)
         if public_key is None:
             abort(503, "Public Key Unset")
             
@@ -110,7 +110,7 @@ class JWTRefreshToken(Resource):
         user = self.usersBroker.get_user_by_id(identity["user_id"])
             
         if user is None:
-            abort(501, "Invalid Username")
+            abort(401, "Invalid User")
             
         additional_claims = {
                 "role": user.role
