@@ -86,7 +86,7 @@ class JWTGuestToken(Resource):
         refresh_token = create_refresh_token(identity=identity, additional_claims=additional_claims)
         
         return jsonify(access_token=access_token, refresh_token=refresh_token)
-    
+
 refresh_parser = ns_auth.parser()
 refresh_parser.add_argument("Authorization", location="headers", required=False, type="apiKey")
 refresh_parser.add_argument("X-CSRF-TOKEN", location="headers", required=False, type="string")
@@ -102,7 +102,7 @@ class JWTRefreshToken(Resource):
     
     @ns_auth.doc(description="JWT refresh access token",
             responses={200: 'Success', 401: "Refresh token verification failed"})
-    
+
     @jwt_required(refresh=True)
     def post(self):
         identity = get_jwt_identity()              
