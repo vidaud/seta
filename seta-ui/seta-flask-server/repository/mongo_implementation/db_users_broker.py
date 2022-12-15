@@ -1,4 +1,3 @@
-from typing import Any
 from interface import implements
 from repository.interfaces.users_broker import IUsersBroker
 
@@ -127,6 +126,9 @@ class UsersBroker(implements(IUsersBroker)):
         sourceDocs = sc.find(filter)
         result: InsertManyResult = tc.insert_many(sourceDocs, False, True)
         
+        now = datetime.now(timezone.utc)
+        tc.update_many({"_id": {"$in": result.inserted_ids}}, {"$set": {"revoked_at": now}})
+        
         r = sc.delete_many({"_id": {"$in": result.inserted_ids}})
         return r.deleted_count
     
@@ -136,8 +138,8 @@ class UsersBroker(implements(IUsersBroker)):
         nowMinusThreeWeeks = str(now - timedelta(weeks=3))
         r = ar.delete_many({
             "$or": [
-                {"created-at": {"$lt":  nowMinusThreeWeeks}},
-                {"revoked-at": {"$lt":  nowMinusThreeWeeks}}
+                {"created_at": {"$lt":  nowMinusThreeWeeks}},
+                {"revoked_at": {"$lt":  nowMinusThreeWeeks}}
             ]
         })
         return r.deleted_count

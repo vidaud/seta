@@ -52,7 +52,8 @@ def login_callback_github(access_token, userBroker: IUsersBroker):
         github_user["email"] = github_user["login"] + "_no_reply@github.com"
         
     admins = app.config["ROOT_USERS"]
-    github_user["is_admin"] = github_user["email"] in admins
+    email = str(github_user["email"]).lower()
+    github_user["is_admin"] = email in admins
         
     seta_user = SetaUser.from_github_json(github_user)
     auth_user = userBroker.authenticate_user(seta_user)    
@@ -75,7 +76,6 @@ def login_callback_github(access_token, userBroker: IUsersBroker):
                 
     response = make_response(redirect(next))
     
-    #response.set_cookie('user_auth', user)
     set_access_cookies(response, access_token)
     set_refresh_cookies(response, refresh_token)            
     

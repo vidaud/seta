@@ -51,9 +51,7 @@ def create_app(config_object):
                 return response
             
             if request.path.startswith(tuple(request_starts_with_ignore_list)):
-                return response
-            
-            app.logger.debug("refresh_expiring_jwts")
+                return response                        
             
             return refresh_expiring_jwts(response)
         

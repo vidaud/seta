@@ -55,19 +55,25 @@ def refresh_expiring_jwts(response):
             token_expires = timedelta(minutes=15)
                 
         verify_result = verify_jwt_in_request(optional=True)
-        if verify_result is not None:        
-            exp_timestamp = get_jwt()["exp"]
+        if verify_result is not None:
+            jwt = get_jwt()      
+            exp_timestamp = jwt["exp"]
             now = datetime.now(timezone.utc)        
                     
             expire_minutes = (token_expires.total_seconds() / 60) // 2
             delta = timedelta(minutes=expire_minutes)
             
             target_timestamp = datetime.timestamp(now + delta)
+            app.logger.debug("Refresh token only if " + str(target_timestamp) + " > " + str(exp_timestamp))
             if target_timestamp > exp_timestamp:
                             
-                username = get_jwt_identity()
+                identity = get_jwt_identity()
+                additional_claims = None
+                role = jwt.get("role", None)
+                if role is not None:
+                    additional_claims = {"role": role}
                 
-                access_token = create_access_token(identity=username, fresh=False)
+                access_token = create_access_token(identity=identity, fresh=False, additional_claims=additional_claims)
                 set_access_cookies(response, access_token)
                 
                 

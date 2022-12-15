@@ -13,7 +13,7 @@ def job1():
         print(e)
 '''
 
-@scheduler.task('interval', id='delete_archived_data_older_than_three_weeks', minutes=1, misfire_grace_time=900)
+@scheduler.task('interval', id='delete_archived_data_older_than_three_weeks', hours=24, misfire_grace_time=900)
 def job_delete_archived_data():
     """Run scheduled job delete_archived_data_older_than_three_weeks"""
     print("Run scheduled job delete_archived_data_older_than_three_weeks")

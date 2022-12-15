@@ -56,7 +56,8 @@ def login_callback_ecas(userBroker: IUsersBroker):
         abort(401, "Failed to verify ticket.")
     else:  # Login successful, redirect according to `next` query parameter. 
         admins = app.config["ROOT_USERS"]
-        attributes["is_admin"] = attributes["email"] in admins
+        email = str(attributes["email"]).lower()
+        attributes["is_admin"] = email in admins
         
         seta_user = SetaUser.from_ecas_json(attributes)
         auth_user = userBroker.authenticate_user(seta_user)                
