@@ -1,5 +1,4 @@
 from calendar import timegm
-import datetime
 from json import JSONDecodeError
 from flask_jwt_extended import JWTManager
 from flask_jwt_extended.config import config

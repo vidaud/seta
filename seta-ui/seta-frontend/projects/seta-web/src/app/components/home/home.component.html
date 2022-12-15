@@ -98,12 +98,20 @@
             Policy Makers. -->
           <p class="lead">
             <button *ngIf="user === null" type="button"
-              (click)="goToEcas($event, '/login/ecas')"
-              class="ecl-button ecl-button--call rounded"><span
+              (click)="goToLogin($event, '/login/ecas')"
+              class="ecl-button ecl-button--call rounded login"><span
                 class="ecl-button__container"><span
                   class="ecl-button__label"
-                  data-ecl-label="true">Log
-                  in</span></span></button>
+                  data-ecl-label="true">Login with ECAS</span></span>
+            </button>
+
+            <button *ngIf="user === null" type="button"
+            (click)="goToLogin($event, '/login/github')"
+            class="ecl-button ecl-button--call rounded login"><span
+              class="ecl-button__container"><span
+                class="ecl-button__label"
+                data-ecl-label="true">Login with GitHub</span></span>
+          </button>
           </p>
         </div>
       </div>

@@ -23,12 +23,6 @@ export class RestService {
     return this.http.get(url);
   }
 
-  public getUserData(username) {
-    let url = this.baseUrl + 'user/' + username;
-
-    return this.httpGetCall(url);
-  }
-
   public getState(username, stateKey) {
     let url = this.baseUrl + 'state/' + username + '/' + stateKey;
 
@@ -47,6 +41,7 @@ export class RestService {
     return this.http.post<any>(url, body);
   }
 
+  /*
   public updateUserData(username, f, v) {
     let url = this.baseUrl + 'user/set/' + username;
     let body = {
@@ -55,7 +50,7 @@ export class RestService {
     };
 
     return this.httpPostCall(url, body);
-  }
+  }*/
 
   public setState(username = '', k = '', v = '') {
     if (null == username || !username) {

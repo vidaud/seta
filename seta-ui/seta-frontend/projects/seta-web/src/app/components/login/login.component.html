@@ -17,8 +17,11 @@
         ngbDropdownItem>{{ 'Hi, ' +
         currentUser.firstName }}</button>
       <button (click)="goToLink($event, '/login/ecas')"
-        *ngIf="currentUser === null" ngbDropdownItem>Log
-        in</button>
+        *ngIf="currentUser === null" ngbDropdownItem>Login ECAS
+      </button>
+      <button (click)="goToLink($event, '/login/github')"
+        *ngIf="currentUser === null" ngbDropdownItem>Login GitHub
+      </button>
       <button
         *ngIf="currentUser !== null && currentUser.username"
         (click)="logout()" ngbDropdownItem>Log out of

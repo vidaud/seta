@@ -7,7 +7,7 @@ export const environment = {
   test: false,
   baseUrl: `http://localhost:8080`,
   baseApplicationContext: `/seta-ui/`,
-  restEndPoint: `rest/`,
+  restEndPoint: `rest/v1/`,
   _regex: new RegExp(`_`, `g`),
   baseFlaskBackendUrl: "http://localhost:8080",
   loginTokenExpiryInterval: 60, // In minutes

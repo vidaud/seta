@@ -2,47 +2,21 @@ from flask import Blueprint, json, request, abort, jsonify
 from flask import current_app as app
 from flask_jwt_extended import jwt_required, get_jwt_identity
 
-from db.db_corpus_queries_broker import getAllCorpusQueries
-from db.db_states_broker import addDbState, deleteDbState, getDbState, setDbState
-from db.db_users_broker import getDbUser, moveDocuments, updateDbUser
+from injector import inject
+from repository.interfaces import IUsersBroker, IStatesBroker
 
 
 rest = Blueprint("rest", __name__)
 
-
-# GET - Get user (by username)
-@rest.route("/user/get/<username>")
-@jwt_required()
-def getUserData(username):
-    user = getDbUser(username)
-
-    if user == None:
-        app.logger.warning("User not found in DB")
-
-        response = {
-            "authenticated": True,
-            "status": "error",
-            "message": "User not found"
-        }
-    else:
-        response = {
-            "authenticated": True,
-            "status": "OK",
-            "user": user,
-            "message": "User retrieved successfully"
-        }
-
-    response = json.jsonify(response)
-    return response
-
-
 # POST - Set user data (by username, field name, and value)
+'''
 @rest.route("/user/set/<username>", methods=["POST"])
 @jwt_required()
-def setUserData(username):
-    user = getDbUser(username)
+@inject
+def setUserData(username, userBroker: IUsersBroker):
+    user = userBroker.get_user_by_username(username)
 
-    if user == None:
+    if user is None:
         app.logger.warning("User not found in DB")
 
         response = {
@@ -55,9 +29,9 @@ def setUserData(username):
 
         r = json.loads(request.data.decode("UTF-8"))
 
-        updateDbUser(username, r["field"], r["value"])
+        userBroker.update_user(username, r["field"], r["value"])
 
-        user = getDbUser(username)
+        user = userBroker.get_user_by_username(username)
 
         # Return response
         response = {
@@ -67,21 +41,21 @@ def setUserData(username):
             "user": user
         }
 
-    response = json.jsonify(response)
-    return response
+    return jsonify(response)
+'''
 
 # POST - Delete user (by username)
 
 
 @rest.route("/user/delete", methods=["POST"])
 @jwt_required()
-def deleteUserAccount():
-    r = json.loads(request.data.decode("UTF-8"))
-    username = r["username"]
+@inject
+def deleteUserAccount(userBroker: IUsersBroker):
+    identity = get_jwt_identity()
     
-    user = getDbUser(username)
+    user = userBroker.get_user_by_id(identity["user_id"])
 
-    if user == None:
+    if user is None:
         app.logger.warning("User not found in DB")
 
         response = {
@@ -90,8 +64,7 @@ def deleteUserAccount():
             "message": "User not found in DB."
         }
     else:
-        moveDocuments("users", "archive", {"username": username})
-        # deleteAllDbUserData(username)
+        userBroker.move_documents("users", "archive", {"user_id": user.user_id})
 
         # Return response
         response = {
@@ -99,135 +72,22 @@ def deleteUserAccount():
             "status": "OK",
             "message":
             "All user data successfully deleted.",
-            "username": username
+            "user_id": user.user_id
         }
-
-    response = json.jsonify(response)
-    return response
-
-
-# GET - Get state (by username and key)
-@rest.route("/state/<username>/<key>")
-@jwt_required()
-def getState(username, key):
-
-    state = getDbState(username, key)
-
-    if state == None:
-        app.logger.warning("No state with key " + key + " found for user.")
-
-        response = {
-            "authenticated": True,
-            "status": "error",
-            "message": "No state with given key exists."
-        }
-
-    else:
-        response = {
-            "authenticated": True,
-            "status": "OK",
-            "state": state
-        }
-
-    response = json.jsonify(response)
-    return response
-
-
-# POST - Set state, given the username, key and value
-@rest.route("/state/<username>", methods=["POST"])
-@jwt_required()
-def setState(username):
-    user = getDbUser(username)
-
-    if user == None:
-        app.logger.warning("User not found in DB")
-
-        response = json.jsonify(
-            {
-                "authenticated": True,
-                "status": "error",
-                "message": "User not found in DB."
-            }
-        )
-    else:
-        r = json.loads(request.data.decode("UTF-8"))
-        print(r["value"])
-        state = getDbState(username, r["key"])
-
-        if state == None:
-            # print("No state with key " + r["key"] + " found. Adding the state.")
-            addDbState(username, r["key"], r["value"])
-            state = getDbState(username, r["key"])
-            response = json.jsonify(
-                {
-                    "authenticated": True,
-                    "status": "OK",
-                    "message": "New state is successfully added.",
-                    "state": state,
-                }
-            )
-        else:
-            # print("State already exists. Setting the state to given value")
-
-            setDbState(username, r["key"], r["value"])
-            state = getDbState(username, r["key"])
-            response = json.jsonify(
-                {
-                    "authenticated": True,
-                    "status": "OK",
-                    "message": "State updated correctly.",
-                    "state": state,
-                }
-            )
-
-    return response
-
-# POST
-
-
-@rest.route("/state/delete", methods=["POST"])
-@jwt_required()
-def deleteUserState():
-    r = json.loads(request.data.decode("UTF-8"))
-    username = r["username"]
-    key = r["key"]
-
-    state = getDbState(username, key)
-
-    if state == None:
-        app.logger.warning("State not found in DB")
-
-        response = {
-            "authenticated": True,
-            "status": "error",
-            "message": "State not found in DB."
-        }
-    else:
-        deleteDbState(username, key)
-
-        # Return response
-        response = {
-            "authenticated": True,
-            "status": "OK",
-            "message": "State successfully deleted.",
-            "key": key
-        }
-
-    response = json.jsonify(response)
-    return response
-
-# Custom non-pure REST calls:
+    
+    return jsonify(response)
 
 # GET - get all queries
 
 
 @rest.route("/state/<username>/queries")
 @jwt_required()
-def getQueries(username):
+@inject
+def getQueries(username, statesBroker: IStatesBroker):
+    identity = get_jwt_identity()
+    queries = statesBroker.get_corpus_queries(identity["user_id"])
 
-    queries = getAllCorpusQueries(username)
-
-    if queries == None:
+    if queries is None:
         app.logger.warning("No queries have been found for this user.")
 
         response = {
@@ -240,30 +100,116 @@ def getQueries(username):
         response = {
             "authenticated": True,
             "status": "OK",
-            "state": queries
+            "state": {
+                "username": queries["user_id"],
+                "key": queries["query_key"],
+                "value": queries["query_value"]
+            }
+        }
+    
+    return jsonify(response)
+
+# GET - Get state (by username and key)
+@rest.route("/state/<username>/<key>")
+@jwt_required()
+@inject
+def getState(username, key, statesBroker: IStatesBroker):
+    identity = get_jwt_identity()
+    state = statesBroker.get_state(identity["user_id"], key)
+
+    if state is None:
+        app.logger.warning("No state with key " + key + " found for user.")
+
+        response = {
+            "authenticated": True,
+            "status": "error",
+            "message": "No state with given key exists."
         }
 
-    response = json.jsonify(response)
+    else:
+        response = {
+            "authenticated": True,
+            "status": "OK",
+            "state": {
+                "username": state["user_id"],
+                "key": state["query_key"],
+                "value": state["query_value"]
+            }
+        }
+    
+    return jsonify(response)
+
+
+# POST - Set state, given the username, key and value
+@rest.route("/state/<username>", methods=["POST"])
+@jwt_required()
+@inject
+def setState(username, statesBroker: IStatesBroker):
+    identity = get_jwt_identity()
+    
+    r = json.loads(request.data.decode("UTF-8"))
+    app.logger.debug(r["value"])
+    
+    is_new = statesBroker.set_state(identity["user_id"], r["key"], r["value"])
+    if is_new:
+        msg = "New state is successfully added."
+    else:
+        msg = "State updated correctly."
+        
+    response = jsonify(
+            {
+                "authenticated": True,
+                "status": "OK",
+                "message": msg,
+                "state": {
+                    "username": identity["user_id"],
+                    "key": r["key"],
+                    "value":  r["value"],
+                }
+            }
+    )
+        
     return response
 
+@rest.route("/state/delete", methods=["POST"])
+@jwt_required()
+@inject
+def deleteUserState(statesBroker: IStatesBroker):
+    identity = get_jwt_identity()
+    
+    r = json.loads(request.data.decode("UTF-8"))
+    key = r["key"]
+
+    statesBroker.delete_state(identity["user_id"], key)
+
+    # Return response
+    response = {
+        "authenticated": True,
+        "status": "OK",
+        "message": "State successfully deleted.",
+        "key": key
+    }
+
+    return jsonify(response)
+
+# Custom non-pure REST calls:
 @rest.route("/user-info", methods=["GET"])
 @jwt_required()
-def user_details():
+@inject
+def user_details(usersBroker: IUsersBroker):
     """ Returns json with user details"""
     
-    identity = get_jwt_identity()
-    user = getDbUser(identity)
+    identity = get_jwt_identity()    
+    user = usersBroker.get_user_by_id_and_provider(user_id=identity["user_id"], provider_uid=identity["provider_uid"], provider=identity["provider"])
     
-    if not user:
+    if user is None:
+        app.logger.error(f"User {str(identity)} not found in the database!")
         abort(404, "User not found in the database!")
-    
-    role = "user"
-    if "role" in user:
-        role = user["role"]
+
     return jsonify({
-                    "username": user["username"], 
-                    "firstName": user["first_name"], 
-                    "lastName": user["last_name"], 
-                    "email": user["email"],
-                    "role": role
-                }), 200
+            "username": user.user_id, 
+            "firstName": user.authenticated_provider.first_name, 
+            "lastName": user.authenticated_provider.last_name,
+            "email": user.email,
+            "role": user.role
+            })

@@ -1,6 +1,5 @@
 import time
 import logging
-from datetime import datetime
 
 from elasticsearch import Elasticsearch
 from sentence_transformers import SentenceTransformer
@@ -67,12 +66,6 @@ def create_app(config_object):
                     error_message = response.json["msg"]
                 elif 'message' in response.json:
                     error_message = response.json["message"]
-
-            '''
-            line = LogLine(username, str(datetime.datetime.now()), request.remote_addr, request.full_path, response.status_code,
-                        diff, error_message)
-            app.api_log.write_log(line)
-            '''
             
             try:
               logger_db = logging.getLogger("mongo")

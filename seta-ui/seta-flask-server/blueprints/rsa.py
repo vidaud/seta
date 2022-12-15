@@ -1,22 +1,24 @@
 
 from Crypto.PublicKey import RSA
 from flask import Blueprint, json, request
-from flask import current_app as app
-from flask_jwt_extended import jwt_required
+from flask_jwt_extended import jwt_required, get_jwt_identity
 
 import infrastructure.constants as constants
-from db.db_rsa_keys_broker import (deleteAllRsaKeysForUser, getDbRsaKey,
-                                setDbRsaKey)
+from repository.interfaces import IRsaKeysBroker
+
+from injector import inject
 
 rsa = Blueprint("rsa", __name__)
 
 
 @rsa.route("/generate-rsa-keys", methods=["POST"])
 @jwt_required()
-def generateRsaKeys():
+@inject
+def generateRsaKeys(rsaKeyBroker: IRsaKeysBroker):
 
-    r = json.loads(request.data.decode("UTF-8"))
-    username = r["username"]
+    #r = json.loads(request.data.decode("UTF-8"))
+    #username = r["username"]
+    identity = get_jwt_identity() 
 
     keyPair = RSA.generate(bits=4096)
 
@@ -29,8 +31,7 @@ def generateRsaKeys():
     privKeyPEM = keyPair.exportKey()
     decodedPrivKeyPEM = privKeyPEM.decode('ascii')
 
-    setDbRsaKey(username, False, decodedPubKeyPEM)
-    # setDbRsaKey(username, True, decodedPrivKeyPEM)
+    rsaKeyBroker.set_rsa_key(identity["user_id"], decodedPubKeyPEM)
 
     response = {
         "authenticated": True,
@@ -40,43 +41,41 @@ def generateRsaKeys():
         "publicKey": decodedPubKeyPEM
     }
 
-    response = json.jsonify(response)
-    return response
+    return json.jsonify(response)
 
 # GET - get the public RSA key
 @rsa.route("/get-public-rsa-key/<username>")
 @jwt_required()
-def getPublicRsaKey(username):
-    key = getDbRsaKey(username, True)
+@inject
+def getPublicRsaKey(username, rsaKeyBroker: IRsaKeysBroker):
+    identity = get_jwt_identity()
+    key = rsaKeyBroker.get_rsa_key(identity["user_id"])
     
     #print("fetched key is:")
     #print(key)
 
     response = {
-        "username": username,
+        "username": identity["user_id"],
         "is-rsa-key": True,
         "rsa-key-exists": True if key is not None else False,
-        "value": key['value'] if key is not None else constants.defaultNoPublicKeyMessage
+        "value": key if key is not None else constants.defaultNoPublicKeyMessage
     }
 
-    response = json.jsonify(response)
-    return response
+    return json.jsonify(response)
 
 @rsa.route("/delete-rsa-keys", methods=["POST"])
 @jwt_required()
-def deleteRsaKeys():
-
-    r = json.loads(request.data.decode("UTF-8"))
-    username = r["username"]
-
-    deleteAllRsaKeysForUser(username)
+@inject
+def deleteRsaKeys(rsaKeyBroker: IRsaKeysBroker):
+    identity = get_jwt_identity()
+    rsaKeyBroker.delete_by_user_id(identity["user_id"])
 
     response = {
         "status": "ok"
     }
 
-    response = json.jsonify(response)
-    return response
+    
+    return json.jsonify(response)
 
     
 

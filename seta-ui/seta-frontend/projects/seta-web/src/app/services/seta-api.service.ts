@@ -35,8 +35,7 @@ import { CorpusSearchPayload } from "../store/corpus-search-payload";
 @Injectable({
   providedIn: `root`
 })
-export class SetaApiService {
-  // public API = `${environment.baseUrl}${environment.baseApplicationContext}${environment.restEndPoint}`;
+export class SetaApiService {  
   public API = `${environment.api_target_path}`
   public regexService: RegExp = environment._regex;
 
@@ -192,7 +191,7 @@ export class SetaApiService {
    */
   exportExcel(body: SetaDocumentsForExport) {
     const API = `${environment.baseUrl}${environment.baseApplicationContext}`;
-    const endpoint = `rest/state/export`;
+    const endpoint = `rest/v1/state/export`;
     const serializer = new SetaExportCorpusSerializer();
     return this.httpClient.post(`${API}${endpoint}`, JSON.stringify(body), {
       responseType: `arraybuffer`,
