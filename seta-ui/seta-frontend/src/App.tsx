@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 //import logo from './logo.svg';
 import './App.css';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
@@ -11,12 +11,37 @@ import Search from './pages/search/search';
 import Profile from './pages/profile/profile';
 import Login from './pages/login/login';
 import NotFoundPage from './pages/not-found/not-found';
-import { PrivateRoute } from "./auth/private-route";
-import {isLoggedIn} from './auth/auth';
+import storageService from './services/storage.service';
+import { environment } from './environments/environment';
+import axios from 'axios';
 
-// const HomeC = ()=> <h3>Logged in as {localStorage.getItem("username")}</h3>
+//const AUTH_API = environment.baseUrl + environment.baseApplicationContext + 'v2/';
 
 function App() {
+  const [authenticated, setauthenticated] = useState<boolean | null>(null);
+  // const handleClick = (e) => {
+  //   e.preventDefault();
+  //   axios.get(`${AUTH_API}/auth/google`, {
+  //     headers: {
+  //       "Access-Control-Allow-Origin": "* ",
+  //       "Access-Control-Allow-Headers": "Content-Type",
+  //     },
+  //   })
+  //     .then((res) => {
+  //       window.location.assign(res.data.auth_url);
+  //     })
+  //     .catch((err) => console.log(err));
+  //   console.log(AUTH_API);
+  // };
+  useEffect(() => {
+    if(storageService.isLoggedIn()){
+        setauthenticated(true);
+        console.log(storageService.getUser());
+    }
+    else {
+        setauthenticated(false);
+    }
+}, []);
   return (
     <div className="App">
       <link rel="stylesheet" href="https://unpkg.com/primeicons/primeicons.css" />
@@ -24,9 +49,9 @@ function App() {
       <link rel="stylesheet" href="https://unpkg.com/primereact/resources/primereact.min.css" />
       <link rel="stylesheet" href="https://unpkg.com/primeflex@3.2.1/primeflex.min.css" />
       <BrowserRouter>
-        {/* <PrivateRoute exact isloggedin={isLoggedIn()} path="/seta-ui/search" component={Search} /> */}
         <Routes>
           <Route path="/seta-ui" element={<Home />} />
+          <Route path="/seta-ui/home" element={<Home />} />
           <Route path="*" element={<NotFoundPage />} />
           <Route path="/seta-ui/search" element={<Search />} />
           <Route path="/seta-ui/profile" element={<Profile />} />

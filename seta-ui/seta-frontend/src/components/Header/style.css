@@ -22,6 +22,9 @@
     color: white !important;
 }
 
+.seta-header > .p-menubar > .p-menubar-end > .pi-power-off {
+    color: white !important;
+}
 .card > .p-menubar {
     padding: 0.5rem 10% 0.5rem 10%;
 }

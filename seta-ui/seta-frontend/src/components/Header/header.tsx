@@ -7,7 +7,7 @@ import axios from 'axios';
 import storageService from '../../services/storage.service';
 
 const Header = () => {
-    //const [authenticated, setauthenticated] = useState<string | null>(null);
+    const [authenticated, setauthenticated] = useState<boolean>();
     //const [currentTime, setCurrentTime] = useState(null);
 
     // useEffect(() => {
@@ -19,8 +19,12 @@ const Header = () => {
     // }, []);
     useEffect(() => {
         if(storageService.isLoggedIn()){
+            setauthenticated(true);
             console.log(storageService.getUser());
-          } 
+        }
+        else {
+            setauthenticated(false);
+        }
     }, []);
     const items_seta = [
         // {
@@ -33,6 +37,7 @@ const Header = () => {
             label: 'Search',
             className: 'seta-item',
             url: '/seta-ui/search',
+            visible: authenticated,
         },
         {
             label: 'About',
@@ -49,7 +54,7 @@ const Header = () => {
     const start_seta = <img alt="logo" src="https://raw.githubusercontent.com/AdrianaLleshi/new_deck.gl/master/images/SeTA-logocut-negative.png" height="40" className="mr-2"></img>;
     // const end = <InputText placeholder="Search" type="text" />;
     const end_seta = <a href='/seta-ui/login-options'><span className="p-menuitem-icon pi pi-user p-menuitem p-menuitem-link" /></a>
-    const logout = <a href='/logout/ecas/'><span className="p-menuitem-icon pi pi-power-off p-menuitem p-menuitem-link" /></a>
+    const logout = <a href='/logout/ecas'><span className="p-menuitem-icon pi pi-power-off p-menuitem p-menuitem-link" /></a>
 
     return (
         <div>
@@ -67,7 +72,7 @@ const Header = () => {
             </header>
             
             <header className="seta-header">
-                <Menubar model={items_seta} start={start_seta} end={end_seta} />
+                <Menubar model={items_seta} start={start_seta} end={authenticated === true ? logout : end_seta} />
                 <a href="/logout/ecas">
                     <button>Logout</button>
                 </a>
