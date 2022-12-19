@@ -27,7 +27,7 @@ RUN pip install -r requirements.txt
 ADD ./seta-flask-server $ROOT/seta-flask-server
 
 
-ENV ROOT_USERS="vidas.daudaravicius@ec.europa.eu;lucia.noce@ext.ec.europa.eu;Andrei.Patrascu@ext.ec.europa.eu"
+ENV ROOT_USERS="vidas.daudaravicius@ec.europa.eu;lucia.noce@ext.ec.europa.eu;Andrei.Patrascu@ext.ec.europa.eu;adriana.lleshi@ext.ec.europa.eu"
 ENV FLASK_ENV="production"
 ENV FLASK_APP=app.py
 ENV FLASK_RUN_PORT=8080

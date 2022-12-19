@@ -19,7 +19,7 @@ services:
       - "9300"
     mem_limit: "4g"
     volumes:
-      - seta-es2:/usr/share/elasticsearch/data
+      - seta-es3:/usr/share/elasticsearch/data
     networks:
       - seta-network
     environment:
@@ -37,7 +37,7 @@ services:
       - "8081"
     mem_limit: "8g"
     volumes:
-      - seta-models2:/home/seta/models
+      - seta-models3:/home/seta/models
     networks:
       - seta-network
     depends_on:
@@ -70,7 +70,7 @@ services:
     expose:
       - "8080"
     volumes:
-      - seta-models2:/home/seta/models
+      - seta-models3:/home/seta/models
     networks:
       - seta-network
 
@@ -89,6 +89,15 @@ services:
     networks: 
       - seta-network
 
+  seta-data:
+    container_name: seta-data
+    build: ../seta-data
+    depends_on:
+      - "seta-es"
+    volumes:
+      - seta-models3:/home/seta/models
+    networks:
+      - seta-network
 
 
 networks:
@@ -98,5 +107,5 @@ networks:
 
 volumes:
   seta-mongo:
-  seta-es2:
-  seta-models2:
+  seta-es3:
+  seta-models3:

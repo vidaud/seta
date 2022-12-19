@@ -8,7 +8,8 @@ def auth_validator(role=None):
         def decorator(*args, **kwargs):                       
             verify_jwt_in_request()
             claims = get_jwt()
-            
+            print(claims,flush=True)
+            print(role,flush=True)
             if role:
                 if not (claims['role'] == role):
                     response = jsonify({"message": "Unauthorized access"})
