@@ -2,20 +2,22 @@ import json
 
 def build_decade_graph(word, current_app):
     query = {
-        "_source": ["date"],
+        "_source": "date",
         "size": 0,
         "aggs": {
             "years": {
-                "terms": {"field": "date", "size": 1000000}
-            }
-
-        },
+                "date_histogram": {"field": "date", 
+                          "calendar_interval": "year",
+                          "format": "yyyy" 
+                         }
+                     }
+               },
         "query": {
             "bool": {
                 "must": {"multi_match": {
                     "query": word.replace('_', ' '),
                     "type": "phrase",
-                    "fields": ["title^10", "opening-text^3", "chunk_text", "sentences"]
+                    "fields": ["title^10", "opening-text^3", "chunk_text", "abstract"]
                 }
                 },
                 "filter": {"match": {"source": "bookshop OR eurlex OR cordis OR pubsy OR opendataportal"}}
@@ -34,14 +36,12 @@ def build_decade_graph(word, current_app):
     
     for r in res["responses"]:
         for k in r["aggregations"]["years"]["buckets"]:
-            year = int(k['key_as_string'].split("-")[0]) // 5 * 5
-            if year > 2015: continue
-            if year < 1990: year = year // 10 * 10
+            year = int(k['key_as_string']) # // 5 * 5
             if year not in a: a[year] = 0
             a[year] += k['doc_count']
             
     print('conteggio years....:', a)
-    x = sorted([str(w) + "-" + str(w + 9) if w < 1990 else str(w) + "-" + str(w + 4) for w in list(a)])
+    x = sorted(  [ str(w) for w in list(a)]  )
     print('sorted x....:', x)
 
     y = [a[w] for w in sorted(list(a))]

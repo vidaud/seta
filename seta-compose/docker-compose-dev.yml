@@ -4,14 +4,13 @@ services:
     container_name: seta-mongo
     restart: always
     build: ../seta-mongo
-    expose:
-      - "27017"
     ports:
       - "27017:27017"
     networks: 
       - seta-network
     volumes: 
       - seta-mongo:/data/db
+
   seta-es:
     container_name: seta-es
     restart: always
@@ -58,6 +57,7 @@ services:
     depends_on:
       - "seta-api"
       - "seta-ui"
+      - "seta-ui-react"
     networks: 
       - seta-network
 
@@ -71,24 +71,30 @@ services:
       - "seta-api"
     expose:
       - "8080"
+    ports:
+      - "5678:5678"
     volumes: 
-      - ../seta-ui:/home/seta/
+      - ../seta-ui:/home/seta
       - seta-models2:/home/seta/models
     networks: 
       - seta-network
 
-  seta-ui-spa:
-    container_name: seta-ui-spa
+  seta-ui-react:
+    container_name: seta-ui-react
     restart: always
     build: 
-       context: ../seta-ui
-       dockerfile: Dockerfile-dev-spa
+       context: ../seta-react
+       dockerfile: Dockerfile-dev
     expose:
-      - "8080"
+      - "3000"
     volumes: 
-      - ../seta-ui:/home/seta/
+      - ../seta-react:/home/seta
     networks: 
       - seta-network
+    depends_on:
+      - "seta-api"
+      - "seta-ui"
+
 
 networks:
   seta-network:

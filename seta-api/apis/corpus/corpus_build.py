@@ -4,10 +4,10 @@ from infrastructure.ApiLogicError import ApiLogicError
 
 def build_corpus_request(term, n_docs, from_doc, sources, collection, reference, eurovoc_concept, eurovoc_dom,
                          eurovoc_mth, ec_priority, sdg_domain, sdg_subdomain, euro_sci_voc, in_force, sort,
-                         semantic_sort_id, emb_vector, author, date_range, aggs, search_type, current_app):
+                         semantic_sort_id, emb_vector, author, date_range, aggs, search_type, other, current_app):
     query = build_search_query(term, sources, collection, reference, eurovoc_concept, eurovoc_dom, eurovoc_mth,
                                ec_priority, sdg_domain, sdg_subdomain, euro_sci_voc, in_force, author, date_range,
-                               search_type)
+                               search_type, other)
     if semantic_sort_id or emb_vector:
         sort = None
         if semantic_sort_id:
@@ -18,7 +18,7 @@ def build_corpus_request(term, n_docs, from_doc, sources, collection, reference,
             raise ApiLogicError('Sbert vector is not retrieved')
         query_to_use = {"script_score": {
             "query": query, "script": {
-                "source": "1 / (1 + l1norm(params.queryVector, 'sbert_embedding'))",
+                "source": "cosineSimilarity(params.queryVector, 'sbert_embedding') + 1.0",
                 "params": {"queryVector": vector}}}}
     else:
         query_to_use = query
@@ -35,12 +35,12 @@ def build_corpus_request(term, n_docs, from_doc, sources, collection, reference,
         "from": from_doc,
         "track_total_hits": True,
         "query": query_to_use,
-        "_source": ["id", "id_alias", "document_id", "source", "title", "abstract", "chunk_text", "collection",
-                    "reference", "author",
-                    "date", "link_origin", "link_alias", "link_related", "link_reference", "mime_type", "in_force",
-                    "language", "eurovoc_concept",
-                    "eurovoc_domain", "eurovoc_mth", "ec_priority", "sdg_domain", "sdg_subdomain", "euro_sci_voc",
-                    "keywords", "other"]
+        "_source": ["id",             "id_alias",        "document_id",    "source", 
+                    "title",          "abstract",        "chunk_text",     "chunk_number", "collection",
+                    "reference",      "author",          "date",           "link_origin",  "link_alias", 
+                    "link_related",   "link_reference",  "mime_type",      "in_force",     
+                    "language",       "eurovoc_concept", "eurovoc_domain", "eurovoc_mth",  "ec_priority", 
+                    "sdg_domain",     "sdg_subdomain",   "euro_sci_voc",   "keywords",     "other"]
     }
 
     if search_type == "CHUNK_SEARCH":
@@ -53,10 +53,15 @@ def build_corpus_request(term, n_docs, from_doc, sources, collection, reference,
     if aggs:
         if aggs == "source" or aggs == "eurovoc_concept":
             f_aggs = aggs + '.keyword'
-        if body["aggs"]:
-            body['aggs'][aggs] = {"terms": {"field": f_aggs}}
-        else:
-            body['aggs'] = {aggs: {"terms": {"field": f_aggs}}}
+            if body["aggs"]:
+                body['aggs'][aggs] = {"terms": {"field": f_aggs}}
+            else:
+                body['aggs'] = {aggs: {"terms": {"field": f_aggs}}}
+        if aggs == "date_year":
+                if "aggs" in body:
+                  body['aggs']["years"] = {"date_histogram": {"field": "date", "calendar_interval": "year", "format": "yyyy" }}
+                else:
+                  body['aggs'] = {"years": {"date_histogram": {"field": "date", "calendar_interval": "year", "format": "yyyy" }}}
     search_arr = []
     search_arr.append({'index': current_app.config["INDEX"][0]})
     search_arr.append(body)

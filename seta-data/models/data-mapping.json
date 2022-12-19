@@ -1,0 +1,76 @@
+{"mappings":
+    {"properties":
+      {"@timestamp":{"type":"date"}
+      ,"@version":{"type":"text","fields":{"keyword":{"type":"keyword","ignore_above":256}}}
+      ,"date":{"type":"date"}
+      ,"source":{"type":"text","fields":{"keyword":{"type":"keyword","ignore_above":256}}}
+
+      ,"author":{"type":"text","fields":{"keyword":{"type":"keyword","ignore_above":256}}}
+      ,"title":{"type":"text","fields":{"keyword":{"type":"keyword","ignore_above":256}}}
+      ,"abstract":{"type":"text","fields":{"keyword":{"type":"keyword","ignore_above":256}}}
+
+      ,"keywords":{"type":"nested","dynamic":"false","properties":{"keyword":{"type":"keyword"}
+                                                                  ,"score":{"type":"double"}}}
+
+      ,"chunk_number":{"type":"integer"}
+      ,"chunk_text":{"type":"text","fields":{"keyword":{"type":"keyword","ignore_above":256}}}
+
+      ,"document_id":{"type":"keyword"}
+      ,"id":{"type":"text","fields":{"keyword":{"type":"keyword","ignore_above":256}}}
+      ,"id_alias":{"type":"text","fields":{"keyword":{"type":"keyword","ignore_above":256}}}
+
+      ,"collection":{"type":"keyword","fields":{"keyword":{"type":"keyword","ignore_above":256}}}
+      ,"reference":{"type":"text","fields":{"keyword":{"type":"keyword","ignore_above":256}}}
+      ,"in_force":{"type":"text","fields":{"keyword":{"type":"keyword","ignore_above":256}}}
+
+      ,"language":{"type":"text","fields":{"keyword":{"type":"keyword","ignore_above":256}}}
+      ,"link_alias":{"type":"text","fields":{"keyword":{"type":"keyword","ignore_above":256}}}
+      ,"link_origin":{"type":"text","fields":{"keyword":{"type":"keyword","ignore_above":256}}}
+      ,"link_reference":{"type":"text","fields":{"keyword":{"type":"keyword","ignore_above":256}}}
+      ,"link_related":{"type":"text","fields":{"keyword":{"type":"keyword","ignore_above":256}}}
+      ,"mime_type":{"type":"text","fields":{"keyword":{"type":"keyword","ignore_above":256}}}
+
+      ,"ec_priority":{"type":"nested","dynamic":"false","properties":{"classifier":{"type":"keyword"}
+                                                                     ,"label":{"type":"keyword"}
+                                                                     ,"validated":{"type":"keyword"}
+                                                                     ,"version":{"type":"keyword"}}}
+      ,"euro_sci_voc":{"type":"nested","dynamic":"false","properties":{"classifier":{"type":"keyword"}
+                                                                      ,"label":{"type":"keyword"}
+                                                                      ,"code":{"type":"keyword"}
+                                                                      ,"longLabel":{"type":"keyword"}
+                                                                      ,"validated":{"type":"keyword"}
+                                                                      ,"version":{"type":"keyword"}}}
+      ,"eurovoc_concept":{"type":"nested","dynamic":"false","properties":{"classifier":{"type":"keyword"}
+                                                                         ,"label":{"type":"keyword"}
+                                                                         ,"code":{"type":"keyword"}
+                                                                         ,"longLabel":{"type":"keyword"}
+                                                                         ,"validated":{"type":"keyword"}
+                                                                         ,"version":{"type":"keyword"}}}
+      ,"eurovoc_domain":{"type":"nested","dynamic":"false","properties":{"classifier":{"type":"keyword"}
+                                                                        ,"label":{"type":"keyword"}
+                                                                        ,"code":{"type":"keyword"}
+                                                                        ,"longLabel":{"type":"keyword"}
+                                                                        ,"validated":{"type":"keyword"}
+                                                                        ,"version":{"type":"keyword"}}}
+      ,"eurovoc_mth":{"type":"nested","dynamic":"false","properties":{"classifier":{"type":"keyword"}
+                                                                     ,"label":{"type":"keyword"}
+                                                                     ,"code":{"type":"keyword"}
+                                                                     ,"longLabel":{"type":"keyword"}
+                                                                     ,"validated":{"type":"keyword"}
+                                                                     ,"version":{"type":"keyword"}}}
+      ,"sdg_domain":{"type":"nested","dynamic":"false","properties":{"classifier":{"type":"keyword"}
+                                                                    ,"label":{"type":"keyword"}
+                                                                    ,"code":{"type":"keyword"}
+                                                                    ,"longLabel":{"type":"keyword"}
+                                                                    ,"validated":{"type":"keyword"}
+                                                                    ,"version":{"type":"keyword"}}}
+      ,"sdg_subdomain":{"type":"nested","dynamic":"false","properties":{"classifier":{"type":"keyword"}
+                                                                       ,"label":{"type":"keyword"}
+                                                                       ,"code":{"type":"keyword"}
+                                                                       ,"longLabel":{"type":"keyword"}
+                                                                       ,"validated":{"type":"keyword"}
+                                                                       ,"version":{"type":"keyword"}}}
+
+      ,"sbert_embedding":{"type":"dense_vector","dims":768,"index":true,"similarity":"cosine"}
+      ,"other":{"type":"flattened"}
+}}}

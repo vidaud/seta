@@ -1,0 +1,11 @@
+elasticsearch==8.2.0
+python-secrets==22.6.1
+gensim==3.8.3
+PyYAML==6.0
+tqdm==4.63.1
+setproctitle==1.2.2
+msgpack==1.0.3
+lxml==4.8.0
+pathlib==1.0.1
+requests==2.27.1
+shutils==0.1.0

@@ -4,6 +4,9 @@ RUN echo "Acquire::http::Proxy \""$HTTP_PROXY"\";" >> /etc/apt/apt.conf
 ENV https_proxy=$HTTP_PROXY
 ENV http_proxy=$HTTP_PROXY
 ENV no_proxy="seta-es,seta-mongo,seta-api,seta-nginx,seta-ui,seta-ui-spa"
+ENV HTTPS_PROXY=$HTTP_PROXY
+ENV HTTP_PROXY=$HTTP_PROXY
+ENV NO_PROXY=$no_proxy
 
 RUN apt update -y
 RUN apt install -y  --no-install-recommends curl
@@ -15,12 +18,16 @@ RUN apt install -y  --no-install-recommends gnupg
 RUN apt install -y  --no-install-recommends python3-pip
 RUN apt install -y  --no-install-recommends python3-dev
 
-RUN npm install elasticdump -g
 
 ARG ROOT=/home/seta
 WORKDIR $ROOT
 
-RUN mkdir $ROOT/tika
+
+
+RUN export  https_proxy=$HTTP_PROXY
+RUN export  http_proxy=$HTTP_PROXY
+
+RUN mkdir -p $ROOT/tika
 WORKDIR $ROOT/tika
 RUN wget https://archive.apache.org/dist/tika/2.4.1/tika-app-2.4.1.jar \
     && wget https://archive.apache.org/dist/tika/2.4.1/tika-app-2.4.1.jar.asc \
@@ -35,11 +42,13 @@ RUN  python3 -m nltk.downloader punkt
 RUN python3 -c 'from sentence_transformers import SentenceTransformer; SentenceTransformer("all-distilroberta-v1")'
 
 ADD ./*.py ./
+ADD ./apis ./apis
 ADD ./infrastructure ./infrastructure
+ADD ./static ./static
 
-ENV PYTHONUNBUFFERED=1
 ENV FLASK_DEBUG=1
 ENV FLASK_RUN_PORT=8081
+ENV PYTHONUNBUFFERED=1
 ENV FLASK_APP=app_dev.py 
 ENV FLASK_ENV=development 
 
