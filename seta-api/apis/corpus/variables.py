@@ -16,15 +16,22 @@ corpus_parser.add_argument('ec_priority', action='split')
 corpus_parser.add_argument('sdg_domain', action='split')
 corpus_parser.add_argument('sdg_subdomain', action='split')
 corpus_parser.add_argument('euro_sci_voc', action='split')
-corpus_parser.add_argument('in_force', type=inputs.boolean)
+corpus_parser.add_argument('in_force')
 corpus_parser.add_argument('sort', action='split')
 corpus_parser.add_argument('semantic_sort_id')
 corpus_parser.add_argument('author', action='split')
 corpus_parser.add_argument('date_range', action='split')
 corpus_parser.add_argument('aggs')  
+corpus_parser.add_argument('other', action='split')  
+
+other = fields.Wildcard(fields.String())
+
+
 
 metadata = {}
+metadata["code"] = fields.String()
 metadata["label"] = fields.String()
+metadata["longLabel"] = fields.String()
 metadata["validated"] = fields.String()
 metadata["classifier"] = fields.String()
 metadata["version"] = fields.String()

@@ -1,7 +1,8 @@
 from flask_restx import Api, Resource, fields
 from flask import Blueprint
-from flask import jsonify, request, abort
+from flask import jsonify, request, abort, make_response
 from flask_jwt_extended import create_access_token, create_refresh_token
+from flask_jwt_extended import set_access_cookies, set_refresh_cookies
 from flask_jwt_extended import get_jwt_identity, jwt_required
 from flask_cors import CORS
 import time
@@ -66,8 +67,12 @@ class JWTUserToken(Resource):
        
         access_token = create_access_token(identity=identity, fresh=True, additional_claims=additional_claims)
         refresh_token = create_refresh_token(identity=identity, additional_claims=additional_claims)
-        
-        return jsonify(access_token=access_token, refresh_token=refresh_token)
+        response = make_response(jsonify(access_token=access_token, refresh_token=refresh_token))
+
+        set_access_cookies(response, access_token)
+        set_refresh_cookies(response, refresh_token)
+                
+        return response
     
 @ns_auth.route("/user/guest", methods=['POST'])
 class JWTGuestToken(Resource):
@@ -84,7 +89,11 @@ class JWTGuestToken(Resource):
        
         access_token = create_access_token(identity=identity, fresh=True, additional_claims=additional_claims)
         refresh_token = create_refresh_token(identity=identity, additional_claims=additional_claims)
-        
+
+        set_access_cookies(response, access_token)
+        set_refresh_cookies(response, refresh_token)            
+
+       
         return jsonify(access_token=access_token, refresh_token=refresh_token)
 
 refresh_parser = ns_auth.parser()
