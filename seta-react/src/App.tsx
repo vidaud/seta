@@ -1,9 +1,6 @@
-import React, { useEffect, useState } from 'react';
-//import logo from './logo.svg';
+import { useEffect, useState } from 'react';
 import './App.css';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-// import { ToastContainer, toast } from 'react-toastify';
-// import 'react-toastify/dist/ReactToastify.css';
 import Home from './pages/home/home';
 import About from './pages/about/about';
 import Contact from './pages/contact/contact';
@@ -13,34 +10,20 @@ import Login from './pages/login/login';
 import NotFoundPage from './pages/not-found/not-found';
 import storageService from './services/storage.service';
 import Dashboard from './pages/dashboard/dashboard';
-import { environment } from './environments/environment';
-import axios from 'axios';
-
-//const AUTH_API = environment.baseUrl + environment.baseApplicationContext + 'v2/';
+import { User } from './models/user.model';
 
 function App() {
   const [authenticated, setauthenticated] = useState<boolean | null>(null);
-  // const handleClick = (e) => {
-  //   e.preventDefault();
-  //   axios.get(`${AUTH_API}/auth/google`, {
-  //     headers: {
-  //       "Access-Control-Allow-Origin": "* ",
-  //       "Access-Control-Allow-Headers": "Content-Type",
-  //     },
-  //   })
-  //     .then((res) => {
-  //       window.location.assign(res.data.auth_url);
-  //     })
-  //     .catch((err) => console.log(err));
-  //   console.log(AUTH_API);
-  // };
+  let user: User | null = null;
   useEffect(() => {
     if(storageService.isLoggedIn()){
         setauthenticated(true);
-        console.log(storageService.getUser());
+        user = storageService.getUser();
+        console.log(user);
     }
     else {
         setauthenticated(false);
+        user = null;
     }
 }, []);
   return (
@@ -59,7 +42,7 @@ function App() {
           <Route path="/seta-ui/dashboard" element={<Dashboard />} />
           <Route path="/seta-ui/about" element={<About />} />
           <Route path="/seta-ui/contact" element={<Contact />} />
-          <Route path="/seta-ui/login-options" element={<Login />} />
+          <Route path="/seta-ui/login" element={<Login />} />
         </Routes>
       </BrowserRouter>
     </div>

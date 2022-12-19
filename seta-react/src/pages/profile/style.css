@@ -1,0 +1,7 @@
+p {
+    padding-bottom: 1.5rem;
+}
+.publicKey {
+    width: 100%;
+    display: flex;
+}

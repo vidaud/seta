@@ -3,22 +3,22 @@ import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
 import './style.css';
 import { useEffect, useRef, useState } from 'react';
-import axios from 'axios';
 import storageService from '../../services/storage.service';
 import { TieredMenu } from 'primereact/tieredmenu';
 
 const Header = () => {
     const dashboard = useRef<any>(null) ;
     const [authenticated, setauthenticated] = useState<boolean>();
+
     useEffect(() => {
         if(storageService.isLoggedIn()){
             setauthenticated(true);
-            console.log(storageService.getUser());
         }
         else {
             setauthenticated(false);
         }
     }, []);
+
     const items_seta = [
         {
             label: 'Search',
@@ -37,6 +37,7 @@ const Header = () => {
             url: '/seta-ui/contact',
         }
     ];
+
     const dashboard_menu = [
         {
             label:'Profile',
@@ -57,10 +58,9 @@ const Header = () => {
             url: '/logout/ecas',
         }
     ];
-    // const start = <img alt="logo" src="https://ec.europa.eu/info/sites/default/themes/europa/images/svg/logo/logo--en.svg" height="40" className="mr-2"></img>;
     const start_seta = <img alt="logo" src="https://raw.githubusercontent.com/AdrianaLleshi/new_deck.gl/master/images/SeTA-logocut-negative.png" height="40" className="mr-2"></img>;
-    // const end = <InputText placeholder="Search" type="text" />;
-    const end_seta = <a href='/seta-ui/login-options'><span className="p-menuitem-icon pi pi-sign-in p-menuitem p-menuitem-link" /></a>
+    const end_seta = <a href='/seta-ui/login'><span className="p-menuitem-icon pi pi-sign-in p-menuitem p-menuitem-link" /></a>
+
     const logout = <div><TieredMenu model={dashboard_menu} popup ref={dashboard} id="overlay_tmenu" />
     <Button icon="pi pi-user" onClick={(event) => dashboard.current.toggle(event)} aria-haspopup aria-controls="overlay_tmenu"/></div>
 
@@ -75,15 +75,11 @@ const Header = () => {
                         <InputText placeholder="Search" type="text" className='search-form'/>
                         <Button label="Search" className='searchButton'/>
                     </div>
-                    {/* <InputText placeholder="Search" type="text" className='search-form'/> */}
                 </div>
             </header>
             
             <header className="seta-header">
                 <Menubar model={items_seta} start={start_seta} end={authenticated === true ? logout : end_seta} />
-                <a href="/logout/ecas">
-                    <button>Logout</button>
-                </a>
             </header>
         </div>
     );
