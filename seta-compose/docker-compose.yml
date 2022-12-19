@@ -17,7 +17,7 @@ services:
     expose:
       - "9200"
       - "9300"
-    mem_limit: "32g"
+    mem_limit: "4g"
     volumes:
       - seta-es2:/usr/share/elasticsearch/data
     networks:
@@ -35,7 +35,7 @@ services:
     build: ../seta-api
     expose:
       - "8081"
-    mem_limit: "32g"
+    mem_limit: "8g"
     volumes:
       - seta-models2:/home/seta/models
     networks:
