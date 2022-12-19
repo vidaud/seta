@@ -72,15 +72,15 @@ def insert_doc(args, current_app):
 
 def corpus(term, n_docs, from_doc, sources, collection, reference, eurovoc_concept, eurovoc_dom, eurovoc_mth,
            ec_priority, sdg_domain, sdg_subdomain, euro_sci_voc, in_force, sort, semantic_sort_id, emb_vector, author,
-           date_range, aggs, search_type, current_app):
+           date_range, aggs, search_type, other, current_app):
     
     if search_type is None or search_type not in current_app.config["SEARCH_TYPES"]:
         search_type = "CHUNK_SEARCH"
         
     documents = {"total_docs": None, "documents": []}
-    list_of_aggs_fields = ["source", "eurovoc_concept"]
+    list_of_aggs_fields = ["source", "eurovoc_concept","date_year"]
     
-    if aggs and aggs not in list_of_aggs_fields:
+    if aggs and (aggs not in list_of_aggs_fields):
         raise ApiLogicError('Malformed query. Wrong aggs parameter')
     '''
     print(term, n_docs, from_doc, sources, collection, reference, eurovoc_concept, eurovoc_dom,
@@ -91,7 +91,7 @@ def corpus(term, n_docs, from_doc, sources, collection, reference, eurovoc_conce
 
     body = build_corpus_request(term, n_docs, from_doc, sources, collection, reference, eurovoc_concept, eurovoc_dom,
                                 eurovoc_mth, ec_priority, sdg_domain, sdg_subdomain, euro_sci_voc, in_force, sort,
-                                semantic_sort_id, emb_vector, author, date_range, aggs, search_type, current_app)
+                                semantic_sort_id, emb_vector, author, date_range, aggs, search_type, other, current_app)
     #print("body", body)
     res = current_app.es.msearch(searches=body)
     #print("res", res)
@@ -103,7 +103,15 @@ def corpus(term, n_docs, from_doc, sources, collection, reference, eurovoc_conce
         elif search_type == "CHUNK_SEARCH":
             documents["total_docs"] = k['aggregations']['total']['value']
         if aggs:
-            documents["aggregations"] = k["aggregations"][aggs]["buckets"]
+            if aggs =="date_year":
+               if not ("aggregations" in documents):
+                 documents["aggregations"] = {}
+               ks = k["aggregations"]["years"]["buckets"]
+               documents["aggregations"]["years"] = {}
+               for kt in ks:
+                 documents["aggregations"]["years"][kt["key_as_string"]] = kt["doc_count"]
+            else:
+               documents["aggregations"] = k["aggregations"][aggs]["buckets"]
         for document in k["hits"]["hits"]:
             abstract = document['_source']['abstract'] if isinstance(document['_source']['abstract'], str) else ""
             text = is_field_in_doc(document['_source'], "chunk_text")
@@ -125,6 +133,8 @@ def corpus(term, n_docs, from_doc, sources, collection, reference, eurovoc_conce
                                            "title": is_field_in_doc(document['_source'], "title"),
                                            "abstract": is_field_in_doc(document['_source'], "abstract"),
                                            "chunk_text": text,
+                                           "chunk_number": document['_source']["chunk_number"],
+                                           "link_origin": document['_source']["link_origin"],
                                            "date": is_field_in_doc(document['_source'], "date"),
                                            "source": document['_source']['source'],
                                            "score": document['_score'],

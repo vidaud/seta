@@ -47,19 +47,24 @@ services:
   seta-nginx:
     container_name: seta-nginx
     restart: always
-    build: ../seta-nginx
+    build: 
+       context: ../seta-nginx
+       dockerfile: Dockerfile
     ports:
       - "80:80"
     depends_on:
       - "seta-api"
       - "seta-ui"
+      - "seta-ui-react"
     networks:
       - seta-network
 
   seta-ui:
     container_name: seta-ui
     restart: always
-    build: ../seta-ui
+    build: 
+       context: ../seta-ui
+       dockerfile: Dockerfile
     depends_on:
       - "seta-api"
     expose:
@@ -68,6 +73,22 @@ services:
       - seta-models2:/home/seta/models
     networks:
       - seta-network
+
+
+  seta-ui-react:
+    container_name: seta-ui-react
+    restart: always
+    build: 
+       context: ../seta-react
+       dockerfile: Dockerfile
+    depends_on:
+      - "seta-api"
+      - "seta-ui"
+    expose:
+      - "3000"
+    networks: 
+      - seta-network
+
 
 
 networks:

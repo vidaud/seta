@@ -2,7 +2,7 @@ FROM nginx:1.20.2
 
 ENV https_proxy=$HTTP_PROXY
 ENV http_proxy=$HTTP_PROXY
-ENV no_proxy="seta-es,seta-mongo,seta-api,seta-nginx,seta-ui,seta-ui-spa"
+ENV no_proxy="seta-es,seta-mongo,seta-api,seta-nginx,seta-ui,seta-ui-react"
 
 RUN rm /etc/nginx/nginx.conf
 COPY nginx.conf /etc/nginx/
