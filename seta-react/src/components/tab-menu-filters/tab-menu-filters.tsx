@@ -1,5 +1,5 @@
 // import React, { useState } from 'react';
-import { TabView, TabPanel } from 'primereact/tabview';
+import { TabView, TabPanel } from 'primereact';
 
 const TabMenuFilters = () => {
     // const items = [

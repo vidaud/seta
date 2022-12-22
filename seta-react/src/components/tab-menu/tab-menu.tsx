@@ -1,5 +1,5 @@
 // import React, { useState } from 'react';
-import { TabView, TabPanel } from 'primereact/tabview';
+import { TabView, TabPanel } from 'primereact';
 import DocumentList from '../../components/document-list/document-list';
 import Pagination from '../../components/pagination/pagination';
 import TabMenuFilters from '../../components/tab-menu-filters/tab-menu-filters';

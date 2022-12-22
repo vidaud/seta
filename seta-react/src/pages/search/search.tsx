@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import './style.css';
-import { InputText } from 'primereact/inputtext';
+import { InputText } from 'primereact';
 import { Button } from 'primereact/button';
 import TabMenus from '../../components/tab-menu/tab-menu';
 import DialogButton from '../../components/dialog/dialog';
@@ -12,7 +12,7 @@ const Search = () => {
         setShowContent(true);
         axios({
             method: "POST",
-            url:"/seta-ui/corpus/",
+            url:"/seta-api/api/v1/corpus",
           })
           .then((response) => {
             console.log(response)

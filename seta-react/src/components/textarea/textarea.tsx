@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { InputTextarea } from 'primereact/inputtextarea';
+import { InputTextarea } from 'primereact';
 
 const TextareaInput = () => {
     const [value1, setValue1] = useState('');

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Dialog } from 'primereact/dialog';
+import { Dialog } from 'primereact';
 import { Button } from 'primereact/button';
 import './style.css';
 import FileUploads from '../file-upload/file-upload';

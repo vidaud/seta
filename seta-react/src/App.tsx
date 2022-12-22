@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react';
 import './App.css';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Home from './pages/home/home';
@@ -8,24 +7,11 @@ import Search from './pages/search/search';
 import Profile from './pages/profile/profile';
 import Login from './pages/login/login';
 import NotFoundPage from './pages/not-found/not-found';
-import storageService from './services/storage.service';
 import Dashboard from './pages/dashboard/dashboard';
-import { User } from './models/user.model';
+import { ProtectedRoute } from './components/protected-route/protected-route';
+import authentificationService from './services/authentification.service';
 
 function App() {
-  const [authenticated, setauthenticated] = useState<boolean | null>(null);
-  let user: User | null = null;
-  useEffect(() => {
-    if(storageService.isLoggedIn()){
-        setauthenticated(true);
-        user = storageService.getUser();
-        console.log(user);
-    }
-    else {
-        setauthenticated(false);
-        user = null;
-    }
-}, []);
   return (
     <div className="App">
       <link rel="stylesheet" href="https://unpkg.com/primeicons/primeicons.css" />
@@ -37,9 +23,30 @@ function App() {
           <Route path="/seta-ui" element={<Home />} />
           <Route path="/seta-ui/home" element={<Home />} />
           <Route path="*" element={<NotFoundPage />} />
-          <Route path="/seta-ui/search" element={<Search />} />
-          <Route path="/seta-ui/profile" element={<Profile />} />
-          <Route path="/seta-ui/dashboard" element={<Dashboard />} />
+          <Route
+            path="/seta-ui/search"
+            element={
+              <ProtectedRoute>
+                <Search />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/seta-ui/profile"
+            element={
+              <ProtectedRoute>
+                <Profile />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/seta-ui/dashboard"
+            element={
+              <ProtectedRoute>
+                <Dashboard />
+              </ProtectedRoute>
+            }
+          />
           <Route path="/seta-ui/about" element={<About />} />
           <Route path="/seta-ui/contact" element={<Contact />} />
           <Route path="/seta-ui/login" element={<Login />} />

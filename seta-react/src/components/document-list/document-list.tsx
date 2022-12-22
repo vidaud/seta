@@ -1,23 +1,16 @@
 import { useState, useEffect, useRef } from 'react';
-import { DataTable } from 'primereact/datatable';
+import { DataTable } from 'primereact';
 import { Column } from 'primereact/column';
-import { ProductService } from '../../services/product.service';
 // import { Rating } from 'primereact/rating';
 import { Button } from 'primereact/button';
-import { MultiSelect } from 'primereact/multiselect';
-import { Rating } from 'primereact/rating';
+import { MultiSelect } from 'primereact';
 import './style.css';
 
 const DocumentList = () => {
-    const [products, setProducts] = useState([]);
-    const productService = new ProductService();
     const isMounted = useRef(false);
-    const toast = useRef(null);
-    const [expandedRows, setExpandedRows] = useState(null);
 
     useEffect(() => {
         isMounted.current = true;
-        productService.getProductsWithOrdersSmall().then(data => setProducts(data));
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
     const onRowExpand = (event) => {
@@ -104,7 +97,7 @@ const DocumentList = () => {
         <div className="datatable-rowexpansion-demo">
 
             <div className="card list">
-                <DataTable value={products}
+                <DataTable
                     onRowExpand={onRowExpand} onRowCollapse={onRowCollapse} responsiveLayout="scroll"
                     dataKey="id" header={header}>
                     <Column style={{ width: '3em' }} />
