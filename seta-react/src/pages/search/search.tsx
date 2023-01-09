@@ -8,32 +8,39 @@ import axios from 'axios';
 
 const Search = () => {
     const [showContent, setShowContent] = useState(false);
+    const [term, setTerm] = useState('');
     const onClick = () => {
         setShowContent(true);
         axios({
-            method: "POST",
+            method: "GET",
             url:"/seta-api/api/v1/corpus",
+            params:{
+              aggs: 'date_year',
+            }
           })
           .then((response) => {
-            console.log(response)
+            console.log(response);
+            console.log(response.data.documents);
           }).catch((error) => {
             if (error.response) {
               console.log(error.response)
               }
-          })
+          });
+        console.log(term);
     }
+
     return (
         <div className="page">
             { showContent ? null : <div>Discover and Link Knowledge in EU Documents</div> }
             <div className="col-8">
                 <div className="p-inputgroup">
                     <DialogButton />
-                    <InputText placeholder="Type term and/or drag and drop here document"/>
+                    <InputText type="search" placeholder="Type term and/or drag and drop here document" onChange={(e) => setTerm(e.target.value)}/>
                     <Button label="Search" onClick={onClick}/>
                 </div>
             </div>
             <div>
-                { showContent ? <TabMenus /> : null }
+                { showContent ? <TabMenus term={term}/> : null }
             </div>
         </div>
         );

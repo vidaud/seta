@@ -27,7 +27,7 @@ class StorageService {
     const cookies = window.document.cookie;
     console.log(cookies);
     console.log(user);
-    if (user && cookies) {
+    if (user || cookies) {
       return true;
     }
 

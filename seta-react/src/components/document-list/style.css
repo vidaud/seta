@@ -6,3 +6,56 @@
 .datatable-rowexpansion-demo .orders-subtable {
     padding: 1rem;
 }
+
+.status-cordis {
+    font-weight: 400;
+    color: white;
+    padding: 2px 5px;
+    border-radius: 4px;
+    background-color: #4073AF;
+}
+
+.status-bookstore {
+    font-weight: 400;
+    color: white;
+    padding: 2px 5px;
+    border-radius: 4px;
+    color: #AF4740;
+}
+
+.status-eurlex {
+    font-weight: 400;
+    color: white;
+    padding: 2px 5px;
+    border-radius: 4px;
+    color: #FBC11D;
+}
+
+.status-openportal {
+    font-weight: 400;
+    color: white;
+    padding: 2px 5px;
+    border-radius: 4px;
+    color: #338349;
+}
+
+.p-datatable .p-datatable-tbody > tr > td {
+    font-size: 14px !important;
+    padding: 0.3rem 0.3rem !important;
+}
+
+.p-datatable .p-datatable-thead > tr > th {
+    padding: 0.3rem !important;
+}
+
+.table-header-container .p-component {
+    padding: 0.4rem 0.5rem !important;
+}
+
+.context-table {
+    margin-bottom: 2%;
+}
+
+.table-headers {
+    font-weight: 600;
+}

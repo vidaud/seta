@@ -10,6 +10,6 @@ p {
 }
 
 .card {
-    width: fit-content;
+    width: -webkit-fill-available;
     padding: inherit;
 }

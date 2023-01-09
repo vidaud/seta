@@ -1,0 +1,63 @@
+{
+  "name": "webpack-pwa-manifest",
+  "version": "4.3.0",
+  "description": "Progressive Web Application (PWA) Manifest Generator",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/arthurbergmz/webpack-pwa-manifest.git"
+  },
+  "keywords": [
+    "pwa",
+    "manifest",
+    "gen",
+    "generator",
+    "webpack",
+    "webapp",
+    "manifest.json",
+    "progressive",
+    "web",
+    "app",
+    "application"
+  ],
+  "scripts": {
+    "build": "npx babel src --out-dir dist",
+    "clean": "rimraf -rf tests/*/output && rimraf -rf dist",
+    "clean:build": "npm run clean && npm run build",
+    "test": "npm run clean:build && node tests/index.js",
+    "test:debug": "npm run clean:build && node --inspect-brk ./tests/index.js"
+  },
+  "author": "Arthur A. Bergamaschi <arthurbergmz@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "css-color-names": "1.0.1",
+    "jimp": "0.16.1",
+    "mime": "2.4.6"
+  },
+  "devDependencies": {
+    "@babel/cli": "7.12.1",
+    "@babel/core": "7.12.3",
+    "@babel/preset-env": "7.12.1",
+    "babel-eslint": "10.1.0",
+    "eslint": "7.13.0",
+    "html-webpack-plugin": "4.5.0",
+    "list-directory-contents": "0.0.3",
+    "rimraf": "3.0.2",
+    "webpack": "5.5.0",
+    "webpack-cli": "4.2.0"
+  },
+  "files": [
+    "dist",
+    "CHANGELOG.md",
+    "index.d.ts",
+    "index.js",
+    "LICENSE",
+    "package-lock.json",
+    "package.json",
+    "README.md"
+  ],
+  "engines": {
+    "node": ">=6.0.0"
+  }
+}
