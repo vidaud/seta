@@ -7,7 +7,7 @@ import TextareaInput from '../textarea/textarea';
 import { EmbeddingsService } from '../../services/corpus/embeddings.service';
 import { CorpusService } from '../../services/corpus/corpus.service';
 
-const DialogButton = ({onChange, onChangeText, onChangeFile}) => {
+const DialogButton = ({onChange, onChangeText, onChangeFile, onChangeContentVisibility}) => {
     const [displayBasic, setDisplayBasic] = useState(false);
     const [embeddings, setEmbeddings] = useState([]);
     const [documentList, setDocumentList] = useState([]);
@@ -53,8 +53,10 @@ const DialogButton = ({onChange, onChangeText, onChangeFile}) => {
         if(embeddings.length > 0) {
             corpusService.getDocumentsFromEmbeddings(embeddings).then(data => { 
                 setDocumentList(data.documents);
-                setShowContentList(true);
                 onChange(data.documents);
+
+                setShowContentList(true);
+                onChangeContentVisibility(true);
             });
             console.log(documentList);
         }

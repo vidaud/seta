@@ -10,7 +10,7 @@ import { CorpusService } from '../../services/corpus/corpus.service';
 
 const DocumentList = (value, list) => {
     const isMounted = useRef(false);
-    const [items, setItems] = useState([]);
+    const [items, setItems] = useState<any>([]);
     const [expandedRows, setExpandedRows] = useState(null);
     const [embeddingsItems, setEmbeddingsItems] = useState([]);
     const [basicFirst, setBasicFirst] = useState(0);
@@ -35,7 +35,15 @@ const DocumentList = (value, list) => {
         setEmbeddingsItems(list);
         console.log(embeddingsItems);
         isMounted.current = true;
-        corpusService.getDocuments(term).then(data => setItems(data));
+        
+        if(Array.isArray(list)) {
+            if(list.length > 0) {
+            setItems(list);
+            }
+        }
+        else {
+            corpusService.getDocuments(term).then(data => setItems(data));
+        }
     }, [value, list]); // eslint-disable-line react-hooks/exhaustive-deps
 
     const onRowExpand = (event) => {
