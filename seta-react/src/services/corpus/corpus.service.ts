@@ -1,5 +1,4 @@
 import axios from "axios";
-import { EmbeddingsModel } from "../../models/embeddings.model";
 
 export class CorpusService {
     getDocuments(term) {
