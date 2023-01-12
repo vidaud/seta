@@ -4,7 +4,6 @@ import { InputText } from 'primereact';
 import { Button } from 'primereact/button';
 import TabMenus from '../../components/tab-menu/tab-menu';
 import DialogButton from '../../components/dialog/dialog';
-import axios from 'axios';
 
 const Search = () => {
     const [showContent, setShowContent] = useState(false);

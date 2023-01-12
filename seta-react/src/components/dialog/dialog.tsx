@@ -54,6 +54,7 @@ const DialogButton = ({onChange, onChangeText, onChangeFile}) => {
             corpusService.getDocumentsFromEmbeddings(embeddings).then(data => { 
                 setDocumentList(data.documents);
                 setShowContentList(true);
+                console.log(showContentList);
                 onChange(data.documents);
             });
             console.log(documentList);

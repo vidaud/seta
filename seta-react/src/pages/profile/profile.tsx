@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { InputText } from 'primereact';
 import { Button } from 'primereact/button';
 import { InputTextarea } from 'primereact/inputtextarea';

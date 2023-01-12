@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { useLocation, useSearchParams } from 'react-router-dom';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { environment } from '../environments/environment';
 import { User } from '../models/user.model';
