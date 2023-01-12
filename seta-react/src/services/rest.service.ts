@@ -99,6 +99,7 @@ class RestService {
       };
 
       axios.post<any>(url, body, {headers:{"X-CSRF-TOKEN": csrf_token}}).then((r) => {
+      axios.post<any>(url, body).then((r) => {
         authentificationService.setaLogout();
 
       });
@@ -118,6 +119,7 @@ class RestService {
     };
 
     return axios.post<any>(url, body, {headers:{"X-CSRF-TOKEN": csrf_token}}) as any;
+    return axios.post<any>(url, body) as any;
 
   }
 
@@ -133,6 +135,7 @@ class RestService {
     };
 
     return axios.post<any>(url, body, {headers:{"X-CSRF-TOKEN": csrf_token}});
+    return axios.post<any>(url, body);
 
   }
 
