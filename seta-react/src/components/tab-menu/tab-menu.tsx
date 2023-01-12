@@ -4,7 +4,7 @@ import DocumentList from '../../components/document-list/document-list';
 // import Pagination from '../../components/pagination/pagination';
 import TabMenuFilters from '../../components/tab-menu-filters/tab-menu-filters';
 
-const TabMenus = (term) => {
+const TabMenus = (term, list) => {
 
     return (
         <div className="tab">
@@ -17,7 +17,7 @@ const TabMenus = (term) => {
                             <TabMenuFilters />
                         </div>
                         <div className='tab-filters'>
-                            <DocumentList value={term}/>
+                            <DocumentList value={term} listOfDocuments={list}/>
                             {/* <Pagination /> */}
                         </div>
                     </div>

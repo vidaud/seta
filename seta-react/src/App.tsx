@@ -10,6 +10,7 @@ import NotFoundPage from './pages/not-found/not-found';
 import Dashboard from './pages/dashboard/dashboard';
 import { ProtectedRoute } from './components/protected-route/protected-route';
 import authentificationService from './services/authentification.service';
+import Communities from './pages/communities/communities';
 
 function App() {
   return (
@@ -47,6 +48,7 @@ function App() {
               </ProtectedRoute>
             }
           />
+          <Route path="/seta-ui/communities" element={<Communities />} />
           <Route path="/seta-ui/about" element={<About />} />
           <Route path="/seta-ui/contact" element={<Contact />} />
           <Route path="/seta-ui/login" element={<Login />} />

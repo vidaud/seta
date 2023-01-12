@@ -8,10 +8,11 @@ import { ProgressBar } from 'primereact/progressbar';
 import './style.css';
 import { CorpusService } from '../../services/corpus/corpus.service';
 
-const DocumentList = (value) => {
+const DocumentList = (value, list) => {
     const isMounted = useRef(false);
-    const [products, setProducts] = useState([]);
+    const [items, setItems] = useState([]);
     const [expandedRows, setExpandedRows] = useState(null);
+    const [embeddingsItems, setEmbeddingsItems] = useState([]);
     const [basicFirst, setBasicFirst] = useState(0);
     const [basicRows, setBasicRows] = useState(10);
     const corpusService = new CorpusService();
@@ -30,9 +31,12 @@ const DocumentList = (value) => {
 
     useEffect(() => {
         var term = value.value.term;
+        console.log(list);
+        setEmbeddingsItems(list);
+        console.log(embeddingsItems);
         isMounted.current = true;
-        corpusService.getDocuments(term).then(data => setProducts(data));
-    }, [value]); // eslint-disable-line react-hooks/exhaustive-deps
+        corpusService.getDocuments(term).then(data => setItems(data));
+    }, [value, list]); // eslint-disable-line react-hooks/exhaustive-deps
 
     const onRowExpand = (event) => {
         // toast.current.show({severity: 'info', summary: 'Document Expanded', detail: event.data.name, life: 3000});
@@ -41,14 +45,6 @@ const DocumentList = (value) => {
     const onRowCollapse = (event) => {
         // toast.current.show({severity: 'success', summary: 'Document Collapsed', detail: event.data.name, life: 3000});
     }
-
-    // const expandAll = () => {
-    //     let _expandedRows = {};
-    // }
-
-    // const collapseAll = () => {
-    //     setExpandedRows(null);
-    // }
 
     const statusTemplate = (rowData) => {
         return <span className={`document-badge status-${(rowData.source ? rowData.source.toLowerCase() : '')}`}>{rowData.source}</span>;
@@ -125,13 +121,13 @@ const DocumentList = (value) => {
 
             <div className="card list">
                 <DataTable
-                    value={products}
+                    value={items}
                     paginator
                     expandedRows={expandedRows}
                     onRowToggle={(e) => setExpandedRows(e.data)}
                     dataKey="_id"
                     rowExpansionTemplate={rowExpansionTemplate}
-                    first={basicFirst} rows={basicRows} totalRecords={products!.length} rowsPerPageOptions={[5, 10, 20, 30]} onPageChange={onBasicPageChange}
+                    first={basicFirst} rows={basicRows} totalRecords={items!.length} rowsPerPageOptions={[5, 10, 20, 30]} onPageChange={onBasicPageChange}
                     paginatorTemplate="CurrentPageReport FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink RowsPerPageDropdown"
                     currentPageReportTemplate="Showing {first} to {last} of {totalRecords}"
                     onRowExpand={onRowExpand} onRowCollapse={onRowCollapse} responsiveLayout="scroll"

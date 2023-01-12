@@ -1,12 +1,15 @@
 import { useState } from 'react';
 import { InputTextarea } from 'primereact';
 
-const TextareaInput = () => {
-    const [value1, setValue1] = useState('');
-
+const TextareaInput = ({onChange}) => {
+    const [text, setText] = useState("");
+    const onChangeValue = (e) => {
+        setText(e.target.value);
+        onChange(text); 
+    }
     return (
         <div>
-            <InputTextarea placeholder="Paste text here ..." value={value1} onChange={(e) => setValue1(e.target.value)} rows={5} cols={100} />
+            <InputTextarea placeholder="Paste text here ..." value={text} onChange={onChangeValue} rows={5} cols={72} />
         </div>
     )
 }

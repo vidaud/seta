@@ -28,6 +28,11 @@ const Header = () => {
             visible: authenticated,
         },
         {
+            label: 'Communities',
+            className: 'seta-item',
+            url: '/seta-ui/communities',
+        },
+        {
             label: 'About',
             className: 'seta-item',
             url: '/seta-ui/about',

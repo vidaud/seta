@@ -1,4 +1,5 @@
 import axios from "axios";
+import { EmbeddingsModel } from "../../models/embeddings.model";
 
 export class CorpusService {
     getDocuments(term) {
@@ -8,7 +9,7 @@ export class CorpusService {
             params:{
               aggs: 'date_year',
               term: term
-            }
+          }
           })
           .then(d => d.data.documents)
           .catch((error) => {
@@ -17,4 +18,22 @@ export class CorpusService {
               }
           })
     }
+
+  getDocumentsFromEmbeddings(embeddings) {
+    return fetch("/seta-api/api/v1/corpus", {
+        method: "POST",
+        body: JSON.stringify({
+          n_docs: 10,
+          emb_vector: embeddings,
+          source: ["cordis"],
+          term: ""
+        }),
+      })
+      .then((d) => d.json())
+      .catch((error) => {
+        if (error.response) {
+          console.log(error.response)
+          }
+      })
+}
 }

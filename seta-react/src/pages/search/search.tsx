@@ -9,38 +9,41 @@ import axios from 'axios';
 const Search = () => {
     const [showContent, setShowContent] = useState(false);
     const [term, setTerm] = useState('');
+    const [documentList, setDocumentList] = useState([]);
     const onClick = () => {
         setShowContent(true);
-        axios({
-            method: "GET",
-            url:"/seta-api/api/v1/corpus",
-            params:{
-              aggs: 'date_year',
-            }
-          })
-          .then((response) => {
-            console.log(response);
-            console.log(response.data.documents);
-          }).catch((error) => {
-            if (error.response) {
-              console.log(error.response)
-              }
-          });
-        console.log(term);
     }
 
+    const onChangeTerm = (e) => {
+      setTerm(e.target.value)
+    }
+    const getDocumentList = (list) => {
+        setDocumentList(documentList)
+      }
+    const getTextValue = (text) => {
+        if (text !== '') {
+            setTerm('"' + text + '"');
+        }
+    }
+
+    const getFileName = (filename) => {
+        if (filename !== '') {
+            setTerm('"' + filename + '"');
+        }
+    }
+    
     return (
         <div className="page">
             { showContent ? null : <div>Discover and Link Knowledge in EU Documents</div> }
             <div className="col-8">
                 <div className="p-inputgroup">
-                    <DialogButton />
-                    <InputText type="search" placeholder="Type term and/or drag and drop here document" onChange={(e) => setTerm(e.target.value)}/>
+                    <DialogButton onChange={getDocumentList} onChangeText={getTextValue} onChangeFile={getFileName}/>
+                    <InputText type="search" value={term} placeholder="Type term and/or drag and drop here document" onChange={onChangeTerm}/>
                     <Button label="Search" onClick={onClick}/>
                 </div>
             </div>
             <div>
-                { showContent ? <TabMenus term={term}/> : null }
+                { showContent ? <TabMenus term={term} list={documentList}/> : null }
             </div>
         </div>
         );

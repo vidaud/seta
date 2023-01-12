@@ -3,25 +3,28 @@ import { useRef, useState } from 'react';
 import { FileUpload, ProgressBar, Tag } from 'primereact';
 import { Button } from 'primereact/button';
 
-export const FileUploads = () => {
+export const FileUploads = ({onChange}) => {
     const [totalSize, setTotalSize] = useState(0);
+    const [fileName, setFileName] = useState<File | null>(null);
     const fileUploadRef = useRef(null);
 
     const onTemplateSelect = (e) => {
         let _totalSize = totalSize;
-        e.files.forEach(file => {
-            _totalSize += file.size;
-        });
-
+        _totalSize += e.files[0].size;
+        setFileName( e.files[0]);
+        selectedFile(fileName);
         setTotalSize(_totalSize);
+    }
+
+    const selectedFile = (file) => {
+        onChange(file); 
     }
 
     const onTemplateUpload = (e) => {
         let _totalSize = 0;
-        e.files.forEach(file => {
-            _totalSize += (file.size || 0);
-        });
-
+        _totalSize += (e.files[0] || 0);
+        onChange(e.files[0]); 
+        
         setTotalSize(_totalSize);
     }
 
@@ -81,7 +84,7 @@ export const FileUploads = () => {
         <div>
             <div className="card">
                 <h5 className='h5_style'>Upload document or Enter text to start searching documents</h5>
-                <FileUpload ref={fileUploadRef} name="demo[]" url="https://primefaces.org/primereact/showcase/upload.php" multiple accept="image/*" maxFileSize={1000000}
+                <FileUpload ref={fileUploadRef} name="demo[]" url="https://primefaces.org/primereact/showcase/upload.php" accept=".xlsx,.xls,.doc, .docx,.ppt, .pptx,.txt,.pdf" maxFileSize={1000000}
                     onUpload={onTemplateUpload} onSelect={onTemplateSelect} onError={onTemplateClear} onClear={onTemplateClear}
                     headerTemplate={headerTemplate} itemTemplate={itemTemplate} emptyTemplate={emptyTemplate}
                     chooseOptions={chooseOptions} uploadOptions={uploadOptions} cancelOptions={cancelOptions} />
