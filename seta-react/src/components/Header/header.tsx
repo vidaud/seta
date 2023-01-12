@@ -1,14 +1,15 @@
-import { Menubar } from 'primereact/menubar';
-import { InputText } from 'primereact/inputtext';
+import { Menubar, InputText } from 'primereact';
 import { Button } from 'primereact/button';
 import './style.css';
 import { useEffect, useRef, useState } from 'react';
 import storageService from '../../services/storage.service';
 import { TieredMenu } from 'primereact/tieredmenu';
+import authentificationService from '../../services/authentification.service';
 
 const Header = () => {
     const dashboard = useRef<any>(null) ;
     const [authenticated, setauthenticated] = useState<boolean>();
+
 
     useEffect(() => {
         if(storageService.isLoggedIn()){
@@ -25,6 +26,11 @@ const Header = () => {
             className: 'seta-item',
             url: '/seta-ui/search',
             visible: authenticated,
+        },
+        {
+            label: 'Communities',
+            className: 'seta-item',
+            url: '/seta-ui/communities',
         },
         {
             label: 'About',
@@ -55,7 +61,10 @@ const Header = () => {
         {
             label:'Sign Out',
             icon:'pi pi-fw pi-sign-out',
-            url: '/logout/ecas',
+            // url: '/logout/ecas',
+            command: () => {
+                authentificationService.setaLogout();
+            }
         }
     ];
     const start_seta = <img alt="logo" src="https://raw.githubusercontent.com/AdrianaLleshi/new_deck.gl/master/images/SeTA-logocut-negative.png" height="40" className="mr-2"></img>;

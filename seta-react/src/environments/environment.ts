@@ -1,7 +1,7 @@
 export const environment = {
   production: false,
   test: false,
-  baseUrl: `http://localhost:8080`,
+  baseUrl: `http://localhost`,
   baseApplicationContext: `/seta-ui/`,
   restEndPoint: `rest/`,
   _regex: new RegExp(`_`, `g`),

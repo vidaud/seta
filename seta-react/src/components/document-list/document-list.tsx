@@ -1,74 +1,62 @@
 import { useState, useEffect, useRef } from 'react';
-import { DataTable } from 'primereact/datatable';
+import { DataTable } from 'primereact';
 import { Column } from 'primereact/column';
-import { ProductService } from '../../services/product.service';
 // import { Rating } from 'primereact/rating';
 import { Button } from 'primereact/button';
-import { MultiSelect } from 'primereact/multiselect';
-import { Rating } from 'primereact/rating';
+import { MultiSelect } from 'primereact';
+import { ProgressBar } from 'primereact/progressbar';
 import './style.css';
+import { CorpusService } from '../../services/corpus/corpus.service';
 
-const DocumentList = () => {
-    const [products, setProducts] = useState([]);
-    const productService = new ProductService();
+const DocumentList = (value, list) => {
     const isMounted = useRef(false);
-    const toast = useRef(null);
+    const [items, setItems] = useState([]);
     const [expandedRows, setExpandedRows] = useState(null);
+    const [embeddingsItems, setEmbeddingsItems] = useState([]);
+    const [basicFirst, setBasicFirst] = useState(0);
+    const [basicRows, setBasicRows] = useState(10);
+    const corpusService = new CorpusService();
+
+    const onBasicPageChange = (event: any) => {
+        setBasicFirst(event.first);
+        setBasicRows(event.rows);
+    }
 
     useEffect(() => {
+        if (isMounted) {
+            // const summary = expandedRows !== null ? 'All Rows Expanded' : 'All Rows Collapsed';
+            // toast.current.show({severity: 'success', summary: `${summary}`, life: 3000});
+        }
+    }, [expandedRows]);
+
+    useEffect(() => {
+        var term = value.value.term;
+        console.log(list);
+        setEmbeddingsItems(list);
+        console.log(embeddingsItems);
         isMounted.current = true;
-        productService.getProductsWithOrdersSmall().then(data => setProducts(data));
-    }, []); // eslint-disable-line react-hooks/exhaustive-deps
+        corpusService.getDocuments(term).then(data => setItems(data));
+    }, [value, list]); // eslint-disable-line react-hooks/exhaustive-deps
 
     const onRowExpand = (event) => {
+        // toast.current.show({severity: 'info', summary: 'Document Expanded', detail: event.data.name, life: 3000});
     }
 
     const onRowCollapse = (event) => {
+        // toast.current.show({severity: 'success', summary: 'Document Collapsed', detail: event.data.name, life: 3000});
     }
 
-    // const expandAll = () => {
-    //     let _expandedRows = {};
-    // }
+    const statusTemplate = (rowData) => {
+        return <span className={`document-badge status-${(rowData.source ? rowData.source.toLowerCase() : '')}`}>{rowData.source}</span>;
+    }
 
-    // const collapseAll = () => {
-    //     setExpandedRows(null);
-    // }
+    const activityBodyTemplate = (rowData) => {
+        return <ProgressBar value={rowData.score} showValue={false}></ProgressBar>;
+    }
 
-    // const formatCurrency = (value) => {
-    //     return value.toLocaleString('en-US', {style: 'currency', currency: 'USD'});
-    // }
-
-    // const amountBodyTemplate = (rowData) => {
-    //     return formatCurrency(rowData.amount);
-    // }
-
-    // const statusOrderBodyTemplate = (rowData) => {
-    //     return <span className={`order-badge order-${rowData.status.toLowerCase()}`}>{rowData.status}</span>;
-    // }
-
-    // const searchBodyTemplate = () => {
-    //     return <Button icon="pi pi-search" />;
-    // }
-
-    // const imageBodyTemplate = (rowData) => {
-    //     return <img src={`images/product/${rowData.image}`} onError={(e) => e} alt={rowData.image} className="product-image" />;
-    // }
-
-    // const priceBodyTemplate = (rowData) => {
-    //     return formatCurrency(rowData.price);
-    // }
-
-    // const ratingBodyTemplate = (rowData) => {
-    //     return <Rating value={rowData.rating} readOnly cancel={false} />;
-    // }
-
-    // const statusBodyTemplate = (rowData) => {
-    //     return <span className={`product-badge status-${rowData.inventoryStatus.toLowerCase()}`}>{rowData.inventoryStatus}</span>;
-    // }
-
-    // const allowExpansion = (rowData) => {
-    //     return rowData.orders.length > 0;
-    // };
+    const allowExpansion = (rowData) => {
+        return rowData.chunk_text !== null;
+    };
 
     const columns = [
         {field: 'score', header: 'Score'},
@@ -76,7 +64,7 @@ const DocumentList = () => {
         {field: 'source', header: 'Source'},
         {field: 'collection', header: 'Collection'},
         {field: 'reference', header: 'Reference'},
-        {field: 'year', header: 'Year'}
+        {field: 'date', header: 'Year'}
     ];
     const [selectedColumns, setSelectedColumns] = useState(columns);
     const onColumnToggle = (event) => {
@@ -85,9 +73,37 @@ const DocumentList = () => {
         setSelectedColumns(orderedSelectedColumns);
     }
     const columnComponents = selectedColumns.map(col=> {
-        return <Column key={col.field} field={col.field} header={col.header} />;
+        if (col.field === 'source') {
+            return <Column key={col.field} field={col.field} body={statusTemplate} header={col.header} sortable/>
+        }
+        else if (col.field === 'score') {
+            return <Column key={col.field} field={col.field} showFilterMatchModes={false} sortable body={activityBodyTemplate} header={col.header}/>
+        }
+        else if (col.field === 'date') {
+            return <Column key={col.field} field={col.field} header={col.header} sortable />
+        }
+        else {
+            return <Column key={col.field} field={col.field} header={col.header} />;
+        }
     });
     
+    const rowExpansionTemplate = (data) => {
+        return (
+            <div className="orders-subtable">
+                <table className='context-table'>
+                    <tr><td><span className='table-headers'>Collection:</span> {data.collection}</td><td><span className='table-headers'>Document reference:</span> {data.reference}</td></tr>
+                    <tr><td><span className='table-headers'>Date:</span> {data.date}</td><td><span className='table-headers'>Source:</span> {data.source}</td></tr>
+                    <tr><td><span className='table-headers'>Eurovoc concepts:</span> {data.eurovoc_concept}</td><td><span className='table-headers'>In force:</span> {data.in_force}</td></tr>
+                </table>
+                <DataTable value={data.concordance} responsiveLayout="scroll">
+                    <Column field={data.concordance![0]} header="Left Context" sortable></Column>
+                    <Column field={data.concordance![1]} header="Keyword" sortable></Column>
+                    <Column field={data.concordance![2]} header="Right Context" sortable></Column>
+                </DataTable>
+            </div>
+        );
+    }
+
     const header = (
         <div style={{ width:'100%', display: '-webkit-box' }}>
             <div className="table-header-container" style={{ width:'50%' }}>
@@ -104,10 +120,19 @@ const DocumentList = () => {
         <div className="datatable-rowexpansion-demo">
 
             <div className="card list">
-                <DataTable value={products}
+                <DataTable
+                    value={items}
+                    paginator
+                    expandedRows={expandedRows}
+                    onRowToggle={(e) => setExpandedRows(e.data)}
+                    dataKey="_id"
+                    rowExpansionTemplate={rowExpansionTemplate}
+                    first={basicFirst} rows={basicRows} totalRecords={items!.length} rowsPerPageOptions={[5, 10, 20, 30]} onPageChange={onBasicPageChange}
+                    paginatorTemplate="CurrentPageReport FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink RowsPerPageDropdown"
+                    currentPageReportTemplate="Showing {first} to {last} of {totalRecords}"
                     onRowExpand={onRowExpand} onRowCollapse={onRowCollapse} responsiveLayout="scroll"
-                    dataKey="id" header={header}>
-                    <Column style={{ width: '3em' }} />
+                    header={header}>
+                    <Column expander={allowExpansion} style={{ width: '3em' }} />
                     {columnComponents}
                 </DataTable>
             </div>

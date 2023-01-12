@@ -1,15 +1,10 @@
 // import React, { useState } from 'react';
-import { TabView, TabPanel } from 'primereact/tabview';
+import { TabView, TabPanel } from 'primereact';
 import DocumentList from '../../components/document-list/document-list';
-import Pagination from '../../components/pagination/pagination';
+// import Pagination from '../../components/pagination/pagination';
 import TabMenuFilters from '../../components/tab-menu-filters/tab-menu-filters';
 
-const TabMenus = () => {
-    // const items = [
-    //     {label: 'Document List', icon: 'pi pi-fw pi-list'},
-    //     {label: 'Context', icon: 'pi pi-fw pi-sitemap'},
-    //     {label: 'Document Map', icon: 'pi pi-fw pi-map'}
-    // ];
+const TabMenus = (term, list) => {
 
     return (
         <div className="tab">
@@ -22,8 +17,8 @@ const TabMenus = () => {
                             <TabMenuFilters />
                         </div>
                         <div className='tab-filters'>
-                            <DocumentList />
-                            <Pagination />
+                            <DocumentList value={term} listOfDocuments={list}/>
+                            {/* <Pagination /> */}
                         </div>
                     </div>
                     </TabPanel>

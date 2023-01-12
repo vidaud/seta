@@ -20,7 +20,7 @@ class Config:
     SECRET_KEY_PATH = "/home/seta/models/key.txt"
     JWT_SECRET_KEY = ""    
     JWT_IDENTITY_CLAIM="seta_id"
-    JWT_COOKIE_CSRF_PROTECT = True
+    JWT_COOKIE_CSRF_PROTECT = False
     JWT_TOKEN_LOCATION=["headers", "cookies"]
     
     #Scheduler variables

@@ -5,3 +5,11 @@ p {
     width: 100%;
     display: flex;
 }
+.p-button-icon {
+    padding-right: inherit;
+}
+
+.card {
+    width: -webkit-fill-available;
+    padding: inherit;
+}

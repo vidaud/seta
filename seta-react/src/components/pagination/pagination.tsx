@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Paginator } from 'primereact/paginator';
+import { Paginator } from 'primereact';
 import './style.css';
 
 const Pagination = () => {

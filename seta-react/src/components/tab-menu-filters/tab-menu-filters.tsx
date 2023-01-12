@@ -1,5 +1,6 @@
 // import React, { useState } from 'react';
-import { TabView, TabPanel } from 'primereact/tabview';
+import { TabView, TabPanel } from 'primereact';
+import PostSearch from '../post-search/post-search';
 
 const TabMenuFilters = () => {
     // const items = [
@@ -15,6 +16,7 @@ const TabMenuFilters = () => {
                     <TabPanel header="Refine Search" leftIcon="pi pi-fw pi-filter">
                     </TabPanel>
                     <TabPanel header="Post Search" leftIcon="pi pi-fw pi-chart-pie"> 
+                        <PostSearch />
                     </TabPanel>
                 </TabView>
             </div>
