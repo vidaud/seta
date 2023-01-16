@@ -1,0 +1,19 @@
+=====================================================
+2023-01-16 Andrei:
+---------------------
+Changes for seta-ui-react development container
+
+* docker-compose-dev.yml file:
+** add environment variables:  CHOKIDAR_USEPOLLING used for hot-reloading in Node server
+** add anonymous volume for node_modules
+
+* Dockerfile-dev:
+** remove adduser seta => the commands run under root user; this prevents permission errors on sharp library installation
+** run local npm install on build
+** other minor changes
+
+* .gitignore file:
+** ignore node_modules directory
+
+* add this changelog.txt
+=====================================================
