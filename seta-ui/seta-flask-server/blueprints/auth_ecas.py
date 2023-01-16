@@ -1,16 +1,17 @@
 
 from flask import Blueprint, abort
 from flask import current_app as app
-from flask import (redirect, request, make_response, url_for, session)
+from flask import (redirect, request, make_response, url_for)
 
 from flask_jwt_extended import create_access_token, create_refresh_token
 from flask_jwt_extended import set_access_cookies, set_refresh_cookies
+
+from urllib.parse import urljoin
 
 from injector import inject
 from repository.interfaces import IUsersBroker
 
 from repository.models import SetaUser
-
 
 auth_ecas = Blueprint("auth_ecas", __name__)
 
@@ -75,7 +76,7 @@ def login_callback_ecas(userBroker: IUsersBroker):
         if not next:
             next = app.home_route
             
-        next = next + "?action=login"
+        next = urljoin(next, "?action=login")
                     
         response = make_response(redirect(next))
         

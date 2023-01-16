@@ -1,0 +1,20 @@
+===============================================
+2023-01-16 Andrei:
+------------------
+seta-ui changes:
+
+* seta-react/src/services/authentification.service.ts
+** check for action query parameter instead of #home?action
+
+*seta-flask-server/factory.py
+** set home_route = '/seta-ui/' - find a better solution in the future !!!
+
+*seta-flask-server/blueprints/auth.py
+** redirect to relative path
+
+*seta-flask-server/blueprints/auth_ecas.py && auth_github.py
+** urljoin(next, "?action=login")
+
+* add changelog.txt
+
+===============================================

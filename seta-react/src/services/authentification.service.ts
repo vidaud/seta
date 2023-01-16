@@ -13,12 +13,14 @@ class AuthentificationService {
         this.currentUserSubject.next(storageService.getUser());
         console.log(this.currentUserSubject);
       } 
-      const searchParam = new URLSearchParams(window.location.hash);
-      const action = Object.fromEntries(searchParam.entries());
-      console.log(action);
-      if(searchParam != null && action['#/home?action'] === 'login'){
-          this.loadProfile();
-      }
+      const searchParam = new URLSearchParams(window.location.search);
+      if(searchParam != null){
+        const action = searchParam.get('action');
+        console.log(action);
+        if(action === 'login'){
+            this.loadProfile();
+        }
+      }      
   }
 
   loadProfile() {

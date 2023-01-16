@@ -19,7 +19,7 @@ def logout_callback():
     Redirect from CAS logout request after CAS logout successfully.
     """
     
-    response = make_response(redirect(request.host_url[0:-1] + app.home_route))
+    response = make_response(redirect(app.home_route))
     unset_jwt_cookies(response)
     return response
 

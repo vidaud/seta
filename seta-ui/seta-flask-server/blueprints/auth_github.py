@@ -1,6 +1,8 @@
 from flask import Blueprint, abort
 from flask import current_app as app, g
-from flask import (redirect, request, make_response, url_for, session)
+from flask import (redirect, request, make_response, url_for)
+
+from urllib.parse import urljoin
 
 from flask_jwt_extended import create_access_token, create_refresh_token
 from flask_jwt_extended import set_access_cookies, set_refresh_cookies
@@ -72,7 +74,7 @@ def login_callback_github(access_token, userBroker: IUsersBroker):
     if not next:
         next = app.home_route
         
-    next = next + "?action=login"
+    next = urljoin(next, "?action=login")
                 
     response = make_response(redirect(next))
     
