@@ -2,6 +2,7 @@
     min-height: 31rem;
     height: auto;
     text-align: -webkit-center;
+    text-align: -moz-center;
     padding: 2rem;
 }
 .tab {
@@ -15,6 +16,7 @@
 
 .datatable-rowexpansion-demo {
     text-align: -webkit-right;
+    text-align: -moz-right;
 }
 
 .table-header-container {
@@ -27,6 +29,7 @@
 @media (min-width: 1024px), print {
     .tab-filters {
         width: -webkit-fill-available;
+        width: -moz-available;
         margin-left: 2%;
     }
     .page-sections {
@@ -40,6 +43,7 @@
     }
     .page-sections {
         display: -webkit-box;
+        display: -moz-box;
     }
 }
 @media (max-width: 540px) , print {

@@ -11,5 +11,6 @@ p {
 
 .card {
     width: -webkit-fill-available;
+    width: -moz-available;
     padding: inherit;
 }
