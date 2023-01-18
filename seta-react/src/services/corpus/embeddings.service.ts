@@ -1,17 +1,6 @@
 import axios from "axios";
 
 export class EmbeddingsService {
-    getEmbeddings(term) {
-        const endpoint = 'compute_embeddings';
-        const api = "/seta-api/api/v1/";
-        return axios.post(`${api}${endpoint}`, term)
-        .then(d => d.data.documents)
-          .catch((error) => {
-            if (error.response) {
-              console.log(error.response)
-              }
-          })
-    }
     retrieveEmbeddings(type: string, body: {"fileToUpload": File, "text": string}) {
         const endpoint = 'compute_embeddings';
         const api = "/seta-api/api/v1/";

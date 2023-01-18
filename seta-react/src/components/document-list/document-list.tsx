@@ -26,10 +26,10 @@ const DocumentList = (value, list) => {
       }
       var term = value.value.term;
       setEmbeddingsItems(list);
+      console.log(embeddingsItems);
       isMounted.current = true;
       corpusParameters$?.subscribe((corpusParameters: CorpusSearchPayload) => {
         cp = new CorpusSearchPayload({ ...corpusParameters });
-        console.log(cp.termCorpus);  
           try {
             term.patchValue(cp.termCorpus);
           } catch (e) {
@@ -44,7 +44,7 @@ const DocumentList = (value, list) => {
         const lastPayload = new CorpusSearchPayload({ ...cp, termCorpus: term, aggs: 'date_year', ndocs: 10 });
         corpusService.getDocuments(lastPayload).then(data => setItems(data));
       }
-    }, [expandedRows,value, list]);
+    }, [expandedRows, value, list]);
 
     const onBasicPageChange = (event: any) => {
         setBasicFirst(event.first);

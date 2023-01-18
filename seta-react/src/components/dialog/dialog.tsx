@@ -41,7 +41,6 @@ const DialogButton = ({onChange, onChangeText, onChangeFile, onChangeContentVisi
         if (file) {
             onChangeFile(file.name);
             embeddingsService.retrieveEmbeddings('file', { "fileToUpload": file, "text": "" }).then(data => {
-                console.log(data);
                 setEmbeddings(data.data.embeddings.vector);
             });
         }
@@ -56,14 +55,12 @@ const DialogButton = ({onChange, onChangeText, onChangeFile, onChangeContentVisi
             const lastPayload = new CorpusSearchPayload({ ...cp, vector: embeddings, ndocs: 10, source: ["cordis"], termCorpus: []});
             corpusService.postDocuments(lastPayload).then(data => { 
                 setDocumentList(data.documents);
+                console.log(documentList);
                 setShowContentList(true);
                 console.log(showContentList);
                 onChange(data.documents);
-
-                setShowContentList(true);
                 onChangeContentVisibility(true);
             });
-            console.log(documentList);
         }
         dialogFuncMap[`${name}`](false);
     }

@@ -20,9 +20,6 @@ export class CorpusSearchPayload extends Resource {
   public sdg_domain?: string[];
   public sdg_subdomain?: string[];
   public euro_sci_voc?: string[];
-  // public conc_dir_1?: string[];
-  // public conc_dir_2?: string[];
-  // public conc_dir_3?: string[];
   public in_force?: boolean;
   public sort?: string[];
   public semantic_sort_id?: string;

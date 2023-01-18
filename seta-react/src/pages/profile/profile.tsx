@@ -16,10 +16,8 @@ function Profile(props) {
     currentUser = storageService.getUser();
     RestService.getPublicRsaKey(currentUser.username).then((r) => {
       setpublicKey(r.data.value);
-      console.log(r);
     });
   }
-  console.log(currentUser);
   function deleteUser() {
     RestService.deleteCurrentUserAccount();
   }

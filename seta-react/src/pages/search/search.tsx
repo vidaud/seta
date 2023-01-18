@@ -39,7 +39,6 @@ const Search = () => {
     const toggleListVisibility = (show) => {
         if (show) {
             setShowContent(true);
-            console.log(showContent);
         }
     }
     
