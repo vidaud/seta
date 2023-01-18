@@ -3,7 +3,7 @@ import { Resource } from "./resource.model";
 
 export class AdvancedFiltersModel extends Resource {
   
-  selectedRepositoryTypes: string[];
+  selectedRepositoryTypes: string[] | undefined;
   eurlexForm: EurlexFormModel;
 
   constructor(data?: Partial<AdvancedFiltersModel>) {

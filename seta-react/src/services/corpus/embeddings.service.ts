@@ -22,5 +22,5 @@ export class EmbeddingsService {
         } else {
           return axios.post(`${api}${endpoint}`, {text: body.text})
         }
-      }
+      } 
 }

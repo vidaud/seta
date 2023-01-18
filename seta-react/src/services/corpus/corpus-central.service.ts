@@ -9,8 +9,9 @@ import { CorpusSearchPayload } from '../../store/corpus-search-payload';
 import { CorpusSearch } from '../../store/seta.actions';
 import authentificationService from '../authentification.service';
 import { CorpusParamHistoryService } from './corpus-param-history.service';
-import restService from '../rest.service';
-
+import RestService from '../../services/rest.service';
+import { Tree } from 'primereact/tree';
+import storageService from '../storage.service';
 
 export enum Modes {
   Lazy = 1,
@@ -75,23 +76,24 @@ export class CorpusCentralService {
     this._dynamicQuery.next(value);
   }
 
-//   constructor(
-//     private store: Store,
-//     private corpusHistoryService: CorpusParamHistoryService,
-//     private rest: RestService,
-//     private authService: AuthenticationService,) {
-//       this.authService.currentUserSubject.asObservable().subscribe((currentUser: User) => this.currentUser = currentUser)
-//     this.formMemory.subscribe((mem) => {
-//       if (mem
-//         && mem !== null
-//         && mem.eurlexForm
-//         && mem.eurlexForm.eurlexMetadataFilters) {
-//         this.countNumberOfEurlexMetadataApplied(mem)
-//       } else {
-//         this.filterCounter.next(0)
-//       }
-//     })
-//   }
+  constructor(
+    // private store: Store,
+    private corpusHistoryService: CorpusParamHistoryService) {
+      let currentUser: User | any = null;
+      if(storageService.isLoggedIn()){
+        currentUser = storageService.getUser();
+      }
+      this.formMemory.subscribe((mem) => {
+      if (mem
+        && mem !== null
+        && mem.eurlexForm
+        && mem.eurlexForm.eurlexMetadataFilters) {
+        this.countNumberOfEurlexMetadataApplied(mem)
+      } else {
+        this.filterCounter.next(0)
+      }
+    })
+  }
 
   public search() {
 
@@ -110,14 +112,14 @@ export class CorpusCentralService {
       this.setCorpusHistoryFilters(this.formMemory.getValue());
     }
 
-    // if (!this.corpusHistoryService.arePayloadsEqual(corpusSearchPayload, lastState)) {
-    //   corpusSearchPayload = new CorpusSearchPayload(
-    //     {
-    //       ...corpusSearchPayload,
-    //       ndocs: 10, from_doc: 0, sort: []
-    //     }
-    //   )
-    // }
+    if (!this.corpusHistoryService.arePayloadsEqual(corpusSearchPayload, lastState)) {
+      corpusSearchPayload = new CorpusSearchPayload(
+        {
+          ...corpusSearchPayload,
+          ndocs: 10, from_doc: 0, sort: []
+        }
+      )
+    }
 
     // this.store.dispatch(
     //   new CorpusSearch(
@@ -127,20 +129,20 @@ export class CorpusCentralService {
   }
 
   private setCorpusHistoryFilters(filters: AdvancedFiltersModel) {
-    // this.corpusHistoryService.eurlexForm_lastExecutionState = new AdvancedFiltersModel(
-    //   {
-    //     selectedRepositoryTypes: filters.selectedRepositoryTypes,
-    //     eurlexForm: new EurlexFormModel({
-    //       eurlexMetadataFilters: { ...filters.eurlexForm.eurlexMetadataFilters },
-    //       eurovocTreeNode: [...filters.eurlexForm.eurovocTreeNode],
-    //       // directoryTreeNode: [...filters.eurlexForm.directoryTreeNode],
-    //     })
-    //   }
-    // );
+    this.corpusHistoryService.eurlexForm_lastExecutionState = new AdvancedFiltersModel(
+      {
+        selectedRepositoryTypes: filters.selectedRepositoryTypes,
+        eurlexForm: new EurlexFormModel({
+          eurlexMetadataFilters: { ...filters.eurlexForm.eurlexMetadataFilters },
+          eurovocTreeNode: [...filters.eurlexForm.eurovocTreeNode],
+          // directoryTreeNode: [...filters.eurlexForm.directoryTreeNode],
+        })
+      }
+    );
   }
 
   public getLastState() {
-    // return this.corpusHistoryService.getLastState();
+    return this.corpusHistoryService.getLastState();
   }
 
   checkIfSemanticSortingIsEnabled(eurlexfil: CorpusSearchPayload) {
@@ -154,8 +156,8 @@ export class CorpusCentralService {
   }
 
   gotToPage(from_doc: number, ndocs: number) {
-    // this.eurlexFilters.next(new CorpusSearchPayload({ ...this.corpusHistoryService.getLastState(), from_doc, ndocs }))
-    // this.applyLastFormExecution();
+    this.eurlexFilters.next(new CorpusSearchPayload({ ...this.corpusHistoryService.getLastState(), from_doc, ndocs }))
+    this.applyLastFormExecution();
     // this.store.dispatch(
     //   new CorpusSearch(
     //     new CorpusSearchPayload({ ...this.corpusHistoryService.getLastState(), from_doc, ndocs })
@@ -163,37 +165,37 @@ export class CorpusCentralService {
   }
 
   private applyLastFormExecution() {
-    // if (this.corpusHistoryService.eurlexForm_lastExecutionState !== null) {
-    //   this.formMemory.next({
-    //     eurlexForm:
-    //     {
-    //       eurlexMetadataFilters:
-    //         this.corpusHistoryService.eurlexForm_lastExecutionState.eurlexForm.eurlexMetadataFilters ?
-    //           { ...this.corpusHistoryService.eurlexForm_lastExecutionState.eurlexForm.eurlexMetadataFilters }
-    //           :
-    //           undefined,
-    //       eurovocTreeNode: this.corpusHistoryService.eurlexForm_lastExecutionState.eurlexForm.eurovocTreeNode,
-    //       //directoryTreeNode: this.corpusHistoryService.eurlexForm_lastExecutionState.eurlexForm.directoryTreeNode
-    //     },
-    //     selectedRepositoryTypes:
-    //       this.corpusHistoryService.eurlexForm_lastExecutionState.selectedRepositoryTypes ?
-    //         [...this.corpusHistoryService.eurlexForm_lastExecutionState.selectedRepositoryTypes]
-    //         :
-    //         undefined
-    //   });
-    //   this.eurovocTreeNode.next([...this.corpusHistoryService.eurlexForm_lastExecutionState?.eurlexForm?.eurovocTreeNode]);
-    //   //this.directoryTreeNode.next([...this.corpusHistoryService.eurlexForm_lastExecutionState?.eurlexForm?.directoryTreeNode])
-    // } else {
+    if (this.corpusHistoryService.eurlexForm_lastExecutionState !== null) {
+      this.formMemory.next({
+        eurlexForm:
+        {
+          eurlexMetadataFilters:
+            this.corpusHistoryService.eurlexForm_lastExecutionState.eurlexForm.eurlexMetadataFilters ?
+              { ...this.corpusHistoryService.eurlexForm_lastExecutionState.eurlexForm.eurlexMetadataFilters }
+              :
+              undefined,
+          eurovocTreeNode: this.corpusHistoryService.eurlexForm_lastExecutionState.eurlexForm.eurovocTreeNode,
+          //directoryTreeNode: this.corpusHistoryService.eurlexForm_lastExecutionState.eurlexForm.directoryTreeNode
+        },
+        selectedRepositoryTypes:
+          this.corpusHistoryService.eurlexForm_lastExecutionState.selectedRepositoryTypes ?
+            [...this.corpusHistoryService.eurlexForm_lastExecutionState.selectedRepositoryTypes]
+            :
+            undefined
+      });
+      this.eurovocTreeNode.next([...this.corpusHistoryService.eurlexForm_lastExecutionState?.eurlexForm?.eurovocTreeNode]);
+      //this.directoryTreeNode.next([...this.corpusHistoryService.eurlexForm_lastExecutionState?.eurlexForm?.directoryTreeNode])
+    } else {
       this.formMemory.next(null!);
       this.eurovocTreeNode.next([]);
       //this.directoryTreeNode.next([])
-    //}
+    }
   }
 
   sort(sortFields: string[] | undefined) {
-    // const newPayload = new CorpusSearchPayload({ ...this.corpusHistoryService.getLastState(), sort: sortFields });
-    // this.eurlexFilters.next(newPayload)
-    // this.applyLastFormExecution();
+    const newPayload = new CorpusSearchPayload({ ...this.corpusHistoryService.getLastState(), sort: sortFields });
+    this.eurlexFilters.next(newPayload)
+    this.applyLastFormExecution();
     // this.store.dispatch(
     //   new CorpusSearch(
     //     newPayload
@@ -305,44 +307,44 @@ export class CorpusCentralService {
   }
   ngOnInit(): void { }
 
-//   public loadPastCorpusQueries(): Observable<TreeNode[]> {
-//     var subject = new Subject<TreeNode[]>();
-//     this.rest.getQueries(this.currentUser.username).subscribe(
-//       (response: any) => {
-//         console.log(response);
-//           let qms: TreeNode[] 
-//           if (response?.status === 'OK' && response?.state?.value) {
-//             qms = JSON.parse(response.state.value);
-//           } else {
-//             qms = []
-//           }
+  public loadPastCorpusQueries(): Observable<Tree[]> {
+    var subject = new Subject<Tree[]>();
+    RestService.getQueries(this.currentUser?.username).then(
+      (response: any) => {
+        console.log(response);
+          let qms: Tree[] 
+          if (response?.status === 'OK' && response?.state?.value) {
+            qms = JSON.parse(response.state.value);
+          } else {
+            qms = []
+          }
           
-//           subject.next((qms))
-//       })
-//     return subject.asObservable();
-//   }
+          subject.next((qms))
+      })
+    return subject.asObservable();
+  }
 
 
   public loadQueryByName(name: string): Observable<QueryModel> {
     var subject = new Subject<QueryModel>();
-    // this.rest.getState(this.currentUser.username, name).subscribe((r: any) => {
-    //   let qm = JSON.parse(r.state.value);
-    //   subject.next(new QueryModel(
-    //     {
-    //       ...qm,
-    //       payload:
-    //       {
-    //         ...qm.payload,
-    //         collection: qm.payload.collection ?
-    //           new Set([...qm.payload.collection]) :
-    //           new Set([]),
-    //         reference: qm.payload.reference ?
-    //           new Set([...qm.payload.reference])
-    //           :
-    //           new Set([])
-    //       }
-    //     }))
-    // })
+    RestService.getState(this.currentUser?.username, name).then((r: any) => {
+      let qm = JSON.parse(r.state.value);
+      subject.next(new QueryModel(
+        {
+          ...qm,
+          payload:
+          {
+            ...qm.payload,
+            collection: qm.payload.collection ?
+              new Set([...qm.payload.collection]) :
+              new Set([]),
+            reference: qm.payload.reference ?
+              new Set([...qm.payload.reference])
+              :
+              new Set([])
+          }
+        }))
+    })
     return subject.asObservable();
   }
 
@@ -351,13 +353,13 @@ export class CorpusCentralService {
     this.eurlexFilters.next(new CorpusSearchPayload(
       {
         ...savedQuery.payload,
-        // collection: savedQuery.payload.collection ?
-        //   new Set([...savedQuery.payload.collection]) :
-        //   new Set([]),
-        //   reference: savedQuery.payload.reference ?
-        //   new Set([...savedQuery.payload.reference])
-        //   :
-        //   new Set([])
+        collection: savedQuery.payload?.collection ?
+          new Set([...savedQuery.payload.collection]) :
+          new Set([]),
+          reference: savedQuery.payload?.reference ?
+          new Set([...savedQuery.payload.reference])
+          :
+          new Set([])
       }))
     if (savedQuery.filters !== null) {
       this.formMemory.next(new AdvancedFiltersModel({ ...savedQuery.filters }))
@@ -380,20 +382,20 @@ export class CorpusCentralService {
   }
 
 
-//   saveQuery(nodes: TreeNode[]) {
-//     let newPayload = new CorpusSearchPayload({ ...this.corpusHistoryService.getLastState() });
-//     this.eurlexFilters.next(newPayload)
-//     this.rest
-//       .setState(
-//         this.currentUser.username,
-//         'corpus-payload',
-//         JSON.stringify(nodes.map((node) => {
-//           return this.setParentNodesToNull(node)
-//         }))
-//       )
-//       .subscribe((r) => {
-//       });
-//   }
+  saveQuery(nodes: Tree[]) {
+    let newPayload = new CorpusSearchPayload({ ...this.corpusHistoryService.getLastState() });
+    this.eurlexFilters.next(newPayload)
+    RestService
+      .setState(
+        this.currentUser?.username,
+        'corpus-payload',
+        JSON.stringify(nodes.map((node) => {
+          return this.setParentNodesToNull(node)
+        }))
+      )
+      .then((r) => {
+      });
+  }
 
 
   /**
@@ -401,24 +403,24 @@ export class CorpusCentralService {
    * Necessary in order to avoid error: 
    * 'Converting circular structure to JSON' when doing JSON.stringify
    */
-//   public setParentNodesToNull(node: TreeNode) {
-//     node.parent = null
-//     if (node.children && node.children.length !== 0) {
-//       node.children.forEach((child) => {
-//         child.parent = null
-//         if (!child.leaf) {
-//           this.setParentNodesToNull(child)
-//         }
-//       })
-//     }
-//     return node
-//   }
+  public setParentNodesToNull(node: Tree) {
+    // node.parent = null
+    // if (node.children && node.children.length !== 0) {
+    //   node.children.forEach((child) => {
+    //     child.parent = null
+    //     if (!child.leaf) {
+    //       this.setParentNodesToNull(child)
+    //     }
+    //   })
+    // }
+    return node
+  }
 
 
   deleteStateByName(key: string): Observable<boolean> {
     var subject = new BehaviorSubject<boolean>(true);
-    // this.rest.deleteState(this.currentUser.username, key).subscribe((r) => {
-    // });
+    RestService.deleteState(this.currentUser?.username, key).then((r) => {
+    });
     return subject.asObservable()
   }
 }

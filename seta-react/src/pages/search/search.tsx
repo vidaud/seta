@@ -4,31 +4,35 @@ import { InputText } from 'primereact';
 import { Button } from 'primereact/button';
 import TabMenus from '../../components/tab-menu/tab-menu';
 import DialogButton from '../../components/dialog/dialog';
-import axios from 'axios';
+import { Term } from '../../models/term.model';
 
 const Search = () => {
     const [showContent, setShowContent] = useState(false);
-    const [term, setTerm] = useState('');
+    const [term, setTerm] = useState<Term[]>([]);
     const [documentList, setDocumentList] = useState([]);
+
     const onClick = () => {
-        setShowContent(true);
+        if (term.length > 0) {
+            setShowContent(true);
+        }
     }
 
     const onChangeTerm = (e) => {
-      setTerm(e.target.value)
-    }
+      setTerm(e.target.value);
+    };
+
     const getDocumentList = (list) => {
         setDocumentList(documentList)
-      }
+    }
     const getTextValue = (text) => {
         if (text !== '') {
-            setTerm('"' + text + '"');
+            setTerm(text);
         }
     }
 
     const getFileName = (filename) => {
         if (filename !== '') {
-            setTerm('"' + filename + '"');
+            setTerm(filename);
         }
     }
 

@@ -1,4 +1,4 @@
-// import { TreeNode } from 'primeng/api';
+import { Tree } from 'primereact/tree';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { AdvancedFiltersModel } from '../../models/advanced-filters.model';
 import { EurovocThesaurusModel } from '../../models/eurovoc-thesaurus.model';
@@ -16,7 +16,7 @@ export class EurlexFormLastExecutionState {
     selectedBeforeDate: string
     selectedAfterDate: string
   }
-//   eurovocTreeNode: TreeNode[]
+    eurovocTreeNode: Tree[]
 
   constructor(data?: Partial<EurlexFormLastExecutionState>) {
     Object.assign(this, data);
@@ -34,7 +34,8 @@ export class AdvancedFiltersFormLastExecutionState {
 
 export class CorpusParamHistoryService {
 
-//   @Select(SetaStateCorpus.corpusSearchPayload)
+// @Select(SetaStateCorpus.corpusSearchPayload)
+
 public corpusSearchPayload$: Observable<CorpusSearchPayload>;
 
   private _history: CorpusSearchPayload[] = [];
@@ -51,7 +52,7 @@ public corpusSearchPayload$: Observable<CorpusSearchPayload>;
     return this._history_sub$;
   }
 
-//   public eurlexForm_lastExecutionState: AdvancedFiltersModel = null
+  public eurlexForm_lastExecutionState: AdvancedFiltersModel | null = null
 
   getLastState(): CorpusSearchPayload {
     return this._history.find(x=>x!==undefined) as any;

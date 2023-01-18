@@ -9,7 +9,6 @@ import Login from './pages/login/login';
 import NotFoundPage from './pages/not-found/not-found';
 import Dashboard from './pages/dashboard/dashboard';
 import { ProtectedRoute } from './components/protected-route/protected-route';
-import authentificationService from './services/authentification.service';
 import Communities from './pages/communities/communities';
 
 function App() {

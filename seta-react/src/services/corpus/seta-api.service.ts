@@ -1,6 +1,7 @@
+import axios from "axios";
 import { Observable, of } from "rxjs";
 import { map } from "rxjs/operators";
-// import * as meta from '../../assets/new_metadata.json';
+import * as meta from "../../assets/new_metadata.json"
 import { environment } from "../../environments/environment";
 import { Cluster } from "../../models/cluster.model";
 import { SetaCorpus } from "../../models/corpus.model";
@@ -32,31 +33,29 @@ import { CorpusSearchPayload } from "../../store/corpus-search-payload";
 
 export class SetaApiService {
   // public API = `${environment.baseUrl}${environment.baseApplicationContext}${environment.restEndPoint}`;
-  public API = `${environment.api_target_path}`
+  public API = `${environment.api_target_path1}`
   public regexService: RegExp = environment._regex;
 
   constructor() {
   }
 
-//   public similar(queryOptions?: HttpParams): Observable<Vertex[]> {
-//     const endpoint = `similar`;
+  public similar(queryOptions?: URLSearchParams): Observable<Vertex[]> {
+    const endpoint = `similar`;
 
-//     return this.httpClient.get(`${this.API}${endpoint}`, { params: queryOptions }).pipe(
-//       map((response: any) => {
-//         return this.convert<Vertex>(response.words, new VertexSerializer());
-//       })
-//     );
-//   }
+    return axios.get(`${this.API}${endpoint}`, { params: queryOptions }).then(
+      (response: any) => {
+        return this.convert<Vertex>(response.words, new VertexSerializer());
+      }) as any
+  }
 
-//   public doc_similar(queryOptions?: HttpParams): Observable<VertexDocument[]> {
-//     const endpoint = `doc_similar`;
+  public doc_similar(queryOptions?: URLSearchParams): Observable<VertexDocument[]> {
+    const endpoint = `doc_similar`;
 
-//     return this.httpClient.get(`${this.API}${endpoint}`, { params: queryOptions }).pipe(
-//       map((response: any) => {
-//         return this.convert<VertexDocument>(response.docs, new VertexDocumentSerializer());
-//       })
-//     );
-//   }
+    return axios.get(`${this.API}${endpoint}`, { params: queryOptions }).then(
+      (response: any) => {
+        return this.convert<VertexDocument>(response.docs, new VertexDocumentSerializer());
+      }) as any
+  }
 
   /**
    * Corpus GET
@@ -64,121 +63,111 @@ export class SetaApiService {
    * @param queryOptions?: HttpParams 
    * @returns Observable<SetaCorpus>
    */
-//   public corpusGet(queryOptions?: HttpParams): Observable<SetaCorpus> {
-//     const endpoint = `corpus`;
-//     return this.httpClient.get(`${this.API}${endpoint}`, { params: queryOptions }).pipe(
-//       map((response: any) => {
-//         if (response){
-//           const corpus = new SetaCorpus();
-//           const documents = this.convert<SetaDocument>(response.documents, new SetaDocumentSerializer());
-//           corpus.documents = [...documents];
-//           corpus.total_docs = response.total_docs;
-//           return corpus;
-//         }
-//       })
-//     );
-//   }
+  public corpusGet(queryOptions?: URLSearchParams): Observable<SetaCorpus> {
+    const endpoint = `corpus`;
+    return axios.get(`${this.API}${endpoint}`, { params: queryOptions }).then(
+      (response: any) => {
+        if (response){
+          const corpus = new SetaCorpus();
+          const documents = this.convert<SetaDocument>(response.documents, new SetaDocumentSerializer());
+          corpus.documents = [...(documents !== undefined ? documents : [])];
+          corpus.total_docs = response.total_docs;
+          return corpus;
+        }
+      }) as any
+  }
 
   /**
    * Corpus POST
-   * @param queryOptions?: CorpusSearchPayload 
+   * @param queryOptions?: CorpusSearchPayload | undefined
    * @returns Observable<SetaCorpus>
    */
-//   public corpus(queryOptions?: CorpusSearchPayload): Observable<SetaCorpus> {
-//     const endpoint = `corpus`;
-//     let cspSerializer = new CorpusSearchPayloadSerializer();
-//     return this.httpClient.post(`${this.API}${endpoint}`, cspSerializer.toJson(queryOptions), {
-//       headers: new HttpHeaders({
-//         'Content-Type': 'application/json',
-//       })
-//     }).pipe(
-//       map((response: any) => {
-//         if (response){
-//           const corpus = new SetaCorpus();
-//           const documents = this.convert<SetaDocument>(response.documents, new SetaDocumentSerializer());
-//           corpus.documents = [...documents];
-//           corpus.total_docs = response.total_docs;
-//           return corpus;
-//         }
-//       })
-//     );
-//   }
+  public corpus(queryOptions?: CorpusSearchPayload | undefined): Observable<SetaCorpus> {
+    const endpoint = `corpus`;
+    let cspSerializer = new CorpusSearchPayloadSerializer();
+    return axios.post(`${this.API}${endpoint}`, cspSerializer.toJson(queryOptions!), {
+      headers: { 
+        "Content-Type": "application/json"
+      }
+    }).then((response: any) => {
+        if (response){
+          const corpus = new SetaCorpus();
+          const documents = this.convert<SetaDocument>(response.documents, new SetaDocumentSerializer());
+          corpus.documents = [...(documents !== undefined ? documents : [])];
+          corpus.total_docs = response.total_docs;
+          return corpus;
+        }
+      }) as any
+  }
 
-//   public corpus_id(id: string): Observable<SetaDocumentMetadata> {
-//     const endpoint = `corpus/${id}`;
+  public corpus_id(id: string): Observable<SetaDocumentMetadata> {
+    const endpoint = `corpus/${id}`;
 
-//     return this.httpClient.get(`${this.API}${endpoint}`).pipe(
-//       map((response: any) => {
-//         return new SetaDocumentMetadataSerializer().fromJson(response);
-//       })
-//     );
-//   }
+    return axios.get(`${this.API}${endpoint}`).then(
+      (response: any) => {
+        return new SetaDocumentMetadataSerializer().fromJson(response);
+      }) as any
+  }
 
-//   public metadata(): Observable<EurlexMetadataDto> {
-//     return of(new EurlexMetadataDtoSerializer().fromJson(meta[`default`]));
-//   }
+  public metadata(): Observable<EurlexMetadataDto> {
+    return of(new EurlexMetadataDtoSerializer().fromJson(meta[`default`]));
+  }
 
-//   public wiki(queryOptions?: HttpParams): Observable<SetaDocument[]> {
-//     const endpoint = `wiki`;
+  public wiki(queryOptions?: URLSearchParams): Observable<SetaDocument[]> {
+    const endpoint = `wiki`;
 
-//     return this.httpClient.get(`${this.API}${endpoint}`, { params: queryOptions }).pipe(
-//       map((response: any) => {
-//         return this.convert<SetaDocument>(response.documents, new SetaDocumentSerializer());
-//       })
-//     );
-//   }
+    return axios.get(`${this.API}${endpoint}`, { params: queryOptions }).then(
+      (response: any) => {
+        return this.convert<SetaDocument>(response.documents, new SetaDocumentSerializer());
+      }) as any
+  }
 
-//   public clusters(queryOptions?: HttpParams): Observable<Cluster[]> {
-//     const endpoint = `clusters`;
+  public clusters(queryOptions?: URLSearchParams): Observable<Cluster[]> {
+    const endpoint = `clusters`;
 
-//     return this.httpClient.get(`${this.API}${endpoint}`, { params: queryOptions }).pipe(
-//       map((response: any) => {
-//         return this.convert<Cluster>(response.clusters, new ClusterSerializer());
-//       })
-//     );
-//   }
+    return axios.get(`${this.API}${endpoint}`, { params: queryOptions }).then(
+      (response: any) => {
+        return this.convert<Cluster>(response.clusters, new ClusterSerializer());
+      }) as any
+  }
 
-//   public ontology(queryOptions?: HttpParams): Observable<OntologyGraph[]> {
-//     const endpoint = `ontology`;
+  public ontology(queryOptions?: URLSearchParams): Observable<OntologyGraph[]> {
+    const endpoint = `ontology`;
 
-//     return this.httpClient.get(`${this.API}${endpoint}`, { params: queryOptions }).pipe(
-//       map((response: any) => {
-//         return [new OntologyGraphSerializer().fromJson(response)];
-//       })
-//     );
-//   }
+    return axios.get(`${this.API}${endpoint}`, { params: queryOptions }).then(
+      (response: any) => {
+        return [new OntologyGraphSerializer().fromJson(response)];
+      }) as any
+  }
 
-//   public ontology_docnet(queryOptions?: HttpParams): Observable<OntologyDocnetGraph[]> {
-//     const endpoint = `doc_ontology`;
+  public ontology_docnet(queryOptions?: URLSearchParams): Observable<OntologyDocnetGraph[]> {
+    const endpoint = `doc_ontology`;
 
-//     return this.httpClient.get(`${this.API}${endpoint}`, { params: queryOptions }).pipe(
-//       map((response: any) => {
-//         return [new OntologyDocnetGraphSerializer().fromJson(response)];
-//       })
-//     );
-//   }
+    return axios.get(`${this.API}${endpoint}`, { params: queryOptions }).then(
+      (response: any) => {
+        return [new OntologyDocnetGraphSerializer().fromJson(response)];
+      }) as any
+  }
 
-//   public decade(queryOptions?: HttpParams): Observable<DecadeGraph> {
-//     const endpoint = `decade`;
+  public decade(queryOptions?: URLSearchParams): Observable<DecadeGraph> {
+    const endpoint = `decade`;
 
-//     return this.httpClient.get(`${this.API}${endpoint}`, { params: queryOptions }).pipe(
-//       map((response: any) => {
-//         return new DecadeGraphSerializer().fromJson(response.graph[0]);
-//       })
-//     );
-//   }
+    return axios.get(`${this.API}${endpoint}`, { params: queryOptions }).then(
+      (response: any) => {
+        return new DecadeGraphSerializer().fromJson(response.graph[0]);
+      }) as any
+  }
 
-//   public suggestions(queryOptions?: HttpParams): Observable<string[]> {
-//     const endpoint = `suggestions`;
+  public suggestions(queryOptions?: URLSearchParams): Observable<string[]> {
+    const endpoint = `suggestions`;
 
-//     return this.httpClient.get(`${this.API}${endpoint}`, { params: queryOptions }).pipe(
-//       map((response: any) => {
-//         return response.words.map((word: string) => {
-//           return word.replace(this.regexService, ` `);
-//         });
-//       })
-//     );
-//   }
+    return axios.get(`${this.API}${endpoint}`, { params: queryOptions }).then(
+      (response: any) => {
+        return response.words.map((word: string) => {
+          return word.replace(this.regexService, ` `);
+        });
+      }) as any
+  }
 //   /**
 //    * Return excel document from middleware
 //    * MISSING PYTHON ENDPOINT
@@ -195,36 +184,30 @@ export class SetaApiService {
 //     });
 //   }
 
-//   public retrieveEmbeddings(type: string, body: {"fileToUpload": File, "text": string}): Observable<HttpEvent<any>> {
-//     const endpoint = 'compute_embeddings'
-//     if (type === "file") {
-//       const formData = new FormData();
-//       formData.append("file", body.fileToUpload);
-//       return this.httpClient.post(`${this.API}${endpoint}`, formData, {
-//         reportProgress: true,
-//         observe: 'events'
-//       })
-//     } else {
-//       return this.httpClient.post(`${this.API}${endpoint}`, {text: body.text}, {
-//         reportProgress: true,
-//         observe: 'events'
-//       })
-//     }
-//   }
+  public retrieveEmbeddings(type: string, body: {"fileToUpload": File, "text": string}) {
+    const endpoint = 'compute_embeddings';
+    const api = "/seta-api/api/v1/";
+    if (type === "file") {
+      const formData = new FormData();
+      formData.append("file", body.fileToUpload);
+      return axios.post(`${api}${endpoint}`, formData)
+    } else {
+      return axios.post(`${api}${endpoint}`, {text: body.text})
+    }
+  }
 
-//   getContentJSON() {
-//     return this.httpClient.get("/assets/eurovoc_in_skos_core_concepts-tree (1).json").pipe(
-//       map((response: any) => {
-//         return response.json();
-//       })
-//     );
-//   }
+  getContentJSON() {
+    return axios.get("/assets/eurovoc_in_skos_core_concepts-tree (1).json").then(
+      (response: any) => {
+        return response.json();
+      })
+  }
 
-//   public convert<T>(items: any, serializer: Serializer): T[] {
-//     if (items) {
-//       return items.map(item => serializer.fromJson(item));
-//     }
-//   }
+  public convert<T>(items: any, serializer: Serializer): T[] | undefined{
+    if (items) {
+      return items.map(item => serializer.fromJson(item));
+    }
+  }
 
 //   private getServerErrorMessage(error: HttpErrorResponse): string {
 //     switch (error.status) {
