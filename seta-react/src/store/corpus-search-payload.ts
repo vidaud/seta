@@ -5,7 +5,7 @@ export class CorpusSearchPayload extends Resource {
 
   public id?: number | string;
   public _id?: number | string;
-  public termCorpus: Term[];
+  public term: Term[];
   public ndocs?: number;
   public from_doc?: number;
   public search_type?: string;
@@ -30,8 +30,8 @@ export class CorpusSearchPayload extends Resource {
 
   prepareCorpusParams() {
     let httpParams: any = new URLSearchParams();
-    if (this.termCorpus && this.termCorpus.length > 0) {
-      httpParams = httpParams.set(`term`, this.getSelectedTerms(this.termCorpus));
+    if (this.term && this.term.length > 0) {
+      httpParams = httpParams.set(`term`, this.getSelectedTerms(this.term));
     }
     if (this.ndocs) {
       httpParams = httpParams.set(`n_docs`, this.ndocs.toString());

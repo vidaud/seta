@@ -31,7 +31,7 @@ const DocumentList = (value, list) => {
       corpusParameters$?.subscribe((corpusParameters: CorpusSearchPayload) => {
         cp = new CorpusSearchPayload({ ...corpusParameters });
           try {
-            term.patchValue(cp.termCorpus);
+            term.patchValue(cp.term);
           } catch (e) {
         }
       });
@@ -41,7 +41,7 @@ const DocumentList = (value, list) => {
         }
       }
       else {
-        const lastPayload = new CorpusSearchPayload({ ...cp, termCorpus: term, aggs: 'date_year', ndocs: 10 });
+        const lastPayload = new CorpusSearchPayload({ ...cp, term: term, aggs: 'date_year', ndocs: 10 });
         corpusService.getDocuments(lastPayload).then(data => setItems(data));
       }
     }, [expandedRows, value, list]);
@@ -87,7 +87,7 @@ const DocumentList = (value, list) => {
     }
     const columnComponents = selectedColumns.map(col=> {
         if (col.field === 'source') {
-            return <Column key={col.field} field={col.field} body={statusTemplate} header={col.header} sortable/>
+            return <Column key={col.field} field={col.field} body={statusTemplate} header={col.header} />
         }
         else if (col.field === 'score') {
             return <Column key={col.field} field={col.field} showFilterMatchModes={false} sortable body={activityBodyTemplate} header={col.header}/>
@@ -104,14 +104,16 @@ const DocumentList = (value, list) => {
         return (
             <div className="orders-subtable">
                 <table className='context-table'>
-                    <tr><td><span className='table-headers'>Collection:</span> {data.collection}</td><td><span className='table-headers'>Document reference:</span> {data.reference}</td></tr>
-                    <tr><td><span className='table-headers'>Date:</span> {data.date}</td><td><span className='table-headers'>Source:</span> {data.source}</td></tr>
-                    <tr><td><span className='table-headers'>Eurovoc concepts:</span> {data.eurovoc_concept}</td><td><span className='table-headers'>In force:</span> {data.in_force}</td></tr>
+                    <tbody>
+                        <tr><td><span className='table-headers'>Collection:</span> {data.collection}</td><td><span className='table-headers'>Document reference:</span> {data.reference}</td></tr>
+                        <tr><td><span className='table-headers'>Date:</span> {data.date}</td><td><span className='table-headers'>Source:</span> {data.source}</td></tr>
+                        <tr><td><span className='table-headers'>Eurovoc concepts:</span> {data.eurovoc_concept}</td><td><span className='table-headers'>In force:</span> {data.in_force}</td></tr>
+                    </tbody>
                 </table>
                 <DataTable value={data.concordance} responsiveLayout="scroll">
-                    <Column field={data.concordance![0]} header="Left Context" sortable></Column>
-                    <Column field={data.concordance![1]} header="Keyword" sortable></Column>
-                    <Column field={data.concordance![2]} header="Right Context" sortable></Column>
+                    <Column field={'0'} header="Left Context" sortable></Column>
+                    <Column field={'1'} header="Keyword" sortable></Column>
+                    <Column field={'2'} header="Right Context" sortable></Column>
                 </DataTable>
             </div>
         );
@@ -120,8 +122,8 @@ const DocumentList = (value, list) => {
     const header = (
         <div style={{ width:'100%', display: '-webkit-box' }}>
             <div className="table-header-container" style={{ width:'50%' }}>
-                <Button icon="pi pi-plus" label="Expand All"  className="mr-2" />
-                <Button icon="pi pi-minus" label="Collapse All"  />
+                {/* <Button icon="pi pi-plus" label="Expand All"  className="mr-2" />
+                <Button icon="pi pi-minus" label="Collapse All"  /> */}
             </div>
             <div style={{ width:'50%' }}>
                 <MultiSelect value={selectedColumns} options={columns} optionLabel="header" onChange={onColumnToggle} style={{width:'60%'}}/>

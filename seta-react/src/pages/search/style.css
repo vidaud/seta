@@ -69,3 +69,12 @@
 .pi-sign-in {
     color: white !important;
 }
+
+.p-tabview-panels {
+    text-align: left;
+}
+
+.tab-filter > .card > .p-tabview .p-tabview-nav-container .p-tabview-panels {
+    padding: 0.25rem 1.25rem;
+    text-align: left;
+}

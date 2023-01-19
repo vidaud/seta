@@ -52,7 +52,7 @@ const DialogButton = ({onChange, onChangeText, onChangeFile, onChangeContentVisi
 
     const search = (name) => {
         if(embeddings.length > 0) {
-            const lastPayload = new CorpusSearchPayload({ ...cp, vector: embeddings, ndocs: 10, source: ["cordis"], termCorpus: []});
+            const lastPayload = new CorpusSearchPayload({ ...cp, vector: embeddings, ndocs: 10, source: ["cordis"], term: []});
             corpusService.postDocuments(lastPayload).then(data => { 
                 setDocumentList(data.documents);
                 console.log(documentList);
