@@ -82,7 +82,7 @@ class RestService {
         key: k
       };
 
-      return this.httpPostCall(url, body);
+      return this.httpPostCall(url, body) as any;
     }
   }
 

@@ -1,4 +1,4 @@
-import { CelexLink, ConcordancePermutation, DomainsModel, ResourceType, SetaDocument, SetaElement, StyleEntities } from '../models/document.model';
+import { ConcordancePermutation, ResourceType, SetaDocument } from '../models/document.model';
 import { EmbeddingsModel } from '../models/embeddings.model';
 import { Resource } from '../models/resource.model';
 import { Serializer } from './serializer.interface';

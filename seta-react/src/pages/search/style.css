@@ -52,7 +52,8 @@
     }
 }
 .table-filters {
-    border: 1px solid #3B82F6;
+    /* border: 1px solid #3B82F6; */
+    box-shadow: 0 1px 2px rgb(0 0 0 / 6%), 0 1px 2px rgb(0 0 0 / 13%);
     border-radius: 6px;
     padding: 2px;
     width: auto;
@@ -71,4 +72,13 @@
 
 .pi-sign-in {
     color: white !important;
+}
+
+.p-tabview-panels {
+    text-align: left;
+}
+
+.tab-filter > .card > .p-tabview .p-tabview-nav-container .p-tabview-panels {
+    padding: 0.25rem 1.25rem;
+    text-align: left;
 }

@@ -6,8 +6,9 @@ import FileUploads from '../file-upload/file-upload';
 import TextareaInput from '../textarea/textarea';
 import { EmbeddingsService } from '../../services/corpus/embeddings.service';
 import { CorpusService } from '../../services/corpus/corpus.service';
+import { CorpusSearchPayload } from '../../store/corpus-search-payload';
 
-const DialogButton = ({onChange, onChangeText, onChangeFile}) => {
+const DialogButton = ({onChange, onChangeText, onChangeFile, onChangeContentVisibility}) => {
     const [displayBasic, setDisplayBasic] = useState(false);
     const [embeddings, setEmbeddings] = useState([]);
     const [documentList, setDocumentList] = useState([]);
@@ -16,6 +17,7 @@ const DialogButton = ({onChange, onChangeText, onChangeFile}) => {
     const [showContentList, setShowContentList] = useState(false);
     // const [typeSearch, setTypeSearch] = useState('');
     const embeddingsService = new EmbeddingsService();
+    let cp: CorpusSearchPayload;
     const corpusService = new CorpusService();
     
     const dialogFuncMap = {
@@ -38,8 +40,7 @@ const DialogButton = ({onChange, onChangeText, onChangeFile}) => {
         console.log(`file: ${fileToUpload}`);
         if (file) {
             onChangeFile(file.name);
-            embeddingsService.retrieveEmbeddings('file', { "fileToUpload": file, "text": '' }).then(data => {
-                console.log(data);
+            embeddingsService.retrieveEmbeddings('file', { "fileToUpload": file, "text": "" }).then(data => {
                 setEmbeddings(data.data.embeddings.vector);
             });
         }
@@ -51,13 +52,15 @@ const DialogButton = ({onChange, onChangeText, onChangeFile}) => {
 
     const search = (name) => {
         if(embeddings.length > 0) {
-            corpusService.getDocumentsFromEmbeddings(embeddings).then(data => { 
+            const lastPayload = new CorpusSearchPayload({ ...cp, vector: embeddings, ndocs: 10, source: ["cordis"], term: []});
+            corpusService.postDocuments(lastPayload).then(data => { 
                 setDocumentList(data.documents);
+                console.log(documentList);
                 setShowContentList(true);
                 console.log(showContentList);
                 onChange(data.documents);
+                onChangeContentVisibility(true);
             });
-            console.log(documentList);
         }
         dialogFuncMap[`${name}`](false);
     }

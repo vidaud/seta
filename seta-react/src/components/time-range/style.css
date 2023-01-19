@@ -1,0 +1,25 @@
+/* SliderDemo.css */
+
+.slider-demo .p-slider-horizontal, .slider-demo .p-inputtext {
+    width: 14rem;
+}
+
+.slider-demo .p-slider-vertical {
+    height: 14rem;
+}
+     
+.left-range {
+    text-align: -webkit-left;
+    text-align: -moz-left;
+    width: 50%;
+}
+
+.right-range {
+    text-align: -webkit-right;
+    text-align: -moz-right;
+    width: 50%;
+}
+
+.p-slider-horizontal {
+    display: -webkit-inline-box;
+}

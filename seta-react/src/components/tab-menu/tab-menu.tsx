@@ -17,8 +17,7 @@ const TabMenus = (term, list) => {
                             <TabMenuFilters />
                         </div>
                         <div className='tab-filters'>
-                            <DocumentList value={term} listOfDocuments={list}/>
-                            {/* <Pagination /> */}
+                            <DocumentList value={term} listOfDocuments={list} />
                         </div>
                     </div>
                     </TabPanel>
