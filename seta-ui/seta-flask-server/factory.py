@@ -14,6 +14,8 @@ from blueprints.rsa import rsa
 from blueprints.token_auth import token_auth
 from blueprints.token_info import token_info
 
+from blueprints.communities import communities_bp_v1
+
 from infrastructure.helpers import JSONEncoder
 
 #from cas import CASClient
@@ -140,6 +142,8 @@ def register_blueprints(app):
     
     app.register_blueprint(token_auth, url_prefix="/authentication/v1/")
     app.register_blueprint(token_info, url_prefix="/authorization/v1/")
+
+    app.register_blueprint(communities_bp_v1, url_prefix="/communities/v1/")
     
 def register_extensions(app):
     #the service_url will be changed before ECAS redirect with 'request.url'
