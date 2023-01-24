@@ -89,6 +89,7 @@ class JWTGuestToken(Resource):
        
         access_token = create_access_token(identity=identity, fresh=True, additional_claims=additional_claims)
         refresh_token = create_refresh_token(identity=identity, additional_claims=additional_claims)
+        response = make_response(jsonify(access_token=access_token, refresh_token=refresh_token))
 
         set_access_cookies(response, access_token)
         set_refresh_cookies(response, refresh_token)            
