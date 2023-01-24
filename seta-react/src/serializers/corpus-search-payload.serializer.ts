@@ -12,9 +12,9 @@ export class CorpusSearchPayloadSerializer implements Serializer {
     if (resource.id) {
       searchPayload = searchPayload + `"id": ${resource.id},`
     }
-    if (resource.termCorpus && resource.termCorpus.length > 0) {
-      searchPayload = searchPayload + `\"term\": ${JSON.stringify(resource.getSelectedTerms(resource.termCorpus))},`
-      // searchPayload = searchPayload + `\"term\": \"${encodeURIComponent(resource.getSelectedTerms(resource.termCorpus))}\",`
+    if (resource.term && resource.term.length > 0) {
+      searchPayload = searchPayload + `\"term\": ${JSON.stringify(resource.getSelectedTerms(resource.term))},`
+      // searchPayload = searchPayload + `\"term\": \"${encodeURIComponent(resource.getSelectedTerms(resource.term))}\",`
     }
     if (resource.ndocs) {
       searchPayload = searchPayload + `\"n_docs\": ${resource.ndocs},`

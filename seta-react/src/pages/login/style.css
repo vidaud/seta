@@ -1,5 +1,6 @@
 .card-position {
     text-align: -webkit-center;
+    text-align: -moz-center;
 }
 .p-button.github {
     background: linear-gradient(to left, var(--bluegray-700) 50%, var(--bluegray-800) 50%) !important;

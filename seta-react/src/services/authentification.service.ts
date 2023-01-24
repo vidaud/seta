@@ -11,7 +11,6 @@ class AuthentificationService {
     constructor() {
       if(storageService.isLoggedIn()){
         this.currentUserSubject.next(storageService.getUser());
-        console.log(this.currentUserSubject);
       } 
       const searchParam = new URLSearchParams(window.location.search);
       if(searchParam != null){
@@ -25,7 +24,6 @@ class AuthentificationService {
 
   loadProfile() {
     this.profile();
-    console.log(this.currentUserSubject);
   }
 
   setaLogout() {
@@ -41,7 +39,6 @@ class AuthentificationService {
     axios
       .get<User>(AUTH_API + '/rest/v1/user-info')
       .then((response) => {
-        console.log(response);
         var user = response.data;
         storageService.saveUser(user);
         this.currentUserSubject.next(user);
