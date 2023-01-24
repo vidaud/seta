@@ -4,6 +4,8 @@ import pytz
 import shortuuid
 from infrastructure.constants import ExternalProviderConstants
 from .user_claim import UserClaim
+from .entity_scope import EntityScope
+from .system_scope import SystemScope
 from .external_provider import ExternalProvider
 from infrastructure.constants import ClaimTypeConstants, UserRoleConstants
 
@@ -20,6 +22,10 @@ class SetaUser:
         self._authenticated_provider = None
         self._external_providers = []
         self._claims = []
+
+        self._community_scopes = []
+        self._resource_scopes = []
+        self._system_scopes = []
         
     def __iter__(self):
         yield from {
@@ -56,7 +62,19 @@ class SetaUser:
         to_return["role"] = self.role
         
         if self._authenticated_provider is not None:
-            to_return["provider"] = self._authenticated_provider.to_json()        
+            to_return["provider"] = self._authenticated_provider.to_json()  
+
+        if self._claims is not None:
+            to_return["claims"] = json.dumps([obj.to_json() for obj in self._claims])
+
+        if self._system_scopes is not None:
+            to_return["system_scopes"] = json.dumps([obj.to_json() for obj in self._system_scopes])
+
+        if self._resource_scopes is not None:
+            to_return["resource_scopes"] = json.dumps([obj.to_json() for obj in self._resource_scopes])
+
+        if self._community_scopes is not None:
+            to_return["community_scopes"] = json.dumps([obj.to_json() for obj in self._community_scopes])
         
         return to_return
     
@@ -78,6 +96,30 @@ class SetaUser:
         
     def add_claim(self, claim: UserClaim) -> None:
         self._claims.append(claim)
+
+    @property
+    def system_scopes(self) -> list[SystemScope]:
+        return self._system_scopes
+    
+    @system_scopes.setter
+    def system_scopes(self, value: list[SystemScope]):
+        self._system_scopes = value        
+
+    @property
+    def community_scopes(self) -> list[EntityScope]:
+        return self._community_scopes
+    
+    @community_scopes.setter
+    def community_scopes(self, value: list[EntityScope]):
+        self._community_scopes = value
+
+    @property
+    def resource_scopes(self) -> list[EntityScope]:
+        return self._resource_scopes
+    
+    @resource_scopes.setter
+    def resource_scopes(self, value: list[EntityScope]):
+        self._resource_scopes = value
         
     @property
     def external_providers(self) -> list[ExternalProvider]:
