@@ -1,6 +1,6 @@
 import logging
 
-from flask import (Flask, request, session)
+from flask import (Flask, request, session, url_for)
 from werkzeug.middleware.proxy_fix import ProxyFix
 
 from infrastructure.extensions import (scheduler, jwt, logs, github)
@@ -32,8 +32,8 @@ def create_app(config_object):
     app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_host=1)
     
     app.config.from_object(config_object)        
-    app.json_encoder= JSONEncoder        
-    app.home_route = "/seta-ui/#/home"
+    app.json_encoder= JSONEncoder  
+    app.home_route = '/seta-ui/'
     
     register_extensions(app)
     register_blueprints(app)
@@ -41,7 +41,7 @@ def create_app(config_object):
     request_endswith_ignore_list = ['.js', '.css', '.png', '.ico', '.svg', '.map', '.json', 'doc']
     request_starts_with_ignore_list = ['/authorization', '/authentication', '/login', '/logout', '/refresh']
     
-    with app.app_context():                  
+    with app.app_context(): 
             
         @app.after_request
         def refresh_jwts(response):
