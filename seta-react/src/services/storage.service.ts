@@ -23,9 +23,8 @@ class StorageService {
   }
 
   public isLoggedIn(): boolean {
-    const user = window.sessionStorage.getItem(USER_KEY);
-    const cookies = window.document.cookie;
-    if (user || cookies) {
+    const user = sessionStorage.getItem(USER_KEY);
+    if (user) {
       return true;
     }
 

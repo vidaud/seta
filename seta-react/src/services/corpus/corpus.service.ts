@@ -13,7 +13,7 @@ export class CorpusService {
 
   getDocuments(queryOptions?: CorpusSearchPayload | undefined) {
     const endpoint = `corpus`;
-    return axios.get(`${this.API}${endpoint}`, { params: queryOptions })
+    return axios.get(`${this.API}${endpoint}`, { params: queryOptions, headers: {'Cache-Control': 'no-cache', 'Pragma': 'no-cache'} })
     .then((response: any) => {
       response.data.documents;
       const corpus = new SetaCorpus();
@@ -40,7 +40,9 @@ export class CorpusService {
     let cspSerializer = new CorpusSearchPayloadSerializer();
     return axios.post(`${this.API}${endpoint}`,  cspSerializer.toJson(queryOptions!), {
       headers: { 
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
+        'Cache-Control': 'no-cache',
+        'Pragma': 'no-cache'
       }
     })
     .then((response: any) => {

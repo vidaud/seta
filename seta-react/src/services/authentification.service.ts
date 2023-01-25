@@ -27,7 +27,7 @@ class AuthentificationService {
   }
 
   setaLogout() {
-    (axios.post(AUTH_API + '/logout', {}) as any).then(() => {
+    (axios.post(AUTH_API + '/logout', {'Cache-Control': 'no-cache', 'Pragma': 'no-cache'}) as any).then(() => {
         window.location.href = "/logout/ecas";
         this.currentUserSubject.next(null);
         storageService.clean();    
@@ -50,7 +50,7 @@ class AuthentificationService {
   }
 
   refreshCookie() {
-    return axios.post(AUTH_API + '/refresh', {});
+    return axios.post(AUTH_API + '/refresh', {'Cache-Control': 'no-cache', 'Pragma': 'no-cache'});
   }
 }
 export default new AuthentificationService();
