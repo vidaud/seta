@@ -1,50 +1,25 @@
 import { useState, useEffect, useRef } from 'react';
 import { DataTable } from 'primereact';
 import { Column } from 'primereact/column';
-import { Button } from 'primereact/button';
 import { MultiSelect } from 'primereact';
 import { ProgressBar } from 'primereact/progressbar';
 import './style.css';
-import { CorpusService } from '../../services/corpus/corpus.service';
-import { Observable } from 'rxjs';
-import { CorpusSearchPayload } from '../../store/corpus-search-payload';
 
-const DocumentList = (value, list) => {
+const DocumentList = (list) => {
     const isMounted = useRef(false);
     const [items, setItems] = useState<any>([]);
     const [expandedRows, setExpandedRows] = useState(null);
-    const [embeddingsItems, setEmbeddingsItems] = useState([]);
     const [basicFirst, setBasicFirst] = useState(0);
     const [basicRows, setBasicRows] = useState(10);
-    const corpusService = new CorpusService();
-    let corpusParameters$: Observable<CorpusSearchPayload>;
-    let cp: CorpusSearchPayload;
 
     useEffect(() => {
       if (isMounted) {
         //
       }
-      var term = value.value.term;
-      setEmbeddingsItems(list);
-      console.log(embeddingsItems);
+      let documentsList = list.documents.data;
+      setItems(documentsList);
       isMounted.current = true;
-      corpusParameters$?.subscribe((corpusParameters: CorpusSearchPayload) => {
-        cp = new CorpusSearchPayload({ ...corpusParameters });
-          try {
-            term.patchValue(cp.term);
-          } catch (e) {
-        }
-      });
-      if(Array.isArray(list)) {
-        if(list.length > 0) {
-          setItems(list);
-        }
-      }
-      else {
-        const lastPayload = new CorpusSearchPayload({ ...cp, term: term, aggs: 'date_year', ndocs: 10 });
-        corpusService.getDocuments(lastPayload).then(data => setItems(data));
-      }
-    }, [expandedRows, value, list]);
+    }, [expandedRows, list]);
 
     const onBasicPageChange = (event: any) => {
         setBasicFirst(event.first);

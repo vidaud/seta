@@ -8,7 +8,7 @@ import { Serializer } from "../../serializers/serializer.interface";
 import { CorpusSearchPayload } from "../../store/corpus-search-payload";
 
 export class CorpusService {
-  public API = `${environment.api_target_path1}`
+  public API = `${environment.api_target_path}`
   public regexService: RegExp = environment._regex;
 
   getDocuments(queryOptions?: CorpusSearchPayload | undefined) {
