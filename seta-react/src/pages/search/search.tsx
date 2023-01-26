@@ -1,17 +1,33 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import './style.css';
 import { InputText } from 'primereact';
 import { Button } from 'primereact/button';
 import TabMenus from '../../components/tab-menu/tab-menu';
 import DialogButton from '../../components/dialog/dialog';
 import { Term } from '../../models/term.model';
+import { CorpusService } from '../../services/corpus/corpus.service';
+import { CorpusSearchPayload } from '../../store/corpus-search-payload';
+import { Observable } from 'rxjs';
 
 const Search = () => {
     const [showContent, setShowContent] = useState(false);
     const [term, setTerm] = useState<Term[]>([]);
+    const [items, setItems] = useState<any>([]);
     const [documentList, setDocumentList] = useState([]);
+    const [typeofSearch, setTypeofSearch] = useState();
+    const corpusService = new CorpusService();
+    let corpusParameters$: Observable<CorpusSearchPayload>;
+    let cp: CorpusSearchPayload;
 
-    const onClick = () => {
+    useEffect(() => {
+        corpusParameters$?.subscribe((corpusParameters: CorpusSearchPayload) => {
+          cp = new CorpusSearchPayload({ ...corpusParameters });
+        });
+          const lastPayload = new CorpusSearchPayload({ ...cp, term: term, aggs: 'date_year', n_docs: 100, search_type: typeofSearch });
+          corpusService.getDocuments(lastPayload).then(data => setItems(data));
+    }, [term, typeofSearch]);
+
+    const onSearch = () => {
         if (term.length > 0) {
             setShowContent(true);
         }
@@ -22,8 +38,9 @@ const Search = () => {
     };
 
     const getDocumentList = (list) => {
-        setDocumentList(documentList)
+        setDocumentList(items)
     }
+
     const getTextValue = (text) => {
         if (text !== '') {
             setTerm(text);
@@ -49,11 +66,17 @@ const Search = () => {
                 <div className="p-inputgroup">
                     <DialogButton onChange={getDocumentList} onChangeText={getTextValue} onChangeFile={getFileName} onChangeContentVisibility={toggleListVisibility}/>
                     <InputText type="search" value={term} placeholder="Type term and/or drag and drop here document" onChange={onChangeTerm}/>
-                    <Button label="Search" onClick={onClick}/>
+                    <Button label="Search" onClick={onSearch}/>
                 </div>
             </div>
             <div>
-                { showContent ? <TabMenus term={term} list={documentList}/> : null }
+                { showContent ? 
+                    <TabMenus
+                        data={items}
+                        term={term}
+                        typeofSearch={typeofSearch}
+                        setTypeofSearch={setTypeofSearch}
+                    /> : null }
             </div>
         </div>
         );

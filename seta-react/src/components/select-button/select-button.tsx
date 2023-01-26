@@ -1,15 +1,8 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { SelectButton } from 'primereact/selectbutton';
-import { CorpusSearchPayload } from '../../store/corpus-search-payload';
-import { CorpusService } from '../../services/corpus/corpus.service';
-import { Observable } from 'rxjs';
 
-const SearchType = () => {
+const SearchType = ({onSelectType}) => {
     const [searchType, setSearchType] = useState('CHUNK_SEARCH');
-    const [items, setItems] = useState<any>([]);
-    const corpusService = new CorpusService();
-    let corpusParameters$: Observable<CorpusSearchPayload>;
-    let cp: CorpusSearchPayload;
 
     const justifyOptions = [
         {icon: 'pi pi-align-left', value: 'CHUNK_SEARCH', tooltip: 'CHUNK SEARCH', label: 'CHUNK SEARCH'},
@@ -23,9 +16,9 @@ const SearchType = () => {
 
     const onChangeSearchType = (e) => {
         setSearchType(e.value);
-        const lastPayload = new CorpusSearchPayload({ ...cp, search_type: e.value, aggs: 'date_year', ndocs: 10 });
-        corpusService.getDocuments(lastPayload).then(data => setItems(data));
+        onSelectType(e.value);
     }
+    
     
     return (
         <div>
