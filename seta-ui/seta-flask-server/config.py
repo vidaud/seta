@@ -90,7 +90,7 @@ class DevConfig(Config):
     SCHEDULER_ENABLED = False
     
     #JWT variables
-    JWT_ACCESS_TOKEN_EXPIRES = timedelta(minutes=1)
+    JWT_ACCESS_TOKEN_EXPIRES = timedelta(minutes=60)
     JWT_REFRESH_TOKEN_EXPIRES = timedelta(hours=2)
     JWT_COOKIE_SECURE = False
     
@@ -107,7 +107,7 @@ class TestConfig(Config):
     SCHEDULER_ENABLED = False       
     
     #JWT variables
-    JWT_ACCESS_TOKEN_EXPIRES = timedelta(minutes=1)
+    JWT_ACCESS_TOKEN_EXPIRES = timedelta(minutes=15)
     JWT_REFRESH_TOKEN_EXPIRES = timedelta(hours=24)    
     JWT_COOKIE_SECURE = True
     
@@ -122,7 +122,7 @@ class ProdConfig(Config):
     SCHEDULER_ENABLED = True
     
     #JWT variables
-    JWT_ACCESS_TOKEN_EXPIRES = timedelta(minutes=1)
+    JWT_ACCESS_TOKEN_EXPIRES = timedelta(minutes=60)
     JWT_REFRESH_TOKEN_EXPIRES = timedelta(days=2)
     JWT_COOKIE_SECURE = True
     
