@@ -26,15 +26,22 @@ class CommunityList(Resource):
         
         super().__init__(api, *args, **kwargs)
     
-    @auth_validator()
+    @communities_ns.doc(description='Retrieve community list for this user.',        
+        responses={int(HTTPStatus.OK): "'Retrieved community list."},
+        security='CSRF')
+    @communities_ns.marshal_with(community_model, mask="*")
+    @auth_validator()    
     def get(self):
-        return {'hello': 'world'}
+        '''Retrive user communities'''
+        
+        identity = get_jwt_identity()
+        return self.communitiesBroker.get_all_by_user_id(identity["user_id"])
     
     @communities_ns.doc(description='Create a new community and add this user as a member with elevated scopes.',        
         responses={int(HTTPStatus.CREATED): "Added new community.", 
                    int(HTTPStatus.FORBIDDEN): "Insufficient rights",
                    int(HTTPStatus.CONFLICT): "Community already exists."},
-        security='Bearer')
+        security='CSRF')
     @communities_ns.expect(new_community_parser)
     @auth_validator()
     def post(self):
@@ -84,8 +91,8 @@ class Community(Resource):
         responses={int(HTTPStatus.OK): "Retrieved community.",
                    int(HTTPStatus.NOT_FOUND): "Community id not found.",
                    int(HTTPStatus.FORBIDDEN): "Insufficient rights"},
-        security='Bearer')
-    @communities_ns.marshal_with(community_model, mask="*")
+        security='CSRF')
+    @communities_ns.marshal_list_with(community_model, mask="*")
     @auth_validator()
     def get(self, id):
         community = self.communitiesBroker.get_by_id(id)
@@ -98,7 +105,7 @@ class Community(Resource):
     @communities_ns.doc(description='Update community fields',        
         responses={int(HTTPStatus.OK): "Community updated.", 
                    int(HTTPStatus.FORBIDDEN): "Insufficient rights"},
-        security='Bearer')
+        security='CSRF')
     @communities_ns.expect(update_community_parser)
     @auth_validator()
     def put(self, id):

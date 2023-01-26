@@ -16,3 +16,6 @@ class ICommunitiesBroker(Interface):
     
     def community_id_exists(self, id: str) -> bool:
         pass
+    
+    def get_all_by_user_id(self, user_id:str) -> list[CommunityModel]:
+        pass

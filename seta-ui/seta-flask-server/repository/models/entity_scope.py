@@ -24,14 +24,20 @@ class EntityScope:
 
     def to_scope_json(self) -> dict:
         return {"id": self.id, "scope": self.scope}
+    
+    def to_community_json(self) -> dict:
+        return {"user_id": self.user_id, "community_id": self.id, "community_scope": self.scope}
+    
+    def to_resource_json(self) -> dict:
+        return {"user_id": self.user_id, "resource_id": self.id, "resource_scope": self.scope}
 
-    @classmethod 
+    @classmethod
     def community_from_db_json(cls, json_dict):
         return cls(json_dict["user_id"],
                    json_dict["community_id"],
                    json_dict["community_scope"])
 
-    @classmethod 
+    @classmethod
     def resource_from_db_json(cls, json_dict):
         return cls(json_dict["user_id"],
                    json_dict["resource_id"],
