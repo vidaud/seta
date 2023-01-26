@@ -32,3 +32,8 @@ class CommunityDataTypeConstants:
     Evidence = "evidence"
     Representative = "representative"
     List = [Evidence, Representative]
+    
+class RequestStatusConstants:
+    Pending = "pending"
+    Approved = "approved"
+    Rejected = "rejected"

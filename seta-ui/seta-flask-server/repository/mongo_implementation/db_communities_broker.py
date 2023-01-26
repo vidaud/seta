@@ -6,8 +6,8 @@ from repository.interfaces.config import IDbConfig
 from datetime import datetime
 import pytz
 
-from repository.models import CommunityModel, EntityScope, SystemScope
-from repository.interfaces.communities_broker import ICommunitiesBroker
+from repository.models import CommunityModel, EntityScope, MembershipModel
+from repository.interfaces import ICommunitiesBroker
 
 from infrastructure.constants import (UserRoleConstants, CommunityScopeConstants, CommunityStatusConstants)
 
@@ -28,15 +28,9 @@ class CommunitiesBroker(implements(ICommunitiesBroker)):
                 self.collection.insert_one(model.to_json(), session=session)
                 
                 #insert this user membership
-                membership = {
-                                "community_id": model.community_id, 
-                                "user_id": model.creator, 
-                                "join_date": now, 
-                                "role": UserRoleConstants.CommunityManager, 
-                                "status": CommunityStatusConstants.Active
-                              }
-                self.collection.insert_one(membership, session=session)
-                
+                membership = MembershipModel(model.community_id, model.creator, UserRoleConstants.CommunityManager, now, CommunityStatusConstants.Active, None)
+                self.collection.insert_one(membership.to_json(), session=session)
+                                
                 #set user scopes for this community
                 scopes = [
                     EntityScope(model.creator,  model.community_id, CommunityScopeConstants.Edit).to_community_json(),
@@ -54,10 +48,6 @@ class CommunitiesBroker(implements(ICommunitiesBroker)):
         
         self.collection.update_one(self._filter_community_by_id(model.community_id), uq)
     
-    def update_membership(self, id: str, membership: str) -> None:
-        '''Create a change request for a community membership'''
-        pass
-
     def get_by_id(self, id: str) -> CommunityModel:
         '''Retrieve community by id'''
         

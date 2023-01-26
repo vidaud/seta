@@ -5,3 +5,4 @@ from .external_provider import ExternalProvider
 from .community import CommunityModel
 from .entity_scope import EntityScope
 from .system_scope import SystemScope
+from .membership import MembershipModel, MembershipRequestModel

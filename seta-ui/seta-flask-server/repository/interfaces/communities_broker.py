@@ -7,9 +7,6 @@ class ICommunitiesBroker(Interface):
 
     def update(self, model: CommunityModel) -> None:
         pass
-    
-    def update_membership(self, id: str, membership: str) -> None:
-        pass
 
     def get_by_id(self, id: str) -> CommunityModel:
         pass

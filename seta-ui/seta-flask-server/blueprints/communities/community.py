@@ -29,7 +29,7 @@ class CommunityList(Resource):
     @communities_ns.doc(description='Retrieve community list for this user.',        
         responses={int(HTTPStatus.OK): "'Retrieved community list."},
         security='CSRF')
-    @communities_ns.marshal_with(community_model, mask="*")
+    @communities_ns.marshal_list_with(community_model, mask="*")
     @auth_validator()    
     def get(self):
         '''Retrive user communities'''
@@ -87,14 +87,16 @@ class Community(Resource):
         
         super().__init__(api, *args, **kwargs)
     
-    @communities_ns.doc(description='Retrieve community',        
+    @communities_ns.doc(description='Retrieve community, if user is a member of it',        
         responses={int(HTTPStatus.OK): "Retrieved community.",
                    int(HTTPStatus.NOT_FOUND): "Community id not found.",
                    int(HTTPStatus.FORBIDDEN): "Insufficient rights"},
         security='CSRF')
-    @communities_ns.marshal_list_with(community_model, mask="*")
+    @communities_ns.marshal_with(community_model, mask="*")
     @auth_validator()
     def get(self, id):
+        '''Retrieve community'''
+        
         community = self.communitiesBroker.get_by_id(id)
         
         if not community:
@@ -125,18 +127,4 @@ class Community(Resource):
         response = jsonify(status="success", message=message)
         response.status_code = HTTPStatus.OK
         
-        return response     
-    
-@communities_ns.route('/<string:id>/resources', endpoint="community_resources")
-@communities_ns.param("id", "Community id")
-class CommunityResources(Resource):
-    @inject
-    def __init__(self, usersBroker: IUsersBroker, communitiesBroker: ICommunitiesBroker, api=None, *args, **kwargs):
-        self.usersBroker = usersBroker
-        self.communitiesBroker = communitiesBroker
-        
-        super().__init__(api, *args, **kwargs)
-    
-    @auth_validator()
-    def get(self, id):
-        return {'hello': 'world'}    
+        return response

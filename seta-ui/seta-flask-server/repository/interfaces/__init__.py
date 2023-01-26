@@ -4,3 +4,4 @@ from .states_broker import IStatesBroker
 from .users_broker import IUsersBroker
 from .communities_broker import ICommunitiesBroker
 from .resources_broker import IResourcesBroker
+from .membership_broker import IMembershipsBroker
