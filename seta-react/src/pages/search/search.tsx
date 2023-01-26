@@ -15,6 +15,7 @@ const Search = () => {
     const [items, setItems] = useState<any>([]);
     const [documentList, setDocumentList] = useState([]);
     const [typeofSearch, setTypeofSearch] = useState();
+    const [timeRangeValue, setTimeRangeValue] = useState();
     const corpusService = new CorpusService();
     let corpusParameters$: Observable<CorpusSearchPayload>;
     let cp: CorpusSearchPayload;
@@ -23,9 +24,9 @@ const Search = () => {
         corpusParameters$?.subscribe((corpusParameters: CorpusSearchPayload) => {
           cp = new CorpusSearchPayload({ ...corpusParameters });
         });
-          const lastPayload = new CorpusSearchPayload({ ...cp, term: term, aggs: 'date_year', n_docs: 100, search_type: typeofSearch });
+          const lastPayload = new CorpusSearchPayload({ ...cp, term: term, aggs: 'date_year', n_docs: 100, search_type: typeofSearch, date_range: timeRangeValue });
           corpusService.getDocuments(lastPayload).then(data => setItems(data));
-    }, [term, typeofSearch]);
+    }, [term, typeofSearch, timeRangeValue]);
 
     const onSearch = () => {
         if (term.length > 0) {
@@ -76,6 +77,8 @@ const Search = () => {
                         term={term}
                         typeofSearch={typeofSearch}
                         setTypeofSearch={setTypeofSearch}
+                        timeRangeValue={timeRangeValue}
+                        setTimeRangeValue={setTimeRangeValue}
                     /> : null }
             </div>
         </div>
