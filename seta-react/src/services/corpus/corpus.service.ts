@@ -1,4 +1,5 @@
 import axios from "axios";
+import { catchError, switchMap, throwError } from "rxjs";
 import { environment } from "../../environments/environment";
 import { SetaCorpus } from "../../models/corpus.model";
 import { SetaDocument } from "../../models/document.model";
@@ -6,6 +7,7 @@ import { CorpusSearchPayloadSerializer } from "../../serializers/corpus-search-p
 import { SetaDocumentSerializer } from "../../serializers/document.serializer";
 import { Serializer } from "../../serializers/serializer.interface";
 import { CorpusSearchPayload } from "../../store/corpus-search-payload";
+import authentificationService from "../authentification.service";
 
 export class CorpusService {
   public API = `${environment.api_target_path1}`
@@ -13,7 +15,7 @@ export class CorpusService {
 
   getDocuments(queryOptions?: CorpusSearchPayload | undefined) {
     const endpoint = `corpus`;
-    return axios.get(`${this.API}${endpoint}`, { params: queryOptions, headers: {'Cache-Control': 'no-cache', 'Pragma': 'no-cache'} })
+    return axios.get(`${this.API}${endpoint}`, { params: queryOptions})
     .then((response: any) => {
       response.data.documents;
       const corpus = new SetaCorpus();
@@ -24,7 +26,13 @@ export class CorpusService {
     })
     .catch((error) => {
       if (error.response) {
-        console.log(error.response)
+        console.log(error.response);
+        if(error.response.status==401){
+          //redirect to login
+          //return window.location.href = '/refresh'
+          return this.handle401Error();
+        }
+        //authentificationService.setaLogout();
         }
     }) as any
   }
@@ -40,9 +48,7 @@ export class CorpusService {
     let cspSerializer = new CorpusSearchPayloadSerializer();
     return axios.post(`${this.API}${endpoint}`,  cspSerializer.toJson(queryOptions!), {
       headers: { 
-        "Content-Type": "application/json",
-        'Cache-Control': 'no-cache',
-        'Pragma': 'no-cache'
+        "Content-Type": "application/json"
       }
     })
     .then((response: any) => {
@@ -54,8 +60,17 @@ export class CorpusService {
     })
     .catch((error) => {
       if (error.response) {
-        console.log(error.response)
+        console.log(error.response);
+        if(error.response.status==401){
+          //redirect to login
+          return this.handle401Error();
+        }
+        //authentificationService.setaLogout();
         }
     }) as any
+  }
+
+  handle401Error() {
+    return authentificationService.refreshCookie();
   }
 }

@@ -90,15 +90,14 @@ class RestService {
     if (this.currentUser != null) {
 
       let un = this.currentUser.username;
-      const query: any = window.document.cookie.split('; ');
-      let csrf_token = query.find(row => row.startsWith('csrf_access_token=')).split('=')[1];
+      const csrf_token = this.getCookie('csrf_access_token');
 
       let url = environment.baseUrl + '/rest/v1/user/delete';
       let body = {
         username: un
       };
 
-      axios.post<any>(url, body, {headers:{"X-CSRF-TOKEN": csrf_token}}).then((r) => {
+      axios.post<any>(url, body, {withCredentials: true, headers:{"X-CSRF-TOKEN": csrf_token}}).then((r) => {
         authentificationService.setaLogout();
 
       });
@@ -109,30 +108,28 @@ class RestService {
   public generateRsaKeys(): Observable<any> {
     let un = this.currentUser?.username;
 
-    const query: any = window.document.cookie.split('; ');
-    let csrf_token = query.find(row => row.startsWith('csrf_access_token=')).split('=')[1];
+    const csrf_token = this.getCookie('csrf_access_token');
     
     let url = environment.baseUrl + '/rsa/v1/generate-rsa-keys';
     let body = {
       username: un
     };
 
-    return axios.post<any>(url, body, {headers:{"X-CSRF-TOKEN": csrf_token}}) as any;
+    return axios.post<any>(url, body, {withCredentials: true, headers:{"X-CSRF-TOKEN": csrf_token}}) as any;
 
   }
 
   public deleteRsaKeys() {
     let un = this.currentUser?.username;
 
-    const query: any = window.document.cookie.split('; ');
-    let csrf_token = query.find(row => row.startsWith('csrf_access_token=')).split('=')[1];
+    const csrf_token = this.getCookie('csrf_access_token');
 
     let url = environment.baseUrl + '/rsa/v1/delete-rsa-keys';
     let body = {
       username: un
     };
 
-    return axios.post<any>(url, body, {headers:{"X-CSRF-TOKEN": csrf_token}});
+    return axios.post<any>(url, body, {withCredentials: true, headers:{"X-CSRF-TOKEN": csrf_token}});
 
   }
 
@@ -145,5 +142,13 @@ class RestService {
     return items.map(item => serializer.fromJson(item));
   }
 
+  public getCookie(name: string): string {
+    const query: any = window.document.cookie.split('; ');
+      let csrf_token = query.find(row => row.startsWith(`${name}=`)).split('=');
+    if (csrf_token.length === 2) 
+      return csrf_token[1];
+
+    return '';
+  }
 }
 export default new RestService();
