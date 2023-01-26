@@ -15,7 +15,6 @@ export class CorpusService {
     const endpoint = `corpus`;
     return axios.get(`${this.API}${endpoint}`, { params: queryOptions })
     .then((response: any) => {
-      response.data.documents;
       const corpus = new SetaCorpus();
       const documents = this.convert<SetaDocument>(response.data.documents, new SetaDocumentSerializer());
       corpus.documents = [...(documents !== undefined ? documents : [])];
