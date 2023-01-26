@@ -10,14 +10,13 @@ import { CorpusSearchPayload } from "../../store/corpus-search-payload";
 import authentificationService from "../authentification.service";
 
 export class CorpusService {
-  public API = `${environment.api_target_path1}`
+  public API = `${environment.api_target_path}`
   public regexService: RegExp = environment._regex;
 
   getDocuments(queryOptions?: CorpusSearchPayload | undefined) {
     const endpoint = `corpus`;
     return axios.get(`${this.API}${endpoint}`, { params: queryOptions})
     .then((response: any) => {
-      response.data.documents;
       const corpus = new SetaCorpus();
       const documents = this.convert<SetaDocument>(response.data.documents, new SetaDocumentSerializer());
       corpus.documents = [...(documents !== undefined ? documents : [])];

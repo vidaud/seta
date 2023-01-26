@@ -1,10 +1,17 @@
 // import React, { useState } from 'react';
 import { TabView, TabPanel } from 'primereact';
+import { useEffect, useState } from 'react';
 import DocumentList from '../../components/document-list/document-list';
 // import Pagination from '../../components/pagination/pagination';
 import TabMenuFilters from '../../components/tab-menu-filters/tab-menu-filters';
 
-const TabMenus = (term, list) => {
+const TabMenus = (props) => {
+    const [searchType, setSearchType] = useState();
+
+    const getSearchTypes = (search_type) => {
+        setSearchType(search_type);
+    };
+    props.setTypeofSearch(searchType);
 
     return (
         <div className="tab">
@@ -14,10 +21,10 @@ const TabMenus = (term, list) => {
                     <TabPanel header="Document List" leftIcon="pi pi-fw pi-list">
                     <div className='page-sections'>
                         <div className='table-filters'>
-                            <TabMenuFilters />
+                            <TabMenuFilters onSelectSearch={getSearchTypes} />
                         </div>
                         <div className='tab-filters'>
-                            <DocumentList value={term} listOfDocuments={list} />
+                            <DocumentList documents={props} />
                         </div>
                     </div>
                     </TabPanel>
