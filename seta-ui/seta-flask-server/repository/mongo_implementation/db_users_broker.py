@@ -8,7 +8,7 @@ from datetime import datetime, timedelta, timezone
 from pymongo.results import InsertManyResult
 
 from repository.models import SetaUser, ExternalProvider, UserClaim, EntityScope, SystemScope
-from infrastructure.constants import CommunityScopeConstants
+from infrastructure.scope_constants import CommunityScopeConstants
 
 class UsersBroker(implements(IUsersBroker)):
     @inject

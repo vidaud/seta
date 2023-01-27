@@ -9,7 +9,8 @@ import pytz
 from repository.models import CommunityModel, EntityScope, MembershipModel
 from repository.interfaces import ICommunitiesBroker
 
-from infrastructure.constants import (UserRoleConstants, CommunityScopeConstants, CommunityStatusConstants)
+from infrastructure.constants import (UserRoleConstants, CommunityStatusConstants)
+from infrastructure.scope_constants import CommunityScopeConstants
 
 class CommunitiesBroker(implements(ICommunitiesBroker)):
     @inject
@@ -28,14 +29,14 @@ class CommunitiesBroker(implements(ICommunitiesBroker)):
                 self.collection.insert_one(model.to_json(), session=session)
                 
                 #insert this user membership
-                membership = MembershipModel(model.community_id, model.creator, UserRoleConstants.CommunityManager, now, CommunityStatusConstants.Active, None)
+                membership = MembershipModel(model.community_id, model.creator_id, UserRoleConstants.CommunityManager, now, CommunityStatusConstants.Active, None)
                 self.collection.insert_one(membership.to_json(), session=session)
                                 
-                #set user scopes for this community
+                #set manager scopes for this community
                 scopes = [
-                    EntityScope(model.creator,  model.community_id, CommunityScopeConstants.Edit).to_community_json(),
-                    EntityScope(model.creator,  model.community_id, CommunityScopeConstants.SendInvite).to_community_json(),
-                    EntityScope(model.creator,  model.community_id, CommunityScopeConstants.ApproveRequest).to_community_json(),
+                    EntityScope(model.creator_id,  model.community_id, CommunityScopeConstants.Edit).to_community_json(),
+                    EntityScope(model.creator_id,  model.community_id, CommunityScopeConstants.SendInvite).to_community_json(),
+                    EntityScope(model.creator_id,  model.community_id, CommunityScopeConstants.ApproveRequest).to_community_json(),
                           ]
                 user_collection = self.db["users"]
                 user_collection.insert_many(scopes, session=session)
@@ -82,7 +83,15 @@ class CommunitiesBroker(implements(ICommunitiesBroker)):
             return None
         
         dict = self.collection.find_one(self._filter_community_by_id(id))
-        return CommunityModel.from_db_json(dict)
+        
+        if dict is None:
+            return None
+        
+        model = CommunityModel.from_db_json(dict)
+        
+        #TODO: get creator details       
+        
+        return model
     
     def community_id_exists(self, id: str) -> bool:
         '''Check if a community id exists'''
@@ -97,7 +106,9 @@ class CommunitiesBroker(implements(ICommunitiesBroker)):
         ids = self.collection.find(membership_filter, {"community_id": True})
               
         filter = {"community_id": {"$in": [i["community_id"] for i in ids]}, "membership":{"$exists" : True}}
-        communities = self.collection.find(filter)        
+        communities = self.collection.find(filter)
+        
+        #TODO: get creator details      
         
         return [CommunityModel.from_db_json(c) for c in communities]
     

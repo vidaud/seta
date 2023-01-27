@@ -11,12 +11,6 @@ class UserRoleConstants:
     
 class ClaimTypeConstants:
     RoleClaimType = "roles"
-    
-class CommunityScopeConstants:
-    Create = "/seta/community/create"
-    Edit = "/seta/community/edit"
-    SendInvite = "/seta/community/invite"
-    ApproveRequest = "/seta/community/approve"
 
 class CommunityStatusConstants:
     Active = "active"
@@ -27,6 +21,7 @@ class CommunityStatusConstants:
 class CommunityMembershipConstants:
     Opened = "opened"
     Closed = "closed"
+    List = [Opened, Closed]
     
 class CommunityDataTypeConstants:
     Evidence = "evidence"

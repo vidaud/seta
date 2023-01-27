@@ -8,11 +8,13 @@ from injector import inject
 from repository.models import CommunityModel
 from repository.interfaces import ICommunitiesBroker, IUsersBroker
 from infrastructure.decorators import auth_validator
+from infrastructure.scope_constants import CommunityScopeConstants
 
 from http import HTTPStatus
-from .models.community_dto import(new_community_parser, update_community_parser, community_model)
+from .models.community_dto import(new_community_parser, update_community_parser, community_model, community_creator_model)
 
 communities_ns = Namespace('communities', validate=True, description='SETA Communities')
+communities_ns.models[community_creator_model.name] = community_creator_model
 communities_ns.models[community_model.name] = community_model
 
 @communities_ns.route('/', endpoint="community_list", methods=['GET', 'POST'])
@@ -35,11 +37,13 @@ class CommunityList(Resource):
         '''Retrive user communities'''
         
         identity = get_jwt_identity()
-        return self.communitiesBroker.get_all_by_user_id(identity["user_id"])
+        user_id = identity["user_id"]        
+        
+        return self.communitiesBroker.get_all_by_user_id(user_id)
     
     @communities_ns.doc(description='Create a new community and add this user as a member with elevated scopes.',        
         responses={int(HTTPStatus.CREATED): "Added new community.", 
-                   int(HTTPStatus.FORBIDDEN): "Insufficient rights",
+                   int(HTTPStatus.FORBIDDEN): "Insufficient rights, scope 'community/create' required",
                    int(HTTPStatus.CONFLICT): "Community already exists."},
         security='CSRF')
     @communities_ns.expect(new_community_parser)
@@ -48,9 +52,18 @@ class CommunityList(Resource):
         '''Create a community'''
         
         identity = get_jwt_identity()
+        user_id = identity["user_id"]
         id_exists = False
         
         community_dict = new_community_parser.parse_args()
+        
+        #TODO: move scopes to JWT token and validate trough decorator
+        #verify scope
+        user = self.usersBroker.get_user_by_id(user_id)
+        if not any(cs.scope == CommunityScopeConstants.Create for cs in user.system_scopes):
+            response = jsonify({"message": "Insufficient rights"})
+            response.status_code = int(HTTPStatus.FORBIDDEN)
+            return response
         
         try:
             
@@ -89,24 +102,23 @@ class Community(Resource):
     
     @communities_ns.doc(description='Retrieve community, if user is a member of it',        
         responses={int(HTTPStatus.OK): "Retrieved community.",
-                   int(HTTPStatus.NOT_FOUND): "Community id not found.",
-                   int(HTTPStatus.FORBIDDEN): "Insufficient rights"},
+                   int(HTTPStatus.NOT_FOUND): "Community id not found."
+                  },
         security='CSRF')
     @communities_ns.marshal_with(community_model, mask="*")
     @auth_validator()
     def get(self, id):
-        '''Retrieve community'''
-        
+        '''Retrieve community'''                
         community = self.communitiesBroker.get_by_id(id)
         
-        if not community:
+        if community is None:
             abort(HTTPStatus.NOT_FOUND, "Community id not found.")
         
-        return community.to_json()
+        return community
     
     @communities_ns.doc(description='Update community fields',        
         responses={int(HTTPStatus.OK): "Community updated.", 
-                   int(HTTPStatus.FORBIDDEN): "Insufficient rights"},
+                   int(HTTPStatus.FORBIDDEN): "Insufficient rights, scope 'community/edit' required"},
         security='CSRF')
     @communities_ns.expect(update_community_parser)
     @auth_validator()
@@ -114,11 +126,22 @@ class Community(Resource):
         '''Update a community'''
         
         identity = get_jwt_identity()
+        user_id = identity["user_id"]
+        
+        #TODO: move scopes to JWT token and validate trough decorator
+        #verify scope
+        user = self.usersBroker.get_user_by_id(user_id)
+        if not any(cs.id.lower() == id.lower() and cs.scope == CommunityScopeConstants.Edit for cs in user.community_scopes):
+            response = jsonify({"message": "Insufficient rights"})
+            response.status_code = int(HTTPStatus.FORBIDDEN)
+            return response
+        
+        
         community_dict = update_community_parser.parse_args()
         
         try:            
             model = CommunityModel(id, community_dict["title"], community_dict["description"], 
-                                    None, community_dict["data_type"], community_dict["status"], identity["user_id"])
+                                    None, community_dict["data_type"], community_dict["status"], user_id)
             
             self.communitiesBroker.update(model)
         except:
@@ -133,18 +156,27 @@ class Community(Resource):
     
     @communities_ns.doc(description='Dalete  community entries',
         responses={int(HTTPStatus.OK): "Community deleted.", 
-                   int(HTTPStatus.FORBIDDEN): "Insufficient rights"},
+                   int(HTTPStatus.FORBIDDEN): "Insufficient rights, scope 'community/edit' required"},
         security='CSRF')
     @auth_validator()
     def delete(self, id):
         '''Delete community'''
         
         identity = get_jwt_identity()
+        user_id = identity["user_id"]
+        
+        #TODO: move scopes to JWT token and validate trough decorator
+        #verify scope
+        user = self.usersBroker.get_user_by_id(user_id)
+        if not any(cs.id.lower() == id.lower() and cs.scope == CommunityScopeConstants.Edit for cs in user.community_scopes):
+            response = jsonify({"message": "Insufficient rights"})
+            response.status_code = int(HTTPStatus.FORBIDDEN)
+            return response
         
         try:            
             self.communitiesBroker.delete(id)
             
-            #TODO: delete resource from elastic search (from here orfrom client side?)
+            #TODO: delete resource from elastic search (from here or from the client side?)
         except:
             app.logger.exception("Community->delete")
             abort(HTTPStatus.INTERNAL_SERVER_ERROR)   

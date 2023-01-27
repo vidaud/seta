@@ -131,18 +131,18 @@ def create_app(config_object):
     return app
     
 def register_blueprints(app):
-    app.register_blueprint(rest, url_prefix="/rest/v1/")
-    app.register_blueprint(base_routes, url_prefix="/seta-ui/")    
-    app.register_blueprint(rsa, url_prefix="/rsa/v1/")
+    app.register_blueprint(rest, url_prefix="/rest/v1")
+    app.register_blueprint(base_routes, url_prefix="/seta-ui")    
+    app.register_blueprint(rsa, url_prefix="/rsa/v1")
     
-    app.register_blueprint(auth, url_prefix="/")
-    app.register_blueprint(auth_ecas, url_prefix="/")
-    app.register_blueprint(auth_github, url_prefix="/")
+    app.register_blueprint(auth, url_prefix="")
+    app.register_blueprint(auth_ecas, url_prefix="")
+    app.register_blueprint(auth_github, url_prefix="")
     
-    app.register_blueprint(token_auth, url_prefix="/authentication/v1/")
-    app.register_blueprint(token_info, url_prefix="/authorization/v1/")
+    app.register_blueprint(token_auth, url_prefix="/authentication/v1")
+    app.register_blueprint(token_info, url_prefix="/authorization/v1")
 
-    app.register_blueprint(communities_bp_v1, url_prefix="/api/communities/v1/")
+    app.register_blueprint(communities_bp_v1, url_prefix="/api/communities/v1")
     
 def register_extensions(app):
     #the service_url will be changed before ECAS redirect with 'request.url'

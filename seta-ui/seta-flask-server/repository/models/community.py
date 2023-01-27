@@ -2,16 +2,18 @@ import json
 
 class CommunityModel:
     
-    def __init__(self, community_id, title, description, membership, data_type, status, creator, created_at = None, modified_at = None) -> None:
+    def __init__(self, community_id, title, description, membership, data_type, status, creator_id, created_at = None, modified_at = None) -> None:
         self.community_id = community_id
         self.title = title
         self.description = description
         self.membership = membership
         self.data_type = data_type
         self.status = status
-        self.creator = creator
+        self.creator_id = creator_id
         self.created_at = created_at
         self.modified_at = modified_at
+        
+        self.creator = {"user_id": creator_id, "full_name": None, "email": None}
         
     def __iter__(self):
         yield from {
@@ -21,7 +23,7 @@ class CommunityModel:
             "membership": self.membership,
             "data_type": self.data_type,
             "status": self.status,
-            "creator": self.creator,
+            "creator_id": self.creator_id,
             "created_at": self.created_at,
             "modified_at": self.modified_at
         }.items()
@@ -34,6 +36,12 @@ class CommunityModel:
 
     def to_json(self):
         return dict(self)
+    
+    def to_json_view(self):
+        json = dict(self)
+        json["creator"] = self.creator
+        
+        return json
     
     def to_json_update(self):
         return{
@@ -52,6 +60,6 @@ class CommunityModel:
                    json_dict["membership"],
                    json_dict["data_type"],
                    json_dict["status"],
-                   json_dict["creator"],
+                   json_dict["creator_id"],
                    json_dict["created_at"],
                    json_dict["modified_at"])
