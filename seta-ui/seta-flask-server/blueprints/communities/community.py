@@ -15,7 +15,7 @@ from .models.community_dto import(new_community_parser, update_community_parser,
 communities_ns = Namespace('communities', validate=True, description='SETA Communities')
 communities_ns.models[community_model.name] = community_model
 
-@communities_ns.route('/', endpoint="community_list")
+@communities_ns.route('/', endpoint="community_list", methods=['GET', 'POST'])
 class CommunityList(Resource):
     '''Get a list of communities with this authorized user membership and expose POST for new communities'''
     
@@ -75,7 +75,7 @@ class CommunityList(Resource):
         
         return response
     
-@communities_ns.route('/<string:id>', endpoint="community")
+@communities_ns.route('/<string:id>', endpoint="community", methods=['GET', 'PUT', 'DELETE'])
 @communities_ns.param("id", "Community id")
 class Community(Resource):
     """Handles HTTP requests to URL: /communities/{id}."""
@@ -111,6 +111,8 @@ class Community(Resource):
     @communities_ns.expect(update_community_parser)
     @auth_validator()
     def put(self, id):
+        '''Update a community'''
+        
         identity = get_jwt_identity()
         community_dict = update_community_parser.parse_args()
         
@@ -124,6 +126,30 @@ class Community(Resource):
             abort(HTTPStatus.INTERNAL_SERVER_ERROR)   
             
         message = f"Community '{id}' updated."
+        response = jsonify(status="success", message=message)
+        response.status_code = HTTPStatus.OK
+        
+        return response
+    
+    @communities_ns.doc(description='Dalete  community entries',
+        responses={int(HTTPStatus.OK): "Community deleted.", 
+                   int(HTTPStatus.FORBIDDEN): "Insufficient rights"},
+        security='CSRF')
+    @auth_validator()
+    def delete(self, id):
+        '''Delete community'''
+        
+        identity = get_jwt_identity()
+        
+        try:            
+            self.communitiesBroker.delete(id)
+            
+            #TODO: delete resource from elastic search (from here orfrom client side?)
+        except:
+            app.logger.exception("Community->delete")
+            abort(HTTPStatus.INTERNAL_SERVER_ERROR)   
+            
+        message = f"All data for community '{id}' deleted."
         response = jsonify(status="success", message=message)
         response.status_code = HTTPStatus.OK
         

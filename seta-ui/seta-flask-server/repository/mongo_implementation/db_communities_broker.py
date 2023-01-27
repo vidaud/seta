@@ -47,6 +47,33 @@ class CommunitiesBroker(implements(ICommunitiesBroker)):
         uq={"$set": model.to_json_update() }
         
         self.collection.update_one(self._filter_community_by_id(model.community_id), uq)
+        
+    def delete(self, id:str) -> None:
+        '''Delete all records for community_id'''       
+        
+        resource_collection = self.db["resources"]
+        user_collection = self.db["users"]
+        
+        #get resources_ids
+        ids = resource_collection.find({"community_id": id}, {"resource_id": 1})
+        resource_ids = [i["resource_id"] for i in ids]
+        
+        
+        with self.db.client.start_session(causal_consistency=True) as session:
+            #delete community scopes      
+            csf = {"community_id": id, "community_scope":{"$exists" : True}}
+            user_collection.delete_many(csf, session=session)
+            #delete resource scopes
+            rsf = {"community_id": id, "resource_id": {"$in": resource_ids}, "resource_scope":{"$exists" : True}}
+            user_collection.delete_many(rsf, session=session)
+            
+            #delete all resources from resources collection
+            resource_collection.delete_many({"resource_id": {"$in": resource_ids}})
+            
+            #delete all entries from communities collection            
+            self.collection.delete_many({"community_id": id})            
+            
+            
     
     def get_by_id(self, id: str) -> CommunityModel:
         '''Retrieve community by id'''
