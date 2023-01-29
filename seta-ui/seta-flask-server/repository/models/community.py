@@ -3,7 +3,7 @@ import json
 class CommunityModel:
     
     def __init__(self, community_id, title, description, membership, data_type, status, creator_id, created_at = None, modified_at = None) -> None:
-        self.community_id = community_id
+        self.community_id = community_id.lower()
         self.title = title
         self.description = description
         self.membership = membership

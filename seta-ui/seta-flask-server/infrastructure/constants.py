@@ -32,3 +32,5 @@ class RequestStatusConstants:
     Pending = "pending"
     Approved = "approved"
     Rejected = "rejected"
+    List=[Pending, Approved, Rejected]
+    EditList=[Approved, Rejected]

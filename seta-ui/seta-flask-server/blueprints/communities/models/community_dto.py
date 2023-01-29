@@ -1,8 +1,6 @@
 from flask_restx import Model, fields
 from flask_restx.reqparse import RequestParser
 
-from repository.models import EntityScope
-
 from infrastructure.constants import (CommunityStatusConstants, CommunityDataTypeConstants, CommunityMembershipConstants)
 
 def data_type_list(value):

@@ -13,7 +13,7 @@ from infrastructure.scope_constants import CommunityScopeConstants
 from http import HTTPStatus
 from .models.community_dto import(new_community_parser, update_community_parser, community_model, community_creator_model)
 
-communities_ns = Namespace('communities', validate=True, description='SETA Communities')
+communities_ns = Namespace('Communities', validate=True, description='SETA Communities')
 communities_ns.models[community_creator_model.name] = community_creator_model
 communities_ns.models[community_model.name] = community_model
 

@@ -1,7 +1,7 @@
 import json
 
 class MembershipModel:
-    def __init__(self, community_id, user_id, role, join_date, status, modified_at) -> None:
+    def __init__(self, community_id, user_id, role = None, join_date = None, status = None, modified_at = None) -> None:
         self.community_id = community_id
         self.user_id = user_id
         self.role = role
@@ -45,7 +45,7 @@ class MembershipModel:
                    json_dict["modified_at"])
         
 class MembershipRequestModel:
-    def __init__(self, community_id, requested_by, message, status, initiated_date, reviewed_by, review_date) -> None:
+    def __init__(self, community_id, requested_by, message = None, status = None, initiated_date = None, reviewed_by = None, review_date = None) -> None:
         self.community_id = community_id
         self.requested_by = requested_by
         self.message = message        
