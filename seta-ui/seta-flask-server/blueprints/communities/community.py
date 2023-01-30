@@ -9,6 +9,7 @@ from repository.models import CommunityModel
 from repository.interfaces import ICommunitiesBroker, IUsersBroker
 from infrastructure.decorators import auth_validator
 from infrastructure.scope_constants import CommunityScopeConstants
+from infrastructure.constants import CommunityMembershipConstants, CommunityStatusConstants
 
 from http import HTTPStatus
 from .models.community_dto import(new_community_parser, update_community_parser, community_model, community_creator_model)
@@ -71,8 +72,10 @@ class CommunityList(Resource):
             id_exists = self.communitiesBroker.community_id_exists(community_id)
                        
             if not id_exists:
-                model = CommunityModel(community_id, community_dict["title"], community_dict["description"], 
-                                    "open", community_dict["data_type"], "active", identity["user_id"])
+                model = CommunityModel(community_id=community_id, title=community_dict["title"], description=community_dict["description"], 
+                                    membership=CommunityMembershipConstants.Closed, 
+                                    data_type=community_dict["data_type"], status=CommunityStatusConstants.Active, 
+                                    creator_id=identity["user_id"])
                 
                 self.communitiesBroker.create(model)
         except:
@@ -140,8 +143,8 @@ class Community(Resource):
         community_dict = update_community_parser.parse_args()
         
         try:            
-            model = CommunityModel(id, community_dict["title"], community_dict["description"], 
-                                    None, community_dict["data_type"], community_dict["status"], user_id)
+            model = CommunityModel(community_id=id, title=community_dict["title"], description=community_dict["description"], 
+                                    membership=None, data_type=community_dict["data_type"], status=community_dict["status"])
             
             self.communitiesBroker.update(model)
         except:

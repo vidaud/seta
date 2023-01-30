@@ -29,14 +29,15 @@ class CommunitiesBroker(implements(ICommunitiesBroker)):
                 self.collection.insert_one(model.to_json(), session=session)
                 
                 #insert this user membership
-                membership = MembershipModel(model.community_id, model.creator_id, UserRoleConstants.CommunityManager, now, CommunityStatusConstants.Active, None)
+                membership = MembershipModel(community_id=model.community_id, creator_id=model.creator_id, 
+                                             role=UserRoleConstants.CommunityManager, join_date=now, status=CommunityStatusConstants.Active)
                 self.collection.insert_one(membership.to_json(), session=session)
                                 
                 #set manager scopes for this community
                 scopes = [
-                    EntityScope(model.creator_id,  model.community_id, CommunityScopeConstants.Edit).to_community_json(),
-                    EntityScope(model.creator_id,  model.community_id, CommunityScopeConstants.SendInvite).to_community_json(),
-                    EntityScope(model.creator_id,  model.community_id, CommunityScopeConstants.ApproveRequest).to_community_json(),
+                    EntityScope(user_id=model.creator_id,  id=model.community_id, scope=CommunityScopeConstants.Edit).to_community_json(),
+                    EntityScope(user_id=model.creator_id,  id=model.community_id, scope=CommunityScopeConstants.SendInvite).to_community_json(),
+                    EntityScope(user_id=model.creator_id,  id=model.community_id, scope=CommunityScopeConstants.ApproveRequest).to_community_json(),
                           ]
                 user_collection = self.db["users"]
                 user_collection.insert_many(scopes, session=session)
