@@ -1,7 +1,6 @@
 ===============================================
 2023-01-16 Andrei:
 ------------------
-seta-ui changes:
 
 * seta-react/src/services/authentification.service.ts
 ** check for action query parameter instead of #home?action
@@ -16,5 +15,20 @@ seta-ui changes:
 ** urljoin(next, "?action=login")
 
 * add changelog.txt
+
+===============================================
+
+===============================================
+2023-01-30 Andrei:
+------------------
+Communities API
+
+* seta-ui\seta-flask-server\repository\mongo_implementation\db_users_broker.py
+** get user scopes
+
+* seta-ui\seta-flask-server\blueprints\communities
+** rest-x namesapaces and models for communities & memberships apis
+
+* repository interfaces, mongo implementation & models for community and membership entities
 
 ===============================================

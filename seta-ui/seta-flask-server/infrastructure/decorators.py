@@ -3,11 +3,11 @@
 # an administrator
 from functools import wraps
 
-from flask import session
+from flask import session, current_app
 from flask import jsonify
-from flask_jwt_extended import get_jwt, verify_jwt_in_request
+from flask_jwt_extended import get_jwt, get_jwt_identity, verify_jwt_in_request
 
-
+from repository.interfaces import IUsersBroker
 
 def pop_session():
     def wrapper(fn):
@@ -21,17 +21,16 @@ def pop_session():
 
     return wrapper
 
-def role_validator(role):
+def auth_validator(role: str = None):
     def wrapper(fn):
         @wraps(fn)
-        def decorator(*args, **kwargs):                       
+        def decorator(*args, **kwargs):
+            print("auth_validator", flush=True)
+            
             verify_jwt_in_request()
-            claims = get_jwt()
+            jwt = get_jwt()
 
-            print(claims,flush=True)
-            print(role,flush=True)
-
-            if not (claims['role'] == role):
+            if role and not (jwt['role'].lower() == role.lower()):
                 response = jsonify({"message": "Unauthorized access"})
                 response.status_code = 403
                 return response
@@ -40,3 +39,20 @@ def role_validator(role):
            
         return decorator
     return wrapper    
+
+'''
+def system_scopes_validator(scopes: list() = None):
+    def wrapper(fn):
+        @wraps(fn)
+        def decorator(self, *args, **kwargs):                       
+            verify_jwt_in_request()
+            identity = get_jwt_identity()
+            
+            user = self.usersBroker.get_user_by_id(identity["user_id"])
+            current_app.logger.debug("system_scopes: " + str(user.system_scopes))
+            
+            return fn(self, *args, **kwargs)
+           
+        return decorator
+    return wrapper
+'''    

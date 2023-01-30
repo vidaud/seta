@@ -7,7 +7,8 @@ from repository.interfaces.config import IDbConfig
 from datetime import datetime, timedelta, timezone
 from pymongo.results import InsertManyResult
 
-from repository.models.seta_user import SetaUser, ExternalProvider, UserClaim
+from repository.models import SetaUser, ExternalProvider, UserClaim, EntityScope, SystemScope
+from infrastructure.scope_constants import CommunityScopeConstants
 
 class UsersBroker(implements(IUsersBroker)):
     @inject
@@ -74,6 +75,10 @@ class UsersBroker(implements(IUsersBroker)):
         seta_user = SetaUser.from_db_json(user)
         seta_user.external_providers = self._get_user_providers_from_db(seta_user.user_id)            
         seta_user.claims = self._get_user_claims_from_db(seta_user.user_id)
+
+        seta_user.community_scopes = self._get_community_scopes_from_db(seta_user.user_id)
+        seta_user.resource_scopes = self._get_resource_scopes_from_db(seta_user.user_id)
+        seta_user.system_scopes = self._get_system_scopes_from_db(seta_user.user_id)
             
         return seta_user
     
@@ -164,13 +169,23 @@ class UsersBroker(implements(IUsersBroker)):
                     user.user_id = SetaUser.generate_uuid()
                     uid_exists = self.user_uid_exists(user.user_id)
                 
+                #inser user record
                 collection.insert_one(user.to_json(), session=session)       
         
-                collection.insert_one(user.authenticated_provider.to_json(), session=session)
+                #insert provider records
+                collection.insert_one(user.authenticated_provider.to_json(), session=session)                
         
+                #insert claims
                 if len(user.claims) > 0:
                     for claim in user.claims:
                         collection.insert_one(claim.to_json(), session=session)
+                        
+                #insert default system scopes
+                scopes = [
+                    SystemScope(user.user_id, CommunityScopeConstants.Create, "community").to_json()
+                          ]
+                collection.insert_many(scopes, session=session)
+
         
         return user     
         
@@ -239,6 +254,42 @@ class UsersBroker(implements(IUsersBroker)):
         for claim in claims:
             user_claims.append(UserClaim.from_db_json(claim))
             
-        return user_claims        
+        return user_claims
+
+    def _get_resource_scopes_from_db(self, user_id: str) -> list[EntityScope]:
+        resource_scopes = []
+        collection = self.db["users"]
+        
+        cFilter = {"user_id": user_id, "resource_scope":{"$exists" : True}}
+        scopes =  collection.find(cFilter)
+        
+        for scope in scopes:
+            resource_scopes.append(EntityScope.resource_from_db_json(scope))
+            
+        return resource_scopes
+
+    def _get_community_scopes_from_db(self, user_id: str) -> list[EntityScope]:
+        community_scopes = []
+        collection = self.db["users"]
+        
+        cFilter = {"user_id": user_id, "community_scope":{"$exists" : True}}
+        scopes =  collection.find(cFilter)
+        
+        for scope in scopes:
+            community_scopes.append(EntityScope.community_from_db_json(scope))
+            
+        return community_scopes
+
+    def _get_system_scopes_from_db(self, user_id: str) -> list[SystemScope]:
+        system_scopes = []
+        collection = self.db["users"]
+        
+        cFilter = {"user_id": user_id, "system_scope":{"$exists" : True}}
+        scopes =  collection.find(cFilter)
+        
+        for scope in scopes:
+            system_scopes.append(SystemScope.from_db_json(scope))
+            
+        return system_scopes
                 
     #-------------------------------------------------------#

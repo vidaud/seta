@@ -1,16 +1,17 @@
 from flask_restx import Api
 from flask import Blueprint
 from .community import communities_ns
+from .community_membership import membership_ns
 from .resource import resources_ns
 
 authorizations = {
-    'apikey': {
+    'Bearer': {
         'type': 'apiKey',
         'in': 'header',
         'name': 'Authorization',
         'description': "Type in the *'Value'* input box below: **'Bearer &lt;JWT&gt;'**, where JWT is the token"
     },
-    'csrfkey': {
+    'CSRF': {
         'type': 'apiKey',
         'in': 'header',
         'name': 'X-CSRF-TOKEN',
@@ -21,12 +22,13 @@ authorizations = {
 communities_bp_v1 = Blueprint('communities-api-v1', __name__)
 
 api = Api(communities_bp_v1,
-         title='SeTA Communities api',
+         title='SeTA Communities API',
          version='1.0',
-         description='SeTA Communities api',
+         description='SeTA Communities API',
          doc='/doc',
          authorizations=authorizations
          )
 
-api.add_namespace(communities_ns)
-api.add_namespace(resources_ns)
+api.add_namespace(communities_ns, path="communities")
+api.add_namespace(membership_ns, path="communities")
+api.add_namespace(resources_ns, path="resources")
