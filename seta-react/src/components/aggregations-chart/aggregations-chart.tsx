@@ -1,17 +1,28 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Chart } from 'primereact/chart';
 
-const AggregationsChart = () => {
-    const [basicData] = useState({
-        labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+const AggregationsChart = ({aggregations}) => {
+    const [years, setYears] = useState<string[]>([]);
+    const [numberofDocuments, setNumberofDocuments] = useState<any>([]);
+    const details = {
+        labels: years,
         datasets: [
             {
                 label: 'Documents / Year',
                 backgroundColor: '#42A5F5',
-                data: [65, 59, 80, 81, 56, 55, 40]
+                data: numberofDocuments
             }
         ]
-    });
+    }
+    const [basicData, setBasicData] = useState(details);
+
+    useEffect(() => {
+        const arrOfStr = Object.keys(aggregations.years).map(num => {
+            return String(num);
+        });
+        setYears(arrOfStr);
+        setNumberofDocuments(Object.values(aggregations.years));
+    }, [aggregations, basicData]);
 
     const getLightTheme = () => {
         let basicOptions = {
@@ -140,7 +151,7 @@ const AggregationsChart = () => {
                     position: 'left',
                     ticks: {
                         min: 0,
-                        max: 100,
+                        max: 10,
                         color: '#495057'
                     },
                     grid: {
@@ -157,7 +168,7 @@ const AggregationsChart = () => {
                     },
                     ticks: {
                         min: 0,
-                        max: 100,
+                        max: 10,
                         color: '#495057'
                     }
                 }
@@ -177,7 +188,6 @@ const AggregationsChart = () => {
     return (
         <div>
             <div className="card">
-                <h5>Vertical</h5>
                 <Chart type="bar" data={basicData} options={basicOptions} />
             </div>
         </div>

@@ -9,7 +9,7 @@ import PostSearch from '../post-search/post-search';
 import SearchType from '../select-button/select-button';
 import TimeRange from '../time-range/time-range';
 
-const TabMenuFilters = ({onSelectSearch, onSelectRange}) => {
+const TabMenuFilters = ({onSelectSearch, onSelectRange, aggregations}) => {
     const [searchType, setSearchType] = useState();
     const [timeRange, setTimeRange] = useState();
 
@@ -30,7 +30,7 @@ const TabMenuFilters = ({onSelectSearch, onSelectRange}) => {
                 <TabView className="tabview-header-icon">
                     <TabPanel header="Refine Search" leftIcon="pi pi-fw pi-filter">
                         <SearchType onSelectType={getSearchTypeValue}/>
-                        <TimeRange onTimeRange={getTimeRangeValue} />
+                        <TimeRange onTimeRange={getTimeRangeValue} list={aggregations}/>
                     </TabPanel>
                     <TabPanel header="Post Search" leftIcon="pi pi-fw pi-chart-pie"> 
                         <PostSearch />

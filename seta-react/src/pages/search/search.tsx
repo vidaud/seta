@@ -13,6 +13,7 @@ const Search = () => {
     const [showContent, setShowContent] = useState(false);
     const [term, setTerm] = useState<Term[]>([]);
     const [items, setItems] = useState<any>([]);
+    const [aggregations, setAggregations] = useState<any>([]);
     const [documentList, setDocumentList] = useState([]);
     const [typeofSearch, setTypeofSearch] = useState();
     const [timeRangeValue, setTimeRangeValue] = useState();
@@ -25,7 +26,10 @@ const Search = () => {
           cp = new CorpusSearchPayload({ ...corpusParameters });
         });
           const lastPayload = new CorpusSearchPayload({ ...cp, term: term, aggs: 'date_year', n_docs: 100, search_type: typeofSearch, date_range: timeRangeValue });
-          corpusService.getDocuments(lastPayload).then(data => setItems(data));
+          corpusService.getDocuments(lastPayload).then(data => {
+            setItems(data.documents);
+            setAggregations(data.aggregations);
+          });
     }, [term, typeofSearch, timeRangeValue]);
 
     const onSearch = () => {
@@ -75,6 +79,7 @@ const Search = () => {
                     <TabMenus
                         data={items}
                         term={term}
+                        aggregations={aggregations}
                         typeofSearch={typeofSearch}
                         setTypeofSearch={setTypeofSearch}
                         timeRangeValue={timeRangeValue}

@@ -21,7 +21,7 @@ export class CorpusService {
       const documents = this.convert<SetaDocument>(response.data.documents, new SetaDocumentSerializer());
       corpus.documents = [...(documents !== undefined ? documents : [])];
       corpus.total_docs = response.data.total_docs;
-      return response.data.documents;
+      return response.data;
     })
     .catch((error) => {
       if (error.response) {

@@ -27,7 +27,7 @@ const TabMenus = (props) => {
                     <TabPanel header="Document List" leftIcon="pi pi-fw pi-list">
                     <div className='page-sections'>
                         <div className='table-filters'>
-                            <TabMenuFilters onSelectSearch={getSearchTypes} onSelectRange={getTimeRange}/>
+                            <TabMenuFilters onSelectSearch={getSearchTypes} onSelectRange={getTimeRange} aggregations={props.aggregations}/>
                         </div>
                         <div className='tab-filters'>
                             <DocumentList documents={props} />
