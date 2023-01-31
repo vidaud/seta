@@ -5,3 +5,4 @@ from .users_broker import IUsersBroker
 from .communities_broker import ICommunitiesBroker
 from .resources_broker import IResourcesBroker
 from .membership_broker import IMembershipsBroker
+from .community_change_request_broker import ICommunityChangeRequestsBroker

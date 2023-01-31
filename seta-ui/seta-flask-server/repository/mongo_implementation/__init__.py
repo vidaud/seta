@@ -5,3 +5,4 @@ from .db_users_broker import UsersBroker
 from .db_communities_broker import CommunitiesBroker
 from .db_resources_broker import ResourcesBroker
 from .db_membership_broker import MembershipsBroker
+from .db_community_change_requests_broker import CommunityChangeRequestsBroker

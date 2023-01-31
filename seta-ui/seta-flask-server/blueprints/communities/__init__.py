@@ -2,6 +2,7 @@ from flask_restx import Api
 from flask import Blueprint
 from .community import communities_ns
 from .community_membership import membership_ns
+from .community_change_requests import community_change_request_ns
 from .resource import resources_ns
 
 authorizations = {
@@ -30,5 +31,6 @@ api = Api(communities_bp_v1,
          )
 
 api.add_namespace(communities_ns, path="communities")
+api.add_namespace(community_change_request_ns, path="communities")
 api.add_namespace(membership_ns, path="communities")
 api.add_namespace(resources_ns, path="resources")

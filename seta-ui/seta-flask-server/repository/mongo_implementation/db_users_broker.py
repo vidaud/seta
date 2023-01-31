@@ -284,7 +284,7 @@ class UsersBroker(implements(IUsersBroker)):
         system_scopes = []
         collection = self.db["users"]
         
-        cFilter = {"user_id": user_id, "system_scope":{"$exists" : True}}
+        cFilter = {"user_id": user_id, "system_scope":{"$exists" : True}, "area":{"$exists" : True}}
         scopes =  collection.find(cFilter)
         
         for scope in scopes:

@@ -28,6 +28,10 @@ class CommunityDataTypeConstants:
     Representative = "representative"
     List = [Evidence, Representative]
     
+class CommunityRequestFieldConstants:
+    Membership = "membership"
+    List = [Membership]    
+    
 class RequestStatusConstants:
     Pending = "pending"
     Approved = "approved"

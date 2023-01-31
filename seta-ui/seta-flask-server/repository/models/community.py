@@ -1,4 +1,6 @@
+import datetime
 import json
+from dataclasses import dataclass, asdict
 
 class CommunityModel:
     
@@ -63,3 +65,41 @@ class CommunityModel:
                    json_dict["creator_id"],
                    json_dict["created_at"],
                    json_dict["modified_at"])
+        
+@dataclass(kw_only=True)        
+class CommunityChangeRequestModel:
+    request_id: str = None
+    community_id: str = None    
+    field_name: str = None
+    new_value: str = None
+    old_value: str = None
+    requested_by: str = None
+    status: str = None
+    initiated_date: datetime = None
+    reviewed_by: str = None
+    review_date: datetime = None
+    
+    def to_json(self):
+        return asdict(self)
+    
+    def to_json_update(self):
+        return{            
+            "status": self.status,
+            "review_date": self.review_date,
+            "reviewed_by": self.reviewed_by
+        }
+        
+    @classmethod 
+    def from_db_json(cls, json_dict):
+        return cls(request_id=json_dict["request_id"],
+                   community_id=json_dict["community_id"],
+                   field_name=json_dict["field_name"],
+                   new_value=json_dict["new_value"],
+                   old_value=json_dict["old_value"],
+                   requested_by=json_dict["requested_by"],
+                   status=json_dict["status"],
+                   initiated_date=json_dict["initiated_date"],
+                   reviewed_by=json_dict["reviewed_by"],
+                   review_date=json_dict["review_date"])
+    
+            
