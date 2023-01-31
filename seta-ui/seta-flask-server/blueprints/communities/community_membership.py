@@ -62,10 +62,8 @@ class MembershipList(Resource):
                 
         #verify scope
         user = self.usersBroker.get_user_by_id(user_id)
-        if not any(cs.scope == CommunityScopeConstants.ApproveRequest for cs in user.system_scopes):
-            response = jsonify({"message": "Insufficient rights"})
-            response.status_code = int(HTTPStatus.FORBIDDEN)
-            return response
+        if not any(cs.scope == CommunityScopeConstants.ApproveMembershipRequest for cs in user.system_scopes):
+            abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
         
         try:
             
@@ -140,9 +138,7 @@ class Membership(Resource):
         #verify scope
         user = self.usersBroker.get_user_by_id(auth_id)
         if not any(cs.id.lower() == community_id.lower() and cs.scope == CommunityScopeConstants.Edit for cs in user.community_scopes):
-            response = jsonify({"message": "Insufficient rights"})
-            response.status_code = int(HTTPStatus.FORBIDDEN)
-            return response
+            abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
         
         if not self.membershipsBroker.membership_exists(community_id, user_id):
             abort(HTTPStatus.NOT_FOUND, "Membership not found.")
@@ -183,9 +179,7 @@ class Membership(Resource):
         #verify scope
         user = self.usersBroker.get_user_by_id(auth_id)
         if not any(cs.id.lower() == community_id.lower() and cs.scope == CommunityScopeConstants.Edit for cs in user.community_scopes):
-            response = jsonify({"message": "Insufficient rights"})
-            response.status_code = int(HTTPStatus.FORBIDDEN)
-            return response
+            abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
         
         if not self.membershipsBroker.membership_exists(community_id, user_id):
             abort(HTTPStatus.NOT_FOUND, "Membership not found.")
@@ -285,7 +279,8 @@ class Request(Resource):
         super().__init__(api, *args, **kwargs)
         
     @membership_ns.doc(description='Retrieve user request for the community.',
-    responses={int(HTTPStatus.OK): "'Retrieved user request."},
+    responses={int(HTTPStatus.OK): "'Retrieved user request.",
+               int(HTTPStatus.NOT_FOUND): "Request not found."},
     security='CSRF')
     @membership_ns.marshal_with(request_model, mask="*")
     @auth_validator()    
@@ -294,14 +289,17 @@ class Request(Resource):
         
         identity = get_jwt_identity()
         auth_id = identity["user_id"]
-        #TODO: what are the scopes for this ?        
+        #TODO: what are the scopes for this ? 
+        
+        if not self.membershipsBroker.request_exists(community_id=community_id, user_id=user_id):
+            abort(HTTPStatus.NOT_FOUND, "Request not found.")       
         
         return self.membershipsBroker.get_request(community_id=community_id, user_id=user_id)
     
     @membership_ns.doc(description='Approve/reject request',        
     responses={
                 int(HTTPStatus.OK): "Request updated.", 
-                int(HTTPStatus.FORBIDDEN): "Insufficient rights, scope 'community/approve' required",
+                int(HTTPStatus.FORBIDDEN): "Insufficient rights, scope 'community/membership/approve' required",
                 int(HTTPStatus.NOT_FOUND): "Request not found."
                 },
     security='CSRF')
@@ -315,10 +313,8 @@ class Request(Resource):
         
         #verify scope
         user = self.usersBroker.get_user_by_id(auth_id)
-        if not any(cs.id.lower() == community_id.lower() and cs.scope == CommunityScopeConstants.ApproveRequest for cs in user.community_scopes):
-            response = jsonify({"message": "Insufficient rights"})
-            response.status_code = int(HTTPStatus.FORBIDDEN)
-            return response
+        if not any(cs.id.lower() == community_id.lower() and cs.scope == CommunityScopeConstants.ApproveMembershipRequest for cs in user.community_scopes):
+            abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
                 
         if not self.membershipsBroker.request_exists(community_id=community_id, user_id=user_id):
             abort(HTTPStatus.NOT_FOUND, "Request not found.")        

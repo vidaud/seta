@@ -37,7 +37,7 @@ class CommunitiesBroker(implements(ICommunitiesBroker)):
                 scopes = [
                     EntityScope(user_id=model.creator_id,  id=model.community_id, scope=CommunityScopeConstants.Edit).to_community_json(),
                     EntityScope(user_id=model.creator_id,  id=model.community_id, scope=CommunityScopeConstants.SendInvite).to_community_json(),
-                    EntityScope(user_id=model.creator_id,  id=model.community_id, scope=CommunityScopeConstants.ApproveRequest).to_community_json(),
+                    EntityScope(user_id=model.creator_id,  id=model.community_id, scope=CommunityScopeConstants.ApproveMembershipRequest).to_community_json(),
                           ]
                 user_collection = self.db["users"]
                 user_collection.insert_many(scopes, session=session)

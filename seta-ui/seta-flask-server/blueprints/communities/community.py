@@ -12,10 +12,10 @@ from infrastructure.scope_constants import CommunityScopeConstants
 from infrastructure.constants import CommunityMembershipConstants, CommunityStatusConstants
 
 from http import HTTPStatus
-from .models.community_dto import(new_community_parser, update_community_parser, community_model, community_creator_model)
+from .models.community_dto import(new_community_parser, update_community_parser, community_model, user_info_model)
 
 communities_ns = Namespace('Communities', validate=True, description='SETA Communities')
-communities_ns.models[community_creator_model.name] = community_creator_model
+communities_ns.models[user_info_model.name] = user_info_model
 communities_ns.models[community_model.name] = community_model
 
 @communities_ns.route('/', endpoint="community_list", methods=['GET', 'POST'])
@@ -55,16 +55,14 @@ class CommunityList(Resource):
         identity = get_jwt_identity()
         user_id = identity["user_id"]
         id_exists = False
-        
-        community_dict = new_community_parser.parse_args()
-        
+                
         #TODO: move scopes to JWT token and validate trough decorator
         #verify scope
         user = self.usersBroker.get_user_by_id(user_id)
         if not any(cs.scope == CommunityScopeConstants.Create for cs in user.system_scopes):
-            response = jsonify({"message": "Insufficient rights"})
-            response.status_code = int(HTTPStatus.FORBIDDEN)
-            return response
+            abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
+        
+        community_dict = new_community_parser.parse_args()
         
         try:
             
@@ -135,10 +133,7 @@ class Community(Resource):
         #verify scope
         user = self.usersBroker.get_user_by_id(user_id)
         if not any(cs.id.lower() == id.lower() and cs.scope == CommunityScopeConstants.Edit for cs in user.community_scopes):
-            response = jsonify({"message": "Insufficient rights"})
-            response.status_code = int(HTTPStatus.FORBIDDEN)
-            return response
-        
+            abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")        
         
         community_dict = update_community_parser.parse_args()
         
@@ -172,9 +167,7 @@ class Community(Resource):
         #verify scope
         user = self.usersBroker.get_user_by_id(user_id)
         if not any(cs.id.lower() == id.lower() and cs.scope == CommunityScopeConstants.Edit for cs in user.community_scopes):
-            response = jsonify({"message": "Insufficient rights"})
-            response.status_code = int(HTTPStatus.FORBIDDEN)
-            return response
+            abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
         
         try:            
             self.communitiesBroker.delete(id)
