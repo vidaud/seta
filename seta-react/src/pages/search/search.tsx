@@ -27,8 +27,10 @@ const Search = () => {
         });
           const lastPayload = new CorpusSearchPayload({ ...cp, term: term, aggs: 'date_year', n_docs: 100, search_type: typeofSearch, date_range: timeRangeValue });
           corpusService.getDocuments(lastPayload).then(data => {
-            setItems(data.documents);
-            setAggregations(data.aggregations);
+            if (data) {
+                setItems(data.documents);
+                setAggregations(data.aggregations);
+            }
           });
     }, [term, typeofSearch, timeRangeValue]);
 
