@@ -1,7 +1,8 @@
 /* SliderDemo.css */
 
 .slider-demo .p-slider-horizontal, .slider-demo .p-inputtext {
-    width: 14rem;
+    width: -webkit-fill-available;
+    width: -moz-available;
 }
 
 .slider-demo .p-slider-vertical {

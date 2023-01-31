@@ -3,11 +3,16 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { environment } from '../environments/environment';
 import { User } from '../models/user.model';
 import storageService from './storage.service';
+import restService from './rest.service';
 
 const AUTH_API = environment.baseUrl;
 
 class AuthentificationService {
   public currentUserSubject: BehaviorSubject<User | null> = new BehaviorSubject<User| null>(null);
+
+    getRefreshedAccessToken(token: string) {
+      return axios.post(AUTH_API + 'refresh', {});
+    }
     constructor() {
       if(storageService.isLoggedIn()){
         this.currentUserSubject.next(storageService.getUser());
@@ -27,7 +32,7 @@ class AuthentificationService {
   }
 
   setaLogout() {
-    (axios.post(AUTH_API + '/logout', {}) as any).then(() => {
+    (axios.post(AUTH_API + '/logout', {'Cache-Control': 'no-cache', 'Pragma': 'no-cache'}) as any).then(() => {
         window.location.href = "/logout/ecas";
         this.currentUserSubject.next(null);
         storageService.clean();    
@@ -50,7 +55,7 @@ class AuthentificationService {
   }
 
   refreshCookie() {
-    return axios.post(AUTH_API + '/refresh', {});
+    return axios.post(AUTH_API + '/refresh');
   }
 }
 export default new AuthentificationService();
