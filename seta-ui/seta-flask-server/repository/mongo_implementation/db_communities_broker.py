@@ -9,7 +9,7 @@ import pytz
 from repository.models import CommunityModel, EntityScope, MembershipModel
 from repository.interfaces import ICommunitiesBroker
 
-from infrastructure.constants import (UserRoleConstants, CommunityStatusConstants)
+from infrastructure.constants import (CommunityRoleConstants, CommunityStatusConstants)
 from infrastructure.scope_constants import CommunityScopeConstants
 
 class CommunitiesBroker(implements(ICommunitiesBroker)):
@@ -29,8 +29,8 @@ class CommunitiesBroker(implements(ICommunitiesBroker)):
                 self.collection.insert_one(model.to_json(), session=session)
                 
                 #insert this user membership
-                membership = MembershipModel(community_id=model.community_id, creator_id=model.creator_id, 
-                                             role=UserRoleConstants.CommunityManager, join_date=now, status=CommunityStatusConstants.Active)
+                membership = MembershipModel(community_id=model.community_id, user_id=model.creator_id, 
+                                             role=CommunityRoleConstants.Manager, join_date=now, status=CommunityStatusConstants.Active)
                 self.collection.insert_one(membership.to_json(), session=session)
                                 
                 #set manager scopes for this community

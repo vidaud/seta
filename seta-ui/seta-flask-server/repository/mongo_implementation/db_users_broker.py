@@ -18,7 +18,7 @@ class UsersBroker(implements(IUsersBroker)):
     #---------------- Public methods ----------------#
     
     def authenticate_user(self, auth_user: SetaUser) -> SetaUser:
-        seta_user = self._get_user_by_email(auth_user.email)
+        seta_user = self.get_user_by_email(auth_user.email)
         
         if seta_user is not None:
             for p in seta_user.external_providers:
@@ -205,7 +205,7 @@ class UsersBroker(implements(IUsersBroker)):
         
         return ExternalProvider.from_db_json(provider)
     
-    def _get_user_by_email(self, email: str) -> SetaUser:
+    def get_user_by_email(self, email: str) -> SetaUser:
         if not email:
             return None
         

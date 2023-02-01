@@ -1,5 +1,7 @@
 defaultNoPublicKeyMessage = 'NO PUBLIC KEY SET'
 
+INVITE_EXPIRE_DAYS: float = 3
+
 class ExternalProviderConstants:
     ECAS = "ECAS"
     GITHUB = "GitHub"
@@ -7,7 +9,6 @@ class ExternalProviderConstants:
 class UserRoleConstants:
     Admin = "Administrator"
     User = "User"
-    CommunityManager = "CommunityManager"
     
 class ClaimTypeConstants:
     RoleClaimType = "roles"
@@ -23,6 +24,11 @@ class CommunityMembershipConstants:
     Closed = "closed"
     List = [Opened, Closed]
     
+class CommunityRoleConstants:        
+    Manager = "CommunityManager"
+    ResourceCreator = "ResourceCreator"
+    Member = "CommunityMember"
+    
 class CommunityDataTypeConstants:
     Evidence = "evidence"
     Representative = "representative"
@@ -30,7 +36,7 @@ class CommunityDataTypeConstants:
     
 class CommunityRequestFieldConstants:
     Membership = "membership"
-    List = [Membership]    
+    List = [Membership] 
     
 class RequestStatusConstants:
     Pending = "pending"
@@ -38,3 +44,11 @@ class RequestStatusConstants:
     Rejected = "rejected"
     List=[Pending, Approved, Rejected]
     EditList=[Approved, Rejected]
+    
+class InviteStatusConstants:
+    Pending = "pending"
+    Accepted = "accepted"
+    Rejected = "rejected"
+    Expired = "expired"
+    List=[Pending, Accepted, Rejected, Expired]
+    EditList=[Accepted, Rejected]    

@@ -32,3 +32,44 @@ Communities API
 * repository interfaces, mongo implementation & models for community and membership entities
 
 ===============================================
+
+===============================================
+2023-01-31 Andrei:
+------------------
+Communities Change Requests API
+
+New files:
+* seta-ui\seta-flask-server\blueprints\communities\community_change_requests.py
+** change requests namespace
+
+* seta-ui\seta-flask-server\repository\interfaces\community_change_request_broker.py
+** interface for change requests broker
+
+* seta-ui\seta-flask-server\repository\mongo_implementation\db_community_change_requests_broker.py
+** mongo implementation for change requests broker
+
+===============================================
+
+
+===============================================
+2023-01-31 Andrei:
+------------------
+
+/refresh token updated:
+* seta-ui\seta-flask-server\blueprints\auth.py
+** include additional_claims in the refreshed token
+
+Communities Invites API
+
+* new model,  and rest-x namespace:
+** seta-ui\seta-flask-server\repository\models\community_invite.py
+
+* broker interface and mongo implementation:
+** seta-ui\seta-flask-server\repository\interfaces\community_invites_broker.py
+** seta-ui\seta-flask-server\repository\mongo_implementation\db_community_invites_broker.py
+
+* rest-x namespaces:
+** seta-ui\seta-flask-server\blueprints\communities\community_invite.py
+** seta-ui\seta-flask-server\blueprints\communities\invites.py
+
+===============================================
