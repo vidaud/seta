@@ -35,7 +35,7 @@ def logout_local():
     return response
 
 
-@auth.route('/refresh', methods=('POST',))
+@auth.route('/refresh', methods=('POST','GET'))
 @jwt_required(refresh=True)
 def refresh():
   username = get_jwt_identity()

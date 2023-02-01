@@ -17,11 +17,13 @@ const AggregationsChart = ({aggregations}) => {
     const [basicData, setBasicData] = useState(details);
 
     useEffect(() => {
-        const arrOfStr = Object.keys(aggregations.years).map(num => {
-            return String(num);
-        });
-        setYears(arrOfStr);
-        setNumberofDocuments(Object.values(aggregations.years));
+        if (aggregations.years) {
+            const arrOfStr = Object.keys(aggregations.years).map(num => {
+                return String(num);
+            });
+            setYears(arrOfStr);
+            setNumberofDocuments(Object.values(aggregations.years));
+    }
     }, [aggregations, basicData]);
 
     const getLightTheme = () => {

@@ -40,6 +40,20 @@ class AuthentificationService {
 
   }
 
+  setaLocalLogout() {
+    (axios.post(AUTH_API + '/logout', {'Cache-Control': 'no-cache', 'Pragma': 'no-cache'}) as any).then(() => {
+        window.location.href = "/login";
+        this.currentUserSubject.next(null);
+        storageService.clean();    
+    })
+    .catch((error) => {
+      if (error.response) {
+        console.log(error.response);
+      }
+    }) as any;;
+
+  }
+
   profile(): Observable<User | null> {
     axios
       .get<User>(AUTH_API + '/rest/v1/user-info')
@@ -55,7 +69,21 @@ class AuthentificationService {
   }
 
   refreshCookie() {
-    return axios.post(AUTH_API + '/refresh');
+    const csrf_token = restService.getCookie('csrf_refresh_token');
+    return axios.get(AUTH_API + '/refresh', {headers:{"X-CSRF-TOKEN": csrf_token}})
+    .then((response: any) => {
+      window.document.location.reload();
+      return response;
+    })
+    .catch((error) => {
+      if (error.response) {
+        console.log(error.response);
+        if(error.response.status === 401){
+          //redirect to logout
+          this.setaLocalLogout();
+        }
+        }
+    }) as any;
   }
 }
 export default new AuthentificationService();
