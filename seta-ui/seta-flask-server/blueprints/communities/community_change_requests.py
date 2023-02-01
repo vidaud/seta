@@ -62,7 +62,7 @@ class CommunityCreateChangeRequest(Resource):
         
         super().__init__(api, *args, **kwargs)
         
-    @community_change_request_ns.doc(description='Add new change request for a community filed.',        
+    @community_change_request_ns.doc(description='Add new change request for a community field.',        
         responses={int(HTTPStatus.CREATED): "Added new change request.", 
                    int(HTTPStatus.CONFLICT): "Community has already a pending change request for this field",
                    int(HTTPStatus.FORBIDDEN): "Insufficient rights, scope 'community/edit' required",},
@@ -86,7 +86,7 @@ class CommunityCreateChangeRequest(Resource):
         
         model = CommunityChangeRequestModel(community_id = community_id, field_name=request_dict["field_name"],
                                             new_value=request_dict["new_value"], old_value=request_dict["old_value"],
-                                            requested_by = auth_id)
+                                            status = RequestStatusConstants.Pending, requested_by = auth_id)
         try:
             self.changeRequestsBroker.create(model)
         except:
@@ -100,6 +100,7 @@ class CommunityCreateChangeRequest(Resource):
    
 @community_change_request_ns.route('/<string:community_id>/change-requests/<string:request_id>', endpoint="community_change_request", methods=['GET', 'PUT'])
 @community_change_request_ns.param("community_id", "Community identifier") 
+@community_change_request_ns.param("request_id", "Change request identifier")
 class CommunityChangeRequest(Resource):
     """Handles HTTP requests to URL: /communities/{community_id}/change-requests/{request_id}."""
     

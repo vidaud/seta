@@ -38,8 +38,16 @@ def logout_local():
 @auth.route('/refresh', methods=('POST',))
 @jwt_required(refresh=True)
 def refresh():
-  username = get_jwt_identity()
-  access_token = create_access_token(identity = username, fresh=False)
+  identity = get_jwt_identity()
+    
+  additional_claims = None
+  
+  jwt = get_jwt()
+  role = jwt.get("role", None)
+  if role is not None:
+    additional_claims = {"role": role}
+
+  access_token = create_access_token(identity = identity, fresh=False, additional_claims=additional_claims)
 
   response = jsonify({"status": "success"})
   set_access_cookies(response, access_token)
