@@ -51,4 +51,20 @@ class InviteStatusConstants:
     Rejected = "rejected"
     Expired = "expired"
     List=[Pending, Accepted, Rejected, Expired]
-    EditList=[Accepted, Rejected]    
+    EditList=[Accepted, Rejected]
+
+class ResourceAccessContants:
+    Public = "public"
+    Community = "community"
+    List = [Public, Community]
+
+class ResourceRequestFieldConstants:
+    Access = "acesss"
+    Limits = "limits"
+    List = [Access, Limits]
+
+class ResourceStatusConstants:
+    Active = "active"
+    Blocked = "blocked"
+    
+    List = [Active, Blocked]    

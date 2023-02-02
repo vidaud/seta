@@ -73,3 +73,23 @@ Communities Invites API
 ** seta-ui\seta-flask-server\blueprints\communities\invites.py
 
 ===============================================
+
+===============================================
+2023-01-31 Andrei:
+------------------
+
+Resources API:
+
+* new models:
+** seta-ui/seta-flask-server/repository/models/resource.py
+
+* add constants for resource fields and scope_constants for resources
+
+* broker interface and mongo implementation:
+** seta-ui/seta-flask-server/repository/interfaces/resources_broker.py
+** seta-ui/seta-flask-server/repository/mongo_implementation/db_resources_broker.py
+** seta-ui/seta-flask-server/repository/mongo_implementation/db_resource_contributors_broker.py
+** seta-ui/seta-flask-server/repository/mongo_implementation/db_resource_change_requests_broker.py
+
+
+===============================================
