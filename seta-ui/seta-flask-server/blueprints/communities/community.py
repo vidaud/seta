@@ -59,7 +59,9 @@ class CommunityList(Resource):
         #TODO: move scopes to JWT token and validate trough decorator
         #verify scope
         user = self.usersBroker.get_user_by_id(user_id)
-        if not any(cs.scope == CommunityScopeConstants.Create for cs in user.system_scopes):
+        if user is None:
+            abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
+        if not user.has_system_scope(scope=CommunityScopeConstants.Create):
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
         
         community_dict = new_community_parser.parse_args()
@@ -132,8 +134,10 @@ class Community(Resource):
         #TODO: move scopes to JWT token and validate trough decorator
         #verify scope
         user = self.usersBroker.get_user_by_id(user_id)
-        if not any(cs.id.lower() == id.lower() and cs.scope == CommunityScopeConstants.Edit for cs in user.community_scopes):
-            abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")        
+        if user is None:
+            abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
+        if not user.has_community_scope(id=id, scope=CommunityScopeConstants.Edit):
+            abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")       
         
         community_dict = update_community_parser.parse_args()
         
@@ -152,7 +156,7 @@ class Community(Resource):
         
         return response
     
-    @communities_ns.doc(description='Dalete  community entries',
+    @communities_ns.doc(description='Delete  community entries',
         responses={int(HTTPStatus.OK): "Community deleted.", 
                    int(HTTPStatus.FORBIDDEN): "Insufficient rights, scope 'community/edit' required"},
         security='CSRF')
@@ -163,10 +167,11 @@ class Community(Resource):
         identity = get_jwt_identity()
         user_id = identity["user_id"]
         
-        #TODO: move scopes to JWT token and validate trough decorator
         #verify scope
         user = self.usersBroker.get_user_by_id(user_id)
-        if not any(cs.id.lower() == id.lower() and cs.scope == CommunityScopeConstants.Edit for cs in user.community_scopes):
+        if user is None:
+            abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
+        if not user.has_community_scope(id=id, scope=CommunityScopeConstants.Edit):
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
         
         try:            

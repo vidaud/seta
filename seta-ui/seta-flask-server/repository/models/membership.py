@@ -83,10 +83,10 @@ class MembershipRequestModel:
     
     @classmethod 
     def from_db_json(cls, json_dict):
-        return cls(json_dict["community_id"],
-                   json_dict["requested_by"],
-                   json_dict["message"],
-                   json_dict["status"],
-                   json_dict["initiated_date"],
-                   json_dict["reviewed_by"],
-                   json_dict["review_date"])        
+        return cls(community_id=json_dict["community_id"],
+                   requested_by=json_dict["requested_by"],
+                   message=json_dict["message"],
+                   status=json_dict["status"],
+                   initiated_date=json_dict["initiated_date"],
+                   reviewed_by=json_dict["reviewed_by"],
+                   review_date=json_dict["review_date"])        

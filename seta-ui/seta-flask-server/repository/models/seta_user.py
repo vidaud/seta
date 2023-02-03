@@ -139,6 +139,24 @@ class SetaUser:
                 return uc.claim_value
         
         return UserRoleConstants.User
+
+    def has_community_scope(self, id: str, scope: id) -> bool:
+        if self._community_scopes is None:
+            return False
+
+        return any(cs.id.lower() == id.lower() and cs.scope == scope for cs in self._community_scopes)
+
+    def has_resource_scope(self, id: str, scope: id) -> bool:
+        if self._resource_scopes is None:
+            return False
+
+        return any(cs.id.lower() == id.lower() and cs.scope == scope for cs in self._resource_scopes)
+
+    def has_system_scope(self, scope: id) -> bool:
+        if self._system_scopes is None:
+            return False
+
+        return any(cs.scope == scope for cs in self._system_scopes)
         
     @staticmethod
     def generate_uuid() -> str:

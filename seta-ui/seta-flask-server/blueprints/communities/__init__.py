@@ -3,9 +3,11 @@ from flask import Blueprint
 from .community import communities_ns
 from .community_membership import membership_ns
 from .community_change_requests import community_change_request_ns
-#from .resource import resources_ns
 from .invites import invite_ns
 from .community_invite import community_invite_ns
+from .resource import resources_ns
+from .resource_contributor import resource_contributors_ns
+from .resource_change_request import resource_change_request_ns
 
 authorizations = {
     'Bearer': {
@@ -32,9 +34,11 @@ api = Api(communities_bp_v1,
          authorizations=authorizations
          )
 
-api.add_namespace(communities_ns, path="communities")
-api.add_namespace(community_change_request_ns, path="communities")
-api.add_namespace(membership_ns, path="communities")
-api.add_namespace(community_invite_ns, path="communities")
-api.add_namespace(invite_ns, path="invites")
-#api.add_namespace(resources_ns, path="resources")
+api.add_namespace(communities_ns, path="/communities")
+api.add_namespace(community_change_request_ns, path="/communities")
+api.add_namespace(membership_ns, path="/communities")
+api.add_namespace(community_invite_ns, path="/communities")
+api.add_namespace(invite_ns, path="/invites")
+api.add_namespace(resources_ns, path="/resources")
+api.add_namespace(resource_contributors_ns, path="/resources")
+api.add_namespace(resource_change_request_ns, path="/resources")

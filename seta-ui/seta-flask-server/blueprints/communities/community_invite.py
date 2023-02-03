@@ -44,7 +44,9 @@ class CommunityCreateChangeRequest(Resource):
         auth_id = identity["user_id"]
         
         user = self.usersBroker.get_user_by_id(auth_id)
-        if not any(cs.scope == CommunityScopeConstants.SendInvite for cs in user.community_scopes):
+        if user is None:
+            abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
+        if not user.has_community_scope(id=community_id,scope=CommunityScopeConstants.SendInvite):
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
             
         if not self.communitiesBroker.community_id_exists(community_id):
@@ -66,7 +68,9 @@ class CommunityCreateChangeRequest(Resource):
         auth_id = identity["user_id"]
         
         user = self.usersBroker.get_user_by_id(auth_id)
-        if not any(cs.scope == CommunityScopeConstants.SendInvite for cs in user.community_scopes):
+        if user is None:
+            abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
+        if not user.has_community_scope(id=community_id,scope=CommunityScopeConstants.SendInvite):
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
             
         if not self.communitiesBroker.community_id_exists(community_id):

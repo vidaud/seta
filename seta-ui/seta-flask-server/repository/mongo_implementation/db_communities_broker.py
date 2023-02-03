@@ -10,7 +10,7 @@ from repository.models import CommunityModel, EntityScope, MembershipModel
 from repository.interfaces import ICommunitiesBroker
 
 from infrastructure.constants import (CommunityRoleConstants, CommunityStatusConstants)
-from infrastructure.scope_constants import CommunityScopeConstants
+from infrastructure.scope_constants import CommunityScopeConstants, ResourceScopeConstants
 
 class CommunitiesBroker(implements(ICommunitiesBroker)):
     @inject
@@ -38,6 +38,7 @@ class CommunitiesBroker(implements(ICommunitiesBroker)):
                     EntityScope(user_id=model.creator_id,  id=model.community_id, scope=CommunityScopeConstants.Edit).to_community_json(),
                     EntityScope(user_id=model.creator_id,  id=model.community_id, scope=CommunityScopeConstants.SendInvite).to_community_json(),
                     EntityScope(user_id=model.creator_id,  id=model.community_id, scope=CommunityScopeConstants.ApproveMembershipRequest).to_community_json(),
+                    EntityScope(user_id=model.creator_id,  id=model.community_id, scope=ResourceScopeConstants.Create).to_community_json()
                           ]
                 user_collection = self.db["users"]
                 user_collection.insert_many(scopes, session=session)
@@ -66,14 +67,14 @@ class CommunitiesBroker(implements(ICommunitiesBroker)):
             csf = {"community_id": id, "community_scope":{"$exists" : True}}
             user_collection.delete_many(csf, session=session)
             #delete resource scopes
-            rsf = {"community_id": id, "resource_id": {"$in": resource_ids}, "resource_scope":{"$exists" : True}}
+            rsf = {"resource_id": {"$in": resource_ids}, "resource_scope":{"$exists" : True}}
             user_collection.delete_many(rsf, session=session)
             
             #delete all resources from resources collection
-            resource_collection.delete_many({"resource_id": {"$in": resource_ids}})
+            resource_collection.delete_many({"resource_id": {"$in": resource_ids}}, session=session)
             
             #delete all entries from communities collection            
-            self.collection.delete_many({"community_id": id})            
+            self.collection.delete_many({"community_id": id}, session=session)
             
             
     

@@ -8,9 +8,10 @@ from injector import inject
 from repository.models import MembershipModel, MembershipRequestModel
 from repository.interfaces import IMembershipsBroker, IUsersBroker, ICommunitiesBroker
 from infrastructure.decorators import auth_validator
-from .models.membership_dto import (membership_model, new_membership_parser, update_membership_parser, 
+from .models.membership_dto import (membership_model, update_membership_parser, 
                                     request_model, new_request_parser, update_request_parser)
 from infrastructure.scope_constants import CommunityScopeConstants
+from infrastructure.constants import CommunityMembershipConstants
 
 from http import HTTPStatus
 
@@ -41,7 +42,7 @@ class MembershipList(Resource):
         '''Retrieve community memberships'''
         
         identity = get_jwt_identity()
-        user_id = identity["user_id"]
+        auth_id = identity["user_id"]
         #TODO: what are the scopes for this ? 
         
         if not self.communitiesBroker.community_id_exists(community_id):
@@ -49,38 +50,33 @@ class MembershipList(Resource):
         
         return self.membershipsBroker.get_memberships_by_community_id(community_id)
     
-    @membership_ns.doc(description='Add new member to the community.',        
+    @membership_ns.doc(description='Add new member to an opened community.',        
         responses={int(HTTPStatus.CREATED): "Added new member.", 
-                   int(HTTPStatus.FORBIDDEN): "Insufficient rights, scope 'community/approve' required",
+                   int(HTTPStatus.FORBIDDEN): "Community is not opened",
                    int(HTTPStatus.NOT_FOUND): "Community not found",
                    int(HTTPStatus.CONFLICT): "Member already exists."},
         security='CSRF')
-    @membership_ns.expect(new_membership_parser)
     @auth_validator()
     def post(self, community_id):
-        '''Create a community member'''
+        '''Create a member for an opened community'''
         
         identity = get_jwt_identity()
-        user_id = identity["user_id"]
-                        
-        #verify scope
-        user = self.usersBroker.get_user_by_id(user_id)
-        if not any(cs.scope == CommunityScopeConstants.ApproveMembershipRequest for cs in user.system_scopes):
-            abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
+        auth_id = identity["user_id"]                
             
-        if not self.communitiesBroker.community_id_exists(community_id):
+        community = self.communitiesBroker.get_by_id(community_id)
+        if community is None:
             abort(HTTPStatus.NOT_FOUND, "Community not found")
+
+        if community.membership != CommunityMembershipConstants.Opened:
+            abort(HTTPStatus.FORBIDDEN, "Community is not opened, a membership request is required")
             
         member_exists = False        
-        membership_dict = new_membership_parser.parse_args()
-        
         try:
             
-            member_exists = self.membershipsBroker.membership_exists(community_id, membership_dict["user_id"])
+            member_exists = self.membershipsBroker.membership_exists(community_id, auth_id)
                        
             if not member_exists:
-                model = MembershipModel(community_id=community_id, user_id=membership_dict["user_id"], 
-                                        role=membership_dict["role"], status=membership_dict["status"])
+                model = MembershipModel(community_id=community_id, user_id=auth_id)
                 
                 self.membershipsBroker.create_membership(model)
         except:
@@ -146,7 +142,9 @@ class Membership(Resource):
         #TODO: move scopes to JWT token and validate trough decorator
         #verify scope
         user = self.usersBroker.get_user_by_id(auth_id)
-        if not any(cs.id.lower() == community_id.lower() and cs.scope == CommunityScopeConstants.Edit for cs in user.community_scopes):
+        if user is None:
+            abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
+        if not user.has_community_scope(id=community_id, scope=CommunityScopeConstants.Edit):
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
         
         if not self.membershipsBroker.membership_exists(community_id, user_id):
@@ -187,7 +185,9 @@ class Membership(Resource):
         #TODO: move scopes to JWT token and validate trough decorator
         #verify scope
         user = self.usersBroker.get_user_by_id(auth_id)
-        if not any(cs.id.lower() == community_id.lower() and cs.scope == CommunityScopeConstants.Edit for cs in user.community_scopes):
+        if user is None:
+            abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
+        if not user.has_community_scope(id=community_id, scope=CommunityScopeConstants.Edit):
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
         
         if not self.membershipsBroker.membership_exists(community_id, user_id):
@@ -228,8 +228,13 @@ class RequestList(Resource):
         '''Retrieve community requests'''
         
         identity = get_jwt_identity()
-        user_id = identity["user_id"]
-        #TODO: what are the scopes for this ? 
+        auth_id = identity["user_id"]
+
+        user = self.usersBroker.get_user_by_id(auth_id)
+        if user is None:
+            abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
+        if not user.has_community_scope(id=community_id, scope=CommunityScopeConstants.ApproveMembershipRequest):
+            abort(HTTPStatus.FORBIDDEN, "Insufficient rights.") 
         
         if not self.communitiesBroker.community_id_exists(community_id):
             abort(HTTPStatus.NOT_FOUND, "Community not found")       
@@ -336,7 +341,9 @@ class Request(Resource):
         
         #verify scope
         user = self.usersBroker.get_user_by_id(auth_id)
-        if not any(cs.id.lower() == community_id.lower() and cs.scope == CommunityScopeConstants.ApproveMembershipRequest for cs in user.community_scopes):
+        if user is None:
+            abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
+        if not user.has_community_scope(id=community_id, scope=CommunityScopeConstants.ApproveMembershipRequest):
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
                 
         if not self.membershipsBroker.request_exists(community_id=community_id, user_id=user_id):
@@ -358,5 +365,3 @@ class Request(Resource):
         response.status_code = HTTPStatus.OK
         
         return response
-    
-    
