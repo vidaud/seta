@@ -7,7 +7,7 @@ from datetime import datetime
 import pytz
 
 from repository.interfaces.resources_broker import IResourcesBroker
-from repository.models import ResourceModel, EntityScope
+from repository.models import ResourceModel, ResourceLimitsModel, EntityScope
 
 from infrastructure.constants import (ResourceAccessContants, ResourceStatusConstants)
 from infrastructure.scope_constants import ResourceScopeConstants
@@ -27,9 +27,14 @@ class ResourcesBroker(implements(IResourcesBroker)):
             with self.db.client.start_session(causal_consistency=True) as session:
                 model.access = ResourceAccessContants.Community
                 model.status = ResourceStatusConstants.Active
+                #keep default limits
+                model.limits = ResourceLimitsModel()
 
                 model.created_at = now
-                self.collection.insert_one(model.to_json(), session=session)
+
+                model_json = model.to_json()
+                print(model_json)
+                self.collection.insert_one(model_json, session=session)
 
                 #set resouce scopes for the creator_id
                 scopes = [

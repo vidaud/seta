@@ -3,15 +3,15 @@ from dataclasses import dataclass, asdict
 
 @dataclass(kw_only=True)
 class ResourceLimitsModel:
-    total_files_no: int = 50,
-    total_storage_mb: float = 1024,
+    total_files_no: int = 50
+    total_storage_mb: float = 1024
     file_size_mb: float = 50
 
     @classmethod 
     def from_db_json(cls, json_dict):
         return cls(total_files_no=json_dict["total_files_no"],
-                   total_MB=json_dict["total_storage_mb"],
-                   file_MB=json_dict["file_size_mb"])
+                   total_storage_mb=json_dict["total_storage_mb"],
+                   file_size_mb=json_dict["file_size_mb"])
 
 @dataclass(kw_only=True)  
 class ResourceModel:

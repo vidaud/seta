@@ -55,7 +55,7 @@ resource_model = Model("ResourceModel",
             "title": fields.String(description="Resource title"),
             "abstract": fields.String(description="Resource relevant description"),
             "access": fields.String(description="The resource access on search", enum=ResourceAccessContants.List),
-            "limits": fields.Nested(model=resource_mimits_model, description="The resource upload limits"),
+            "limits": fields.Nested(model=resource_limits_model, description="The resource upload limits"),
             "status": fields.String(description="The resource status", enum=ResourceStatusConstants.List),
             "creator_id": fields.String(description="Creator user identifier"),
             "created_at": fields.DateTime(description="Creation date", attribute="created_at")

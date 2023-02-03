@@ -156,7 +156,7 @@ class Community(Resource):
         
         return response
     
-    @communities_ns.doc(description='Dalete  community entries',
+    @communities_ns.doc(description='Delete  community entries',
         responses={int(HTTPStatus.OK): "Community deleted.", 
                    int(HTTPStatus.FORBIDDEN): "Insufficient rights, scope 'community/edit' required"},
         security='CSRF')
