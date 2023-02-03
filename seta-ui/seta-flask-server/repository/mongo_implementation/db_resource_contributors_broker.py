@@ -24,10 +24,10 @@ class ResourceContributorsBroker(implements(IResourceContributorsBroker)):
 
         self.collection.insert_one(model.to_json())
 
-    def get_all_by_resource_id(self, resource_id:str) -> ResourceContributorModel:
+    def get_all_by_resource_id(self, resource_id:str) -> list[ResourceContributorModel]:
         '''Get all contributors for the resource_id'''
 
-        filter = {"resource_id": resource_id, "upload_at": {"$exists": True}}
+        filter = {"resource_id": resource_id, "uploaded_at": {"$exists": True}}
         contributors = self.collection.find(filter)
 
         return [ResourceContributorModel.from_db_json(c) for c in contributors]

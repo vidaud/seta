@@ -28,7 +28,7 @@ class IResourceContributorsBroker(Interface):
     def create(self, model: ResourceContributorModel):
         pass
 
-    def get_all_by_resource_id(self, resource_id:str) -> ResourceContributorModel:
+    def get_all_by_resource_id(self, resource_id:str) -> list[ResourceContributorModel]:
         pass
 
 class IResourceChangeRequestsBroker(Interface):

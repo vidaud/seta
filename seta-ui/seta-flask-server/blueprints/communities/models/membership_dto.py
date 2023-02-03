@@ -4,27 +4,18 @@ from flask_restx.reqparse import RequestParser
 from infrastructure.constants import CommunityStatusConstants, RequestStatusConstants
 from .models_dto import status_list, request_status_list
 
-new_membership_parser = RequestParser(bundle_errors=True)
-new_membership_parser.add_argument("user_id", 
-                                  location="form",
-                                  required=True,
-                                  nullable=False,
-                                  help="User identifier")
-new_membership_parser.add_argument("role", 
+update_membership_parser = RequestParser(bundle_errors=True)
+update_membership_parser.add_argument("role", 
                                   location="form",
                                   required=True,
                                   nullable=False,
                                   help="Membership role")
-#new_membership_parser.add_argument('membership')
-new_membership_parser.add_argument("status",
+update_membership_parser.add_argument("status",
                                   type=status_list,
                                   location="form",
                                   required=True,
                                   nullable=False,
                                   help=f"Status, one of {CommunityStatusConstants.List}")
-
-update_membership_parser = new_membership_parser.copy()
-update_membership_parser.remove_argument("user_id")
 
 
 membership_model = Model("Membership",
