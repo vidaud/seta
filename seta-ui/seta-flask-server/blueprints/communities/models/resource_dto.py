@@ -48,7 +48,7 @@ resource_limits_model = Model("ResourceLimits",
                     "file_size_mb": fields.String(description="File size limit in megabytes")
                 })
 
-resource_model = Model("ResourceModel",
+resource_model = Model("Resource",
         {
             "resource_id": fields.String(description="Resource identifier"),
             "community_id": fields.String(description="Community identifier"),

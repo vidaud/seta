@@ -67,7 +67,7 @@ community_model = Model("Community",
 
 
 def request_field(value):
-    '''Validation method for status value in list'''    
+    '''Validation method for filed name in list'''    
     value = value.lower()
     
     if value not in CommunityRequestFieldConstants.List:

@@ -33,7 +33,7 @@ class ResourceChangeRequestsBroker(implements(IResourceChangeRequestsBroker)):
         self.collection.insert_one(model.to_json())
 
     def update(self, model: ResourceChangeRequestModel) -> None:
-        '''Update change request'''
+        '''Update change request; update resource field if approved'''
         
         model.review_date = datetime.now(tz=pytz.utc)
         
@@ -44,7 +44,7 @@ class ResourceChangeRequestsBroker(implements(IResourceChangeRequestsBroker)):
             self.collection.update_one(filter, uq, session=session)
             
             if model.status == RequestStatusConstants.Approved:
-                cf={"community_id": model.community_id, "membership": {"$exists" : True}}
+                cf={"resource_id": model.resource_id, "access": {"$exists" : True}}
                 modified_at = datetime.now(tz=pytz.utc)
                 
                 new_value = model.new_value

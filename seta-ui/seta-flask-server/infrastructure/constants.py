@@ -59,7 +59,7 @@ class ResourceAccessContants:
     List = [Public, Community]
 
 class ResourceRequestFieldConstants:
-    Access = "acesss"
+    Access = "access"
     Limits = "limits"
     List = [Access, Limits]
 

@@ -108,6 +108,6 @@ class ResourcesBroker(implements(IResourcesBroker)):
     
     def _filter_resource_by_id(self, id: str):
         '''Get filter dict for a resource'''
-        return {"resource_id": id.lower(), "access": {"$exists" : True}}
+        return {"resource_id": id, "access": {"$exists" : True}}
     
     #------------------------#

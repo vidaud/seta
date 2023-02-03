@@ -42,7 +42,7 @@ class MembershipList(Resource):
         '''Retrieve community memberships'''
         
         identity = get_jwt_identity()
-        user_id = identity["user_id"]
+        auth_id = identity["user_id"]
         #TODO: what are the scopes for this ? 
         
         if not self.communitiesBroker.community_id_exists(community_id):
@@ -228,8 +228,13 @@ class RequestList(Resource):
         '''Retrieve community requests'''
         
         identity = get_jwt_identity()
-        user_id = identity["user_id"]
-        #TODO: what are the scopes for this ? 
+        auth_id = identity["user_id"]
+
+        user = self.usersBroker.get_user_by_id(auth_id)
+        if user is None:
+            abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
+        if not user.has_community_scope(id=community_id, scope=CommunityScopeConstants.ApproveMembershipRequest):
+            abort(HTTPStatus.FORBIDDEN, "Insufficient rights.") 
         
         if not self.communitiesBroker.community_id_exists(community_id):
             abort(HTTPStatus.NOT_FOUND, "Community not found")       

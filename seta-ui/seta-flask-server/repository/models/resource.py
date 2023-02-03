@@ -100,7 +100,7 @@ class ResourceChangeRequestModel:
     @classmethod 
     def from_db_json(cls, json_dict):
         return cls(request_id=json_dict["request_id"],
-                   community_id=json_dict["resource_id"],
+                   resource_id=json_dict["resource_id"],
                    field_name=json_dict["field_name"],
                    new_value=json_dict["new_value"],
                    old_value=json_dict["old_value"],

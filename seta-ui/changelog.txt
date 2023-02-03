@@ -75,7 +75,7 @@ Communities Invites API
 ===============================================
 
 ===============================================
-2023-01-31 Andrei:
+2023-02-03 Andrei:
 ------------------
 
 Resources API:
@@ -91,5 +91,12 @@ Resources API:
 ** seta-ui/seta-flask-server/repository/mongo_implementation/db_resource_contributors_broker.py
 ** seta-ui/seta-flask-server/repository/mongo_implementation/db_resource_change_requests_broker.py
 
+* rest-x namespaces:
+** seta-ui/seta-flask-server/blueprints/communities/resource.py
+** seta-ui/seta-flask-server/blueprints/communities/resource_contributor.py
+** seta-ui/seta-flask-server/blueprints/communities/resource_change_request.py
 
+Community API fixes
+* change requests
+* membership requests
 ===============================================
