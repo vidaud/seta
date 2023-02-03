@@ -110,7 +110,7 @@ class DevConfig(Config):
     LOG_LEVEL = "DEBUG"
     
     #JWT variables
-    JWT_ACCESS_TOKEN_EXPIRES = timedelta(minutes=30)
+    JWT_ACCESS_TOKEN_EXPIRES = timedelta(minutes=1)
     JWT_REFRESH_TOKEN_EXPIRES = timedelta(hours=2)
     
     

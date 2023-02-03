@@ -90,7 +90,7 @@ class DevConfig(Config):
     SCHEDULER_ENABLED = False
     
     #JWT variables
-    JWT_ACCESS_TOKEN_EXPIRES = timedelta(minutes=60)
+    JWT_ACCESS_TOKEN_EXPIRES = timedelta(minutes=1)
     JWT_REFRESH_TOKEN_EXPIRES = timedelta(hours=2)
     JWT_COOKIE_SECURE = False
     
