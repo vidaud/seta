@@ -1,5 +1,4 @@
 from flask_restx import Api, Resource, fields
-from flask_restx.reqparse import RequestParser
 
 from flask import Blueprint
 from flask import jsonify, abort
@@ -20,7 +19,7 @@ authorization_api = Api(token_info,
                doc="/doc",
                description="JWT authorization for seta apis"               
                )
-authorization_api = authorization_api.namespace("", "Authorization endpoints")
+ns_authorization = authorization_api.namespace("", "Authorization endpoints")
 
 '''
 request_parser = RequestParser()
@@ -31,28 +30,29 @@ request_parser.add_argument("token",
                             help="Encoded token")
 '''                        
 
-request_parser = authorization_api.model(
-    "Encoded Token",
+request_parser = ns_authorization.model(
+    "EncodedToken",
     {
         'token': fields.String(required=True, description="Encoded token"),
      }
 )
 
-@authorization_api.route("/token_info", methods=['POST'])
+@ns_authorization.route("/token_info", methods=['POST'])
 class TokenInfo(Resource):
     @inject
     def __init__(self, usersBroker: IUsersBroker, api=None, *args, **kwargs):
         self.usersBroker = usersBroker
         super().__init__(api, *args, **kwargs)
     
-    @authorization_api.doc(description="Decoded token with user permissions",
-            responses={int(HTTPStatus.OK): 'Success',
+    @ns_authorization.doc(description="Returns the decoded token including user community permissions",
+            responses={int(HTTPStatus.OK): 'Decoded token as json',
                        int(HTTPStatus.BAD_REQUEST): 'No token provided',
                        int(HTTPStatus.UNAUTHORIZED): 'Unauthorized JWT',
                        int(HTTPStatus.UNPROCESSABLE_ENTITY): 'Invalid token',
                        })
-    @authorization_api.expect(request_parser, validate=True)
+    @ns_authorization.expect(request_parser, validate=True)
     def post(self):
+        '''Decods the token and builds the community scopes for the user identity'''
         
         r = authorization_api.payload
         token = r["token"]

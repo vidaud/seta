@@ -5,6 +5,7 @@ INVITE_EXPIRE_DAYS: float = 3
 class ExternalProviderConstants:
     ECAS = "ECAS"
     GITHUB = "GitHub"
+    List = (ECAS, GITHUB)
 
 class UserRoleConstants:
     Admin = "Administrator"

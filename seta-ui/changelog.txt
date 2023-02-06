@@ -100,3 +100,23 @@ Community API fixes
 * change requests
 * membership requests
 ===============================================
+
+===============================================
+2023-02-03 Andrei:
+------------------
+
+Rest-x refactoring:
+ * seta-ui\seta-flask-server\blueprints\token_info.py
+ * seta-ui\seta-flask-server\blueprints\auth.py
+
+ Add /login/info endpoint that returns the token expiration date:
+  * seta-ui\seta-flask-server\blueprints\auth.py
+
+Set custom swagger.json locations
+* seta-api\apis\__init__.py
+* seta-ui\seta-flask-server\blueprints\auth.py
+
+Improve nginx locations
+* seta-nginx\project.conf
+
+===============================================
