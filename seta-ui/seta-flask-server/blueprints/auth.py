@@ -145,7 +145,7 @@ def refresh_expiring_jwts(response):
                 
         if token_expires is None:
             app.logger.debug("set token_expires to 15 min")
-            token_expires = timedelta(minutes=1)
+            token_expires = timedelta(minutes=15)
 
         print("token_expires:" + str(token_expires))
                 
