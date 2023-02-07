@@ -9,6 +9,7 @@ import { CorpusService } from '../../services/corpus/corpus.service';
 import { CorpusSearchPayload } from '../../store/corpus-search-payload';
 import { Observable } from 'rxjs';
 import authentificationService from '../../services/authentification.service';
+import { TokenStorageService } from '../../services/token-storage.service';
 
 const Search = () => {
     ///const previousInputValue: any = localStorage.getItem('term');
@@ -23,6 +24,7 @@ const Search = () => {
     const [timeRangeValue, setTimeRangeValue] = useState();
     const [lastPayload, setLastPayload] = useState<any>();
     const corpusService = new CorpusService();
+    const tokenService = new TokenStorageService();
     let corpusParameters$: Observable<CorpusSearchPayload>;
     let cp: CorpusSearchPayload;
 
@@ -36,11 +38,20 @@ const Search = () => {
     }, [term, typeofSearch, timeRangeValue]);
 
     const onSearch = () => {
+        const currentTime = new Date().toISOString().slice(0,19);
         if (term.length > 2) {
-            corpusService.getDocuments(lastPayload).then(data => {
-                if (data) {
-                    setItems(data.documents);
-                    setAggregations(data.aggregations);
+            tokenService.getTokenInfo().then(response => {
+                if (response) {
+                    console.log(response)
+                    if(response.data.token_exp > currentTime) {
+                        authentificationService.refreshToken();
+                    }
+                    corpusService.getDocuments(lastPayload).then(data => {
+                        if (data) {
+                            setItems(data.documents);
+                            setAggregations(data.aggregations);
+                        }
+                    });
                 }
             });
             setShowContent(true);

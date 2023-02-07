@@ -1,9 +1,11 @@
+import axios from 'axios';
 import { environment } from '../environments/environment';
 
 const TOKEN_KEY = environment.token_key;
 const REFRESHTOKEN_KEY = environment.refreshtoken_key;
 
-class TokenStorageService {
+export class TokenStorageService {
+  public API = `${environment.baseUrl}`;
 
   constructor() { }
   signOut(): void {
@@ -23,6 +25,10 @@ class TokenStorageService {
   public getRefreshToken(): string | null {
     return window.localStorage.getItem(REFRESHTOKEN_KEY);
   }
-}
 
-export default new TokenStorageService();
+  public getTokenInfo() {
+    const endpoint = `/login/info`;
+    console.log(endpoint);
+    return axios.get(`${this.API}${endpoint}`);
+  }
+}
