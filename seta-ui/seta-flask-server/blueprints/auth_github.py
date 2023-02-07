@@ -20,7 +20,7 @@ auth_github = Blueprint("auth_github", __name__)
 @auth_github.route('/login/github', methods=["GET"])
 def login():
     """
-    GITHUB authentication
+    Redirect to GITHUB authentication page
     """
     next = request.args.get("next", None)
     
@@ -35,7 +35,9 @@ def token_getter():
 @auth_github.route('/login/callback/github', methods=["GET"])
 @github.authorized_handler
 @inject
-def login_callback_github(access_token, userBroker: IUsersBroker):    
+def login_callback_github(access_token, userBroker: IUsersBroker):
+    """Callback after Github successful authentication"""
+    
     if access_token is None:
         abort(401, "Failed Github authorization.")
         
@@ -84,6 +86,8 @@ def login_callback_github(access_token, userBroker: IUsersBroker):
     return response
 
 def _get_user_email() -> str:
+    """Perform a GET request to retrieve the user email from Github"""
+    
     try:
         #emails = github.get("/user/emails", headers={'Accept':'application/vnd.github+json'})
         emails = github.get("/user/emails")
