@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import './style.css';
 import { InputText } from 'primereact';
 import { Button } from 'primereact/button';
@@ -8,40 +8,51 @@ import { Term } from '../../models/term.model';
 import { CorpusService } from '../../services/corpus/corpus.service';
 import { CorpusSearchPayload } from '../../store/corpus-search-payload';
 import { Observable } from 'rxjs';
+import authentificationService from '../../services/authentification.service';
 
 const Search = () => {
+    ///const previousInputValue: any = localStorage.getItem('term');
     const [showContent, setShowContent] = useState(false);
+    ///const [term, setTerm] = useState<Term[]>(previousInputValue ? previousInputValue : []);
     const [term, setTerm] = useState<Term[]>([]);
+    //const previousInputValue = useRef<any>([]);
     const [items, setItems] = useState<any>([]);
     const [aggregations, setAggregations] = useState<any>([]);
     const [documentList, setDocumentList] = useState([]);
     const [typeofSearch, setTypeofSearch] = useState();
     const [timeRangeValue, setTimeRangeValue] = useState();
+    const [lastPayload, setLastPayload] = useState<any>();
     const corpusService = new CorpusService();
     let corpusParameters$: Observable<CorpusSearchPayload>;
     let cp: CorpusSearchPayload;
 
     useEffect(() => {
+        //previousInputValue.current = term;
+        ///localStorage.setItem('term', String(term));
         corpusParameters$?.subscribe((corpusParameters: CorpusSearchPayload) => {
           cp = new CorpusSearchPayload({ ...corpusParameters });
         });
-          const lastPayload = new CorpusSearchPayload({ ...cp, term: term, aggs: 'date_year', n_docs: 100, search_type: typeofSearch, date_range: timeRangeValue });
-          corpusService.getDocuments(lastPayload).then(data => {
-            if (data) {
-                setItems(data.documents);
-                setAggregations(data.aggregations);
-            }
-          });
+        setLastPayload(new CorpusSearchPayload({ ...cp, term: term, aggs: 'date_year', n_docs: 100, search_type: typeofSearch, date_range: timeRangeValue }));
     }, [term, typeofSearch, timeRangeValue]);
 
     const onSearch = () => {
-        if (term.length > 0) {
+        if (term.length > 2) {
+            corpusService.getDocuments(lastPayload).then(data => {
+                if (data) {
+                    setItems(data.documents);
+                    setAggregations(data.aggregations);
+                }
+            });
             setShowContent(true);
+        }
+        else {
+            setShowContent(false); 
         }
     }
 
     const onChangeTerm = (e) => {
-      setTerm(e.target.value);
+        e.preventDefault();
+        setTerm(e.target.value);
     };
 
     const getDocumentList = (list) => {

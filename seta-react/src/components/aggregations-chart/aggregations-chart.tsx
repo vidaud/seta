@@ -2,29 +2,24 @@ import { useEffect, useState } from 'react';
 import { Chart } from 'primereact/chart';
 
 const AggregationsChart = ({aggregations}) => {
-    const [years, setYears] = useState<string[]>([]);
-    const [numberofDocuments, setNumberofDocuments] = useState<any>([]);
-    const details = {
-        labels: years,
-        datasets: [
-            {
-                label: 'Documents / Year',
-                backgroundColor: '#42A5F5',
-                data: numberofDocuments
-            }
-        ]
-    }
-    const [basicData, setBasicData] = useState(details);
+    const [basicData, setBasicData] = useState<any>();
 
     useEffect(() => {
         if (aggregations.years) {
-            const arrOfStr = Object.keys(aggregations.years).map(num => {
-                return String(num);
-            });
-            setYears(arrOfStr);
-            setNumberofDocuments(Object.values(aggregations.years));
-    }
-    }, [aggregations, basicData]);
+            const details = {
+                labels: Object.keys(aggregations.years),
+                datasets: [
+                    {
+                        label: 'Documents / Year',
+                        backgroundColor: '#42A5F5',
+                        data: Object.values(aggregations.years)
+                    }
+                ]
+            }
+            setBasicData(details);
+        }
+        console.log(aggregations);
+    }, [aggregations]);
 
     const getLightTheme = () => {
         let basicOptions = {
