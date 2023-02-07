@@ -36,7 +36,8 @@ status_model = ns_auth.model(
 
 
 login_info_model = ns_auth.model("LoginInfo", {
-    "token_exp": fields.DateTime(description="Token expiration date"),
+    "access_token_exp": fields.DateTime(description="Access token expiration date"),
+    "refresh_token_exp": fields.DateTime(description="Refresh token expiration date"),
     "user_id": fields.String(description="Seta User Identifier"),
     "auth_provider": fields.String(description="Third-party authentication provider", enum=ExternalProviderConstants.List),
     "logout_url": fields.String(description="Logout url to be used by the web client")
@@ -129,15 +130,31 @@ class SetaLoginInfo(Resource):
         
         exp_timestamp = jwt["exp"]
         
-        expire_date = datetime.fromtimestamp(exp_timestamp)
+        access_token_exp = datetime.fromtimestamp(exp_timestamp)
         provider = str(identity["provider"])
         
         logout_url = url_for('auth._seta_logout')
         
         if provider.lower() == ExternalProviderConstants.ECAS.lower():
             logout_url = url_for('auth_ecas.logout_ecas')
+            
+        #get refresh data
+        refresh_exp_timestamp = None
+        refresh_token_exp = None
         
-        return {"token_exp": expire_date, "user_id": identity["user_id"], "auth_provider": provider, "logout_url": logout_url}    
+        try:
+            jwt_header, jwt_data = verify_jwt_in_request(refresh=True)
+            if jwt_data is not None:
+                refresh_exp_timestamp = jwt_data["exp"]
+        except:
+            app.logger.exception("Refresh token failed retrieval")
+        
+        if refresh_exp_timestamp is not None:
+            refresh_token_exp = datetime.fromtimestamp(refresh_exp_timestamp)
+            
+        return {"access_token_exp": access_token_exp, "refresh_token_exp": refresh_token_exp, 
+                "user_id": identity["user_id"], "auth_provider": provider, 
+                "logout_url": logout_url}
 
 def refresh_expiring_jwts(response):
     try:
