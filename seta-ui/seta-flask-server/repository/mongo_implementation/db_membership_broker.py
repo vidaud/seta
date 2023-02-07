@@ -9,7 +9,7 @@ import pytz
 from repository.models import MembershipModel, MembershipRequestModel
 from repository.interfaces import IMembershipsBroker
 
-from infrastructure.constants import RequestStatusConstants
+from infrastructure.constants import RequestStatusConstants, CommunityRoleConstants, CommunityStatusConstants
 
 class MembershipsBroker(implements(IMembershipsBroker)):
     @inject
@@ -21,8 +21,14 @@ class MembershipsBroker(implements(IMembershipsBroker)):
         '''Create community membership json objects in mongo db'''
         
         if not self.membership_exists(user_id=model.user_id, community_id=model.community_id):
-            now = datetime.now(tz=pytz.utc)
-            model.join_date = now
+
+            if model.join_date is None:
+                now = datetime.now(tz=pytz.utc)
+                model.join_date = now
+            if model.role is None:
+                model.role = CommunityRoleConstants.Member
+            if model.status is None:
+                model.status = CommunityStatusConstants.Active            
             
             self.collection.insert_one(model.to_json())
 
@@ -82,19 +88,29 @@ class MembershipsBroker(implements(IMembershipsBroker)):
     def update_request(self, model: MembershipRequestModel) -> None:
         '''Update request'''
         
+        now = datetime.now(tz=pytz.utc)
         model.review_date = datetime.now(tz=pytz.utc)
         uq={"$set": model.to_json_update() }
-        
-        self.collection.update_one(self._filter_request(model.community_id, model.requested_by), uq)
+
+        with self.db.client.start_session(causal_consistency=True) as session:        
+            self.collection.update_one(self._filter_request(model.community_id, model.requested_by), uq, session=session)
+
+            if model.status == RequestStatusConstants.Approved:
+                #create membership
+                membership = MembershipModel(community_id=model.community_id, user_id=model.requested_by, join_date=now, 
+                                             role=CommunityRoleConstants.Member, status=CommunityStatusConstants.Active)
+
+                if not self.membership_exists(user_id=model.requested_by, community_id=model.community_id):
+                    self.collection.insert_one(membership.to_json(), session = session)
     
     def get_requests_by_community_id(self, community_id: str) -> list[MembershipRequestModel]:
-        filter =  {"community_id": community_id, "requested_by":{"$exists" : True}}
+        filter =  {"community_id": community_id, "message":{"$exists" : True}}
         requests = self.collection.find(filter)
         
         return [MembershipRequestModel.from_db_json(c) for c in requests]
     
     def get_request(self, community_id: str, user_id: str) -> MembershipRequestModel:
-        filter =  {"community_id": community_id, "requested_by": user_id}
+        filter =  {"community_id": community_id, "requested_by": user_id, "message":{"$exists" : True}}
         request = self.collection.find_one(filter)
         
         if request is None:
@@ -103,7 +119,7 @@ class MembershipsBroker(implements(IMembershipsBroker)):
         return MembershipRequestModel.from_db_json(request)
     
     def get_requests_by_user_id(self, user_id: str) -> list[MembershipRequestModel]:
-        filter =  {"requested_by": user_id}
+        filter =  {"requested_by": user_id, "message":{"$exists" : True}}
         requests = self.collection.find(filter)
         
         return [MembershipRequestModel.from_db_json(c) for c in requests]
@@ -125,7 +141,7 @@ class MembershipsBroker(implements(IMembershipsBroker)):
     
     def _filter_request(self, community_id: str, user_id: str):
         '''Get filter dict for a membership'''
-        return {"community_id": community_id.lower(), "requested_by": user_id}
+        return {"community_id": community_id.lower(), "requested_by": user_id, "message":{"$exists" : True}}
     
    
     

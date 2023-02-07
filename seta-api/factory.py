@@ -35,6 +35,7 @@ def create_app(config_object):
         
     app.logger.info(app.url_map)
             
+    request_endswith_ignore_list = ['.js', '.css', '.png', '.ico', '.svg', '.map', '.json', 'doc']
     with app.app_context():                
         if app.config['SCHEDULER_ENABLED']:
             from infrastructure.scheduler import (tasks, events)
@@ -50,6 +51,9 @@ def create_app(config_object):
 
         @app.after_request
         def after_request(response: Response):
+            if request.path.endswith(tuple(request_endswith_ignore_list)):
+                return response
+            
             try:
                 verify_jwt_in_request()
             except:

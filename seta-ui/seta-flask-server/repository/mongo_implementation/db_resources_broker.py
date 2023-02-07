@@ -3,18 +3,111 @@ from interface import implements
 from injector import inject
 from repository.interfaces.config import IDbConfig
 
+from datetime import datetime
+import pytz
+
 from repository.interfaces.resources_broker import IResourcesBroker
+from repository.models import ResourceModel, ResourceLimitsModel, EntityScope
+
+from infrastructure.constants import (ResourceAccessContants, ResourceStatusConstants)
+from infrastructure.scope_constants import ResourceScopeConstants
 
 class ResourcesBroker(implements(IResourcesBroker)):
     @inject
     def __init__(self, config: IDbConfig) -> None:
        self.db = config.get_db()
+       self.collection = self.db["resources"]
 
-    def create(self, json: dict) -> dict:
-        pass
+    def create(self, model: ResourceModel) -> None:
+        '''Create resource json objects in mongo db'''
 
-    def update(self, json: dict) -> None:
-        pass
+        if not self.resource_id_exists(model.resource_id):
+            now = datetime.now(tz=pytz.utc)
 
-    def get(self, id) -> dict:
-        pass
+            with self.db.client.start_session(causal_consistency=True) as session:
+                model.access = ResourceAccessContants.Community
+                model.status = ResourceStatusConstants.Active
+                #keep default limits
+                model.limits = ResourceLimitsModel()
+
+                model.created_at = now
+
+                model_json = model.to_json()
+                print(model_json)
+                self.collection.insert_one(model_json, session=session)
+
+                #set resouce scopes for the creator_id
+                scopes = [
+                    EntityScope(user_id=model.creator_id,  id=model.resource_id, scope=ResourceScopeConstants.Edit).to_resource_json()
+                          ]
+                user_collection = self.db["users"]
+                user_collection.insert_many(scopes, session=session)
+
+
+    def update(self, model: ResourceModel) -> None:
+        '''Update resource fields'''
+
+        model.modified_at = datetime.now(tz=pytz.utc)
+        uq={"$set": model.to_json_update() }
+        
+        self.collection.update_one(self._filter_resource_by_id(model.resource_id), uq)
+
+    def delete(self, id: str) -> None:
+        '''Delete all records for resource id'''
+
+        user_collection = self.db["users"]
+        with self.db.client.start_session(causal_consistency=True) as session:
+            #delete resource scopes
+            rsf = {"resource_id": id, "resource_scope":{"$exists" : True}}
+            user_collection.delete_many(rsf, session=session)
+
+            #delete all entries from resources collection            
+            self.collection.delete_many({"resource_id": id}, session=session)
+
+    def get_by_id(self, id: str) -> ResourceModel:
+        '''Retrieve resource by id'''
+
+        dict = self.collection.find_one(self._filter_resource_by_id(id))
+        
+        if dict is None:
+            return None
+        
+        model = ResourceModel.from_db_json(dict)        
+        return model
+
+    def get_all_assigned_to_user_id(self, user_id:str) -> list[ResourceModel]:
+        '''Retrieve all resources assigned to user id'''
+
+        user_collection = self.db["users"]
+        rsf = {"user_id": user_id, "resource_scope":{"$exists" : True}}
+
+        ids = user_collection.find(rsf, {"resource_id": True})
+        tuple_ids = (i["resource_id"] for i in ids)
+
+        filter = {"resource_id": {"$in": tuple_ids}, "access":{"$exists" : True}}
+        resources = self.collection.find(filter)
+
+        return [ResourceModel.from_db_json(c) for c in resources]
+
+    def get_all_by_community_id(self, community_id:str) -> list[ResourceModel]:
+        '''Retrieve all resources belonging to the community id'''
+
+        filter = {"community_id": community_id, "access": {"$exists" : True}}
+        resources = self.collection.find(filter)
+
+        return [ResourceModel.from_db_json(c) for c in resources]
+
+    def resource_id_exists(self, id: str) -> bool:
+        '''Check if a resouce id exists'''
+              
+        exists_count = self.collection.count_documents(self._filter_resource_by_id(id))
+        return exists_count > 0
+
+    #------------------------#
+    """ Private methods """
+    
+    def _filter_resource_by_id(self, id: str):
+        '''Get filter dict for a resource'''
+        return {"resource_id": id, "access": {"$exists" : True}}
+    
+    #------------------------#

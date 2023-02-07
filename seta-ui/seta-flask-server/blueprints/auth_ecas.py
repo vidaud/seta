@@ -1,4 +1,7 @@
 
+from flask_restx import Api, Resource, fields
+from http import HTTPStatus
+
 from flask import Blueprint, abort
 from flask import current_app as app
 from flask import (redirect, request, make_response, url_for)
@@ -19,7 +22,7 @@ auth_ecas = Blueprint("auth_ecas", __name__)
 @auth_ecas.route('/login/ecas', methods=["GET"])
 def login():
     """
-    ECAS authentication
+    Redirects to ECAS authentication page
     """
     
     #TODO: verify if user already logged in ?
@@ -35,6 +38,8 @@ def login():
 @auth_ecas.route('/login/callback/ecas', methods=["GET"])
 @inject
 def login_callback_ecas(userBroker: IUsersBroker):
+    """ Callback after ECAS successful authentication """
+    
     next = request.args.get("next")
     ticket = request.args.get("ticket")
     
@@ -88,7 +93,9 @@ def login_callback_ecas(userBroker: IUsersBroker):
 
 @auth_ecas.route("/logout/ecas")
 def logout_ecas():
-    redirect_url = url_for("auth.logout_callback", _external=True)
+    """Redirect to ECAS logout page"""
+    
+    redirect_url = url_for("auth._seta_logout_callback", _external=True)
     cas_logout_url = app.cas_client.get_logout_url(redirect_url)
     app.logger.debug("CAS logout URL: %s", cas_logout_url)
 

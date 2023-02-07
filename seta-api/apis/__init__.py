@@ -19,6 +19,8 @@ authorizations = {
     }
 }
 
+api_root = "/seta-api/api/v1"
+
 api = Api(version='beta',
          title='SeTA API',
          description='SeTA<style>.models {display: none !important}</style> - Semantic Text Analysis. \n'
@@ -32,10 +34,9 @@ api = Api(version='beta',
                      'the technical approach chosen and key use cases are described here: '
                      'https://ec.europa.eu/jrc/en/publication/semantic-text-analysis-tool-seta',
          doc='/seta-api/doc',
-         authorizations=authorizations
+         authorizations=authorizations,
+         default_swagger_filename= api_root[1:] + "/swagger_api.json",
          )
-
-api_root = "/seta-api/api/v1"
 
 api.add_namespace(cluster_api, path=api_root)
 api.add_namespace(suggestions_api, path=api_root)

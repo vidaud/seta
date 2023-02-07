@@ -6,3 +6,5 @@ from .community import CommunityModel, CommunityChangeRequestModel
 from .entity_scope import EntityScope
 from .system_scope import SystemScope
 from .membership import MembershipModel, MembershipRequestModel
+from .community_invite import CommunityInviteModel
+from .resource import ResourceModel, ResourceLimitsModel, ResourceContributorModel, ResourceChangeRequestModel

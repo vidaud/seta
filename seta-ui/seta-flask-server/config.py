@@ -41,6 +41,9 @@ class Config:
     LOG_COPIES = "5"
     
     ROOT_USERS = []
+    
+    #disable the mask documentation in swagger
+    RESTX_MASK_SWAGGER=False
         
     def __init__(self) -> None:             
         """Read environment variables"""               
