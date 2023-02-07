@@ -9,7 +9,7 @@ import pytz
 from repository.interfaces.resources_broker import IResourcesBroker
 from repository.models import ResourceModel, ResourceLimitsModel, EntityScope
 
-from infrastructure.constants import (ResourceAccessContants, ResourceStatusConstants)
+from infrastructure.constants import (ResourceAccessContants, ResourceStatusConstants, CommunityStatusConstants)
 from infrastructure.scope_constants import ResourceScopeConstants
 
 class ResourcesBroker(implements(IResourcesBroker)):
@@ -38,7 +38,9 @@ class ResourcesBroker(implements(IResourcesBroker)):
 
                 #set resouce scopes for the creator_id
                 scopes = [
-                    EntityScope(user_id=model.creator_id,  id=model.resource_id, scope=ResourceScopeConstants.Edit).to_resource_json()
+                    EntityScope(user_id=model.creator_id,  id=model.resource_id, scope=ResourceScopeConstants.Edit).to_resource_json(),
+                    EntityScope(user_id=model.creator_id,  id=model.resource_id, scope=ResourceScopeConstants.DataAdd).to_resource_json(),
+                    EntityScope(user_id=model.creator_id,  id=model.resource_id, scope=ResourceScopeConstants.DataDelete).to_resource_json()
                           ]
                 user_collection = self.db["users"]
                 user_collection.insert_many(scopes, session=session)
@@ -82,9 +84,25 @@ class ResourcesBroker(implements(IResourcesBroker)):
         rsf = {"user_id": user_id, "resource_scope":{"$exists" : True}}
 
         ids = user_collection.find(rsf, {"resource_id": True})
-        tuple_ids = (i["resource_id"] for i in ids)
+        resource_ids = [i["resource_id"] for i in ids]
 
-        filter = {"resource_id": {"$in": tuple_ids}, "access":{"$exists" : True}}
+        filter = {"resource_id": {"$in": resource_ids}, "access":{"$exists" : True}}
+        resources = self.collection.find(filter)
+
+        return [ResourceModel.from_db_json(c) for c in resources]
+    
+    def get_all_queryable_by_user_id(self, user_id:str) -> list[ResourceModel]:
+        '''Retrieve all resources that can be queried by user id'''
+        
+        #get active memberships
+        community_collection = self.db["communities"]
+        
+        memberships_filter =  {"user_id": user_id, "status": CommunityStatusConstants.Active, "join_date":{"$exists" : 1}}        
+        memberships = community_collection.find(memberships_filter, {"community_id": 1})        
+        community_ids = [i["community_id"] for i in memberships]
+                
+        #get active resources
+        filter = {"community_id": {"$in": community_ids}, "status": ResourceStatusConstants.Active, "access":{"$exists" : 1}}        
         resources = self.collection.find(filter)
 
         return [ResourceModel.from_db_json(c) for c in resources]

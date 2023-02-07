@@ -8,8 +8,10 @@ from flask import current_app as app
 
 from http import HTTPStatus
 
-from repository.interfaces import IUsersBroker
+from repository.interfaces import IUsersBroker, IResourcesBroker
 from injector import inject
+
+from infrastructure.scope_constants import ResourceScopeConstants
 
 token_info = Blueprint("token_info", __name__)
 
@@ -40,8 +42,10 @@ request_parser = ns_authorization.model(
 @ns_authorization.route("/token_info", methods=['POST'])
 class TokenInfo(Resource):
     @inject
-    def __init__(self, usersBroker: IUsersBroker, api=None, *args, **kwargs):
+    def __init__(self, usersBroker: IUsersBroker, resourcesBroker: IResourcesBroker, api=None, *args, **kwargs):
         self.usersBroker = usersBroker
+        self.resourcesBroker = resourcesBroker
+        
         super().__init__(api, *args, **kwargs)
     
     @ns_authorization.doc(description="Returns the decoded token including user community permissions",
@@ -71,14 +75,15 @@ class TokenInfo(Resource):
                 decoded_token["resource_scopes"] = []
                 if user is not None:
                     if user.resource_scopes is not None:
-                        decoded_token["resource_scopes"] = [obj.to_scope_json() for obj in user.resource_scopes]
+                        data_add_resources = filter(lambda r: r.scope.lower() == ResourceScopeConstants.DataAdd.lower(), user.resource_scopes)                        
+                        decoded_token["data_add_resources"] = [obj.id for obj in data_add_resources]
+                        
+                        data_delete_resources = filter(lambda r: r.scope.lower() == ResourceScopeConstants.DataDelete.lower(), user.resource_scopes)                        
+                        decoded_token["data_delete_resources"] = [obj.id for obj in data_delete_resources]
 
-                    if user.system_scopes is not None:
-                        for ss in user.system_scopes:
-                            if ss.area.lower() == "resource":
-                                decoded_token["resource_scopes"].add({"id": "_any_", "scope": ss.scope})
-
-                    #TODO: build readable scopes from the community membership and public resources
+                    #get queryable resource
+                    view_resources = self.resourcesBroker.get_all_queryable_by_user_id(user.user_id)
+                    decoded_token["view_resources"] =  [obj.resource_id for obj in view_resources]
                 
 
         except JWTExtendedException as e:
