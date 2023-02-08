@@ -24,7 +24,7 @@ const Home = () => {
             numScroll: 2
         },
         {
-            breakpoint: '767px',
+            breakpoint: '567px',
             numVisible: 1,
             numScroll: 1
         }
@@ -40,16 +40,18 @@ const Home = () => {
         return (
             <div className="product-item">
                 <div className="product-item-content">
-                        <img src={`${product.image}`} alt={product.description} className="product-image"/>
+                    <div className="mb-3">
+                        <img src={`${product.image}`} alt={product.name} className="product-image"/>
+                    </div>
                 </div>
             </div>
         );
     };
     
     return (
-        <div className="card flex justify-content-center">
+        <div className="card justify-content-center">
             <Carousel value={products} numVisible={1} numScroll={1} responsiveOptions={responsiveOptions} className="custom-carousel" circular
-            autoplayInterval={3000} itemTemplate={productTemplate}  />
+            autoplayInterval={3000} itemTemplate={productTemplate}/>
         </div>
     )
 }
