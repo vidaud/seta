@@ -118,7 +118,6 @@ Set custom swagger.json locations
 
 Improve nginx locations
 * seta-nginx\project.conf
-
 ===============================================
 
 ===============================================
@@ -128,5 +127,21 @@ Improve nginx locations
 Add scopes DataAdd & DataDelete for resources
 Add 3 resource lists to token_info endpoint: data_add_resources, data_delete_resources & view_resources
 Add method get_all_queryable_by_user_id to ResourcesBroker
+===============================================
 
+===============================================
+2023-02-08 Andrei:
+------------------
+
+Remove '/login/info' endpoint
+
+Set cookies for access and refresh tokens UNIX timestamp for expiration:
+* access_expire_cookie - UNIX timestamp for the access token expiration 
+* refresh_expire_cookie - UNIX timestamp for the refresh token expiration
+
+* seta-ui\seta-flask-server\infrastructure\helpers.py
+** define new helpers methods for cookies set/unset: set_token_info_cookies & unset_token_info_cookies
+
+* seta-ui\seta-flask-server\blueprints: auth.py, auth_ecas.py & auth_github.py:
+** set/unset token info cookies
 ===============================================

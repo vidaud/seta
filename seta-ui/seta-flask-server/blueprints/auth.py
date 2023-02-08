@@ -7,14 +7,15 @@ from datetime import timezone
 
 from flask import Blueprint
 from flask import current_app as app
-from flask import (jsonify, redirect, make_response, url_for)
+from flask import (jsonify, redirect, make_response)
 
 from flask_jwt_extended import create_access_token
-from flask_jwt_extended import jwt_required, verify_jwt_in_request
+from flask_jwt_extended import jwt_required
 from flask_jwt_extended import set_access_cookies, unset_jwt_cookies
 from flask_jwt_extended import get_jwt_identity, get_jwt
 
 from infrastructure.constants import ExternalProviderConstants
+from infrastructure.helpers import set_token_info_cookies, unset_token_info_cookies
 
 auth = Blueprint("auth", __name__)
 
@@ -55,6 +56,8 @@ class SetaLogoutCallback(Resource):
         
         response = make_response(redirect(app.home_route))
         unset_jwt_cookies(response)
+        unset_token_info_cookies(response=response)
+        
         return response
 
 @ns_auth.route("/logout", methods=["POST","GET"],
@@ -78,6 +81,8 @@ class SetaLogout(Resource):
         #session.pop("username", None)
         response = jsonify({"status": "success"})
         unset_jwt_cookies(response)
+        unset_token_info_cookies(response=response)
+        
         return response
     
 @ns_auth.route("/refresh", methods=["POST","GET"],
@@ -107,10 +112,12 @@ class SetaRefresh(Resource):
         access_token = create_access_token(identity = identity, fresh=False, additional_claims=additional_claims)
 
         response = jsonify({"status": "success"})
-        set_access_cookies(response, access_token)
+        set_access_cookies(response, access_token)        
+        set_token_info_cookies(response=response, access_token_encoded=access_token)
 
         return response
     
+'''
 @ns_auth.route("/login/info", methods=['GET'])
 class SetaLoginInfo(Resource):
     
@@ -155,6 +162,7 @@ class SetaLoginInfo(Resource):
         return {"access_token_exp": access_token_exp, "refresh_token_exp": refresh_token_exp, 
                 "user_id": identity["user_id"], "auth_provider": provider, 
                 "logout_url": logout_url}
+    ''' 
 
 def refresh_expiring_jwts(response):
     try:
@@ -187,7 +195,7 @@ def refresh_expiring_jwts(response):
             
             access_token = create_access_token(identity=identity, fresh=False, additional_claims=additional_claims)
             set_access_cookies(response, access_token)
-            
+            set_token_info_cookies(response=response, access_token_encoded=access_token)
             
             app.logger.debug("target_timestamp: " 
                         + str(datetime.fromtimestamp(target_timestamp)) 
@@ -200,4 +208,4 @@ def refresh_expiring_jwts(response):
         app.logger.exception("Could not refresh the expiring token.")        
         return response
     finally:
-        return response
+        return response  
