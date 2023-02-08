@@ -8,7 +8,11 @@ import TabMenuFilters from '../../components/tab-menu-filters/tab-menu-filters';
 const TabMenus = (props) => {
     const [searchType, setSearchType] = useState();
     const [timeRange, setTimeRange] = useState();
-
+    const itemsHeader = [
+        {label: 'Document List'},
+        {label: 'Concepts'},
+        {label: 'Document Map'}
+    ];
     const getSearchTypes = (search_type) => {
         setSearchType(search_type);
     };

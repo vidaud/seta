@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import './style.css';
 import { InputText } from 'primereact';
 import { Button } from 'primereact/button';
@@ -10,27 +10,29 @@ import { CorpusSearchPayload } from '../../store/corpus-search-payload';
 import { Observable } from 'rxjs';
 import authentificationService from '../../services/authentification.service';
 import { TokenStorageService } from '../../services/token-storage.service';
+import { BreadCrumb } from 'primereact/breadcrumb';
 
 const Search = () => {
-    ///const previousInputValue: any = localStorage.getItem('term');
     const [showContent, setShowContent] = useState(false);
-    ///const [term, setTerm] = useState<Term[]>(previousInputValue ? previousInputValue : []);
     const [term, setTerm] = useState<Term[]>([]);
-    //const previousInputValue = useRef<any>([]);
     const [items, setItems] = useState<any>([]);
     const [aggregations, setAggregations] = useState<any>([]);
     const [documentList, setDocumentList] = useState([]);
     const [typeofSearch, setTypeofSearch] = useState();
     const [timeRangeValue, setTimeRangeValue] = useState();
     const [lastPayload, setLastPayload] = useState<any>();
+    const [isActive, setIsActive] = useState(false);
     const corpusService = new CorpusService();
     const tokenService = new TokenStorageService();
     let corpusParameters$: Observable<CorpusSearchPayload>;
     let cp: CorpusSearchPayload;
+    const itemsBreadCrumb = [
+        {label: 'Search', url: '/seta-ui/search'},
+        {label: 'Document List', url: '/seta-ui/search#documentList'}
+    ];
+    const home = { icon: 'pi pi-home', url: '/seta-ui' }
 
     useEffect(() => {
-        //previousInputValue.current = term;
-        ///localStorage.setItem('term', String(term));
         corpusParameters$?.subscribe((corpusParameters: CorpusSearchPayload) => {
           cp = new CorpusSearchPayload({ ...corpusParameters });
         });
@@ -89,6 +91,8 @@ const Search = () => {
     }
     
     return (
+        <>
+        <BreadCrumb model={itemsBreadCrumb} home={home} />
         <div className="page">
             { showContent ? null : <div>Discover and Link Knowledge in EU Documents</div> }
             <div className="col-8">
@@ -111,6 +115,7 @@ const Search = () => {
                     /> : null }
             </div>
         </div>
-        );
+        </>
+    );
     }
 export default Search;
