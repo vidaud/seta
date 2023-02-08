@@ -1,7 +1,7 @@
 import './App.css';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Home from './pages/home/home';
-import About from './pages/about/about';
+import Faqs from './pages/faqs/faqs';
 import Contact from './pages/contact/contact';
 import Search from './pages/search/search';
 import Profile from './pages/profile/profile';
@@ -48,7 +48,7 @@ function App() {
             }
           />
           <Route path="/seta-ui/communities" element={<Communities />} />
-          <Route path="/seta-ui/about" element={<About />} />
+          <Route path="/seta-ui/faqs" element={<Faqs />} />
           <Route path="/seta-ui/contact" element={<Contact />} />
           <Route path="/seta-ui/login" element={<Login />} />
         </Routes>

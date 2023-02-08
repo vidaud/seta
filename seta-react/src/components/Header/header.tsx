@@ -33,9 +33,9 @@ const Header = () => {
             url: '/seta-ui/communities',
         },
         {
-            label: 'About',
+            label: 'Faqs',
             className: 'seta-item',
-            url: '/seta-ui/about',
+            url: '/seta-ui/faqs',
         },
         {
             label: 'Contact',
