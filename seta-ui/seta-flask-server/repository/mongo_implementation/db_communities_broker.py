@@ -104,7 +104,7 @@ class CommunitiesBroker(implements(ICommunitiesBroker)):
     def get_all_by_user_id(self, user_id:str) -> list[CommunityModel]:
         '''Retrieve all communities filtered by user id'''
         
-        membership_filter =  {"user_id": user_id, "join_date":{"$exists" : True}}        
+        membership_filter =  {"user_id": user_id, "status": CommunityStatusConstants.Active, "join_date":{"$exists" : True}}        
         ids = self.collection.find(membership_filter, {"community_id": True})
               
         filter = {"community_id": {"$in": [i["community_id"] for i in ids]}, "membership":{"$exists" : True}}

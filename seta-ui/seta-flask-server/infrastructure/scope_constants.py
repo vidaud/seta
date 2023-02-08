@@ -8,4 +8,6 @@ class CommunityScopeConstants:
 class ResourceScopeConstants:
     Create = "/seta/resource/create"
     Edit = "/seta/resource/edit"
+    DataAdd = "/seta/resource/data/add"
+    DataDelete = "/seta/resource/data/delete"
     ApproveChangeRequest = "/seta/resource/change_request/approve"

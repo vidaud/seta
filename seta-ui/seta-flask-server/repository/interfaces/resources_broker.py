@@ -16,12 +16,15 @@ class IResourcesBroker(Interface):
 
     def get_all_assigned_to_user_id(self, user_id:str) -> list[ResourceModel]:
         pass
+    
+    def get_all_queryable_by_user_id(self, user_id:str) -> list[ResourceModel]:
+        pass
 
     def get_all_by_community_id(self, community_id:str) -> list[ResourceModel]:
         pass
 
     def resource_id_exists(self, id: str) -> bool:
-        pass   
+        pass       
     
 
 class IResourceContributorsBroker(Interface):
