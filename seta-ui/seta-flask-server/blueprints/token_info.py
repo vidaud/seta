@@ -71,19 +71,21 @@ class TokenInfo(Resource):
             if seta_id:
                 user = self.usersBroker.get_user_by_id(seta_id["user_id"])
                 
-
-                decoded_token["resource_scopes"] = []
+                permissions = {"add": [], "delete": [], "view": []}  
+                              
                 if user is not None:
                     if user.resource_scopes is not None:
                         data_add_resources = filter(lambda r: r.scope.lower() == ResourceScopeConstants.DataAdd.lower(), user.resource_scopes)                        
-                        decoded_token["data_add_resources"] = [obj.id for obj in data_add_resources]
+                        permissions["add"] = [obj.id for obj in data_add_resources]
                         
                         data_delete_resources = filter(lambda r: r.scope.lower() == ResourceScopeConstants.DataDelete.lower(), user.resource_scopes)                        
-                        decoded_token["data_delete_resources"] = [obj.id for obj in data_delete_resources]
+                        permissions["delete"] = [obj.id for obj in data_delete_resources]
 
                     #get queryable resource
                     view_resources = self.resourcesBroker.get_all_queryable_by_user_id(user.user_id)
-                    decoded_token["view_resources"] =  [obj.resource_id for obj in view_resources]
+                    permissions["view"] =  [obj.resource_id for obj in view_resources]
+                    
+                decoded_token["resource_permissions"] = permissions
                 
 
         except JWTExtendedException as e:
