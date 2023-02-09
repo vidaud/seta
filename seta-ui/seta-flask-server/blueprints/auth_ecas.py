@@ -9,6 +9,8 @@ from flask import (redirect, request, make_response, url_for)
 from flask_jwt_extended import create_access_token, create_refresh_token
 from flask_jwt_extended import set_access_cookies, set_refresh_cookies
 
+from infrastructure.helpers import set_token_info_cookies
+
 from urllib.parse import urljoin
 
 from injector import inject
@@ -87,7 +89,8 @@ def login_callback_ecas(userBroker: IUsersBroker):
         
         #response.set_cookie('user_auth', user)
         set_access_cookies(response, access_token)
-        set_refresh_cookies(response, refresh_token)            
+        set_refresh_cookies(response, refresh_token)   
+        set_token_info_cookies(response=response, access_token_encoded=access_token, refresh_token_encoded=refresh_token)
         
         return response
 

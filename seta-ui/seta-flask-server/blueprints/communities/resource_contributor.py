@@ -46,12 +46,12 @@ class ResourceContributorList(Resource):
     @resource_contributors_ns.doc(description='Create new contributor.',        
         responses={int(HTTPStatus.CREATED): "Added contributor.", 
                    int(HTTPStatus.NOT_FOUND): "Resource not found",
-                   int(HTTPStatus.FORBIDDEN): "Insufficient rights, scope 'resource/edit' required"},
+                   int(HTTPStatus.FORBIDDEN): "Insufficient rights, scope 'resource/data/add' required"},
         security='CSRF')
     @resource_contributors_ns.expect(new_contributor_parser)
     @auth_validator()
     def post(self, resource_id):
-        '''Create resource'''
+        '''Create resource contribution'''
         
         identity = get_jwt_identity()
         auth_id = identity["user_id"]
@@ -59,7 +59,7 @@ class ResourceContributorList(Resource):
         user = self.usersBroker.get_user_by_id(auth_id)
         if user is None:
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
-        if not user.has_resource_scope(id=resource_id, scope=ResourceScopeConstants.Edit):
+        if not user.has_resource_scope(id=resource_id, scope=ResourceScopeConstants.DataAdd):
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
 
         if not self.resourcesBroker.resource_id_exists(resource_id):
