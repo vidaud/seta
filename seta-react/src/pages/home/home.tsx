@@ -15,7 +15,7 @@ const Home = () => {
         description: string;
         image: string
 
-      }
+      } 
 
     const [products, setImages] = useState<ImageProperties[]>([]);
     const carouselService = new CarouselService();
