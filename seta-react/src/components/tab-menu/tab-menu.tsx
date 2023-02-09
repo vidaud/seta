@@ -1,8 +1,6 @@
-// import React, { useState } from 'react';
 import { TabView, TabPanel } from 'primereact';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import DocumentList from '../../components/document-list/document-list';
-// import Pagination from '../../components/pagination/pagination';
 import TabMenuFilters from '../../components/tab-menu-filters/tab-menu-filters';
 
 const TabMenus = (props) => {

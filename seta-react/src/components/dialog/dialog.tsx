@@ -15,7 +15,6 @@ const DialogButton = ({onChange, onChangeText, onChangeFile, onChangeContentVisi
     const [textareaValue, setTextareaValue] = useState("");
     const [fileToUpload, setFileToUpload] = useState<File | null>(null);
     const [showContentList, setShowContentList] = useState(false);
-    // const [typeSearch, setTypeSearch] = useState('');
     const embeddingsService = new EmbeddingsService();
     let cp: CorpusSearchPayload;
     const corpusService = new CorpusService();

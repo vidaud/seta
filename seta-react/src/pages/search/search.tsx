@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import './style.css';
 import { InputText } from 'primereact';
 import { Button } from 'primereact/button';
@@ -8,8 +8,6 @@ import { Term } from '../../models/term.model';
 import { CorpusService } from '../../services/corpus/corpus.service';
 import { CorpusSearchPayload } from '../../store/corpus-search-payload';
 import { Observable } from 'rxjs';
-import authentificationService from '../../services/authentification.service';
-import { TokenStorageService } from '../../services/token-storage.service';
 import { BreadCrumb } from 'primereact/breadcrumb';
 
 const Search = () => {
@@ -21,14 +19,12 @@ const Search = () => {
     const [typeofSearch, setTypeofSearch] = useState();
     const [timeRangeValue, setTimeRangeValue] = useState();
     const [lastPayload, setLastPayload] = useState<any>();
-    const [isActive, setIsActive] = useState(false);
     const corpusService = new CorpusService();
-    const tokenService = new TokenStorageService();
     let corpusParameters$: Observable<CorpusSearchPayload>;
     let cp: CorpusSearchPayload;
     const itemsBreadCrumb = [
         {label: 'Search', url: '/seta-ui/search'},
-        {label: 'Document List', url: '/seta-ui/search#documentList'}
+        {label: 'Document List'}
     ];
     const home = { icon: 'pi pi-home', url: '/seta-ui' }
 
@@ -37,23 +33,15 @@ const Search = () => {
           cp = new CorpusSearchPayload({ ...corpusParameters });
         });
         setLastPayload(new CorpusSearchPayload({ ...cp, term: term, aggs: 'date_year', n_docs: 100, search_type: typeofSearch, date_range: timeRangeValue }));
+        corpusService.getRefreshedToken();
     }, [term, typeofSearch, timeRangeValue]);
 
     const onSearch = () => {
-        const currentTime = new Date().toISOString().slice(0,19);
         if (term.length > 2) {
-            tokenService.getTokenInfo().then(response => {
-                if (response) {
-                    console.log(response)
-                    if(response.data.token_exp > currentTime) {
-                        authentificationService.refreshToken();
-                    }
-                    corpusService.getDocuments(lastPayload).then(data => {
-                        if (data) {
-                            setItems(data.documents);
-                            setAggregations(data.aggregations);
-                        }
-                    });
+            corpusService.getDocuments(lastPayload).then(data => {
+                if (data) {
+                    setItems(data.documents);
+                    setAggregations(data.aggregations);
                 }
             });
             setShowContent(true);

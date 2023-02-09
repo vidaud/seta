@@ -144,7 +144,7 @@ class RestService {
 
   public getCookie(name: string): string {
     const query: any = window.document.cookie.split('; ');
-    if (query.length === 2) {
+    if (query.length > 2) {
       let csrf_token = query.find(row => row.startsWith(`${name}=`)).split('=');
       if (csrf_token.length === 2) {
         return csrf_token[1];

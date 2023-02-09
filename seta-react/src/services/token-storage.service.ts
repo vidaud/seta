@@ -1,4 +1,3 @@
-import axios from 'axios';
 import { environment } from '../environments/environment';
 
 const TOKEN_KEY = environment.token_key;
@@ -24,11 +23,5 @@ export class TokenStorageService {
   }
   public getRefreshToken(): string | null {
     return window.localStorage.getItem(REFRESHTOKEN_KEY);
-  }
-
-  public getTokenInfo() {
-    const endpoint = `/login/info`;
-    console.log(endpoint);
-    return axios.get(`${this.API}${endpoint}`);
   }
 }
