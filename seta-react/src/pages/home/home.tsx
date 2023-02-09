@@ -10,7 +10,14 @@ const carousel = {
     prevIcon: <span className="pi pi-fw pi-caret-left"></span>
 }
 const Home = () => {
-    const [products, setImages] = useState([]);
+    interface ImageProperties {
+        name: string;
+        description: string;
+        image: string
+
+      }
+
+    const [products, setImages] = useState<ImageProperties[]>([]);
     const carouselService = new CarouselService();
     const responsiveOptions = [
         {
