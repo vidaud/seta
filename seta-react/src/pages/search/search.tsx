@@ -38,6 +38,7 @@ const Search = () => {
 
     const onSearch = () => {
         if (term.length > 2) {
+            corpusService.getRefreshedToken();
             corpusService.getDocuments(lastPayload).then(data => {
                 if (data) {
                     setItems(data.documents);

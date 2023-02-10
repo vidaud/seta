@@ -14,17 +14,16 @@ export class CorpusService {
   public regexService: RegExp = environment._regex;
 
   getRefreshedToken() {
-    const currentTimestamp = new Date().getTime() / 1E3 | 0;
+    //const currentTimestamp = new Date().getTime() / 1E3 | 0;
+    const currentTimestamp = Math.floor(Date.now() / 1000);
     const accessExpirationTime = restService.getCookie('access_expire_cookie');
     const refreshExpirationTime = restService.getCookie('refresh_expire_cookie');
     if(Number(accessExpirationTime) < currentTimestamp && Number(refreshExpirationTime) > currentTimestamp) {
-      console.log('isExpired')
       return authentificationService.refreshToken();
     }
   }
 
   getDocuments(queryOptions?: CorpusSearchPayload | undefined) {
-    this.getRefreshedToken();
     const endpoint = `corpus`;
     return axios.get(`${this.API}${endpoint}`, { params: queryOptions})
       .then((response: any) => {
@@ -36,7 +35,6 @@ export class CorpusService {
       })
       .catch((error) => {
         if (error.response) {
-          console.log(error.response);
           this.handle401Error(error);
         }
       }) as any
@@ -67,7 +65,6 @@ export class CorpusService {
       })
       .catch((error) => {
         if (error.response) {
-          console.log(error.response);
           this.handle401Error(error);
         }
       }) as any

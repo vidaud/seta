@@ -21,7 +21,6 @@ class AuthentificationService {
     const searchParam = new URLSearchParams(window.location.search);
     if(searchParam != null){
       const action = searchParam.get('action');
-      console.log(action);
       if(action === 'login'){
         this.loadProfile();
       }
@@ -68,12 +67,10 @@ class AuthentificationService {
         headers:{"X-CSRF-TOKEN": csrf_token}
       })
       .then((response: any) => {
-        console.log(response);
         return response;
       })
       .catch((error) => {
         if (error.response) {
-          console.log(error.response);
           if(error.response.status === 401){
             //redirect to logout
             this.setaLocalLogout();
