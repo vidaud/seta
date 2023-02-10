@@ -5,6 +5,9 @@ from os.path import exists
 import os
 import secrets
 
+SETA_DB_NAME="seta"
+SETA_DB_NAME_TEST="seta_test"
+
     
 class Config:
     """Common configuration"""
@@ -13,8 +16,6 @@ class Config:
     AUTH_CAS_URL = "https://webgate.ec.europa.eu/cas/"
     DB_HOST="seta-mongo"
     DB_PORT=27017
-    MONGO_URI = ""
-    #MONGO_URI = "mongodb://seta-mongo:27017/seta"
     
     #JWT variables
     SECRET_KEY_PATH = "/home/seta/models/key.txt"
@@ -57,8 +58,6 @@ class Config:
             
             with open(Config.SECRET_KEY_PATH, "w") as f1:
                 f1.write(self.SECRET_KEY)
-
-        Config.MONGO_URI = f"mongodb://{Config.DB_HOST}:{Config.DB_PORT}/seta"        
             
         Config.JWT_SECRET_KEY = self.SECRET_KEY
         
@@ -87,6 +86,8 @@ class Config:
             
 class DevConfig(Config):  
     """Development config"""
+    DB_NAME = SETA_DB_NAME
+    MONGO_URI = f"mongodb://{Config.DB_HOST}:{Config.DB_PORT}/{SETA_DB_NAME}"
     
     FLASK_ENV = "development"
     DEBUG = True
@@ -105,6 +106,9 @@ class DevConfig(Config):
 class TestConfig(Config):
     """Test config"""
     
+    DB_NAME = SETA_DB_NAME_TEST
+    MONGO_URI = f"mongodb://{Config.DB_HOST}:{Config.DB_PORT}/{SETA_DB_NAME_TEST}"
+    
     FLASK_ENV = "test"
     DEBUG = False 
     SCHEDULER_ENABLED = False       
@@ -112,13 +116,16 @@ class TestConfig(Config):
     #JWT variables
     JWT_ACCESS_TOKEN_EXPIRES = timedelta(minutes=15)
     JWT_REFRESH_TOKEN_EXPIRES = timedelta(hours=24)    
-    JWT_COOKIE_SECURE = True
+    JWT_COOKIE_SECURE = False
     
     GITHUB_CLIENT_ID = "ea09540bb092bd7af2f4"
     GITHUB_CLIENT_SECRET = "b9e76828307f1bb849f7b47a97c1b7c9ca3361df"
     
 class ProdConfig(Config):
     """Production config"""
+    
+    DB_NAME = SETA_DB_NAME
+    MONGO_URI = f"mongodb://{Config.DB_HOST}:{Config.DB_PORT}/{SETA_DB_NAME}"    
     
     FLASK_ENV = "production"
     DEBUG = False  
