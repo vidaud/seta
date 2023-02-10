@@ -188,3 +188,11 @@ img {
     border: 1px solid !important;
     color: #3B82F6 !important;
 }
+
+.blue-tooltip.p-tooltip .p-tooltip-arrow {
+    border-top-color: var(--blue-500);
+}
+
+.blue-tooltip.p-tooltip .p-tooltip-text {
+    background-color: var(--blue-500);
+}
