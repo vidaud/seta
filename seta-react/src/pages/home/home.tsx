@@ -2,6 +2,8 @@
 import React, { useState, useEffect } from 'react';
 import { Carousel } from 'primereact/carousel';
 import { CarouselService } from '../../services/CarouselService';
+import { Splitter, SplitterPanel } from 'primereact/splitter';
+import './style.css'; 
 
 const carousel = {
     index: 1,  //index which u want to display first
@@ -45,12 +47,23 @@ const Home = () => {
 
     const productTemplate = (product) => {
         return (
-            <div className="product-item">
-                <div className="product-item-content">
-                    <div className="mb-3">
-                        <img src={`${product.image}`} alt={product.name} className="product-image"/>
-                    </div>
-                </div>
+
+            <div className="card">
+                <h1>{product.name}</h1>
+                <Splitter  gutterSize={0} style={{height: '580px'}}>
+                    <SplitterPanel className="align-items-right" size={30}>
+                        <p style={{lineHeight: '1.5', whiteSpace: 'pre-wrap', fontSize: '1.3em', marginTop:'7em' }}>{product.description} {"\n"} <a href={product.link}>{product.descLink}</a></p>
+                    </SplitterPanel>
+                    <SplitterPanel size={70}>
+                            <div className="product-item">
+                                <div className="product-item-content">
+                                    <div className="mb-3">
+                                        <img src={`${product.image}`} alt={product.name} className="product-image"/>
+                                    </div>
+                                </div>
+                            </div>
+                    </SplitterPanel>
+                </Splitter>
             </div>
         );
     };
