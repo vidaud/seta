@@ -19,6 +19,7 @@ RUN npm install -g primereact
 RUN npm install -g primeicons
 RUN npm install -g axios
 RUN npm install -g serve
+RUN npm install -g npm
 
 #RUN ng update -g
 
