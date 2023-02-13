@@ -22,7 +22,7 @@ const TimeRange = ({onTimeRange, list}) => {
                 <Checkbox inputId="include_zero" checked={checked} onChange={e => setChecked(e.checked)} />
                 <label htmlFor="include_zero">Include 0</label>
             </div>
-            <Tooltip target=".slider>.p-slider-handle" content={`${range[1]}`} position="top" event="focus" className="hoverClass" />
+            <Tooltip target=".slider>.p-slider-handle" content={`[${range[0]}-${range[1]}]`} position="top" event="focus" className="hoverClass" />
             <Slider className="slider" value={range} min={1958} max={2023} onChange={onChangeTimeRange} range />
             <div className="p-slider-horizontal">
                 <div className="left-range">{range[0]}</div>  
