@@ -85,7 +85,7 @@ const DocumentList = (list) => {
                         <tr><td><span className='table-headers'>Eurovoc concepts:</span> {data.eurovoc_concept}</td><td><span className='table-headers'>In force:</span> {data.in_force}</td></tr>
                     </tbody>
                 </table>
-                <DataTable value={data.concordance} responsiveLayout="scroll">
+                <DataTable value={data.concordance} responsiveLayout="scroll" scrollable scrollHeight="400px">
                     <Column field={'0'} header="Left Context" sortable></Column>
                     <Column field={'1'} header="Keyword" sortable></Column>
                     <Column field={'2'} header="Right Context" sortable></Column>

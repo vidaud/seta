@@ -83,3 +83,14 @@
     padding: 0.25rem 1.25rem;
     text-align: left;
 }
+
+.p-breadcrumb ul li:last-child .p-menuitem-text {
+    color: #acafb2 !important;
+    cursor: context-menu;
+}
+.select>.p-button>.p-button-label.p-c {
+    font-weight: normal !important;
+}
+.select>.p-highlight>.p-button-label.p-c {
+    font-weight: 700 !important;
+}
