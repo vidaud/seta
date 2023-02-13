@@ -3,7 +3,8 @@ import { environment } from '../environments/environment';
 const TOKEN_KEY = environment.token_key;
 const REFRESHTOKEN_KEY = environment.refreshtoken_key;
 
-class TokenStorageService {
+export class TokenStorageService {
+  public API = `${environment.baseUrl}`;
 
   constructor() { }
   signOut(): void {
@@ -24,5 +25,3 @@ class TokenStorageService {
     return window.localStorage.getItem(REFRESHTOKEN_KEY);
   }
 }
-
-export default new TokenStorageService();

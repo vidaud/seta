@@ -13,6 +13,16 @@ export class CorpusService {
   public API = `${environment.api_target_path}`
   public regexService: RegExp = environment._regex;
 
+  getRefreshedToken() {
+    //const currentTimestamp = new Date().getTime() / 1E3 | 0;
+    const currentTimestamp = Math.floor(Date.now() / 1000);
+    const accessExpirationTime = restService.getCookie('access_expire_cookie');
+    const refreshExpirationTime = restService.getCookie('refresh_expire_cookie');
+    if(Number(accessExpirationTime) < currentTimestamp && Number(refreshExpirationTime) > currentTimestamp) {
+      return authentificationService.refreshToken();
+    }
+  }
+
   getDocuments(queryOptions?: CorpusSearchPayload | undefined) {
     const endpoint = `corpus`;
     return axios.get(`${this.API}${endpoint}`, { params: queryOptions})
@@ -25,8 +35,7 @@ export class CorpusService {
       })
       .catch((error) => {
         if (error.response) {
-          console.log(error.response);
-          this.handle401Error(error, queryOptions, endpoint);
+          this.handle401Error(error);
         }
       }) as any
   }
@@ -56,21 +65,14 @@ export class CorpusService {
       })
       .catch((error) => {
         if (error.response) {
-          console.log(error.response);
-          this.handle401Error(error, queryOptions, endpoint);
+          this.handle401Error(error);
         }
       }) as any
   }
 
-  private handle401Error = async (error: AxiosError, queryOptions, endpoint) => {
+  private handle401Error = async (error: AxiosError) => {
     if (error.response?.status === 401) {
-        const refreshedToken = await authentificationService.refreshToken();
-        if (refreshedToken.status === 200) {
-          return axios.get(`${this.API}${endpoint}`, { params: queryOptions})
-          .then((response: any) => {
-            return response.data;
-          })
-        }
+        return authentificationService.refreshToken();
     }
   }
 }

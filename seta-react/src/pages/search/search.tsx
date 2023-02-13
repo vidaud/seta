@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import './style.css';
 import { InputText } from 'primereact';
 import { Button } from 'primereact/button';
@@ -8,14 +8,11 @@ import { Term } from '../../models/term.model';
 import { CorpusService } from '../../services/corpus/corpus.service';
 import { CorpusSearchPayload } from '../../store/corpus-search-payload';
 import { Observable } from 'rxjs';
-import authentificationService from '../../services/authentification.service';
+import { BreadCrumb } from 'primereact/breadcrumb';
 
 const Search = () => {
-    ///const previousInputValue: any = localStorage.getItem('term');
     const [showContent, setShowContent] = useState(false);
-    ///const [term, setTerm] = useState<Term[]>(previousInputValue ? previousInputValue : []);
     const [term, setTerm] = useState<Term[]>([]);
-    //const previousInputValue = useRef<any>([]);
     const [items, setItems] = useState<any>([]);
     const [aggregations, setAggregations] = useState<any>([]);
     const [documentList, setDocumentList] = useState([]);
@@ -25,18 +22,23 @@ const Search = () => {
     const corpusService = new CorpusService();
     let corpusParameters$: Observable<CorpusSearchPayload>;
     let cp: CorpusSearchPayload;
+    const itemsBreadCrumb = [
+        {label: 'Search', url: '/seta-ui/search'},
+        {label: 'Document List'}
+    ];
+    const home = { icon: 'pi pi-home', url: '/seta-ui' }
 
     useEffect(() => {
-        //previousInputValue.current = term;
-        ///localStorage.setItem('term', String(term));
         corpusParameters$?.subscribe((corpusParameters: CorpusSearchPayload) => {
           cp = new CorpusSearchPayload({ ...corpusParameters });
         });
         setLastPayload(new CorpusSearchPayload({ ...cp, term: term, aggs: 'date_year', n_docs: 100, search_type: typeofSearch, date_range: timeRangeValue }));
+        corpusService.getRefreshedToken();
     }, [term, typeofSearch, timeRangeValue]);
 
     const onSearch = () => {
         if (term.length > 2) {
+            corpusService.getRefreshedToken();
             corpusService.getDocuments(lastPayload).then(data => {
                 if (data) {
                     setItems(data.documents);
@@ -78,6 +80,8 @@ const Search = () => {
     }
     
     return (
+        <>
+        <BreadCrumb model={itemsBreadCrumb} home={home} />
         <div className="page">
             { showContent ? null : <div>Discover and Link Knowledge in EU Documents</div> }
             <div className="col-8">
@@ -100,6 +104,7 @@ const Search = () => {
                     /> : null }
             </div>
         </div>
-        );
+        </>
+    );
     }
 export default Search;

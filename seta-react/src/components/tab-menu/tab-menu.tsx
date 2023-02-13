@@ -1,14 +1,16 @@
-// import React, { useState } from 'react';
 import { TabView, TabPanel } from 'primereact';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import DocumentList from '../../components/document-list/document-list';
-// import Pagination from '../../components/pagination/pagination';
 import TabMenuFilters from '../../components/tab-menu-filters/tab-menu-filters';
 
 const TabMenus = (props) => {
     const [searchType, setSearchType] = useState();
     const [timeRange, setTimeRange] = useState();
-
+    const itemsHeader = [
+        {label: 'Document List'},
+        {label: 'Concepts'},
+        {label: 'Document Map'}
+    ];
     const getSearchTypes = (search_type) => {
         setSearchType(search_type);
     };
