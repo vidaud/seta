@@ -59,3 +59,7 @@
 .table-headers {
     font-weight: 600;
 }
+
+.datatable-rowexpansion-demo .p-progressbar {
+    height: 0.5rem;
+}

@@ -18,11 +18,8 @@ const SearchType = ({onSelectType}) => {
     // }
 
     const onFocusOption = (e) => {
-        console.log(e);
-        console.log(e.target.id);
         searchOptions.forEach(option => {
             if(option.name === e.target.ariaLabel) {
-                console.log(option.name);
                 setSearchTooltip(option.tooltip);
             }
         });

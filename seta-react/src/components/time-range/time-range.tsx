@@ -13,7 +13,6 @@ const TimeRange = ({onTimeRange, list}) => {
         setRange(e.value);
         let time = 'gte:'+`${e.value[0]}`+',lte:'+`${e.value[1]}`;
         onTimeRange(time);
-        console.log(list)
     }
     return (
         <div className="slider-demo">

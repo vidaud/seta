@@ -18,7 +18,6 @@ const AggregationsChart = ({aggregations}) => {
             }
             setBasicData(details);
         }
-        console.log(aggregations);
     }, [aggregations]);
 
     const getLightTheme = () => {

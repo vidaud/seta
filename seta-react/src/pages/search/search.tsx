@@ -9,6 +9,8 @@ import { CorpusService } from '../../services/corpus/corpus.service';
 import { CorpusSearchPayload } from '../../store/corpus-search-payload';
 import { Observable } from 'rxjs';
 import { BreadCrumb } from 'primereact/breadcrumb';
+import { AutoComplete } from 'primereact/autocomplete';
+import { SuggestionsService } from '../../services/corpus/suggestions.service';
 
 const Search = () => {
     const [showContent, setShowContent] = useState(false);
@@ -19,7 +21,10 @@ const Search = () => {
     const [typeofSearch, setTypeofSearch] = useState();
     const [timeRangeValue, setTimeRangeValue] = useState();
     const [lastPayload, setLastPayload] = useState<any>();
+    const [suggestedTerms, setSuggestedTerms] = useState<any>(null);
+    const [filtredTerms, setFiltredTerms] = useState<any>(null);
     const corpusService = new CorpusService();
+    const suggestionsService = new SuggestionsService();
     let corpusParameters$: Observable<CorpusSearchPayload>;
     let cp: CorpusSearchPayload;
     const itemsBreadCrumb = [
@@ -34,6 +39,11 @@ const Search = () => {
         });
         setLastPayload(new CorpusSearchPayload({ ...cp, term: term, aggs: 'date_year', n_docs: 100, search_type: typeofSearch, date_range: timeRangeValue }));
         corpusService.getRefreshedToken();
+        suggestionsService.retrieveSuggestions(term).then(data => {
+            if (data) {
+                setSuggestedTerms(data);
+            }
+        });
     }, [term, typeofSearch, timeRangeValue]);
 
     const onSearch = () => {
@@ -50,6 +60,22 @@ const Search = () => {
         else {
             setShowContent(false); 
         }
+    }
+
+    const searchSuggestions = () => {
+        setTimeout(() => {
+            let _filteredSuggestions;
+            if (!String(term).trim().length) {
+                _filteredSuggestions = [...suggestedTerms];
+            }
+            else {
+                _filteredSuggestions = suggestedTerms.filter((suggestion) => {
+                    return suggestion;
+                });
+            }
+
+            setFiltredTerms(_filteredSuggestions);
+        }, 250);
     }
 
     const onChangeTerm = (e) => {
@@ -87,7 +113,7 @@ const Search = () => {
             <div className="col-8">
                 <div className="p-inputgroup">
                     <DialogButton onChange={getDocumentList} onChangeText={getTextValue} onChangeFile={getFileName} onChangeContentVisibility={toggleListVisibility}/>
-                    <InputText type="search" value={term} placeholder="Type term and/or drag and drop here document" onChange={onChangeTerm}/>
+                    <AutoComplete suggestions={filtredTerms} completeMethod={searchSuggestions}  type="search" value={term} dropdownAriaLabel="Type term and/or drag and drop here document" onChange={onChangeTerm}/>
                     <Button label="Search" onClick={onSearch}/>
                 </div>
             </div>
