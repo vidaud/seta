@@ -11,6 +11,7 @@ import { Observable } from 'rxjs';
 import { BreadCrumb } from 'primereact/breadcrumb';
 import { AutoComplete } from 'primereact/autocomplete';
 import { SuggestionsService } from '../../services/corpus/suggestions.service';
+import { SimilarsService } from '../../services/corpus/similars.service';
 
 const Search = () => {
     const [showContent, setShowContent] = useState(false);
@@ -22,9 +23,11 @@ const Search = () => {
     const [timeRangeValue, setTimeRangeValue] = useState();
     const [lastPayload, setLastPayload] = useState<any>();
     const [suggestedTerms, setSuggestedTerms] = useState<any>(null);
-    const [filtredTerms, setFiltredTerms] = useState<any>(null);
+    const [filteredTerms, setFilteredTerms] = useState<any>(null);
+    const [similarTerms, setSimilarTerms] = useState<any>(null);
     const corpusService = new CorpusService();
     const suggestionsService = new SuggestionsService();
+    const similarsService = new SimilarsService();
     let corpusParameters$: Observable<CorpusSearchPayload>;
     let cp: CorpusSearchPayload;
     const itemsBreadCrumb = [
@@ -39,11 +42,18 @@ const Search = () => {
         });
         setLastPayload(new CorpusSearchPayload({ ...cp, term: term, aggs: 'date_year', n_docs: 100, search_type: typeofSearch, date_range: timeRangeValue }));
         corpusService.getRefreshedToken();
-        suggestionsService.retrieveSuggestions(term).then(data => {
-            if (data) {
-                setSuggestedTerms(data);
-            }
-        });
+        if (term.length > 2) {
+            suggestionsService.retrieveSuggestions(term).then(data => {
+                if (data) {
+                    setSuggestedTerms(data);
+                }
+            });
+            similarsService.retrieveSimilars(term).then(data => {
+                if (data) {
+                    setSimilarTerms(data);
+                }
+            });
+        }
     }, [term, typeofSearch, timeRangeValue]);
 
     const onSearch = () => {
@@ -64,17 +74,7 @@ const Search = () => {
 
     const searchSuggestions = () => {
         setTimeout(() => {
-            let _filteredSuggestions;
-            if (!String(term).trim().length) {
-                _filteredSuggestions = [...suggestedTerms];
-            }
-            else {
-                _filteredSuggestions = suggestedTerms.filter((suggestion) => {
-                    return suggestion;
-                });
-            }
-
-            setFiltredTerms(_filteredSuggestions);
+            setFilteredTerms(suggestedTerms);
         }, 250);
     }
 
@@ -104,7 +104,7 @@ const Search = () => {
             setShowContent(true);
         }
     }
-    
+
     return (
         <>
         <BreadCrumb model={itemsBreadCrumb} home={home} />
@@ -112,8 +112,20 @@ const Search = () => {
             { showContent ? null : <div>Discover and Link Knowledge in EU Documents</div> }
             <div className="col-8">
                 <div className="p-inputgroup">
-                    <DialogButton onChange={getDocumentList} onChangeText={getTextValue} onChangeFile={getFileName} onChangeContentVisibility={toggleListVisibility}/>
-                    <AutoComplete suggestions={filtredTerms} completeMethod={searchSuggestions}  type="search" value={term} dropdownAriaLabel="Type term and/or drag and drop here document" onChange={onChangeTerm}/>
+                    <DialogButton
+                      onChange={getDocumentList}
+                      onChangeText={getTextValue}
+                      onChangeFile={getFileName}
+                      onChangeContentVisibility={toggleListVisibility}
+                    />
+                    <AutoComplete
+                      suggestions={filteredTerms}
+                      completeMethod={searchSuggestions}
+                      type="search"
+                      value={term}
+                      placeholder="Type term and/or drag and drop here document"
+                      onChange={onChangeTerm}
+                    />
                     <Button label="Search" onClick={onSearch}/>
                 </div>
             </div>

@@ -13,10 +13,6 @@ const SearchType = ({onSelectType}) => {
         {name: '∃', value: 'ALL_CHUNKS_SEARCH', tooltip: 'Find any related paragraphs'}
     ];
 
-    // const justifyTemplate = (option) => {
-    //     return <i className={option.icon}></i>;
-    // }
-
     const onFocusOption = (e) => {
         searchOptions.forEach(option => {
             if(option.name === e.target.ariaLabel) {
