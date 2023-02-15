@@ -94,3 +94,13 @@
 .select>.p-highlight>.p-button-label.p-c {
     font-weight: 700 !important;
 }
+
+.switchButton {
+    float: left;
+    display: -webkit-inline-box;
+}
+
+.p-inputswitch {
+    margin-top: 15px;
+    margin-left: 10px;
+}

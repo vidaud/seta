@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import './style.css';
-import { InputText } from 'primereact';
+import { InputSwitch } from 'primereact/inputswitch';
 import { Button } from 'primereact/button';
 import TabMenus from '../../components/tab-menu/tab-menu';
 import DialogButton from '../../components/dialog/dialog';
@@ -12,6 +12,7 @@ import { BreadCrumb } from 'primereact/breadcrumb';
 import { AutoComplete } from 'primereact/autocomplete';
 import { SuggestionsService } from '../../services/corpus/suggestions.service';
 import { SimilarsService } from '../../services/corpus/similars.service';
+import { OntologyListService } from '../../services/corpus/ontology-list.service';
 
 const Search = () => {
     const [showContent, setShowContent] = useState(false);
@@ -25,9 +26,13 @@ const Search = () => {
     const [suggestedTerms, setSuggestedTerms] = useState<any>(null);
     const [filteredTerms, setFilteredTerms] = useState<any>(null);
     const [similarTerms, setSimilarTerms] = useState<any>(null);
+    const [filteredSimilarTerms, setFilteredSimilarTerms] = useState<any>(null);
+    const [ontologyList, setOntologyList] = useState<any>(null);
+    const [swithToAutocomplete, setSwithToAutocomplete] = useState(false);
     const corpusService = new CorpusService();
     const suggestionsService = new SuggestionsService();
     const similarsService = new SimilarsService();
+    const ontologyListService = new OntologyListService();
     let corpusParameters$: Observable<CorpusSearchPayload>;
     let cp: CorpusSearchPayload;
     const itemsBreadCrumb = [
@@ -49,12 +54,25 @@ const Search = () => {
                 }
             });
             similarsService.retrieveSimilars(term).then(data => {
+                if (data.length > 0) {
+                    let list: any = [];
+                    data.forEach(element => {
+                        list.push(element.similar_word);
+                    });
+                    setSimilarTerms(list);
+                }
+            });
+            ontologyListService.retrieveOntologyList(term).then(data => {
                 if (data) {
-                    setSimilarTerms(data);
+                    setOntologyList(data);
                 }
             });
         }
-    }, [term, typeofSearch, timeRangeValue]);
+    }, [term, typeofSearch, timeRangeValue, swithToAutocomplete]);
+
+    const onSwitch = (e) => {
+        setSwithToAutocomplete(e.value);
+    }
 
     const onSearch = () => {
         if (term.length > 2) {
@@ -65,6 +83,17 @@ const Search = () => {
                     setAggregations(data.aggregations);
                 }
             });
+            const groupedTerms = [
+                {
+                    label: 'Similar', code: 'SI',
+                    keywords: similarTerms
+                },
+                {
+                    label: 'Ontology List', code: 'SI',
+                    keywords: ontologyList
+                }
+            ];
+            console.log(groupedTerms);
             setShowContent(true);
         }
         else {
@@ -75,6 +104,12 @@ const Search = () => {
     const searchSuggestions = () => {
         setTimeout(() => {
             setFilteredTerms(suggestedTerms);
+        }, 250);
+    }
+
+    const searchSimilars = () => {
+        setTimeout(() => {
+            setFilteredSimilarTerms(similarTerms);
         }, 250);
     }
 
@@ -118,15 +153,32 @@ const Search = () => {
                       onChangeFile={getFileName}
                       onChangeContentVisibility={toggleListVisibility}
                     />
-                    <AutoComplete
-                      suggestions={filteredTerms}
-                      completeMethod={searchSuggestions}
-                      type="search"
-                      value={term}
-                      placeholder="Type term and/or drag and drop here document"
-                      onChange={onChangeTerm}
-                    />
+                    { swithToAutocomplete ? 
+                        <AutoComplete
+                            suggestions={similarTerms}
+                            completeMethod={searchSimilars}
+                            type="search"
+                            value={term}
+                            autoHighlight={true}
+                            placeholder="Type term and/or drag and drop here document"
+                            onChange={onChangeTerm}
+                        />
+                    :
+                        <AutoComplete
+                            suggestions={filteredTerms}
+                            completeMethod={searchSuggestions}
+                            type="search"
+                            value={term}
+                            autoHighlight={true}
+                            placeholder="Type term and/or drag and drop here document"
+                            onChange={onChangeTerm}
+                        />
+                    }
                     <Button label="Search" onClick={onSearch}/>
+                </div>
+                <div className='switchButton'>
+                    <h5>Switch to related terms search</h5>
+                    <InputSwitch checked={swithToAutocomplete} onChange={onSwitch} />
                 </div>
             </div>
             <div>
