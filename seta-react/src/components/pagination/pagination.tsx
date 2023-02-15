@@ -12,7 +12,7 @@ const Pagination = () => {
     }
 
     return (
-        <div className="paginator-demo">
+        <div className="paginator">
             <div className="card">
                 <Paginator first={basicFirst} rows={basicRows} totalRecords={120} rowsPerPageOptions={[10, 20, 30]} onPageChange={onBasicPageChange}></Paginator>
             </div>

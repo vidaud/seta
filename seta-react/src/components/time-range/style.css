@@ -1,11 +1,11 @@
 /* SliderDemo.css */
 
-.slider-demo .p-slider-horizontal, .slider-demo .p-inputtext {
+.slider .p-slider-horizontal, .slider .p-inputtext {
     width: -webkit-fill-available;
     width: -moz-available;
 }
 
-.slider-demo .p-slider-vertical {
+.slider .p-slider-vertical {
     height: 14rem;
 }
      

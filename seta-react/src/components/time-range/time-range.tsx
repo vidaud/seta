@@ -15,7 +15,7 @@ const TimeRange = ({onTimeRange, list}) => {
         onTimeRange(time);
     }
     return (
-        <div className="slider-demo">
+        <div className="slider">
             <h5>Time Range</h5>
             <div className="field-checkbox">
                 <Checkbox inputId="include_zero" checked={checked} onChange={e => setChecked(e.checked)} />

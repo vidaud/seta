@@ -107,7 +107,7 @@ const DocumentList = (list) => {
     );
 
     return (
-        <div className="datatable-rowexpansion-demo">
+        <div className="datatable-rowexpansion">
 
             <div className="card list">
                 <DataTable

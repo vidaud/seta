@@ -1,9 +1,9 @@
-.datatable-rowexpansion-demo .product-image {
+.datatable-rowexpansion .product-image {
     width: 100px;
     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
 }
 
-.datatable-rowexpansion-demo .orders-subtable {
+.datatable-rowexpansion .orders-subtable {
     padding: 1rem;
 }
 
@@ -60,6 +60,6 @@
     font-weight: 600;
 }
 
-.datatable-rowexpansion-demo .p-progressbar {
+.datatable-rowexpansion .p-progressbar {
     height: 0.5rem;
 }
