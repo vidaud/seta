@@ -8,6 +8,7 @@ import { Serializer } from "../../serializers/serializer.interface";
 import { CorpusSearchPayload } from "../../store/corpus-search-payload";
 import authentificationService from "../authentification.service";
 import restService from "../rest.service";
+import { getCookie } from 'typescript-cookie'
 
 export class CorpusService {
   public API = `${environment.api_target_path}`
@@ -16,8 +17,8 @@ export class CorpusService {
   getRefreshedToken() {
     //const currentTimestamp = new Date().getTime() / 1E3 | 0;
     const currentTimestamp = Math.floor(Date.now() / 1000);
-    const accessExpirationTime = restService.getCookie('access_expire_cookie');
-    const refreshExpirationTime = restService.getCookie('refresh_expire_cookie');
+    const accessExpirationTime = getCookie('access_expire_cookie');
+    const refreshExpirationTime = getCookie('refresh_expire_cookie');
     if(Number(accessExpirationTime) < currentTimestamp && Number(refreshExpirationTime) > currentTimestamp) {
       return authentificationService.refreshToken();
     }
