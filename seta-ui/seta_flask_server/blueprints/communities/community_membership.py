@@ -34,7 +34,7 @@ class MembershipList(Resource):
         
     @membership_ns.doc(description='Retrieve membership list for this community.',
         responses={int(HTTPStatus.OK): "'Retrieved membership list.",
-                   int(HTTPStatus.NOT_FOUND): "Community not found"},
+                   int(HTTPStatus.NO_CONTENT): "Community not found"},
         security='CSRF')
     @membership_ns.marshal_list_with(membership_model, mask="*")
     @auth_validator()    
@@ -46,14 +46,14 @@ class MembershipList(Resource):
         #TODO: what are the scopes for this ? 
         
         if not self.communitiesBroker.community_id_exists(community_id):
-            abort(HTTPStatus.NOT_FOUND, "Community not found")       
+            return '', HTTPStatus.NO_CONTENT     
         
         return self.membershipsBroker.get_memberships_by_community_id(community_id)
     
     @membership_ns.doc(description='Add new member to an opened community.',        
         responses={int(HTTPStatus.CREATED): "Added new member.", 
                    int(HTTPStatus.FORBIDDEN): "Community is not opened",
-                   int(HTTPStatus.NOT_FOUND): "Community not found",
+                   int(HTTPStatus.NO_CONTENT): "Community not found",
                    int(HTTPStatus.CONFLICT): "Member already exists."},
         security='CSRF')
     @auth_validator()
@@ -65,7 +65,7 @@ class MembershipList(Resource):
             
         community = self.communitiesBroker.get_by_id(community_id)
         if community is None:
-            abort(HTTPStatus.NOT_FOUND, "Community not found")
+            return '', HTTPStatus.NO_CONTENT
 
         if community.membership != CommunityMembershipConstants.Opened:
             abort(HTTPStatus.FORBIDDEN, "Community is not opened, a membership request is required")
@@ -107,7 +107,7 @@ class Membership(Resource):
         
     @membership_ns.doc(description='Retrieve user membership',        
         responses={int(HTTPStatus.OK): "Retrieved membership.",
-                int(HTTPStatus.NOT_FOUND): "Membership not found."
+                int(HTTPStatus.NO_CONTENT): "Membership not found."
                 },
         security='CSRF')
     @membership_ns.marshal_with(membership_model, mask="*")
@@ -120,7 +120,7 @@ class Membership(Resource):
         community = self.membershipsBroker.get_membership(community_id, user_id)
         
         if community is None:
-            abort(HTTPStatus.NOT_FOUND, "Membership not found.")
+            return '', HTTPStatus.NO_CONTENT
         
         return community
     
@@ -128,7 +128,7 @@ class Membership(Resource):
     responses={
                 int(HTTPStatus.OK): "Membership updated.", 
                 int(HTTPStatus.FORBIDDEN): "Insufficient rights, scope 'community/edit' required",
-                int(HTTPStatus.NOT_FOUND): "Membership not found."
+                int(HTTPStatus.NO_CONTENT): "Membership not found."
                 },
     security='CSRF')
     @membership_ns.expect(update_membership_parser)
@@ -148,7 +148,7 @@ class Membership(Resource):
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
         
         if not self.membershipsBroker.membership_exists(community_id, user_id):
-            abort(HTTPStatus.NOT_FOUND, "Membership not found.")
+            return '', HTTPStatus.NO_CONTENT
         
         
         membership_dict = update_membership_parser.parse_args()
@@ -172,7 +172,7 @@ class Membership(Resource):
     responses={
                 int(HTTPStatus.OK): "Membership removed.", 
                 int(HTTPStatus.FORBIDDEN): "Insufficient rights, scope 'community/edit' required",
-                int(HTTPStatus.NOT_FOUND): "Membership not found."
+                int(HTTPStatus.NO_CONTENT): "Membership not found."
                 },
     security='CSRF')
     @auth_validator()
@@ -191,7 +191,7 @@ class Membership(Resource):
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
         
         if not self.membershipsBroker.membership_exists(community_id, user_id):
-            abort(HTTPStatus.NOT_FOUND, "Membership not found.")
+            return '', HTTPStatus.NO_CONTENT
                     
         try:                
             self.membershipsBroker.delete_membership(community_id=community_id, user_id=user_id)
@@ -220,7 +220,7 @@ class RequestList(Resource):
         
     @membership_ns.doc(description='Retrieve request list for this community.',
         responses={int(HTTPStatus.OK): "'Retrieved request list.",
-                   int(HTTPStatus.NOT_FOUND): "Community not found"},
+                   int(HTTPStatus.NO_CONTENT): "Community not found"},
         security='CSRF')
     @membership_ns.marshal_list_with(request_model, mask="*")
     @auth_validator()    
@@ -237,13 +237,13 @@ class RequestList(Resource):
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.") 
         
         if not self.communitiesBroker.community_id_exists(community_id):
-            abort(HTTPStatus.NOT_FOUND, "Community not found")       
+            return '', HTTPStatus.NO_CONTENT
         
         return self.membershipsBroker.get_requests_by_community_id(community_id)
     
     @membership_ns.doc(description='Add new request for the community for the authorized user.',        
         responses={int(HTTPStatus.CREATED): "Added new request.", 
-                   int(HTTPStatus.NOT_FOUND): "Community not found",
+                   int(HTTPStatus.NO_CONTENT): "Community not found",
                    int(HTTPStatus.CONFLICT): "Member or request already exists."},
         security='CSRF')
     @membership_ns.expect(new_request_parser)
@@ -278,7 +278,7 @@ class RequestList(Resource):
             abort(HTTPStatus.INTERNAL_SERVER_ERROR)
             
         if not community_exists:
-            abort(HTTPStatus.NOT_FOUND, "Community not found")
+            return '', HTTPStatus.NO_CONTENT
         
         if member_exists:
             error = f"User is already part of this community."
@@ -308,7 +308,7 @@ class Request(Resource):
         
     @membership_ns.doc(description='Retrieve user request for the community.',
     responses={int(HTTPStatus.OK): "'Retrieved user request.",
-               int(HTTPStatus.NOT_FOUND): "Request not found."},
+               int(HTTPStatus.NO_CONTENT): "Request not found."},
     security='CSRF')
     @membership_ns.marshal_with(request_model, mask="*")
     @auth_validator()    
@@ -320,7 +320,7 @@ class Request(Resource):
         #TODO: what are the scopes for this ? 
         
         if not self.membershipsBroker.request_exists(community_id=community_id, user_id=user_id):
-            abort(HTTPStatus.NOT_FOUND, "Request not found.")       
+            return '', HTTPStatus.NO_CONTENT
         
         return self.membershipsBroker.get_request(community_id=community_id, user_id=user_id)
     
@@ -328,7 +328,7 @@ class Request(Resource):
     responses={
                 int(HTTPStatus.OK): "Request updated.", 
                 int(HTTPStatus.FORBIDDEN): "Insufficient rights, scope 'community/membership/approve' required",
-                int(HTTPStatus.NOT_FOUND): "Request not found."
+                int(HTTPStatus.NO_CONTENT): "Request not found."
                 },
     security='CSRF')
     @membership_ns.expect(update_request_parser)
@@ -347,7 +347,7 @@ class Request(Resource):
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
                 
         if not self.membershipsBroker.request_exists(community_id=community_id, user_id=user_id):
-            abort(HTTPStatus.NOT_FOUND, "Request not found.")        
+            return '', HTTPStatus.NO_CONTENT     
         
         request_dict = update_request_parser.parse_args()
         status = request_dict["status"]

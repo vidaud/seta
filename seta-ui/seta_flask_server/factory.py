@@ -1,6 +1,6 @@
 import logging
 
-from flask import (Flask, request, session, url_for)
+from flask import (Flask, request, session)
 from werkzeug.middleware.proxy_fix import ProxyFix
 
 from .infrastructure.extensions import (scheduler, jwt, logs, github)
@@ -22,8 +22,6 @@ from .infrastructure.helpers import JSONEncoder
 from .infrastructure.cas_client import SetaCasClient
 
 from flask_injector import FlaskInjector
-
-from .repository.interfaces import IUsersBroker
 from .dependency import MongoDbClientModule
 
 def create_app(config_object):

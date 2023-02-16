@@ -32,7 +32,7 @@ class CommunityResourceList(Resource):
 
     @resources_ns.doc(description='Retrieve resources for this community.',
         responses={int(HTTPStatus.OK): "'Retrieved resources.",
-                   int(HTTPStatus.NOT_FOUND): "Community not found"},
+                   int(HTTPStatus.NO_CONTENT): "Community not found"},
         security='CSRF')
     @resources_ns.marshal_list_with(resource_model, mask="*")
     @auth_validator()    
@@ -40,13 +40,13 @@ class CommunityResourceList(Resource):
         '''Retrieve resources'''
 
         if not self.communitiesBroker.community_id_exists(community_id):
-            abort(HTTPStatus.NOT_FOUND, "Community id not found.")
+            return '', HTTPStatus.NO_CONTENT
 
         return self.resourcesBroker.get_all_by_community_id(community_id)
 
     @resources_ns.doc(description='Create new resource.',        
         responses={int(HTTPStatus.CREATED): "Added resource.", 
-                   int(HTTPStatus.NOT_FOUND): "Community not found",
+                   int(HTTPStatus.NO_CONTENT): "Community not found",
                    int(HTTPStatus.FORBIDDEN): "Insufficient rights, scope 'resource/create' required"},
         security='CSRF')
     @resources_ns.expect(new_resource_parser)
@@ -64,7 +64,7 @@ class CommunityResourceList(Resource):
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
 
         if not self.communitiesBroker.community_id_exists(community_id):
-            abort(HTTPStatus.NOT_FOUND, "Community id not found.")
+            return '', HTTPStatus.NO_CONTENT
 
         resource_dict = new_resource_parser.parse_args()
         
@@ -108,7 +108,7 @@ class CommunityResource(Resource):
 
     @resources_ns.doc(description='Retrieve resource',        
         responses={int(HTTPStatus.OK): "Retrieved resource.",
-                   int(HTTPStatus.NOT_FOUND): "Resource id not found."
+                   int(HTTPStatus.NO_CONTENT): "Resource id not found."
                   },
         security='CSRF')
     @resources_ns.marshal_with(resource_model, mask="*")
@@ -117,7 +117,7 @@ class CommunityResource(Resource):
         resource = self.resourcesBroker.get_by_id(id)
         
         if resource is None:
-            abort(HTTPStatus.NOT_FOUND, "Resource id not found.")
+            return '', HTTPStatus.NO_CONTENT
         
         return resource
 
