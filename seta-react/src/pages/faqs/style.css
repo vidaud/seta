@@ -1,0 +1,21 @@
+.accordion-demo .accordion-custom i, .accordion-demo .accordion-custom span {
+    vertical-align: middle;
+}
+
+.accordion-demo .accordion-custom span {
+    margin: 0 .5rem;
+}
+
+.accordion-demo .p-accordion p {
+    line-height: 1.5;
+    margin: 0;
+}
+.headerH {
+  text-align: center;
+  color: #3B82F6;
+  font-weight: bold;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+.m-0{
+    text-align: justify;
+}

@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from 'react';
 import storageService from '../../services/storage.service';
 import { TieredMenu } from 'primereact/tieredmenu';
 import authentificationService from '../../services/authentification.service';
+import { Tooltip } from 'primereact/tooltip';
 
 const Header = () => {
     const dashboard = useRef<any>(null) ;
@@ -33,9 +34,9 @@ const Header = () => {
             url: '/seta-ui/communities',
         },
         {
-            label: 'About',
+            label: 'Faqs',
             className: 'seta-item',
-            url: '/seta-ui/about',
+            url: '/seta-ui/faqs',
         },
         {
             label: 'Contact',
@@ -67,11 +68,11 @@ const Header = () => {
             }
         }
     ];
-    const start_seta = <img alt="logo" src="https://raw.githubusercontent.com/AdrianaLleshi/new_deck.gl/master/images/SeTA-logocut-negative.png" height="40" className="mr-2"></img>;
+    const start_seta = <a href='/seta-ui/'><img alt="logo" src="https://raw.githubusercontent.com/AdrianaLleshi/new_deck.gl/master/images/SeTA-logocut-negative.png" height="40" className="mr-2"></img></a>;
     const end_seta = <a href='/seta-ui/login'><span className="p-menuitem-icon pi pi-sign-in p-menuitem p-menuitem-link" /></a>
 
     const logout = <div><TieredMenu model={dashboard_menu} popup ref={dashboard} id="overlay_tmenu" />
-    <Button icon="pi pi-user" onClick={(event) => dashboard.current.toggle(event)} aria-haspopup aria-controls="overlay_tmenu"/></div>
+    <Button icon="pi pi-user" onClick={(event) => dashboard.current.toggle(event)} aria-haspopup aria-controls="overlay_tmenu" tooltip="Profile menu" tooltipOptions={{ className: 'blue-tooltip', position: 'top' }}/></div>
 
     return (
         <div>
@@ -82,13 +83,13 @@ const Header = () => {
                     </a>
                     <div className="p-inputgroup searches">
                         <InputText placeholder="Search" type="text" className='search-form'/>
-                        <Button label="Search" className='searchButton'/>
+                        <Button label="Search" className='searchButton' tooltip="Search on the website" tooltipOptions={{ className: 'blue-tooltip', position: 'right' }} />
                     </div>
                 </div>
             </header>
             
             <header className="seta-header">
-                <Menubar model={items_seta} start={start_seta} end={authenticated === true ? logout : end_seta} />
+                <Menubar model={items_seta} start={start_seta} end={authenticated === true ? logout : end_seta}/>
             </header>
         </div>
     );
