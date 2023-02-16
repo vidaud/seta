@@ -1,5 +1,5 @@
-from .config import DevConfig
-from .factory import create_app
+from seta_flask_server.config import DevConfig
+from seta_flask_server.factory import create_app
 
 configuration = DevConfig() 
 app = create_app(configuration)

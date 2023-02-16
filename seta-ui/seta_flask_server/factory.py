@@ -130,7 +130,7 @@ def create_app(config_object):
     )
     
     if app.config['SCHEDULER_ENABLED']:            
-        from infrastructure.scheduler import (tasks, events)            
+        from seta_flask_server.infrastructure.scheduler import (tasks, events)            
         scheduler.start()
     
     return app

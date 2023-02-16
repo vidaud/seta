@@ -1,5 +1,5 @@
-from .config import ProdConfig
-from .factory import create_app
+from seta_flask_server.config import ProdConfig
+from seta_flask_server.factory import create_app
 
 configuration = ProdConfig()  
 app = create_app(configuration)
