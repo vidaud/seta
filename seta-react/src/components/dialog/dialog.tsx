@@ -75,7 +75,7 @@ const DialogButton = ({onChange, onChangeText, onChangeFile, onChangeContentVisi
     }
 
     return (
-        <div className="dialog-demo">
+        <div className="dialog">
                 <Button icon="pi pi-cloud-upload" className="p-inputgroup-addon" aria-label="Upload" onClick={() => onClick('displayBasic')}/>
                 <Dialog header="Search with Document/Text" visible={displayBasic} style={{ width: '50vw' }} footer={renderFooter('displayBasic')} onHide={() => onHide('displayBasic')}>
                     <FileUploads onChange={getDocumentUploadValue} />

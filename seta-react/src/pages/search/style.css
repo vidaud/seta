@@ -14,7 +14,7 @@
     margin-right: 0;
 }
 
-.datatable-rowexpansion-demo {
+.datatable-rowexpansion {
     text-align: -webkit-right;
     text-align: -moz-right;
 }
@@ -82,4 +82,25 @@
 .tab-filter > .card > .p-tabview .p-tabview-nav-container .p-tabview-panels {
     padding: 0.25rem 1.25rem;
     text-align: left;
+}
+
+.p-breadcrumb ul li:last-child .p-menuitem-text {
+    color: #acafb2 !important;
+    cursor: context-menu;
+}
+.select>.p-button>.p-button-label.p-c {
+    font-weight: normal !important;
+}
+.select>.p-highlight>.p-button-label.p-c {
+    font-weight: 700 !important;
+}
+
+.switchButton {
+    float: left;
+    display: -webkit-inline-box;
+}
+
+.p-inputswitch {
+    margin-top: 15px;
+    margin-left: 10px;
 }
