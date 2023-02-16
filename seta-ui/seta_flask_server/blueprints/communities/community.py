@@ -60,8 +60,10 @@ class CommunityList(Resource):
         #verify scope
         user = self.usersBroker.get_user_by_id(user_id)
         if user is None:
+            app.logger.debug(f"{user_id} not found")
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
         if not user.has_system_scope(scope=CommunityScopeConstants.Create):
+            app.logger.debug(f"{user_id} does not have the scope {CommunityScopeConstants.Create}")
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
         
         community_dict = new_community_parser.parse_args()

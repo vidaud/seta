@@ -38,12 +38,12 @@
         },
         {
             "user_id": "seta_admin",
-            "scope": "/seta/community/create",
+            "system_scope": "/seta/community/create",
             "area": "community"
         },
         {
             "user_id": "seta_community_manager",
-            "scope": "/seta/community/create",
+            "system_scope": "/seta/community/create",
             "area": "community"
         }
     ],

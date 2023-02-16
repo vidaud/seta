@@ -26,9 +26,9 @@ def test_create_community(client: FlaskClient, user_id: str):
 
     response = create_community(client=client, access_token=access_token, 
                     id="blue", title="Blue Community", description="Blue Community for test", data_type="representative")
-    assert response == HTTPStatus.CREATED
+    assert response.status_code == HTTPStatus.CREATED
     response = get_community(client=client, access_token=access_token, id="blue")
-    assert response == HTTPStatus.OK
+    assert response.status_code == HTTPStatus.OK
 
 
     

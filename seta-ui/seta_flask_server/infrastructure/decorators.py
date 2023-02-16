@@ -23,10 +23,12 @@ def auth_validator(role: str = None):
     def wrapper(fn):
         @wraps(fn)
         def decorator(*args, **kwargs):
-            print("auth_validator", flush=True)
+            #print("before verify_jwt_in_request", flush=True)
             
             verify_jwt_in_request()
             jwt = get_jwt()
+
+            #print("after verify_jwt_in_request", flush=True)
 
             if role and not (jwt['role'].lower() == role.lower()):
                 response = jsonify({"message": "Unauthorized access"})

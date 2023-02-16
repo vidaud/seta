@@ -62,7 +62,7 @@ def create_app(config_object):
     @app.after_request
     def after_request(response):   
         if app.testing:
-            app.logger.debug(request.path + ": " + str(response.status_code))
+            app.logger.debug(request.path + ": " + str(response.status_code) + ", json: " + str(response.data))
             return response     
         
         """ Logging after every request. """
