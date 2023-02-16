@@ -22,9 +22,9 @@ RUN apt-get install -yq tzdata && \
     ln -fs /usr/share/zoneinfo/UTC /etc/localtime && \
     dpkg-reconfigure -f noninteractive tzdata
 
-RUN mkdir -p $ROOT/seta-flask-server && mkdir -p $ROOT/models
-COPY ./seta-flask-server/requirements.txt $ROOT/seta-flask-server/requirements.txt
-WORKDIR $ROOT/seta-flask-server
+RUN mkdir -p $ROOT/seta_flask_server && mkdir -p $ROOT/models
+COPY ./seta_flask_server/requirements.txt $ROOT/seta_flask_server/requirements.txt
+WORKDIR $ROOT/seta_flask_server
 RUN pip install -r requirements.txt
 
 ENV ROOT_USERS="vidas.daudaravicius@ec.europa.eu;lucia.noce@ext.ec.europa.eu;Andrei.Patrascu@ext.ec.europa.eu;adriana.lleshi@ext.ec.europa.eu"
@@ -39,5 +39,5 @@ ENV PYTHONDONTWRITEBYTECODE 1
 # Turns off buffering for easier container logging
 ENV PYTHONUNBUFFERED 1
 
-#CMD ["gunicorn", "--conf", "/home/seta/seta-flask-server/gunicorn_conf.py", "--reload", "--bind", "0.0.0.0:8080", "--capture-output" , "--access-logformat", "[seta.api] %(h)s %(l)s %(u)s %(t)s. %(r)s. %(s)s %(b)s. %(f)s. %(a)s", "--chdir", "/home/seta", "app_dev:app"]
+#CMD ["gunicorn", "--conf", "/home/seta/seta_flask_server/gunicorn_conf.py", "--reload", "--bind", "0.0.0.0:8080", "--capture-output" , "--access-logformat", "[seta.api] %(h)s %(l)s %(u)s %(t)s. %(r)s. %(s)s %(b)s. %(f)s. %(a)s", "--chdir", "/home/seta", "app_dev:app"]
 CMD flask --app app_dev --debug run -h "0.0.0.0"

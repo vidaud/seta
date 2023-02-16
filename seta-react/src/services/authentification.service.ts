@@ -4,6 +4,7 @@ import { environment } from '../environments/environment';
 import { User } from '../models/user.model';
 import storageService from './storage.service';
 import restService from './rest.service';
+import { getCookie } from 'typescript-cookie'
 
 const AUTH_API = environment.baseUrl;
 
@@ -62,7 +63,7 @@ class AuthentificationService {
   }
 
   async refreshToken(): Promise<any> {
-    const csrf_token = restService.getCookie('csrf_refresh_token');
+    const csrf_token = getCookie('csrf_refresh_token');
       return axios.get(AUTH_API + '/refresh', {
         headers:{"X-CSRF-TOKEN": csrf_token}
       })

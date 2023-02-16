@@ -5,9 +5,9 @@ dist/
 tmp/
 app/**/*.js
 app/**/*.js.map
-seta-flask-server/seta-ui/
-seta-flask-server/__pycache__/
-seta-frontend/package-lock.json
+seta_flask_server/seta-ui/
+seta-flask-seta_flask_server/__pycache__/
+seta_flask_server/package-lock.json
 
 # dependencies
 node_modules/
@@ -23,9 +23,8 @@ seta-frontend/projects/seta-web/.editorconfig
 seta-frontend/projects/seta-web/.prettierrc
 
 # Flask caches and similar
-seta-flask-server/__pycache__/*
-seta-flask-server/__pycache__/**
-# seta-flask-server/config.py
+seta_flask_server/__pycache__/*
+seta_flask_server/__pycache__/**
 
 # misc
 .sass-cache/

@@ -17,6 +17,8 @@ RUN n lts
 RUN npm install -g primereact
 RUN npm install -g primeicons
 RUN npm install -g axios
+#update npm to the latest version (fix EACCES error on node_modules/.cache in npm v>9)
+RUN npm install -g npm
 
 WORKDIR $ROOT
 
@@ -29,6 +31,8 @@ RUN npm install
 
 COPY ./src $ROOT/src
 COPY ./public $ROOT/public
+
+#RUN mkdir $ROOT/node_modules/.cache && chmod -R 777 $ROOT/node_modules/.cache
 
 CMD chdir /home/seta/ \
     && npm start --host '0.0.0.0' --port 3000 
