@@ -16,7 +16,7 @@ from .blueprints.token_info import token_info
 
 from .blueprints.communities import communities_bp_v1
 
-from .infrastructure.helpers import JSONEncoder
+from .infrastructure.helpers import JSONEncoder, MongodbJSONProvider
 
 #from cas import CASClient
 from .infrastructure.cas_client import SetaCasClient
@@ -32,7 +32,8 @@ def create_app(config_object):
     app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_host=1)
     
     app.config.from_object(config_object)        
-    app.json_encoder= JSONEncoder  
+    #app.json_encoder= JSONEncoder  
+    app.json_provider_class = MongodbJSONProvider
     app.home_route = '/seta-ui/'
     
     register_extensions(app)
