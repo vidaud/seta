@@ -17,7 +17,7 @@ resources_ns = Namespace('Resources', description='SETA Resources')
 resources_ns.models[resource_limits_model.name] = resource_limits_model
 resources_ns.models[resource_model.name] = resource_model
 
-@resources_ns.route('/communities/<string:community_id>/resources', methods=['POST', 'GET'])
+@resources_ns.route('/community/<string:community_id>', methods=['POST', 'GET'])
 @resources_ns.param("community_id", "Community identifier")
 class CommunityResourceList(Resource):
     """Get the resources of the community and expose POST for new resources"""
@@ -60,11 +60,12 @@ class CommunityResourceList(Resource):
         user = self.usersBroker.get_user_by_id(auth_id)
         if user is None:
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
-        if not user.has_community_scope(id=community_id, scope=ResourceScopeConstants.Create):
-            abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
 
         if not self.communitiesBroker.community_id_exists(community_id):
             return '', HTTPStatus.NO_CONTENT
+
+        if not user.has_community_scope(id=community_id, scope=ResourceScopeConstants.Create):
+            abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")        
 
         resource_dict = new_resource_parser.parse_args()
         
@@ -131,7 +132,7 @@ class CommunityResource(Resource):
         '''Update a resource'''
         
         identity = get_jwt_identity()
-        auth_id = identity["auth_id"]
+        auth_id = identity["user_id"]
         
         #verify scope
         user = self.usersBroker.get_user_by_id(auth_id)
