@@ -1,4 +1,4 @@
-import json
+from flask import json
 
 class SystemScope:
     def __init__(self, user_id, scope, area) -> None:

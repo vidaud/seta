@@ -1,4 +1,4 @@
-import json
+from flask import json
 from seta_flask_server.infrastructure.constants import ClaimTypeConstants, UserRoleConstants
 
 class UserClaim:

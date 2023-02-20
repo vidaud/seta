@@ -126,9 +126,7 @@ class MembershipsBroker(implements(IMembershipsBroker)):
     
     def request_exists(self, community_id: str,  user_id: str) -> bool:    
         filter =  self._filter_request(community_id=community_id, user_id=user_id)
-        
-        print(f"Request filter: '{filter}'")
-        
+                
         exists_count = self.collection.count_documents(filter)
         return exists_count > 0
     

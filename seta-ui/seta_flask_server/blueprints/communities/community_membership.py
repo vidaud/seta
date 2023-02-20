@@ -134,7 +134,7 @@ class Membership(Resource):
     @membership_ns.expect(update_membership_parser)
     @auth_validator()
     def put(self, community_id, user_id):
-        '''Update a community'''
+        '''Update a community membership'''
         
         identity = get_jwt_identity()
         auth_id = identity["user_id"]
@@ -249,7 +249,7 @@ class RequestList(Resource):
     @membership_ns.expect(new_request_parser)
     @auth_validator()
     def post(self, community_id):
-        '''Create a community request'''
+        '''Create a community membership request'''
         
         identity = get_jwt_identity()
         user_id = identity["user_id"]
@@ -328,7 +328,8 @@ class Request(Resource):
     responses={
                 int(HTTPStatus.OK): "Request updated.", 
                 int(HTTPStatus.FORBIDDEN): "Insufficient rights, scope 'community/membership/approve' required",
-                int(HTTPStatus.NO_CONTENT): "Request not found."
+                int(HTTPStatus.NO_CONTENT): "Request not found.",
+                int(HTTPStatus.CONFLICT): "Request status already set"
                 },
     security='CSRF')
     @membership_ns.expect(update_request_parser)
@@ -347,17 +348,19 @@ class Request(Resource):
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
                 
         if not self.membershipsBroker.request_exists(community_id=community_id, user_id=user_id):
-            return '', HTTPStatus.NO_CONTENT     
+            return '', HTTPStatus.NO_CONTENT
         
         request_dict = update_request_parser.parse_args()
         status = request_dict["status"]
-        try:            
-            model = MembershipRequestModel(community_id=community_id, requested_by=user_id, status=status, reviewed_by=auth_id)
-            
-            self.membershipsBroker.update_request(model)
-        except:
-            app.logger.exception("Request->put")
-            abort(HTTPStatus.INTERNAL_SERVER_ERROR)   
+
+        request = self.membershipsBroker.get_request(community_id=community_id, user_id=user_id)
+        app.logger.debug(repr(request))        
+        if request.status.lower() == status.lower():
+            abort(HTTPStatus.CONFLICT, f"Request was aleardy {status}")
+
+                   
+        model = MembershipRequestModel(community_id=community_id, requested_by=user_id, status=status, reviewed_by=auth_id)        
+        self.membershipsBroker.update_request(model)
            
         
         message = f"Request {status}."

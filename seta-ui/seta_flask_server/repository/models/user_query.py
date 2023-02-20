@@ -1,4 +1,4 @@
-import json
+from flask import json
 
 class UserQuery:
     
