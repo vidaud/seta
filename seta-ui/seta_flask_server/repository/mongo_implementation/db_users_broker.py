@@ -1,11 +1,11 @@
 from interface import implements
-from seta_flask_server.repository.interfaces.users_broker import IUsersBroker
-
 from injector import inject
-from seta_flask_server.repository.interfaces.config import IDbConfig
 
 from datetime import datetime, timedelta, timezone
 from pymongo.results import InsertManyResult
+
+from seta_flask_server.repository.interfaces import IDbConfig, IUsersBroker
+from .db_user_permissions import UserPermissionsBroker
 
 from seta_flask_server.repository.models import SetaUser, ExternalProvider, UserClaim, EntityScope, SystemScope
 from seta_flask_server.infrastructure.scope_constants import CommunityScopeConstants
@@ -13,7 +13,9 @@ from seta_flask_server.infrastructure.scope_constants import CommunityScopeConst
 class UsersBroker(implements(IUsersBroker)):
     @inject
     def __init__(self, config: IDbConfig) -> None:
-       self.db = config.get_db()
+        self.config = config
+        self.db = config.get_db()
+        self.collection = self.db["users"]
     
     #---------------- Public methods ----------------#
     
@@ -37,11 +39,10 @@ class UsersBroker(implements(IUsersBroker)):
             
         return seta_user  
     
-    def get_user_by_id_and_provider(self, user_id: str, provider_uid: str, provider: str) -> SetaUser:
-        collection = self.db["users"]
+    def get_user_by_id_and_provider(self, user_id: str, provider_uid: str, provider: str) -> SetaUser:        
         filter = {"user_id": user_id}
         
-        user = collection.find_one(filter)
+        user = self.collection.find_one(filter)
         
         if user is None:
             return None
@@ -64,10 +65,9 @@ class UsersBroker(implements(IUsersBroker)):
         
     
     def get_user_by_id(self, user_id: str) -> SetaUser:
-        collection = self.db["users"]
         filter = {"user_id": user_id}
         
-        user = collection.find_one(filter)
+        user = self.collection.find_one(filter)
         
         if user is None:
             return None
@@ -76,9 +76,10 @@ class UsersBroker(implements(IUsersBroker)):
         seta_user.external_providers = self._get_user_providers_from_db(seta_user.user_id)            
         seta_user.claims = self._get_user_claims_from_db(seta_user.user_id)
 
-        seta_user.community_scopes = self._get_community_scopes_from_db(seta_user.user_id)
-        seta_user.resource_scopes = self._get_resource_scopes_from_db(seta_user.user_id)
-        seta_user.system_scopes = self._get_system_scopes_from_db(seta_user.user_id)
+        permissionsBroker = UserPermissionsBroker(config=self.config)
+        seta_user.community_scopes = permissionsBroker.get_all_community_scopes(seta_user.user_id)
+        seta_user.resource_scopes = permissionsBroker.get_all_resource_scopes(seta_user.user_id)
+        seta_user.system_scopes = permissionsBroker.get_all_system_scopes(seta_user.user_id)
             
         return seta_user
     
@@ -86,7 +87,7 @@ class UsersBroker(implements(IUsersBroker)):
     
     '''
     def add_user(self, user: Any):
-        usersCollection = self.db["users"]
+        usersCollection = self.collection
         if user.get("role") is None:
             user["role"] = "user"
 
@@ -104,7 +105,7 @@ class UsersBroker(implements(IUsersBroker)):
     '''
     '''
     def get_user_by_username(self, username: str):
-        usersCollection = self.db["users"]
+        usersCollection = self.collection
         uq = {"username": username, "email":{"$exists" : True}}
 
         return usersCollection.find_one(uq)
@@ -112,7 +113,7 @@ class UsersBroker(implements(IUsersBroker)):
     
     '''
     def update_user(self, username: str, field: str, value: Any):
-        usersCollection = self.db["users"]
+        usersCollection = self.collection
         userQuery = {"username": username}
 
         user = usersCollection.find_one(userQuery)
@@ -150,16 +151,14 @@ class UsersBroker(implements(IUsersBroker)):
         return r.deleted_count
     
      #-------------Private methods ----------------------#        
-    def user_uid_exists(self, user_id: str) -> bool:
-        collection = self.db["users"]
+    def user_uid_exists(self, user_id: str) -> bool:        
         filter = {"user_id": user_id, "email": {"$exists" : True}}
                 
-        if  collection.count_documents(filter, limit = 1):
+        if  self.collection.count_documents(filter, limit = 1):
             return True
         return False
     
-    def _create_new_user(self, user: SetaUser) -> SetaUser:
-        collection = self.db["users"]
+    def _create_new_user(self, user: SetaUser) -> SetaUser:        
         
         with self.db.client.start_session(causal_consistency=True) as session:
                 uid_exists = self.user_uid_exists(user.user_id)
@@ -170,35 +169,32 @@ class UsersBroker(implements(IUsersBroker)):
                     uid_exists = self.user_uid_exists(user.user_id)
                 
                 #inser user record
-                collection.insert_one(user.to_json(), session=session)       
+                self.collection.insert_one(user.to_json(), session=session)       
         
                 #insert provider records
-                collection.insert_one(user.authenticated_provider.to_json(), session=session)                
+                self.collection.insert_one(user.authenticated_provider.to_json(), session=session)                
         
                 #insert claims
                 if len(user.claims) > 0:
                     for claim in user.claims:
-                        collection.insert_one(claim.to_json(), session=session)
+                        self.collection.insert_one(claim.to_json(), session=session)
                         
                 #insert default system scopes
                 scopes = [
                     SystemScope(user.user_id, CommunityScopeConstants.Create, "community").to_json()
                           ]
-                collection.insert_many(scopes, session=session)
+                self.collection.insert_many(scopes, session=session)
 
         
         return user     
         
     
-    def _create_external_provider(self, provider: ExternalProvider):
-        collection = self.db["users"]
-         
-        collection.insert_one(provider.to_json())    
+    def _create_external_provider(self, provider: ExternalProvider):         
+        self.collection.insert_one(provider.to_json())    
     
     def _get_external_provider(self, user_id: str, provider_uid: str, provider: str) -> ExternalProvider:
-        collection = self.db["users"]
         pFilter = {"user_id": user_id, "provider_uid": provider_uid, "provider": provider}
-        provider = collection.find_one(pFilter)
+        provider = self.collection.find_one(pFilter)
         
         if provider is None:
             return None
@@ -207,9 +203,7 @@ class UsersBroker(implements(IUsersBroker)):
     
     def get_user_by_email(self, email: str) -> SetaUser:
         if not email:
-            return None
-        
-        collection = self.db["users"]
+            return None        
         
         '''
         filter = {"email": email}
@@ -219,10 +213,10 @@ class UsersBroker(implements(IUsersBroker)):
             'strength': 2
         }
 
-        user = collection.find_one(filter=filter, collation=collation)
+        user = self.collection.find_one(filter=filter, collation=collation)
         '''
         
-        user = collection.find_one({"email": email.lower()})
+        user = self.collection.find_one({"email": email.lower()})
         if user is None:
             return None
         
@@ -234,10 +228,9 @@ class UsersBroker(implements(IUsersBroker)):
     
     def _get_user_providers_from_db(self, user_id: str) -> list[ExternalProvider]:
         user_providers = []
-        collection = self.db["users"]
         
         pFilter = {"user_id": user_id, "provider":{"$exists" : True}}
-        providers = collection.find(pFilter)
+        providers = self.collection.find(pFilter)
         
         for provider in providers:
             user_providers.append(ExternalProvider.from_db_json(provider))
@@ -246,50 +239,13 @@ class UsersBroker(implements(IUsersBroker)):
     
     def _get_user_claims_from_db(self, user_id: str) -> list[UserClaim]:
         user_claims = []
-        collection = self.db["users"]
         
         cFilter = {"user_id": user_id, "claim_type":{"$exists" : True}}
-        claims =  collection.find(cFilter)
+        claims =  self.collection.find(cFilter)
         
         for claim in claims:
             user_claims.append(UserClaim.from_db_json(claim))
             
-        return user_claims
-
-    def _get_resource_scopes_from_db(self, user_id: str) -> list[EntityScope]:
-        resource_scopes = []
-        collection = self.db["users"]
-        
-        cFilter = {"user_id": user_id, "resource_scope":{"$exists" : True}}
-        scopes =  collection.find(cFilter)
-        
-        for scope in scopes:
-            resource_scopes.append(EntityScope.resource_from_db_json(scope))
-            
-        return resource_scopes
-
-    def _get_community_scopes_from_db(self, user_id: str) -> list[EntityScope]:
-        community_scopes = []
-        collection = self.db["users"]
-        
-        cFilter = {"user_id": user_id, "community_scope":{"$exists" : True}}
-        scopes =  collection.find(cFilter)
-        
-        for scope in scopes:
-            community_scopes.append(EntityScope.community_from_db_json(scope))
-            
-        return community_scopes
-
-    def _get_system_scopes_from_db(self, user_id: str) -> list[SystemScope]:
-        system_scopes = []
-        collection = self.db["users"]
-        
-        cFilter = {"user_id": user_id, "system_scope":{"$exists" : True}, "area":{"$exists" : True}}
-        scopes =  collection.find(cFilter)
-        
-        for scope in scopes:
-            system_scopes.append(SystemScope.from_db_json(scope))
-            
-        return system_scopes
+        return user_claims    
                 
     #-------------------------------------------------------#
