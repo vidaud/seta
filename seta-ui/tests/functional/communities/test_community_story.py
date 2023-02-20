@@ -3,10 +3,13 @@ from flask import json
 from flask.testing import FlaskClient
 from http import HTTPStatus
 
+from seta_flask_server.infrastructure.scope_constants import CommunityScopeConstants, ResourceScopeConstants
+
 from tests.infrastructure.helpers.authentication import (login_user)
 from tests.infrastructure.helpers.community import (create_community, get_community, update_community)
 from tests.infrastructure.helpers.resource import (create_resource, get_resource, update_resource, delete_resource)
 from tests.infrastructure.helpers.community_membership import (create_membership_request, get_membership_requests, update_membership_request)
+from tests.infrastructure.helpers.community_permission import (replace_user_permissions)
    
 '''==================== CREATE Community ======================================='''
 
@@ -352,5 +355,49 @@ def test_update_membership_request(client: FlaskClient, user_id: str, community_
 
     response = update_membership_request(client=client, access_token=access_token, community_id=community_id, user_id=request_id, status="approved")
     assert response.status_code == HTTPStatus.OK
+
+'''==========================================================='''
+
+'''==================== Grant user rights ======================================='''
+@pytest.mark.parametrize("user_id, community_id, manager_id", [("seta_admin", "blue", "seta_community_manager")])
+def test_add_community_manager(client: FlaskClient, user_id: str, community_id: str, manager_id: str):
+    """
+    user1: grant 'edit/manager' rigths to 'user2' for community 'blue' - result SUCCESS
+    """
+
+    response = login_user(client=client, user_id=user_id)    
+    assert response.status_code == HTTPStatus.OK
+    assert "access_token" in response.json
+    access_token = response.json["access_token"]
+
+    scopes = [CommunityScopeConstants.Manager, ResourceScopeConstants.Create]
+    response = replace_user_permissions(client=client, access_token=access_token, community_id=community_id, user_id=manager_id, scopes=scopes)
+    assert response.status_code == HTTPStatus.OK
+
+@pytest.mark.parametrize("user_id, community_id", [("seta_community_manager", "blue")])
+def test_get_community_join_requests_again(client: FlaskClient, user_id: str, community_id: str):
+    """
+    Scenario: 'user2' gets the join requests list for community 'blue'
+
+    Given: 'user2' is authenticated users in SeTA
+         AND data community 'community_id' is registered 
+    When: 'user2' is requesting the list of join requests of community 'community'
+    Then: gets the list
+    """
+        
+    test_get_community_join_requests(client=client, user_id=user_id, community_id=community_id)
+
+@pytest.mark.parametrize("user_id, community_id", [("seta_community_manager", "blue"),
+        pytest.param("seta_community_manager", "blue", marks=pytest.mark.xfail)])
+def test_create_resource_again(client: FlaskClient, user_id: str, community_id: str):
+    response = login_user(client=client, user_id=user_id)    
+    assert response.status_code == HTTPStatus.OK
+    assert "access_token" in response.json
+    access_token = response.json["access_token"]
+
+    response = create_resource(client=client, access_token=access_token, community_id=community_id,
+                    resource_id="sea", title="Sea", abstract="Sea resource for test")
+    assert response.status_code == HTTPStatus.CREATED
+
 
 '''==========================================================='''

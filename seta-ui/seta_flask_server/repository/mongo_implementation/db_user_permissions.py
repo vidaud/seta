@@ -11,7 +11,9 @@ class UserPermissionsBroker(implements(IUserPermissionsBroker)):
        self.db = config.get_db()
        self.collection = self.db["users"]
 
-    def get_all_system_scopes(self, user_id: str) -> list[SystemScope]:
+    
+
+    def get_all_user_system_scopes(self, user_id: str) -> list[SystemScope]:
         '''Return all system scopes assigned to 'user_id' '''
 
         system_scopes = []
@@ -24,7 +26,7 @@ class UserPermissionsBroker(implements(IUserPermissionsBroker)):
             
         return system_scopes
 
-    def get_all_resource_scopes(self, user_id: str) -> list[EntityScope]:
+    def get_all_user_resource_scopes(self, user_id: str) -> list[EntityScope]:
         '''Return all resource scopes assigned to 'user_id' '''
 
         resource_scopes = []
@@ -37,7 +39,7 @@ class UserPermissionsBroker(implements(IUserPermissionsBroker)):
             
         return resource_scopes
 
-    def get_all_community_scopes(self, user_id: str) -> list[EntityScope]:
+    def get_all_user_community_scopes(self, user_id: str) -> list[EntityScope]:
         '''Return all community scopes assigned to 'user_id' '''
 
         community_scopes = []
@@ -50,7 +52,7 @@ class UserPermissionsBroker(implements(IUserPermissionsBroker)):
             
         return community_scopes
 
-    def get_community_scopes_by_id(self, user_id: str, community_id: str) -> list[EntityScope]:
+    def get_user_community_scopes_by_id(self, user_id: str, community_id: str) -> list[EntityScope]:
         '''Return 'community_id' scopes assigned to 'user_id' '''
 
         community_scopes = []
@@ -63,7 +65,7 @@ class UserPermissionsBroker(implements(IUserPermissionsBroker)):
             
         return community_scopes
 
-    def get_resource_scopes_by_id(self, user_id: str, resource_id: str) -> list[EntityScope]:
+    def get_user_resource_scopes_by_id(self, user_id: str, resource_id: str) -> list[EntityScope]:
         '''Return 'resource_id' scopes assigned to 'user_id' '''
 
         resource_scopes = []
@@ -76,7 +78,9 @@ class UserPermissionsBroker(implements(IUserPermissionsBroker)):
             
         return resource_scopes   
 
-    def replace_all_system_scopes(self, user_id: str, scopes: list[SystemScope]) -> None:
+    def replace_all_user_system_scopes(self, user_id: str, scopes: list[SystemScope]) -> None:
+        ''' Replace all system scopes for 'user_id' '''
+
         cFilter = {"user_id": user_id, "system_scope":{"$exists" : True}, "area":{"$exists" : True}}
 
         with self.db.client.start_session(causal_consistency=True) as session:
@@ -86,7 +90,9 @@ class UserPermissionsBroker(implements(IUserPermissionsBroker)):
             sList = [s.to_json() for s in scopes]
             self.collection.insert_many(sList, session=session)
 
-    def replace_community_scopes(self, user_id: str, community_id: str, scopes: list[EntityScope]) -> None:
+    def replace_all_user_community_scopes(self, user_id: str, community_id: str, scopes: list[EntityScope]) -> None:
+        ''' Replace all community scopes for 'user_id' and 'community_id' '''
+
         cFilter = {"user_id": user_id, "community_id": community_id, "community_scope":{"$exists" : True}}
 
         with self.db.client.start_session(causal_consistency=True) as session:
@@ -96,7 +102,9 @@ class UserPermissionsBroker(implements(IUserPermissionsBroker)):
             sList = [s.to_community_json() for s in scopes]
             self.collection.insert_many(sList, session=session)
 
-    def replace_resource_scopes(self, user_id: str, resource_id: str, scopes: list[EntityScope]) -> None:
+    def replace_all_user_resource_scopes(self, user_id: str, resource_id: str, scopes: list[EntityScope]) -> None:
+        ''' Replace all resource scopes for 'user_id' and 'resource_id' '''
+
         cFilter = {"user_id": user_id, "resource_id": resource_id, "resource_scope":{"$exists" : True}}
 
         with self.db.client.start_session(causal_consistency=True) as session:
@@ -105,3 +113,29 @@ class UserPermissionsBroker(implements(IUserPermissionsBroker)):
 
             sList = [s.to_resource_json() for s in scopes]
             self.collection.insert_many(sList, session=session)
+
+    def get_all_resource_scopes(self, resource_id: str) -> list[EntityScope]:
+        '''Return all resource scopes for resource id '''
+
+        resource_scopes = []
+        
+        cFilter = {"resource_id": resource_id, "resource_scope":{"$exists" : True}}
+        scopes =  self.collection.find(cFilter)
+        
+        for scope in scopes:
+            resource_scopes.append(EntityScope.resource_from_db_json(scope))
+            
+        return resource_scopes
+
+    def get_all_community_scopes(self, community_id: str) -> list[EntityScope]:
+        '''Return all community scopes for community id '''
+
+        community_scopes = []
+        
+        cFilter = {"community_id": community_id, "community_scope":{"$exists" : True}}
+        scopes =  self.collection.find(cFilter)
+        
+        for scope in scopes:
+            community_scopes.append(EntityScope.community_from_db_json(scope))
+            
+        return community_scopes

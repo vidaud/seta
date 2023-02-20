@@ -80,7 +80,7 @@ class CommunityCreateChangeRequest(Resource):
         user = self.usersBroker.get_user_by_id(auth_id)
         if user is None:
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
-        if not user.has_community_scope(id=community_id, scope=CommunityScopeConstants.Edit):
+        if not user.has_community_scope(id=community_id, scope=CommunityScopeConstants.Manager):
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
         
         request_dict = new_change_request_parser.parse_args()

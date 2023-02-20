@@ -77,9 +77,9 @@ class UsersBroker(implements(IUsersBroker)):
         seta_user.claims = self._get_user_claims_from_db(seta_user.user_id)
 
         permissionsBroker = UserPermissionsBroker(config=self.config)
-        seta_user.community_scopes = permissionsBroker.get_all_community_scopes(seta_user.user_id)
-        seta_user.resource_scopes = permissionsBroker.get_all_resource_scopes(seta_user.user_id)
-        seta_user.system_scopes = permissionsBroker.get_all_system_scopes(seta_user.user_id)
+        seta_user.community_scopes = permissionsBroker.get_all_user_community_scopes(seta_user.user_id)
+        seta_user.resource_scopes = permissionsBroker.get_all_user_resource_scopes(seta_user.user_id)
+        seta_user.system_scopes = permissionsBroker.get_all_user_system_scopes(seta_user.user_id)
             
         return seta_user
     

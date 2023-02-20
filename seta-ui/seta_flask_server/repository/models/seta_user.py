@@ -142,23 +142,65 @@ class SetaUser:
         
         return UserRoleConstants.User
 
-    def has_community_scope(self, id: str, scope: id) -> bool:
+    def has_community_scope(self, id: str, scope: str) -> bool:
         if self._community_scopes is None:
             return False
 
         return any(cs.id.lower() == id.lower() and cs.scope == scope for cs in self._community_scopes)
 
-    def has_resource_scope(self, id: str, scope: id) -> bool:
+    def has_any_community_scope(self, id: str, scopes: list[str]) -> bool:
+        if self._community_scopes is None:
+            return False
+
+        for scope in scopes:
+            if self.has_community_scope(id=id, scope=scope):
+                return True
+        
+        return False
+
+    def has_all_community_scopes(self, id: str, scopes: list[str]) -> bool:
+        if scopes is None or len(scopes) == 0:
+            return False
+
+        if self._community_scopes is None:
+            return False
+
+        for scope in scopes:
+            if not self.has_community_scope(id=id, scope=scope):
+                return False
+        
+        return True
+
+    def has_resource_scope(self, id: str, scope: str) -> bool:
         if self._resource_scopes is None:
             return False
 
         return any(cs.id.lower() == id.lower() and cs.scope == scope for cs in self._resource_scopes)
 
-    def has_system_scope(self, scope: id) -> bool:
+    def has_any_resource_scope(self, id: str, scopes: list[str]) -> bool:
+        if self._resource_scopes is None:
+            return False
+
+        for scope in scopes:
+            if self.has_resource_scope(id=id, scope=scope):
+                return True
+        return False
+
+    def has_system_scope(self, scope: str) -> bool:
         if self._system_scopes is None:
             return False
 
         return any(cs.scope == scope for cs in self._system_scopes)
+
+    def has_any_system_scope(self, scopes: list[str]) -> bool:
+        if self._system_scopes is None:
+            return False
+
+        for scope in scopes:
+            if self.has_system_scope(scope):
+                return True
+        
+        return False
         
     @staticmethod
     def generate_uuid() -> str:

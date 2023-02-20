@@ -127,7 +127,7 @@ class Membership(Resource):
     @membership_ns.doc(description='Update membership fields',        
     responses={
                 int(HTTPStatus.OK): "Membership updated.", 
-                int(HTTPStatus.FORBIDDEN): "Insufficient rights, scope 'community/edit' required",
+                int(HTTPStatus.FORBIDDEN): "Insufficient rights, scope 'community/manager' required",
                 int(HTTPStatus.NO_CONTENT): "Membership not found."
                 },
     security='CSRF')
@@ -144,7 +144,7 @@ class Membership(Resource):
         user = self.usersBroker.get_user_by_id(auth_id)
         if user is None:
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
-        if not user.has_community_scope(id=community_id, scope=CommunityScopeConstants.Edit):
+        if not user.has_community_scope(id=community_id, scope=CommunityScopeConstants.Manager):
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
         
         if not self.membershipsBroker.membership_exists(community_id, user_id):
@@ -187,7 +187,7 @@ class Membership(Resource):
         user = self.usersBroker.get_user_by_id(auth_id)
         if user is None:
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
-        if not user.has_community_scope(id=community_id, scope=CommunityScopeConstants.Edit):
+        if not user.has_community_scope(id=community_id, scope=CommunityScopeConstants.Manager):
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
         
         if not self.membershipsBroker.membership_exists(community_id, user_id):
@@ -233,7 +233,7 @@ class RequestList(Resource):
         user = self.usersBroker.get_user_by_id(auth_id)
         if user is None:
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
-        if not user.has_community_scope(id=community_id, scope=CommunityScopeConstants.ApproveMembershipRequest):
+        if not user.has_any_community_scope(id=community_id, scopes=[CommunityScopeConstants.Manager, CommunityScopeConstants.ApproveMembershipRequest]):
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.") 
         
         if not self.communitiesBroker.community_id_exists(community_id):
@@ -354,7 +354,7 @@ class Request(Resource):
         status = request_dict["status"]
 
         request = self.membershipsBroker.get_request(community_id=community_id, user_id=user_id)
-        app.logger.debug(repr(request))        
+            
         if request.status.lower() == status.lower():
             abort(HTTPStatus.CONFLICT, f"Request was aleardy {status}")
 

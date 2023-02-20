@@ -143,7 +143,7 @@ class Community(Resource):
         if not self.communitiesBroker.community_id_exists(id):
             return '', HTTPStatus.NO_CONTENT
 
-        if not user.has_community_scope(id=id, scope=CommunityScopeConstants.Edit):
+        if not user.has_community_scope(id=id, scope=CommunityScopeConstants.Manager):
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")       
         
         community_dict = update_community_parser.parse_args()
@@ -165,7 +165,7 @@ class Community(Resource):
     
     @communities_ns.doc(description='Delete  community entries',
         responses={int(HTTPStatus.OK): "Community deleted.", 
-                   int(HTTPStatus.FORBIDDEN): "Insufficient rights, scope 'community/edit' required"},
+                   int(HTTPStatus.FORBIDDEN): "Insufficient rights, scope 'community/manager' required"},
         security='CSRF')
     @auth_validator()
     def delete(self, id):
@@ -178,7 +178,7 @@ class Community(Resource):
         user = self.usersBroker.get_user_by_id(user_id)
         if user is None:
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
-        if not user.has_community_scope(id=id, scope=CommunityScopeConstants.Edit):
+        if not user.has_community_scope(id=id, scope=CommunityScopeConstants.Manager):
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
         
         try:            

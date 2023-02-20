@@ -34,7 +34,7 @@ class CommunitiesBroker(implements(ICommunitiesBroker)):
                                 
                 #set manager scopes for this community
                 scopes = [
-                    EntityScope(user_id=model.creator_id,  id=model.community_id, scope=CommunityScopeConstants.Edit).to_community_json(),
+                    EntityScope(user_id=model.creator_id,  id=model.community_id, scope=CommunityScopeConstants.Manager).to_community_json(),                    
                     EntityScope(user_id=model.creator_id,  id=model.community_id, scope=CommunityScopeConstants.SendInvite).to_community_json(),
                     EntityScope(user_id=model.creator_id,  id=model.community_id, scope=CommunityScopeConstants.ApproveMembershipRequest).to_community_json(),
                     EntityScope(user_id=model.creator_id,  id=model.community_id, scope=ResourceScopeConstants.Create).to_community_json()
