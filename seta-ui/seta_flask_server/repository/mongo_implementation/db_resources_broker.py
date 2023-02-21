@@ -18,7 +18,7 @@ class ResourcesBroker(implements(IResourcesBroker)):
        self.db = config.get_db()
        self.collection = self.db["resources"]
 
-    def create(self, model: ResourceModel) -> None:
+    def create(self, model: ResourceModel, scopes: list[dict]) -> None:
         '''Create resource json objects in mongo db'''
 
         if not self.resource_id_exists(model.resource_id):
@@ -33,15 +33,9 @@ class ResourcesBroker(implements(IResourcesBroker)):
                 model.created_at = now
 
                 model_json = model.to_json()
-                print(model_json)
+                #print(model_json)
                 self.collection.insert_one(model_json, session=session)
-
-                #set resouce scopes for the creator_id
-                scopes = [
-                    EntityScope(user_id=model.creator_id,  id=model.resource_id, scope=ResourceScopeConstants.Edit).to_resource_json(),
-                    EntityScope(user_id=model.creator_id,  id=model.resource_id, scope=ResourceScopeConstants.DataAdd).to_resource_json(),
-                    EntityScope(user_id=model.creator_id,  id=model.resource_id, scope=ResourceScopeConstants.DataDelete).to_resource_json()
-                          ]
+               
                 user_collection = self.db["users"]
                 user_collection.insert_many(scopes, session=session)
 

@@ -5,10 +5,10 @@ from flask_restx import Namespace, Resource, abort
 
 from injector import inject
 
-from seta_flask_server.repository.models import CommunityModel
+from seta_flask_server.repository.models import CommunityModel, EntityScope
 from seta_flask_server.repository.interfaces import ICommunitiesBroker, IUsersBroker
 from seta_flask_server.infrastructure.decorators import auth_validator
-from seta_flask_server.infrastructure.scope_constants import CommunityScopeConstants
+from seta_flask_server.infrastructure.scope_constants import CommunityScopeConstants, SystemScopeConstants
 from seta_flask_server.infrastructure.constants import CommunityMembershipConstants, CommunityStatusConstants
 
 from http import HTTPStatus
@@ -62,8 +62,7 @@ class CommunityList(Resource):
         if user is None:
             app.logger.debug(f"{user_id} not found")
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
-        if not user.has_system_scope(scope=CommunityScopeConstants.Create):
-            app.logger.debug(f"{user_id} does not have the scope {CommunityScopeConstants.Create}")
+        if not user.has_system_scope(scope=SystemScopeConstants.CreateCommunity):            
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
         
         community_dict = new_community_parser.parse_args()
@@ -78,8 +77,16 @@ class CommunityList(Resource):
                                     membership=CommunityMembershipConstants.Closed, 
                                     data_type=community_dict["data_type"], status=CommunityStatusConstants.Active, 
                                     creator_id=identity["user_id"])
+
+                scopes = [
+                    EntityScope(user_id=model.creator_id,  id=model.community_id, scope=CommunityScopeConstants.Ownership).to_community_json(),
+                    EntityScope(user_id=model.creator_id,  id=model.community_id, scope=CommunityScopeConstants.Manager).to_community_json(),                    
+                    EntityScope(user_id=model.creator_id,  id=model.community_id, scope=CommunityScopeConstants.SendInvite).to_community_json(),
+                    EntityScope(user_id=model.creator_id,  id=model.community_id, scope=CommunityScopeConstants.ApproveMembershipRequest).to_community_json(),
+                    EntityScope(user_id=model.creator_id,  id=model.community_id, scope=CommunityScopeConstants.CreateResource).to_community_json()
+                          ]
                 
-                self.communitiesBroker.create(model)
+                self.communitiesBroker.create(model=model, scopes=scopes)
         except:
             app.logger.exception("CommunityList->post")
             abort(HTTPStatus.INTERNAL_SERVER_ERROR)

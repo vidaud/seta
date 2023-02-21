@@ -9,7 +9,7 @@ from http import HTTPStatus
 from seta_flask_server.repository.models import CommunityChangeRequestModel
 from seta_flask_server.repository.interfaces import ICommunityChangeRequestsBroker, IUsersBroker
 from seta_flask_server.infrastructure.decorators import auth_validator
-from seta_flask_server.infrastructure.scope_constants import CommunityScopeConstants
+from seta_flask_server.infrastructure.scope_constants import CommunityScopeConstants, SystemScopeConstants
 from seta_flask_server.infrastructure.constants import RequestStatusConstants
 
 from .models.community_dto import(new_change_request_parser, update_change_request_parser, change_request_model)
@@ -47,7 +47,7 @@ class CommunityChangeRequestList(Resource):
         user = self.usersBroker.get_user_by_id(user_id)        
         if user is None:
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
-        if not user.has_system_scope(CommunityScopeConstants.ApproveChangeRequest):
+        if not user.has_system_scope(SystemScopeConstants.ApproveCommunityChangeRequest):
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
 
         return self.changeRequestsBroker.get_all_pending()
@@ -139,7 +139,7 @@ class CommunityChangeRequest(Resource):
             user = self.usersBroker.get_user_by_id(auth_id)
             if user is None:
                 abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
-            if not user.has_system_scope(scope=CommunityScopeConstants.ApproveChangeRequest):
+            if not user.has_system_scope(scope=SystemScopeConstants.ApproveCommunityChangeRequest):
                 abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
         
         return request
@@ -163,7 +163,7 @@ class CommunityChangeRequest(Resource):
 
         if user is None:
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
-        if not user.has_system_scope(scope=CommunityScopeConstants.ApproveChangeRequest):
+        if not user.has_system_scope(scope=SystemScopeConstants.ApproveCommunityChangeRequest):
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
 
         request = None

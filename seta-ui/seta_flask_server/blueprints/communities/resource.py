@@ -6,9 +6,9 @@ from flask_restx import Namespace, Resource, abort
 from injector import inject
 
 from seta_flask_server.repository.interfaces import IResourcesBroker, IUsersBroker, ICommunitiesBroker
-from seta_flask_server.repository.models import ResourceModel
+from seta_flask_server.repository.models import ResourceModel, EntityScope
 from seta_flask_server.infrastructure.decorators import auth_validator
-from seta_flask_server.infrastructure.scope_constants import ResourceScopeConstants
+from seta_flask_server.infrastructure.scope_constants import ResourceScopeConstants, CommunityScopeConstants
 
 from http import HTTPStatus
 from .models.resource_dto import (new_resource_parser, update_resource_parser, resource_model, resource_limits_model)
@@ -64,7 +64,7 @@ class CommunityResourceList(Resource):
         if not self.communitiesBroker.community_id_exists(community_id):
             return '', HTTPStatus.NO_CONTENT
 
-        if not user.has_community_scope(id=community_id, scope=ResourceScopeConstants.Create):
+        if not user.has_community_scope(id=community_id, scope=CommunityScopeConstants.CreateResource):
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")        
 
         resource_dict = new_resource_parser.parse_args()
@@ -78,8 +78,15 @@ class CommunityResourceList(Resource):
                 model = ResourceModel(resource_id=resource_id, community_id=community_id, 
                                     title=resource_dict["title"], abstract=resource_dict["abstract"],                                    
                                     creator_id=identity["user_id"])
+
+                 #set resouce scopes for the creator_id
+                scopes = [
+                    EntityScope(user_id=model.creator_id,  id=model.resource_id, scope=ResourceScopeConstants.Edit).to_resource_json(),
+                    EntityScope(user_id=model.creator_id,  id=model.resource_id, scope=ResourceScopeConstants.DataAdd).to_resource_json(),
+                    EntityScope(user_id=model.creator_id,  id=model.resource_id, scope=ResourceScopeConstants.DataDelete).to_resource_json()
+                          ]
                 
-                self.resourcesBroker.create(model)
+                self.resourcesBroker.create(model=model,scopes=scopes)
         except:
             app.logger.exception("CommunityResourceList->post")
             abort(HTTPStatus.INTERNAL_SERVER_ERROR)

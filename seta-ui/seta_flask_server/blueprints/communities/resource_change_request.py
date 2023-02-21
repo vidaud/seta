@@ -9,7 +9,7 @@ from http import HTTPStatus
 from seta_flask_server.repository.models import ResourceChangeRequestModel
 from seta_flask_server.repository.interfaces import IResourceChangeRequestsBroker, IUsersBroker
 from seta_flask_server.infrastructure.decorators import auth_validator
-from seta_flask_server.infrastructure.scope_constants import ResourceScopeConstants
+from seta_flask_server.infrastructure.scope_constants import SystemScopeConstants
 
 from .models.resource_request_dto import(new_change_request_parser, update_change_request_parser, change_request_model)
 
@@ -46,7 +46,7 @@ class ResourceChangeRequestList(Resource):
         user = self.usersBroker.get_user_by_id(auth_id)        
         if user is None:
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
-        if not user.has_system_scope(ResourceScopeConstants.ApproveChangeRequest):
+        if not user.has_system_scope(SystemScopeConstants.ApproveResourceChangeRequest):
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
 
         return self.changeRequestsBroker.get_all_pending()
@@ -138,7 +138,7 @@ class ResourceChangeRequest(Resource):
             user = self.usersBroker.get_user_by_id(auth_id)
             if user is None:
                 abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
-            if not user.has_system_scope(scope=ResourceScopeConstants.ApproveChangeRequest):
+            if not user.has_system_scope(scope=SystemScopeConstants.ApproveResourceChangeRequest):
                 abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
         
         return request
@@ -162,7 +162,7 @@ class ResourceChangeRequest(Resource):
 
         if user is None:
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
-        if not user.has_system_scope(scope=ResourceScopeConstants.ApproveChangeRequest):
+        if not user.has_system_scope(scope=SystemScopeConstants.ApproveResourceChangeRequest):
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
 
         request = None

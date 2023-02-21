@@ -17,7 +17,7 @@ class CommunitiesBroker(implements(ICommunitiesBroker)):
        self.db = config.get_db()
        self.collection = self.db["communities"]
 
-    def create(self, model: CommunityModel) -> None:
+    def create(self, model: CommunityModel, scopes: list[dict]) -> None:
         '''Create community json objects in mongo db'''
               
         if not self.community_id_exists(model.community_id):
@@ -32,13 +32,7 @@ class CommunitiesBroker(implements(ICommunitiesBroker)):
                                              role=CommunityRoleConstants.Manager, join_date=now, status=CommunityStatusConstants.Active)
                 self.collection.insert_one(membership.to_json(), session=session)
                                 
-                #set manager scopes for this community
-                scopes = [
-                    EntityScope(user_id=model.creator_id,  id=model.community_id, scope=CommunityScopeConstants.Manager).to_community_json(),                    
-                    EntityScope(user_id=model.creator_id,  id=model.community_id, scope=CommunityScopeConstants.SendInvite).to_community_json(),
-                    EntityScope(user_id=model.creator_id,  id=model.community_id, scope=CommunityScopeConstants.ApproveMembershipRequest).to_community_json(),
-                    EntityScope(user_id=model.creator_id,  id=model.community_id, scope=ResourceScopeConstants.Create).to_community_json()
-                          ]
+                #set owner scopes for this community
                 user_collection = self.db["users"]
                 user_collection.insert_many(scopes, session=session)
 

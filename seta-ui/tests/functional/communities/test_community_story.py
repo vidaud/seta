@@ -370,7 +370,8 @@ def test_add_community_manager(client: FlaskClient, user_id: str, community_id: 
     assert "access_token" in response.json
     access_token = response.json["access_token"]
 
-    scopes = [CommunityScopeConstants.Manager, ResourceScopeConstants.Create]
+    scopes = [CommunityScopeConstants.Manager, CommunityScopeConstants.CreateResource, 
+            CommunityScopeConstants.SendInvite, CommunityScopeConstants.ApproveMembershipRequest]
     response = replace_user_permissions(client=client, access_token=access_token, community_id=community_id, user_id=manager_id, scopes=scopes)
     assert response.status_code == HTTPStatus.OK
 

@@ -7,8 +7,8 @@ from pymongo.results import InsertManyResult
 from seta_flask_server.repository.interfaces import IDbConfig, IUsersBroker
 from .db_user_permissions import UserPermissionsBroker
 
-from seta_flask_server.repository.models import SetaUser, ExternalProvider, UserClaim, EntityScope, SystemScope
-from seta_flask_server.infrastructure.scope_constants import CommunityScopeConstants
+from seta_flask_server.repository.models import SetaUser, ExternalProvider, UserClaim, SystemScope
+from seta_flask_server.infrastructure.scope_constants import SystemScopeConstants
 
 class UsersBroker(implements(IUsersBroker)):
     @inject
@@ -181,7 +181,7 @@ class UsersBroker(implements(IUsersBroker)):
                         
                 #insert default system scopes
                 scopes = [
-                    SystemScope(user.user_id, CommunityScopeConstants.Create, "community").to_json()
+                    SystemScope(user.user_id, SystemScopeConstants.CreateCommunity, "community").to_json()
                           ]
                 self.collection.insert_many(scopes, session=session)
 
