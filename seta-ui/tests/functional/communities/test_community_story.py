@@ -8,8 +8,8 @@ from seta_flask_server.infrastructure.scope_constants import CommunityScopeConst
 from tests.infrastructure.helpers.authentication import (login_user)
 from tests.infrastructure.helpers.community import (create_community, get_community, update_community)
 from tests.infrastructure.helpers.resource import (create_resource, get_resource, update_resource, delete_resource)
-from tests.infrastructure.helpers.community_membership import (create_membership_request, get_membership_requests, update_membership_request)
-from tests.infrastructure.helpers.community_permission import (replace_user_permissions)
+from tests.infrastructure.helpers.community_membership import (create_membership_request, get_membership_requests, update_membership_request, delete_membership_request)
+from tests.infrastructure.helpers.community_permission import (replace_user_permissions, get_user_permissions)
    
 '''==================== CREATE Community ======================================='''
 
@@ -391,6 +391,11 @@ def test_get_community_join_requests_again(client: FlaskClient, user_id: str, co
 @pytest.mark.parametrize("user_id, community_id", [("seta_community_manager", "blue"),
         pytest.param("seta_community_manager", "blue", marks=pytest.mark.xfail)])
 def test_create_resource_again(client: FlaskClient, user_id: str, community_id: str):
+    """
+        user2: Register new data source 'sea' in 'blue' community - result  SUCCESS
+        user2: Register new data source 'sea' in 'blue' community - result  FAILED
+    """
+
     response = login_user(client=client, user_id=user_id)    
     assert response.status_code == HTTPStatus.OK
     assert "access_token" in response.json
@@ -399,6 +404,54 @@ def test_create_resource_again(client: FlaskClient, user_id: str, community_id: 
     response = create_resource(client=client, access_token=access_token, community_id=community_id,
                     resource_id="sea", title="Sea", abstract="Sea resource for test")
     assert response.status_code == HTTPStatus.CREATED
+
+
+'''==========================================================='''
+
+'''==================== Remove owner membership ======================================='''
+
+@pytest.mark.parametrize("user_id, community_id, member_id, expected", [("seta_admin", "blue", "seta_admin", HTTPStatus.CONFLICT)])
+def test_delete_membership(client: FlaskClient, user_id: str, community_id: str, member_id: str, expected: int):
+    """user1: remove 'user1' membership of 'blue' community  - result  FAILED"""
+
+
+    response = login_user(client=client, user_id=user_id)    
+    assert response.status_code == HTTPStatus.OK
+    assert "access_token" in response.json
+    access_token = response.json["access_token"]
+
+    response = delete_membership_request(client=client, access_token=access_token, community_id=community_id, user_id=member_id)
+    assert response.status_code == expected
+
+@pytest.mark.parametrize("user_id, community_id, owner_id", [("seta_admin", "blue", "seta_community_manager")])
+def test_add_community_owner(client: FlaskClient, user_id: str, community_id: str, owner_id: str):
+    """
+    user1: grant 'ownership' of community 'blue' to 'user2' - result  SUCCESS
+    """
+
+    response = login_user(client=client, user_id=user_id)    
+    assert response.status_code == HTTPStatus.OK
+    assert "access_token" in response.json
+    access_token = response.json["access_token"]
+
+    response = get_user_permissions(client=client, access_token=access_token, community_id=community_id, user_id=owner_id)
+    assert response.status_code == HTTPStatus.OK
+
+    scopes = [CommunityScopeConstants.Ownership]    
+
+    for scope in response.json:
+        scopes.append(scope["scope"])
+    
+    response = replace_user_permissions(client=client, access_token=access_token, community_id=community_id, user_id=owner_id, scopes=scopes)
+    assert response.status_code == HTTPStatus.OK  
+
+@pytest.mark.parametrize("user_id, community_id, member_id", [("seta_admin", "blue", "seta_admin")])
+def test_delete_membership_again(client: FlaskClient, user_id: str, community_id: str, member_id: str):
+    """
+    user1: remove membership of 'blue' community  - result  SUCCESS
+    """
+
+    test_delete_membership(client=client, user_id=user_id, community_id=community_id, member_id=member_id, expected=HTTPStatus.OK)    
 
 
 '''==========================================================='''

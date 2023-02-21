@@ -17,3 +17,8 @@ def update_membership_request(client: FlaskClient, access_token:str, community_i
 
     data=f"status={status}" 
     return client.put(url, data=data, content_type="application/x-www-form-urlencoded", headers=auth_headers(access_token))
+
+def delete_membership_request(client: FlaskClient, access_token:str, community_id: str, user_id: str):
+    url = f"/api/communities/v1/communities/{community_id}/memberships/{user_id}"
+
+    return client.delete(url, headers=auth_headers(access_token))

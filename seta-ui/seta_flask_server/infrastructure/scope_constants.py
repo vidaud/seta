@@ -12,11 +12,11 @@ class ResourceScopeConstants:
     EditList=[Edit,DataAdd,DataDelete]
 
 class CommunityScopeConstants:
-    Ownership = "/seta/community/ownership"
+    Ownership = "/seta/community/owner"
     Manager = "/seta/community/manager"
     CreateResource = "/seta/resource/create"
     SendInvite = "/seta/community/invite"
     ApproveMembershipRequest = "/seta/community/membership/approve"
     
 
-    EditList=[Manager, SendInvite, ApproveMembershipRequest, CreateResource]
+    EditList=[Ownership, Manager, SendInvite, ApproveMembershipRequest, CreateResource]

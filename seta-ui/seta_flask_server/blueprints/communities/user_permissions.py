@@ -86,7 +86,7 @@ class CommunityUserPermissions(Resource):
         if (not user.has_community_scope(id=community_id, scope=CommunityScopeConstants.Manager)):
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
 
-        return self.permissionsBroker.get_all_user_community_scopes(community_id=community_id, user_id=user_id)
+        return self.permissionsBroker.get_user_community_scopes_by_id(community_id=community_id, user_id=user_id)
 
     @permissions_ns.doc(description='Replace all user permissions for the community',        
     responses={
@@ -108,11 +108,17 @@ class CommunityUserPermissions(Resource):
         user = self.usersBroker.get_user_by_id(auth_id)
         if user is None:
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
-        if not user.has_community_scope(id=community_id, scope=CommunityScopeConstants.Manager):
+        if not user.has_any_community_scope(id=community_id, scopes=[CommunityScopeConstants.Manager, CommunityScopeConstants.Ownership]):
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")    
 
         request_dict = community_scopes_parser.parse_args()
         scopes = request_dict["scope"]
+
+        #verify owner scope in the list
+        if CommunityScopeConstants.Ownership in scopes:
+            #only an owner can add another owner
+            if not user.has_community_scope(id=community_id, scope=CommunityScopeConstants.Ownership):
+                abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
 
         scope_list = []
         for scope in scopes:

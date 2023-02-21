@@ -29,7 +29,7 @@ class CommunitiesBroker(implements(ICommunitiesBroker)):
                 
                 #insert this user membership
                 membership = MembershipModel(community_id=model.community_id, user_id=model.creator_id, 
-                                             role=CommunityRoleConstants.Manager, join_date=now, status=CommunityStatusConstants.Active)
+                                             role=CommunityRoleConstants.Owner, join_date=now, status=CommunityStatusConstants.Active)
                 self.collection.insert_one(membership.to_json(), session=session)
                                 
                 #set owner scopes for this community

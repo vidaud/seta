@@ -6,7 +6,7 @@ from flask_restx import Namespace, Resource, abort
 from injector import inject
 
 from seta_flask_server.repository.models import MembershipModel, MembershipRequestModel
-from seta_flask_server.repository.interfaces import IMembershipsBroker, IUsersBroker, ICommunitiesBroker
+from seta_flask_server.repository.interfaces import IMembershipsBroker, IUsersBroker, ICommunitiesBroker, IUserPermissionsBroker
 from seta_flask_server.infrastructure.decorators import auth_validator
 from .models.membership_dto import (membership_model, update_membership_parser, 
                                     request_model, new_request_parser, update_request_parser)
@@ -39,14 +39,14 @@ class MembershipList(Resource):
     @membership_ns.marshal_list_with(membership_model, mask="*")
     @auth_validator()    
     def get(self, community_id):
-        '''Retrieve community memberships'''
-        
-        identity = get_jwt_identity()
-        auth_id = identity["user_id"]
-        #TODO: what are the scopes for this ? 
+        '''Retrieve community memberships'''        
         
         if not self.communitiesBroker.community_id_exists(community_id):
-            return '', HTTPStatus.NO_CONTENT     
+            return '', HTTPStatus.NO_CONTENT
+
+        identity = get_jwt_identity()
+        auth_id = identity["user_id"]        
+        #TODO: what are the scopes for this ?      
         
         return self.membershipsBroker.get_memberships_by_community_id(community_id)
     
@@ -99,9 +99,10 @@ class Membership(Resource):
     """Handles HTTP requests to URL: /communities/{community_id}/memberships/{user_id}."""
 
     @inject
-    def __init__(self, usersBroker: IUsersBroker, membershipsBroker: IMembershipsBroker, api=None, *args, **kwargs):
+    def __init__(self, usersBroker: IUsersBroker, membershipsBroker: IMembershipsBroker, permissionsBroker: IUserPermissionsBroker, api=None, *args, **kwargs):
         self.usersBroker = usersBroker
         self.membershipsBroker = membershipsBroker
+        self.permissionsBroker = permissionsBroker
         
         super().__init__(api, *args, **kwargs)
         
@@ -138,13 +139,12 @@ class Membership(Resource):
         
         identity = get_jwt_identity()
         auth_id = identity["user_id"]
-        
-        #TODO: move scopes to JWT token and validate trough decorator
+                
         #verify scope
         user = self.usersBroker.get_user_by_id(auth_id)
         if user is None:
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
-        if not user.has_community_scope(id=community_id, scope=CommunityScopeConstants.Manager):
+        if not user.has_any_community_scope(id=community_id, scopes=[CommunityScopeConstants.Manager, CommunityScopeConstants.Ownership]):
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
         
         if not self.membershipsBroker.membership_exists(community_id, user_id):
@@ -153,7 +153,8 @@ class Membership(Resource):
         
         membership_dict = update_membership_parser.parse_args()
         
-        try:            
+        try:   
+            #TODO: check the owner role?
             model = MembershipModel(community_id=community_id, user_id=user_id, 
                                     role=membership_dict["role"], status=membership_dict["status"])
             
@@ -172,7 +173,8 @@ class Membership(Resource):
     responses={
                 int(HTTPStatus.OK): "Membership removed.", 
                 int(HTTPStatus.FORBIDDEN): "Insufficient rights, scope 'community/edit' required",
-                int(HTTPStatus.NO_CONTENT): "Membership not found."
+                int(HTTPStatus.NO_CONTENT): "Membership not found.",
+                int(HTTPStatus.CONFLICT): "Cannot remove the only owner."
                 },
     security='CSRF')
     @auth_validator()
@@ -182,16 +184,28 @@ class Membership(Resource):
         identity = get_jwt_identity()
         auth_id = identity["user_id"]
         
-        #TODO: move scopes to JWT token and validate trough decorator
         #verify scope
         user = self.usersBroker.get_user_by_id(auth_id)
         if user is None:
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
-        if not user.has_community_scope(id=community_id, scope=CommunityScopeConstants.Manager):
+        if not user.has_any_community_scope(id=community_id, scopes=[CommunityScopeConstants.Manager, CommunityScopeConstants.Ownership]):
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
         
         if not self.membershipsBroker.membership_exists(community_id, user_id):
             return '', HTTPStatus.NO_CONTENT
+
+        #verify owner scope for the target user_id
+        scopes = self.permissionsBroker.get_user_community_scopes_by_id(user_id=user_id, community_id=community_id)
+        if any(cs.scope == CommunityScopeConstants.Ownership for cs in scopes):
+
+            #only an owner can remove another owner (including himself)
+            if not user.has_community_scope(id=community_id, scope=CommunityScopeConstants.Ownership):
+                abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
+
+            #check if it's not the only owner of this community
+            community_scopes = self.permissionsBroker.get_all_community_scopes(community_id=community_id)
+            if not any(cs.user_id != user_id and cs.scope == CommunityScopeConstants.Ownership for cs in community_scopes):
+                abort(HTTPStatus.CONFLICT, "Cannot remove the only owner for this community.")
                     
         try:                
             self.membershipsBroker.delete_membership(community_id=community_id, user_id=user_id)
@@ -344,7 +358,7 @@ class Request(Resource):
         user = self.usersBroker.get_user_by_id(auth_id)
         if user is None:
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
-        if not user.has_community_scope(id=community_id, scope=CommunityScopeConstants.ApproveMembershipRequest):
+        if not user.has_any_community_scope(id=community_id, scopes=[CommunityScopeConstants.ApproveMembershipRequest, CommunityScopeConstants.Manager]):
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
                 
         if not self.membershipsBroker.request_exists(community_id=community_id, user_id=user_id):
