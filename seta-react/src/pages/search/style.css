@@ -104,3 +104,24 @@
     margin-top: 15px;
     margin-left: 10px;
 }
+.p-component, .p-component * {
+    box-sizing: border-box;
+}
+.p-tree {
+    /* border: 1px solid #dee2e6; */
+    background: #ffffff;
+    color: #495057;
+    padding: 1.25rem;
+    border-radius: 6px;
+}
+.p-component {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    font-size: 1rem;
+    font-weight: normal;
+}
+.p-component, .p-component * {
+    box-sizing: border-box;
+}
+.tree-panel {
+    border: 0 !important;
+}
