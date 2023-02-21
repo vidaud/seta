@@ -19,7 +19,7 @@ import { InputText } from 'primereact/inputtext';
 
 const Search = () => {
     const [showContent, setShowContent] = useState(false);
-    const [term, setTerm] = useState<Term[]>([]);
+    const [term, setTerm] = useState<Term[] | any>([]);
     const [items, setItems] = useState<any>([]);
     const [aggregations, setAggregations] = useState<any>([]);
     const [documentList, setDocumentList] = useState([]);
@@ -83,10 +83,8 @@ const Search = () => {
                     createTree(data);
                 }
             });
-            console.log(selectedNodeKeys2);
-            console.log(Object.keys(selectedNodeKeys2).length)
         }
-    }, [term, typeofSearch, timeRangeValue, swithToAutocomplete]);
+    }, [term, typeofSearch, timeRangeValue, swithToAutocomplete, selectedNodeKeys2]);
 
     const createTree = (nodes) => {
         let label, key, children, node_list: any = [];
@@ -143,6 +141,7 @@ const Search = () => {
 
     const onChangeTerm = (e) => {
         e.preventDefault();
+        // selectedNodeKeys2.push(e.target.value);
         setTerm(e.target.value);
     };
 
@@ -190,12 +189,14 @@ const Search = () => {
                         <InputText
                             type="search"
                             aria-haspopup
-                            value={Object.keys(selectedNodeKeys2)}
+                            value={term}
                             aria-controls="overlay_panel"
                             className="select-product-button"
-                            onKeyPress={(e) => op.current?.toggle(e)}
                             placeholder="Type term and/or drag and drop here document"
-                            onChange={onChangeTerm}
+                            onChange={(e) => {
+                                op.current?.toggle(e);
+                                setTerm(e.target.value)
+                            }}
                         />
                         <OverlayPanel
                             ref={op}
