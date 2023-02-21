@@ -9,7 +9,7 @@ from http import HTTPStatus
 from seta_flask_server.repository.models import ResourceChangeRequestModel
 from seta_flask_server.repository.interfaces import IResourceChangeRequestsBroker, IUsersBroker
 from seta_flask_server.infrastructure.decorators import auth_validator
-from seta_flask_server.infrastructure.scope_constants import SystemScopeConstants
+from seta_flask_server.infrastructure.scope_constants import SystemScopeConstants, ResourceScopeConstants
 
 from .models.resource_request_dto import(new_change_request_parser, update_change_request_parser, change_request_model)
 
