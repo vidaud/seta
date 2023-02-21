@@ -108,16 +108,16 @@ class CommunityUserPermissions(Resource):
         user = self.usersBroker.get_user_by_id(auth_id)
         if user is None:
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
-        if not user.has_any_community_scope(id=community_id, scopes=[CommunityScopeConstants.Manager, CommunityScopeConstants.Ownership]):
+        if not user.has_any_community_scope(id=community_id, scopes=[CommunityScopeConstants.Manager, CommunityScopeConstants.Owner]):
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")    
 
         request_dict = community_scopes_parser.parse_args()
         scopes = request_dict["scope"]
 
         #verify owner scope in the list
-        if CommunityScopeConstants.Ownership in scopes:
+        if CommunityScopeConstants.Owner in scopes:
             #only an owner can add another owner
-            if not user.has_community_scope(id=community_id, scope=CommunityScopeConstants.Ownership):
+            if not user.has_community_scope(id=community_id, scope=CommunityScopeConstants.Owner):
                 abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
 
         scope_list = []

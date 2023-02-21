@@ -131,6 +131,7 @@ class CommunityResource(Resource):
 
     @resources_ns.doc(description='Update resource fields',        
         responses={int(HTTPStatus.OK): "Resource updated.", 
+                   int(HTTPStatus.NO_CONTENT): "Resource id not found.",
                    int(HTTPStatus.FORBIDDEN): "Insufficient rights, scope 'resource/edit' required"},
         security='CSRF')
     @resources_ns.expect(update_resource_parser)
@@ -145,8 +146,14 @@ class CommunityResource(Resource):
         user = self.usersBroker.get_user_by_id(auth_id)
         if user is None:
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
-        if not user.has_resource_scope(id=id, scope=ResourceScopeConstants.Edit):
-            abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")       
+
+        resource = self.resourcesBroker.get_by_id(id)
+        if resource is None:
+            return '', HTTPStatus.NO_CONTENT
+
+        community_scopes = [CommunityScopeConstants.Owner, CommunityScopeConstants.Manager]
+        if not user.has_resource_scope(id=id, scope=ResourceScopeConstants.Edit) and not user.has_any_community_scope(id=resource.community_id, scopes=community_scopes):
+            abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")      
         
         resource_dict = update_resource_parser.parse_args()
 
@@ -167,6 +174,7 @@ class CommunityResource(Resource):
 
     @resources_ns.doc(description='Delete all resource entries',
         responses={int(HTTPStatus.OK): "Resource deleted.", 
+                    int(HTTPStatus.NO_CONTENT): "Resource id not found.",
                    int(HTTPStatus.FORBIDDEN): "Insufficient rights, scope 'resource/edit' required"},
         security='CSRF')
     @auth_validator()
@@ -180,7 +188,15 @@ class CommunityResource(Resource):
         user = self.usersBroker.get_user_by_id(auth_id)
         if user is None:
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
-        if not user.has_resource_scope(id=id, scope=ResourceScopeConstants.Edit):
+
+        app.logger.debug(user.to_json_complete())
+
+        resource = self.resourcesBroker.get_by_id(id)
+        if resource is None:
+            return '', HTTPStatus.NO_CONTENT
+
+        community_scopes = [CommunityScopeConstants.Owner, CommunityScopeConstants.Manager]
+        if not user.has_resource_scope(id=id, scope=ResourceScopeConstants.Edit) and not user.has_any_community_scope(id=resource.community_id, scopes=community_scopes):
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
         
         try:            

@@ -6,7 +6,7 @@ from flask_restx import Namespace, Resource, abort
 from injector import inject
 
 from seta_flask_server.repository.models import CommunityModel, EntityScope
-from seta_flask_server.repository.interfaces import ICommunitiesBroker, IUsersBroker
+from seta_flask_server.repository.interfaces import ICommunitiesBroker, IUsersBroker, IResourcesBroker
 from seta_flask_server.infrastructure.decorators import auth_validator
 from seta_flask_server.infrastructure.scope_constants import CommunityScopeConstants, SystemScopeConstants
 from seta_flask_server.infrastructure.constants import CommunityMembershipConstants, CommunityStatusConstants
@@ -79,7 +79,7 @@ class CommunityList(Resource):
                                     creator_id=identity["user_id"])
 
                 scopes = [
-                    EntityScope(user_id=model.creator_id,  id=model.community_id, scope=CommunityScopeConstants.Ownership).to_community_json(),
+                    EntityScope(user_id=model.creator_id,  id=model.community_id, scope=CommunityScopeConstants.Owner).to_community_json(),
                     EntityScope(user_id=model.creator_id,  id=model.community_id, scope=CommunityScopeConstants.Manager).to_community_json(),                    
                     EntityScope(user_id=model.creator_id,  id=model.community_id, scope=CommunityScopeConstants.SendInvite).to_community_json(),
                     EntityScope(user_id=model.creator_id,  id=model.community_id, scope=CommunityScopeConstants.ApproveMembershipRequest).to_community_json(),
@@ -106,9 +106,10 @@ class Community(Resource):
     """Handles HTTP requests to URL: /communities/{id}."""
     
     @inject
-    def __init__(self, usersBroker: IUsersBroker, communitiesBroker: ICommunitiesBroker, api=None, *args, **kwargs):
+    def __init__(self, usersBroker: IUsersBroker, communitiesBroker: ICommunitiesBroker, resourcesBroker: IResourcesBroker, api=None, *args, **kwargs):
         self.usersBroker = usersBroker
         self.communitiesBroker = communitiesBroker
+        self.resourcesBroker = resourcesBroker
         
         super().__init__(api, *args, **kwargs)
     
@@ -172,7 +173,8 @@ class Community(Resource):
     
     @communities_ns.doc(description='Delete  community entries',
         responses={int(HTTPStatus.OK): "Community deleted.", 
-                   int(HTTPStatus.FORBIDDEN): "Insufficient rights, scope 'community/manager' required"},
+                   int(HTTPStatus.FORBIDDEN): "Insufficient rights, scope 'community/manager' required",
+                   int(HTTPStatus.CONFLICT): "There are resources linked to this community"},                   
         security='CSRF')
     @auth_validator()
     def delete(self, id):
@@ -185,16 +187,16 @@ class Community(Resource):
         user = self.usersBroker.get_user_by_id(user_id)
         if user is None:
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
-        if not user.has_community_scope(id=id, scope=CommunityScopeConstants.Manager):
+        if not user.has_community_scope(id=id, scope=CommunityScopeConstants.Owner):
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
         
-        try:            
-            self.communitiesBroker.delete(id)
-            
-            #TODO: delete resource from elastic search (from here or from the client side?)
-        except:
-            app.logger.exception("Community->delete")
-            abort(HTTPStatus.INTERNAL_SERVER_ERROR)   
+
+        #check for any resources
+        resources = self.resourcesBroker.get_all_by_community_id(community_id=id)
+        if len(resources) > 0:
+            abort(HTTPStatus.CONFLICT, "There are resources linked to this community")
+
+        self.communitiesBroker.delete(id)
             
         message = f"All data for community '{id}' deleted."
         response = jsonify(status="success", message=message)

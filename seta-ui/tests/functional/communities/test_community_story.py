@@ -3,10 +3,10 @@ from flask import json
 from flask.testing import FlaskClient
 from http import HTTPStatus
 
-from seta_flask_server.infrastructure.scope_constants import CommunityScopeConstants, ResourceScopeConstants
+from seta_flask_server.infrastructure.scope_constants import CommunityScopeConstants
 
 from tests.infrastructure.helpers.authentication import (login_user)
-from tests.infrastructure.helpers.community import (create_community, get_community, update_community)
+from tests.infrastructure.helpers.community import (create_community, get_community, update_community, delete_community)
 from tests.infrastructure.helpers.resource import (create_resource, get_resource, update_resource, delete_resource)
 from tests.infrastructure.helpers.community_membership import (create_membership_request, get_membership_requests, update_membership_request, delete_membership_request)
 from tests.infrastructure.helpers.community_permission import (replace_user_permissions, get_user_permissions)
@@ -314,9 +314,9 @@ def test_create_join_request(client: FlaskClient, user_id: str, community_id: st
                     message="I want to become a member of your community!")
     assert response.status_code == HTTPStatus.CREATED
 
-@pytest.mark.parametrize("user_id, community_id", [("seta_admin", "blue"), 
-        pytest.param("seta_community_manager", "blue", marks=pytest.mark.xfail)])
-def test_get_community_join_requests(client: FlaskClient, user_id: str, community_id: str):
+@pytest.mark.parametrize("user_id, community_id, expect", [("seta_admin", "blue", HTTPStatus.OK), 
+        ("seta_community_manager", "blue", HTTPStatus.FORBIDDEN)])
+def test_get_community_join_requests(client: FlaskClient, user_id: str, community_id: str, expect: int):
     """
     Scenario: 'user1' gets the join requests list for community 'blue'
 
@@ -333,8 +333,7 @@ def test_get_community_join_requests(client: FlaskClient, user_id: str, communit
     access_token = response.json["access_token"]
 
     response = get_membership_requests(client=client, access_token=access_token, community_id=community_id)
-    assert response.status_code == HTTPStatus.OK
-    assert len(response.json) > 0
+    assert response.status_code == expect
 
 @pytest.mark.parametrize("user_id, community_id, request_id", [ 
         pytest.param("seta_community_manager", "blue", "seta_community_manager", marks=pytest.mark.xfail),
@@ -386,7 +385,7 @@ def test_get_community_join_requests_again(client: FlaskClient, user_id: str, co
     Then: gets the list
     """
         
-    test_get_community_join_requests(client=client, user_id=user_id, community_id=community_id)
+    test_get_community_join_requests(client=client, user_id=user_id, community_id=community_id, expect=HTTPStatus.OK)
 
 @pytest.mark.parametrize("user_id, community_id", [("seta_community_manager", "blue"),
         pytest.param("seta_community_manager", "blue", marks=pytest.mark.xfail)])
@@ -437,7 +436,7 @@ def test_add_community_owner(client: FlaskClient, user_id: str, community_id: st
     response = get_user_permissions(client=client, access_token=access_token, community_id=community_id, user_id=owner_id)
     assert response.status_code == HTTPStatus.OK
 
-    scopes = [CommunityScopeConstants.Ownership]    
+    scopes = [CommunityScopeConstants.Owner]    
 
     for scope in response.json:
         scopes.append(scope["scope"])
@@ -453,5 +452,74 @@ def test_delete_membership_again(client: FlaskClient, user_id: str, community_id
 
     test_delete_membership(client=client, user_id=user_id, community_id=community_id, member_id=member_id, expected=HTTPStatus.OK)    
 
+@pytest.mark.parametrize("user_id, community_id", [("seta_admin", "blue")])
+def test_get_community_join_requests_no_membership(client: FlaskClient, user_id: str, community_id: str):
+    """
+        user1: get list of requests to join community 'blue' -  result FAILED
+    """
+
+    test_get_community_join_requests(client=client, user_id=user_id, community_id=community_id, expect=HTTPStatus.FORBIDDEN)
+
+@pytest.mark.parametrize("user_id, community_id", [("seta_admin", "blue")])
+def test_fail_create_resource_forbidden_no_membership(client: FlaskClient, user_id: str, community_id: str):
+    """
+    user1: Register new data source 'lake' in 'blue' community - result  FAILED
+    """
+
+    
+    response = login_user(client=client, user_id=user_id)    
+    assert response.status_code == HTTPStatus.OK
+    assert "access_token" in response.json
+    access_token = response.json["access_token"]
+
+    response = create_resource(client=client, access_token=access_token, community_id=community_id,
+                    resource_id="lake", title="Lake", abstract="Lake resource for test")
+    assert response.status_code == HTTPStatus.FORBIDDEN     
+
+'''==========================================================='''
+
+
+'''==================== Delete community ======================================='''
+
+@pytest.mark.parametrize("user_id, community_id, expected", [("seta_admin", "blue", HTTPStatus.FORBIDDEN),
+        ("seta_community_manager", "blue", HTTPStatus.CONFLICT)])
+def test_delete_community(client: FlaskClient, user_id: str, community_id: str, expected: int):
+    """
+        user1: Delete community 'blue' -  result  FAILED
+        user2: Delete community 'blue' -  result  FAILED
+    """
+
+
+    response = login_user(client=client, user_id=user_id)    
+    assert response.status_code == HTTPStatus.OK
+    assert "access_token" in response.json
+    access_token = response.json["access_token"]
+
+    response = delete_community(client=client, access_token=access_token, id=community_id)
+    assert response.status_code == expected
+
+@pytest.mark.parametrize("user_id, resource_id, expected", [("seta_community_manager", "ocean", HTTPStatus.OK),
+        ("seta_community_manager", "sea", HTTPStatus.OK)])
+def test_delete_resource(client: FlaskClient, user_id: str, resource_id: str, expected: int):
+    """
+        user2: Delete resource 'ocean' in community 'blue' -  result  SUCCESS
+        user2: Delete resource 'sea' in community 'blue' -  result  SUCCESS 
+    """
+
+
+    response = login_user(client=client, user_id=user_id)    
+    assert response.status_code == HTTPStatus.OK
+    assert "access_token" in response.json
+    access_token = response.json["access_token"]
+
+    response = delete_resource(client=client, access_token=access_token, resource_id=resource_id)
+    assert response.status_code == expected   
+
+@pytest.mark.parametrize("user_id, community_id", [("seta_community_manager", "blue")])
+def test_delete_community_again(client: FlaskClient, user_id: str, community_id: str):
+    """
+        user2: Delete community 'blue' -  result  SUCCESS
+    """     
+    test_delete_community(client=client, user_id=user_id, community_id=community_id, expected=HTTPStatus.OK)
 
 '''==========================================================='''

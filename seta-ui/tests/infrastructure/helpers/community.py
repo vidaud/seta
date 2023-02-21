@@ -18,7 +18,7 @@ def update_community(client: FlaskClient, access_token:str, id: str, title: str,
     data=f"title={title}&description={description}&data_type={data_type}&status={status}" 
     return client.put(url, data=data, content_type="application/x-www-form-urlencoded", headers=auth_headers(access_token))
 
-def delete_resource(client: FlaskClient, access_token:str, id: str):
+def delete_community(client: FlaskClient, access_token:str, id: str):
     url = f"/api/communities/v1/communities/{id}"
 
     return client.delete(url, headers=auth_headers(access_token))    

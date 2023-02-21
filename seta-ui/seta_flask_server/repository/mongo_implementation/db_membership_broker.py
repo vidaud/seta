@@ -17,7 +17,7 @@ class MembershipsBroker(implements(IMembershipsBroker)):
        self.db = config.get_db()
        self.collection = self.db["communities"]
     
-    def create_membership(self, model: MembershipModel) -> None:
+    def create_membership(self, model: MembershipModel, community_scopes: list[dict]) -> None:
         '''Create community membership json objects in mongo db'''
         
         if not self.membership_exists(user_id=model.user_id, community_id=model.community_id):
@@ -30,7 +30,11 @@ class MembershipsBroker(implements(IMembershipsBroker)):
             if model.status is None:
                 model.status = CommunityStatusConstants.Active            
             
-            self.collection.insert_one(model.to_json())
+            user_collection = self.db["users"]
+
+            with self.db.client.start_session(causal_consistency=True) as session:
+                self.collection.insert_one(model.to_json())
+                user_collection.insert_many(community_scopes, session=session)
 
     def update_membership(self, model: MembershipModel) -> None:
         '''Update membership fields'''
@@ -41,7 +45,25 @@ class MembershipsBroker(implements(IMembershipsBroker)):
         self.collection.update_one(self._filter_membership(model.community_id, model.user_id), uq)
     
     def delete_membership(self, community_id: str, user_id: str) -> None:
-        self.collection.delete_one(self._filter_membership(community_id, user_id))
+
+        user_collection = self.db["users"]
+        resource_collection = self.db["resources"]
+
+        #get resources_ids
+        ids = resource_collection.find({"community_id": community_id}, {"resource_id": 1})
+        resource_ids = [i["resource_id"] for i in ids]
+
+        with self.db.client.start_session(causal_consistency=True) as session:
+            #delete membership
+            self.collection.delete_one(self._filter_membership(community_id, user_id))
+
+            #delete community scopes      
+            csf = {"community_id": community_id, "user_id": user_id, "community_scope":{"$exists" : True}}
+            user_collection.delete_many(csf, session=session)
+
+            #delete resource scopes
+            rsf = {"user_id": user_id, "resource_id": {"$in": resource_ids}, "resource_scope":{"$exists" : True}}
+            user_collection.delete_many(rsf, session=session)
     
     def get_membership(self, community_id: str, user_id: str) -> MembershipModel:        
         dict = self.collection.find_one(self._filter_membership(community_id, user_id))
@@ -85,23 +107,33 @@ class MembershipsBroker(implements(IMembershipsBroker)):
                             
         self.collection.insert_one(model.to_json())
 
-    def update_request(self, model: MembershipRequestModel) -> None:
+    def approve_request(self, model: MembershipRequestModel, community_scopes: list[dict]) -> None:
         '''Update request'''
         
+        model.status = RequestStatusConstants.Approved
         now = datetime.now(tz=pytz.utc)
         model.review_date = datetime.now(tz=pytz.utc)
         uq={"$set": model.to_json_update() }
 
         with self.db.client.start_session(causal_consistency=True) as session:        
             self.collection.update_one(self._filter_request(model.community_id, model.requested_by), uq, session=session)
+            
+            #create membership
+            membership = MembershipModel(community_id=model.community_id, user_id=model.requested_by, join_date=now, 
+                                            role=CommunityRoleConstants.Member, status=CommunityStatusConstants.Active)
 
-            if model.status == RequestStatusConstants.Approved:
-                #create membership
-                membership = MembershipModel(community_id=model.community_id, user_id=model.requested_by, join_date=now, 
-                                             role=CommunityRoleConstants.Member, status=CommunityStatusConstants.Active)
+            if not self.membership_exists(user_id=model.requested_by, community_id=model.community_id):
+                self.collection.insert_one(membership.to_json(), session = session)
+                self.db["users"].insert_many(community_scopes, session=session)
 
-                if not self.membership_exists(user_id=model.requested_by, community_id=model.community_id):
-                    self.collection.insert_one(membership.to_json(), session = session)
+    def reject_request(self, model: MembershipRequestModel) -> None:
+        '''Update request'''
+        
+        model.status = RequestStatusConstants.Rejected        
+        model.review_date = datetime.now(tz=pytz.utc)
+        uq={"$set": model.to_json_update() }        
+        
+        self.collection.update_one(self._filter_request(model.community_id, model.requested_by), uq)
     
     def get_requests_by_community_id(self, community_id: str) -> list[MembershipRequestModel]:
         filter =  {"community_id": community_id, "message":{"$exists" : True}}
