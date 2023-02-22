@@ -3,7 +3,8 @@ from flask_restx import Model, fields
 from flask_restx.reqparse import RequestParser 
 
 class FileMetadata(fields.Raw):
-    __schema_type__ = 'dict'
+    __schema_format__ = "json"
+    __schema_type__ = "json"
 
     def format(self, value):
         return value

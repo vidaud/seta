@@ -43,10 +43,10 @@ update_change_request_parser.add_argument("status",
                                   help=f"Status, one of {RequestStatusConstants.EditList}")
 
 
-change_request_model = Model("CommunityChangeRequest",
+change_request_model = Model("ResourceChangeRequest",
                              {
                                  "request_id": fields.String(description="Request identifier"),
-                                 "resource_id": fields.String(description="Community identifier"),
+                                 "resource_id": fields.String(description="Resource identifier"),
                                  "field_name": fields.String(description="Requested field", enum=ResourceRequestFieldConstants.List),
                                  "new_value": fields.String(description="New value for field"),
                                  "old_value": fields.String(description="Current value at request"),

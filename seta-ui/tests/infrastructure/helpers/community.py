@@ -22,3 +22,4 @@ def delete_community(client: FlaskClient, access_token:str, id: str):
     url = f"/api/communities/v1/communities/{id}"
 
     return client.delete(url, headers=auth_headers(access_token))    
+

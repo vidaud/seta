@@ -17,7 +17,7 @@ from .models.community_dto import(new_change_request_parser, update_change_reque
 community_change_request_ns = Namespace('Community Change Requests', validate=True, description='SETA Community Change Requests')
 community_change_request_ns.models[change_request_model.name] = change_request_model
 
-@community_change_request_ns.route('/change_requests/pending', endpoint="community_change_request_list", methods=['GET', 'POST'])
+@community_change_request_ns.route('/change-requests/pending', endpoint="community_change_request_list", methods=['GET', 'POST'])
 class CommunityChangeRequestList(Resource):
     '''Get a list of pending community change requests'''
     
@@ -67,7 +67,7 @@ class CommunityCreateChangeRequest(Resource):
     @community_change_request_ns.doc(description='Add new change request for a community field.',        
         responses={int(HTTPStatus.CREATED): "Added new change request.", 
                    int(HTTPStatus.CONFLICT): "Community has already a pending change request for this field",
-                   int(HTTPStatus.FORBIDDEN): "Insufficient rights, scope 'community/edit' required",},
+                   int(HTTPStatus.FORBIDDEN): "Insufficient rights, scope 'community/manager' required",},
         security='CSRF')
     @community_change_request_ns.expect(new_change_request_parser)
     @auth_validator()
@@ -80,7 +80,7 @@ class CommunityCreateChangeRequest(Resource):
         user = self.usersBroker.get_user_by_id(auth_id)
         if user is None:
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
-        if not user.has_community_scope(id=community_id, scope=CommunityScopeConstants.Manager):
+        if not user.has_any_community_scope(id=community_id, scopes=[CommunityScopeConstants.Manager, CommunityScopeConstants.Owner]):
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
         
         request_dict = new_change_request_parser.parse_args()
@@ -133,12 +133,13 @@ class CommunityChangeRequest(Resource):
         
         if request is None:
             return '', HTTPStatus.NO_CONTENT
+
+        user = self.usersBroker.get_user_by_id(auth_id)
+        if user is None:
+            abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
         
         #if not the initiator of the request, verify ApproveChangeRequest scope
         if request.requested_by != auth_id:            
-            user = self.usersBroker.get_user_by_id(auth_id)
-            if user is None:
-                abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
             if not user.has_system_scope(scope=SystemScopeConstants.ApproveCommunityChangeRequest):
                 abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
         

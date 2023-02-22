@@ -1,5 +1,4 @@
 import pytest
-from flask import json
 from flask.testing import FlaskClient
 from http import HTTPStatus
 

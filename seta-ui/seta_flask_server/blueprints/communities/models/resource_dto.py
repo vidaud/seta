@@ -43,9 +43,9 @@ update_resource_parser.add_argument("status",
 
 resource_limits_model = Model("ResourceLimits", 
                 {
-                    "total_files_no": fields.String(description="Total number of files to upload for the resource"),
-                    "total_storage_mb": fields.String(description="Total storage in megabytes"),
-                    "file_size_mb": fields.String(description="File size limit in megabytes")
+                    "total_files_no": fields.Integer(description="Total number of files to upload for the resource"),
+                    "total_storage_mb": fields.Float(description="Total storage in megabytes"),
+                    "file_size_mb": fields.Float(description="File size limit in megabytes")
                 })
 
 resource_model = Model("Resource",

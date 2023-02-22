@@ -16,7 +16,7 @@ from .models.resource_request_dto import(new_change_request_parser, update_chang
 resource_change_request_ns = Namespace('Resource Change Requests', validate=True, description='SETA Resource Change Requests')
 resource_change_request_ns.models[change_request_model.name] = change_request_model
 
-@resource_change_request_ns.route('/change_requests/pending', methods=['GET', 'POST'])
+@resource_change_request_ns.route('/change-requests/pending', methods=['GET', 'POST'])
 class ResourceChangeRequestList(Resource):
     '''Get a list of pending resource change requests'''
     
