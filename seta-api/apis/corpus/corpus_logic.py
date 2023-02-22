@@ -53,7 +53,7 @@ def insert_doc(args, current_app):
     index = current_app.config["INDEX_PUBLIC"]
     res = current_app.es.index(index=index, document=new_doc)
     doc_id = res["_id"]
-    embs = Embeddings.get_embeddings(args["title"], args["abstract"], args["text"])
+    embs = Embeddings.embeddings_from_doc_fields(args["title"], args["abstract"], args["text"])
     first = True
     for emb in embs:
         if first:
