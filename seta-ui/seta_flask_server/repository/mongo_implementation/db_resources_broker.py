@@ -33,7 +33,6 @@ class ResourcesBroker(implements(IResourcesBroker)):
                 model.created_at = now
 
                 model_json = model.to_json()
-                #print(model_json)
                 self.collection.insert_one(model_json, session=session)
                
                 user_collection = self.db["users"]

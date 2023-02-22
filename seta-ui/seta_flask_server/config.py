@@ -63,11 +63,9 @@ class Config:
         
         #Read admin users and change values to lower
         root_users = os.environ.get('ROOT_USERS')
-        #print("ROOT_USERS " + str(root_users))
         if root_users is not None:
             admins = root_users.split(sep=";")
             Config.ROOT_USERS = list(map(str.lower,admins))
-            #print("ROOT_USERS after split: " + str(Config.ROOT_USERS))
         
         #Read flask environment variables
         Config.FLASK_PATH = os.environ.get('FLASK_PATH', 'http://localhost')
@@ -99,28 +97,7 @@ class DevConfig(Config):
     JWT_COOKIE_SECURE = False
     
     GITHUB_CLIENT_ID = "ea09540bb092bd7af2f4"
-    GITHUB_CLIENT_SECRET = "b9e76828307f1bb849f7b47a97c1b7c9ca3361df"
-    
-    
-    
-class TestConfig(Config):
-    """Test config"""
-    
-    DB_NAME = SETA_DB_NAME_TEST
-    MONGO_URI = f"mongodb://{Config.DB_HOST}:{Config.DB_PORT}/{SETA_DB_NAME_TEST}"
-    
-    FLASK_ENV = "test"
-    DEBUG = True
-    ALLOWED_HOSTS = ['*']
-    SCHEDULER_ENABLED = False       
-    
-    #JWT variables
-    JWT_ACCESS_TOKEN_EXPIRES = timedelta(minutes=15)
-    JWT_REFRESH_TOKEN_EXPIRES = timedelta(hours=24)    
-    JWT_COOKIE_SECURE = False
-    
-    GITHUB_CLIENT_ID = "ea09540bb092bd7af2f4"
-    GITHUB_CLIENT_SECRET = "b9e76828307f1bb849f7b47a97c1b7c9ca3361df"
+    GITHUB_CLIENT_SECRET = "b9e76828307f1bb849f7b47a97c1b7c9ca3361df"    
     
 class ProdConfig(Config):
     """Production config"""
@@ -136,6 +113,68 @@ class ProdConfig(Config):
     JWT_ACCESS_TOKEN_EXPIRES = timedelta(minutes=60)
     JWT_REFRESH_TOKEN_EXPIRES = timedelta(days=2)
     JWT_COOKIE_SECURE = True
+    
+    GITHUB_CLIENT_ID = "ea09540bb092bd7af2f4"
+    GITHUB_CLIENT_SECRET = "b9e76828307f1bb849f7b47a97c1b7c9ca3361df"
+
+
+class TestConfig:
+    #AUTH_CAS_URL = "https://ecas.ec.europa.eu/cas/"
+    AUTH_CAS_URL = "https://webgate.ec.europa.eu/cas/"
+
+    #DB_HOST="seta-mongo"
+    DB_HOST="localhost"
+    DB_PORT=27017
+    
+    #JWT variables
+    SECRET_KEY_PATH = ""
+    JWT_SECRET_KEY = "f9bf78b9a18ce6d46a0cd2b0b86df9da"    
+    JWT_IDENTITY_CLAIM="seta_id"
+    JWT_COOKIE_CSRF_PROTECT = False
+    JWT_TOKEN_LOCATION=["headers", "cookies"]
+    
+    #Scheduler variables
+    SCHEDULER_API_ENABLED = False
+    
+    #Flask env variables
+    FLASK_PATH = "http://localhost"
+    API_TARGET_PATH = ""
+    
+    #LogSetup variables
+    LOG_TYPE = "stream"
+    LOG_LEVEL = "DEBUG"
+    LOG_DIR = "/"
+    APP_LOG_NAME = "app.log"
+    WWW_LOG_NAME = "www.log"
+    SCHEDULER_LOG_NAME = "sched.log"
+    LOG_MAX_BYTES = "100_000"
+    LOG_COPIES = "5"
+    
+    ROOT_USERS = []
+    
+    #disable the mask documentation in swagger
+    RESTX_MASK_SWAGGER=False
+
+    """Test config"""
+    
+    DB_NAME = SETA_DB_NAME_TEST
+
+    @property
+    def MONGO_URI(self):
+        return f"mongodb://{self.DB_HOST}:{self.DB_PORT}/{self.DB_NAME}"
+    
+    FLASK_ENV = "test"
+    DEBUG = True
+    TESTING = True
+    ALLOWED_HOSTS = ['*']
+    SECRET_KEY="f9bf78b9a18ce6d46a0cd2b0b86df9da"
+
+    SCHEDULER_ENABLED = False       
+    
+    #JWT variables
+    JWT_ACCESS_TOKEN_EXPIRES = timedelta(minutes=15)
+    JWT_REFRESH_TOKEN_EXPIRES = timedelta(hours=24)    
+    JWT_COOKIE_SECURE = False
     
     GITHUB_CLIENT_ID = "ea09540bb092bd7af2f4"
     GITHUB_CLIENT_SECRET = "b9e76828307f1bb849f7b47a97c1b7c9ca3361df"

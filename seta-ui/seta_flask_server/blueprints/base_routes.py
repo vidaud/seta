@@ -11,7 +11,6 @@ def send_index():
 
 @base_routes.route("/<path:path>")
 def send_js(path):
-    print(path)
     return send_from_directory("./seta-ui/", path)
 
 @base_routes.route("/<path>")

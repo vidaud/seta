@@ -50,11 +50,9 @@ class UsersBroker(implements(IUsersBroker)):
         provider = self._get_external_provider(user_id,provider_uid, provider)
                 
         if provider is None:
-            #print("No provider_uid '"+provider_uid+"' and provider '" + provider + "'")
             return None
         
         if user["user_id"] != provider.user_id:
-            #print(user["user_id"] + " != " + provider.user_id)
             return None
         
         seta_user = SetaUser.from_db_json(user)
