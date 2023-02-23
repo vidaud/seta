@@ -68,28 +68,17 @@ const Search = () => {
             let operator = ' OR ';
             let result = String(term).split(',').join(operator);
             setTerm(result);
-            suggestionsService.retrieveSuggestions(term).then(data => {
-                if (data) {
-                    setSuggestedTerms(data);
-                }
-            });
-            similarsService.retrieveSimilars(term).then(data => {
-                if (data && data.length > 0) {
-                    let list: any = [];
-                    data.forEach(element => {
-                        list.push(element.similar_word);
-                    });
-                    setSimilarTerms(list);
-                }
-            });
-            ontologyListService.retrieveOntologyList(term).then(data => {
-                if (data) {
-                    setOntologyList(data);
-                    createTree(data);
-                }
-            });
+            // similarsService.retrieveSimilars(term).then(data => {
+            //     if (data && data.length > 0) {
+            //         let list: any = [];
+            //         data.forEach(element => {
+            //             list.push(element.similar_word);
+            //         });
+            //         setSimilarTerms(list);
+            //     }
+            // });
         }
-    }, [term, typeofSearch, timeRangeValue, swithToAutocomplete, selectedNodeKeys2]);
+    }, [term, typeofSearch, timeRangeValue, swithToAutocomplete, selectedNodeKeys2, ontologyList, suggestedTerms]);
 
     const createTree = (nodes) => {
         let label, key, children, node_list: any = [];
@@ -150,6 +139,12 @@ const Search = () => {
 
     const onChangeTerm = (e) => {
         e.preventDefault();
+        let lastKeyword: any = e.target.value.split(' ').pop();
+        suggestionsService.retrieveSuggestions(lastKeyword).then(data => {
+            if (data) {
+                setSuggestedTerms(data);
+            }
+        });
         setTerm(e.target.value);
     };
 
@@ -205,6 +200,13 @@ const Search = () => {
                                 if (term === "") {
                                     setSelectedNodeKeys2(term);
                                 }
+                                const lastKeyword = e.target.value.split(' ').pop();
+                                ontologyListService.retrieveOntologyList(lastKeyword).then(data => {
+                                    if (data) {
+                                        setOntologyList(data);
+                                        createTree(data);
+                                    }
+                                });
                                 op.current?.toggle(e);
                                 setTerm(e.target.value);
                             }}
@@ -230,7 +232,14 @@ const Search = () => {
                                 onSelectionChange={(e) => {
                                     setSelectedNodeKeys2(e.value);
                                     let value: any = e.value;
-                                    setTerm(Object.keys(value));
+                                    let arr: any = [];
+                                    arr.push(term);
+                                    Object.keys(value).forEach(element => {
+                                        if (!term.includes(element)){
+                                            arr.push(element)
+                                        }
+                                    });
+                                      setTerm(arr);
                                 }}
                                 selectionMode="checkbox"
                             ></Tree>
