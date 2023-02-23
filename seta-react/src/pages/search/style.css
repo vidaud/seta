@@ -98,6 +98,13 @@
 .switchButton {
     float: left;
     display: -webkit-inline-box;
+    display: -moz-inline-box;
+}
+
+.search_all {
+    display: -webkit-inline-box;
+    display: -moz-inline-box;
+    width: 100%;
 }
 
 .p-inputswitch {
@@ -124,4 +131,6 @@
 }
 .tree-panel {
     border: 0 !important;
+    overflow-y: scroll;
+    max-height: 300px;
 }

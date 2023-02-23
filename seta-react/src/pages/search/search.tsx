@@ -33,6 +33,7 @@ const Search = () => {
     const [treeLeaf, setTreeLeaf] = useState<any>(null);
     const [selectedNodeKeys2, setSelectedNodeKeys2] = useState<any>(term);
     const [swithToAutocomplete, setSwithToAutocomplete] = useState(false);
+    const [searchAllTerms, setSearchAllTerms] = useState(false);
     
     const corpusService = new CorpusService();
     const suggestionsService = new SuggestionsService();
@@ -49,6 +50,7 @@ const Search = () => {
         {label: 'Document List'}
     ];
     const home = { icon: 'pi pi-home', url: '/seta-ui' }
+
     useEffect(() => {
         if (isMounted) {
             op.current?.hide();
@@ -62,14 +64,17 @@ const Search = () => {
         });
         setLastPayload(new CorpusSearchPayload({ ...cp, term: term, aggs: 'date_year', n_docs: 100, search_type: typeofSearch, date_range: timeRangeValue }));
         corpusService.getRefreshedToken();
-        if (term.length > 2) {
+        if (term.length >= 2) {
+            let operator = ' OR ';
+            let result = String(term).split(',').join(operator);
+            setTerm(result);
             suggestionsService.retrieveSuggestions(term).then(data => {
                 if (data) {
                     setSuggestedTerms(data);
                 }
             });
             similarsService.retrieveSimilars(term).then(data => {
-                if (data.length > 0) {
+                if (data && data.length > 0) {
                     let list: any = [];
                     data.forEach(element => {
                         list.push(element.similar_word);
@@ -117,8 +122,12 @@ const Search = () => {
         setSwithToAutocomplete(e.value);
     }
 
+    const onSearchAll = (e) => {
+        setSearchAllTerms(e.value);
+    }
+
     const onSearch = () => {
-        if (term.length > 2) {
+        if (term.length >= 2) {
             corpusService.getRefreshedToken();
             corpusService.getDocuments(lastPayload).then(data => {
                 if (data) {
@@ -132,7 +141,7 @@ const Search = () => {
             setShowContent(false); 
         }
     }
-
+    
     const searchSuggestions = () => {
         setTimeout(() => {
             setFilteredTerms(suggestedTerms);
@@ -141,7 +150,6 @@ const Search = () => {
 
     const onChangeTerm = (e) => {
         e.preventDefault();
-        // selectedNodeKeys2.push(e.target.value);
         setTerm(e.target.value);
     };
 
@@ -194,8 +202,11 @@ const Search = () => {
                             className="select-product-button"
                             placeholder="Type term and/or drag and drop here document"
                             onChange={(e) => {
+                                if (term === "") {
+                                    setSelectedNodeKeys2(term);
+                                }
                                 op.current?.toggle(e);
-                                setTerm(e.target.value)
+                                setTerm(e.target.value);
                             }}
                         />
                         <OverlayPanel
@@ -203,9 +214,26 @@ const Search = () => {
                             showCloseIcon
                             id="overlay_panel"
                             style={{ width: "60%", left: "20%"}}
-                            className="overlaypanel-demo"
+                            className="overlaypanel"
                         >
-                            <Tree className='tree-panel' value={treeLeaf} header="Related terms" footer={`Selected terms: ${Object.keys(selectedNodeKeys2).length}`} selectionKeys={selectedNodeKeys2} onSelectionChange={(e) => setSelectedNodeKeys2(e.value)} selectionMode="checkbox" ></Tree>
+                            <div className='search_all'>
+                                <h5>Search all related terms</h5>
+                                <InputSwitch checked={searchAllTerms} onChange={onSearchAll} />
+                            </div>
+                            <Tree
+                                className='tree-panel'
+                                value={treeLeaf}
+                                // header={search_all}
+                                disabled={searchAllTerms ? true : false}
+                                footer={`Selected terms: ${Object.keys(selectedNodeKeys2).length}`}
+                                selectionKeys={selectedNodeKeys2}
+                                onSelectionChange={(e) => {
+                                    setSelectedNodeKeys2(e.value);
+                                    let value: any = e.value;
+                                    setTerm(Object.keys(value));
+                                }}
+                                selectionMode="checkbox"
+                            ></Tree>
                         </OverlayPanel>
                     </>
                     :
