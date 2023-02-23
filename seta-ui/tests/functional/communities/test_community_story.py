@@ -7,7 +7,7 @@ from seta_flask_server.infrastructure.scope_constants import CommunityScopeConst
 from tests.infrastructure.helpers.authentication import (login_user)
 from tests.infrastructure.helpers.community import (create_community, get_community, update_community, delete_community)
 from tests.infrastructure.helpers.resource import (create_resource, get_resource, update_resource, delete_resource)
-from tests.infrastructure.helpers.community_membership import (create_membership_request, get_membership_requests, update_membership_request, delete_membership_request)
+from tests.infrastructure.helpers.community_membership import (create_membership_request, get_membership_requests, update_membership_request, delete_membership)
 from tests.infrastructure.helpers.community_permission import (replace_user_permissions, get_user_permissions)
    
 '''==================== CREATE Community ======================================='''
@@ -418,7 +418,7 @@ def test_delete_membership(client: FlaskClient, user_id: str, community_id: str,
     assert "access_token" in response.json
     access_token = response.json["access_token"]
 
-    response = delete_membership_request(client=client, access_token=access_token, community_id=community_id, user_id=member_id)
+    response = delete_membership(client=client, access_token=access_token, community_id=community_id, user_id=member_id)
     assert response.status_code == expected
 
 @pytest.mark.parametrize("user_id, community_id, owner_id", [("seta_admin", "blue", "seta_community_manager")])

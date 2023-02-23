@@ -15,7 +15,7 @@ from .models.invite_dto import (update_invite_parser, invite_model)
 invite_ns = Namespace('Invites', validate=True, description='SETA Community Invites')
 invite_ns.models[invite_model.name] = invite_model
 
-@invite_ns.route('/invites/<string:invite_id>', endpoint="invite", methods=['GET', 'PUT'])
+@invite_ns.route('/<string:invite_id>', endpoint="invite", methods=['GET', 'PUT'])
 @invite_ns.param("invite_id", "Invite identifier")
 class CommunityInvite(Resource):
     """Handles HTTP requests to URL: /invites/{invite_id}."""

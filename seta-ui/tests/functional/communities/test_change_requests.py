@@ -174,19 +174,19 @@ def test_resource_update_change_requests(client: FlaskClient, user_id: str):
     response = update_resource_change_request(client=client, access_token=access_token, 
                 resource_id=cr_access["resource_id"], request_id=cr_access["request_id"], status=RequestStatusConstants.Approved)
     assert response.status_code == HTTPStatus.OK
+    
+    response = update_resource_change_request(client=client, access_token=access_token, 
+                resource_id=cr_limits["resource_id"], request_id=cr_limits["request_id"], status=RequestStatusConstants.Approved)
+    assert response.status_code == HTTPStatus.OK
 
     response = get_resource(client=client, access_token=access_token, resource_id=cr_access["resource_id"])
     assert response.status_code == HTTPStatus.OK
     assert ResourceRequestFieldConstants.Access in response.json
     assert response.json[ResourceRequestFieldConstants.Access] == ResourceAccessContants.Public
-
-    response = update_resource_change_request(client=client, access_token=access_token, 
-                resource_id=cr_limits["resource_id"], request_id=cr_limits["request_id"], status=RequestStatusConstants.Approved)
-    assert response.status_code == HTTPStatus.OK
-
-    response = get_resource_pending_change_requests(client=client, access_token=access_token)
-    assert response.status_code == HTTPStatus.OK
-    assert len(response.json) == 0
+    
+    new_limits = json.loads(cr_limits["new_value"])
+    assert response.json[ResourceRequestFieldConstants.Limits]["file_size_mb"] == new_limits["file_size_mb"]
+    
     
 
 '''==========================================================='''

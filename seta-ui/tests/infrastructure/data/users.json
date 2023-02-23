@@ -8,7 +8,7 @@
         },
         {
             "user_id": "seta_community_manager",
-            "email": "seta_user@localtest.eu",
+            "email": "seta_community_manager@localtest.eu",
             "user_type": "user",
             "status": "active"
         }
@@ -61,7 +61,7 @@
             "provider_uid": "seta_user",
             "provider": "GitHub",
             "first_name": "Seta",
-            "last_name": "Uset",
+            "last_name": "Manager",
             "domain": "eu.europa.ec"
           }
     ]

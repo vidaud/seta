@@ -77,7 +77,7 @@ class CommunityCreateChangeRequest(Resource):
             return '', HTTPStatus.NO_CONTENT
         
         request_dict = new_invite_parser.parse_args()
-        emails = request_dict["emails"]
+        emails = request_dict["email"]
         message = request_dict["message"]
         
         count_sent = 0
