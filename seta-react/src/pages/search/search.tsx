@@ -31,6 +31,7 @@ const Search = () => {
     const [similarTerms, setSimilarTerms] = useState<any>(null);
     const [ontologyList, setOntologyList] = useState<any>(null);
     const [treeLeaf, setTreeLeaf] = useState<any>(null);
+    const [node1, setNode1] = useState<any>(null);
     const [selectedNodeKeys2, setSelectedNodeKeys2] = useState<any>(term);
     const [swithToAutocomplete, setSwithToAutocomplete] = useState(false);
     const [searchAllTerms, setSearchAllTerms] = useState(false);
@@ -56,29 +57,60 @@ const Search = () => {
             op.current?.hide();
         }
     }, [ selectedNodeKeys2 ]);
+
     useEffect(() => {
         isMounted.current = true;
 
         corpusParameters$?.subscribe((corpusParameters: CorpusSearchPayload) => {
           cp = new CorpusSearchPayload({ ...corpusParameters });
         });
+
         setLastPayload(new CorpusSearchPayload({ ...cp, term: term, aggs: 'date_year', n_docs: 100, search_type: typeofSearch, date_range: timeRangeValue }));
         corpusService.getRefreshedToken();
+        
         if (term.length >= 2) {
             let operator = ' OR ';
             let result = String(term).split(',').join(operator);
             setTerm(result);
-            // similarsService.retrieveSimilars(term).then(data => {
-            //     if (data && data.length > 0) {
-            //         let list: any = [];
-            //         data.forEach(element => {
-            //             list.push(element.similar_word);
-            //         });
-            //         setSimilarTerms(list);
-            //     }
-            // });
         }
     }, [term, typeofSearch, timeRangeValue, swithToAutocomplete, selectedNodeKeys2, ontologyList, suggestedTerms]);
+
+    const selectAll = (checked: boolean) => {
+        let arr: any = [];
+        arr.push(term);
+        let _selectedKeys = {};
+        for (let node of treeLeaf) {
+            selectNode(node, _selectedKeys, checked);
+        }
+
+        setSelectedNodeKeys2(_selectedKeys);
+        if (Object.keys(_selectedKeys).length > 0) {
+            Object.keys(_selectedKeys).forEach(element => {
+                if (!term.includes(element)){
+                    arr.push(element)
+                }
+            });
+        }
+        else {
+            arr = [];
+        }
+        setTerm(arr);
+    };
+
+    const selectNode = (node, _selectedKeys, checked) => {
+        if (checked === true) {
+            _selectedKeys[node.key] = { checked: checked, partialChecked: false };
+            if (node.children && node.children.length) {
+                for (let child of node.children) {
+                    selectNode(child, _selectedKeys, checked);
+                }
+            }
+        }
+
+        if (checked === false) {
+            _selectedKeys = {}
+        }
+    };
 
     const createTree = (nodes) => {
         let label, key, children, node_list: any = [];
@@ -107,11 +139,13 @@ const Search = () => {
         }
         setTreeLeaf(root.root);
     }
+
     const onSwitch = (e) => {
         setSwithToAutocomplete(e.value);
     }
 
     const onSearchAll = (e) => {
+        selectAll(e.value);
         setSearchAllTerms(e.value);
     }
 
