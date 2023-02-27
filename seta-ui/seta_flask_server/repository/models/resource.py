@@ -7,6 +7,9 @@ class ResourceLimitsModel:
     total_storage_mb: float = 1024
     file_size_mb: float = 50
 
+    def to_json(self):
+        return asdict(self)
+
     @classmethod 
     def from_db_json(cls, json_dict):
         return cls(total_files_no=json_dict["total_files_no"],

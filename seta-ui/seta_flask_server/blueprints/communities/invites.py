@@ -15,7 +15,7 @@ from .models.invite_dto import (update_invite_parser, invite_model)
 invite_ns = Namespace('Invites', validate=True, description='SETA Community Invites')
 invite_ns.models[invite_model.name] = invite_model
 
-@invite_ns.route('/invites/<string:invite_id>', endpoint="invite", methods=['GET', 'PUT'])
+@invite_ns.route('/<string:invite_id>', endpoint="invite", methods=['GET', 'PUT'])
 @invite_ns.param("invite_id", "Invite identifier")
 class CommunityInvite(Resource):
     """Handles HTTP requests to URL: /invites/{invite_id}."""
@@ -29,7 +29,7 @@ class CommunityInvite(Resource):
         
     @invite_ns.doc(description='Retrieve invite.',
     responses={int(HTTPStatus.OK): "'Retrieved invite.",
-               int(HTTPStatus.NOT_FOUND): "Invite not found.",
+               int(HTTPStatus.NO_CONTENT): "Invite not found.",
                int(HTTPStatus.FORBIDDEN): "Insufficient rights"
                },
     security='CSRF')
@@ -44,7 +44,7 @@ class CommunityInvite(Resource):
         request = self.invitesBroker.get_by_invite_id(invite_id)
         
         if request is None:
-            abort(HTTPStatus.NOT_FOUND, "Invite not found.")
+            return '', HTTPStatus.NO_CONTENT
         
         #if not the initiator of the request or the invitee, do not allow
         if request.initiated_by != auth_id and request.invited_user != auth_id:            
@@ -56,7 +56,7 @@ class CommunityInvite(Resource):
     responses={
                 int(HTTPStatus.OK): "Invite updated.", 
                 int(HTTPStatus.FORBIDDEN): "Insufficient rights",
-                int(HTTPStatus.NOT_FOUND): "Invite not found."
+                int(HTTPStatus.NO_CONTENT): "Invite not found."
                 },
     security='CSRF')
     @invite_ns.expect(update_invite_parser)
@@ -71,7 +71,7 @@ class CommunityInvite(Resource):
         
         #only pending invites can be updated
         if invite is None or invite.status != InviteStatusConstants.Pending:
-            abort(HTTPStatus.NOT_FOUND, "Invite not found or not in pending anymore.")
+            return '', HTTPStatus.NO_CONTENT
         
         #if not the initiator, do not allow
         if invite.invited_user != auth_id:            

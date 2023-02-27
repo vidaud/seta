@@ -6,9 +6,9 @@ from flask_restx import Namespace, Resource, abort
 from injector import inject
 
 from seta_flask_server.repository.interfaces import IResourcesBroker, IUsersBroker, ICommunitiesBroker
-from seta_flask_server.repository.models import ResourceModel
+from seta_flask_server.repository.models import ResourceModel, EntityScope
 from seta_flask_server.infrastructure.decorators import auth_validator
-from seta_flask_server.infrastructure.scope_constants import ResourceScopeConstants
+from seta_flask_server.infrastructure.scope_constants import ResourceScopeConstants, CommunityScopeConstants
 
 from http import HTTPStatus
 from .models.resource_dto import (new_resource_parser, update_resource_parser, resource_model, resource_limits_model)
@@ -17,7 +17,7 @@ resources_ns = Namespace('Resources', description='SETA Resources')
 resources_ns.models[resource_limits_model.name] = resource_limits_model
 resources_ns.models[resource_model.name] = resource_model
 
-@resources_ns.route('/communities/<string:community_id>/resources', methods=['POST', 'GET'])
+@resources_ns.route('/community/<string:community_id>', methods=['POST', 'GET'])
 @resources_ns.param("community_id", "Community identifier")
 class CommunityResourceList(Resource):
     """Get the resources of the community and expose POST for new resources"""
@@ -32,7 +32,7 @@ class CommunityResourceList(Resource):
 
     @resources_ns.doc(description='Retrieve resources for this community.',
         responses={int(HTTPStatus.OK): "'Retrieved resources.",
-                   int(HTTPStatus.NOT_FOUND): "Community not found"},
+                   int(HTTPStatus.NO_CONTENT): "Community not found"},
         security='CSRF')
     @resources_ns.marshal_list_with(resource_model, mask="*")
     @auth_validator()    
@@ -40,13 +40,13 @@ class CommunityResourceList(Resource):
         '''Retrieve resources'''
 
         if not self.communitiesBroker.community_id_exists(community_id):
-            abort(HTTPStatus.NOT_FOUND, "Community id not found.")
+            return '', HTTPStatus.NO_CONTENT
 
         return self.resourcesBroker.get_all_by_community_id(community_id)
 
     @resources_ns.doc(description='Create new resource.',        
         responses={int(HTTPStatus.CREATED): "Added resource.", 
-                   int(HTTPStatus.NOT_FOUND): "Community not found",
+                   int(HTTPStatus.NO_CONTENT): "Community not found",
                    int(HTTPStatus.FORBIDDEN): "Insufficient rights, scope 'resource/create' required"},
         security='CSRF')
     @resources_ns.expect(new_resource_parser)
@@ -60,11 +60,12 @@ class CommunityResourceList(Resource):
         user = self.usersBroker.get_user_by_id(auth_id)
         if user is None:
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
-        if not user.has_community_scope(id=community_id, scope=ResourceScopeConstants.Create):
-            abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
 
         if not self.communitiesBroker.community_id_exists(community_id):
-            abort(HTTPStatus.NOT_FOUND, "Community id not found.")
+            return '', HTTPStatus.NO_CONTENT
+
+        if not user.has_community_scope(id=community_id, scope=CommunityScopeConstants.CreateResource):
+            abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")        
 
         resource_dict = new_resource_parser.parse_args()
         
@@ -77,8 +78,15 @@ class CommunityResourceList(Resource):
                 model = ResourceModel(resource_id=resource_id, community_id=community_id, 
                                     title=resource_dict["title"], abstract=resource_dict["abstract"],                                    
                                     creator_id=identity["user_id"])
+
+                 #set resouce scopes for the creator_id
+                scopes = [
+                    EntityScope(user_id=model.creator_id,  id=model.resource_id, scope=ResourceScopeConstants.Edit).to_resource_json(),
+                    EntityScope(user_id=model.creator_id,  id=model.resource_id, scope=ResourceScopeConstants.DataAdd).to_resource_json(),
+                    EntityScope(user_id=model.creator_id,  id=model.resource_id, scope=ResourceScopeConstants.DataDelete).to_resource_json()
+                          ]
                 
-                self.resourcesBroker.create(model)
+                self.resourcesBroker.create(model=model,scopes=scopes)
         except:
             app.logger.exception("CommunityResourceList->post")
             abort(HTTPStatus.INTERNAL_SERVER_ERROR)
@@ -108,7 +116,7 @@ class CommunityResource(Resource):
 
     @resources_ns.doc(description='Retrieve resource',        
         responses={int(HTTPStatus.OK): "Retrieved resource.",
-                   int(HTTPStatus.NOT_FOUND): "Resource id not found."
+                   int(HTTPStatus.NO_CONTENT): "Resource id not found."
                   },
         security='CSRF')
     @resources_ns.marshal_with(resource_model, mask="*")
@@ -117,12 +125,13 @@ class CommunityResource(Resource):
         resource = self.resourcesBroker.get_by_id(id)
         
         if resource is None:
-            abort(HTTPStatus.NOT_FOUND, "Resource id not found.")
+            return '', HTTPStatus.NO_CONTENT
         
         return resource
 
     @resources_ns.doc(description='Update resource fields',        
         responses={int(HTTPStatus.OK): "Resource updated.", 
+                   int(HTTPStatus.NO_CONTENT): "Resource id not found.",
                    int(HTTPStatus.FORBIDDEN): "Insufficient rights, scope 'resource/edit' required"},
         security='CSRF')
     @resources_ns.expect(update_resource_parser)
@@ -131,14 +140,20 @@ class CommunityResource(Resource):
         '''Update a resource'''
         
         identity = get_jwt_identity()
-        auth_id = identity["auth_id"]
+        auth_id = identity["user_id"]
         
         #verify scope
         user = self.usersBroker.get_user_by_id(auth_id)
         if user is None:
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
-        if not user.has_resource_scope(id=id, scope=ResourceScopeConstants.Edit):
-            abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")       
+
+        resource = self.resourcesBroker.get_by_id(id)
+        if resource is None:
+            return '', HTTPStatus.NO_CONTENT
+
+        community_scopes = [CommunityScopeConstants.Owner, CommunityScopeConstants.Manager]
+        if not user.has_resource_scope(id=id, scope=ResourceScopeConstants.Edit) and not user.has_any_community_scope(id=resource.community_id, scopes=community_scopes):
+            abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")      
         
         resource_dict = update_resource_parser.parse_args()
 
@@ -159,6 +174,7 @@ class CommunityResource(Resource):
 
     @resources_ns.doc(description='Delete all resource entries',
         responses={int(HTTPStatus.OK): "Resource deleted.", 
+                    int(HTTPStatus.NO_CONTENT): "Resource id not found.",
                    int(HTTPStatus.FORBIDDEN): "Insufficient rights, scope 'resource/edit' required"},
         security='CSRF')
     @auth_validator()
@@ -172,7 +188,15 @@ class CommunityResource(Resource):
         user = self.usersBroker.get_user_by_id(auth_id)
         if user is None:
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
-        if not user.has_resource_scope(id=id, scope=ResourceScopeConstants.Edit):
+
+        app.logger.debug(user.to_json_complete())
+
+        resource = self.resourcesBroker.get_by_id(id)
+        if resource is None:
+            return '', HTTPStatus.NO_CONTENT
+
+        community_scopes = [CommunityScopeConstants.Owner, CommunityScopeConstants.Manager]
+        if not user.has_resource_scope(id=id, scope=ResourceScopeConstants.Edit) and not user.has_any_community_scope(id=resource.community_id, scopes=community_scopes):
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
         
         try:            

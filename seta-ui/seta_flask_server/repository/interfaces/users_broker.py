@@ -1,5 +1,4 @@
 from interface import Interface
-from typing import Any
 from seta_flask_server.repository.models.seta_user import SetaUser
 
 class IUsersBroker(Interface):
@@ -19,21 +18,7 @@ class IUsersBroker(Interface):
         pass
     
     #-------------------------------------------------------#
-    
-    '''
-    def add_user(self, user: Any):
-        pass
-    '''
-     
-    '''
-    def get_user_by_username(self, username: str):
-        pass
-    '''   
-    
-    '''
-    def update_user(self, username: str, field: str, value: Any):
-        pass
-    '''
+
     
     def move_documents(self, sourceCollection: str, targetCollection: str, filter: dict):
         pass

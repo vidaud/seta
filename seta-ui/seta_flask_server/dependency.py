@@ -18,6 +18,7 @@ class MongoDbClientModule(injector.Module):
         binder.bind(interfaces.IResourcesBroker, to=implementation.ResourcesBroker)
         binder.bind(interfaces.IResourceContributorsBroker, to=implementation.ResourceContributorsBroker)
         binder.bind(interfaces.IResourceChangeRequestsBroker, to=implementation.ResourceChangeRequestsBroker)
+        binder.bind(interfaces.IUserPermissionsBroker, to=implementation.UserPermissionsBroker)
                 
     def create_client(
             self

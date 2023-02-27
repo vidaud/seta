@@ -7,3 +7,4 @@ from .resources_broker import IResourcesBroker, IResourceContributorsBroker, IRe
 from .membership_broker import IMembershipsBroker
 from .community_change_request_broker import ICommunityChangeRequestsBroker
 from .community_invites_broker import ICommunityInvitesBroker
+from .user_permissions_broker import IUserPermissionsBroker

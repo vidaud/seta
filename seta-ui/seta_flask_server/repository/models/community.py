@@ -1,5 +1,5 @@
 import datetime
-import json
+from flask import json
 from dataclasses import dataclass, asdict
 
 class CommunityModel:

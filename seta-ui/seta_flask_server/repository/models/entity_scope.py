@@ -1,4 +1,4 @@
-import json
+from flask import json
 
 class EntityScope:
     def __init__(self, user_id, id, scope) -> None:

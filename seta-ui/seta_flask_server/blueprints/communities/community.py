@@ -5,10 +5,10 @@ from flask_restx import Namespace, Resource, abort
 
 from injector import inject
 
-from seta_flask_server.repository.models import CommunityModel
-from seta_flask_server.repository.interfaces import ICommunitiesBroker, IUsersBroker
+from seta_flask_server.repository.models import CommunityModel, EntityScope
+from seta_flask_server.repository.interfaces import ICommunitiesBroker, IUsersBroker, IResourcesBroker
 from seta_flask_server.infrastructure.decorators import auth_validator
-from seta_flask_server.infrastructure.scope_constants import CommunityScopeConstants
+from seta_flask_server.infrastructure.scope_constants import CommunityScopeConstants, SystemScopeConstants
 from seta_flask_server.infrastructure.constants import CommunityMembershipConstants, CommunityStatusConstants
 
 from http import HTTPStatus
@@ -60,8 +60,9 @@ class CommunityList(Resource):
         #verify scope
         user = self.usersBroker.get_user_by_id(user_id)
         if user is None:
+            app.logger.debug(f"{user_id} not found")
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
-        if not user.has_system_scope(scope=CommunityScopeConstants.Create):
+        if not user.has_system_scope(scope=SystemScopeConstants.CreateCommunity):            
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
         
         community_dict = new_community_parser.parse_args()
@@ -76,8 +77,16 @@ class CommunityList(Resource):
                                     membership=CommunityMembershipConstants.Closed, 
                                     data_type=community_dict["data_type"], status=CommunityStatusConstants.Active, 
                                     creator_id=identity["user_id"])
+
+                scopes = [
+                    EntityScope(user_id=model.creator_id,  id=model.community_id, scope=CommunityScopeConstants.Owner).to_community_json(),
+                    EntityScope(user_id=model.creator_id,  id=model.community_id, scope=CommunityScopeConstants.Manager).to_community_json(),                    
+                    EntityScope(user_id=model.creator_id,  id=model.community_id, scope=CommunityScopeConstants.SendInvite).to_community_json(),
+                    EntityScope(user_id=model.creator_id,  id=model.community_id, scope=CommunityScopeConstants.ApproveMembershipRequest).to_community_json(),
+                    EntityScope(user_id=model.creator_id,  id=model.community_id, scope=CommunityScopeConstants.CreateResource).to_community_json()
+                          ]
                 
-                self.communitiesBroker.create(model)
+                self.communitiesBroker.create(model=model, scopes=scopes)
         except:
             app.logger.exception("CommunityList->post")
             abort(HTTPStatus.INTERNAL_SERVER_ERROR)
@@ -97,15 +106,16 @@ class Community(Resource):
     """Handles HTTP requests to URL: /communities/{id}."""
     
     @inject
-    def __init__(self, usersBroker: IUsersBroker, communitiesBroker: ICommunitiesBroker, api=None, *args, **kwargs):
+    def __init__(self, usersBroker: IUsersBroker, communitiesBroker: ICommunitiesBroker, resourcesBroker: IResourcesBroker, api=None, *args, **kwargs):
         self.usersBroker = usersBroker
         self.communitiesBroker = communitiesBroker
+        self.resourcesBroker = resourcesBroker
         
         super().__init__(api, *args, **kwargs)
     
     @communities_ns.doc(description='Retrieve community, if user is a member of it',        
         responses={int(HTTPStatus.OK): "Retrieved community.",
-                   int(HTTPStatus.NOT_FOUND): "Community id not found."
+                   int(HTTPStatus.NO_CONTENT): "Community id not found."
                   },
         security='CSRF')
     @communities_ns.marshal_with(community_model, mask="*")
@@ -115,12 +125,13 @@ class Community(Resource):
         community = self.communitiesBroker.get_by_id(id)
         
         if community is None:
-            abort(HTTPStatus.NOT_FOUND, "Community id not found.")
+            return '', HTTPStatus.NO_CONTENT
         
         return community
     
     @communities_ns.doc(description='Update community fields',        
         responses={int(HTTPStatus.OK): "Community updated.", 
+                   int(HTTPStatus.NO_CONTENT): "Community id not found",
                    int(HTTPStatus.FORBIDDEN): "Insufficient rights, scope 'community/edit' required"},
         security='CSRF')
     @communities_ns.expect(update_community_parser)
@@ -136,7 +147,11 @@ class Community(Resource):
         user = self.usersBroker.get_user_by_id(user_id)
         if user is None:
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
-        if not user.has_community_scope(id=id, scope=CommunityScopeConstants.Edit):
+
+        if not self.communitiesBroker.community_id_exists(id):
+            return '', HTTPStatus.NO_CONTENT
+
+        if not user.has_community_scope(id=id, scope=CommunityScopeConstants.Manager):
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")       
         
         community_dict = update_community_parser.parse_args()
@@ -158,7 +173,8 @@ class Community(Resource):
     
     @communities_ns.doc(description='Delete  community entries',
         responses={int(HTTPStatus.OK): "Community deleted.", 
-                   int(HTTPStatus.FORBIDDEN): "Insufficient rights, scope 'community/edit' required"},
+                   int(HTTPStatus.FORBIDDEN): "Insufficient rights, scope 'community/manager' required",
+                   int(HTTPStatus.CONFLICT): "There are resources linked to this community"},                   
         security='CSRF')
     @auth_validator()
     def delete(self, id):
@@ -171,16 +187,16 @@ class Community(Resource):
         user = self.usersBroker.get_user_by_id(user_id)
         if user is None:
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
-        if not user.has_community_scope(id=id, scope=CommunityScopeConstants.Edit):
+        if not user.has_community_scope(id=id, scope=CommunityScopeConstants.Owner):
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
         
-        try:            
-            self.communitiesBroker.delete(id)
-            
-            #TODO: delete resource from elastic search (from here or from the client side?)
-        except:
-            app.logger.exception("Community->delete")
-            abort(HTTPStatus.INTERNAL_SERVER_ERROR)   
+
+        #check for any resources
+        resources = self.resourcesBroker.get_all_by_community_id(community_id=id)
+        if len(resources) > 0:
+            abort(HTTPStatus.CONFLICT, "There are resources linked to this community")
+
+        self.communitiesBroker.delete(id)
             
         message = f"All data for community '{id}' deleted."
         response = jsonify(status="success", message=message)
