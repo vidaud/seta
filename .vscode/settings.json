@@ -1,7 +1,0 @@
-{
-    "python.testing.pytestArgs": [
-        "seta-ui"
-    ],
-    "python.testing.unittestEnabled": false,
-    "python.testing.pytestEnabled": true
-}
