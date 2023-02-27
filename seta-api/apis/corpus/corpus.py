@@ -97,6 +97,8 @@ query_corpus_post_data = corpus_api.model(
         'sort': fields.List(fields.String(), description='sort results field:order'),
         'semantic_sort_id': fields.String(description='sort results by semantic distance among documents'),
         'sbert_embedding': fields.List(fields.Float, description='embeddings vector'),
+        'semantic_sort_id_list': fields.List(fields.String(), description='sort results by semantic distance among documents'),
+        'sbert_embedding_list': fields.List(fields.List(fields.Float, description='list of embeddings vector')),
         'author': fields.String(description='author'),
         'date_range': fields.List(fields.String, description='examples: gte:yyyy-mm-dd,lte:yyyy-mm-dd,gt:yyyy-mm-dd,lt:yyyy-mm-dd'),
         'aggs': fields.String(description='field to be aggregated, allowed fields are: "date_year"'),
@@ -116,7 +118,9 @@ class CorpusQuery(Resource):
         app.logger.debug(str(args))        
         
         if is_field_in_doc(args, 'term') or is_field_in_doc(args, 'semantic_sort_id') \
-                or is_field_in_doc(args, 'sbert_embedding') or is_field_in_doc(args, 'aggs') \
+                or is_field_in_doc(args, 'semantic_sort_id_list')\
+                or is_field_in_doc(args, 'sbert_embedding') or is_field_in_doc(args, 'sbert_embedding_list') \
+                or is_field_in_doc(args, 'aggs') \
                 or is_field_in_doc(args, 'source'):
             try:
                 documents = corpus(is_field_in_doc(args, 'term')
@@ -136,6 +140,8 @@ class CorpusQuery(Resource):
                                  , is_field_in_doc(args, 'sort')
                                  , is_field_in_doc(args, 'semantic_sort_id')
                                  , is_field_in_doc(args, 'sbert_embedding')
+                                 , is_field_in_doc(args, 'semantic_sort_id_list')
+                                 , is_field_in_doc(args, 'sbert_embedding_list')
                                  , is_field_in_doc(args, 'author')
                                  , is_field_in_doc(args, 'date_range')
                                  , is_field_in_doc(args, 'aggs')
@@ -183,20 +189,20 @@ class CorpusQuery(Resource):
                     'in_force': 'eurlex metadata in_force',
                     'sort': 'sort results field:order',
                     'semantic_sort_id': 'sort results by semantic distance among documents',
+                    'semantic_sort_id_list': 'sort results by semantic distance among documents',
                     'author': 'description',
                     'date_range': 'gte:yyyy-mm-dd,lte:yyyy-mm-dd,gt:yyyy-mm-dd,lt:yyyy-mm-dd',
                     'aggs': 'field to be aggregated, allowed fields are: "source", "eurovoc_concept"'},
             security='apikey')
     def get(self):
         args = corpus_parser.parse_args()
-        
-        if args['term'] or args['semantic_sort_id'] or args['aggs'] or args['source']:
+        if args['term'] or args['semantic_sort_id'] or args['semantic_sort_id_list'] or args['aggs'] or args['source']:
             try:
                 documents = corpus(args['term'], args['n_docs'], args['from_doc'], args['source'], args['collection'],
                           args['reference'], args['eurovoc_concept'], args['eurovoc_domain'], args['eurovoc_mth'],
                           args['ec_priority'], args['sdg_domain'], args['sdg_subdomain'], args['euro_sci_voc'],
-                          args['in_force'], args['sort'], args['semantic_sort_id'], None, args['author'],
-                          args['date_range'], args['aggs'], args['search_type'], args['other'],
+                          args['in_force'], args['sort'], args['semantic_sort_id'], None, args['semantic_sort_id_list'],
+                          None, args['author'], args['date_range'], args['aggs'], args['search_type'], args['other'],
                           current_app=app)                
                 
                 return jsonify(documents)
