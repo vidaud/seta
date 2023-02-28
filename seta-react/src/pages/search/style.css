@@ -134,3 +134,10 @@
     overflow-y: scroll;
     max-height: 300px;
 }
+.p-listbox {
+    border: none !important;
+}
+
+.overlaypanel1 > .p-overlaypanel-content > .p-listbox .p-listbox-list {
+    height: 200px;
+}

@@ -4,10 +4,10 @@ import { InputSwitch } from 'primereact/inputswitch';
 import { Button } from 'primereact/button';
 import TabMenus from '../../components/tab-menu/tab-menu';
 import DialogButton from '../../components/dialog/dialog';
-import { Term } from '../../models/term.model';
+import { Operators, Term, TermType } from '../../models/term.model';
 import { CorpusService } from '../../services/corpus/corpus.service';
 import { CorpusSearchPayload } from '../../store/corpus-search-payload';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { BreadCrumb } from 'primereact/breadcrumb';
 import { AutoComplete } from 'primereact/autocomplete';
 import { SuggestionsService } from '../../services/corpus/suggestions.service';
@@ -16,6 +16,7 @@ import { OntologyListService } from '../../services/corpus/ontology-list.service
 import { Tree } from 'primereact/tree';
 import { OverlayPanel } from 'primereact/overlaypanel';
 import { InputText } from 'primereact/inputtext';
+import { ListBox } from 'primereact/listbox';
 
 const Search = () => {
     const [showContent, setShowContent] = useState(false);
@@ -28,13 +29,14 @@ const Search = () => {
     const [lastPayload, setLastPayload] = useState<any>();
     const [suggestedTerms, setSuggestedTerms] = useState<any>(null);
     const [filteredTerms, setFilteredTerms] = useState<any>(null);
-    const [similarTerms, setSimilarTerms] = useState<any>(null);
     const [ontologyList, setOntologyList] = useState<any>(null);
     const [treeLeaf, setTreeLeaf] = useState<any>(null);
-    const [node1, setNode1] = useState<any>(null);
     const [selectedNodeKeys2, setSelectedNodeKeys2] = useState<any>(term);
     const [swithToAutocomplete, setSwithToAutocomplete] = useState(false);
     const [searchAllTerms, setSearchAllTerms] = useState(false);
+    const [inputText, setInputText] = useState(``);
+    const [copyQyery, setCopyQuery] = useState<Term[] | any>([]);
+    const refs = useRef<any>(null);
     
     const corpusService = new CorpusService();
     const suggestionsService = new SuggestionsService();
@@ -44,6 +46,7 @@ const Search = () => {
 
     const isMounted = useRef(false);
     const op = useRef<OverlayPanel>(null);
+    const op1 = useRef<OverlayPanel>(null);
     let cp: CorpusSearchPayload;
 
     const itemsBreadCrumb = [
@@ -55,25 +58,24 @@ const Search = () => {
     useEffect(() => {
         if (isMounted) {
             op.current?.hide();
+            op1.current?.hide();
         }
     }, [ selectedNodeKeys2 ]);
 
     useEffect(() => {
         isMounted.current = true;
-
+        if (String(term).split(" ").length > 1) {
+            let operator = ' OR ';
+            let result = String(term).split(" ").join(operator);
+            setCopyQuery(result);
+        }
         corpusParameters$?.subscribe((corpusParameters: CorpusSearchPayload) => {
           cp = new CorpusSearchPayload({ ...corpusParameters });
         });
 
-        setLastPayload(new CorpusSearchPayload({ ...cp, term: term, aggs: 'date_year', n_docs: 100, search_type: typeofSearch, date_range: timeRangeValue }));
+        setLastPayload(new CorpusSearchPayload({ ...cp, term: copyQyery, aggs: 'date_year', n_docs: 100, search_type: typeofSearch, date_range: timeRangeValue }));
         corpusService.getRefreshedToken();
-        
-        if (term.length >= 2) {
-            let operator = ' OR ';
-            let result = String(term).split(',').join(operator);
-            setTerm(result);
-        }
-    }, [term, typeofSearch, timeRangeValue, swithToAutocomplete, selectedNodeKeys2, ontologyList, suggestedTerms]);
+    }, [term, typeofSearch, timeRangeValue, swithToAutocomplete, selectedNodeKeys2, ontologyList, suggestedTerms, copyQyery]);
 
     const selectAll = (checked: boolean) => {
         let arr: any = [];
@@ -179,6 +181,7 @@ const Search = () => {
                 setSuggestedTerms(data);
             }
         });
+        setFilteredTerms(suggestedTerms);
         setTerm(e.target.value);
     };
 
@@ -204,6 +207,89 @@ const Search = () => {
         }
     }
 
+    const handleKeypress = (e) => {
+        if (e.key === 'Enter') {
+            transform(e.target.value.split(' ').pop());
+        }
+    };
+
+    const transform = (textInput: string | { display: string; value: string } | any): Observable<object> => {
+        let item: any = null;
+        // is it a string?
+        if (typeof textInput === `string`) {
+          // is it an operator?
+          if (textInput === `AND`) {
+            item = new Term({
+              display: `${textInput}`,
+              termType: TermType.OPERATOR,
+              value: `${textInput}`,
+              isOperator: true,
+              operator: Operators.properties[Operators.AND],
+            });
+          } else {
+            /*Check if there is a pair of quotes*/
+            const areQuotesPresent = textInput.match('"') !== null ? true : false;
+            // are quotes present?
+            if (areQuotesPresent) {
+              const startQuote = textInput.indexOf('"');
+              const finalQuote = textInput.indexOf('"', textInput.length - 1);
+              if (startQuote === 0) {
+                if (textInput.length >= 3 && finalQuote === textInput.length - 1) {
+                  item = new Term({
+                    display: `${textInput}`,
+                    termType: TermType.VERTEX,
+                    value: textInput.replace(/^"|"$/g, ''),
+                    isOperator: false,
+                  });
+                }
+              }
+            } else {
+                item = new Term({
+                    display: textInput.indexOf(`-`) !== -1 ? `"${textInput}"` : `${textInput}`,
+                    termType: TermType.VERTEX,
+                    value: textInput.replace(/^"|"$/g, ''),
+                    isOperator: false,
+                });
+            }
+          }
+        } else {
+          // is it an operator?
+          if (textInput.display === `AND`) {
+            item = new Term({
+              display: `${textInput.display}`,
+              termType: TermType.OPERATOR,
+              value: textInput.value.replace(/^"|"$/g, ''),
+              isOperator: true,
+              operator: Operators.properties[Operators.AND],
+            });
+          } else {
+            item = new Term({
+              display: textInput.display.indexOf(` `) !== -1 ?
+                (textInput.display.match("\"") !== null ? true : false)
+                  ?
+                  `${textInput.display}`
+                  // textInput.display.indexOf(`-`) !== -1 ? `"${textInput.display}"` : `${textInput.display}`
+                  :
+                  `"${textInput.display}"`
+                :
+                textInput.display.indexOf(`-`) !== -1 ? `"${textInput.display}"` : `${textInput.display}`
+              ,
+              termType: TermType.VERTEX,
+              value: textInput.value.replace(/^"|"$/g, ''), isOperator: false
+            });
+          }
+        }
+    
+        if (item === null) {
+            setInputText(textInput + ` `);
+          return of();
+        } else {
+            setInputText(``);
+        }
+        console.log(of(item))
+        return of(item);
+    }
+
     return (
         <>
         <BreadCrumb model={itemsBreadCrumb} home={home} />
@@ -226,6 +312,7 @@ const Search = () => {
                         <InputText
                             type="search"
                             aria-haspopup
+                            ref={refs}
                             value={term}
                             aria-controls="overlay_panel"
                             className="select-product-button"
@@ -244,7 +331,8 @@ const Search = () => {
                                 op.current?.toggle(e);
                                 setTerm(e.target.value);
                             }}
-                        />
+                            onKeyPress={handleKeypress}
+                          />
                         <OverlayPanel
                             ref={op}
                             showCloseIcon
@@ -256,42 +344,84 @@ const Search = () => {
                                 <h5>Search all related terms</h5>
                                 <InputSwitch checked={searchAllTerms} onChange={onSearchAll} />
                             </div>
-                            <Tree
-                                className='tree-panel'
-                                value={treeLeaf}
-                                // header={search_all}
-                                disabled={searchAllTerms ? true : false}
-                                footer={`Selected terms: ${Object.keys(selectedNodeKeys2).length}`}
-                                selectionKeys={selectedNodeKeys2}
-                                onSelectionChange={(e) => {
-                                    setSelectedNodeKeys2(e.value);
-                                    let value: any = e.value;
-                                    let arr: any = [];
-                                    arr.push(term);
-                                    Object.keys(value).forEach(element => {
-                                        if (!term.includes(element)){
-                                            arr.push(element)
-                                        }
-                                    });
-                                      setTerm(arr);
-                                }}
-                                selectionMode="checkbox"
-                            ></Tree>
+                            { searchAllTerms ? <div></div> :
+                                <Tree
+                                    className='tree-panel'
+                                    value={treeLeaf}
+                                    // header={search_all}
+                                    disabled={searchAllTerms ? true : false}
+                                    footer={`Selected terms: ${Object.keys(selectedNodeKeys2).length}`}
+                                    selectionKeys={selectedNodeKeys2}
+                                    onSelectionChange={(e) => {
+                                        setSelectedNodeKeys2(e.value);
+                                        let value: any = e.value;
+                                        let arr: any = [];
+                                        arr.push(term);
+                                        Object.keys(value).forEach(element => {
+                                            if (!term.includes(element)){
+                                                arr.push(element)
+                                            }
+                                        });
+                                        setTerm(arr);
+                                    }}
+                                    selectionMode="checkbox"
+                                ></Tree>
+                            }
                         </OverlayPanel>
                     </>
                     :
-                        <AutoComplete
-                            suggestions={filteredTerms}
-                            completeMethod={searchSuggestions}
+                    <>
+                        <InputText
                             type="search"
                             aria-haspopup
-                            aria-controls="overlay_panel"
-                            className="select-product-button"
                             value={term}
-                            autoHighlight={true}
+                            aria-controls="overlay_panel1"
+                            className="select-product-button"
                             placeholder="Type term and/or drag and drop here document"
-                            onChange={onChangeTerm}
+                            onChange={(e) => {
+                                e.preventDefault();
+                                let lastKeyword: any = e.target.value.split(' ').pop();
+                                suggestionsService.retrieveSuggestions(lastKeyword).then(data => {
+                                    if (data) {
+                                        setSuggestedTerms(data);
+                                    }
+                                });
+                                op1.current?.toggle(e);
+                                setFilteredTerms(suggestedTerms);
+                                setTerm(e.target.value);
+                            }}
+                            onKeyPress={handleKeypress}
                         />
+                        {/* // <AutoComplete
+                        //     suggestions={filteredTerms}
+                        //     completeMethod={searchSuggestions}
+                        //     type="search"
+                        //     aria-haspopup
+                        //     aria-controls="overlay_panel"
+                        //     className="select-product-button"
+                        //     value={term}
+                        //     autoHighlight={true}
+                        //     placeholder="Type term and/or drag and drop here document"
+                        //     onChange={onChangeTerm}
+                        // /> */}
+                        <OverlayPanel
+                            ref={op1}
+                            showCloseIcon
+                            id="overlay_panel1"
+                            style={{ width: "55%", left: "19%", height: "240px"}}
+                            className="overlaypanel1"
+                        >
+                            <ListBox value={term} options={suggestedTerms}
+                                onChange={(e) => {
+                                    transform(e.value).subscribe((response: any) =>{
+                                        console.log(response)
+                                        setTerm(response.value)
+                                    });
+                                    }
+                                }
+                            />
+                        </OverlayPanel>
+                    </>
                     }
                     <Button label="Search" onClick={onSearch}/>
                 </div>
