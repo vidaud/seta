@@ -34,4 +34,4 @@ ENV ROOT_USERS="vidas.daudaravicius@ec.europa.eu;lucia.noce@ext.ec.europa.eu;And
 CMD ["gunicorn", "--conf", "/home/seta/gunicorn_conf.py", "--bind", "0.0.0.0:8080", "--capture-output" , "--access-logformat", "[seta.ui] %(h)s %(l)s %(u)s %(t)s %(r)s %(s)s %(b)s | %(f)s | %(a)s", "--chdir", "/home/seta", "app:app"]
 
 #for error displays:
-#CMD flask --app app --debug run -h "0.0.0.0"
+#CMD flask --app app --debug run -h "0.0.0.0" --port 8080
