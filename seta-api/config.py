@@ -17,10 +17,7 @@ class Config:
     JWT_COOKIE_CSRF_PROTECT = False
     JWT_TOKEN_LOCATION=["headers", "cookies"]
     JWT_TOKEN_INFO_URL="http://seta-ui:8080/authorization/v1/token_info"
-    
-    #Scheduler variables
-    SCHEDULER_API_ENABLED = True
-    SCHEDULER_API_PREFIX = "/seta-api/scheduler"
+
         
     #LogSetup variables
     LOG_TYPE = "stream"
@@ -59,7 +56,7 @@ class Config:
     MODELS_WORD2VEC_FILE = "wv-sg0-hs1.bin"
     MODELS_WORD2VEC_FILE_CRC = "wv-sg0-hs1.crc"
     MODELS_INIT_FILE = "models.zip"
-    
+
     EXAMPLE_GUEST = "example_get-token_guest.py"
     EXAMPLE_USER = "example_get-token_user.py"
     JRCBOX_ID = "DbdH9B1dc5hD0TM"

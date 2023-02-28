@@ -12,7 +12,7 @@ from flask_cors import CORS
 from werkzeug.middleware.proxy_fix import ProxyFix
 from flask_jwt_extended import get_jwt_identity, verify_jwt_in_request
 
-from infrastructure.extensions import (scheduler, jwt, logs)
+from infrastructure.extensions import (jwt, logs)
 
 def create_app(config_object):
     """Main app factory"""
@@ -36,13 +36,7 @@ def create_app(config_object):
     app.logger.info(app.url_map)
             
     request_endswith_ignore_list = ['.js', '.css', '.png', '.ico', '.svg', '.map', '.json', 'doc']
-    with app.app_context():                
-        if app.config['SCHEDULER_ENABLED']:
-            from infrastructure.scheduler import (tasks, events)
-            from infrastructure.scheduler.tasks import suggestion_update_job
-            
-            suggestion_update_job()
-            scheduler.start()
+    with app.app_context():
            
         #Log requests
         @app.before_request
@@ -112,7 +106,6 @@ def init(app):
     app.logger.info("SeTA-API is up and running.")    
  
 def register_extensions(app):
-#    scheduler.init_app(app)
     jwt.init_app(app)
     logs.init_app(app)      
     

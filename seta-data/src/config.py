@@ -24,6 +24,8 @@ class Config:
     MODELS_WORD2VEC_FILE = "wv-sg0-hs1.bin"
     MODELS_WORD2VEC_FILE_CRC = "wv-sg0-hs1.crc"
     MODELS_INIT_FILE = "models.zip"
+    WORD2VEC_JSON_EXPORT = "json_suggestion.json"
+
     
     def __init__(self) -> None:             
         """Read environment variables"""               

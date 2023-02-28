@@ -1,8 +1,10 @@
-from infrastructure.helpers import sanitize_input, word_exists
+from infrastructure.helpers import sanitize_input, word_exists, revert_sanitize_input
 from infrastructure.ApiLogicError import ApiLogicError
+from infrastructure.utils.crc import get_crc_from_es
 import copy
 from math import sqrt
 import itertools
+
 
 def build_graph(term, current_app):
     term = sanitize_input(term)
@@ -36,6 +38,23 @@ def build_graph(term, current_app):
                 
     return graphjs
 
+
+def get_most_similar(term, current_app):
+    term = revert_sanitize_input(term)
+    current_crc, crc_id = get_crc_from_es(current_app.es, current_app.config["INDEX_SUGGESTION"])
+
+    query_similar_terms = {"bool": {"must": [{"match": {"phrase.keyword": term}},
+                                             {"match": {"crc.keyword": current_crc}}]}}
+
+    resp = current_app.es.search(index=current_app.config["INDEX_SUGGESTION"], query=query_similar_terms,
+                                 _source=["most_similar.term"])
+    terms = []
+    for r in resp["hits"]["hits"]:
+        for t in r["_source"]["most_similar"]:
+            terms.append(sanitize_input(t["term"]))
+    return terms
+
+
 def build_tree(term, current_app):
     term = sanitize_input(term)
     if not word_exists(current_app.terms_model, term):
@@ -44,8 +63,7 @@ def build_tree(term, current_app):
     terms_model = current_app.terms_model
     graphjs = {"nodes": []}
     
-
-    nodes = [sanitize_input(x) for x, y in terms_model.wv.most_similar(term, topn=20)]
+    nodes = get_most_similar(term, current_app)
     nodes2 = []
     done = []
     done2 = []
@@ -67,7 +85,7 @@ def build_tree(term, current_app):
     for r in nodes2:
         r2 = copy.deepcopy(r)
         for n in r:
-            for m in [sanitize_input(x) for x, y in terms_model.wv.most_similar(n, topn=7)]:
+            for m in get_most_similar(n, current_app)[:7]:
                 if m not in done and m != term and m not in done2:
                     done2.append(m)
                     r2.append(m)
