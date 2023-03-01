@@ -9,9 +9,7 @@ import { CorpusService } from '../../services/corpus/corpus.service';
 import { CorpusSearchPayload } from '../../store/corpus-search-payload';
 import { Observable, of } from 'rxjs';
 import { BreadCrumb } from 'primereact/breadcrumb';
-import { AutoComplete } from 'primereact/autocomplete';
 import { SuggestionsService } from '../../services/corpus/suggestions.service';
-import { SimilarsService } from '../../services/corpus/similars.service';
 import { OntologyListService } from '../../services/corpus/ontology-list.service';
 import { Tree } from 'primereact/tree';
 import { OverlayPanel } from 'primereact/overlaypanel';
@@ -36,11 +34,11 @@ const Search = () => {
     const [searchAllTerms, setSearchAllTerms] = useState(false);
     const [inputText, setInputText] = useState(``);
     const [copyQyery, setCopyQuery] = useState<Term[] | any>([]);
+    const [singleTerm, setSingleTerm] = useState<Term[] | any>([]);
     const refs = useRef<any>(null);
     
     const corpusService = new CorpusService();
     const suggestionsService = new SuggestionsService();
-    const similarsService = new SimilarsService();
     const ontologyListService = new OntologyListService();
     let corpusParameters$: Observable<CorpusSearchPayload>;
 
@@ -68,6 +66,13 @@ const Search = () => {
             let operator = ' OR ';
             let result = String(term).split(" ").join(operator);
             setCopyQuery(result);
+        }
+        if (String(term).split(',').length > 1) {
+            let operator = ' OR ';
+            let result = String(term).split(',').join(operator);
+            let query = String(term).split(',').join(' ');
+            setCopyQuery(result);
+            setTerm(query);
         }
         corpusParameters$?.subscribe((corpusParameters: CorpusSearchPayload) => {
           cp = new CorpusSearchPayload({ ...corpusParameters });
@@ -167,23 +172,23 @@ const Search = () => {
         }
     }
     
-    const searchSuggestions = () => {
-        setTimeout(() => {
-            setFilteredTerms(suggestedTerms);
-        }, 250);
-    }
+    // const searchSuggestions = () => {
+    //     setTimeout(() => {
+    //         setFilteredTerms(suggestedTerms);
+    //     }, 250);
+    // }
 
-    const onChangeTerm = (e) => {
-        e.preventDefault();
-        let lastKeyword: any = e.target.value.split(' ').pop();
-        suggestionsService.retrieveSuggestions(lastKeyword).then(data => {
-            if (data) {
-                setSuggestedTerms(data);
-            }
-        });
-        setFilteredTerms(suggestedTerms);
-        setTerm(e.target.value);
-    };
+    // const onChangeTerm = (e) => {
+    //     e.preventDefault();
+    //     let lastKeyword: any = e.target.value.split(' ').pop();
+    //     suggestionsService.retrieveSuggestions(lastKeyword).then(data => {
+    //         if (data) {
+    //             setSuggestedTerms(data);
+    //         }
+    //     });
+    //     setFilteredTerms(suggestedTerms);
+    //     setTerm(e.target.value);
+    // };
 
     const getDocumentList = (list) => {
         setDocumentList(items)
@@ -268,7 +273,6 @@ const Search = () => {
                 (textInput.display.match("\"") !== null ? true : false)
                   ?
                   `${textInput.display}`
-                  // textInput.display.indexOf(`-`) !== -1 ? `"${textInput.display}"` : `${textInput.display}`
                   :
                   `"${textInput.display}"`
                 :
@@ -313,7 +317,7 @@ const Search = () => {
                             type="search"
                             aria-haspopup
                             ref={refs}
-                            value={term}
+                            value={searchAllTerms ?  singleTerm : term}
                             aria-controls="overlay_panel"
                             className="select-product-button"
                             placeholder="Type term and/or drag and drop here document"
@@ -321,6 +325,8 @@ const Search = () => {
                                 if (term === "") {
                                     setSelectedNodeKeys2(term);
                                 }
+                                let typed : any = e.target.value.split(' ')[0];
+                                setSingleTerm(typed);
                                 const lastKeyword = e.target.value.split(' ').pop();
                                 ontologyListService.retrieveOntologyList(lastKeyword).then(data => {
                                     if (data) {
@@ -348,7 +354,6 @@ const Search = () => {
                                 <Tree
                                     className='tree-panel'
                                     value={treeLeaf}
-                                    // header={search_all}
                                     disabled={searchAllTerms ? true : false}
                                     footer={`Selected terms: ${Object.keys(selectedNodeKeys2).length}`}
                                     selectionKeys={selectedNodeKeys2}
@@ -392,18 +397,6 @@ const Search = () => {
                             }}
                             onKeyPress={handleKeypress}
                         />
-                        {/* // <AutoComplete
-                        //     suggestions={filteredTerms}
-                        //     completeMethod={searchSuggestions}
-                        //     type="search"
-                        //     aria-haspopup
-                        //     aria-controls="overlay_panel"
-                        //     className="select-product-button"
-                        //     value={term}
-                        //     autoHighlight={true}
-                        //     placeholder="Type term and/or drag and drop here document"
-                        //     onChange={onChangeTerm}
-                        // /> */}
                         <OverlayPanel
                             ref={op1}
                             showCloseIcon

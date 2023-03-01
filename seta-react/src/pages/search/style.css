@@ -137,7 +137,21 @@
 .p-listbox {
     border: none !important;
 }
-
 .overlaypanel1 > .p-overlaypanel-content > .p-listbox .p-listbox-list {
     height: 200px;
+}
+/* .overlaypanel > .p-overlaypanel-content > .p-listbox .p-listbox-list {
+    height: 200px;
+} */
+.p-tree {
+    padding: 0;
+}
+.p-tree .p-treenode-children {
+    display: inline-flex;
+}
+.p-tree-container {
+    width: -webkit-fill-available;
+    width: -moz-available;
+    overflow-x: unset;
+    overflow: initial !important;
 }
