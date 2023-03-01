@@ -30,7 +30,7 @@ const Search = () => {
     const [ontologyList, setOntologyList] = useState<any>(null);
     const [treeLeaf, setTreeLeaf] = useState<any>(null);
     const [selectedNodeKeys2, setSelectedNodeKeys2] = useState<any>(term);
-    const [swithToAutocomplete, setSwithToAutocomplete] = useState(false);
+    const [swithToRelatedTerms, setSwithToRelatedTerms] = useState(false);
     const [searchAllTerms, setSearchAllTerms] = useState(false);
     const [inputText, setInputText] = useState(``);
     const [copyQyery, setCopyQuery] = useState<Term[] | any>([]);
@@ -40,7 +40,6 @@ const Search = () => {
     const corpusService = new CorpusService();
     const suggestionsService = new SuggestionsService();
     const ontologyListService = new OntologyListService();
-    let corpusParameters$: Observable<CorpusSearchPayload>;
 
     const isMounted = useRef(false);
     const op = useRef<OverlayPanel>(null);
@@ -62,27 +61,31 @@ const Search = () => {
 
     useEffect(() => {
         isMounted.current = true;
+        // transform query if contains " " or ',' between keywords
         if (String(term).split(" ").length > 1) {
             let operator = ' OR ';
             let result = String(term).split(" ").join(operator);
             setCopyQuery(result);
         }
-        if (String(term).split(',').length > 1) {
+        else if (String(term).split(',').length > 1) {
             let operator = ' OR ';
             let result = String(term).split(',').join(operator);
             let query = String(term).split(',').join(' ');
             setCopyQuery(result);
             setTerm(query);
         }
-        corpusParameters$?.subscribe((corpusParameters: CorpusSearchPayload) => {
-          cp = new CorpusSearchPayload({ ...corpusParameters });
-        });
-
+        else {
+            setCopyQuery(term);
+        }
+        if (String(term) !== '') {
+            transform(String(term));
+        }
+        //update corpus api call parameters
         setLastPayload(new CorpusSearchPayload({ ...cp, term: copyQyery, aggs: 'date_year', n_docs: 100, search_type: typeofSearch, date_range: timeRangeValue }));
         corpusService.getRefreshedToken();
-    }, [term, typeofSearch, timeRangeValue, swithToAutocomplete, selectedNodeKeys2, ontologyList, suggestedTerms, copyQyery]);
+    }, [term, typeofSearch, timeRangeValue, swithToRelatedTerms, selectedNodeKeys2, ontologyList, suggestedTerms, copyQyery]);
 
-    const selectAll = (checked: boolean) => {
+    const toggleSelectAllNodes = (checked: boolean) => {
         let arr: any = [];
         arr.push(term);
         let _selectedKeys = {};
@@ -147,12 +150,18 @@ const Search = () => {
         setTreeLeaf(root.root);
     }
 
-    const onSwitch = (e) => {
-        setSwithToAutocomplete(e.value);
+    const onSwitchToRelatedTerms = (e) => {
+        setSwithToRelatedTerms(e.value);
+        //switch select all ontology list items to false when both swithToRelatedTerms and searchAllTerms are true
+        if (swithToRelatedTerms === true && searchAllTerms === true) {
+            setSearchAllTerms(false);
+            toggleSelectAllNodes(false);
+            setTerm(singleTerm);
+        }
     }
 
-    const onSearchAll = (e) => {
-        selectAll(e.value);
+    const onSearchAllTreeNodes = (e) => {
+        toggleSelectAllNodes(e.value);
         setSearchAllTerms(e.value);
     }
 
@@ -172,24 +181,6 @@ const Search = () => {
         }
     }
     
-    // const searchSuggestions = () => {
-    //     setTimeout(() => {
-    //         setFilteredTerms(suggestedTerms);
-    //     }, 250);
-    // }
-
-    // const onChangeTerm = (e) => {
-    //     e.preventDefault();
-    //     let lastKeyword: any = e.target.value.split(' ').pop();
-    //     suggestionsService.retrieveSuggestions(lastKeyword).then(data => {
-    //         if (data) {
-    //             setSuggestedTerms(data);
-    //         }
-    //     });
-    //     setFilteredTerms(suggestedTerms);
-    //     setTerm(e.target.value);
-    // };
-
     const getDocumentList = (list) => {
         setDocumentList(items)
     }
@@ -246,6 +237,7 @@ const Search = () => {
                     value: textInput.replace(/^"|"$/g, ''),
                     isOperator: false,
                   });
+                  setCopyQuery(item.display);
                 }
               }
             } else {
@@ -302,7 +294,7 @@ const Search = () => {
             <div className="col-8">
                 <div className='switchButton'>
                     <h5>Switch to related terms search</h5>
-                    <InputSwitch checked={swithToAutocomplete} onChange={onSwitch} />
+                    <InputSwitch checked={swithToRelatedTerms} onChange={onSwitchToRelatedTerms} />
                 </div>
                 <div className="p-inputgroup">
                     <DialogButton
@@ -311,7 +303,7 @@ const Search = () => {
                       onChangeFile={getFileName}
                       onChangeContentVisibility={toggleListVisibility}
                     />
-                    { swithToAutocomplete ? 
+                    { swithToRelatedTerms ? 
                     <>
                         <InputText
                             type="search"
@@ -348,7 +340,7 @@ const Search = () => {
                         >
                             <div className='search_all'>
                                 <h5>Search all related terms</h5>
-                                <InputSwitch checked={searchAllTerms} onChange={onSearchAll} />
+                                <InputSwitch checked={searchAllTerms} onChange={onSearchAllTreeNodes} />
                             </div>
                             { searchAllTerms ? <div></div> :
                                 <Tree
@@ -379,7 +371,7 @@ const Search = () => {
                         <InputText
                             type="search"
                             aria-haspopup
-                            value={term}
+                            value={searchAllTerms ?  singleTerm : term}
                             aria-controls="overlay_panel1"
                             className="select-product-button"
                             placeholder="Type term and/or drag and drop here document"

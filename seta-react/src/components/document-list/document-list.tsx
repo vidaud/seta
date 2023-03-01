@@ -117,7 +117,7 @@ const DocumentList = (list) => {
                     onRowToggle={(e) => setExpandedRows(e.data)}
                     dataKey="_id"
                     rowExpansionTemplate={rowExpansionTemplate}
-                    first={basicFirst} rows={basicRows} totalRecords={items?.length} rowsPerPageOptions={[5, 10, 20, 30]} onPageChange={onBasicPageChange}
+                    first={basicFirst} rows={basicRows} totalRecords={items?.length} rowsPerPageOptions={[5, 10, 20, 30]} onPage={onBasicPageChange}
                     paginatorTemplate="CurrentPageReport FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink RowsPerPageDropdown"
                     currentPageReportTemplate="Showing {first} to {last} of {totalRecords}"
                     onRowExpand={onRowExpand} onRowCollapse={onRowCollapse} responsiveLayout="scroll"
