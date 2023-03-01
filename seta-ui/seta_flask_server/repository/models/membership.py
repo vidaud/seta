@@ -1,4 +1,4 @@
-import json
+from flask import json
 
 class MembershipModel:
     def __init__(self, community_id, user_id, role = None, join_date = None, status = None, modified_at = None) -> None:

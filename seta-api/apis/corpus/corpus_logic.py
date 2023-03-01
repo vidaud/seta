@@ -53,7 +53,7 @@ def insert_doc(args, current_app):
     index = current_app.config["INDEX_PUBLIC"]
     res = current_app.es.index(index=index, document=new_doc)
     doc_id = res["_id"]
-    embs = Embeddings.get_embeddings(args["title"], args["abstract"], args["text"])
+    embs = Embeddings.embeddings_from_doc_fields(args["title"], args["abstract"], args["text"])
     first = True
     for emb in embs:
         if first:
@@ -70,9 +70,10 @@ def insert_doc(args, current_app):
 
     return doc_id
 
+
 def corpus(term, n_docs, from_doc, sources, collection, reference, eurovoc_concept, eurovoc_dom, eurovoc_mth,
-           ec_priority, sdg_domain, sdg_subdomain, euro_sci_voc, in_force, sort, semantic_sort_id, emb_vector, author,
-           date_range, aggs, search_type, other, current_app):
+           ec_priority, sdg_domain, sdg_subdomain, euro_sci_voc, in_force, sort, semantic_sort_id, emb_vector,
+           semantic_sort_id_list, emb_vector_list, author, date_range, aggs, search_type, other, current_app):
     
     if search_type is None or search_type not in current_app.config["SEARCH_TYPES"]:
         search_type = "CHUNK_SEARCH"
@@ -82,19 +83,13 @@ def corpus(term, n_docs, from_doc, sources, collection, reference, eurovoc_conce
     
     if aggs and (aggs not in list_of_aggs_fields):
         raise ApiLogicError('Malformed query. Wrong aggs parameter')
-    '''
-    print(term, n_docs, from_doc, sources, collection, reference, eurovoc_concept, eurovoc_dom,
-          eurovoc_mth, ec_priority, sdg_domain, sdg_subdomain, euro_sci_voc, in_force, sort,
-          semantic_sort_id, emb_vector, author, date_range, aggs, search_type)
-    '''
-    
 
     body = build_corpus_request(term, n_docs, from_doc, sources, collection, reference, eurovoc_concept, eurovoc_dom,
                                 eurovoc_mth, ec_priority, sdg_domain, sdg_subdomain, euro_sci_voc, in_force, sort,
-                                semantic_sort_id, emb_vector, author, date_range, aggs, search_type, other, current_app)
-    #print("body", body)
+                                semantic_sort_id, emb_vector, semantic_sort_id_list, emb_vector_list, author,
+                                date_range, aggs, search_type, other, current_app)
+    current_app.logger.debug(str(body))
     res = current_app.es.msearch(searches=body)
-    #print("res", res)
     for k in res["responses"]:
         if "error" in k:
             raise ApiLogicError('Malformed query.')

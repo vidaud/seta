@@ -16,12 +16,12 @@ def invite_status_list(value):
     return value
 
 new_invite_parser = RequestParser(bundle_errors=True)
-new_invite_parser.add_argument("emails", 
+new_invite_parser.add_argument("email", 
                                   location="form",
                                   required=True,
                                   nullable=False,
-                                  action='split',
-                                  help="Registered email coma separated list")
+                                  action='append',
+                                  help="List of registered emails \"email='a@a.a'&email='b@b.b'\"")
 new_invite_parser.add_argument("message", 
                                   location="form",
                                   required=True,

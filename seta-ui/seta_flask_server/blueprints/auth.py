@@ -171,8 +171,6 @@ def refresh_expiring_jwts(response):
         if token_expires is None:
             app.logger.debug("set token_expires to 15 min")
             token_expires = timedelta(minutes=15)
-
-        print("token_expires:" + str(token_expires))
                 
         jwt = get_jwt()      
         exp_timestamp = jwt["exp"]
@@ -204,7 +202,6 @@ def refresh_expiring_jwts(response):
             app.logger.debug("Expiring access token was refreshed.")            
     except Exception as e:
         # Case where there is not a valid JWT. Just return the original response
-        print(e)
         app.logger.exception("Could not refresh the expiring token.")        
         return response
     finally:

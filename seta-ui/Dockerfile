@@ -29,14 +29,9 @@ COPY . $ROOT
 
 
 ENV ROOT_USERS="vidas.daudaravicius@ec.europa.eu;lucia.noce@ext.ec.europa.eu;Andrei.Patrascu@ext.ec.europa.eu;adriana.lleshi@ext.ec.europa.eu"
-ENV FLASK_ENV="production"
-ENV FLASK_APP=app.py
-ENV FLASK_RUN_PORT=8080
-ENV FLASK_DEBUG=0
-#ENV FLASK_PATH="https://seta-dev.jrc.cec.eu.int"
-ENV API_TARGET_PATH="seta-api:8081/seta-api/api/v1"
+#ENV APP_ROOT_PATH="https://seta-dev.jrc.cec.eu.int"
 
 CMD ["gunicorn", "--conf", "/home/seta/gunicorn_conf.py", "--bind", "0.0.0.0:8080", "--capture-output" , "--access-logformat", "[seta.ui] %(h)s %(l)s %(u)s %(t)s %(r)s %(s)s %(b)s | %(f)s | %(a)s", "--chdir", "/home/seta", "app:app"]
 
 #for error displays:
-#CMD flask --app app --debug run -h "0.0.0.0"
+#CMD flask --app app --debug run -h "0.0.0.0" --port 8080

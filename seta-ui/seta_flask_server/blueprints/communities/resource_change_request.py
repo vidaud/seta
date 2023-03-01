@@ -9,14 +9,14 @@ from http import HTTPStatus
 from seta_flask_server.repository.models import ResourceChangeRequestModel
 from seta_flask_server.repository.interfaces import IResourceChangeRequestsBroker, IUsersBroker
 from seta_flask_server.infrastructure.decorators import auth_validator
-from seta_flask_server.infrastructure.scope_constants import ResourceScopeConstants
+from seta_flask_server.infrastructure.scope_constants import SystemScopeConstants, ResourceScopeConstants
 
 from .models.resource_request_dto import(new_change_request_parser, update_change_request_parser, change_request_model)
 
 resource_change_request_ns = Namespace('Resource Change Requests', validate=True, description='SETA Resource Change Requests')
 resource_change_request_ns.models[change_request_model.name] = change_request_model
 
-@resource_change_request_ns.route('/change_requests/pending', methods=['GET', 'POST'])
+@resource_change_request_ns.route('/change-requests/pending', methods=['GET', 'POST'])
 class ResourceChangeRequestList(Resource):
     '''Get a list of pending resource change requests'''
     
@@ -46,7 +46,7 @@ class ResourceChangeRequestList(Resource):
         user = self.usersBroker.get_user_by_id(auth_id)        
         if user is None:
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
-        if not user.has_system_scope(ResourceScopeConstants.ApproveChangeRequest):
+        if not user.has_system_scope(SystemScopeConstants.ApproveResourceChangeRequest):
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
 
         return self.changeRequestsBroker.get_all_pending()
@@ -116,7 +116,7 @@ class ResourceChangeRequest(Resource):
         
     @resource_change_request_ns.doc(description='Retrieve change request for the community.',
     responses={int(HTTPStatus.OK): "'Retrieved change request.",
-               int(HTTPStatus.NOT_FOUND): "Request not found.",
+               int(HTTPStatus.NO_CONTENT): "Request not found.",
                int(HTTPStatus.FORBIDDEN): "Insufficient rights, scope 'community/change_request/approve' required"
                },
     security='CSRF')
@@ -131,14 +131,14 @@ class ResourceChangeRequest(Resource):
         request = self.changeRequestsBroker.get_request(resource_id=resource_id, request_id=request_id)
         
         if request is None:
-            abort(HTTPStatus.NOT_FOUND, "Request not found.")
+            return '', HTTPStatus.NO_CONTENT
         
         #if not the initiator of the request, verify ApproveChangeRequest scope
         if request.requested_by != auth_id:            
             user = self.usersBroker.get_user_by_id(auth_id)
             if user is None:
                 abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
-            if not user.has_system_scope(scope=ResourceScopeConstants.ApproveChangeRequest):
+            if not user.has_system_scope(scope=SystemScopeConstants.ApproveResourceChangeRequest):
                 abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
         
         return request
@@ -147,7 +147,7 @@ class ResourceChangeRequest(Resource):
     responses={
                 int(HTTPStatus.OK): "Request updated.", 
                 int(HTTPStatus.FORBIDDEN): "Insufficient rights, scope 'community/membership/approve' required",
-                int(HTTPStatus.NOT_FOUND): "Request not found."
+                int(HTTPStatus.NO_CONTENT): "Request not found."
                 },
     security='CSRF')
     @resource_change_request_ns.expect(update_change_request_parser)
@@ -162,7 +162,7 @@ class ResourceChangeRequest(Resource):
 
         if user is None:
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
-        if not user.has_system_scope(scope=ResourceScopeConstants.ApproveChangeRequest):
+        if not user.has_system_scope(scope=SystemScopeConstants.ApproveResourceChangeRequest):
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
 
         request = None
@@ -182,7 +182,7 @@ class ResourceChangeRequest(Resource):
             abort(HTTPStatus.INTERNAL_SERVER_ERROR)   
            
         if request is None:
-            abort(HTTPStatus.NOT_FOUND, "Request not found.")
+            return '', HTTPStatus.NO_CONTENT
         
         message = f"Request {status}."
         response = jsonify(status="success", message=message)

@@ -1,4 +1,4 @@
-flask==2.2.2
+flask==2.2.3
 flask-cors==3.0.10
 Pillow==9.3.0
 pymongo==4.3.3
@@ -12,7 +12,7 @@ flask_apscheduler==1.12.4
 python-secrets==22.6.1
 flask-pymongo==2.3.0
 log4mongo==1.7.0
-flask-restx==1.0.3
+flask-restx==1.0.5
 python-interface==1.6.1
 injector==0.20.1
 flask-injector==0.14.0

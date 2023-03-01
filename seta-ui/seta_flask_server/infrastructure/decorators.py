@@ -22,9 +22,7 @@ def pop_session():
 def auth_validator(role: str = None):
     def wrapper(fn):
         @wraps(fn)
-        def decorator(*args, **kwargs):
-            print("auth_validator", flush=True)
-            
+        def decorator(*args, **kwargs):            
             verify_jwt_in_request()
             jwt = get_jwt()
 

@@ -26,6 +26,7 @@ class CommunityMembershipConstants:
     List = [Opened, Closed]
     
 class CommunityRoleConstants:        
+    Owner = "CommunityOwner"
     Manager = "CommunityManager"
     ResourceCreator = "ResourceCreator"
     Member = "CommunityMember"

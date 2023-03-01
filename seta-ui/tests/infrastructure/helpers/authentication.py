@@ -8,6 +8,8 @@ from typing import Tuple
 from flask import json
 from flask.testing import FlaskClient
 
+from .util import get_private_key
+
 def generate_signature(private_key: str) -> Tuple[str, str]:
     '''
     Generate a random message and its signature bases on a private key
@@ -25,7 +27,12 @@ def generate_signature(private_key: str) -> Tuple[str, str]:
 
     return random_string, str(signature.hex())
 
-def login_user(client: FlaskClient, user_id: str, message: str, signature: str):
+def login_user(client: FlaskClient, user_id: str):
+
+    private_key = get_private_key(user_id)
+    message, signature = generate_signature(private_key)
+
+
     payload = {
         "user_id": user_id,
         "rsa_original_message": message,
