@@ -1,7 +1,5 @@
 [
 	{
-		"label": "Search",
-		"icon": "pi pi-fw pi-search",
 		"items": [
 			{
 				"label": "About SeTA",
