@@ -35,6 +35,7 @@ const Search = () => {
     const [inputText, setInputText] = useState(``);
     const [copyQyery, setCopyQuery] = useState<Term[] | any>([]);
     const [singleTerm, setSingleTerm] = useState<Term[] | any>([]);
+    const [loading, setLoading] = useState(true);
     const refs = useRef<any>(null);
     
     const corpusService = new CorpusService();
@@ -123,31 +124,31 @@ const Search = () => {
     };
 
     const createTree = (nodes) => {
-        let label, key, children, node_list: any = [];
-        nodes.forEach(node => {
-            label = node[0];
-            key = node[0];
-            node.shift();
-            var children_list: any = [];
-            var obj: any = {};
-            node.forEach((item) => {
-                obj = {'label': item, 'key': item};
-                children_list.push(obj);
+            let label, key, children, node_list: any = [];
+            nodes.forEach(node => {
+                label = node[0];
+                key = node[0];
+                node.shift();
+                var children_list: any = [];
+                var obj: any = {};
+                node.forEach((item) => {
+                    obj = {'label': item, 'key': item};
+                    children_list.push(obj);
+                });
+                children = children_list;
+                let tree_node = {
+                    key,
+                    label,
+                    children
+                }
+                node_list.push(tree_node);
             });
-            children = children_list;
-            let tree_node = {
-                key,
-                label,
-                children
+            let root;
+            root = {
+                    "root": node_list
+                    
             }
-            node_list.push(tree_node);
-        });
-        let root;
-        root = {
-                "root": node_list
-                
-        }
-        setTreeLeaf(root.root);
+            setTreeLeaf(root.root);
     }
 
     const onSwitchToRelatedTerms = (e) => {
@@ -163,6 +164,16 @@ const Search = () => {
     const onSearchAllTreeNodes = (e) => {
         toggleSelectAllNodes(e.value);
         setSearchAllTerms(e.value);
+    }
+
+    const getOntologyList = (lastKeyword) => {
+        ontologyListService.retrieveOntologyList(lastKeyword).then(data => {
+                if (data) {
+                    setOntologyList(data);
+                    createTree(data);
+                }
+                setLoading(false);
+        });
     }
 
     const onSearch = () => {
@@ -202,12 +213,6 @@ const Search = () => {
             setShowContent(true);
         }
     }
-
-    const handleKeypress = (e) => {
-        if (e.key === 'Enter') {
-            transform(e.target.value.split(' ').pop());
-        }
-    };
 
     const transform = (textInput: string | { display: string; value: string } | any): Observable<object> => {
         let item: any = null;
@@ -317,19 +322,16 @@ const Search = () => {
                                 if (term === "") {
                                     setSelectedNodeKeys2(term);
                                 }
-                                let typed : any = e.target.value.split(' ')[0];
-                                setSingleTerm(typed);
-                                const lastKeyword = e.target.value.split(' ').pop();
-                                ontologyListService.retrieveOntologyList(lastKeyword).then(data => {
-                                    if (data) {
-                                        setOntologyList(data);
-                                        createTree(data);
-                                    }
-                                });
-                                op.current?.toggle(e);
+                                setTimeout(() => {
+                                    setLoading(true);
+                                    let typed : any = e.target.value.split(' ')[0];
+                                    setSingleTerm(typed);
+                                    const lastKeyword = e.target.value.split(' ').pop();
+                                    getOntologyList(lastKeyword);                                
+                                }, 1000);
+                                op.current?.show(e,e.target);
                                 setTerm(e.target.value);
                             }}
-                            onKeyPress={handleKeypress}
                           />
                         <OverlayPanel
                             ref={op}
@@ -346,9 +348,12 @@ const Search = () => {
                                 <Tree
                                     className='tree-panel'
                                     value={treeLeaf}
+                                    loading={loading}
                                     disabled={searchAllTerms ? true : false}
                                     footer={`Selected terms: ${Object.keys(selectedNodeKeys2).length}`}
                                     selectionKeys={selectedNodeKeys2}
+                                    onExpand={(e) => e.node.style={display: "flex", background: "aliceblue"}}
+                                    onCollapse={(e) => e.node.style={display: "block", background: "white"}}
                                     onSelectionChange={(e) => {
                                         setSelectedNodeKeys2(e.value);
                                         let value: any = e.value;
@@ -383,11 +388,10 @@ const Search = () => {
                                         setSuggestedTerms(data);
                                     }
                                 });
-                                op1.current?.toggle(e);
+                                op1.current?.show(e,e.target);
                                 setFilteredTerms(suggestedTerms);
                                 setTerm(e.target.value);
                             }}
-                            onKeyPress={handleKeypress}
                         />
                         <OverlayPanel
                             ref={op1}
