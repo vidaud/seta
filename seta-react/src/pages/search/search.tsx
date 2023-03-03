@@ -287,9 +287,28 @@ const Search = () => {
         } else {
             setInputText(``);
         }
-        console.log(of(item))
         return of(item);
     }
+
+    const getWordAtNthPosition = (str: string, position: number | any) => {
+        const n: any = str.substring(position).match(/^[a-zA-Z0-9-_]+/);
+        const p: any = str.substring(0, position).match(/[a-zA-Z0-9-_]+$/);
+        // if you really only want the word if you click at start or between
+        // but not at end instead use if (!n) return
+        
+        //let test: any =  (p || '') + (n || ''); // demo
+        let selected: any = !p && !n ? '' : (p || '') + (n || '');
+        // if(p) {
+        //     setTest(p.index);
+        // }
+        let value;
+        if (p) {
+            value = p.index;
+        }
+        let obj = [selected, value];
+        return obj;
+      }
+      
 
     return (
         <>
@@ -318,16 +337,23 @@ const Search = () => {
                             aria-controls="overlay_panel"
                             className="select-product-button"
                             placeholder="Type term and/or drag and drop here document"
+                            onClick= {(e) => {
+                                let keyword = getWordAtNthPosition(e.currentTarget.value, e.currentTarget.selectionStart);
+                                if (keyword[1]) {
+                                    e.currentTarget.setSelectionRange(keyword[1], e.currentTarget.selectionStart);
+                                }
+                                //getOntologyList(getWordAtNthPosition(e.currentTarget.value, e.currentTarget.selectionStart));
+                            }}
                             onChange={(e) => {
                                 if (term === "") {
                                     setSelectedNodeKeys2(term);
                                 }
                                 setTimeout(() => {
+                                    let keyword = getWordAtNthPosition(e.target.value, e.target.selectionStart);
                                     setLoading(true);
                                     let typed : any = e.target.value.split(' ')[0];
                                     setSingleTerm(typed);
-                                    const lastKeyword = e.target.value.split(' ').pop();
-                                    getOntologyList(lastKeyword);                                
+                                    getOntologyList(keyword[0]);                                
                                 }, 1000);
                                 op.current?.show(e,e.target);
                                 setTerm(e.target.value);
@@ -403,7 +429,6 @@ const Search = () => {
                             <ListBox value={term} options={suggestedTerms}
                                 onChange={(e) => {
                                     transform(e.value).subscribe((response: any) =>{
-                                        console.log(response)
                                         setTerm(response.value)
                                     });
                                     }
