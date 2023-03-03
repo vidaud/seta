@@ -1,0 +1,55 @@
+{
+  "mappings": {
+    "properties": {
+      "crc": {
+        "type": "text",
+        "fields": {
+          "keyword": {
+            "type": "keyword",
+            "ignore_above": 256
+          }
+        }
+      },
+      "crc_model": {
+        "type": "text",
+        "fields": {
+          "keyword": {
+            "type": "keyword",
+            "ignore_above": 256
+          }
+        }
+      },
+      "most_similar": {
+        "properties": {
+          "score": {
+            "type": "double"
+          },
+          "size": {
+            "type": "long"
+          },
+          "term": {
+            "type": "text",
+            "fields": {
+              "keyword": {
+                "type": "keyword",
+                "ignore_above": 256
+              }
+            }
+          }
+        }
+      },
+      "phrase": {
+        "type": "text",
+        "fields": {
+          "keyword": {
+            "type": "keyword",
+            "ignore_above": 256
+          }
+        }
+      },
+      "size": {
+        "type": "long"
+      }
+    }
+  }
+}

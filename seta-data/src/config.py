@@ -13,7 +13,8 @@ class Config:
     
     ES_HOST = "seta-es:9200"
     ES_INIT_DATA_CONFIG_FILE = "data-mapping.json"
-    
+    ES_SUGGESTION_INIT_DATA_CONFIG_FILE = "suggestion-data-mapping.json"
+
     INDEX = ["seta-public-000001", "seta-private-000001"]
     INDEX_SUGGESTION = "seta-suggestion-000001"
     INDEX_PUBLIC = "seta-public-000001"

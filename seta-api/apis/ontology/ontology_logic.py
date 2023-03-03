@@ -40,7 +40,6 @@ def build_graph(term, current_app):
 
 
 def get_most_similar(term, current_app):
-    term = revert_sanitize_input(term)
     current_crc, crc_id = get_crc_from_es(current_app.es, current_app.config["INDEX_SUGGESTION"])
 
     query_similar_terms = {"bool": {"must": [{"match": {"phrase.keyword": term}},
@@ -51,16 +50,50 @@ def get_most_similar(term, current_app):
     terms = []
     for r in resp["hits"]["hits"]:
         for t in r["_source"]["most_similar"]:
-            terms.append(sanitize_input(t["term"]))
+            terms.append(t["term"])
     return terms
 
 
+def word_exists_index(current_app, term):
+    current_crc, crc_id = get_crc_from_es(current_app.es, current_app.config["INDEX_SUGGESTION"])
+    query = {"bool": {"must": [{"match": {"phrase.keyword": term}},
+                               {"match": {"crc.keyword": current_crc}}]}}
+    resp = current_app.es.search(index=current_app.config["INDEX_SUGGESTION"], query=query)
+    if resp['hits']['total']['value'] == 0:
+        return False
+    else:
+        return True
+
+
+def get_most_similar_gt_value(term, current_app, value):
+    current_crc, crc_id = get_crc_from_es(current_app.es, current_app.config["INDEX_SUGGESTION"])
+
+    query_similar_terms = {"bool": {"must": [{"match": {"phrase.keyword": term}},
+                                             {"match": {"crc.keyword": current_crc}}]}}
+
+    resp = current_app.es.search(index=current_app.config["INDEX_SUGGESTION"], query=query_similar_terms,
+                                 _source=["most_similar.term", "most_similar.score"])
+    terms = []
+    for r in resp["hits"]["hits"]:
+        for t in r["_source"]["most_similar"]:
+            if t["score"] > value:
+                terms.append(t["term"])
+    return terms
+
+
+def is_similarity_gt_value(term1, term2, value, current_app):
+    most_similar_t1 = get_most_similar_gt_value(term1, current_app, value)
+    most_similar_t2 = get_most_similar_gt_value(term2, current_app, value)
+    if term1 in most_similar_t2 or term2 in most_similar_t1:
+        return True
+    else:
+        return False
+
+
 def build_tree(term, current_app):
-    term = sanitize_input(term)
-    if not word_exists(current_app.terms_model, term):
+    if not word_exists_index(current_app, term):
         raise ApiLogicError('Term out of vocabulary.')
-    
-    terms_model = current_app.terms_model
+
     graphjs = {"nodes": []}
     
     nodes = get_most_similar(term, current_app)
@@ -74,7 +107,7 @@ def build_tree(term, current_app):
             r = [n1]
             for j in range(i + 1, len(nodes)):
                 n2 = nodes[j]
-                if terms_model.similarity(n1, n2) > 0.7:
+                if is_similarity_gt_value(n1, n2, 0.7, current_app):
                     if n2 not in done and n2 != term and n2 not in done2:
                         done2.append(n2)
                         r.append(n2)

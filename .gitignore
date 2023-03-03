@@ -3,6 +3,7 @@ __pycache__/
 *.py[cod]
 *$py.class
 wv-sg0-hs1*
+json_suggestion.json
 
 # C extensions
 *.so

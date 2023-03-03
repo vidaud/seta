@@ -23,7 +23,7 @@ def wait_for_es(config):
         print(res, res.ok, flush=True)
         if res.ok:
             res = json.loads(res.content)
-            print("ElsticSearch...", res['status'], flush=True)
+            print("ElasticSearch...", res['status'], flush=True)
             if res['status'] == 'green' or res['status'] == 'yellow':
                 return
         time.sleep(2)
@@ -43,13 +43,8 @@ def suggestion_update_job(config):
         f.write(crc)
         f.close()
 
-    es_session = requests.Session()
-    #    es_session.trust_env = True
-
     index_suggestion = config.INDEX_SUGGESTION
     es = Elasticsearch("http://" + config.ES_HOST, verify_certs=False, request_timeout=30)
-    resp = es_session.put("http://" + config.ES_HOST + "/" + index_suggestion + "?pretty")
-    print("suggestion index response: ", resp)
     current_w2v_crc, crc_id = get_crc_from_es(es, index_suggestion)
     if crc != current_w2v_crc:
         try:
@@ -98,14 +93,23 @@ def seta_es_init_map(config):
     f = open(fn, 'r')
     dataformat = f.read()
     f.close()
-    print(dataformat)
     for indx in config.INDEX:
-        resp = es_session.get("http://" + config.ES_HOST + "/" + indx + "?pretty")
-        if resp.ok:
-            print("ElasticSearch index mapping exists: ", indx)
-        else:
-            resp = es_session.put("http://" + config.ES_HOST + "/" + indx + "?pretty", data=dataformat, headers=headers)
-            print(resp.content)
+        check_index_exists_or_create_it(config.ES_HOST, dataformat, es_session, headers, indx)
+    #suggestion index
+    fn = config.MODELS_PATH + config.ES_SUGGESTION_INIT_DATA_CONFIG_FILE
+    f = open(fn, 'r')
+    dataformat = f.read()
+    f.close()
+    check_index_exists_or_create_it(config.ES_HOST, dataformat, es_session, headers, config.INDEX_SUGGESTION)
+
+
+def check_index_exists_or_create_it(host, dataformat, es_session, headers, indx):
+    resp = es_session.get("http://" + host + "/" + indx + "?pretty")
+    if resp.ok:
+        print("ElasticSearch index mapping exists: ", indx)
+    else:
+        resp = es_session.put("http://" + host + "/" + indx + "?pretty", data=dataformat, headers=headers)
+        print(resp.content)
 
 
 def copy_models_files(config):
@@ -127,6 +131,10 @@ def copy_models_files(config):
 
     dst = config.MODELS_PATH + config.WORD2VEC_JSON_EXPORT
     src = config.MODELS_DOCKER_PATH + config.WORD2VEC_JSON_EXPORT
+    shutil.copyfile(src, dst)
+
+    dst = config.MODELS_PATH + config.ES_SUGGESTION_INIT_DATA_CONFIG_FILE
+    src = config.MODELS_DOCKER_PATH + config.ES_SUGGESTION_INIT_DATA_CONFIG_FILE
     shutil.copyfile(src, dst)
 
 
@@ -155,8 +163,8 @@ def getsha256(filename):
 def init():
     wait_for_es(config)
     copy_models_files(config)
-    suggestion_update_job(config)
     seta_es_init_map(config)
+    suggestion_update_job(config)
     print("SeTA-ES is initialised.")
 
 
