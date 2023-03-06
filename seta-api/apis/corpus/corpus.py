@@ -36,7 +36,7 @@ class Corpus(Resource):
             app.logger.exception("Corpus->get")
             abort(500, "Internal server error")
 
-    @auth_validator("Administrator")
+    @auth_validator()
     @corpus_api.doc(description='Given the elasticsearch unique _id, the relative document is deleted.',
             params={'id': 'Delete the document with the specified _id'},
             responses={200: 'Success', 404: 'Not Found Error'},
