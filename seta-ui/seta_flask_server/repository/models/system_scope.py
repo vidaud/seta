@@ -9,7 +9,7 @@ class SystemScope:
     def __iter__(self):
         yield from {
             "user_id": self.user_id,            
-            "scope": self.scope,
+            "system_scope": self.scope,
             "area": self.area
         }.items()
         
