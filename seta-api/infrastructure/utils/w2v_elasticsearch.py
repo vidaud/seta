@@ -16,6 +16,22 @@ def get_most_similar(term, current_app, top_n):
     return terms[:top_n]
 
 
+def get_most_similar_with_score_and_size(term, current_app, top_n):
+    current_crc, crc_id = get_crc_from_es(current_app.es, current_app.config["INDEX_SUGGESTION"])
+
+    query_similar_terms = {"bool": {"must": [{"match": {"phrase.keyword": term}},
+                                             {"match": {"crc.keyword": current_crc}}]}}
+
+    resp = current_app.es.search(index=current_app.config["INDEX_SUGGESTION"], query=query_similar_terms,
+                                 _source=["most_similar.term", "most_similar.score", "most_similar.size"])
+    terms = []
+    for r in resp["hits"]["hits"]:
+        for t in r["_source"]["most_similar"]:
+            term_tuple = (t["term"], t["score"], t["size"])
+            terms.append(term_tuple)
+    return terms[:top_n]
+
+
 def word_exists(current_app, term):
     current_crc, crc_id = get_crc_from_es(current_app.es, current_app.config["INDEX_SUGGESTION"])
     query = {"bool": {"must": [{"match": {"phrase.keyword": term}},

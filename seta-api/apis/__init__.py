@@ -1,13 +1,8 @@
 from flask_restx import Api
-from .clusters.clusters import cluster_api
 from .suggestions.suggestions import suggestions_api
 from .corpus.corpus import corpus_api
-from .wiki.wiki import wiki_api
 from .similar.similar import similar_api
 from .ontology.ontology import ontology_api
-from .decade.decade import decade_api
-from .term.term import term_api
-from .distance.distance import distance_api
 from .embeddings.embeddings import emb_api
 
 authorizations = {
@@ -38,13 +33,8 @@ api = Api(version='beta',
          default_swagger_filename= api_root[1:] + "/swagger_api.json",
          )
 
-api.add_namespace(cluster_api, path=api_root)
 api.add_namespace(suggestions_api, path=api_root)
 api.add_namespace(corpus_api, path=api_root)
 api.add_namespace(similar_api, path=api_root)
 api.add_namespace(ontology_api, path=api_root)
-api.add_namespace(decade_api, path=api_root)
-api.add_namespace(term_api, path=api_root)
-api.add_namespace(distance_api, path=api_root)
 api.add_namespace(emb_api, path=api_root)
-api.add_namespace(wiki_api, path=api_root)
