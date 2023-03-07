@@ -43,7 +43,7 @@ def validate_view_permissions(sources):
                     raise ForbiddenResourceError(resource_id=s)
     
     #user has no access to any public or community resources
-    if view_resources is None:   
+    if not view_resources:   
         raise ForbiddenResourceError(resource_id=None)
     
     #restrict query only to view_resources

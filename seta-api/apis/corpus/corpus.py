@@ -19,7 +19,7 @@ class Corpus(Resource):
                         'EU corpus contains documents of the European Commission: '
                         'Eur-Lex, CORDIS,JRC PUBSY, EU Open Data Portal, etc..',
             params={'id': 'Return the document with the specified _id'},
-            responses={200: 'Success', 404: 'Not Found Error'},
+            responses={200: 'Success', 401: 'Forbbiden access to the resource', 404: 'Not Found Error'},
             security='apikey')
     def get(self, id):
         try:
@@ -39,7 +39,7 @@ class Corpus(Resource):
     @auth_validator()
     @corpus_api.doc(description='Given the elasticsearch unique _id, the relative document is deleted.',
             params={'id': 'Delete the document with the specified _id'},
-            responses={200: 'Success', 404: 'Not Found Error'},
+            responses={200: 'Success', 401: 'Forbbiden access to the resource', 404: 'Not Found Error'},
             security='apikey')
     def delete(self, id):
         try:
@@ -126,6 +126,7 @@ class CorpusQuery(Resource):
     @corpus_api.doc(description='Retrieve documents related to a term from EU corpus.'
                         'EU corpus contains documents of the European Commission: '
                         'Eur-Lex, CORDIS, JRC PUBSY, EU Open Data Portal, etc..',
+            responses={200: 'Success', 401: 'Forbbiden access to the resource', 404: 'Not Found Error'},
             security='apikey')
     @corpus_api.expect(query_corpus_post_data)
     def post(self):
@@ -141,7 +142,7 @@ class CorpusQuery(Resource):
             if sources is None:
                 args["source"] = view_resources
         except ForbiddenResourceError as fre:
-            abort(403, fre.message)
+            abort(HTTPStatus.FORBIDDEN, fre.message)
         
         if is_field_in_doc(args, 'term') or is_field_in_doc(args, 'semantic_sort_id') \
                 or is_field_in_doc(args, 'semantic_sort_id_list')\
@@ -183,6 +184,7 @@ class CorpusQuery(Resource):
 
     @auth_validator()
     @corpus_api.doc(description='Put a document into corpus index.',
+            responses={200: 'Success', 401: 'Forbbiden access to the resource'},
             security='apikey')
     @corpus_api.expect(corpus_put_data)
     def put(self):
@@ -224,6 +226,7 @@ class CorpusQuery(Resource):
                     'author': 'description',
                     'date_range': 'gte:yyyy-mm-dd,lte:yyyy-mm-dd,gt:yyyy-mm-dd,lt:yyyy-mm-dd',
                     'aggs': 'field to be aggregated, allowed fields are: "source", "eurovoc_concept"'},
+            responses={200: 'Success', 401: 'Forbbiden access to the resource', 404: 'Not Found Error'},
             security='apikey')
     def get(self):
         args = corpus_parser.parse_args()        
