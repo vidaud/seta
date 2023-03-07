@@ -146,9 +146,9 @@
 .p-tree {
     padding: 0;
 }
-.p-tree .p-treenode-children {
+/* .p-tree .p-treenode-children {
     display: inline-flex;
-}
+} */
 .p-tree-container {
     width: -webkit-fill-available;
     width: -moz-available;

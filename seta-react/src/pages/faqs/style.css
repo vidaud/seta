@@ -50,3 +50,7 @@
 .button-demo .p-button {
     margin-right: 0.5rem;
 }
+
+.p-tree .p-treenode-children {
+    display: block;
+}
