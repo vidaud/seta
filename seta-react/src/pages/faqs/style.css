@@ -16,6 +16,37 @@
   font-weight: bold;
   font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
+
+.headerQ {
+    text-align: left;
+    color: #3B82F6;
+    font-weight: bold;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  }
+
 .m-0{
     text-align: justify;
+}
+
+.m-1{
+    text-align: left;
+}
+
+.custom-scrolltop {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 4px;
+    background-color: var(--primary-color) !important;
+}
+.custom-scrolltop:hover {
+    background-color: var(--primary-color) !important;
+}
+
+.custom-scrolltop .p-scrolltop-icon {
+    font-size: 1rem;
+    color: var(--primary-color-text);
+}
+
+.button-demo .p-button {
+    margin-right: 0.5rem;
 }
