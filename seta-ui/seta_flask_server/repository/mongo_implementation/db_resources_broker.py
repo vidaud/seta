@@ -97,8 +97,18 @@ class ResourcesBroker(implements(IResourcesBroker)):
         #get active resources
         filter = {"community_id": {"$in": community_ids}, "status": ResourceStatusConstants.Active, "access":{"$exists" : 1}}        
         resources = self.collection.find(filter)
+        
+        result = [ResourceModel.from_db_json(c) for c in resources]
+        
+        #get public resources
+        filter = {"access": ResourceAccessContants.Public, "access":{"$exists" : 1}}
+        public_resources = self.collection.find(filter)
+                
+        for pr in public_resources:
+            if not any(r.resource_id == pr["resource_id"] for r in result):                
+                result.append(ResourceModel.from_db_json(pr))
 
-        return [ResourceModel.from_db_json(c) for c in resources]
+        return result
 
     def get_all_by_community_id(self, community_id:str) -> list[ResourceModel]:
         '''Retrieve all resources belonging to the community id'''
