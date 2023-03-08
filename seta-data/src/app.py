@@ -35,11 +35,11 @@ def wait_for_es(config):
 
 def suggestion_update_job(config):
     models_path = config.MODELS_PATH
-    if os.path.exists(models_path + config.MODELS_WORD2VEC_FILE_CRC):
-        crc = open(models_path + config.MODELS_WORD2VEC_FILE_CRC, 'r').read()
+    if os.path.exists(models_path + config.WORD2VEC_JSON_EXPORT_CRC):
+        crc = open(models_path + config.WORD2VEC_JSON_EXPORT_CRC, 'r').read()
     else:
-        crc = getsha256(models_path + config.MODELS_WORD2VEC_FILE)
-        f = open(models_path + config.MODELS_WORD2VEC_FILE_CRC, mode='w')
+        crc = getsha256(models_path + config.WORD2VEC_JSON_EXPORT)
+        f = open(models_path + config.WORD2VEC_JSON_EXPORT_CRC, mode='w')
         f.write(crc)
         f.close()
 
@@ -91,16 +91,16 @@ def seta_es_init_map(config):
     headers = {"Content-Type": "application/json"}
     fn = config.MODELS_PATH + config.ES_INIT_DATA_CONFIG_FILE
     f = open(fn, 'r')
-    dataformat = f.read()
+    data_format = f.read()
     f.close()
     for indx in config.INDEX:
-        check_index_exists_or_create_it(config.ES_HOST, dataformat, es_session, headers, indx)
+        check_index_exists_or_create_it(config.ES_HOST, data_format, es_session, headers, indx)
     #suggestion index
     fn = config.MODELS_PATH + config.ES_SUGGESTION_INIT_DATA_CONFIG_FILE
     f = open(fn, 'r')
-    dataformat = f.read()
+    data_format = f.read()
     f.close()
-    check_index_exists_or_create_it(config.ES_HOST, dataformat, es_session, headers, config.INDEX_SUGGESTION)
+    check_index_exists_or_create_it(config.ES_HOST, data_format, es_session, headers, config.INDEX_SUGGESTION)
 
 
 def check_index_exists_or_create_it(host, dataformat, es_session, headers, indx):
@@ -117,20 +117,12 @@ def copy_models_files(config):
     src = config.MODELS_DOCKER_PATH + config.ES_INIT_DATA_CONFIG_FILE
     shutil.copyfile(src, dst)
 
-    dst = config.MODELS_PATH + config.MODELS_WORD2VEC_FILE
-    src = config.MODELS_DOCKER_PATH + config.MODELS_WORD2VEC_FILE
-    shutil.copyfile(src, dst)
-
-    dst = config.MODELS_PATH + config.MODELS_WORD2VEC_FILE + ".vectors.npy"
-    src = config.MODELS_DOCKER_PATH + config.MODELS_WORD2VEC_FILE + ".vectors.npy"
-    shutil.copyfile(src, dst)
-
-    dst = config.MODELS_PATH + config.MODELS_WORD2VEC_FILE_CRC
-    src = config.MODELS_DOCKER_PATH + config.MODELS_WORD2VEC_FILE_CRC
-    shutil.copyfile(src, dst)
-
     dst = config.MODELS_PATH + config.WORD2VEC_JSON_EXPORT
     src = config.MODELS_DOCKER_PATH + config.WORD2VEC_JSON_EXPORT
+    shutil.copyfile(src, dst)
+
+    dst = config.MODELS_PATH + config.WORD2VEC_JSON_EXPORT_CRC
+    src = config.MODELS_DOCKER_PATH + config.WORD2VEC_JSON_EXPORT_CRC
     shutil.copyfile(src, dst)
 
     dst = config.MODELS_PATH + config.ES_SUGGESTION_INIT_DATA_CONFIG_FILE

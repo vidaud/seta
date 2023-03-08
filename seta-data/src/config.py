@@ -1,9 +1,5 @@
 """seta-ui flask configuration."""
-
-from datetime import timedelta
-from os.path import exists
 import os
-import secrets
     
 class Config:
     """Common configuration"""
@@ -21,11 +17,12 @@ class Config:
     INDEX_PRIVATE = "seta-private-000001"
     
     MODELS_DOCKER_PATH = "/home/seta/models_docker/"    
-    MODELS_PATH = "/home/seta/models/"    
+    MODELS_PATH = "/home/seta/models/"
     MODELS_WORD2VEC_FILE = "wv-sg0-hs1.bin"
     MODELS_WORD2VEC_FILE_CRC = "wv-sg0-hs1.crc"
     MODELS_INIT_FILE = "models.zip"
     WORD2VEC_JSON_EXPORT = "json_suggestion.json"
+    WORD2VEC_JSON_EXPORT_CRC = "json_suggestion.crc"
 
     
     def __init__(self) -> None:             
@@ -53,7 +50,6 @@ class Config:
         Config.LOG_DIR = os.environ.get("LOG_DIR", "/var/log")
         Config.APP_LOG_NAME = os.environ.get("APP_LOG_NAME", "app.log")
         Config.WWW_LOG_NAME = os.environ.get("WWW_LOG_NAME", "www.log")
-        Config.SCHEDULER_LOG_NAME = os.environ.get("SCHEDULER_LOG_NAME", "sched.log")
         Config.LOG_MAX_BYTES = os.environ.get("LOG_MAX_BYTES", 100_000_000)  # 100MB in bytes
         Config.LOG_COPIES = os.environ.get("LOG_COPIES", 5)        
             
@@ -62,7 +58,6 @@ class DevConfig(Config):
     
     FLASK_ENV = "development"
     DEBUG = True
-    SCHEDULER_ENABLED = False
     LOG_LEVEL = "DEBUG"
     
     
@@ -71,11 +66,9 @@ class TestConfig(Config):
     
     FLASK_ENV = "test"
     DEBUG = False 
-    SCHEDULER_ENABLED = True       
-    
+
 class ProdConfig(Config):
     """Production config"""
     
     FLASK_ENV = "production"
     DEBUG = False  
-    SCHEDULER_ENABLED = True
