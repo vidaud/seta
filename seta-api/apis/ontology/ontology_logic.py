@@ -1,33 +1,31 @@
-from infrastructure.helpers import sanitize_input, word_exists
 from infrastructure.ApiLogicError import ApiLogicError
+from infrastructure.utils import w2v_elasticsearch as w2v
 import copy
 from math import sqrt
 import itertools
 
+
 def build_graph(term, current_app):
-    term = sanitize_input(term)
-    
-    if not word_exists(current_app.terms_model, term):
+
+    if not w2v.word_exists(current_app, term):
         raise ApiLogicError('Term out of vocabulary.')
-    
-    terms_model = current_app.terms_model
-    
-    size = terms_model.wv.vocab[term].count
+
+    size = w2v.get_size(term, current_app)
     graphjs = {"nodes": [{"id": term, "depth": '0', "size": size, 'graph_size': sqrt(size) // 40 + 3}],
                "links": []}
-    maxwords = 7
-    nodes = [x for x, y in terms_model.wv.most_similar(term, topn=maxwords)]
-    
+
+    nodes = w2v.get_most_similar(term, current_app, 7)
+
     done = copy.deepcopy(nodes)
     done2 = []
     
     for c, n in enumerate(nodes):
-        size = terms_model.wv.vocab[n].count
+        size = w2v.get_size(n, current_app)
         graphjs["nodes"].append({"id": n, "depth": '1', "size": size, "graph_size": sqrt(size) // 20 + 3})
         graphjs["links"].append({"source": term, "target": n, "value": .2})
-        for m in [x for x, y in terms_model.wv.most_similar(n, topn=5)]:
+        for m in w2v.get_most_similar(n, current_app, 5):
             if m not in done and m != term and m not in done2:
-                size = terms_model.wv.vocab[m].count
+                size = w2v.get_size(m, current_app)
                 done2.append(m)
                 graphjs["nodes"].append({"id": m, "depth": '2', "size": size, "graph_size": sqrt(size) // 20 + 3})
                 graphjs["links"].append({"source": n, "target": m, "value": .1})
@@ -36,16 +34,14 @@ def build_graph(term, current_app):
                 
     return graphjs
 
+
 def build_tree(term, current_app):
-    term = sanitize_input(term)
-    if not word_exists(current_app.terms_model, term):
+    if not w2v.word_exists(current_app, term):
         raise ApiLogicError('Term out of vocabulary.')
-    
-    terms_model = current_app.terms_model
+
     graphjs = {"nodes": []}
     
-
-    nodes = [sanitize_input(x) for x, y in terms_model.wv.most_similar(term, topn=20)]
+    nodes = w2v.get_most_similar(term, current_app, 20)
     nodes2 = []
     done = []
     done2 = []
@@ -56,7 +52,7 @@ def build_tree(term, current_app):
             r = [n1]
             for j in range(i + 1, len(nodes)):
                 n2 = nodes[j]
-                if terms_model.similarity(n1, n2) > 0.7:
+                if w2v.is_similarity_gt_value(n1, n2, 0.7, current_app):
                     if n2 not in done and n2 != term and n2 not in done2:
                         done2.append(n2)
                         r.append(n2)
@@ -67,7 +63,7 @@ def build_tree(term, current_app):
     for r in nodes2:
         r2 = copy.deepcopy(r)
         for n in r:
-            for m in [sanitize_input(x) for x, y in terms_model.wv.most_similar(n, topn=7)]:
+            for m in w2v.get_most_similar(n, current_app, 7):
                 if m not in done and m != term and m not in done2:
                     done2.append(m)
                     r2.append(m)
