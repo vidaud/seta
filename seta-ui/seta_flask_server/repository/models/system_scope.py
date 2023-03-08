@@ -1,4 +1,4 @@
-import json
+from flask import json
 
 class SystemScope:
     def __init__(self, user_id, scope, area) -> None:
@@ -9,7 +9,7 @@ class SystemScope:
     def __iter__(self):
         yield from {
             "user_id": self.user_id,            
-            "scope": self.scope,
+            "system_scope": self.scope,
             "area": self.area
         }.items()
         

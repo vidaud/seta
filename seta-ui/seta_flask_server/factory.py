@@ -1,6 +1,6 @@
 import logging
 
-from flask import (Flask, request, session, url_for)
+from flask import (Flask, request, session)
 from werkzeug.middleware.proxy_fix import ProxyFix
 
 from .infrastructure.extensions import (scheduler, jwt, logs, github)
@@ -16,14 +16,12 @@ from .blueprints.token_info import token_info
 
 from .blueprints.communities import communities_bp_v1
 
-from .infrastructure.helpers import JSONEncoder
+from .infrastructure.helpers import JSONEncoder, MongodbJSONProvider
 
 #from cas import CASClient
 from .infrastructure.cas_client import SetaCasClient
 
 from flask_injector import FlaskInjector
-
-from .repository.interfaces import IUsersBroker
 from .dependency import MongoDbClientModule
 
 def create_app(config_object):
@@ -34,7 +32,9 @@ def create_app(config_object):
     app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_host=1)
     
     app.config.from_object(config_object)        
-    app.json_encoder= JSONEncoder  
+        
+    #use flask.json in all modules instead of python built-in json
+    app.json_provider_class = MongodbJSONProvider
     app.home_route = '/seta-ui/'
     
     register_extensions(app)
@@ -62,7 +62,7 @@ def create_app(config_object):
     @app.after_request
     def after_request(response):   
         if app.testing:
-            app.logger.debug(request.path + ": " + str(response.status_code))
+            app.logger.debug(request.path + ": " + str(response.status_code) + ", json: " + str(response.data))
             return response     
         
         """ Logging after every request. """
@@ -153,7 +153,7 @@ def register_extensions(app):
     #the service_url will be changed before ECAS redirect with 'request.url'
     app.cas_client = SetaCasClient(
         #version=3,
-        service_url = app.config["FLASK_PATH"] + "/login/callback/ecas",
+        service_url = app.config["APP_ROOT_PATH"] + "/login/callback/ecas",
         server_url = app.config["AUTH_CAS_URL"],
     )
     

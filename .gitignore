@@ -135,3 +135,6 @@ requirements_seta_ui.txt
 
 # react app
 node_modules
+
+#vscode
+.vscode

@@ -36,7 +36,7 @@ export class CorpusService {
       })
       .catch((error) => {
         if (error.response) {
-          this.handle401Error(error);
+          return authentificationService.refreshToken();
         }
       }) as any
   }
@@ -66,7 +66,7 @@ export class CorpusService {
       })
       .catch((error) => {
         if (error.response) {
-          this.handle401Error(error);
+          return authentificationService.refreshToken();
         }
       }) as any
   }

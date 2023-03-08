@@ -1,15 +1,45 @@
 from bson import json_util, SON
-from flask import json as flask_json
+from flask import json as flask_json, Flask
 from six import iteritems, string_types
 from bson.json_util import RELAXED_JSON_OPTIONS
 from Crypto.Hash import SHA256
 from Crypto.PublicKey import RSA
 from Crypto.Signature import pkcs1_15
 import binascii
+import typing as t
 
-from flask import url_for, Response
+from flask import Response
+from flask.json.provider import JSONProvider, _default
 from flask_jwt_extended import decode_token, verify_jwt_in_request
 from flask_jwt_extended.config import config as jwt_config
+
+class MongodbJSONProvider(JSONProvider):
+    def __init__(self, app: Flask) -> None:
+        super().__init__(app)
+
+    default: t.Callable[[t.Any], t.Any] = staticmethod(
+        _default
+    )
+
+    def dumps(self, obj, **kwargs) -> str:
+        """Serialize data as JSON.
+
+        :param obj: The data to serialize.
+        :param kwargs: May be passed to the underlying JSON library.
+        """
+        kwargs.setdefault("default", self.default)
+        kwargs.setdefault("ensure_ascii", True)
+        kwargs.setdefault("sort_keys", True)
+        return json_util.dumps(obj, **kwargs)
+
+    def loads(self, s, **kwargs):
+        """Deserialize data as JSON.
+
+        :param s: Text or UTF-8 bytes.
+        :param kwargs: May be passed to the underlying JSON library.
+        """
+        return json_util.loads(s, **kwargs)
+    
 
 class JSONEncoder(flask_json.JSONEncoder):
 
@@ -35,20 +65,6 @@ class JSONEncoder(flask_json.JSONEncoder):
                 return json_util.default(obj, **self._default_kwargs)
             except TypeError:
                 return obj
-            
-'''
-from bson import ObjectId, datetime
-
-class JSONEncoder(flask_json.JSONEncoder):
-    """extend json-encoder class"""
-
-    def default(self, o):
-        if isinstance(o, ObjectId):
-            return str(o)
-        if isinstance(o, datetime.datetime):
-            return str(o)
-        return json.JSONEncoder.default(self, o)
-'''     
 
 def validate_public_key(public, message, signature):
     try:

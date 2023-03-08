@@ -12,8 +12,8 @@ RUN apt update -y
 RUN apt install -y  --no-install-recommends curl
 RUN apt install -y  --no-install-recommends wget
 RUN apt install -y  --no-install-recommends openjdk-11-jre
-RUN apt install -y  --no-install-recommends nodejs 
-RUN apt install -y  --no-install-recommends npm
+#RUN apt install -y  --no-install-recommends nodejs 
+#RUN apt install -y  --no-install-recommends npm
 RUN apt install -y  --no-install-recommends gnupg
 RUN apt install -y  --no-install-recommends python3-pip
 RUN apt install -y  --no-install-recommends python3-dev
@@ -52,6 +52,5 @@ ENV PYTHONUNBUFFERED=1
 ENV FLASK_APP=app_dev.py 
 ENV FLASK_ENV=development 
 
-CMD ["gunicorn", "--conf", "/home/seta/gunicorn_conf.py", "--reload", "--bind", "0.0.0.0:8081", "--capture-output" , "--access-logformat", "[seta.api] %(h)s %(l)s %(u)s %(t)s. %(r)s. %(s)s %(b)s. %(f)s. %(a)s", "--chdir", "/home/seta", "app_dev:app"]
-#CMD chdir /home/seta \
-    # && flask run --host 0.0.0.0
+#CMD ["gunicorn", "--conf", "/home/seta/gunicorn_conf.py", "--reload", "--bind", "0.0.0.0:8081", "--capture-output" , "--access-logformat", "[seta.api] %(h)s %(l)s %(u)s %(t)s. %(r)s. %(s)s %(b)s. %(f)s. %(a)s", "--chdir", "/home/seta", "app_dev:app"]
+CMD flask run --host 0.0.0.0

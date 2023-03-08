@@ -1,5 +1,6 @@
 import json
 import os
+import time
 import shutil
 import time
 import config
@@ -8,13 +9,21 @@ from elasticsearch import Elasticsearch
 from elasticsearch.helpers import bulk
 
 import hashlib as hash
-BLOCKSIZE = 65536
+from config import Config
 
-config = config.ProdConfig()
+def getsha256(filename):
+    BLOCKSIZE = 65536
+    sha = hash.sha256()
+    with open(filename, 'rb') as f:
+        file_buffer = f.read(BLOCKSIZE)
+        while len(file_buffer) > 0:
+            sha.update(file_buffer)
+            file_buffer = f.read(BLOCKSIZE)
+    return sha.hexdigest()
 
 
-def wait_for_es(config):
-    esh = "http://" + config.ES_HOST + "/_cluster/health?pretty"
+def wait_for_es():
+    esh = f"http://{Config.ES_HOST}/_cluster/health?pretty"
     print('waiting for ES', esh, flush=True)
     try:
         es_session = requests.Session()
@@ -27,61 +36,63 @@ def wait_for_es(config):
             if res['status'] == 'green' or res['status'] == 'yellow':
                 return
         time.sleep(2)
-        wait_for_es(config)
+        wait_for_es()
     except Exception as e:
         time.sleep(2)
-        wait_for_es(config)
+        wait_for_es()
 
 
 def suggestion_update_job(config):
-    models_path = config.MODELS_PATH
-    if os.path.exists(models_path + config.WORD2VEC_JSON_EXPORT_CRC):
-        crc = open(models_path + config.WORD2VEC_JSON_EXPORT_CRC, 'r').read()
+    models_path = Config.MODELS_PATH
+    if os.path.exists(models_path + Config.WORD2VEC_JSON_EXPORT_CRC):
+        crc = open(models_path + Config.WORD2VEC_JSON_EXPORT_CRC, 'r').read()
     else:
-        crc = getsha256(models_path + config.WORD2VEC_JSON_EXPORT)
-        f = open(models_path + config.WORD2VEC_JSON_EXPORT_CRC, mode='w')
+        crc = getsha256(models_path + Config.WORD2VEC_JSON_EXPORT)
+        f = open(models_path + Config.WORD2VEC_JSON_EXPORT_CRC, mode='w')
         f.write(crc)
         f.close()
 
-    index_suggestion = config.INDEX_SUGGESTION
+    index_suggestion = Config.INDEX_SUGGESTION
     es = Elasticsearch("http://" + config.ES_HOST, verify_certs=False, request_timeout=30)
+
     current_w2v_crc, crc_id = get_crc_from_es(es, index_suggestion)
     if crc != current_w2v_crc:
         try:
             bulk(es, gen_data(crc))
             crc_model = {"crc_model": crc}
-            delete_all_suggestion(current_w2v_crc)
+            
+            if current_w2v_crc:
+                delete_all_suggestion(current_w2v_crc)
+                
             if crc_id:
                 es.update(index=index_suggestion, id=crc_id, doc=crc_model)
             else:
                 es.index(index=index_suggestion, document=crc_model)
         except Exception as e:
-            print(e)
             print("errors on suggestion update. New crc: ", crc)
-
+            print(e)
 
 def gen_data(crc):
     print("suggestion indexing started")
 
-    with open(config.MODELS_PATH + config.WORD2VEC_JSON_EXPORT) as json_file:
+    with open(Config.MODELS_PATH + Config.WORD2VEC_JSON_EXPORT) as json_file:
         data = json.load(json_file)
 
     for suggestion in data:
         yield {
-                "_index": config.INDEX_SUGGESTION,
+                "_index": Config.INDEX_SUGGESTION,
                 "phrase": suggestion["phrase"],
                 "most_similar": suggestion["most_similar"],
                 "size": suggestion["size"],
                 "crc": crc
             }
 
-
 def delete_all_suggestion(crc):
     if crc:
         print("suggestion delete started")
         query = {"query": {"bool": {"must": [{"match": {"crc.keyword": crc}}]}}}
-        es = Elasticsearch("http://" + config.ES_HOST, verify_certs=False, request_timeout=30)
-        res = es.delete_by_query(index=config.INDEX_SUGGESTION, body=query, wait_for_completion=False)
+        es = Elasticsearch("http://" + Config.ES_HOST, verify_certs=False, request_timeout=30)
+        res = es.delete_by_query(index=Config.INDEX_SUGGESTION, body=query, wait_for_completion=False)
         print(res)
         print("suggestion delete finished")
 
@@ -89,18 +100,18 @@ def delete_all_suggestion(crc):
 def seta_es_init_map(config):
     es_session = requests.Session()
     headers = {"Content-Type": "application/json"}
-    fn = config.MODELS_PATH + config.ES_INIT_DATA_CONFIG_FILE
+    fn = Config.MODELS_PATH + Config.ES_INIT_DATA_CONFIG_FILE
     f = open(fn, 'r')
     data_format = f.read()
     f.close()
-    for indx in config.INDEX:
-        check_index_exists_or_create_it(config.ES_HOST, data_format, es_session, headers, indx)
+    for indx in Config.INDEX:
+        check_index_exists_or_create_it(Config.ES_HOST, data_format, es_session, headers, indx)
     #suggestion index
-    fn = config.MODELS_PATH + config.ES_SUGGESTION_INIT_DATA_CONFIG_FILE
+    fn = Config.MODELS_PATH + Config.ES_SUGGESTION_INIT_DATA_CONFIG_FILE
     f = open(fn, 'r')
     data_format = f.read()
     f.close()
-    check_index_exists_or_create_it(config.ES_HOST, data_format, es_session, headers, config.INDEX_SUGGESTION)
+    check_index_exists_or_create_it(Config.ES_HOST, data_format, es_session, headers, Config.INDEX_SUGGESTION)
 
 
 def check_index_exists_or_create_it(host, dataformat, es_session, headers, indx):
@@ -112,21 +123,21 @@ def check_index_exists_or_create_it(host, dataformat, es_session, headers, indx)
         print(resp.content)
 
 
-def copy_models_files(config):
-    dst = config.MODELS_PATH + config.ES_INIT_DATA_CONFIG_FILE
-    src = config.MODELS_DOCKER_PATH + config.ES_INIT_DATA_CONFIG_FILE
+def copy_models_files():
+    dst = Config.MODELS_PATH + Config.ES_INIT_DATA_CONFIG_FILE
+    src = Config.MODELS_DOCKER_PATH + Config.ES_INIT_DATA_CONFIG_FILE
     shutil.copyfile(src, dst)
 
-    dst = config.MODELS_PATH + config.WORD2VEC_JSON_EXPORT
-    src = config.MODELS_DOCKER_PATH + config.WORD2VEC_JSON_EXPORT
+    dst = Config.MODELS_PATH + Config.WORD2VEC_JSON_EXPORT
+    src = Config.MODELS_DOCKER_PATH + Config.WORD2VEC_JSON_EXPORT
     shutil.copyfile(src, dst)
 
-    dst = config.MODELS_PATH + config.WORD2VEC_JSON_EXPORT_CRC
-    src = config.MODELS_DOCKER_PATH + config.WORD2VEC_JSON_EXPORT_CRC
+    dst = Config.MODELS_PATH + Config.WORD2VEC_JSON_EXPORT_CRC
+    src = Config.MODELS_DOCKER_PATH + Config.WORD2VEC_JSON_EXPORT_CRC
     shutil.copyfile(src, dst)
 
-    dst = config.MODELS_PATH + config.ES_SUGGESTION_INIT_DATA_CONFIG_FILE
-    src = config.MODELS_DOCKER_PATH + config.ES_SUGGESTION_INIT_DATA_CONFIG_FILE
+    dst = Config.MODELS_PATH + Config.ES_SUGGESTION_INIT_DATA_CONFIG_FILE
+    src = Config.MODELS_DOCKER_PATH + Config.ES_SUGGESTION_INIT_DATA_CONFIG_FILE
     shutil.copyfile(src, dst)
 
 
@@ -153,11 +164,12 @@ def getsha256(filename):
 
 
 def init():
-    wait_for_es(config)
-    copy_models_files(config)
-    seta_es_init_map(config)
-    suggestion_update_job(config)
+    wait_for_es()
+    copy_models_files()
+    seta_es_init_map()
+    suggestion_update_job()
     print("SeTA-ES is initialised.")
 
-
-init()
+ 
+if __name__ == "__main__":
+    init()

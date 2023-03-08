@@ -1,11 +1,7 @@
 """seta-ui flask configuration."""
-import os
+#import os
     
 class Config:
-    """Common configuration"""
-    DB_HOST="seta-mongo"
-    DB_PORT=27017
-    MONGO_URI = ""
     
     ES_HOST = "seta-es:9200"
     ES_INIT_DATA_CONFIG_FILE = "data-mapping.json"
@@ -24,51 +20,5 @@ class Config:
     WORD2VEC_JSON_EXPORT = "json_suggestion.json"
     WORD2VEC_JSON_EXPORT_CRC = "json_suggestion.crc"
 
-    
-    def __init__(self) -> None:             
-        """Read environment variables"""               
-        
-        #read key from the key.txt file
-        '''
-        if exists(Config.SECRET_KEY_PATH):
-            with open(Config.SECRET_KEY_PATH, "r") as fobj:
-                self.SECRET_KEY = fobj.readline()
-        else:
-            self.SECRET_KEY = secrets.token_hex(16)
-            
-            with open(Config.SECRET_KEY_PATH, "w") as f1:
-                f1.write(self.SECRET_KEY)
-                
-        Config.JWT_SECRET_KEY = self.SECRET_KEY
-        '''                
-
-        Config.MONGO_URI = f"mongodb://{Config.DB_HOST}:{Config.DB_PORT}/seta"            
-        
-        #Read logging environment variables
-        Config.LOG_TYPE = os.environ.get("LOG_TYPE", "stream")
-        Config.LOG_LEVEL = os.environ.get("LOG_LEVEL", "INFO")
-        Config.LOG_DIR = os.environ.get("LOG_DIR", "/var/log")
-        Config.APP_LOG_NAME = os.environ.get("APP_LOG_NAME", "app.log")
-        Config.WWW_LOG_NAME = os.environ.get("WWW_LOG_NAME", "www.log")
-        Config.LOG_MAX_BYTES = os.environ.get("LOG_MAX_BYTES", 100_000_000)  # 100MB in bytes
-        Config.LOG_COPIES = os.environ.get("LOG_COPIES", 5)        
-            
-class DevConfig(Config):  
-    """Development config"""
-    
     FLASK_ENV = "development"
-    DEBUG = True
-    LOG_LEVEL = "DEBUG"
-    
-    
-class TestConfig(Config):
-    """Test config"""
-    
-    FLASK_ENV = "test"
-    DEBUG = False 
 
-class ProdConfig(Config):
-    """Production config"""
-    
-    FLASK_ENV = "production"
-    DEBUG = False  

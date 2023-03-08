@@ -1,21 +1,44 @@
 import pytest
 import time
 
-from seta_flask_server.config import TestConfig
+from seta_flask_server.config_test import TestConfig
 from seta_flask_server.factory import create_app
 
 from tests.infrastructure.mongodb.db import DbTestSetaApi
 
+"""
+    For testing in docker run: pytest -s tests/ --db_host=seta-mongo --db_port=27017
+"""
+
+def pytest_addoption(parser):
+    parser.addoption("--db_host", action="store", default="localhost", help="database host server") 
+    parser.addoption("--db_port", action="store", default="27017", help="database port")
+
+@pytest.fixture(scope="session")
+def db_host(request):
+    return request.config.getoption('--db_host')
+
+@pytest.fixture(scope="session")
+def db_port(request):
+    return request.config.getoption('--db_port')
+
 @pytest.fixture(scope='module')
-def app():
+def app(db_host, db_port):
     configuration = TestConfig() 
-    app = create_app(configuration)
-    app.testing = True
-    app.config["JWT_COOKIE_CSRF_PROTECT"] = False
+
+    if db_host:
+        configuration.DB_HOST = db_host
+
+    if db_port:
+        configuration.DB_PORT = int(db_port)
 
     time_str = str(int(time.time()))
-    app.config["DB_NAME"] = app.config["DB_NAME"] + f"_{time_str}"
-    app.config["MONGO_URI"] = app.config["MONGO_URI"] + f"_{time_str}"
+    configuration.DB_NAME = configuration.DB_NAME + f"_{time_str}"
+
+    #print(configuration.MONGO_URI)
+
+    app = create_app(configuration)
+    app.testing = True
     
     with app.app_context(): 
         db = DbTestSetaApi()

@@ -2,7 +2,7 @@ from interface import Interface
 from seta_flask_server.repository.models.resource import (ResourceModel, ResourceContributorModel, ResourceChangeRequestModel)
 
 class IResourcesBroker(Interface):
-    def create(self, model: ResourceModel) -> None:
+    def create(self, model: ResourceModel, scopes: list[dict]) -> None:
         pass
 
     def update(self, model: ResourceModel) -> None:

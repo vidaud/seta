@@ -5,18 +5,20 @@ const AggregationsChart = ({aggregations}) => {
     const [basicData, setBasicData] = useState<any>();
 
     useEffect(() => {
-        if (aggregations.years) {
-            const details = {
-                labels: Object.keys(aggregations.years),
-                datasets: [
-                    {
-                        label: 'Documents / Year',
-                        backgroundColor: '#42A5F5',
-                        data: Object.values(aggregations.years)
-                    }
-                ]
+        if (aggregations) {
+            if (aggregations.length > 0 || aggregations.years) {
+                const details = {
+                    labels: Object.keys(aggregations.years),
+                    datasets: [
+                        {
+                            label: 'Documents / Year',
+                            backgroundColor: '#42A5F5',
+                            data: Object.values(aggregations.years)
+                        }
+                    ]
+                }
+                setBasicData(details);
             }
-            setBasicData(details);
         }
     }, [aggregations]);
 

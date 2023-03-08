@@ -18,7 +18,7 @@ class ResourcesBroker(implements(IResourcesBroker)):
        self.db = config.get_db()
        self.collection = self.db["resources"]
 
-    def create(self, model: ResourceModel) -> None:
+    def create(self, model: ResourceModel, scopes: list[dict]) -> None:
         '''Create resource json objects in mongo db'''
 
         if not self.resource_id_exists(model.resource_id):
@@ -33,15 +33,8 @@ class ResourcesBroker(implements(IResourcesBroker)):
                 model.created_at = now
 
                 model_json = model.to_json()
-                print(model_json)
                 self.collection.insert_one(model_json, session=session)
-
-                #set resouce scopes for the creator_id
-                scopes = [
-                    EntityScope(user_id=model.creator_id,  id=model.resource_id, scope=ResourceScopeConstants.Edit).to_resource_json(),
-                    EntityScope(user_id=model.creator_id,  id=model.resource_id, scope=ResourceScopeConstants.DataAdd).to_resource_json(),
-                    EntityScope(user_id=model.creator_id,  id=model.resource_id, scope=ResourceScopeConstants.DataDelete).to_resource_json()
-                          ]
+               
                 user_collection = self.db["users"]
                 user_collection.insert_many(scopes, session=session)
 
@@ -104,8 +97,18 @@ class ResourcesBroker(implements(IResourcesBroker)):
         #get active resources
         filter = {"community_id": {"$in": community_ids}, "status": ResourceStatusConstants.Active, "access":{"$exists" : 1}}        
         resources = self.collection.find(filter)
+        
+        result = [ResourceModel.from_db_json(c) for c in resources]
+        
+        #get public resources
+        filter = {"access": ResourceAccessContants.Public, "access":{"$exists" : 1}}
+        public_resources = self.collection.find(filter)
+                
+        for pr in public_resources:
+            if not any(r.resource_id == pr["resource_id"] for r in result):                
+                result.append(ResourceModel.from_db_json(pr))
 
-        return [ResourceModel.from_db_json(c) for c in resources]
+        return result
 
     def get_all_by_community_id(self, community_id:str) -> list[ResourceModel]:
         '''Retrieve all resources belonging to the community id'''
