@@ -4,38 +4,18 @@ from datetime import timedelta
 import os
     
 class Config:
-    """Common configuration"""
+    """Base class for common configuration"""
+    
+    #============Seta Configuration ========#
+     
+    #database host - docker container for mongo
     DB_HOST="seta-mongo"
+    
+    #database port
     DB_PORT=27017
-    MONGO_URI = ""
     
-    
-    #JWT variables
-    SECRET_KEY_PATH = "/home/seta/models/key.txt"
-    JWT_SECRET_KEY = "no-need-for-secret"    
-    JWT_IDENTITY_CLAIM="sub"
-    JWT_COOKIE_CSRF_PROTECT = False
-    JWT_TOKEN_LOCATION=["headers", "cookies"]
-    JWT_TOKEN_INFO_URL="http://seta-ui:8080/authorization/v1/token_info"
-    
-    #Scheduler variables
-    SCHEDULER_API_ENABLED = True
-    SCHEDULER_API_PREFIX = "/seta-api/scheduler"
-        
-    #LogSetup variables
-    LOG_TYPE = "stream"
-    LOG_LEVEL = "INFO"
-    LOG_DIR = "/"
-    APP_LOG_NAME = ""
-    WWW_LOG_NAME = ""
-    SCHEDULER_LOG_NAME = ""
-    LOG_MAX_BYTES = "100_000"
-    LOG_COPIES = "5"
-    
-    
-    PROPAGATE_EXCEPTIONS = True
-    SWAGGER_UI_JSONEDITOR = True
-    MAX_CONTENT_LENGTH = 50 * 1000 * 1000  # 50M
+    #database name
+    DB_NAME="seta"
     
     #corpus
     DEFAULT_SUGGESTION = 6
@@ -66,30 +46,95 @@ class Config:
     JRCBOX_PATH = "https://jrcbox.jrc.ec.europa.eu/index.php/s/"
     JRCBOX_PASS = "Op-next-seta-2022-14-14"
     JRCBOX_WEBDAV = "https://jrcbox.jrc.ec.europa.eu/public.php/webdav/"
+    
+    #======================================#
+    
+    #===========Flask-PyMongo Configuration========#
+    #https://flask-pymongo.readthedocs.io/en/latest/
+    
+    #MONGO_URI = f"mongodb://{DB_HOST}:{DB_PORT}/{DB_NAME}"
+    @property
+    def MONGO_URI(self):
+        return f"mongodb://{self.DB_HOST}:{self.DB_PORT}/{self.DB_NAME}"
+    
+    #======================================#  
+    
+    #============Flask Configuration========#
+    #https://flask.palletsprojects.com/en/2.1.x/config/
+    
+    #Exceptions are re-raised rather than being handled by the app's error handlers.     
+    PROPAGATE_EXCEPTIONS = True
+    
+    #A secret key that will be used for securely signing the session cookie
+    SECRET_KEY = "no-need-for-secret"
+    
+    MAX_CONTENT_LENGTH = 50 * 1000 * 1000  # 50M 
+    
+    #======================================#
+    
+    #===========Flask-RESTX Configuration========#
+    #https://flask-restx.readthedocs.io/en/latest/configuration.html
+    
+    #disable the mask documentation in swagger
+    RESTX_MASK_SWAGGER=False    
+    
+    #no info about this one!
+    SWAGGER_UI_JSONEDITOR = True
+    #======================================# 
+    
+        
+    #============Flask-JWT-Extended Configuration========#
+    #https://flask-jwt-extended.readthedocs.io/en/stable/options/
+    
+    #The secret key used to encode and decode JWTs    
+    JWT_SECRET_KEY = "no-need-for-secret"
+    
+    #The claim in a JWT that is used as the source of identity
+    JWT_IDENTITY_CLAIM="seta_id"
+    
+    #Enable Cross Site Request Forgery (CSRF) protection
+    JWT_COOKIE_CSRF_PROTECT = False
+    
+    #Where to look for a JWT when processing a request in the specified order.
+    JWT_TOKEN_LOCATION=["headers", "cookies"]
+    
+    #api endpoint to decode the JWT token
+    JWT_TOKEN_INFO_URL="http://seta-ui:8080/authorization/v1/token_info"
+    #======================================#
+    
+    #============Flask-APScheduler Configuration========#
+    #https://viniciuschiele.github.io/flask-apscheduler/rst/configuration.html
+    
+    #enable Flask-APScheduler build-in API
+    SCHEDULER_API_ENABLED = True
+    SCHEDULER_API_PREFIX = "/seta-api/scheduler"
+    #======================================#        
+    
+    #===========LogSetup Configuration========#
+    #https://medium.com/tenable-techblog/the-boring-stuff-flask-logging-21c3a5dd0392
+    #https://github.com/tenable/flask-logging-demo
+    
+    #These configs are read from Docker ENV variables
+    
+    # Logging Setup
+    LOG_TYPE = "stream"
+    LOG_LEVEL = "INFO"
+    
+    # File Logging Setup
+    LOG_DIR = "/var/log"
+    APP_LOG_NAME = "app.log"
+    WWW_LOG_NAME = "www.log"
+    SCHEDULER_LOG_NAME = "sched.log"
+    LOG_MAX_BYTES = "100_000" # 10MB in bytes
+    LOG_COPIES = "5" 
+    #======================================#     
+    
+    
+   
         
     def __init__(self) -> None:             
-        """Read environment variables"""               
-        
-        #read key from the key.txt file
-        '''
-        if exists(Config.SECRET_KEY_PATH):
-            with open(Config.SECRET_KEY_PATH, "r") as fobj:
-                self.SECRET_KEY = fobj.readline()
-        else:
-            self.SECRET_KEY = secrets.token_hex(16)
-            
-            with open(Config.SECRET_KEY_PATH, "w") as f1:
-                f1.write(self.SECRET_KEY)
+        """Read environment variables"""         
                 
-        Config.JWT_SECRET_KEY = self.SECRET_KEY
-        '''                
-
-        Config.MONGO_URI = f"mongodb://{Config.DB_HOST}:{Config.DB_PORT}/seta"            
-        
-        
-        #Read flask environment variables
-        Config.FLASK_PATH = os.environ.get('FLASK_PATH', 'http://localhost')
-        
         #Read logging environment variables
         Config.LOG_TYPE = os.environ.get("LOG_TYPE", "stream")
         Config.LOG_LEVEL = os.environ.get("LOG_LEVEL", "INFO")
@@ -103,35 +148,54 @@ class Config:
 class DevConfig(Config):  
     """Development config"""
     
-    FLASK_ENV = "development"
-    DEBUG = True
+    #============Seta Configuration ========#
+    
+    #disable scheduler
     SCHEDULER_ENABLED = False
     
-    LOG_LEVEL = "DEBUG"
-    
-    #JWT variables
-    JWT_ACCESS_TOKEN_EXPIRES = timedelta(minutes=30)
-    JWT_REFRESH_TOKEN_EXPIRES = timedelta(hours=2)
-    
-    
-class TestConfig(Config):
-    """Test config"""
-    
-    FLASK_ENV = "test"
-    DEBUG = False 
-    SCHEDULER_ENABLED = True       
-    
-    #JWT variables
-    JWT_ACCESS_TOKEN_EXPIRES = timedelta(minutes=15)
-    JWT_REFRESH_TOKEN_EXPIRES = timedelta(hours=24)
+    #======================================#    
     
 class ProdConfig(Config):
     """Production config"""
     
-    FLASK_ENV = "production"
-    DEBUG = False  
-    SCHEDULER_ENABLED = True
+    #============Seta Configuration ========#
     
-    #JWT variables
-    JWT_ACCESS_TOKEN_EXPIRES = timedelta(minutes=60)
-    JWT_REFRESH_TOKEN_EXPIRES = timedelta(days=2)
+    #disable scheduler tasks
+    SCHEDULER_ENABLED = False
+    
+    #======================================#
+    
+class TestConfig(Config):
+    """Testing configuration"""
+    
+    def __init__(self) -> None:
+        super().__init__()
+    
+    #============Seta Configuration ========#
+    #database host - docker container for mongo
+    DB_HOST="seta-mongo"
+    
+    #database name
+    DB_NAME="seta-test"
+    
+    #disable scheduler tasks
+    SCHEDULER_ENABLED = False
+    
+    #======================================#
+    
+    #============Flask Configuration========#
+        
+    #Enable testing mode
+    TESTING = True
+    
+    #======================================#
+    
+    #============Flask-JWT-Extended Configuration========#
+    #api endpoint to decode the JWT token
+    JWT_TOKEN_INFO_URL="http://seta-ui:8080/authorization/v1/token_info"
+    #======================================#
+    
+    #============Flask-APScheduler Configuration========#
+    #disable Flask-APScheduler build-in API
+    SCHEDULER_API_ENABLED = False
+    #======================================#  

@@ -54,6 +54,10 @@ def create_app(config_object):
             if request.path.endswith(tuple(request_endswith_ignore_list)):
                 return response
             
+            if app.testing:
+                app.logger.debug(request.path + ": " + str(response.status_code) + ", json: " + str(response.data))
+                return response  
+            
             try:
                 verify_jwt_in_request()
             except:
@@ -114,19 +118,4 @@ def init(app):
 def register_extensions(app):
 #    scheduler.init_app(app)
     jwt.init_app(app)
-    logs.init_app(app)      
-    
-@jwt.additional_claims_loader
-def add_claims_to_access_token(identity):
-    iat = time.time()
-    source_limit = {"source": identity, "limit": 5}    
-    role = "user"
-    
-    additional_claims = {
-        "iat": iat,
-        "iss": "SETA API Flask server",
-        "sub": identity,
-        "role": role,
-        "source_limit": source_limit
-    }
-    return additional_claims
+    logs.init_app(app)

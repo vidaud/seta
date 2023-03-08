@@ -38,7 +38,7 @@ const Faqs = () => {
         let data = parse(node.data);
 
         return (
-            <span className={options.className} style={{ textAlign: 'justify' }}>
+            <span style={{ textAlign: 'justify' }}>
                 {data}
             </span>
         )
@@ -48,11 +48,11 @@ const Faqs = () => {
     return (
         <><BreadCrumb model={breadCrumbsItems} home={home} />
         <div className='page'>
-        <h1 className="headerH">FAQs</h1>
+        <h1 className='headerH'>FAQs</h1>
             <div className='card'>
                 <ScrollTop />
                     <div className="col-10">
-                        <Tree value={nodes} nodeTemplate={nodeTemplate} />
+                        <Tree className='p-fixedTree, p-fixedTreenode-children' value={nodes} nodeTemplate={nodeTemplate} />
                     </div>                    
             </div>
         </div>
