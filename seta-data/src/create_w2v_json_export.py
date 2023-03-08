@@ -23,16 +23,16 @@ def get_similar_term_with_threshold(source_word):
     return terms
 
 
-for word in list(terms_model.vocab):
+for word in list(terms_model.key_to_index):
     phrase = word.replace('_', ' ').lower()
     most_similar = []
 
     similar_terms = get_similar_term_with_threshold(word)
 
-    size = terms_model.vocab[word].count
+    size = int(terms_model.get_vecattr(word, "count"))
     for entry in similar_terms:
         term = entry[0].replace('_', ' ').lower()
-        size_t = terms_model.vocab[entry[0]].count
+        size_t = int(terms_model.get_vecattr(entry[0], "count"))
         most_similar.append({"term": term, "score": entry[1], "size": size_t})
     suggestion ={
     "phrase": phrase,

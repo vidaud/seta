@@ -1,6 +1,6 @@
 elasticsearch==8.2.0
 python-secrets==22.6.1
-gensim==3.8.3
+gensim==4.3.0
 PyYAML==6.0
 tqdm==4.63.1
 setproctitle==1.2.2
