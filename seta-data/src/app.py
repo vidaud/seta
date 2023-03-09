@@ -42,7 +42,7 @@ def wait_for_es():
         wait_for_es()
 
 
-def suggestion_update_job(config):
+def suggestion_update_job():
     models_path = Config.MODELS_PATH
     if os.path.exists(models_path + Config.WORD2VEC_JSON_EXPORT_CRC):
         crc = open(models_path + Config.WORD2VEC_JSON_EXPORT_CRC, 'r').read()
@@ -53,24 +53,29 @@ def suggestion_update_job(config):
         f.close()
 
     index_suggestion = Config.INDEX_SUGGESTION
-    es = Elasticsearch("http://" + config.ES_HOST, verify_certs=False, request_timeout=30)
+    es = Elasticsearch("http://" + Config.ES_HOST, verify_certs=False, timeout=120, max_retries=3, retry_on_timeout=True)
+    print(es)
 
     current_w2v_crc, crc_id = get_crc_from_es(es, index_suggestion)
     if crc != current_w2v_crc:
         try:
+            print("starting suggestion upload",flush=True)
             bulk(es, gen_data(crc))
             crc_model = {"crc_model": crc}
             
             if current_w2v_crc:
+                print("deleting old suggestions",flush=True)
                 delete_all_suggestion(current_w2v_crc)
                 
             if crc_id:
+                print("updating suggestions id",flush=True)
                 es.update(index=index_suggestion, id=crc_id, doc=crc_model)
             else:
+                print("adding suggestions id",flush=True)
                 es.index(index=index_suggestion, document=crc_model)
         except Exception as e:
-            print("errors on suggestion update. New crc: ", crc)
-            print(e)
+            print("errors on suggestion update. New crc: ", crc,flush=True)
+            print(e,flush=True)
 
 def gen_data(crc):
     print("suggestion indexing started")
@@ -89,15 +94,15 @@ def gen_data(crc):
 
 def delete_all_suggestion(crc):
     if crc:
-        print("suggestion delete started")
+        print("suggestion delete started",flush=True)
         query = {"query": {"bool": {"must": [{"match": {"crc.keyword": crc}}]}}}
-        es = Elasticsearch("http://" + Config.ES_HOST, verify_certs=False, request_timeout=30)
+        es = Elasticsearch("http://" + Config.ES_HOST, verify_certs=False, request_timeout=300)
         res = es.delete_by_query(index=Config.INDEX_SUGGESTION, body=query, wait_for_completion=False)
-        print(res)
-        print("suggestion delete finished")
+        print(res,flush=True)
+        print("suggestion delete finished",flush=True)
 
 
-def seta_es_init_map(config):
+def seta_es_init_map():
     es_session = requests.Session()
     headers = {"Content-Type": "application/json"}
     fn = Config.MODELS_PATH + Config.ES_INIT_DATA_CONFIG_FILE
@@ -117,10 +122,10 @@ def seta_es_init_map(config):
 def check_index_exists_or_create_it(host, dataformat, es_session, headers, indx):
     resp = es_session.get("http://" + host + "/" + indx + "?pretty")
     if resp.ok:
-        print("ElasticSearch index mapping exists: ", indx)
+        print("ElasticSearch index mapping exists: ", indx,flush=True)
     else:
         resp = es_session.put("http://" + host + "/" + indx + "?pretty", data=dataformat, headers=headers)
-        print(resp.content)
+        print(resp.content,flush=True)
 
 
 def copy_models_files():
@@ -165,10 +170,13 @@ def getsha256(filename):
 
 def init():
     wait_for_es()
+    print("copy model files",flush=True)
     copy_models_files()
+    print("seta es init map",flush=True)
     seta_es_init_map()
+    print("seta suggestions init/update",flush=True)
     suggestion_update_job()
-    print("SeTA-ES is initialised.")
+    print("SeTA-ES is initialised.",flush=True)
 
  
 if __name__ == "__main__":
