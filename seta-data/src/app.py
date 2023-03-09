@@ -83,7 +83,6 @@ def suggestion_update_job():
             print("errors on suggestion update: ")
             print(str(ex), flush=True)
 
-
 def gen_data(crc):
     print("suggestion indexing started", flush=True)
 
@@ -98,7 +97,6 @@ def gen_data(crc):
                 "size": suggestion["size"],
                 "crc": crc
             }
-
 
 def delete_all_suggestion(crc):
     if crc:
