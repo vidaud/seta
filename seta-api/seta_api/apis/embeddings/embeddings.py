@@ -15,7 +15,7 @@ parser_file = reqparse.RequestParser()
 parser_file.add_argument('file', type=werkzeug.datastructures.FileStorage, location='files')
 parser_file.add_argument('text')
 
-@emb_api.route("/compute_embeddings")
+@emb_api.route("compute_embeddings")
 @emb_api.doc(
     description='Given a file or a plain text, related embeddings are provided. Embeddings are built using Doc2vec. '
                 'Tika is used to extract text from the provided file. '

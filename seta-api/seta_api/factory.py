@@ -10,6 +10,8 @@ from werkzeug.middleware.proxy_fix import ProxyFix
 from flask_jwt_extended import get_jwt_identity, verify_jwt_in_request
 
 from seta_api.infrastructure.extensions import (jwt, logs)
+from seta_api.apis import apis_bp_v1
+from seta_api.private import private_bp_v1
 
 
 def create_app(config_object):
@@ -23,11 +25,9 @@ def create_app(config_object):
     # app.logger.debug(app.config)
 
     register_extensions(app)
+    register_blueprints(app)
+    
     init(app)
-
-    with app.app_context():
-        from seta_api.apis import api
-        api.init_app(app)
 
     CORS(app)
 
@@ -101,6 +101,9 @@ def init(app):
 
     app.logger.info("SeTA-API is up and running.")
 
+def register_blueprints(app):
+    app.register_blueprint(apis_bp_v1)
+    app.register_blueprint(private_bp_v1)
 
 def register_extensions(app):
     jwt.init_app(app)

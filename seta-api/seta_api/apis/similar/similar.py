@@ -20,7 +20,7 @@ similar_parser.add_argument('n_term', type=int)
                 'n_term': 'Number of similar terms to be extracted (default 20).'},
         responses={200: 'Success', 404: 'Not Found Error'},
         security='apikey')
-@similar_api.route("/similar")
+@similar_api.route("similar")
 class SimilarWords(Resource):
     @auth_validator()
     @similar_api.expect(similar_parser)

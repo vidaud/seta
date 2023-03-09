@@ -13,7 +13,7 @@ from http import HTTPStatus
 
 corpus_api = Namespace('seta-api-corpus', description='Corpus')
 
-@corpus_api.route("/corpus/<string:id>", methods=['GET', 'DELETE'])
+@corpus_api.route("corpus/<string:id>", methods=['GET', 'DELETE'])
 class Corpus(Resource):
     @auth_validator()
     @corpus_api.doc(description='Given the elasticsearch unique _id, the relative document from EU corpus is shown.'
@@ -121,7 +121,7 @@ query_corpus_post_data = corpus_api.model(
         'other': fields.List(other, descritpion='"other":[{"other.crc":"de1cbd1eecdd19cb0d527f3a3433c6958e4b8b1b02ce69c960e02a611f27b036"}]')    }
 )      
         
-@corpus_api.route("/corpus", methods=['POST', 'GET', 'PUT'])
+@corpus_api.route("corpus", methods=['POST', 'GET', 'PUT'])
 class CorpusQuery(Resource):
     @auth_validator()
     @corpus_api.doc(description='Retrieve documents related to a term from EU corpus.'

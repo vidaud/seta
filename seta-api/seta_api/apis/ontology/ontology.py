@@ -12,7 +12,7 @@ term_parser = reqparse.RequestParser()
 term_parser.add_argument('term', required=True)
 
 
-@ontology_api.route("/ontology")
+@ontology_api.route("ontology")
 @ontology_api.doc(description='Return a graph that describes the ontology of the specified term. '
                     'A set of nodes and relative links are provided.'
                     'For each node depth, id, size and graph size are returned, '
@@ -38,7 +38,7 @@ class Ontology(Resource):
         except Exception as ex:
             abort(404, str(ex))
         
-@ontology_api.route("/ontology-list")
+@ontology_api.route("ontology-list")
 @ontology_api.doc(description='Return a list of lists of similar terms that describes the ontology of the specified term. '
                     'Lists are ranked by the relation strenght to a query term. The first node in each list is'
                     ' direct relation to query term. The following terms in each sublist have relation to'

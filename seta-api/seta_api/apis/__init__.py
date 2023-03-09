@@ -1,4 +1,6 @@
 from flask_restx import Api
+from flask import Blueprint
+
 from .suggestions.suggestions import suggestions_api
 from .corpus.corpus import corpus_api
 from .similar.similar import similar_api
@@ -14,9 +16,11 @@ authorizations = {
     }
 }
 
-api_root = "/seta-api/api/v1"
+api_root="/seta-api/api/v1"
+apis_bp_v1 = Blueprint('seta-apis-v1', __name__, url_prefix=api_root)
 
-api = Api(version='beta',
+api = Api(apis_bp_v1,
+         version='beta',
          title='SeTA API',
          description='SeTA<style>.models {display: none !important}</style> - Semantic Text Analysis. \n'
                      'SeTa applies advanced text analysis techniques to large document collections, helping policy '
@@ -28,13 +32,13 @@ api = Api(version='beta',
                      'agri-environment measures and natural disasters. The document collection which have been used, '
                      'the technical approach chosen and key use cases are described here: '
                      'https://ec.europa.eu/jrc/en/publication/semantic-text-analysis-tool-seta',
-         doc='/seta-api/doc',
+         doc='/doc',
          authorizations=authorizations,
-         default_swagger_filename= api_root[1:] + "/swagger_api.json",
+         default_swagger_filename= "/swagger_api.json",
          )
 
-api.add_namespace(suggestions_api, path=api_root)
-api.add_namespace(corpus_api, path=api_root)
-api.add_namespace(similar_api, path=api_root)
-api.add_namespace(ontology_api, path=api_root)
-api.add_namespace(emb_api, path=api_root)
+api.add_namespace(suggestions_api, path="/")
+api.add_namespace(corpus_api, path="/")
+api.add_namespace(similar_api, path="/")
+api.add_namespace(ontology_api, path="/")
+api.add_namespace(emb_api, path="/")
