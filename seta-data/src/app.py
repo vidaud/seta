@@ -167,15 +167,6 @@ def get_crc_from_es(es, index_suggestion):
 
 def init():
     wait_for_es()
-<<<<<<< HEAD
-    print("copy model files",flush=True)
-    copy_models_files()
-    print("seta es init map",flush=True)
-    seta_es_init_map()
-    print("seta suggestions init/update",flush=True)
-    suggestion_update_job()
-    print("SeTA-ES is initialised.",flush=True)
-=======
     print("copy_models_files", flush=True)
     copy_models_files()
     print("seta_es_init_map", flush=True)
@@ -183,7 +174,6 @@ def init():
     print("suggestion_update_job", flush=True)
     suggestion_update_job()
     print("SeTA-ES is initialised.", flush=True)
->>>>>>> 52da12f00d96a2483600e700bbb5954a2907a3f1
 
  
 if __name__ == "__main__":
