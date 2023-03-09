@@ -43,37 +43,44 @@ def wait_for_es():
 
 
 def suggestion_update_job():
-    models_path = Config.MODELS_PATH
-    if os.path.exists(models_path + Config.WORD2VEC_JSON_EXPORT_CRC):
-        crc = open(models_path + Config.WORD2VEC_JSON_EXPORT_CRC, 'r').read()
-    else:
-        crc = getsha256(models_path + Config.WORD2VEC_JSON_EXPORT)
-        f = open(models_path + Config.WORD2VEC_JSON_EXPORT_CRC, mode='w')
-        f.write(crc)
-        f.close()
+    try:
+        models_path = Config.MODELS_PATH
+        if os.path.exists(models_path + Config.WORD2VEC_JSON_EXPORT_CRC):
+            crc = open(models_path + Config.WORD2VEC_JSON_EXPORT_CRC, 'r').read()
+        else:
+            crc = getsha256(models_path + Config.WORD2VEC_JSON_EXPORT)
+            f = open(models_path + Config.WORD2VEC_JSON_EXPORT_CRC, mode='w')
+            f.write(crc)
+            f.close()
 
-    index_suggestion = Config.INDEX_SUGGESTION
-    es = Elasticsearch("http://" + Config.ES_HOST, verify_certs=False, request_timeout=30)
+        index_suggestion = Config.INDEX_SUGGESTION
+    
+    
+        es = Elasticsearch("http://" + Config.ES_HOST, verify_certs=False, request_timeout=30)
 
-    current_w2v_crc, crc_id = get_crc_from_es(es, index_suggestion)
-    if crc != current_w2v_crc:
-        try:
-            bulk(es, gen_data(crc))
-            crc_model = {"crc_model": crc}
-            
-            if current_w2v_crc:
-                delete_all_suggestion(current_w2v_crc)
+        current_w2v_crc, crc_id = get_crc_from_es(es, index_suggestion)
+        if crc != current_w2v_crc:
+            try:
+                bulk(es, gen_data(crc))
+                crc_model = {"crc_model": crc}
                 
-            if crc_id:
-                es.update(index=index_suggestion, id=crc_id, doc=crc_model)
-            else:
-                es.index(index=index_suggestion, document=crc_model)
-        except Exception as e:
-            print("errors on suggestion update. New crc: ", crc)
-            print(e)
+                if current_w2v_crc:
+                    delete_all_suggestion(current_w2v_crc)
+                    
+                if crc_id:
+                    es.update(index=index_suggestion, id=crc_id, doc=crc_model)
+                else:
+                    es.index(index=index_suggestion, document=crc_model)
+            except Exception as e:
+                print("errors on suggestion update. New crc: ", crc)
+                print(str(e), flush=True)
+            
+    except Exception as ex:
+            print("errors on suggestion update: ")
+            print(str(ex), flush=True)
 
 def gen_data(crc):
-    print("suggestion indexing started")
+    print("suggestion indexing started", flush=True)
 
     with open(Config.MODELS_PATH + Config.WORD2VEC_JSON_EXPORT) as json_file:
         data = json.load(json_file)
@@ -157,10 +164,13 @@ def get_crc_from_es(es, index_suggestion):
 
 def init():
     wait_for_es()
+    print("copy_models_files", flush=True)
     copy_models_files()
+    print("seta_es_init_map", flush=True)
     seta_es_init_map()
+    print("suggestion_update_job", flush=True)
     suggestion_update_job()
-    print("SeTA-ES is initialised.")
+    print("SeTA-ES is initialised.", flush=True)
 
  
 if __name__ == "__main__":
