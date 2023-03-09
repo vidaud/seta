@@ -4,10 +4,10 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 urllib3.disable_warnings(urllib3.exceptions.SecurityWarning)
 #TODO end
 
-import config
-from factory import create_app
+from seta_api.config import DevConfig
+from seta_api.factory import create_app
 
-configuration = config.DevConfig() 
+configuration = DevConfig() 
 app = create_app(configuration)
 
 app.logger.debug(f"seta-api dev run")

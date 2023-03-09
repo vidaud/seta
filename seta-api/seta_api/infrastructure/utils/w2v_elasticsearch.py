@@ -1,4 +1,4 @@
-from infrastructure.utils.crc import get_crc_from_es
+from seta_api.infrastructure.utils.crc import get_crc_from_es
 
 
 def get_most_similar(term, current_app, top_n):

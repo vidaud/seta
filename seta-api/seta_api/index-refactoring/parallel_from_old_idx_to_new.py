@@ -3,7 +3,7 @@ copy all data from old format to new one index seta-public-000001
 """
 from elasticsearch import Elasticsearch, helpers
 import yaml
-from infrastructure.utils.embeddings import Embeddings
+from seta_api.infrastructure.utils.embeddings import Embeddings
 
 config = yaml.load(open("../config.yaml"), Loader=yaml.FullLoader)
 

@@ -9,7 +9,7 @@ from flask_cors import CORS
 from werkzeug.middleware.proxy_fix import ProxyFix
 from flask_jwt_extended import get_jwt_identity, verify_jwt_in_request
 
-from infrastructure.extensions import (jwt, logs)
+from seta_api.infrastructure.extensions import (jwt, logs)
 
 
 def create_app(config_object):
@@ -26,7 +26,7 @@ def create_app(config_object):
     init(app)
 
     with app.app_context():
-        from apis import api
+        from seta_api.apis import api
         api.init_app(app)
 
     CORS(app)

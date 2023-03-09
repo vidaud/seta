@@ -1,6 +1,6 @@
-from infrastructure.utils.embeddings import Embeddings
-from infrastructure.helpers import is_field_in_doc
-from infrastructure.ApiLogicError import ApiLogicError
+from seta_api.infrastructure.utils.embeddings import Embeddings
+from seta_api.infrastructure.helpers import is_field_in_doc
+from seta_api.infrastructure.ApiLogicError import ApiLogicError
 
 from nltk.tokenize import word_tokenize
 from nltk.text import ConcordanceIndex

@@ -1,13 +1,14 @@
-import json
 from flask import current_app as app
 from flask import jsonify, request
 from flask_restx import Namespace, Resource, abort, fields
-from infrastructure.ApiLogicError import ApiLogicError, ForbiddenResourceError
-from infrastructure.auth_validator import auth_validator, validate_view_permissions, validate_add_permission, validate_delete_permission
-from infrastructure.helpers import is_field_in_doc
+
+from seta_api.infrastructure.ApiLogicError import ApiLogicError, ForbiddenResourceError
+from seta_api.infrastructure.auth_validator import auth_validator, validate_view_permissions, validate_add_permission, validate_delete_permission
+from seta_api.infrastructure.helpers import is_field_in_doc
 
 from .corpus_logic import corpus, delete_doc, docbyid, insert_doc
 from .variables import corpus_parser, keywords, metadata, other
+
 from http import HTTPStatus
 
 corpus_api = Namespace('seta-api-corpus', description='Corpus')

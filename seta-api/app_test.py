@@ -1,7 +1,7 @@
-import config
-from factory import create_app
+from seta_api.config import TestConfig
+from seta_api.factory import create_app
 
-configuration = config.TestConfig() 
+configuration = TestConfig() 
 app = create_app(configuration)
 
 app.logger.debug("seta-ui test run")

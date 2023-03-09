@@ -1,7 +1,7 @@
 from functools import wraps
 from flask_jwt_extended import get_jwt, verify_jwt_in_request
 from flask import jsonify
-from infrastructure.ApiLogicError import ForbiddenResourceError
+from seta_api.infrastructure.ApiLogicError import ForbiddenResourceError
 
 def auth_validator(role=None):
     def wrapper(fn):

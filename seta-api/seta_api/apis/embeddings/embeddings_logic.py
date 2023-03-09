@@ -1,5 +1,5 @@
-from infrastructure.ApiLogicError import ApiLogicError
-from infrastructure.utils.embeddings import Embeddings
+from seta_api.infrastructure.ApiLogicError import ApiLogicError
+from seta_api.infrastructure.utils.embeddings import Embeddings
 
 
 def compute_embeddings(text, current_app):

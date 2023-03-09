@@ -1,10 +1,9 @@
 from calendar import timegm
 from json import JSONDecodeError
 from flask_jwt_extended import JWTManager
-from flask_jwt_extended.config import config
+from flask_jwt_extended.config import config as jwt_config
 from flask_jwt_extended.exceptions import CSRFError
 from flask_jwt_extended.exceptions import JWTDecodeError
-from jwt import DecodeError, ExpiredSignatureError, InvalidAudienceError, MissingRequiredClaimError
 import requests
 from hmac import compare_digest
 from flask import current_app
@@ -30,8 +29,8 @@ class SetaJWTManager(JWTManager):
             current_app.logger.debug(decoded_token)
             
             #verification copied from flask_jwt_extended.tokens.py->_decode_token
-            if config.identity_claim_key not in decoded_token:
-                raise JWTDecodeError("Missing claim: {}".format(config.identity_claim_key))
+            if jwt_config.identity_claim_key not in decoded_token:
+                raise JWTDecodeError("Missing claim: {}".format(jwt_config.identity_claim_key))
             
             if "type" not in decoded_token:
                 decoded_token["type"] = "access"

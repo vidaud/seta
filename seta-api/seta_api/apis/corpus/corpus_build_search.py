@@ -1,4 +1,4 @@
-import json
+from flask import json
 import re
 
 def build_search_query(search_term, sources, collection, reference, eurovoc_concept, eurovoc_dom, eurovoc_mth,

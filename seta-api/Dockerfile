@@ -39,10 +39,8 @@ RUN pip3 install -r $ROOT/requirements.txt
 RUN  python3 -m nltk.downloader punkt 
 RUN python3 -c 'from sentence_transformers import SentenceTransformer; SentenceTransformer("all-distilroberta-v1")'
 
-ADD ./*.py ./
-ADD ./apis ./apis
-ADD ./infrastructure ./infrastructure
-ADD ./static ./static
+COPY ./*.py ./
+COPY ./seta_api ./seta_api
 
 ENV FLASK_DEBUG=0
 ENV FLASK_RUN_PORT=8081

@@ -1,5 +1,5 @@
 from sentence_transformers import SentenceTransformer
-import infrastructure.utils.clean as clean
+import seta_api.infrastructure.utils.clean as clean
 from elasticsearch import Elasticsearch, helpers
 import yaml
 import multiprocessing

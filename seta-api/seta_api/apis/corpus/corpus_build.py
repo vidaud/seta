@@ -1,6 +1,6 @@
-import json
+from flask import json
 from .corpus_build_search import build_search_query
-from infrastructure.ApiLogicError import ApiLogicError
+from seta_api.infrastructure.ApiLogicError import ApiLogicError
 
 
 def retrieve_vector_list(semantic_sort_id, emb_vector, semantic_sort_id_list, emb_vector_list, current_app):

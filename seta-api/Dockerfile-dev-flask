@@ -20,9 +20,11 @@ RUN apt install -y  --no-install-recommends python3-dev
 
 
 ARG ROOT=/home/seta
-WORKDIR $ROOT
 
-
+#set UTC timezone
+RUN apt-get install -yq tzdata && \
+    ln -fs /usr/share/zoneinfo/UTC /etc/localtime && \
+    dpkg-reconfigure -f noninteractive tzdata
 
 RUN export  https_proxy=$HTTP_PROXY
 RUN export  http_proxy=$HTTP_PROXY
@@ -40,11 +42,6 @@ COPY requirements.txt $ROOT/requirements.txt
 RUN pip3 install -r $ROOT/requirements.txt 
 RUN  python3 -m nltk.downloader punkt 
 RUN python3 -c 'from sentence_transformers import SentenceTransformer; SentenceTransformer("all-distilroberta-v1")'
-
-ADD ./*.py ./
-ADD ./apis ./apis
-ADD ./infrastructure ./infrastructure
-ADD ./static ./static
 
 ENV FLASK_DEBUG=1
 ENV FLASK_RUN_PORT=8081

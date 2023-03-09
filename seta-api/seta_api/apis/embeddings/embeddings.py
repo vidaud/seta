@@ -1,7 +1,9 @@
 from flask_restx import Namespace, Resource, reqparse, abort
 from flask import current_app as app, jsonify, request
-from infrastructure.auth_validator import auth_validator
-from infrastructure.ApiLogicError import ApiLogicError
+
+from seta_api.infrastructure.auth_validator import auth_validator
+from seta_api.infrastructure.ApiLogicError import ApiLogicError
+
 from subprocess import Popen, PIPE
 import werkzeug
 

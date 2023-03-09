@@ -1,6 +1,4 @@
 """seta-ui flask configuration."""
-
-from datetime import timedelta
 import os
     
 class Config:

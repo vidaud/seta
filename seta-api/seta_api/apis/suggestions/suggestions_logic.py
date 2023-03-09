@@ -1,4 +1,4 @@
-from infrastructure.utils.crc import get_crc_from_es
+from seta_api.infrastructure.utils.crc import get_crc_from_es
 
 def get_word_suggestions(current_app, chars, n_suggestions=6):
     current_crc, crc_id = get_crc_from_es(current_app.es, current_app.config["INDEX_SUGGESTION"])

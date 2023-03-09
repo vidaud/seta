@@ -1,7 +1,7 @@
 from flask_restx import Namespace, Resource, reqparse
 from flask import current_app as app, jsonify
 
-from infrastructure.auth_validator import auth_validator
+from seta_api.infrastructure.auth_validator import auth_validator
 from .suggestions_logic import get_word_suggestions
 
 suggestions_api = Namespace('seta-api-suggestions', description='Suggestions')
