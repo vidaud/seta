@@ -42,38 +42,45 @@ def wait_for_es():
         wait_for_es()
 
 
-def suggestion_update_job(config):
-    models_path = Config.MODELS_PATH
-    if os.path.exists(models_path + Config.WORD2VEC_JSON_EXPORT_CRC):
-        crc = open(models_path + Config.WORD2VEC_JSON_EXPORT_CRC, 'r').read()
-    else:
-        crc = getsha256(models_path + Config.WORD2VEC_JSON_EXPORT)
-        f = open(models_path + Config.WORD2VEC_JSON_EXPORT_CRC, mode='w')
-        f.write(crc)
-        f.close()
+def suggestion_update_job():
+    try:
+        models_path = Config.MODELS_PATH
+        if os.path.exists(models_path + Config.WORD2VEC_JSON_EXPORT_CRC):
+            crc = open(models_path + Config.WORD2VEC_JSON_EXPORT_CRC, 'r').read()
+        else:
+            crc = getsha256(models_path + Config.WORD2VEC_JSON_EXPORT)
+            f = open(models_path + Config.WORD2VEC_JSON_EXPORT_CRC, mode='w')
+            f.write(crc)
+            f.close()
 
-    index_suggestion = Config.INDEX_SUGGESTION
-    es = Elasticsearch("http://" + config.ES_HOST, verify_certs=False, request_timeout=30)
+        index_suggestion = Config.INDEX_SUGGESTION
+    
+    
+        es = Elasticsearch("http://" + Config.ES_HOST, verify_certs=False, request_timeout=30)
 
-    current_w2v_crc, crc_id = get_crc_from_es(es, index_suggestion)
-    if crc != current_w2v_crc:
-        try:
-            bulk(es, gen_data(crc))
-            crc_model = {"crc_model": crc}
-            
-            if current_w2v_crc:
-                delete_all_suggestion(current_w2v_crc)
+        current_w2v_crc, crc_id = get_crc_from_es(es, index_suggestion)
+        if crc != current_w2v_crc:
+            try:
+                bulk(es, gen_data(crc))
+                crc_model = {"crc_model": crc}
                 
-            if crc_id:
-                es.update(index=index_suggestion, id=crc_id, doc=crc_model)
-            else:
-                es.index(index=index_suggestion, document=crc_model)
-        except Exception as e:
-            print("errors on suggestion update. New crc: ", crc)
-            print(e)
+                if current_w2v_crc:
+                    delete_all_suggestion(current_w2v_crc)
+                    
+                if crc_id:
+                    es.update(index=index_suggestion, id=crc_id, doc=crc_model)
+                else:
+                    es.index(index=index_suggestion, document=crc_model)
+            except Exception as e:
+                print("errors on suggestion update. New crc: ", crc)
+                print(str(e), flush=True)
+            
+    except Exception as ex:
+            print("errors on suggestion update: ")
+            print(str(ex), flush=True)
 
 def gen_data(crc):
-    print("suggestion indexing started")
+    print("suggestion indexing started", flush=True)
 
     with open(Config.MODELS_PATH + Config.WORD2VEC_JSON_EXPORT) as json_file:
         data = json.load(json_file)
@@ -97,7 +104,7 @@ def delete_all_suggestion(crc):
         print("suggestion delete finished")
 
 
-def seta_es_init_map(config):
+def seta_es_init_map():
     es_session = requests.Session()
     headers = {"Content-Type": "application/json"}
     fn = Config.MODELS_PATH + Config.ES_INIT_DATA_CONFIG_FILE
@@ -134,7 +141,10 @@ def copy_models_files():
 
     dst = Config.MODELS_PATH + Config.WORD2VEC_JSON_EXPORT_CRC
     src = Config.MODELS_DOCKER_PATH + Config.WORD2VEC_JSON_EXPORT_CRC
-    shutil.copyfile(src, dst)
+    
+    #file WORD2VEC_JSON_EXPORT_CRC will be generated in suggestion_update_job()
+    if os.path.exists(src):
+        shutil.copyfile(src, dst)
 
     dst = Config.MODELS_PATH + Config.ES_SUGGESTION_INIT_DATA_CONFIG_FILE
     src = Config.MODELS_DOCKER_PATH + Config.ES_SUGGESTION_INIT_DATA_CONFIG_FILE
@@ -152,23 +162,15 @@ def get_crc_from_es(es, index_suggestion):
         crc_id = resp['hits']['hits'][0]['_id']
     return crc_es, crc_id
 
-
-def getsha256(filename):
-    sha = hash.sha256()
-    with open(filename, 'rb') as f:
-        file_buffer = f.read(BLOCKSIZE)
-        while len(file_buffer) > 0:
-            sha.update(file_buffer)
-            file_buffer = f.read(BLOCKSIZE)
-    return sha.hexdigest()
-
-
 def init():
     wait_for_es()
+    print("copy_models_files", flush=True)
     copy_models_files()
+    print("seta_es_init_map", flush=True)
     seta_es_init_map()
+    print("suggestion_update_job", flush=True)
     suggestion_update_job()
-    print("SeTA-ES is initialised.")
+    print("SeTA-ES is initialised.", flush=True)
 
  
 if __name__ == "__main__":
