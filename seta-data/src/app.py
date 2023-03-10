@@ -9,7 +9,15 @@ from elasticsearch import Elasticsearch
 from elasticsearch.helpers import bulk
 
 import hashlib as hash
-from config import Config
+from config import Config as DevConfig, TestConfig
+
+
+app_env = os.environ.get('APP_ENV')
+
+Config = DevConfig
+
+if app_env is not None and app_env == "test":
+    Config = TestConfig
 
 
 def getsha256(filename):

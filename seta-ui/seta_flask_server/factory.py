@@ -160,4 +160,6 @@ def register_extensions(app):
     github.init_app(app)
     scheduler.init_app(app)
     jwt.init_app(app)
-    logs.init_app(app)
+    
+    if not app.testing:
+        logs.init_app(app)

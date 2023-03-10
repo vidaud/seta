@@ -25,11 +25,14 @@ def db_port(request):
 @pytest.fixture(scope='module')
 def app(db_host, db_port):
     configuration = TestConfig() 
+    
+    configuration.DB_HOST = "localhost"
+    configuration.DB_PORT = 27018
 
     if db_host:
         configuration.DB_HOST = db_host
 
-    if db_port:
+    if db_port and configuration.DB_HOST != "localhost":        
         configuration.DB_PORT = int(db_port)
 
     time_str = str(int(time.time()))

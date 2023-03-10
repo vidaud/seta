@@ -18,7 +18,7 @@ class Config:
     MODELS_WORD2VEC_FILE_CRC = "wv-sg0-hs1.crc"
     MODELS_INIT_FILE = "models.zip"
     WORD2VEC_JSON_EXPORT = "json_suggestion.json"
-    WORD2VEC_JSON_EXPORT_CRC = "json_suggestion.crc"
-
-    FLASK_ENV = "development"
-
+    WORD2VEC_JSON_EXPORT_CRC = "json_suggestion.crc"    
+    
+class TestConfig(Config):
+    ES_HOST = "seta-es-test:9200"

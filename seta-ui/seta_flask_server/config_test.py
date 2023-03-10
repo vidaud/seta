@@ -8,7 +8,7 @@ class TestConfig:
     AUTH_CAS_URL = "https://webgate.ec.europa.eu/cas/"
     
     #database host
-    DB_HOST="localhost"
+    DB_HOST="seta-mongo-test"
     
     #database port
     DB_PORT=27017
@@ -92,7 +92,7 @@ class TestConfig:
     
      # Logging Setup
     LOG_TYPE = "stream"
-    LOG_LEVEL = "INFO"
+    LOG_LEVEL = "DEBUG"
     
     # File Logging Setup
     LOG_DIR = "/var/log"
