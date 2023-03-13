@@ -60,13 +60,14 @@ def create_app(config_object):
         
             
     @app.after_request
-    def after_request(response):   
+    def after_request(response):        
+        """ Logging after every request. """
+        
+        if request.path.endswith(tuple(request_endswith_ignore_list)):
+            return response
+        
         if app.testing:
             app.logger.debug(request.path + ": " + str(response.status_code) + ", json: " + str(response.data))
-            return response     
-        
-        """ Logging after every request. """
-        if request.path.endswith(tuple(request_endswith_ignore_list)):
             return response
         
         user = session.get("username")
@@ -160,6 +161,4 @@ def register_extensions(app):
     github.init_app(app)
     scheduler.init_app(app)
     jwt.init_app(app)
-    
-    if not app.testing:
-        logs.init_app(app)
+    logs.init_app(app)

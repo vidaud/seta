@@ -46,8 +46,10 @@ ENV FLASK_DEBUG=1
 ENV FLASK_RUN_PORT=8081
 ENV FLASK_APP=app_test.py 
 ENV FLASK_ENV=test
+
 #log setup
+ENV LOG_LEVEL="DEBUG"
 #ENV LOG_TYPE="watched"
 
-#CMD ["gunicorn", "--conf", "/home/seta/gunicorn_conf.py", "--bind", "0.0.0.0:8081", "--capture-output" , "--access-logformat", "[seta.api] %(h)s %(l)s %(u)s %(t)s. %(r)s. %(s)s %(b)s. %(f)s. %(a)s", "--chdir", "/home/seta", "app_test:app"]
-CMD flask run --host 0.0.0.0
+CMD ["gunicorn", "--conf", "/home/seta/gunicorn_conf.py", "--bind", "0.0.0.0:8081", "--capture-output" , "--access-logformat", "[seta.api] %(h)s %(l)s %(u)s %(t)s. %(r)s. %(s)s %(b)s. %(f)s. %(a)s", "--chdir", "/home/seta", "app_test:app"]
+#CMD flask run --host 0.0.0.0
