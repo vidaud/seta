@@ -12,7 +12,7 @@ from tests.infrastructure.mongodb.db import DbTestSetaApi
 
 def pytest_addoption(parser):
     parser.addoption("--db_host", action="store", default="localhost", help="database host server") 
-    parser.addoption("--db_port", action="store", default="27017", help="database port")
+    parser.addoption("--db_port", action="store", default="27018", help="database port")
 
 @pytest.fixture(scope="session")
 def db_host(request):
@@ -26,19 +26,17 @@ def db_port(request):
 def app(db_host, db_port):
     configuration = TestConfig() 
     
-    configuration.DB_HOST = "localhost"
-    configuration.DB_PORT = 27018
+    #configuration.DB_HOST = "localhost"
+    #configuration.DB_PORT = 27018
 
     if db_host:
         configuration.DB_HOST = db_host
 
-    if db_port and configuration.DB_HOST != "localhost":        
+    if db_port:        
         configuration.DB_PORT = int(db_port)
 
     time_str = str(int(time.time()))
     configuration.DB_NAME = configuration.DB_NAME + f"_{time_str}"
-
-    #print(configuration.MONGO_URI)
 
     app = create_app(configuration)
     app.testing = True

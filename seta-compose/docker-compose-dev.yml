@@ -51,7 +51,9 @@ services:
   seta-nginx:
     container_name: seta-nginx
     restart: always
-    build: ../seta-nginx
+    build: 
+       context: ../seta-nginx
+       dockerfile: Dockerfile-dev
     ports:
       - "80:80"
     depends_on:
