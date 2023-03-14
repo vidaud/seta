@@ -294,3 +294,7 @@ h1:after{
     top: 0.05rem !important;
     right: 0.05rem !important;
 }
+
+.dataTable-list .p-datatable-thead {
+    display: none !important;
+}

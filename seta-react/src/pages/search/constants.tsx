@@ -62,3 +62,12 @@ export const createTree = (nodes) => {
     }
     // setTreeLeaf(root.root);
 }
+
+export const itsPhrase = (s): boolean => {
+    const reWhiteSpace = new RegExp("\\s+");
+    const underscore = s.includes('_');
+        if (reWhiteSpace.test(s) || underscore) {
+            return true;
+        }
+        return false;
+}

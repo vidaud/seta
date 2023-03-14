@@ -18,7 +18,7 @@ import { SimilarsService } from '../../services/corpus/similars.service';
 import { SelectButton } from 'primereact/selectbutton';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
-import { defaultTypeOfSearch, itemsBreadCrumb, home, typeOfSearches, columns, getWordAtNthPosition } from './constants';
+import { defaultTypeOfSearch, itemsBreadCrumb, home, typeOfSearches, columns, getWordAtNthPosition, itsPhrase } from './constants';
 
 const Search = () => {
     const [showContent, setShowContent] = useState(false);
@@ -67,93 +67,95 @@ const Search = () => {
             let result = String(term).split(" ").join(operator);
             setCopyQuery(result);
         }
-        else if (String(term).split(',').length > 1) {
+        if (String(term).split(',').length > 1) {
             let operator = ' OR ';
             let result = String(term).split(',').join(operator);
             let query = String(term).split(',').join(' ');
             setCopyQuery(result);
             setTerm(query);
         }
-        else {
             setCopyQuery(term);
-        }
-        if (String(term) !== '') {
-            transform(String(term));
-        }
+        // if (String(term) !== '') {
+        //     transform(String(term));
+        // }
         //update corpus api call parameters
         setLastPayload(new CorpusSearchPayload({ ...cp, term: copyQyery, aggs: 'date_year', n_docs: 100, search_type: typeofSearch, date_range: timeRangeValue }));
         corpusService.getRefreshedToken();
     }, [term, typeofSearch, timeRangeValue, selectedNodeKeys2, ontologyList, suggestedTerms, copyQyery, selectedTypeSearch, similarTerms, value, value1]);
 
-    const toggleSelectAllNodes = (checked: boolean) => {
-    }
-
-
-    const transformList = (nodes: any) => {
+    const transformOntologyList = (nodes: any) => {
         let list: any = [];
         nodes.forEach((item) => {
             let element = {
                 id: item[0],
-                leaf: item
+                node: item
             }
             list.push(element);
         });
         setOntologyList(list);
     }
 
-    const selectNode = (event) => {
-        //event.value = array of all leafs selected
-        //ontologyList = array of all leafs
-        //select all options:  event.value = ontologyList
-        setSelectedProducts7(event.value)
+    const selectAllTerms = (selectedNodes) => {
+        let listOfTerms: any = [];
+        listOfTerms.push(inputText);
+        if (selectedNodes.length > 0) {
+            selectedNodes.forEach(item => {
+                listOfTerms.push(item);
+            });
+            let uniqueTerms = listOfTerms.filter((subject, index) => {
+                return listOfTerms.indexOf(subject) === index;
+            });
+            setValue1(uniqueTerms);
+            transformPhrases(uniqueTerms);
+        }
+        if (selectedNodes.length === 0) {
+            setValue1(listOfTerms);
+            setTerm(listOfTerms);
+        }
+        toggleSelectAll(selectedNodes, similarTerms);
     }
-    // const toggleSelectAllNodes = (checked: boolean) => {
-    //     let arr: any = [];
-    //     arr.push(term);
-    //     let _selectedKeys = {};
-    //     for (let node of treeLeaf) {
-    //         selectNode(node, _selectedKeys, checked);
-    //     }
 
-    //     setSelectedNodeKeys2(_selectedKeys);
-    //     if (Object.keys(_selectedKeys).length > 0) {
-    //         Object.keys(_selectedKeys).forEach(element => {
-    //             if (!term.includes(element)){
-    //                 arr.push(element)
-    //             }
-    //         });
-    //     }
-    //     else {
-    //         arr = [];
-    //     }
-    //     setTerm(arr);
-    // };
+    const selectNode = (selectedNodes) => {
+        setSelectedProducts7(selectedNodes);
+        let listOfClusterTerms: any = [];
+        listOfClusterTerms.push(inputText);
+        if (selectedNodes.length > 0) {
+            selectedNodes.forEach(item => {
+                listOfClusterTerms.push(...item.node);
+            });
+            let uniqueValues = listOfClusterTerms.filter((subject, index) => {
+                return listOfClusterTerms.indexOf(subject) === index;
+            });
+            setValue(uniqueValues);
+            transformPhrases(uniqueValues);
+        }
+        if (selectedNodes.length === 0) {
+            setValue(listOfClusterTerms);
+            setTerm(listOfClusterTerms);
+        }
+        toggleSelectAll(selectedNodes, ontologyList);
+    }
 
-    // const selectNode = (node, _selectedKeys, checked) => {
-    //     if (checked === true) {
-    //         _selectedKeys[node.key] = { checked: checked, partialChecked: false };
-    //         if (node.children && node.children.length) {
-    //             for (let child of node.children) {
-    //                 selectNode(child, _selectedKeys, checked);
-    //             }
-    //         }
-    //     }
-
-    //     if (checked === false) {
-    //         _selectedKeys = {}
-    //     }
-    // };
-
-    // const onSearchAllTreeNodes = (e) => {
-    //     toggleSelectAllNodes(e.value);
-    // }
-
+    const transformPhrases = (terms) => {
+        let listOfValues1: any = [];
+        terms.forEach(item => {
+            itsPhrase(item) ? listOfValues1.push(`"${item}"`) : listOfValues1.push(item);
+        });
+        setTerm(listOfValues1);
+    }
+    
+    const toggleSelectAll = (items, allList) => {
+        if (items.length === allList.length) {
+            setChecked1(true)
+        } else {
+            setChecked1(false)
+        }
+    }
+    
     const getOntologyList = (lastKeyword) => {
         ontologyListService.retrieveOntologyList(lastKeyword).then(data => {
                 if (data) {
-                    transformList(data);
-                    // setOntologyList(data);
-                    // createTree(data);
+                    transformOntologyList(data);
                 }
                 setLoading(false);
         });
@@ -202,81 +204,81 @@ const Search = () => {
         callService(e.value.code);
     }
 
-    const transform = (textInput: string | { display: string; value: string } | any): Observable<object> => {
-        let item: any = null;
-        // is it a string?
-        if (typeof textInput === `string`) {
-          // is it an operator?
-          if (textInput === `AND`) {
-            item = new Term({
-              display: `${textInput}`,
-              termType: TermType.OPERATOR,
-              value: `${textInput}`,
-              isOperator: true,
-              operator: Operators.properties[Operators.AND],
-            });
-          } else {
-            /*Check if there is a pair of quotes*/
-            const areQuotesPresent = textInput.match('"') !== null ? true : false;
-            // are quotes present?
-            if (areQuotesPresent) {
-              const startQuote = textInput.indexOf('"');
-              const finalQuote = textInput.indexOf('"', textInput.length - 1);
-              if (startQuote === 0) {
-                if (textInput.length >= 3 && finalQuote === textInput.length - 1) {
-                  item = new Term({
-                    display: `${textInput}`,
-                    termType: TermType.VERTEX,
-                    value: textInput.replace(/^"|"$/g, ''),
-                    isOperator: false,
-                  });
-                  setCopyQuery(item.display);
-                }
-              }
-            } else {
-                item = new Term({
-                    display: textInput.indexOf(`-`) !== -1 ? `"${textInput}"` : `${textInput}`,
-                    termType: TermType.VERTEX,
-                    value: textInput.replace(/^"|"$/g, ''),
-                    isOperator: false,
-                });
-            }
-          }
-        } else {
-          // is it an operator?
-          if (textInput.display === `AND`) {
-            item = new Term({
-              display: `${textInput.display}`,
-              termType: TermType.OPERATOR,
-              value: textInput.value.replace(/^"|"$/g, ''),
-              isOperator: true,
-              operator: Operators.properties[Operators.AND],
-            });
-          } else {
-            item = new Term({
-              display: textInput.display.indexOf(` `) !== -1 ?
-                (textInput.display.match("\"") !== null ? true : false)
-                  ?
-                  `${textInput.display}`
-                  :
-                  `"${textInput.display}"`
-                :
-                textInput.display.indexOf(`-`) !== -1 ? `"${textInput.display}"` : `${textInput.display}`
-              ,
-              termType: TermType.VERTEX,
-              value: textInput.value.replace(/^"|"$/g, ''), isOperator: false
-            });
-          }
-        }
+    // const transform = (textInput: string | { display: string; value: string } | any): Observable<object> => {
+    //     let item: any = null;
+    //     // is it a string?
+    //     if (typeof textInput === `string`) {
+    //       // is it an operator?
+    //       if (textInput === `AND`) {
+    //         item = new Term({
+    //           display: `${textInput}`,
+    //           termType: TermType.OPERATOR,
+    //           value: `${textInput}`,
+    //           isOperator: true,
+    //           operator: Operators.properties[Operators.AND],
+    //         });
+    //       } else {
+    //         /*Check if there is a pair of quotes*/
+    //         const areQuotesPresent = textInput.match('"') !== null ? true : false;
+    //         // are quotes present?
+    //         if (areQuotesPresent) {
+    //           const startQuote = textInput.indexOf('"');
+    //           const finalQuote = textInput.indexOf('"', textInput.length - 1);
+    //           if (startQuote === 0) {
+    //             if (textInput.length >= 3 && finalQuote === textInput.length - 1) {
+    //               item = new Term({
+    //                 display: `${textInput}`,
+    //                 termType: TermType.VERTEX,
+    //                 value: textInput.replace(/^"|"$/g, ''),
+    //                 isOperator: false,
+    //               });
+    //               setCopyQuery(item.display);
+    //             }
+    //           }
+    //         } else {
+    //             item = new Term({
+    //                 display: textInput.indexOf(`-`) !== -1 ? `"${textInput}"` : `${textInput}`,
+    //                 termType: TermType.VERTEX,
+    //                 value: textInput.replace(/^"|"$/g, ''),
+    //                 isOperator: false,
+    //             });
+    //         }
+    //       }
+    //     } else {
+    //       // is it an operator?
+    //       if (textInput.display === `AND`) {
+    //         item = new Term({
+    //           display: `${textInput.display}`,
+    //           termType: TermType.OPERATOR,
+    //           value: textInput.value.replace(/^"|"$/g, ''),
+    //           isOperator: true,
+    //           operator: Operators.properties[Operators.AND],
+    //         });
+    //       } else {
+    //         item = new Term({
+    //           display: textInput.display.indexOf(` `) !== -1 ?
+    //             (textInput.display.match("\"") !== null ? true : false)
+    //               ?
+    //               `${textInput.display}`
+    //               :
+    //               `"${textInput.display}"`
+    //             :
+    //             textInput.display.indexOf(`-`) !== -1 ? `"${textInput.display}"` : `${textInput.display}`
+    //           ,
+    //           termType: TermType.VERTEX,
+    //           value: textInput.value.replace(/^"|"$/g, ''), isOperator: false
+    //         });
+    //       }
+    //     }
     
-        if (item === null) {
-            textInput = textInput + ` `;
-            return of();
-        } else {
-            textInput = ` `;
-        }
-        return of(item);
-    }
+    //     if (item === null) {
+    //         textInput = textInput + ` `;
+    //         return of();
+    //     } else {
+    //         textInput = ` `;
+    //     }
+    //     return of(item);
+    // }
     
     const toggleOverlayPanel  = (event) => {
         console.log(event)
@@ -409,7 +411,7 @@ const Search = () => {
                     setTerm(e.value);
                 }
             }  
-            options={rowData.leaf}
+            options={rowData.node}
             multiple={true}
             />
         )
@@ -456,14 +458,28 @@ const Search = () => {
                         >
                             <div className='overlayPanelHeader'>
                                 <div className='div-size alingItems'>
-                                    { inputText ? <ToggleButton checked={checked1} className="custom" aria-label={inputText} onLabel={inputText} offLabel={inputText} tooltip={checked1 ? 'Unselect all terms' : 'Select all terms'} tooltipOptions={{position: 'top'}}
+                                    { inputText ? <ToggleButton checked={checked1} disabled={selectedTypeSearch.code === 'AC' ? true : false} className="custom" aria-label={inputText} onLabel={inputText} offLabel={inputText} tooltip={checked1 ? 'Unselect all terms' : 'Select all terms'} tooltipOptions={{position: 'top'}}
                                         onChange={
                                             (e) => {
                                                 setChecked1(e.value);
-                                                if (selectedTypeSearch.code === 'RC') {
-                                                    // onSearchAllTreeNodes(e);
+                                                if (selectedTypeSearch.code === 'AC') {
+                                                    // selectNode(suggestedTerms);
                                                 }
-                                                console.log(selectedTypeSearch.code)
+                                                if (selectedTypeSearch.code === 'RC') {
+                                                    if (e.value) {
+                                                        selectNode(ontologyList);
+                                                    } else if (!e.value) {
+                                                        selectNode([]);
+                                                    }
+                                                }
+                                                if (selectedTypeSearch.code === 'RT') {
+                                                    if (e.value) {
+                                                        selectAllTerms(similarTerms);
+                                                    } else if (!e.value) {
+                                                        selectAllTerms([]);
+                                                    }
+                                                    console.log(selectedTypeSearch.code)
+                                                }
                                             }
                                         } /> 
                                     : <span></span>}
@@ -481,7 +497,12 @@ const Search = () => {
                                                 (e) => {
                                                     console.log(e.value)
                                                     setValue(e.value);
-                                                    setTerm(e.value);
+                                                    // Check for white space
+                                                    if (itsPhrase(e.value)) {
+                                                        setTerm(`"${e.value}"`);
+                                                    } else {
+                                                        setTerm(e.value);
+                                                    } 
                                                     op.current?.hide();
                                                 }
                                             }  
@@ -492,8 +513,8 @@ const Search = () => {
                                 </>
                                 : selectedTypeSearch.code === 'RC' ? 
                                     <>
-                                        <DataTable loading={loading} value={ontologyList} className="dataTable-list" selection={selectedProducts7} onSelectionChange={
-                                                (e) => selectNode(e)
+                                        <DataTable loading={loading} value={ontologyList} showSelectAll={false} className="dataTable-list" selection={selectedProducts7} onSelectionChange={
+                                                (e) => selectNode(e.value)
                                             } 
                                             dataKey='id' 
                                             responsiveLayout="scroll"
@@ -508,9 +529,10 @@ const Search = () => {
                                         <SelectButton value={value1} className="suggestions-list"
                                             onChange={
                                                 (e) => {
-                                                    console.log(e.value)
-                                                    setValue1(e.value);
-                                                    setTerm(e.value);
+                                                    // console.log(e.value)
+                                                    // setValue1(e.value);
+                                                    // setTerm(e.value);
+                                                    selectAllTerms(e.value)
                                                 }
                                             }  
                                             options={similarTerms}
