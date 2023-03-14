@@ -1,0 +1,5 @@
+FROM mongo:5
+
+ENV https_proxy=$HTTP_PROXY
+ENV http_proxy=$HTTP_PROXY
+ENV no_proxy="seta-es-test,seta-mongo-test,seta-api-test,seta-nginx-test,seta-ui-test"

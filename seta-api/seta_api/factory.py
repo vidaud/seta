@@ -29,9 +29,7 @@ def create_app(config_object):
     
     init(app)
 
-    CORS(app)
-
-    app.logger.info(app.url_map)
+    CORS(app)    
 
     request_endswith_ignore_list = ['.js', '.css', '.png', '.ico', '.svg', '.map', '.json', 'doc']
     with app.app_context():
@@ -43,6 +41,8 @@ def create_app(config_object):
 
         @app.after_request
         def after_request(response: Response):
+            """ Logging after every request. """
+            
             if request.path.endswith(tuple(request_endswith_ignore_list)):
                 return response
             
@@ -106,5 +106,5 @@ def register_blueprints(app):
     app.register_blueprint(private_bp_v1)
 
 def register_extensions(app):
-    jwt.init_app(app)
+    jwt.init_app(app)    
     logs.init_app(app)

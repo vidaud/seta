@@ -58,14 +58,17 @@ class LogSetup(object):
                 "flask_apscheduler":{"level": logging_level, 
                     "handlers": ["apscheduler_logs"], 
                     "propagate": False},
-                "mongo": {
-                    "level": logging_level,
-                    "handlers": ["default", "mongo_logs"],
-                    "propagate": False,
-                },
                 "root": {"level": logging_level, "handlers": ["default"]},
             }
         }
+        
+        if not app.testing:
+            std_logger["loggers"]["mongo"] = {
+                    "level": logging_level,
+                    "handlers": ["default", "mongo_logs"],
+                    "propagate": False,
+                }
+        
         if log_type == "stream":
             logging_handler = {
                 "handlers": {
@@ -83,8 +86,12 @@ class LogSetup(object):
                         "level": logging_level,
                         "class": logging_policy,
                         "formatter": "default",
-                    },
-                    "mongo_logs": {
+                    }
+                }
+            }
+            
+            if not app.testing:
+                logging_handler["handlers"]["mongo_logs"] = {
                         "level": logging_level,
                         "class": 'log4mongo.handlers.MongoHandler',
                         "host": db_host, 
@@ -94,8 +101,7 @@ class LogSetup(object):
                         "reuse": False,
                         "connect": False                      
                     }
-                }
-            }
+                
         elif log_type == "watched":
             logging_handler = {
                 "handlers": {
@@ -119,18 +125,22 @@ class LogSetup(object):
                         "filename": scheduler_log,
                         "formatter": "default",
                         "delay": True,
-                    },                    
-                    "mongo_logs": {
+                    }
+                }
+            }
+            
+            if not app.testing:
+                logging_handler["handlers"]["mongo_logs"] = {
                         "level": logging_level,
                         "class": 'log4mongo.handlers.BufferedMongoHandler',
                         "host": db_host, 
                         "port": db_port,
                         "database_name": "seta-logs",
                         "collection": "logs",
-                        "reuse": False
+                        "reuse": False,
+                        "connect": False
                     }
-                }
-            }
+            
         else:
             logging_handler = {
                 "handlers": {
@@ -160,8 +170,12 @@ class LogSetup(object):
                         "maxBytes": log_max_bytes,
                         "formatter": "default",
                         "delay": True,
-                    },                                       
-                    "mongo_logs": {
+                    }
+                }
+            }
+            
+            if not app.testing:
+                logging_handler["handlers"]["mongo_logs"] = {
                         "level": logging_level,
                         "class": 'log4mongo.handlers.BufferedMongoHandler',
                         "host": db_host, 
@@ -170,10 +184,9 @@ class LogSetup(object):
                         "collection": "logs",
                         "capped": True,
                         "capped_size": 1000000,
-                        "reuse": False
+                        "reuse": False,
+                        "connect": False
                     }
-                }
-            }
 
         log_config = {
             "version": 1,
