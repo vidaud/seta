@@ -93,8 +93,10 @@ def create_app(config_object):
 
 def init(app):
     app.es = Elasticsearch("http://" + app.config["ES_HOST"], verify_certs=False, request_timeout=30)
-    total = app.es.count(index=app.config["INDEX"][0])['count']
-    app.logger.info(f"Total number of documents indexed by Elastic: {total}")
+    
+    if not app.testing:
+        total = app.es.count(index=app.config["INDEX"][0])['count']
+        app.logger.info(f"Total number of documents indexed by Elastic: {total}")
 
     app.sbert_model = SentenceTransformer('all-distilroberta-v1')
     app.sbert_model.max_seq_length = 512
