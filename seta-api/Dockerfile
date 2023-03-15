@@ -1,4 +1,4 @@
-FROM ubuntu:20.04
+FROM ubuntu:22.04
 
 RUN echo "Acquire::http::Proxy \""$HTTP_PROXY"\";" >> /etc/apt/apt.conf
 ENV https_proxy=$HTTP_PROXY
@@ -42,11 +42,10 @@ RUN python3 -c 'from sentence_transformers import SentenceTransformer; SentenceT
 COPY ./*.py ./
 COPY ./seta_api ./seta_api
 
-ENV FLASK_DEBUG=0
-ENV FLASK_RUN_PORT=8081
-ENV FLASK_APP=app.py 
-ENV FLASK_ENV=production
 #log setup
 #ENV LOG_TYPE="watched"
 
 CMD ["gunicorn", "--conf", "/home/seta/gunicorn_conf.py", "--bind", "0.0.0.0:8081", "--capture-output" , "--access-logformat", "[seta.api] %(h)s %(l)s %(u)s %(t)s. %(r)s. %(s)s %(b)s. %(f)s. %(a)s", "--chdir", "/home/seta", "app:app"]
+
+#for error displays:
+#CMD flask --app app --debug run -h "0.0.0.0" --port 8081

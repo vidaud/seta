@@ -1,4 +1,4 @@
-FROM ubuntu:20.04
+FROM ubuntu:22.04
 
 RUN echo "Acquire::http::Proxy \""$HTTP_PROXY"\";" >> /etc/apt/apt.conf
 ENV https_proxy=$HTTP_PROXY
@@ -12,8 +12,6 @@ RUN apt update -y
 RUN apt install -y  --no-install-recommends curl
 RUN apt install -y  --no-install-recommends wget
 RUN apt install -y  --no-install-recommends openjdk-11-jre
-#RUN apt install -y  --no-install-recommends nodejs 
-#RUN apt install -y  --no-install-recommends npm
 RUN apt install -y  --no-install-recommends gnupg
 RUN apt install -y  --no-install-recommends python3-pip
 RUN apt install -y  --no-install-recommends python3-dev
@@ -43,11 +41,10 @@ RUN pip3 install -r $ROOT/requirements.txt
 RUN  python3 -m nltk.downloader punkt 
 RUN python3 -c 'from sentence_transformers import SentenceTransformer; SentenceTransformer("all-distilroberta-v1")'
 
-ENV FLASK_DEBUG=1
-ENV FLASK_RUN_PORT=8081
-ENV PYTHONUNBUFFERED=1
-ENV FLASK_APP=app_dev.py 
-ENV FLASK_ENV=development 
+# Keeps Python from generating .pyc files in the container
+ENV PYTHONDONTWRITEBYTECODE 1
+# Turns off buffering for easier container logging
+ENV PYTHONUNBUFFERED 1
 
 #CMD ["gunicorn", "--conf", "/home/seta/gunicorn_conf.py", "--reload", "--bind", "0.0.0.0:8081", "--capture-output" , "--access-logformat", "[seta.api] %(h)s %(l)s %(u)s %(t)s. %(r)s. %(s)s %(b)s. %(f)s. %(a)s", "--chdir", "/home/seta", "app_dev:app"]
-CMD flask run --host 0.0.0.0
+CMD flask --app app_dev --debug run -h "0.0.0.0" --port 8081

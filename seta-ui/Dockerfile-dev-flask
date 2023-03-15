@@ -8,8 +8,6 @@ ENV no_proxy="seta-es,seta-mongo,seta-api,seta-nginx,seta-ui,seta-ui-spa"
 RUN apt update -y
 RUN apt install -y  --no-install-recommends curl
 RUN apt install -y  --no-install-recommends wget
-RUN apt install -y  --no-install-recommends nodejs
-RUN apt install -y  --no-install-recommends npm
 RUN apt install -y  --no-install-recommends gnupg
 RUN apt install -y  --no-install-recommends python3-pip
 

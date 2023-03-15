@@ -63,14 +63,14 @@ def suggestion_update_job():
             f.close()
     
         index_suggestion = Config.INDEX_SUGGESTION
-        es = Elasticsearch("http://" + Config.ES_HOST, verify_certs=False, request_timeout=120, max_retries=10, retry_on_timeout=True)
+        es = Elasticsearch("http://" + Config.ES_HOST, verify_certs=False, request_timeout=300, max_retries=10, retry_on_timeout=True)
         print(es)
     
         current_w2v_crc, crc_id = get_crc_from_es(es, index_suggestion)
         if crc != current_w2v_crc:
             try:
                 print("starting suggestion upload",flush=True)
-                bulk(es, gen_data(crc),request_timeout=300)
+                bulk(es, gen_data(crc))
                 crc_model = {"crc_model": crc}
                 
                 if current_w2v_crc:
@@ -85,7 +85,7 @@ def suggestion_update_job():
                     es.index(index=index_suggestion, document=crc_model)
             except Exception as e:
                 print("errors on suggestion update. New crc: ", crc,flush=True)
-                print(e,flush=True)
+                print(str(e),flush=True)
                 
     except Exception as ex:
             print("errors on suggestion update: ")
