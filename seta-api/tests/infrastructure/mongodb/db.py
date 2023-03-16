@@ -14,10 +14,19 @@ class DbTestSetaApi:
         client = MongoClient(self.db_host, self.db_port)
         self.db = client[self.db_name] 
 
-    def init_db(self):        
+    def init_db(self):    
+        """
+        Initialize test database and its collections
+        """
+        
+            
         created_at = datetime.datetime.now(tz=pytz.utc)
         data_path="../tests/infrastructure/data"
              
+        '''
+            Load users:
+        '''
+        
         with current_app.open_resource(f"{data_path}/users.json") as fp:
             data = json.load(fp)
       
@@ -54,6 +63,45 @@ class DbTestSetaApi:
         #save user providers
         if "providers" in data:
             collection.insert_many(data["providers"])
+            
+        '''
+            Load communities:
+        '''
+        with current_app.open_resource(f"{data_path}/communities.json") as fp:
+            data = json.load(fp)
+            
+        collection = self.db["communities"]
+            
+        if "communities" in data:
+            for community in data["communities"]:
+                community["created_at"] = created_at
+                community["modified_at"] = None
+                
+                collection.insert_one(community)
+            
+        if "memberships" in data:
+            for membership in data["memberships"]:
+                membership["join_date"] = created_at
+                membership["modified_at"] = None
+                
+                collection.insert_one(membership)
+                
+        '''
+            Load resources:
+        '''
+        with current_app.open_resource(f"{data_path}/resources.json") as fp:
+            data = json.load(fp)
+            
+        collection = self.db["resources"]
+            
+        if "resources" in data:
+            for resource in data["resources"]:
+                resource["created_at"] = created_at
+                resource["modified_at"] = None
+                
+                collection.insert_one(resource)
+                
+            
         
     def clear_db(self):
         for c in self.db.list_collection_names():

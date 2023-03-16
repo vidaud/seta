@@ -67,11 +67,12 @@ def app(es_host, db_host, db_port, web_root):
     
     with app.app_context():         
         db = DbTestSetaApi(db_host=config.DB_HOST, db_port=config.DB_PORT, db_name="seta_test")
+        db.clear_db()
         db.init_db()   
     
         yield app   
 
-        #db.clear_db()
+        db.clear_db()
 
 @pytest.fixture(scope='module')
 def client(app):
