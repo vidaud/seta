@@ -3,10 +3,9 @@ import './style.css';
 import { Button } from 'primereact/button';
 import TabMenus from '../../components/tab-menu/tab-menu';
 import DialogButton from '../../components/dialog/dialog';
-import { Operators, Term, TermType } from '../../models/term.model';
+import { Term } from '../../models/term.model';
 import { CorpusService } from '../../services/corpus/corpus.service';
 import { CorpusSearchPayload } from '../../store/corpus-search-payload';
-import { Observable, of } from 'rxjs';
 import { BreadCrumb } from 'primereact/breadcrumb';
 import { SuggestionsService } from '../../services/corpus/suggestions.service';
 import { OntologyListService } from '../../services/corpus/ontology-list.service';
@@ -18,7 +17,7 @@ import { SimilarsService } from '../../services/corpus/similars.service';
 import { SelectButton } from 'primereact/selectbutton';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
-import { defaultTypeOfSearch, itemsBreadCrumb, home, typeOfSearches, columns, getWordAtNthPosition, itsPhrase } from './constants';
+import { defaultTypeOfSearch, itemsBreadCrumb, home, typeOfSearches, columns, getWordAtNthPosition, itsPhrase, transform } from './constants';
 
 const Search = () => {
     const [showContent, setShowContent] = useState(false);
@@ -35,23 +34,23 @@ const Search = () => {
     const [inputText, setInputText] = useState<Term[] | any>('');
     const [copyQyery, setCopyQuery] = useState<Term[] | any>([]);
     const [loading, setLoading] = useState(true);
-    const [checked1, setChecked1] = useState(false);
-    const [checked2, setChecked2] = useState(false);
+    const [selectAll, setSelectAll] = useState(false);
+    const [enrichQuery, setEnrichQuery] = useState(false);
     const [similarTerms, setSimilarTerms] = useState<any>(null);
-    const [value, setValue] = useState<any>(null);
-    const [value1, setValue1] = useState<any>(null);
-    const [selectedProducts7, setSelectedProducts7] = useState(null);
+    const [ontologyValue, setOntologyValue] = useState<any>(null);
+    const [suggestionsValue, setSuggestionsValue] = useState<any>(null);
+    const [similarValues, setSimilarValues] = useState<any>(null);
+    const [selectedRelatedTermsCl, setSelectedRelatedTermsCl] = useState(null);
     const [selectedTypeSearch, setSelectedTypeSearch] = useState<any>(defaultTypeOfSearch);
-    
+    const [selectedColumns, setSelectedColumns] = useState(columns);
+    const isMounted = useRef(false);
+    const op = useRef<OverlayPanel>(null);
+    let cp: CorpusSearchPayload;
     
     const corpusService = new CorpusService();
     const suggestionsService = new SuggestionsService();
     const ontologyListService = new OntologyListService();
     const similarService = new SimilarsService();
-
-    const isMounted = useRef(false);
-    const op = useRef<OverlayPanel>(null);
-    let cp: CorpusSearchPayload;
 
     useEffect(() => {
         if (isMounted) {
@@ -61,27 +60,15 @@ const Search = () => {
 
     useEffect(() => {
         isMounted.current = true;
-        // transform query if contains " " or ',' between keywords
-        if (String(term).split(" ").length > 1) {
-            let operator = ' OR ';
-            let result = String(term).split(" ").join(operator);
-            setCopyQuery(result);
+        if (String(term) !== '') {
+            transform(String(term));
         }
-        if (String(term).split(',').length > 1) {
-            let operator = ' OR ';
-            let result = String(term).split(',').join(operator);
-            let query = String(term).split(',').join(' ');
-            setCopyQuery(result);
-            setTerm(query);
-        }
-            setCopyQuery(term);
-        // if (String(term) !== '') {
-        //     transform(String(term));
-        // }
+        let result = String(term).split(',').join(' ');
+        setTerm(result);
         //update corpus api call parameters
         setLastPayload(new CorpusSearchPayload({ ...cp, term: copyQyery, aggs: 'date_year', n_docs: 100, search_type: typeofSearch, date_range: timeRangeValue }));
         corpusService.getRefreshedToken();
-    }, [term, typeofSearch, timeRangeValue, selectedNodeKeys2, ontologyList, suggestedTerms, copyQyery, selectedTypeSearch, similarTerms, value, value1]);
+    }, [term, typeofSearch, timeRangeValue, selectedNodeKeys2, ontologyList, suggestedTerms, copyQyery, selectedTypeSearch, similarTerms, suggestionsValue, similarValues, ontologyValue]);
 
     const transformOntologyList = (nodes: any) => {
         let list: any = [];
@@ -105,50 +92,57 @@ const Search = () => {
             let uniqueTerms = listOfTerms.filter((subject, index) => {
                 return listOfTerms.indexOf(subject) === index;
             });
-            setValue1(uniqueTerms);
+            setSimilarValues(uniqueTerms);
             transformPhrases(uniqueTerms);
         }
         if (selectedNodes.length === 0) {
-            setValue1(listOfTerms);
+            setSimilarValues(listOfTerms);
             setTerm(listOfTerms);
         }
         toggleSelectAll(selectedNodes, similarTerms);
     }
 
     const selectNode = (selectedNodes) => {
-        setSelectedProducts7(selectedNodes);
+        setSelectedRelatedTermsCl(selectedNodes);
         let listOfClusterTerms: any = [];
         listOfClusterTerms.push(inputText);
         if (selectedNodes.length > 0) {
             selectedNodes.forEach(item => {
-                listOfClusterTerms.push(...item.node);
+                if (item.node) {
+                    listOfClusterTerms.push(...item.node);
+                }
+                else {
+                    listOfClusterTerms.push(item);
+                }
             });
             let uniqueValues = listOfClusterTerms.filter((subject, index) => {
                 return listOfClusterTerms.indexOf(subject) === index;
             });
-            setValue(uniqueValues);
+            setOntologyValue(uniqueValues);
             transformPhrases(uniqueValues);
         }
         if (selectedNodes.length === 0) {
-            setValue(listOfClusterTerms);
+            setOntologyValue(listOfClusterTerms);
             setTerm(listOfClusterTerms);
         }
         toggleSelectAll(selectedNodes, ontologyList);
     }
 
     const transformPhrases = (terms) => {
-        let listOfValues1: any = [];
+        let listOfValues: any = [];
         terms.forEach(item => {
-            itsPhrase(item) ? listOfValues1.push(`"${item}"`) : listOfValues1.push(item);
+            itsPhrase(item) ? listOfValues.push(`"${item}"`) : listOfValues.push(item);
         });
-        setTerm(listOfValues1);
+        let copyTerm = String(listOfValues).split(',').join(' OR ');
+        setCopyQuery(copyTerm)
+        setTerm(listOfValues);
     }
     
     const toggleSelectAll = (items, allList) => {
         if (items.length === allList.length) {
-            setChecked1(true)
+            setSelectAll(true)
         } else {
-            setChecked1(false)
+            setSelectAll(false)
         }
     }
     
@@ -204,93 +198,30 @@ const Search = () => {
         callService(e.value.code);
     }
 
-    // const transform = (textInput: string | { display: string; value: string } | any): Observable<object> => {
-    //     let item: any = null;
-    //     // is it a string?
-    //     if (typeof textInput === `string`) {
-    //       // is it an operator?
-    //       if (textInput === `AND`) {
-    //         item = new Term({
-    //           display: `${textInput}`,
-    //           termType: TermType.OPERATOR,
-    //           value: `${textInput}`,
-    //           isOperator: true,
-    //           operator: Operators.properties[Operators.AND],
-    //         });
-    //       } else {
-    //         /*Check if there is a pair of quotes*/
-    //         const areQuotesPresent = textInput.match('"') !== null ? true : false;
-    //         // are quotes present?
-    //         if (areQuotesPresent) {
-    //           const startQuote = textInput.indexOf('"');
-    //           const finalQuote = textInput.indexOf('"', textInput.length - 1);
-    //           if (startQuote === 0) {
-    //             if (textInput.length >= 3 && finalQuote === textInput.length - 1) {
-    //               item = new Term({
-    //                 display: `${textInput}`,
-    //                 termType: TermType.VERTEX,
-    //                 value: textInput.replace(/^"|"$/g, ''),
-    //                 isOperator: false,
-    //               });
-    //               setCopyQuery(item.display);
-    //             }
-    //           }
-    //         } else {
-    //             item = new Term({
-    //                 display: textInput.indexOf(`-`) !== -1 ? `"${textInput}"` : `${textInput}`,
-    //                 termType: TermType.VERTEX,
-    //                 value: textInput.replace(/^"|"$/g, ''),
-    //                 isOperator: false,
-    //             });
-    //         }
-    //       }
-    //     } else {
-    //       // is it an operator?
-    //       if (textInput.display === `AND`) {
-    //         item = new Term({
-    //           display: `${textInput.display}`,
-    //           termType: TermType.OPERATOR,
-    //           value: textInput.value.replace(/^"|"$/g, ''),
-    //           isOperator: true,
-    //           operator: Operators.properties[Operators.AND],
-    //         });
-    //       } else {
-    //         item = new Term({
-    //           display: textInput.display.indexOf(` `) !== -1 ?
-    //             (textInput.display.match("\"") !== null ? true : false)
-    //               ?
-    //               `${textInput.display}`
-    //               :
-    //               `"${textInput.display}"`
-    //             :
-    //             textInput.display.indexOf(`-`) !== -1 ? `"${textInput.display}"` : `${textInput.display}`
-    //           ,
-    //           termType: TermType.VERTEX,
-    //           value: textInput.value.replace(/^"|"$/g, ''), isOperator: false
-    //         });
-    //       }
-    //     }
-    
-    //     if (item === null) {
-    //         textInput = textInput + ` `;
-    //         return of();
-    //     } else {
-    //         textInput = ` `;
-    //     }
-    //     return of(item);
-    // }
+    const toggleEnrichQuery = (value) => {
+        setEnrichQuery(value);
+        if (value === true) {
+            if (selectedTypeSearch.code === 'RT') {
+                //selectAllTerms(similarTerms);
+            }
+            if (selectedTypeSearch.code === 'RC') {
+                // selectNode(ontologyList);
+            }
+        } else if (value === false) {
+            if (selectedTypeSearch.code === 'RT') {
+                // selectAllTerms([]);
+            }
+            if (selectedTypeSearch.code === 'RC') {
+                // selectNode([]);
+            }
+        }
+    }
     
     const toggleOverlayPanel  = (event) => {
         console.log(event)
     }
     
     const suggestionsTemplate = (value) => {
-        let patt = new RegExp(inputText.toLowerCase, "g");
-        let result = value.matchAll(patt);
-        for (let res of result) {
-            console.log("hi");
-            console.log(res);
-        }
         let string = value.substr(
             0,
             value.toLowerCase().indexOf(inputText.toLowerCase())
@@ -347,6 +278,16 @@ const Search = () => {
         }
     }
 
+    const onChangeTermUpdateQuery = (value) => {
+        let result = value.replace(/"([^"]+)"|\s+/g, (m, g1) => g1 ? g1 : '\"').split('"');
+        let listOfValues: any = [];
+        result.forEach(item => {
+            itsPhrase(item) ? listOfValues.push(`"${item}"`) : listOfValues.push(item);
+        });
+        let copyTerm = String(listOfValues).split(',').join(' OR ');
+        setCopyQuery(copyTerm)
+    }
+
     const onUpdateSelectedTerm = (e) => {
         if(e.target.value !== '') {
             if(selectedTypeSearch.code === 'AC') {
@@ -374,6 +315,7 @@ const Search = () => {
                 }, 250);
                 op.current?.show(e,e.target);
                 setTerm(e.target.value);
+                onChangeTermUpdateQuery(e.target.value)
             }
             else if(selectedTypeSearch.code === 'RT') {
                 e.preventDefault();
@@ -394,21 +336,17 @@ const Search = () => {
                 });
                 op.current?.show(e,e.target);
                 setTerm(e.target.value);
+                onChangeTermUpdateQuery(e.target.value)
             }
         }
     }
 
-    const [selectedColumns, setSelectedColumns] = useState(columns);
-
     const activityBodyTemplate = (rowData) => {
-        console.log(rowData)
         return (
-            <SelectButton value={value} className="suggestions-list"
+            <SelectButton value={ontologyValue} className="suggestions-list"
             onChange={
                 (e) => {
-                    console.log(e.value)
-                    setValue(e.value);
-                    setTerm(e.value);
+                    selectNode(e.value);
                 }
             }  
             options={rowData.node}
@@ -458,13 +396,10 @@ const Search = () => {
                         >
                             <div className='overlayPanelHeader'>
                                 <div className='div-size alingItems'>
-                                    { inputText ? <ToggleButton checked={checked1} disabled={selectedTypeSearch.code === 'AC' ? true : false} className="custom" aria-label={inputText} onLabel={inputText} offLabel={inputText} tooltip={checked1 ? 'Unselect all terms' : 'Select all terms'} tooltipOptions={{position: 'top'}}
+                                    { inputText ? <ToggleButton checked={selectAll} disabled={(selectedTypeSearch.code === 'AC' ? true : false || enrichQuery === true)} className="custom" aria-label={inputText} onLabel={inputText} offLabel={inputText} tooltip={selectAll ? 'Unselect all terms' : 'Select all terms'} tooltipOptions={{position: 'top'}}
                                         onChange={
                                             (e) => {
-                                                setChecked1(e.value);
-                                                if (selectedTypeSearch.code === 'AC') {
-                                                    // selectNode(suggestedTerms);
-                                                }
+                                                setSelectAll(e.value);
                                                 if (selectedTypeSearch.code === 'RC') {
                                                     if (e.value) {
                                                         selectNode(ontologyList);
@@ -478,25 +413,29 @@ const Search = () => {
                                                     } else if (!e.value) {
                                                         selectAllTerms([]);
                                                     }
-                                                    console.log(selectedTypeSearch.code)
                                                 }
                                             }
                                         } /> 
                                     : <span></span>}
                                 </div>
                                 <div className='search_dropdown div-size'>
-                                    {selectedTypeSearch.code !== 'AC' ? <ToggleButton checked={checked2} onChange={(e) => setChecked2(e.value)} className="custom-thumb" aria-label={inputText} offIcon="pi pi-thumbs-up" onIcon="pi pi-thumbs-up-fill" onLabel='' offLabel='' tooltip='Enrich query automatically' tooltipOptions={{position: 'bottom'}}/> : ""}
+                                    {selectedTypeSearch.code !== 'AC' ? <ToggleButton className="custom-thumb" aria-label={inputText} offIcon="pi pi-thumbs-up" onIcon="pi pi-thumbs-up-fill" onLabel='' offLabel='' tooltip='Enrich query automatically' tooltipOptions={{position: 'bottom'}}
+                                        checked={enrichQuery} onChange={
+                                            (e) => {
+                                                    toggleEnrichQuery(e.value);
+                                                }
+                                            }
+                                        /> : ""}
                                     <Dropdown value={selectedTypeSearch} options={typeOfSearches} onChange={onChangeOption} optionLabel="name" />
                                 </div>
                             </div>
                             { selectedTypeSearch.code === 'AC' ?
                                 <>
                                     <div className="card flex justify-content-center">
-                                        <SelectButton value={value} className="suggestions-list"
+                                        <SelectButton value={suggestionsValue} className="suggestions-list"
                                             onChange={
                                                 (e) => {
-                                                    console.log(e.value)
-                                                    setValue(e.value);
+                                                    setSuggestionsValue(e.value);
                                                     // Check for white space
                                                     if (itsPhrase(e.value)) {
                                                         setTerm(`"${e.value}"`);
@@ -511,9 +450,9 @@ const Search = () => {
                                         />
                                     </div>
                                 </>
-                                : selectedTypeSearch.code === 'RC' ? 
+                                : (selectedTypeSearch.code === 'RC' && enrichQuery === false) ? 
                                     <>
-                                        <DataTable loading={loading} value={ontologyList} showSelectAll={false} className="dataTable-list" selection={selectedProducts7} onSelectionChange={
+                                        <DataTable loading={loading} value={ontologyList} showSelectAll={false} className="dataTable-list" selection={selectedRelatedTermsCl} onSelectionChange={
                                                 (e) => selectNode(e.value)
                                             } 
                                             dataKey='id' 
@@ -523,15 +462,12 @@ const Search = () => {
                                             {columnComponents}
                                         </DataTable>
                                     </>
-                                : 
+                                : (selectedTypeSearch.code === 'RT' && enrichQuery === false) ? 
                                     <>
                                         <div className="card flex justify-content-center similars">
-                                        <SelectButton value={value1} className="suggestions-list"
+                                        <SelectButton value={similarValues} className="suggestions-list"
                                             onChange={
                                                 (e) => {
-                                                    // console.log(e.value)
-                                                    // setValue1(e.value);
-                                                    // setTerm(e.value);
                                                     selectAllTerms(e.value)
                                                 }
                                             }  
@@ -540,6 +476,7 @@ const Search = () => {
                                         />
                                     </div>
                                     </>
+                                : <div></div>
                             }
                         </OverlayPanel>
                     <Button icon="pi pi-ellipsis-v" className='ellipsis-v' onClick={toggleOverlayPanel}></Button>

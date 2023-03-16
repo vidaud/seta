@@ -1,3 +1,6 @@
+import { Observable, of } from "rxjs";
+import { Operators, Term, TermType } from "../../models/term.model";
+
 export const defaultTypeOfSearch = {
     code: "AC",
     name: "Autocomplete"
@@ -65,9 +68,130 @@ export const createTree = (nodes) => {
 
 export const itsPhrase = (s): boolean => {
     const reWhiteSpace = new RegExp("\\s+");
-    const underscore = s.includes('_');
-        if (reWhiteSpace.test(s) || underscore) {
+        if (reWhiteSpace.test(s)) {
             return true;
         }
         return false;
 }
+
+export const transform = (textInput: string | { display: string; value: string } | any) => {
+    let item: any = null;
+    // is it a string?
+    if (typeof textInput === `string`) {
+      // is it an operator?
+      if (textInput === `AND`) {
+        item = new Term({
+          display: `${textInput}`,
+          termType: TermType.OPERATOR,
+          value: `${textInput}`,
+          isOperator: true,
+          operator: Operators.properties[Operators.AND],
+        });
+      } else {
+        /*Check if there is a pair of quotes*/
+        const areQuotesPresent = textInput.match('"') !== null ? true : false;
+        // are quotes present?
+        if (areQuotesPresent) {
+          const startQuote = textInput.indexOf('"');
+          const finalQuote = textInput.indexOf('"', textInput.length - 1);
+          if (startQuote === 0) {
+            if (textInput.length >= 3 && finalQuote === textInput.length - 1) {
+              item = new Term({
+                display: `${textInput}`,
+                termType: TermType.VERTEX,
+                value: textInput.replace(/^"|"$/g, ''),
+                isOperator: false,
+              });
+            //   setCopyQuery(item.display);
+            }
+          }
+        } else {
+            item = new Term({
+                display: textInput.indexOf(`-`) !== -1 ? `"${textInput}"` : `${textInput}`,
+                termType: TermType.VERTEX,
+                value: textInput.replace(/^"|"$/g, ''),
+                isOperator: false,
+            });
+        }
+      }
+    } else {
+      // is it an operator?
+      if (textInput.display === `AND`) {
+        item = new Term({
+          display: `${textInput.display}`,
+          termType: TermType.OPERATOR,
+          value: textInput.value.replace(/^"|"$/g, ''),
+          isOperator: true,
+          operator: Operators.properties[Operators.AND],
+        });
+      } else {
+        item = new Term({
+          display: textInput.display.indexOf(` `) !== -1 ?
+            (textInput.display.match("\"") !== null ? true : false)
+              ?
+              `${textInput.display}`
+              :
+              `"${textInput.display}"`
+            :
+            textInput.display.indexOf(`-`) !== -1 ? `"${textInput.display}"` : `${textInput.display}`
+          ,
+          termType: TermType.VERTEX,
+          value: textInput.value.replace(/^"|"$/g, ''), isOperator: false
+        });
+      }
+    }
+
+    if (item === null) {
+        textInput = textInput + ` `;
+        return of();
+    } else {
+        textInput = ` `;
+    }
+    return of(item);
+}
+
+// export const transformQuery = (suggestions: Term[]): string => {
+//     let suggestionsCopy: any = [...suggestions]
+//     suggestionsCopy = suggestionsCopy.filter((sugg) => { return sugg.termType !== TermType.DOCUMENT})
+//     let suggestionString = ``;
+//     let finalSuggestionString = ``;
+//     for (let index = 0; index < suggestionsCopy.length; index++) {
+//       const suggestion = suggestionsCopy[index];
+//       if (index < suggestionsCopy.length - 1) {
+//         if (suggestion.isOperator) {
+//           continue;
+//         } else {
+//           if (suggestion.display === `AND` || suggestion.display === `OR`) {
+//             continue;
+//           } else {
+//             if (
+//               (suggestionsCopy[index + 1].isOperator && suggestionsCopy[index + 1].operator.index === Operators.AND)
+//               ||
+//               (suggestionsCopy[index + 1].display === `AND`)
+//             ) {
+//               suggestionString += suggestion.display.replace('\\\"', '"') + Operators.properties[Operators.AND].code;
+//             } else {
+//               suggestionString += suggestion.display.replace('\\\"', '"') + Operators.properties[Operators.OR].code;
+//             }
+//           }
+//         }
+//       } else {
+//         suggestionString += suggestion.display.replace('\\\"', '');
+//       }
+//     }
+
+//     const suggestionList = suggestionString.split(` AND `)
+//     if (suggestionList.length > 0) {
+//       finalSuggestionString = suggestionList.reduce((total, currentValue, currentIndex, arr) => {
+//         if (currentIndex === 1) {
+//           return `(${total})` + ` AND ` + `(${currentValue})`;
+//         } else {
+//           return total + ` AND ` + `(${currentValue})`;
+//         }
+//       })
+//     } else {
+//       finalSuggestionString = suggestionString
+//     }
+//     console.log(finalSuggestionString)
+//     return finalSuggestionString;
+//   }
