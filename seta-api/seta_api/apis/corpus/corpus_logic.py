@@ -8,21 +8,21 @@ import re
 
 from .corpus_build import build_corpus_request
 
-def docbyid(doc_id, current_app):
+def docbyid(doc_id, es, index):
     try:
-        q = current_app.es.get(index=current_app.config['INDEX_PUBLIC'], id=doc_id)
+        q = es.get(index=index, id=doc_id)
         doc = q['_source']
         return doc
     except:
         raise ApiLogicError('ID not found.')
     
-def delete_doc(id, current_app):
+def delete_doc(id, es, index):
     try:
-        current_app.es.delete(index=current_app.config['INDEX_PUBLIC'], id=id)
+        es.delete(index=index, id=id)
     except:
         raise ApiLogicError("id not found")
 
-def insert_doc(args, current_app):
+def insert_doc(args, es, index):
     new_doc = {}
     new_doc["id"] = is_field_in_doc(args, "id")
     new_doc["id_alias"] = is_field_in_doc(args, "id_alias")
@@ -50,8 +50,7 @@ def insert_doc(args, current_app):
     new_doc["other"] = is_field_in_doc(args, "other")
     new_doc["keywords"] = is_field_in_doc(args, "keywords")
 
-    index = current_app.config["INDEX_PUBLIC"]
-    res = current_app.es.index(index=index, document=new_doc)
+    res = es.index(index=index, document=new_doc)
     doc_id = res["_id"]
     embs = Embeddings.embeddings_from_doc_fields(args["title"], args["abstract"], args["text"])
     first = True
@@ -59,14 +58,14 @@ def insert_doc(args, current_app):
         if first:
             update_fields = {"chunk_text": emb["text"], "document_id": doc_id, "chunk_number": emb["chunk"],
                              "sbert_embedding": emb["vector"]}
-            current_app.es.update(index=index, id=doc_id, doc=update_fields)
+            es.update(index=index, id=doc_id, doc=update_fields)
             first = False
         else:
             new_doc["chunk_text"] = emb["text"]
             new_doc["document_id"] = doc_id
             new_doc["chunk_number"] = emb["chunk"]
             new_doc["sbert_embedding"] = emb["vector"]
-            current_app.es.index(index=index, document=new_doc)
+            es.index(index=index, document=new_doc)
 
     return doc_id
 
