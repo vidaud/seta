@@ -1,12 +1,12 @@
 import pytest
-import time
 
 from elasticsearch import Elasticsearch
 
 from seta_api.config import TestConfig
 from seta_api.factory import create_app
 
-from tests.infrastructure.mongodb.db import DbTestSetaApi
+from tests.infrastructure.init.mongodb import DbTestSetaApi
+from tests.infrastructure.init.es import SetaES
 
 """
     For testing in docker run: pytest -s tests/ --es_host="seta-es-test:9200" --db_host="seta-mongo-test" --dp_port=27017 --web_root="seta-ui-test:8080"
@@ -36,16 +36,19 @@ def web_root(request):
 
 @pytest.fixture(scope='module', autouse=True)
 def es(es_host):
-    config = TestConfig()
-    
+    config = TestConfig()    
+    host = config.ES_HOST
+        
     if es_host:
-        config.ES_HOST = es_host
+        host = es_host
+        
+    es = SetaES(host=host, index=config.INDEX_PUBLIC)
+    es.cleanup()
+    es.init_es()
     
-    es = Elasticsearch("http://" + config.ES_HOST, verify_certs=False, request_timeout=30)
     yield es
     
-    body = {"query": {"match_all": {}}}
-    es.delete_by_query(index=config.INDEX_PUBLIC, body=body)
+    es.cleanup()
     
 
 @pytest.fixture(scope='module')

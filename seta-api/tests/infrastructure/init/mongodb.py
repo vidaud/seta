@@ -1,4 +1,4 @@
-from flask import current_app, g, json
+from flask import current_app, json
 from pymongo import MongoClient
 
 import datetime

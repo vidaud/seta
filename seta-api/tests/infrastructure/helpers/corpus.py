@@ -16,3 +16,15 @@ def delete_document(client: FlaskClient, access_token:str, document_id: str):
     url = f"/seta-api/api/v1/corpus/{document_id}"
 
     return client.delete(url, headers=auth_headers(access_token))
+
+def get_by_term(client: FlaskClient, access_token:str, term: str):
+    url = f"/seta-api/api/v1/corpus?term={term}"
+    
+    return client.get(url, content_type="application/json", headers=auth_headers(access_token))
+
+def post_by_term(client: FlaskClient, access_token:str, term: str):
+    url = f"/seta-api/api/v1/corpus"
+    
+    data = { "term": term }
+    
+    return client.post(url, json=data, content_type="application/json", headers=auth_headers(access_token))
