@@ -37,12 +37,12 @@ class MembershipModel:
     
     @classmethod 
     def from_db_json(cls, json_dict):
-        return cls(json_dict["community_id"],
-                   json_dict["user_id"],
-                   json_dict["role"],
-                   json_dict["join_date"],
-                   json_dict["status"],
-                   json_dict["modified_at"])
+        return cls(community_id=json_dict["community_id"],
+                   user_id=json_dict["user_id"],
+                   role=json_dict["role"],
+                   join_date=json_dict["join_date"],
+                   status=json_dict["status"],
+                   modified_at=json_dict.get("modified_at", None))
         
 class MembershipRequestModel:
     def __init__(self, community_id, requested_by, message = None, status = None, initiated_date = None, reviewed_by = None, review_date = None) -> None:
