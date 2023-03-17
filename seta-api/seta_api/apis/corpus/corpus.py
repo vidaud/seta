@@ -6,7 +6,7 @@ from seta_api.infrastructure.ApiLogicError import ApiLogicError, ForbiddenResour
 from seta_api.infrastructure.auth_validator import auth_validator, validate_view_permissions, validate_add_permission, validate_delete_permission
 from seta_api.infrastructure.helpers import is_field_in_doc
 
-from .corpus_logic import corpus, delete_doc, docbyid, insert_doc
+from .corpus_logic import corpus, delete_doc, doc_by_id, insert_doc
 from .variables import corpus_parser, keywords, metadata, other
 
 from http import HTTPStatus
@@ -24,8 +24,8 @@ class Corpus(Resource):
             security='apikey')
     def get(self, id):
         try:
-            doc = docbyid(id, current_app=app)
-            
+            doc = doc_by_id(id, current_app=app)
+
             validate_view_permissions(sources=[doc.get("source", None)])
             
             return doc
@@ -44,7 +44,7 @@ class Corpus(Resource):
             security='apikey')
     def delete(self, id):
         try:
-            doc = docbyid(id, current_app=app)            
+            doc = doc_by_id(id, current_app=app)
             resource_id = doc.get("source", None)
             
             if not validate_delete_permission(resource_id):

@@ -43,19 +43,8 @@ def build_corpus_request(term, n_docs, from_doc, sources, collection, reference,
     query = build_search_query(term, sources, collection, reference, eurovoc_concept, eurovoc_dom, eurovoc_mth,
                                ec_priority, sdg_domain, sdg_subdomain, euro_sci_voc, in_force, author, date_range,
                                search_type, other)
-    if semantic_sort_id or emb_vector:
-        query_to_use = embeddings_query(semantic_sort_id, emb_vector, semantic_sort_id_list, emb_vector_list,
-                                        current_app, query)
-        # sort must be None because embeddings define sorting
-        sort = None
-    else:
-        query_to_use = query
-    if n_docs is None:
-        n_docs = current_app.config["DEFAULT_DOCS_NUMBER"]
-    if from_doc is None:
-        from_doc = current_app.config["DEFAULT_FROM_DOC_NUMBER"]
-    if sort:
-        sort_list = build_sort_body(sort)
+    query_to_use = check_embeddings_query(current_app, emb_vector, emb_vector_list, query, semantic_sort_id,
+                                          semantic_sort_id_list)
 
     body = {
         "size": n_docs,
@@ -73,29 +62,70 @@ def build_corpus_request(term, n_docs, from_doc, sources, collection, reference,
     if search_type == "CHUNK_SEARCH":
         body["collapse"] = {"field": "document_id"}
         body["aggs"] = {"total": {"cardinality": {"field": "document_id"}}}
-    if sort:
-        body['sort'] = []
-        for sort_item in sort_list:
-            body['sort'].append(sort_item)
-    if aggs:
-        if aggs == "source" or aggs == "eurovoc_concept":
-            f_aggs = aggs + '.keyword'
-            if body["aggs"]:
-                body['aggs'][aggs] = {"terms": {"field": f_aggs}}
-            else:
-                body['aggs'] = {aggs: {"terms": {"field": f_aggs}}}
-        if aggs == "date_year":
-                if "aggs" in body:
-                  body['aggs']["years"] = {"date_histogram": {"field": "date", "calendar_interval": "year", "format": "yyyy" }}
-                else:
-                  body['aggs'] = {"years": {"date_histogram": {"field": "date", "calendar_interval": "year", "format": "yyyy" }}}
-    search_arr = []
-    search_arr.append({'index': current_app.config["INDEX"][0]})
-    search_arr.append(body)
+
+    body = fill_body_for_sort(body, emb_vector, semantic_sort_id, sort)
+    body = fill_body_for_aggregations(aggs, body)
+    return body
+
+
+def compose_request_for_msearch(body, current_app):
+    search_arr = [{'index': current_app.config["INDEX"][0]}, body]
     request = ''
     for each in search_arr:
         request += '%s \n' % json.dumps(each)
     return request
+
+
+def fill_body_for_sort(body, emb_vector, semantic_sort_id, sort):
+    if sort:
+        if semantic_sort_id or emb_vector:
+            # embeddings define sorting, sort parameter must be ignored
+            pass
+        else:
+            sort_list = build_sort_body(sort)
+            body['sort'] = []
+            for sort_item in sort_list:
+                body['sort'].append(sort_item)
+    return body
+
+
+def check_embeddings_query(current_app, emb_vector, emb_vector_list, query, semantic_sort_id, semantic_sort_id_list):
+    if semantic_sort_id or emb_vector:
+        query_to_use = embeddings_query(semantic_sort_id, emb_vector, semantic_sort_id_list, emb_vector_list,
+                                        current_app, query)
+    else:
+        query_to_use = query
+    return query_to_use
+
+
+def fill_body_for_aggregations(aggs, body):
+    list_of_aggs_fields = ["source", "eurovoc_concept", "date_year", "multi_aggregation"]
+
+    if aggs and (aggs not in list_of_aggs_fields):
+        raise ApiLogicError('Malformed query. Wrong aggs parameter')
+
+    if aggs:
+        if aggs == "source" or aggs == "eurovoc_concept":
+            agg_body = {"terms": {"field": aggs + '.keyword'}}
+            body = add_aggs(agg_body, aggs, body)
+        if aggs == "date_year":
+            agg_body = {"date_histogram": {"field": "date", "calendar_interval": "year", "format": "yyyy"}}
+            body = add_aggs(agg_body, "years", body)
+        if aggs == "multi_aggregation":
+            agg_body = {"multi_terms": {"terms": [{"field": "source.keyword"},
+                                                  {"field": "collection.keyword", "missing": "NO_CLASS"},
+                                                  {"field": "reference.keyword", "missing": "NO_CLASS"}]}}
+            body = add_aggs(agg_body, aggs, body)
+    return body
+
+
+def add_aggs(agg_body, aggs_name, body):
+    if "aggs" in body:
+        body['aggs'][aggs_name] = agg_body
+    else:
+        body['aggs'] = {aggs_name: agg_body}
+    return body
+
 
 def get_vector(semantic_sort_id, current_app):
     query = {"bool": {"must": [{"match": {"_id": {"query": semantic_sort_id}}}]}}
@@ -104,6 +134,7 @@ def get_vector(semantic_sort_id, current_app):
     if res['hits']['total']['value'] > 0:
         vector = res['hits']['hits'][0]['_source']['sbert_embedding']
     return vector
+
 
 def build_sort_body(sort):
     sort_list = []

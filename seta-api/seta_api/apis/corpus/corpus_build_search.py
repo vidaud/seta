@@ -1,8 +1,10 @@
 from flask import json
 import re
 
+
 def build_search_query(search_term, sources, collection, reference, eurovoc_concept, eurovoc_dom, eurovoc_mth,
-                       ec_priority, sdg_domain, sdg_subdomain, euro_sci_voc, in_force, author, date_range, search_type, other):
+                       ec_priority, sdg_domain, sdg_subdomain, euro_sci_voc, in_force, author, date_range,
+                       search_type, other):
     query = build_search_query_json(search_term)
 
     metadata_param_blocks = build_metadata_param_blocks(collection, reference, eurovoc_concept, eurovoc_dom,
@@ -18,6 +20,7 @@ def build_search_query(search_term, sources, collection, reference, eurovoc_conc
     elif not query:
         query = {"match_all": {}}
     return query
+
 
 def build_metadata_param_blocks(collection, reference, eurovoc_concept, eurovoc_dom, eurovoc_mth,
                                 ec_priority, sdg_domain, sdg_subdomain, euro_sci_voc,
@@ -105,6 +108,7 @@ def build_metadata_param_blocks(collection, reference, eurovoc_concept, eurovoc_
             full_block.append(block)
     return full_block
 
+
 def build_search_query_json(search_term):
     if search_term:
         search_term = search_term.replace('/', '\\\/')
@@ -129,7 +133,8 @@ def build_search_query_json(search_term):
         return query
     else:
         return None
-    
+
+
 def bluid_search_phrase_block(search_term_phrase):
     full_block = []
     for text in search_term_phrase:
@@ -141,6 +146,7 @@ def bluid_search_phrase_block(search_term_phrase):
         }}
         full_block.append(block)
     return full_block 
+
 
 def parse_search_term(search_term):
     phrase = []
