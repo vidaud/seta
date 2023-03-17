@@ -1,5 +1,5 @@
 import pytest
-
+import time
 from elasticsearch import Elasticsearch
 
 from seta_api.config import TestConfig
@@ -34,7 +34,7 @@ def db_port(request):
 def web_root(request):
     return request.config.getoption('--web_root')
 
-@pytest.fixture(scope='module', autouse=True)
+@pytest.fixture(scope='session', autouse=True)
 def es(es_host):
     config = TestConfig()    
     host = config.ES_HOST
@@ -68,8 +68,14 @@ def app(es_host, db_host, db_port, web_root):
     app.config["JWT_TOKEN_INFO_URL"] = f"http://{web_root}/authorization/v1/token_info"
     app.config["JWT_TOKEN_AUTH_URL"] = f"http://{web_root}/authentication/v1/user/token"
     
-    with app.app_context():         
-        db = DbTestSetaApi(db_host=config.DB_HOST, db_port=config.DB_PORT, db_name="seta_test")
+    with app.app_context():  
+        
+        db_name="seta_test"
+        
+        time_str = str(int(time.time()))
+        db_name += f"_{time_str}"
+               
+        db = DbTestSetaApi(db_host=config.DB_HOST, db_port=config.DB_PORT, db_name=db_name)
         db.clear_db()
         db.init_db()   
     
