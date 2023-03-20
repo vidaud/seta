@@ -3,7 +3,7 @@ import './style.css';
 import { Button } from 'primereact/button';
 import TabMenus from '../../components/tab-menu/tab-menu';
 import DialogButton from '../../components/dialog/dialog';
-import { Term } from '../../models/term.model';
+import { Operators, Term, TermType } from '../../models/term.model';
 import { CorpusService } from '../../services/corpus/corpus.service';
 import { CorpusSearchPayload } from '../../store/corpus-search-payload';
 import { BreadCrumb } from 'primereact/breadcrumb';
@@ -17,11 +17,12 @@ import { SimilarsService } from '../../services/corpus/similars.service';
 import { SelectButton } from 'primereact/selectbutton';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
-import { defaultTypeOfSearch, itemsBreadCrumb, home, typeOfSearches, columns, getWordAtNthPosition, itsPhrase, transform } from './constants';
+import { defaultTypeOfSearch, itemsBreadCrumb, home, typeOfSearches, columns, getWordAtNthPosition, itsPhrase, transform, getSelectedTerms, getListOfTerms, transformOntologyList } from './constants';
 
 const Search = () => {
     const [showContent, setShowContent] = useState(false);
     const [term, setTerm] = useState<Term[] | any>([]);
+    const [listOfTerms, setListOfTerms] = useState<Term[] | any>([]);
     const [items, setItems] = useState<any>([]);
     const [aggregations, setAggregations] = useState<any>([]);
     const [documentList, setDocumentList] = useState([]);
@@ -61,26 +62,15 @@ const Search = () => {
     useEffect(() => {
         isMounted.current = true;
         if (String(term) !== '') {
-            transform(String(term));
+            setListOfTerms(getListOfTerms(String(term)));
+            setCopyQuery(getSelectedTerms(listOfTerms));
         }
         let result = String(term).split(',').join(' ');
         setTerm(result);
         //update corpus api call parameters
         setLastPayload(new CorpusSearchPayload({ ...cp, term: copyQyery, aggs: 'date_year', n_docs: 100, search_type: typeofSearch, date_range: timeRangeValue }));
         corpusService.getRefreshedToken();
-    }, [term, typeofSearch, timeRangeValue, selectedNodeKeys2, ontologyList, suggestedTerms, copyQyery, selectedTypeSearch, similarTerms, suggestionsValue, similarValues, ontologyValue]);
-
-    const transformOntologyList = (nodes: any) => {
-        let list: any = [];
-        nodes.forEach((item) => {
-            let element = {
-                id: item[0],
-                node: item
-            }
-            list.push(element);
-        });
-        setOntologyList(list);
-    }
+    }, [term, typeofSearch, timeRangeValue, selectedNodeKeys2, ontologyList, suggestedTerms, copyQyery, listOfTerms, selectedTypeSearch, similarTerms, suggestionsValue, similarValues, ontologyValue]);
 
     const selectAllTerms = (selectedNodes) => {
         let listOfTerms: any = [];
@@ -148,10 +138,10 @@ const Search = () => {
     
     const getOntologyList = (lastKeyword) => {
         ontologyListService.retrieveOntologyList(lastKeyword).then(data => {
-                if (data) {
-                    transformOntologyList(data);
-                }
-                setLoading(false);
+            if (data) {
+                setOntologyList(transformOntologyList(data));
+            }
+            setLoading(false);
         });
     }
 
@@ -199,6 +189,9 @@ const Search = () => {
     }
 
     const toggleEnrichQuery = (value) => {
+        // ex: "(bin) AND (regulation OR guideline) AND (standard)"
+        //send request to ontologyList for each keyword
+        //send request to corpus with the ontology list of all keywords
         setEnrichQuery(value);
         if (value === true) {
             if (selectedTypeSearch.code === 'RT') {
@@ -278,16 +271,6 @@ const Search = () => {
         }
     }
 
-    const onChangeTermUpdateQuery = (value) => {
-        let result = value.replace(/"([^"]+)"|\s+/g, (m, g1) => g1 ? g1 : '\"').split('"');
-        let listOfValues: any = [];
-        result.forEach(item => {
-            itsPhrase(item) ? listOfValues.push(`"${item}"`) : listOfValues.push(item);
-        });
-        let copyTerm = String(listOfValues).split(',').join(' OR ');
-        setCopyQuery(copyTerm)
-    }
-
     const onUpdateSelectedTerm = (e) => {
         if(e.target.value !== '') {
             if(selectedTypeSearch.code === 'AC') {
@@ -315,7 +298,6 @@ const Search = () => {
                 }, 250);
                 op.current?.show(e,e.target);
                 setTerm(e.target.value);
-                onChangeTermUpdateQuery(e.target.value)
             }
             else if(selectedTypeSearch.code === 'RT') {
                 e.preventDefault();
@@ -336,7 +318,6 @@ const Search = () => {
                 });
                 op.current?.show(e,e.target);
                 setTerm(e.target.value);
-                onChangeTermUpdateQuery(e.target.value)
             }
         }
     }

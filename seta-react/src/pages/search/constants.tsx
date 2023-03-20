@@ -27,9 +27,6 @@ export const getWordAtNthPosition = (str: string, position: number | any) => {
     
     //let test: any =  (p || '') + (n || ''); // demo
     let selected: any = !p && !n ? '' : (p || '') + (n || '');
-    // if(p) {
-    //     setTest(p.index);
-    // }
     let value;
     if (p) {
         value = p.index;
@@ -63,7 +60,6 @@ export const createTree = (nodes) => {
             "root": node_list
             
     }
-    // setTreeLeaf(root.root);
 }
 
 export const itsPhrase = (s): boolean => {
@@ -147,51 +143,75 @@ export const transform = (textInput: string | { display: string; value: string }
     } else {
         textInput = ` `;
     }
-    return of(item);
+    return item;
 }
 
-// export const transformQuery = (suggestions: Term[]): string => {
-//     let suggestionsCopy: any = [...suggestions]
-//     suggestionsCopy = suggestionsCopy.filter((sugg) => { return sugg.termType !== TermType.DOCUMENT})
-//     let suggestionString = ``;
-//     let finalSuggestionString = ``;
-//     for (let index = 0; index < suggestionsCopy.length; index++) {
-//       const suggestion = suggestionsCopy[index];
-//       if (index < suggestionsCopy.length - 1) {
-//         if (suggestion.isOperator) {
-//           continue;
-//         } else {
-//           if (suggestion.display === `AND` || suggestion.display === `OR`) {
-//             continue;
-//           } else {
-//             if (
-//               (suggestionsCopy[index + 1].isOperator && suggestionsCopy[index + 1].operator.index === Operators.AND)
-//               ||
-//               (suggestionsCopy[index + 1].display === `AND`)
-//             ) {
-//               suggestionString += suggestion.display.replace('\\\"', '"') + Operators.properties[Operators.AND].code;
-//             } else {
-//               suggestionString += suggestion.display.replace('\\\"', '"') + Operators.properties[Operators.OR].code;
-//             }
-//           }
-//         }
-//       } else {
-//         suggestionString += suggestion.display.replace('\\\"', '');
-//       }
-//     }
+export const getSelectedTerms = (suggestions: Term[]): string => {
+  let suggestionsCopy: any = [...suggestions]
+  suggestionsCopy = suggestionsCopy.filter((sugg) => { return sugg.termType !== TermType.DOCUMENT})
+  let suggestionString = ``;
+  let finalSuggestionString = ``;
+  for (let index = 0; index < suggestionsCopy.length; index++) {
+  const suggestion = suggestionsCopy[index];
+  if (index < suggestionsCopy.length - 1) {
+      if (suggestion.isOperator) {
+      continue;
+      } else {
+      if (suggestion.display === `AND` || suggestion.display === `OR`) {
+          continue;
+      } else {
+          if (
+          (suggestionsCopy[index + 1].isOperator && suggestionsCopy[index + 1].operator.index === Operators.AND)
+          ||
+          (suggestionsCopy[index + 1].display === `AND`)
+          ) {
+          suggestionString += suggestion.display.replace('\\\"', '"') + Operators.properties[Operators.AND].code;
+          } else {
+          suggestionString += suggestion.display.replace('\\\"', '"') + Operators.properties[Operators.OR].code;
+          }
+      }
+      }
+  } else {
+      suggestionString += suggestion.display.replace('\\\"', '');
+  }
+  }
 
-//     const suggestionList = suggestionString.split(` AND `)
-//     if (suggestionList.length > 0) {
-//       finalSuggestionString = suggestionList.reduce((total, currentValue, currentIndex, arr) => {
-//         if (currentIndex === 1) {
-//           return `(${total})` + ` AND ` + `(${currentValue})`;
-//         } else {
-//           return total + ` AND ` + `(${currentValue})`;
-//         }
-//       })
-//     } else {
-//       finalSuggestionString = suggestionString
-//     }
-//     console.log(finalSuggestionString)
-//     return finalSuggestionString;
-//   }
+  const suggestionList = suggestionString.split(` AND `)
+  if (suggestionList.length > 0) {
+  finalSuggestionString = suggestionList.reduce((total, currentValue, currentIndex, arr) => {
+      if (currentIndex === 1) {
+      return `(${total})` + ` AND ` + `(${currentValue})`;
+      } else {
+      return total + ` AND ` + `(${currentValue})`;
+      }
+  })
+  } else {
+  finalSuggestionString = suggestionString
+  }
+  return finalSuggestionString;
+}
+
+export const getListOfTerms = (terms) => {
+  let listOF = terms.replace(/"([^"]+)"|\s+/g, (m, g1) => g1 ? g1 : '\"').split('"');
+  let newListOF: any = [];
+  listOF.forEach(element => {
+      itsPhrase(element) ? newListOF.push(`"${element}"`) : newListOF.push(element);
+  });
+  let transformedList: any = [];
+  newListOF.forEach(element => {
+      transformedList.push(transform(element))
+  });
+  return transformedList;
+}
+
+export const transformOntologyList = (nodes: any) => {
+  let list: any = [];
+  nodes.forEach((item) => {
+      let element = {
+          id: item[0],
+          node: item
+      }
+      list.push(element);
+  });
+  return list;
+}
