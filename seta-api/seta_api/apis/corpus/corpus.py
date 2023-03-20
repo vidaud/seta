@@ -24,7 +24,7 @@ class Corpus(Resource):
             security='apikey')
     def get(self, id):
         try:
-            doc = docbyid(id, current_app=app)
+            doc = docbyid(id, es=app.es, index=app.config['INDEX_PUBLIC'])
             
             validate_view_permissions(sources=[doc.get("source", None)])
             
@@ -44,13 +44,13 @@ class Corpus(Resource):
             security='apikey')
     def delete(self, id):
         try:
-            doc = docbyid(id, current_app=app)            
+            doc = docbyid(id, es=app.es, index=app.config['INDEX_PUBLIC'])            
             resource_id = doc.get("source", None)
             
             if not validate_delete_permission(resource_id):
                 raise ForbiddenResourceError(resource_id=resource_id, message="User does not have delete permission for the resource")
             
-            delete_doc(id, current_app=app)
+            delete_doc(id, es=app.es, index=app.config["INDEX_PUBLIC"])
             return jsonify({"deleted document id": id})
         except ApiLogicError as aex:
             abort(404, str(aex))
@@ -195,7 +195,7 @@ class CorpusQuery(Resource):
         if not validate_add_permission(source):
             abort(HTTPStatus.FORBIDDEN, "User does not have add document permission for the resource")
         
-        doc_id = insert_doc(args, current_app=app)
+        doc_id = insert_doc(args, es=app.es, index=app.config["INDEX_PUBLIC"])
         return jsonify({"document_id": doc_id})
 
     @corpus_api.expect(corpus_parser)

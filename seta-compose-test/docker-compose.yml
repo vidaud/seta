@@ -22,6 +22,9 @@ services:
     expose:
       - "9200"
       - "9300"
+    ports:
+      - "0.0.0.0:9200:9200"
+      - "0.0.0.0:9300:9300"
     mem_limit: "4g"
     volumes:
       - seta-es3-test:/usr/share/elasticsearch/data
@@ -36,7 +39,7 @@ services:
 
   seta-api-test:
     container_name: seta-api-test
-    restart: "no"
+    restart: always
     build:
       context: ../seta-api
       dockerfile: Dockerfile-test
