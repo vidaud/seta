@@ -4,7 +4,7 @@ import logging
 from elasticsearch import Elasticsearch
 from sentence_transformers import SentenceTransformer
 
-from flask import (Flask, request, g, Response)
+from flask import (Flask, request, g, Response, json)
 from flask_cors import CORS
 from werkzeug.middleware.proxy_fix import ProxyFix
 from flask_jwt_extended import get_jwt_identity, verify_jwt_in_request
@@ -12,6 +12,8 @@ from flask_jwt_extended import get_jwt_identity, verify_jwt_in_request
 from seta_api.infrastructure.extensions import (jwt, logs)
 from seta_api.apis import apis_bp_v1
 from seta_api.private import private_bp_v1
+
+import requests
 
 
 def create_app(config_object):
@@ -93,15 +95,40 @@ def create_app(config_object):
 
 def init(app):
     app.es = Elasticsearch("http://" + app.config["ES_HOST"], verify_certs=False, request_timeout=30)
-    
-    if not app.testing:
-        total = app.es.count(index=app.config["INDEX"][0])['count']
-        app.logger.info(f"Total number of documents indexed by Elastic: {total}")
+
+    wait_for_es(app)
 
     app.sbert_model = SentenceTransformer('all-distilroberta-v1')
     app.sbert_model.max_seq_length = 512
 
     app.logger.info("SeTA-API is up and running.")
+    
+def wait_for_es(app):
+    host = app.config["ES_HOST"]
+    esh = f"http://{host}/_cluster/health?pretty"
+    app.logger.info(f'Waiting for ES {esh} ...')
+    
+    try:
+        es_session = requests.Session()
+        es_session.trust_env = False
+        res = es_session.get(esh)
+        
+        if res.ok:
+            res = json.loads(res.content)
+            app.logger.info("ElasticSearch..." + res['status'])
+            if res['status'] == 'green' or res['status'] == 'yellow':
+                total = app.es.count(index=app.config["INDEX"][0])['count']
+                app.logger.info(f"Total number of documents indexed by Elastic: {total}")
+                
+                return
+            
+        time.sleep(5)
+        wait_for_es(app)
+    except Exception as e:
+        app.logger.error("ES not ready yet")
+        
+        time.sleep(5)
+        wait_for_es(app)
 
 def register_blueprints(app):
     app.register_blueprint(apis_bp_v1)
