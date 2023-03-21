@@ -1,4 +1,5 @@
 version: "3.8"
+name: seta-test
 services:
   seta-mongo-test:    
     extends:
@@ -48,7 +49,8 @@ services:
       - .env.test
     restart: "no"
     build: 
-       dockerfile: Dockerfile-test
+       args:
+        - PROJECT_CONF=project_test
     ports:
       - "8080:8080"
     depends_on:
