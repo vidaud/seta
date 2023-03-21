@@ -1,10 +1,15 @@
 FROM nginx:1.20.2
 
+ARG PROJECT_CONF=project
+
 ENV https_proxy=$HTTP_PROXY
 ENV http_proxy=$HTTP_PROXY
-ENV no_proxy="seta-es,seta-mongo,seta-api,seta-nginx,seta-ui,seta-ui-react"
+
+ENV HTTPS_PROXY=$HTTP_PROXY
+ENV HTTP_PROXY=$HTTP_PROXY
 
 RUN rm /etc/nginx/nginx.conf
 COPY nginx.conf /etc/nginx/
+
 RUN rm /etc/nginx/conf.d/default.conf
-COPY project.conf /etc/nginx/conf.d/default.conf
+COPY ${PROJECT_CONF}.conf /etc/nginx/conf.d/default.conf

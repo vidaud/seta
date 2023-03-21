@@ -24,9 +24,6 @@ class Config:
     #databse name
     DB_NAME="seta"
     
-    #file path that contains the secret key to encode and decode JWTs and session cookies
-    SECRET_KEY_PATH = "/home/seta/models/key.txt"
-    
     #administrators email list - new user is set as admin if email present in this list
     #set from docker ENV variable
     ROOT_USERS = []
@@ -112,7 +109,8 @@ class Config:
     def __init__(self) -> None:             
         """Read environment variables"""               
         
-        #read key from the key.txt file
+        '''
+        #read key from the key.txt file        
         if exists(Config.SECRET_KEY_PATH):
             with open(Config.SECRET_KEY_PATH, "r") as fobj:
                 Config.SECRET_KEY = fobj.readline()
@@ -121,7 +119,9 @@ class Config:
             
             with open(Config.SECRET_KEY_PATH, "w") as f1:
                 f1.write(Config.SECRET_KEY)
-            
+        '''
+                
+        Config.SECRET_KEY = os.environ["API_SECRET_KEY"]            
         Config.JWT_SECRET_KEY = Config.SECRET_KEY
         
         #Read admin users and change values to lower
