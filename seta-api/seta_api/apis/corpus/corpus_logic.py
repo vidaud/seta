@@ -84,8 +84,7 @@ def corpus(term, n_docs, from_doc, sources, collection, reference, eurovoc_conce
                                 eurovoc_mth, ec_priority, sdg_domain, sdg_subdomain, euro_sci_voc, in_force, sort,
                                 semantic_sort_id, emb_vector, semantic_sort_id_list, emb_vector_list, author,
                                 date_range, aggs, search_type, other, current_app)
-    print("body: ", body)
     request = compose_request_for_msearch(body, current_app)
     res = current_app.es.msearch(searches=request)
-    documents = handle_corpus_response(aggs, res, search_type, semantic_sort_id, term, current_app, body)
+    documents = handle_corpus_response(aggs, res, search_type, semantic_sort_id, term)
     return documents

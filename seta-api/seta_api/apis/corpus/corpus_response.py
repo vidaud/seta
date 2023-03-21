@@ -7,13 +7,13 @@ from nltk.text import ConcordanceIndex
 import re
 
 
-def handle_corpus_response(aggs, res, search_type, semantic_sort_id, term, current_app, query_body):
+def handle_corpus_response(aggs, res, search_type, semantic_sort_id, term):
     documents = {"total_docs": None, "documents": []}
     for response in res["responses"]:
         if "error" in response:
             raise ApiLogicError('Malformed query.')
         documents["total_docs"] = retrieve_total_number(response, search_type)
-        documents = handle_aggs_response(aggs, response, search_type, documents, current_app, query_body)
+        documents = handle_aggs_response(aggs, response, documents)
         for document in response["hits"]["hits"]:
             abstract = document['_source']['abstract'] if isinstance(document['_source']['abstract'], str) else ""
             text = is_field_in_doc(document['_source'], "chunk_text")
@@ -56,40 +56,51 @@ def retrieve_total_number(response, search_type):
         return response['aggregations']['total']['value']
 
 
-def get_correct_aggregation_totals(current_app, aggs, original_query_body):
-    ids = get_ids(original_query_body, current_app)
-    body = {"size": 0, "query": {"ids": {"values": ids}}}
-    body = fill_body_for_aggregations(aggs, body)
-    request = compose_request_for_msearch(body, current_app)
-    res = current_app.es.msearch(searches=request)
-    for r in res["responses"]:
-        agg_res = r["aggregations"]
-        return agg_res
+def compose_multi_agg_response_tree(response_buckets):
+    aggregation = {}
+    for item in response_buckets:
+        s = item["key"][0]
+        c = item["key"][1]
+        r = item["key"][2]
+        if s not in aggregation:
+            aggregation[s] = {"doc_count": item["doc_count"], "collections": {}}
+            aggregation[s]["collections"][c] = {"doc_count": item["doc_count"], "references": {}}
+            aggregation[s]["collections"][c]["references"][r] = {"doc_count": item["doc_count"]}
+        else:
+            aggregation[s]["doc_count"] += item["doc_count"]
+            if c not in aggregation[s]["collections"]:
+                aggregation[s]["collections"][c] = {"doc_count": item["doc_count"], "references": {}}
+                aggregation[s]["collections"][c]["references"][r] = {"doc_count": item["doc_count"]}
+            else:
+                aggregation[s]["collections"][c]["doc_count"] += item["doc_count"]
+                if r not in aggregation[s]["collections"][c]["references"]:
+                    aggregation[s]["collections"][c]["references"][r] = {"doc_count": item["doc_count"]}
+                else:
+                    aggregation[s]["collections"][c]["references"][r]["doc_count"] += item["doc_count"]
+
+    tree = {"sources": []}
+    for s in aggregation:
+        source = {"key": s, "doc_count": aggregation[s]["doc_count"], "collections": []}
+        for c in aggregation[s]["collections"]:
+            collection = {"key": c, "doc_count": aggregation[s]["collections"][c]["doc_count"], "references": []}
+            for r in aggregation[s]["collections"][c]["references"]:
+                reference = {"key": r, "doc_count": aggregation[s]["collections"][c]["references"][r]["doc_count"]}
+                collection["references"].append(reference)
+            source["collections"].append(collection)
+        tree["sources"].append(source)
+    return tree
 
 
-def get_ids(original_query_body, current_app):
-    ids = []
-    new_body = {"query": original_query_body["query"],
-                "collapse": original_query_body["collapse"],
-                "_source": "_id"}
-    request = compose_request_for_msearch(new_body, current_app)
-    resp = current_app.es.msearch(searches=request)
-    for response in resp["responses"]:
-        for document in response["hits"]["hits"]:
-            ids.append(document['_id'])
-    return ids
-
-
-def handle_aggs_response(aggs, response, search_type, documents, current_app, original_query_body):
+def handle_aggs_response(aggs, response, documents):
     if aggs:
-        if search_type == "CHUNK_SEARCH":
-            response["aggregations"] = get_correct_aggregation_totals(current_app, aggs, original_query_body)
         documents["aggregations"] = {}
         if aggs == "date_year":
             years = response["aggregations"]["years"]["buckets"]
             documents["aggregations"]["years"] = {}
             for year in years:
                 documents["aggregations"]["years"][year["key_as_string"]] = year["doc_count"]
+        elif aggs == "source_collection_reference":
+            documents["aggregations"] = compose_multi_agg_response_tree(response["aggregations"][aggs]["buckets"])
         else:
             documents["aggregations"] = response["aggregations"][aggs]["buckets"]
     return documents

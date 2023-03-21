@@ -117,7 +117,8 @@ query_corpus_post_data = corpus_api.model(
         'sbert_embedding_list': fields.List(fields.List(fields.Float, description='list of embeddings vector')),
         'author': fields.String(description='author'),
         'date_range': fields.List(fields.String, description='examples: gte:yyyy-mm-dd,lte:yyyy-mm-dd,gt:yyyy-mm-dd,lt:yyyy-mm-dd'),
-        'aggs': fields.String(description='field to be aggregated, allowed fields are: "date_year"'),
+        'aggs': fields.String(description='field to be aggregated, allowed fields are: "source", "eurovoc_concept", '
+                                          '"date_year", "source_collection_reference"'),
         'other': fields.List(other, descritpion='"other":[{"other.crc":"de1cbd1eecdd19cb0d527f3a3433c6958e4b8b1b02ce69c960e02a611f27b036"}]')    }
 )      
         
@@ -226,7 +227,8 @@ class CorpusQuery(Resource):
                     'semantic_sort_id_list': 'sort results by semantic distance among documents',
                     'author': 'description',
                     'date_range': 'gte:yyyy-mm-dd,lte:yyyy-mm-dd,gt:yyyy-mm-dd,lt:yyyy-mm-dd',
-                    'aggs': 'field to be aggregated, allowed fields are: "source", "eurovoc_concept"'},
+                    'aggs': 'field to be aggregated, allowed fields are: "source", "eurovoc_concept", "date_year", '
+                            '"source_collection_reference"'},
             responses={200: 'Success', 401: 'Forbbiden access to the resource', 404: 'Not Found Error'},
             security='apikey')
     def get(self):

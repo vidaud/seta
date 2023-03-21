@@ -99,7 +99,7 @@ def check_embeddings_query(current_app, emb_vector, emb_vector_list, query, sema
 
 
 def fill_body_for_aggregations(aggs, body):
-    list_of_aggs_fields = ["source", "eurovoc_concept", "date_year", "multi_aggregation"]
+    list_of_aggs_fields = ["source", "eurovoc_concept", "date_year", "source_collection_reference"]
 
     if aggs and (aggs not in list_of_aggs_fields):
         raise ApiLogicError('Malformed query. Wrong aggs parameter')
@@ -111,7 +111,7 @@ def fill_body_for_aggregations(aggs, body):
         if aggs == "date_year":
             agg_body = {"date_histogram": {"field": "date", "calendar_interval": "year", "format": "yyyy"}}
             body = add_aggs(agg_body, "years", body)
-        if aggs == "multi_aggregation":
+        if aggs == "source_collection_reference":
             agg_body = {"multi_terms": {"terms": [{"field": "source.keyword"},
                                                   {"field": "collection.keyword", "missing": "NO_CLASS"},
                                                   {"field": "reference.keyword", "missing": "NO_CLASS"}]}}
