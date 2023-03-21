@@ -1,0 +1,92 @@
+version: "3.8"
+services:
+  seta-mongo-test:    
+    extends:
+      file: common.yml
+      service: mongo
+    env_file:
+      - .env.test
+    restart: "no"
+    ports:
+      - "27018:27017"
+    networks:
+      - seta-network-test
+
+  seta-es-test:
+    extends:
+      file: common.yml
+      service: es
+    env_file:
+      - .env.test
+    restart: "no"   
+    ports:
+      - "0.0.0.0:9200:9200"
+      - "0.0.0.0:9300:9300"
+    networks:
+      - seta-network-test
+
+  seta-api-test:
+    extends:
+      file: common.yml
+      service: api
+    env_file:
+      - .env.test
+    restart: "no"
+    build:
+      dockerfile: Dockerfile-test
+    networks:
+      - seta-network-test
+    depends_on:
+      - "seta-mongo-test"
+      - "seta-es-test"
+
+  seta-nginx-test:
+    extends:
+      file: common.yml
+      service: nginx
+    env_file:
+      - .env.test
+    restart: "no"
+    build: 
+       dockerfile: Dockerfile-test
+    ports:
+      - "8080:8080"
+    depends_on:
+      - "seta-api-test"
+      - "seta-ui-test"
+    networks:
+      - seta-network-test
+
+  seta-ui-test:
+    extends:
+      file: common.yml
+      service: ui
+    env_file:
+      - .env.test
+    restart: "no"
+    build: 
+       dockerfile: Dockerfile-test
+    depends_on:
+      - "seta-api-test"
+    networks:
+      - seta-network-test
+
+
+  seta-data-test:
+    extends:
+      file: common.yml
+      service: data
+    env_file:
+      - .env.test
+    build:
+      dockerfile: Dockerfile-test
+    depends_on:
+      - "seta-es-test"
+    networks:
+      - seta-network-test
+
+
+networks:
+  seta-network-test:
+    name: seta-network-test
+    driver: bridge
