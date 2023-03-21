@@ -1,6 +1,6 @@
 cd ./seta-compose
-docker-compose build
-docker-compose up
+docker compose build
+docker compose up
 
 # it will setup all system and data.
 # it will take a while depending on the Internet speed. Might take 30min to 2h.
@@ -17,7 +17,7 @@ CTRL + C
 # and it will stop gracefuly
 # if you started in detached mode ('docker-compose up -d') you can stop services with 
 
-docker-compose down
+docker compose down
 
 # the minimum requirements are:
 # at least 10GB available free RAM.
@@ -26,18 +26,17 @@ docker-compose down
 
 # The first run will take time. The next run will be fast.
 
-docker-compose -f docker-compose-dev.yml build
+docker compose -f docker-compose.yml -f docker-compose-dev.yml build
 # (re-)build all images
 
-docker-compose -f docker-compose-dev.yml build seta-ui
+docker compose -f docker-compose.yml -f docker-compose-dev.yml build seta-ui
 # (re-)build only seta-ui image
 
-docker-compose -f docker-compose-dev.yml up
+docker compose -f docker-compose.yml -f docker-compose-dev.yml up
 # start all services for your environment locally
 
-docker-compose -f docker-compose-dev.yml up -d
+docker compose -f docker-compose.yml -f docker-compose-dev.yml up -d
 # start all services for your environment locally in detached mode
 
-docker-compose -f docker-compose-dev.yml up  --force-recreate --build --no-deps seta-ui
+docker compose -f docker-compose.yml -f docker-compose-dev.yml up  --force-recreate --build --no-deps seta-ui
 # rebuild and restart seta-ui services while other services are runing. 
-
