@@ -10,7 +10,7 @@ services:
     build:
       context: ../seta-api
       dockerfile: Dockerfile-dev-flask
-    volumes: 
+    volumes:
       - ../seta-api:/home/seta
 
   seta-nginx:
@@ -19,19 +19,21 @@ services:
         - PROJECT_CONF=project_dev
 
   seta-ui:
-    build: 
+    build:
        context: ../seta-ui
        dockerfile: Dockerfile-dev-flask
     ports:
       - "5678:5678"
-    volumes: 
+    volumes:
       - ../seta-ui:/home/seta
 
   seta-ui-react:
-    build: 
+    build:
        context: ../seta-react
        dockerfile: Dockerfile-dev
-    volumes: 
+    ports:
+      - "3000:3000"
+    volumes:
       - ../seta-react:/home/seta
       - /home/seta/node_modules
     environment:

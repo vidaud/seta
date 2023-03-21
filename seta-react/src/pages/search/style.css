@@ -7,10 +7,8 @@
 }
 .tab {
     padding-block-start: 2rem;
-    /* padding: 2rem; */
 }
 .list {
-    /* width: 95%; */
     margin-right: 0;
 }
 
@@ -52,7 +50,6 @@
     }
 }
 .table-filters {
-    /* border: 1px solid #3B82F6; */
     width: 40%;
     box-shadow: 0 1px 2px rgb(0 0 0 / 6%), 0 1px 2px rgb(0 0 0 / 13%);
     border-radius: 6px;
@@ -63,9 +60,6 @@
 .tab-filter > .card > .p-tabmenu .p-tabmenu-nav .p-tabmenuitem {
     width: 50%;
 }
-/* button > .pi-user {
-    color: white !important;
-} */
 
 .pi-power-off {
     color: white !important;
@@ -115,7 +109,6 @@
     box-sizing: border-box;
 }
 .p-tree {
-    /* border: 1px solid #dee2e6; */
     background: #ffffff;
     color: #495057;
     padding: 1.25rem;
@@ -140,15 +133,11 @@
 .overlay_panel > .p-overlaypanel-content > .p-listbox .p-listbox-list {
     height: 200px;
 }
-/* .overlaypanel > .p-overlaypanel-content > .p-listbox .p-listbox-list {
-    height: 200px;
-} */
+
 .p-tree {
     padding: 0;
 }
-/* .p-tree .p-treenode-children {
-    display: inline-flex;
-} */
+
 .p-tree-container {
     width: -webkit-fill-available;
     width: -moz-available;

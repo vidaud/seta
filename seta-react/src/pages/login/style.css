@@ -9,7 +9,6 @@
     transition: background-position 0.5s ease-out;
     color: #fff;
     border-color: var(--bluegray-800) !important;
-    /* margin-top: 3%; */
 }
 .p-button.github:hover {
     background-position: left bottom;
@@ -24,9 +23,6 @@
     width: 30%;
     margin: 2%;
 }
-/* .p-button {
-    display: inline !important;
-} */
 
 @media screen and (max-width: 960px) {
     .card-position .p-button {

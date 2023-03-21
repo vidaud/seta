@@ -1,23 +1,37 @@
-import { useEffect, useRef, useState } from 'react';
-import './style.css';
-import { Button } from 'primereact/button';
-import TabMenus from '../../components/tab-menu/tab-menu';
-import DialogButton from '../../components/dialog/dialog';
-import { Term } from '../../models/term.model';
-import { CorpusService } from '../../services/corpus/corpus.service';
-import { CorpusSearchPayload } from '../../store/corpus-search-payload';
-import { BreadCrumb } from 'primereact/breadcrumb';
-import { SuggestionsService } from '../../services/corpus/suggestions.service';
-import { OntologyListService } from '../../services/corpus/ontology-list.service';
-import { OverlayPanel } from 'primereact/overlaypanel';
-import { InputText } from 'primereact/inputtext';
-import { Dropdown } from 'primereact/dropdown';
-import { ToggleButton } from 'primereact/togglebutton';
-import { SimilarsService } from '../../services/corpus/similars.service';
-import { SelectButton } from 'primereact/selectbutton';
-import { DataTable } from 'primereact/datatable';
-import { Column } from 'primereact/column';
-import { defaultTypeOfSearch, itemsBreadCrumb, home, typeOfSearches, columns, getWordAtNthPosition, isPhrase, transform, getSelectedTerms, getListOfTerms, transformOntologyList } from './constants';
+import { useEffect, useRef, useState } from 'react'
+import { BreadCrumb } from 'primereact/breadcrumb'
+import { Button } from 'primereact/button'
+import { Column } from 'primereact/column'
+import { DataTable } from 'primereact/datatable'
+import { Dropdown } from 'primereact/dropdown'
+import { InputText } from 'primereact/inputtext'
+import { OverlayPanel } from 'primereact/overlaypanel'
+import { SelectButton } from 'primereact/selectbutton'
+import { ToggleButton } from 'primereact/togglebutton'
+
+import './style.css'
+
+import {
+  defaultTypeOfSearch,
+  itemsBreadCrumb,
+  home,
+  typeOfSearches,
+  columns,
+  getWordAtNthPosition,
+  isPhrase,
+  getSelectedTerms,
+  getListOfTerms,
+  transformOntologyList
+} from './constants'
+
+import DialogButton from '../../components/dialog/dialog'
+import TabMenus from '../../components/tab-menu/tab-menu'
+import type { Term } from '../../models/term.model'
+import { CorpusService } from '../../services/corpus/corpus.service'
+import { OntologyListService } from '../../services/corpus/ontology-list.service'
+import { SimilarsService } from '../../services/corpus/similars.service'
+import { SuggestionsService } from '../../services/corpus/suggestions.service'
+import { CorpusSearchPayload } from '../../store/corpus-search-payload'
 
 const Search = () => {
     const [showContent, setShowContent] = useState(false);
@@ -49,7 +63,7 @@ const Search = () => {
     const isMounted = useRef(false);
     const op = useRef<OverlayPanel>(null);
     let cp: CorpusSearchPayload;
-    
+
     const corpusService = new CorpusService();
     const suggestionsService = new SuggestionsService();
     const ontologyListService = new OntologyListService();
@@ -138,7 +152,7 @@ const Search = () => {
         result = result + ' ' + listOfValues.join(' ')
         setTerm(result);
     }
-    
+
     const toggleSelectAll = (items, allList) => {
         if (items.length === allList.length) {
             setSelectAll(true)
@@ -146,7 +160,7 @@ const Search = () => {
             setSelectAll(false)
         }
     }
-    
+
     const getOntologyList = (lastKeyword) => {
         ontologyListService.retrieveOntologyList(lastKeyword).then(data => {
             if (data) {
@@ -170,42 +184,50 @@ const Search = () => {
         return ontologyTermList;
     }
 
-    const getSimilarsList = (lastKeyword) => {
-        similarService.retrieveSimilars(lastKeyword).then(data => {
-            if (data) {
-                if (data.length > 0) {
-                    let list: any = [];
-                    if (data && data.length > 0) {
-                        data.forEach(element => {
-                            list.push(element.similar_word);
-                        });
-                        setSimilarTerms(list);
-                    }
-                }
-            }
-        });
-    }
+  const getSimilarsList = lastKeyword => {
+    similarService.retrieveSimilars(lastKeyword).then(data => {
+      if (data) {
+        if (data.length > 0) {
+          const list: any = []
 
-    const getSimilarsTerms = (lastKeywords) => {
-        let similarsTermsList: any = [];
-        lastKeywords.forEach(lastKeyword => {
-        similarService.retrieveSimilars(lastKeyword).then(data => {
-            if (data) {
-                if (data.length > 0) {
-                    let list: any = [];
-                    if (data && data.length > 0) {
-                        data.forEach(element => {
-                            isPhrase(element.similar_word) ? list.push(`"${element.similar_word}"`) : list.push(element.similar_word);
-                        });
-                        setSimilarTerms(list);
-                        similarsTermsList.push(...[list]);
-                    }
-                }
+          if (data && data.length > 0) {
+            data.forEach(element => {
+              list.push(element.similar_word)
+            })
+
+            setSimilarTerms(list)
+          }
+        }
+      }
+    })
+  }
+
+  const getSimilarsTerms = lastKeywords => {
+    const similarsTermsList: any = []
+
+    lastKeywords.forEach(lastKeyword => {
+      similarService.retrieveSimilars(lastKeyword).then(data => {
+        if (data) {
+          if (data.length > 0) {
+            const list: any = []
+
+            if (data && data.length > 0) {
+              data.forEach(element => {
+                isPhrase(element.similar_word)
+                  ? list.push(`"${element.similar_word}"`)
+                  : list.push(element.similar_word)
+              })
+
+              setSimilarTerms(list)
+              similarsTermsList.push(...[list])
             }
-        });
-        });
-        return similarsTermsList;
-    }
+          }
+        }
+      })
+    })
+
+    return similarsTermsList
+  }
 
     const onSearch = () => {
         if (term.length >= 2) {
@@ -226,32 +248,35 @@ const Search = () => {
             });
             setShowContent(true);
         }
-        else {
-            setShowContent(false); 
-        }
-    }
-    
-    const getDocumentList = (list) => {
-        setDocumentList(items)
-    }
+      })
 
-    const getTextValue = (text) => {
-        if (text !== '') {
-            setTerm(text);
-        }
+      setShowContent(true)
+    } else {
+      setShowContent(false)
     }
+  }
 
-    const getFileName = (filename) => {
-        if (filename !== '') {
-            setTerm(filename);
-        }
-    }
+  const getDocumentList = list => {
+    setDocumentList(items)
+  }
 
-    const toggleListVisibility = (show) => {
-        if (show) {
-            setShowContent(true);
-        }
+  const getTextValue = text => {
+    if (text !== '') {
+      setTerm(text)
     }
+  }
+
+  const getFileName = filename => {
+    if (filename !== '') {
+      setTerm(filename)
+    }
+  }
+
+  const toggleListVisibility = show => {
+    if (show) {
+      setShowContent(true)
+    }
+  }
 
     const onChangeOption = (e: { value: any}) => {
         setSelectedTypeSearch(e.value);
@@ -336,18 +361,18 @@ const Search = () => {
                     else {
                         splitedOROperator.push(getOntologyTerms(element.split(' OR ')));
                     }
-                    setOntologyListItems(splitedOROperator) 
+                    setOntologyListItems(splitedOROperator)
                 });
             }
         } else {
             callService(selectedTypeSearch.code);
         }
     }
-    
+
     const toggleOverlayPanel  = (event) => {
         console.log(event)
     }
-    
+
     const suggestionsTemplate = (value) => {
         let string = value.substr(
             0,
@@ -383,7 +408,7 @@ const Search = () => {
         if (code === 'RC') {
             setTimeout(() => {
                 setLoading(true);
-                getOntologyList(inputText);                                
+                getOntologyList(inputText);
             }, 250);
         }
         else if(code === 'RT') {
@@ -412,7 +437,7 @@ const Search = () => {
                     setInputText(keyword[0]);
                     if (!enrichQuery) {
                         getOntologyList(keyword[0]);
-                    }                              
+                    }
                 }, 250);
                 op.current?.show(e,e.target);
                 setTerm(e.target.value);
@@ -436,23 +461,23 @@ const Search = () => {
         }
     }
 
-    const activityBodyTemplate = (rowData) => {
-        return (
-            <SelectButton value={ontologyValue} className="suggestions-list"
-            onChange={
-                (e) => {
-                    selectNode(e.value);
-                }
-            }  
-            options={rowData.node}
-            multiple={true}
-            />
-        )
-    }
+  const activityBodyTemplate = rowData => {
+    return (
+      <SelectButton
+        value={ontologyValue}
+        className="suggestions-list"
+        onChange={e => {
+          selectNode(e.value)
+        }}
+        options={rowData.node}
+        multiple={true}
+      />
+    )
+  }
 
-    const columnComponents = selectedColumns.map(col=> {
-            return <Column showFilterMatchModes={false} body={activityBodyTemplate}/>
-    });
+  const columnComponents = selectedColumns.map(col => {
+    return <Column key={col.header} showFilterMatchModes={false} body={activityBodyTemplate} />
+  })
 
     return (
         <>
@@ -512,7 +537,7 @@ const Search = () => {
                                                         }
                                                     }
                                                 }
-                                            } /> 
+                                            } />
                                         : <span></span>}
                                     </div>
                                     <div className='search_dropdown div-size-2'>
@@ -544,31 +569,31 @@ const Search = () => {
                                                             } else {
                                                                 let result = term.replace(inputText, e.value);
                                                                 setTerm(result);
-                                                            } 
+                                                            }
                                                         }
                                                         op.current?.hide();
                                                     }
-                                                }  
+                                                }
                                                 itemTemplate={suggestionsTemplate}
-                                                options={suggestedTerms} 
+                                                options={suggestedTerms}
                                             />
                                         </div>
                                     </>
                                 </div>
                                 <div className='div-size-2'>
-                                    { (selectedTypeSearch.code === 'RC' && enrichQuery === false) ? 
+                                    { (selectedTypeSearch.code === 'RC' && enrichQuery === false) ?
                                             <>
                                                 <DataTable lazy={true} loading={loading} value={ontologyList} showSelectAll={false} className="dataTable-list" selection={selectedRelatedTermsCl} onSelectionChange={
                                                         (e) => selectNode(e.value)
-                                                    } 
-                                                    dataKey='id' 
+                                                    }
+                                                    dataKey='id'
                                                     responsiveLayout="scroll"
                                                     >
                                                     <Column selectionMode="multiple" headerStyle={{width: '3em'}}></Column>
                                                     {columnComponents}
                                                 </DataTable>
                                             </>
-                                        : (selectedTypeSearch.code === 'RT' && enrichQuery === false) ? 
+                                        : (selectedTypeSearch.code === 'RT' && enrichQuery === false) ?
                                             <>
                                                 <div className="card flex justify-content-center similars">
                                                 <SelectButton value={similarValues} className="suggestions-list"
@@ -576,7 +601,7 @@ const Search = () => {
                                                         (e) => {
                                                             selectAllTerms(e.value)
                                                         }
-                                                    }  
+                                                    }
                                                     options={similarTerms}
                                                     multiple={true}
                                                 />
@@ -592,7 +617,7 @@ const Search = () => {
                 </div>
             </div>
             <div>
-                { showContent ? 
+                { showContent ?
                     <TabMenus
                         data={items}
                         term={term}

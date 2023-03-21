@@ -1,18 +1,19 @@
-import './App.css';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Home from './pages/home/home';
-import Faqs from './pages/faqs/faqs';
-import Contact from './pages/contact/contact';
-import Search from './pages/search/search';
-import Profile from './pages/profile/profile';
-import Login from './pages/login/login';
-import NotFoundPage from './pages/not-found/not-found';
-import Dashboard from './pages/dashboard/dashboard';
-import { ProtectedRoute } from './components/protected-route/protected-route';
-import Communities from './pages/communities/communities';
-import "primereact/resources/themes/lara-light-blue/theme.css";
-import "primereact/resources/primereact.min.css";
-import "primeicons/primeicons.css"; 
+import './App.css'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
+
+import { ProtectedRoute } from './components/protected-route/protected-route'
+import Communities from './pages/communities/communities'
+import Contact from './pages/contact/contact'
+import Dashboard from './pages/dashboard/dashboard'
+import Faqs from './pages/faqs/faqs'
+import Home from './pages/home/home'
+import Login from './pages/login/login'
+import NotFoundPage from './pages/not-found/not-found'
+import Profile from './pages/profile/profile'
+import Search from './pages/search/search'
+import 'primereact/resources/themes/lara-light-blue/theme.css'
+import 'primereact/resources/primereact.min.css'
+import 'primeicons/primeicons.css'
 
 function App() {
   return (
@@ -57,7 +58,7 @@ function App() {
         </Routes>
       </BrowserRouter>
     </div>
-  );
+  )
 }
 
-export default App;
+export default App

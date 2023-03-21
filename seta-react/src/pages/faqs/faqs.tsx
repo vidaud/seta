@@ -1,63 +1,60 @@
+import { useState, useEffect } from 'react'
+import parse from 'html-react-parser'
+import { BreadCrumb } from 'primereact/breadcrumb'
+import { ScrollTop } from 'primereact/scrolltop'
+import { Tree } from 'primereact/tree'
 
-import { useState, useEffect } from 'react';
-import { Tree } from 'primereact/tree';
-import { FaqsService } from '../../services/FaqsService';
-import { ScrollTop } from 'primereact/scrolltop';
-import { BreadCrumb } from 'primereact/breadcrumb';
-import './style.css';
-import parse from 'html-react-parser';
-
+import { FaqsService } from '../../services/FaqsService'
+import './style.css'
 
 const Faqs = () => {
-    const [nodes, setNodes] = useState<any>();
-    const nodeService = new FaqsService();
-    
-    const breadCrumbsItems = [
-        {label: 'Faqs', url: '/seta-ui/faqs'}
-    ];
+  const [nodes, setNodes] = useState<any>()
+  const nodeService = new FaqsService()
 
-    const home = { icon: 'pi pi-home', url: '/seta-ui' }
+  const breadCrumbsItems = [{ label: 'Faqs', url: '/seta-ui/faqs' }]
 
-    const expandNode = (node, _expandedKeys) => {
-        if (node.children && node.children.length) {
-            _expandedKeys[node.key] = true;
+  const home = { icon: 'pi pi-home', url: '/seta-ui' }
 
-            for (let child of node.children) {
-                expandNode(child, _expandedKeys);
-            }
-        }
+  const expandNode = (node, _expandedKeys) => {
+    if (node.children && node.children.length) {
+      _expandedKeys[node.key] = true
+
+      for (const child of node.children) {
+        expandNode(child, _expandedKeys)
+      }
     }
+  }
 
-    useEffect(() => {
-        let nodeData = nodeService.getTreeNodes();
-        setNodes(nodeData)
-    }, []); 
+  useEffect(() => {
+    const nodeData = nodeService.getTreeNodes()
 
+    setNodes(nodeData)
+  }, [])
 
-    const nodeTemplate = (node, options) => {
-        let data = parse(node.data);
+  const nodeTemplate = (node, options) => {
+    const data = parse(node.data)
 
-        return (
-            <span style={{ textAlign: 'justify' }}>
-                {data}
-            </span>
-        )
-    }
+    return <span style={{ textAlign: 'justify' }}>{data}</span>
+  }
 
-
-    return (
-        <><BreadCrumb model={breadCrumbsItems} home={home} />
-        <div className='page'>
-        <h1 className='headerH'>FAQs</h1>
-            <div className='card'>
-                <ScrollTop />
-                    <div className="col-10">
-                        <Tree className='p-fixedTree, p-fixedTreenode-children' value={nodes} nodeTemplate={nodeTemplate} />
-                    </div>                    
-            </div>
+  return (
+    <>
+      <BreadCrumb model={breadCrumbsItems} home={home} />
+      <div className="page">
+        <h1 className="headerH">FAQs</h1>
+        <div className="card">
+          <ScrollTop />
+          <div className="col-10">
+            <Tree
+              className="p-fixedTree, p-fixedTreenode-children"
+              value={nodes}
+              nodeTemplate={nodeTemplate}
+            />
+          </div>
         </div>
-    </>        
-    );
+      </div>
+    </>
+  )
 }
 
-export default Faqs;
+export default Faqs

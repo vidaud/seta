@@ -1,9 +1,7 @@
-// import React from 'react';
-import './style.css';
+import './style.css'
 
 const Communities = () => {
-    return (
-        <div className='page'></div>
-        );
-    }
-export default Communities;
+  return <div className="page" />
+}
+
+export default Communities
