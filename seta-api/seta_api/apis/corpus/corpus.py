@@ -6,7 +6,7 @@ from seta_api.infrastructure.ApiLogicError import ApiLogicError, ForbiddenResour
 from seta_api.infrastructure.auth_validator import auth_validator, validate_view_permissions, validate_add_permission, validate_delete_permission
 from seta_api.infrastructure.helpers import is_field_in_doc
 
-from .corpus_logic import corpus, delete_doc, docbyid, insert_doc
+from .corpus_logic import corpus, delete_doc, doc_by_id, insert_doc
 from .variables import corpus_parser, keywords, metadata, other
 
 from http import HTTPStatus
@@ -24,8 +24,8 @@ class Corpus(Resource):
             security='apikey')
     def get(self, id):
         try:
-            doc = docbyid(id, es=app.es, index=app.config['INDEX_PUBLIC'])
-            
+
+            doc = doc_by_id(id, es=app.es, index=app.config['INDEX_PUBLIC'])
             validate_view_permissions(sources=[doc.get("source", None)])
             
             return doc
@@ -44,7 +44,8 @@ class Corpus(Resource):
             security='apikey')
     def delete(self, id):
         try:
-            doc = docbyid(id, es=app.es, index=app.config['INDEX_PUBLIC'])            
+            doc = doc_by_id(id, current_app=app)
+            doc = doc_by_id(id, es=app.es, index=app.config['INDEX_PUBLIC'])            
             resource_id = doc.get("source", None)
             
             if not validate_delete_permission(resource_id):
@@ -117,7 +118,8 @@ query_corpus_post_data = corpus_api.model(
         'sbert_embedding_list': fields.List(fields.List(fields.Float, description='list of embeddings vector')),
         'author': fields.String(description='author'),
         'date_range': fields.List(fields.String, description='examples: gte:yyyy-mm-dd,lte:yyyy-mm-dd,gt:yyyy-mm-dd,lt:yyyy-mm-dd'),
-        'aggs': fields.String(description='field to be aggregated, allowed fields are: "date_year"'),
+        'aggs': fields.String(description='field to be aggregated, allowed fields are: "source", "eurovoc_concept", '
+                                          '"date_year", "source_collection_reference"'),
         'other': fields.List(other, descritpion='"other":[{"other.crc":"de1cbd1eecdd19cb0d527f3a3433c6958e4b8b1b02ce69c960e02a611f27b036"}]')    }
 )      
         
@@ -226,7 +228,8 @@ class CorpusQuery(Resource):
                     'semantic_sort_id_list': 'sort results by semantic distance among documents',
                     'author': 'description',
                     'date_range': 'gte:yyyy-mm-dd,lte:yyyy-mm-dd,gt:yyyy-mm-dd,lt:yyyy-mm-dd',
-                    'aggs': 'field to be aggregated, allowed fields are: "source", "eurovoc_concept"'},
+                    'aggs': 'field to be aggregated, allowed fields are: "source", "eurovoc_concept", "date_year", '
+                            '"source_collection_reference"'},
             responses={200: 'Success', 401: 'Forbbiden access to the resource', 404: 'Not Found Error'},
             security='apikey')
     def get(self):
