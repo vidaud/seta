@@ -62,7 +62,7 @@ export const createTree = (nodes) => {
     }
 }
 
-export const itsPhrase = (s): boolean => {
+export const isPhrase = (s): boolean => {
     const reWhiteSpace = new RegExp("\\s+");
         if (reWhiteSpace.test(s)) {
             return true;
@@ -195,7 +195,7 @@ export const getListOfTerms = (terms) => {
   let listOF = terms.replace(/"([^"]+)"|\s+/g, (m, g1) => g1 ? g1 : '\"').split('"');
   let newListOF: any = [];
   listOF.forEach(element => {
-      itsPhrase(element) ? newListOF.push(`"${element}"`) : newListOF.push(element);
+    isPhrase(element) ? newListOF.push(`"${element}"`) : newListOF.push(element);
   });
   let transformedList: any = [];
   newListOF.forEach(element => {
