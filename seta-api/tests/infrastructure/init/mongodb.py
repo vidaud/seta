@@ -1,5 +1,6 @@
-from flask import current_app, json
+import json
 from pymongo import MongoClient
+from pathlib import Path
 
 import datetime
 import pytz
@@ -21,13 +22,17 @@ class DbTestSetaApi:
         
             
         created_at = datetime.datetime.now(tz=pytz.utc)
-        data_path="../tests/infrastructure/data"
+        
+        base_path = Path(__file__).parent
+        users_file_path="../data/users.json"
+        
+        users_full_path = (base_path / users_file_path).resolve()
              
         '''
             Load users:
         '''
         
-        with current_app.open_resource(f"{data_path}/users.json") as fp:
+        with open(users_full_path) as fp:
             data = json.load(fp)
       
         collection = self.db["users"]
@@ -47,9 +52,11 @@ class DbTestSetaApi:
                                    "created_at": created_at})
 
             #insert public key
-            pub_path = f"{data_path}/{user_id}.pub"
-            with current_app.open_resource(resource=pub_path) as fk:
-                key = fk.read().decode("utf8")
+            pub_path=f"../data/{user_id}.pub"        
+            full_path = (base_path / pub_path).resolve()
+            
+            with open(full_path, encoding="utf-8") as fk:
+                key = fk.read()
                 collection.insert_one({"user_id": user_id, "rsa_value": key, "created_at": created_at})
 
             #current_app.logger.debug("Append user: " + su.user_id)            
@@ -67,7 +74,11 @@ class DbTestSetaApi:
         '''
             Load communities:
         '''
-        with current_app.open_resource(f"{data_path}/communities.json") as fp:
+        comm_file_path="../data/communities.json"
+        
+        comm_full_path = (base_path / comm_file_path).resolve()
+        
+        with open(comm_full_path) as fp:
             data = json.load(fp)
             
         collection = self.db["communities"]
@@ -89,8 +100,12 @@ class DbTestSetaApi:
         '''
             Load resources:
         '''
-        with current_app.open_resource(f"{data_path}/resources.json") as fp:
-            data = json.load(fp)
+        res_file_path="../data/resources.json"
+        
+        res_full_path = (base_path / res_file_path).resolve()
+        
+        with open(res_full_path) as fr:
+            data = json.load(fr)
             
         collection = self.db["resources"]
             

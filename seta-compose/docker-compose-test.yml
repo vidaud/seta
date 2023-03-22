@@ -1,0 +1,108 @@
+version: "3.8"
+name: seta-test
+services:
+  seta-mongo-test:
+    container_name: mongo-test
+    extends:
+      file: common.yml
+      service: mongo
+    env_file:
+      - .env.test
+    restart: "no"
+    ports:
+      - "27018:27017"
+    networks:
+      - seta-network-test
+
+  seta-es-test:
+    container_name: es-test
+    extends:
+      file: common.yml
+      service: es
+    env_file:
+      - .env.test
+    restart: "no"   
+    ports:
+      - "0.0.0.0:9200:9200"
+      - "0.0.0.0:9300:9300"
+    volumes:
+      - seta-es3-test:/usr/share/elasticsearch/data
+    networks:
+      - seta-network-test
+
+  seta-api-test:
+    container_name: api-test
+    extends:
+      file: common.yml
+      service: api
+    env_file:
+      - .env.test
+    restart: "no"
+    build:
+      dockerfile: Dockerfile-test
+    networks:
+      - seta-network-test
+    depends_on:
+      - "seta-mongo-test"
+      - "seta-es-test"
+
+  seta-nginx-test:
+    container_name: nginx-test
+    extends:
+      file: common.yml
+      service: nginx
+    env_file:
+      - .env.test
+    restart: "no"
+    build: 
+       args:
+        - PROJECT_CONF=project_test
+    ports:
+      - "8080:8080"
+    depends_on:
+      - "seta-api-test"
+      - "seta-ui-test"
+    networks:
+      - seta-network-test
+
+  seta-ui-test:
+    container_name: ui-test
+    extends:
+      file: common.yml
+      service: ui
+    env_file:
+      - .env.test
+    restart: "no"
+    build: 
+      dockerfile: Dockerfile-test
+    depends_on:
+      - "seta-api-test"
+    networks:
+      - seta-network-test
+
+
+  seta-data-test:
+    container_name: data-test
+    extends:
+      file: common.yml
+      service: data
+    env_file:
+      - .env.test
+    depends_on:
+      - "seta-es-test"
+    volumes:
+      - seta-models3-test:/home/seta/models
+    networks:
+      - seta-network-test
+    environment:
+      - APP_ENV=test
+
+
+networks:
+  seta-network-test:
+    name: seta-network-test
+    driver: bridge
+
+volumes:
+  seta-es3-test:
+  seta-models3-test:

@@ -3,10 +3,9 @@ FROM ubuntu:22.04
 RUN echo "Acquire::http::Proxy \""$HTTP_PROXY"\";" >> /etc/apt/apt.conf
 ENV https_proxy=$HTTP_PROXY
 ENV http_proxy=$HTTP_PROXY
-ENV no_proxy="seta-es-test,seta-mongo-test,seta-api-test,seta-nginx-test,seta-ui-test"
+
 ENV HTTPS_PROXY=$HTTP_PROXY
 ENV HTTP_PROXY=$HTTP_PROXY
-ENV NO_PROXY=$no_proxy
 
 RUN apt update -y
 RUN apt install -y  --no-install-recommends curl
@@ -41,6 +40,7 @@ RUN python3 -c 'from sentence_transformers import SentenceTransformer; SentenceT
 
 COPY ./*.py ./
 COPY ./seta_api ./seta_api
+COPY ./tests ./tests
 
 #log setup
 ENV LOG_LEVEL="DEBUG"
