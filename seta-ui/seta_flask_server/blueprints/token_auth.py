@@ -51,14 +51,14 @@ class JWTUserToken(Resource):
         user_id = args['user_id']
         user = self.usersBroker.get_user_by_id(user_id)
         if not user:
-            abort(501, "Invalid User")
+            return 'Invalid User', 501            
             
         public_key = self.rsaBroker.get_rsa_key(user_id)
         if public_key is None:
-            abort(503, "Public Key Unset")
+            return 'Public Key Unset', 503            
             
         if not validate_public_key(public_key, args['rsa_original_message'], args['rsa_message_signature']):
-            abort(502, "Invalid Signature") 
+            return 'Invalid Signature', 502             
             
         identity = user.to_identity_json()
         additional_claims = {
