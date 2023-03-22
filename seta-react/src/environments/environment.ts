@@ -1,7 +1,7 @@
 export const environment = {
   production: false,
   test: false,
-  baseUrl: `http://localhost:3000`,
+  baseUrl: `http://localhost`,
   baseApplicationContext: `/seta-ui/`,
   restEndPoint: `rest/`,
   _regex: new RegExp(`_`, `g`),
@@ -9,7 +9,7 @@ export const environment = {
   loginTokenExpiryInterval: 60, // In minutes
   
   //api_target_path: `https://seta-test.emm4u.eu/seta-api/seta/api/v1/`,
-  api_target_path: `http://localhost:3000/seta-api/api/v1/`, 
+  api_target_path: `http://localhost/seta-api/api/v1/`, 
   //token_key: 'accessToken',
   //refreshtoken_key: 'refreshToken',
   token_key: 'csrf_access_token',
