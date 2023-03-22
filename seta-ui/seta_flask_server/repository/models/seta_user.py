@@ -208,12 +208,12 @@ class SetaUser:
     
     @classmethod 
     def from_db_json(cls, json_dict):
-        return cls(json_dict["user_id"],
-                   json_dict["email"],
-                   json_dict["user_type"],
-                   json_dict["status"],
-                   json_dict["created_at"],
-                   json_dict["modified_at"])
+        return cls(user_id=json_dict["user_id"],
+                   email=json_dict["email"],
+                   user_type=json_dict["user_type"],
+                   status=json_dict["status"],
+                   created_at=json_dict["created_at"],
+                   modified_at=json_dict.get("modified_at", None))
       
     @classmethod
     def from_ecas_json(cls, json_dct):

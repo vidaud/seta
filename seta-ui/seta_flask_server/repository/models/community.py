@@ -56,15 +56,15 @@ class CommunityModel:
     
     @classmethod 
     def from_db_json(cls, json_dict):
-        return cls(json_dict["community_id"],
-                   json_dict["title"],
-                   json_dict["description"],
-                   json_dict["membership"],
-                   json_dict["data_type"],
-                   json_dict["status"],
-                   json_dict["creator_id"],
-                   json_dict["created_at"],
-                   json_dict["modified_at"])
+        return cls(community_id=json_dict["community_id"],
+                   title=json_dict["title"],
+                   description=json_dict["description"],
+                   membership=json_dict["membership"],
+                   data_type=json_dict["data_type"],
+                   status=json_dict["status"],
+                   creator_id=json_dict["creator_id"],
+                   created_at=json_dict["created_at"],
+                   modified_at=json_dict.get("modified_at", None))
         
 @dataclass(kw_only=True)        
 class CommunityChangeRequestModel:

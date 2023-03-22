@@ -1,0 +1,18 @@
+{
+    "resources":[
+        {
+            "resource_id": "cordis",
+            "community_id": "seta",
+            "title": "Cordis",
+            "abstract": "Cordis resource",
+            "access": "community",
+            "limits": {
+              "total_files_no": 50,
+              "total_storage_mb": 1024,
+              "file_size_mb": 50
+            },
+            "status": "active",
+            "creator_id": "seta_admin"            
+          }
+    ]
+}

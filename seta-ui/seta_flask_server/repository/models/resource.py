@@ -52,7 +52,7 @@ class ResourceModel:
                    status=json_dict["status"],
                    creator_id=json_dict["creator_id"],
                    created_at=json_dict["created_at"],
-                   modified_at=json_dict["modified_at"],
+                   modified_at=json_dict.get("modified_at", None),
                    limits=limits)
 
 @dataclass(kw_only=True)

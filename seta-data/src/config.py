@@ -22,3 +22,6 @@ class Config:
     
 class TestConfig(Config):
     ES_HOST = "seta-es-test:9200"
+    
+    WORD2VEC_JSON_EXPORT = "json_suggestion_samples.json"
+    WORD2VEC_JSON_EXPORT_CRC = "json_suggestion_samples.crc"

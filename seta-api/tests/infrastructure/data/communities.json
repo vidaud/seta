@@ -1,0 +1,21 @@
+{
+    "communities": [        
+        {
+            "community_id": "seta",
+            "title": "Seta",
+            "description": "Seta community",
+            "membership": "closed",
+            "data_type": "evidence",
+            "status": "active",
+            "creator_id": "seta_admin"              
+        }        
+    ],
+    "memberships":[
+        {
+            "community_id": "seta",
+            "user_id": "5Mq7bNYnhtaiS6BDLvcZ",
+            "role": "CommunityOwner",
+            "status": "active"
+        }
+    ]
+}
