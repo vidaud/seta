@@ -167,7 +167,7 @@ class TestConfig(Config):
     DB_HOST="seta-mongo-test"
     
     #database name
-    DB_NAME="seta-test"
+    DB_NAME="seta_test"
     
     #disable scheduler tasks
     SCHEDULER_ENABLED = False
