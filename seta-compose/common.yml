@@ -1,6 +1,5 @@
 services:
   mongo:
-    container_name: mongo
     restart: always
     build: 
       context: ../seta-mongo
@@ -11,7 +10,6 @@ services:
       - no_proxy=${NO_PROXY}
 
   es:
-    container_name: es
     restart: always
     build: 
       context: ../seta-es
@@ -29,7 +27,6 @@ services:
       - ingest.geoip.downloader.enabled=false
 
   api:
-    container_name: api
     restart: always
     build: 
       context: ../seta-api
@@ -41,7 +38,6 @@ services:
       - no_proxy=${NO_PROXY}
 
   nginx:
-    container_name: nginx
     restart: always
     build: 
        context: ../seta-nginx
@@ -51,7 +47,6 @@ services:
       - no_proxy=${NO_PROXY}
 
   ui:
-    container_name: ui
     restart: always
     build: 
        context: ../seta-ui
@@ -65,7 +60,6 @@ services:
       - API_SECRET_KEY
 
   ui-react:
-    container_name: ui-react
     restart: always
     build: 
        context: ../seta-react
@@ -77,7 +71,6 @@ services:
       - no_proxy=${NO_PROXY}
 
   data:
-    container_name: data
     build: 
       context: ../seta-data
     environment:
