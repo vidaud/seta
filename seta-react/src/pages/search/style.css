@@ -137,7 +137,7 @@
 .p-listbox {
     border: none !important;
 }
-.overlaypanel1 > .p-overlaypanel-content > .p-listbox .p-listbox-list {
+.overlay_panel > .p-overlaypanel-content > .p-listbox .p-listbox-list {
     height: 200px;
 }
 /* .overlaypanel > .p-overlaypanel-content > .p-listbox .p-listbox-list {
@@ -238,13 +238,17 @@ h1:after{
     padding: 0.5rem 1.25rem !important;
 }
 
-.alingItems .p-togglebutton.p-button:not(.p-disabled):not(.p-highlight):hover {
+.suggestions-list .p-c {
+    font-weight: normal !important;
+}
+
+/* .alingItems .p-togglebutton.p-button:not(.p-disabled):not(.p-highlight):hover {
     color: rgb(92, 150, 221) !important;
 }
 
 .alingItems .p-togglebutton.p-button:not(.p-disabled):not(.p-highlight) {
     color: rgb(92, 150, 221) !important;
-}
+} */
 
 .search_dropdown {
     text-align: right;
@@ -254,4 +258,43 @@ h1:after{
 .overlayPanelHeader {
     padding-bottom: 1%;
     border-bottom: 1px solid #ced4da;
+}
+
+.highlight-text {
+    font-weight: 700;
+}
+
+.dataTable-list .p-selectbutton {
+    text-align: left !important;
+}
+
+.dataTable-list {
+    overflow-y: scroll;
+    max-height: 300px;
+}
+
+.dataTable-list .pi-check:before {
+    content: none !important;
+}
+
+.dataTable-list .suggestions-list .p-button {
+    padding: 0.2rem 0.65rem !important;
+}
+
+.dataTable-list .p-checkbox-box {
+    border-radius: 50% !important;
+}
+
+.similars .p-selectbutton {
+    text-align: -webkit-left;
+    text-align: -moz-left;
+}
+
+.overlay_panel .p-overlaypanel-close {
+    top: 0.05rem !important;
+    right: 0.05rem !important;
+}
+
+.dataTable-list .p-datatable-thead {
+    display: none !important;
 }
