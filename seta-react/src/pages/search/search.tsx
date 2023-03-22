@@ -178,7 +178,7 @@ const Search = () => {
                     let list: any = [];
                     if (data && data.length > 0) {
                         data.forEach(element => {
-                            isPhrase(element.similar_word) ? list.push(`"${element.similar_word}"`) : list.push(element.similar_word);
+                            list.push(element.similar_word);
                         });
                         setSimilarTerms(list);
                     }
