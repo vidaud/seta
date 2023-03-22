@@ -96,7 +96,8 @@ def create_app(config_object):
 def init(app):
     app.es = Elasticsearch("http://" + app.config["ES_HOST"], verify_certs=False, request_timeout=30)
 
-    wait_for_es(app)
+    if not app.testing:
+        wait_for_es(app)
 
     app.sbert_model = SentenceTransformer('all-distilroberta-v1')
     app.sbert_model.max_seq_length = 512
