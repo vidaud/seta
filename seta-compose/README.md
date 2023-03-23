@@ -31,16 +31,16 @@ The minimum requirements are:
 The first run will take time. The next run will be fast.
 
 ### (re-)build all images
-    docker-compose -f docker-compose-dev.yml build
+    docker-compose -f docker-compose.yml -f docker-compose-dev.yml build
 
 ### (re-)build only seta-ui image
-    docker-compose -f docker-compose-dev.yml build seta-ui
+    docker-compose -f docker-compose.yml -f docker-compose-dev.yml build seta-ui
 
 ### Start all services for your environment locally
-    docker-compose -f docker-compose-dev.yml up
+    docker-compose -f docker-compose.yml -f docker-compose-dev.yml up
 
 ### Start all services for your environment locally in detached mode
-    docker-compose -f docker-compose-dev.yml up -d
+    docker-compose -f docker-compose.yml -f docker-compose-dev.yml up -d
 
 ### (re-)build and restart seta-ui services while other services are runing
-    docker-compose -f docker-compose-dev.yml up  --force-recreate --build --no-deps seta-ui
+    docker-compose -f docker-compose.yml -f docker-compose-dev.yml up  --force-recreate --build --no-deps seta-ui
