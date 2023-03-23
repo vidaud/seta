@@ -1,8 +1,8 @@
 # Minimum requirements
 
-* at least 10GB available free RAM.
+* at least 10 GB available free RAM.
 
-* 16 GR (32GB prefered) RAM, 100GB free space HDD or SSD (prefered).
+* 16 GR (32 GB preferred) RAM, 100 GB free space HDD or SSD (preferred).
 
 * good Internet speed. You will need to download at least 5GB (> 20GB for all data)
 
@@ -13,7 +13,7 @@ The first run will take time. The next run will be fast.
 cd ./seta-compose
 ```
 
-Create an *.env* file containing the variables as described in *.env.example*
+Create an ***.env*** file containing the variables as described in *.env.example*
 The following commands will use by default the *docker-compose.yml* as the configuration file and *.env* as the environment file
 ```
 docker compose build
@@ -44,8 +44,9 @@ docker-compose up -d
 docker compose down
 ```
 
-
 # Development environment
+
+Create an ***.env.dev*** file containing the variables as described in *.env.example*
 
  (Re-)build all images:
 ```
@@ -66,7 +67,6 @@ Start all services for your environment locally in detached mode:
 docker compose -f docker-compose.yml -f docker-compose-dev.yml --env-file .env.dev up -d
 ```
 
-
 Rebuild and restart seta-ui services while other services are runing:  
 ```
 docker compose -f docker-compose.yml -f docker-compose-dev.yml --env-file .env.dev up --force-recreate --build --no-deps seta-ui
@@ -79,4 +79,11 @@ For execute permissions run:
 ```
 chmod +x ./dev-build.sh
 chmod +x ./dev-up.sh
+```
+# Test environment
+Create an ***.env.test*** file containing the variables as described in *.env.example*
+
+```
+docker compose -f docker-compose-test.yml build
+docker compose -f docker-compose-test.yml up
 ```
