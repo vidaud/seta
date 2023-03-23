@@ -2,8 +2,8 @@
 
 SeTA is a new tool that applies advanced text analysis techniques to large document collections, helping policy analysts to understand the concepts expressed in thousands of documents and to see in a visual manner the relationships between these concepts and their development over time. 
 
-General Overview 
-------------  
+## General Overview 
+
 This project is made up of two modules, the **frontend** and the **flask-server** one. 
 **Seta-frontend** is an *Angular2* standard workspace enabled application.  
 **Seta-middleware** is a standard `maven-archetype-webapp` 
@@ -95,4 +95,7 @@ Please make sure to update tests as appropriate.
 
 ## License
 
-[MIT](https://choosealicense.com/licenses/mit/)
+[![MIT][mit-badge]][mit-url]
+
+[mit-badge]: https://img.shields.io/badge/license-mit-blue
+[mit-url]: https://choosealicense.com/licenses/mit/

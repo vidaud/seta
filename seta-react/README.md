@@ -31,7 +31,7 @@ It correctly bundles React in production mode and optimizes the build for the be
 The build is minified and the filenames include the hashes.\
 Your app is ready to be deployed!
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+See the section about [![deployment][Deployment]][Deployment-information] for more information.
 
 ## Eject
     npm run eject
@@ -46,9 +46,13 @@ You don’t have to ever use `eject`. The curated feature set is suitable for sm
 
 ## Learn More
 
-*You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started)*.
+You can learn more in the [![Create React App documentation][React-doc]][React-doc-url]
 
 To learn React, check out the [React documentation](https://reactjs.org/).
 
 [React.js]: https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB
 [React-url]: https://github.com/facebook/create-react-app
+[React-doc]: https://img.shields.io/badge/react-getting%20started-blue
+[React-doc-url]: https://facebook.github.io/create-react-app/docs/getting-started
+[Deployment]: https://img.shields.io/badge/deployment-information-informational
+[Deployment-information]: https://facebook.github.io/create-react-app/docs/deployment
