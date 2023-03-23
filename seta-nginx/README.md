@@ -1,0 +1,2 @@
+# seta-nginx
+
