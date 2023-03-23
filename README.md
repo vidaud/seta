@@ -5,12 +5,16 @@ SeTA is a new tool that applies advanced text analysis techniques to large docum
 
 ## General Overview 
 
-This project is made up of two modules, the **frontend** and the **flask-server** one. 
-**Seta-frontend** is an *Angular2* standard workspace enabled application.  
-**Seta-middleware** is a standard `maven-archetype-webapp` 
-**Seta-flask-server** is a Flask application 
+This project is made up of two modules: \
+* The **frontend** 
+* The **flask-server** one. \
+
+**Seta-frontend** is an *Angular2* standard workspace enabled application.  \
+**Seta-middleware** is a standard `maven-archetype-webapp` \
+**Seta-flask-server** is a Flask application \
+
 The frontend module contains all the static reaources that make up the UI business logic  
-The middleware module contains all the java sources and acts as a proxy / integration layer towards the backend. 
+The middleware module contains all the java sources and acts as a proxy / integration layer towards the backend. \
 The flask-server module contains all the python sources and acts as a proxy / authentication layer towards the backend.  
 
 
@@ -30,9 +34,9 @@ Flask configurations files are:
 
 Create a new virtual environment by choosing a Python interpreter and making a ./venv directory to hold it:
 
-
+```
     python3 -m venv --system-site-packages ./venv
-
+```
 
 Activate the virtual environment using a shell-specific command:
 
@@ -49,9 +53,9 @@ Install packages within a virtual environment without affecting the host system 
 
 
 Clone with 
-
+```
     git clone https://alm.emm4u.eu/seta/seta-new.git
-
+```
 Then install all requirements:
 
     python -m pip install -r requirements.txt
