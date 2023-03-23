@@ -2,21 +2,15 @@ name: seta-dev
 services:
   seta-mongo:
     container_name: mongo-dev
-    env_file:
-      - .env.dev
     ports:
       - "27017:27017"
 
   seta-es:
     container_name: es-dev
-    env_file:
-      - .env.dev
     mem_limit: "6g"
 
   seta-api:
     container_name: api-dev
-    env_file:
-      - .env.dev
     build:
       context: ../seta-api
       dockerfile: Dockerfile-dev-flask
@@ -26,16 +20,12 @@ services:
 
   seta-nginx:
     container_name: nginx-dev
-    env_file:
-      - .env.dev
     build:
       args:
         - PROJECT_CONF=project_dev
 
   seta-ui:
     container_name: ui-dev
-    env_file:
-      - .env.dev
     build: 
        context: ../seta-ui
        dockerfile: Dockerfile-dev-flask
@@ -47,8 +37,6 @@ services:
 
   seta-ui-react:
     container_name: ui-react-dev
-    env_file:
-      - .env.dev
     build: 
        context: ../seta-react
        dockerfile: Dockerfile-dev
@@ -61,5 +49,3 @@ services:
   
   seta-data:
     container_name: data-dev
-    env_file:
-      - .env.dev
