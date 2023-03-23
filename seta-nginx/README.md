@@ -1,4 +1,4 @@
-# seta-nginx
+# seta-nginx 💻 
 
 The subfolder contains docker files for generating executable images for nginx and the configuration files:
 

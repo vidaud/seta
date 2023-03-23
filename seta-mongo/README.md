@@ -1,4 +1,4 @@
-# seta-mongo
+# seta-mongo 💾
 
 The subfolder contains the configuration files for the Mongo DB container.
 

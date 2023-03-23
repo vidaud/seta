@@ -9,7 +9,7 @@ This project is made up of two modules: \
 * The **frontend** 
 * The **flask-server** one. \
 
-**Seta-frontend** is an *Angular2* standard workspace enabled application.  \
+**Seta-frontend** is an *React* standard workspace enabled application.  \
 **Seta-middleware** is a standard `maven-archetype-webapp` \
 **Seta-flask-server** is a Flask application \
 
