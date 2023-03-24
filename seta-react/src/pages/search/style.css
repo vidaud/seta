@@ -189,22 +189,33 @@ h1:after{
     background-color: white !important;
 }
 
-.overlayPanelHeader {
+.overlayPanelBody {
+    padding-bottom: 1%;
     display: inline-flex;
     width: 100%;
 }
 
-.div-size {
-    width: 50%;
+.div-size-1 {
+    width: 30%;
+    border-right: 1px solid black;
+}
+
+.div-size-button {
+    width: 30%;
+}
+.div-size-2 {
+    width: 70%;
 }
 
 .alingItems {
-    align-self: center;
+    width: 70%;
+    display: -webkit-inline-box;
 }
 
 .custom {
     border-radius: 16px !important;
     padding: 0.4rem 0.75rem !important;
+    left: 5px;
 }
 
 .custom-thumb {
@@ -235,7 +246,7 @@ h1:after{
 }
 
 .suggestions-list .p-button {
-    padding: 0.5rem 1.25rem !important;
+    padding: 0.3rem 0.75rem !important;
 }
 
 .suggestions-list .p-c {
@@ -256,8 +267,9 @@ h1:after{
 }
 
 .overlayPanelHeader {
-    padding-bottom: 1%;
     border-bottom: 1px solid #ced4da;
+    display: inline-flex;
+    width: 100%;
 }
 
 .highlight-text {
@@ -297,4 +309,16 @@ h1:after{
 
 .dataTable-list .p-datatable-thead {
     display: none !important;
+}
+
+.overlayPanelBody .card {
+    padding-top: 3%;
+}
+
+.overlayPanelBody .suggestions-list {
+    text-align: left;
+}
+
+.overlayPanelBody .div-size-1 .p-button {
+    margin-bottom: 2%;
 }
