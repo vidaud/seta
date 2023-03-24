@@ -28,10 +28,6 @@ class Config:
     #set from docker ENV variable
     ROOT_USERS = []
     
-    #seta-ui root path - used in third-party authentication callbacks
-    #set from docker ENV variable
-    APP_ROOT_PATH = ""
-    
     #disable scheduler
     SCHEDULER_ENABLED = False
     
@@ -122,10 +118,7 @@ class Config:
         if root_users is not None:
             admins = root_users.split(sep=";")
             Config.ROOT_USERS = list(map(str.lower,admins))
-        
-        #Read flask environment variables
-        Config.APP_ROOT_PATH = os.environ.get('APP_ROOT_PATH', 'http://localhost')
-        
+                
         #Read logging environment variables
         Config.LOG_TYPE = os.environ.get("LOG_TYPE", "stream")
         Config.LOG_LEVEL = os.environ.get("LOG_LEVEL", "INFO")

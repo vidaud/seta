@@ -1,6 +1,6 @@
 import logging
 
-from flask import (Flask, request, session)
+from flask import (Flask, request, session, url_for)
 from werkzeug.middleware.proxy_fix import ProxyFix
 
 from .infrastructure.extensions import (scheduler, jwt, logs, github)
@@ -37,8 +37,10 @@ def create_app(config_object):
     app.json_provider_class = MongodbJSONProvider
     app.home_route = '/seta-ui/'
     
+    
     register_extensions(app)
     register_blueprints(app)
+    register_cas_client(app)
            
     request_endswith_ignore_list = ['.js', '.css', '.png', '.ico', '.svg', '.map', '.json', 'doc']
     request_starts_with_ignore_list = ['/authorization', '/authentication', '/login', '/logout', '/refresh']
@@ -150,15 +152,25 @@ def register_blueprints(app):
 
     app.register_blueprint(communities_bp_v1, url_prefix="/api/communities/v1")
     
-def register_extensions(app):
-    #the service_url will be changed before ECAS redirect with 'request.url'
-    app.cas_client = SetaCasClient(
-        #version=3,
-        service_url = app.config["APP_ROOT_PATH"] + "/login/callback/ecas",
-        server_url = app.config["AUTH_CAS_URL"],
-    )
-    
+def register_extensions(app):    
     github.init_app(app)
     scheduler.init_app(app)
     jwt.init_app(app)
-    logs.init_app(app)
+    
+    try:
+        logs.init_app(app)
+    except:
+        app.logger.error("logs config failed")
+        
+def register_cas_client(app):
+    with app.app_context(), app.test_request_context():
+        ecas_login_callback_url = url_for("auth_ecas.login_callback_ecas", _external=True)
+        
+    app.logger.debug("Auth ECAS login callback: " + ecas_login_callback_url)
+    
+    #the service_url will be changed before ECAS redirect with 'request.url'
+    app.cas_client = SetaCasClient(
+        #version=3,
+        service_url = ecas_login_callback_url,
+        server_url = app.config["AUTH_CAS_URL"],
+    )    

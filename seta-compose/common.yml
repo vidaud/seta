@@ -3,6 +3,9 @@ services:
     restart: always
     build: 
       context: ../seta-mongo
+      args:
+        - HTTP_PROXY=${HTTP_PROXY}
+        - HTTPS_PROXY=${HTTPS_PROXY}
     expose:
       - "27017"
     environment:
@@ -13,6 +16,9 @@ services:
     restart: always
     build: 
       context: ../seta-es
+      args:
+        - HTTP_PROXY=${HTTP_PROXY}
+        - HTTPS_PROXY=${HTTPS_PROXY}      
     expose:
       - "9200"
       - "9300"
@@ -30,18 +36,27 @@ services:
     restart: always
     build: 
       context: ../seta-api
+      args:
+        - HTTP_PROXY=${HTTP_PROXY}
+        - HTTPS_PROXY=${HTTPS_PROXY}      
     expose:
       - "8081"
     mem_limit: "8g"
     environment:
       - NO_PROXY=${NO_PROXY}
       - no_proxy=${NO_PROXY}
+      - ES_HOST
+      - DB_HOST
+      - DB_PORT
+      - DB_NAME
 
   nginx:
     restart: always
     build: 
-       context: ../seta-nginx
-       dockerfile: Dockerfile
+      context: ../seta-nginx
+      args:
+        - HTTP_PROXY=${HTTP_PROXY}
+        - HTTPS_PROXY=${HTTPS_PROXY}       
     environment:
       - NO_PROXY=${NO_PROXY}
       - no_proxy=${NO_PROXY}
@@ -49,8 +64,10 @@ services:
   ui:
     restart: always
     build: 
-       context: ../seta-ui
-       dockerfile: Dockerfile
+      context: ../seta-ui
+      args:
+        - HTTP_PROXY=${HTTP_PROXY}
+        - HTTPS_PROXY=${HTTPS_PROXY}  
     expose:
       - "8080" 
     environment:
@@ -60,12 +77,17 @@ services:
       - API_SECRET_KEY
       - GITHUB_CLIENT_ID
       - GITHUB_CLIENT_SECRET
+      - DB_HOST
+      - DB_PORT
+      - DB_NAME
 
   ui-react:
     restart: always
     build: 
-       context: ../seta-react
-       dockerfile: Dockerfile
+      context: ../seta-react
+      args:
+        - HTTP_PROXY=${HTTP_PROXY}
+        - HTTPS_PROXY=${HTTPS_PROXY}  
     expose:
       - "3000"
     environment:
@@ -75,6 +97,10 @@ services:
   data:
     build: 
       context: ../seta-data
+      args:
+        - HTTP_PROXY=${HTTP_PROXY}
+        - HTTPS_PROXY=${HTTPS_PROXY}  
     environment:
       - NO_PROXY=${NO_PROXY}
       - no_proxy=${NO_PROXY}
+      - ES_HOST

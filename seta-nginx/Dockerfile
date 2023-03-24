@@ -2,10 +2,10 @@ FROM nginx:1.20.2
 
 ARG PROJECT_CONF=project
 
-ENV https_proxy=$HTTP_PROXY
+ENV https_proxy=$HTTPS_PROXY
 ENV http_proxy=$HTTP_PROXY
 
-ENV HTTPS_PROXY=$HTTP_PROXY
+ENV HTTPS_PROXY=$HTTPS_PROXY
 ENV HTTP_PROXY=$HTTP_PROXY
 
 RUN rm /etc/nginx/nginx.conf
