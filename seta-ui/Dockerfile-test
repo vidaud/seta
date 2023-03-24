@@ -23,7 +23,6 @@ RUN apt-get install -yq tzdata && \
     ln -fs /usr/share/zoneinfo/UTC /etc/localtime && \
     dpkg-reconfigure -f noninteractive tzdata
 
-RUN mkdir -p $ROOT/models
 COPY ./requirements.txt $ROOT/requirements.txt
 
 WORKDIR $ROOT

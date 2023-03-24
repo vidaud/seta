@@ -40,9 +40,7 @@ RUN pip3 install -r $ROOT/requirements.txt
 RUN  python3 -m nltk.downloader punkt 
 RUN python3 -c 'from sentence_transformers import SentenceTransformer; SentenceTransformer("all-distilroberta-v1")'
 
-COPY ./*.py ./
-COPY ./seta_api ./seta_api
-COPY ./tests ./tests
+COPY . .
 
 #log setup
 ENV LOG_LEVEL="DEBUG"

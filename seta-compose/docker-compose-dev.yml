@@ -12,7 +12,6 @@ services:
       dockerfile: Dockerfile-dev-flask
     volumes: 
       - ../seta-api:/home/seta
-      - seta-models3:/home/seta/models
 
   seta-nginx:
     build:
@@ -27,7 +26,6 @@ services:
       - "5678:5678"
     volumes: 
       - ../seta-ui:/home/seta
-      - seta-models3:/home/seta/models
 
   seta-ui-react:
     build: 

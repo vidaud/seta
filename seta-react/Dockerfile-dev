@@ -27,15 +27,13 @@ WORKDIR $ROOT
 
 ENV PATH $ROOT/node_modules/.bin:$PATH
 
-ADD ./package.json $ROOT/package.json
-ADD ./tsconfig.json $ROOT/tsconfig.json
+COPY ./package.json $ROOT/package.json
+COPY ./tsconfig.json $ROOT/tsconfig.json
 
 RUN npm install
 
 COPY ./src $ROOT/src
 COPY ./public $ROOT/public
-
-#RUN mkdir $ROOT/node_modules/.cache && chmod -R 777 $ROOT/node_modules/.cache
 
 CMD chdir /home/seta/ \
     && npm start --host '0.0.0.0' --port 3000 
