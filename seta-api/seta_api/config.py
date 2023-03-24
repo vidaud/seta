@@ -134,10 +134,23 @@ class Config:
         Config.APP_LOG_NAME = os.environ.get("APP_LOG_NAME", "app.log")
         Config.WWW_LOG_NAME = os.environ.get("WWW_LOG_NAME", "www.log")
         Config.LOG_MAX_BYTES = os.environ.get("LOG_MAX_BYTES", 100_000_000)  # 100MB in bytes
-        Config.LOG_COPIES = os.environ.get("LOG_COPIES", 5)        
+        Config.LOG_COPIES = os.environ.get("LOG_COPIES", 5)   
+             
+        #read services env variables
+        Config.ES_HOST = os.environ.get("ES_HOST")
+        
+        Config.DB_HOST = os.environ.get("DB_HOST")        
+        Config.DB_NAME = os.environ.get("DB_NAME")
+        
+        port = os.environ.get("DB_PORT")
+        if port:
+            Config.DB_PORT = int(port)
             
 class DevConfig(Config):  
     """Development config"""
+    
+    def __init__(self) -> None:
+        super().__init__()        
     
     #============Seta Configuration ========#
     
@@ -148,6 +161,9 @@ class DevConfig(Config):
     
 class ProdConfig(Config):
     """Production config"""
+    
+    def __init__(self) -> None:
+        super().__init__()    
     
     #============Seta Configuration ========#
     
@@ -161,18 +177,24 @@ class TestConfig(Config):
     
     def __init__(self) -> None:
         super().__init__()
+        
+        if Config.ES_HOST is None:
+            Config.ES_HOST = "seta-es-test:9200"
+            
+        if Config.DB_HOST is None:
+            Config.DB_HOST = "seta-mongo-test"
+            
+        if Config.DB_PORT is None:
+            Config.DB_PORT = 27017
+            
+        if Config.DB_NAME is None:
+            Config.DB_NAME = "seta-test"
     
     #============Seta Configuration ========#
-    #database host - docker container for mongo
-    DB_HOST="seta-mongo-test"
-    
-    #database name
-    DB_NAME="seta_test"
     
     #disable scheduler tasks
-    SCHEDULER_ENABLED = False
+    SCHEDULER_ENABLED = False   
     
-    ES_HOST = "seta-es-test:9200"
     
     #======================================#
     

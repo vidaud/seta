@@ -2,10 +2,12 @@
 FROM ubuntu:22.04
 
 RUN echo "Acquire::http::Proxy \""$HTTP_PROXY"\";" >> /etc/apt/apt.conf
-ENV https_proxy=$HTTP_PROXY
+RUN echo "Acquire::https::Proxy \""$HTTPS_PROXY"\";" >> /etc/apt/apt.conf
+
+ENV https_proxy=$HTTPS_PROXY
 ENV http_proxy=$HTTP_PROXY
 
-ENV HTTPS_PROXY=$HTTP_PROXY
+ENV HTTPS_PROXY=$HTTPS_PROXY
 ENV HTTP_PROXY=$HTTP_PROXY
 
 RUN apt update -y && apt install -y --no-install-recommends  nodejs npm && mkdir /home/seta

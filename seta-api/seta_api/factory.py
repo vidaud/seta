@@ -137,4 +137,8 @@ def register_blueprints(app):
 
 def register_extensions(app):
     jwt.init_app(app)    
-    logs.init_app(app)
+    
+    try:
+        logs.init_app(app)
+    except:
+        app.logger.error("logs config failed")
