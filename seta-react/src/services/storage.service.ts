@@ -22,6 +22,9 @@ class StorageService {
     return {}
   }
 
+  // FIXME: I think this might be unsecure.
+  // I can get access to the pages only an authenticated user should see
+  // by simply adding any value with the key of 'auth-user' to the session storage.
   public isLoggedIn(): boolean {
     const user = sessionStorage.getItem(USER_KEY)
 

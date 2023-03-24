@@ -20,16 +20,23 @@ class AuthentificationService {
   constructor() {
     if (storageService.isLoggedIn()) {
       this.currentUserSubject.next(storageService.getUser())
+
+      // We return early if the user is already logged in.
+      return
     }
 
-    const searchParam = new URLSearchParams(window.location.search)
+    const url = new URL(window.location.href)
+    const action = url.searchParams.get('action')
 
-    if (searchParam != null) {
-      const action = searchParam.get('action')
+    if (action === 'login') {
+      url.searchParams.delete('action')
 
-      if (action === 'login') {
-        this.loadProfile()
-      }
+      // We must replace the current URL with the one without the `action` parameter.
+      // Using `replaceState` instead of `pushState` because we don't want to add a new entry to the browser's history.
+      // eslint-disable-next-line no-restricted-globals
+      history.replaceState(null, '', url)
+
+      this.loadProfile()
     }
   }
 

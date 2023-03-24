@@ -234,7 +234,7 @@
     ],
     "no-param-reassign": "warn",
     "no-invalid-this": "warn",
-    "func-style": ["warn", "expression"] // TODO: Change this to "error" and refactor all the functions
+    "func-style": ["warn", "expression"]
   },
   "parser": "@typescript-eslint/parser",
   "parserOptions": {

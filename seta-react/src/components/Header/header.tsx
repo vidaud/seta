@@ -1,8 +1,9 @@
 import { useEffect, useRef, useState } from 'react'
 import { Menubar, InputText } from 'primereact'
 import { Button } from 'primereact/button'
-import './style.css'
 import { TieredMenu } from 'primereact/tieredmenu'
+
+import './style.css'
 
 import authentificationService from '../../services/authentification.service'
 import storageService from '../../services/storage.service'
