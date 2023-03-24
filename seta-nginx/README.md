@@ -12,9 +12,9 @@ The subfolder contains docker files for generating executable images for nginx a
 
 
 The images can be built by running:
-
+```
     docker compose up seta-ui-react seta-nginx
-
+```
 It will setup all the containers: _seta-mongo_, _seta-es_, _seta-api_ and _seta-ui_ \
 It will recreate containers: _seta-ui-react_ and _seta-nginx_ 
 

@@ -1,12 +1,28 @@
 # seta-data 📚
 
-The **seta-data** contains all necessary files for the training and mapping of data.
+The *seta-data* contains all necessary files for the training and mapping of data.
 
 * cd \.models
 * cd .\src
 * docker-compose.yml
 * Dockerfile
 * Dockerfile-test
+
+
+## Build
+***
+The image is build it together with all the images
+
+```
+    docker compose -f docker-compose.yml -f docker-compose-dev.yml --env-file .env.dev build
+```
+
+
+## Contributing
+
+Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
+
+Please make sure to update tests as appropriate.
 
 
 ## License

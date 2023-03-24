@@ -1,7 +1,30 @@
-# seta-mongo 💾
+# seta-mongo 💾 
 
-The subfolder contains the configuration files for the Mongo DB container.
+The *seta-mongo* subfolder contains the configuration files necessary for the Mongo DB container.
 
 * docker-compose.yml 
 * Dockerfile
 * Dockerfile-test
+
+
+## Build
+***
+The image is build it together with all the images
+
+```
+    docker compose -f docker-compose.yml -f docker-compose-dev.yml --env-file .env.dev build
+```
+
+
+## Contributing
+
+Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
+
+Please make sure to update tests as appropriate.
+
+## License
+
+[![MIT][mit-badge]][mit-url]
+
+[mit-badge]: https://img.shields.io/badge/license-mit-blue
+[mit-url]: https://choosealicense.com/licenses/mit/
