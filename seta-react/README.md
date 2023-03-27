@@ -5,7 +5,8 @@ The *seta-react* contains the image that works to launch the web app of SeTA pro
 Within the Dockerfile is stablished the configuration for the execution of the app so it can be executed when the build of the project is launched.
 
 
-The image can be built by running:
+## Build
+The image is build it together with all the images through the execution of the docker-compose:
 ```
     docker compose -f docker-compose.yml -f docker-compose-dev.yml --env-file .env.dev build
 ```

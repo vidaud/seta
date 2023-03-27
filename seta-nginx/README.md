@@ -2,8 +2,9 @@
 
 The **seta-nginx** folder contains the configuration of the server with all the proxy configurations.
 
+## Build
 
-The images can be built by running:
+The image can be built by running:
 ```
     docker compose up seta-ui-react seta-nginx
 ```
