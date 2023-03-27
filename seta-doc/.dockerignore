@@ -1,0 +1,5 @@
+.dockerignore
+Dockerfile
+__pychache__
+.gitignore
+site
