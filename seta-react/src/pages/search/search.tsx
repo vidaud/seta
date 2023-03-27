@@ -68,9 +68,6 @@ const Search = () => {
                 setListOFTerms(getListOfTerms(String(term)));
                 setCopyQuery(getSelectedTerms(listOFTerms));
             }
-            else if (enrichQuery) {
-                updateEnrichedQuery(similarsList, ontologyListItems)
-            }
         }
         let result = String(term).split(',').join(' ');
         setTerm(result);
@@ -165,7 +162,7 @@ const Search = () => {
             ontologyListService.retrieveOntologyList(lastKeyword).then(data => {
                 if (data) {
                     setOntologyList(transformOntologyList(data));
-                    ontologyTermList.push(...[data.join(' OR ').split(',')]);
+                    ontologyTermList.push(...[String(data).split(',')]);
                 }
                 setLoading(false);
             });
@@ -213,7 +210,14 @@ const Search = () => {
     const onSearch = () => {
         if (term.length >= 2) {
             corpusService.getRefreshedToken();
-            corpusService.getDocuments(lastPayload).then(data => {
+            let details;
+            if (enrichQuery) {
+                let result = updateEnrichedQuery(similarsList, ontologyListItems);
+                details = new CorpusSearchPayload({ ...cp, term: result, aggs: 'date_year', n_docs: 100, search_type: typeofSearch, date_range: timeRangeValue });
+            } else {
+                details = lastPayload;
+            }
+            corpusService.getDocuments(details).then(data => {
                 if (data) {
                     setItems(data.documents);
                     setAggregations(data.aggregations);
@@ -260,18 +264,21 @@ const Search = () => {
             if(similars.length > 1 ) {
                 let result = similars.join(' AND ').split(',').join(' ');
                 setCopyQuery(getSelectedTerms(getListOfTerms(result)));
+                return getSelectedTerms(getListOfTerms(result));
             }
-            else if(similars.length === 1 ) {
+            else if(similars.length === 1 &&  similars[0].length > 0) {
                 let result = similars[0].join(' OR ').split(',').join(' OR ')
                 setCopyQuery(result);
+                return result;
             }
         }
         if (selectedTypeSearch.code === 'RC') {
             if(clusters.length > 1 ) {
                 let result = clusters.join(' AND ').split(',').join(' ');
                 setCopyQuery(getSelectedTerms(getListOfTerms(result)));
+                return getSelectedTerms(getListOfTerms(result));
             }
-            else if(clusters.length === 1 ) {
+            else if(clusters.length === 1 &&  clusters[0].length > 0) {
                 let newOntologyList = clusters[0];
                 let newItems: any = [];
                 if(newOntologyList !== '' || newOntologyList.length > 0) {
@@ -281,23 +288,38 @@ const Search = () => {
                         });
                     });
                 }
-                let result = newItems.join(' OR ').split(',').join(' OR ')
+                let result = newItems.join(' OR ').split(',').join(' OR ');
                 setCopyQuery(result);
+                return result;
             }
         }
     }
+
+    const toggleEnrichButton = () => {
+        let toggled = !enrichQuery;
+        setEnrichQuery(toggled);
+        toggleEnrichQuery(toggled);
+    }
+
     const toggleEnrichQuery = (value) => {
         // ex: "(bin) AND (regulation OR guideline) AND (standard)"
         //send request to ontologyList for each keyword
         //send request to corpus with the ontology list of all keywords
         setEnrichQuery(value);
         if (value) {
+            let regExp = /\(|\)|\[|\]/g;
             if (selectedTypeSearch.code === 'RT') {
                 let splitedANDOperator = getSelectedTerms(listOFTerms).split(` AND `);
                 let splitedOROperator: any = [];
                 splitedANDOperator.forEach(element => {
-                    let removedBrackets = element.slice(1,element.length -1).split(' OR ');
-                    splitedOROperator.push(getSimilarsTerms(removedBrackets));
+                    let hasBrackets = regExp.test(element);
+                    if (hasBrackets) {
+                        let removedBrackets = element.slice(1,element.length -1).split(' OR ');
+                        splitedOROperator.push(getSimilarsTerms(removedBrackets));
+                    }
+                    else {
+                        splitedOROperator.push(getSimilarsTerms(element.split(' OR ')));
+                    }
                     setSimilarsList(splitedOROperator)
                 });
             }
@@ -305,8 +327,14 @@ const Search = () => {
                 let splitedANDOperator = getSelectedTerms(listOFTerms).split(` AND `);
                 let splitedOROperator: any = [];
                 splitedANDOperator.forEach(element => {
-                    let removedBrackets = element.slice(1,element.length -1).split(' OR ');
-                    splitedOROperator.push(getOntologyTerms(removedBrackets));
+                    let hasBrackets = regExp.test(element);
+                    if (hasBrackets) {
+                        let removedBrackets = element.slice(1,element.length -1).split(' OR ');
+                        splitedOROperator.push(getOntologyTerms(removedBrackets));
+                    }
+                    else {
+                        splitedOROperator.push(getOntologyTerms(element.split(' OR ')));
+                    }
                     setOntologyListItems(splitedOROperator) 
                 });
             }
@@ -375,8 +403,6 @@ const Search = () => {
                     });
                 }
             }, 250);
-            // op.current?.show(e,e.target);
-            // setTerm(e.target.value);
             if (selectedTypeSearch.code === 'RC') {
                 setTimeout(() => {
                     let keyword = getWordAtNthPosition(e.target.value, e.target.selectionStart);
@@ -489,13 +515,11 @@ const Search = () => {
                                         : <span></span>}
                                     </div>
                                     <div className='search_dropdown div-size-2'>
-                                        <ToggleButton className="custom-thumb" aria-label={inputText} offIcon="pi pi-thumbs-up" onIcon="pi pi-thumbs-up-fill" onLabel='' offLabel='' tooltip='Enrich query automatically' tooltipOptions={{position: 'bottom'}}
-                                            checked={enrichQuery} onChange={
-                                                (e) => {
-                                                        toggleEnrichQuery(e.value);
-                                                    }
-                                                }
-                                            />
+                                        <Button className={enrichQuery ? "custom-magic" : "custom-magic magic"} aria-label={inputText} tooltip='Enrich query automatically' tooltipOptions={{position: 'bottom'}}
+                                            onClick={toggleEnrichButton}
+                                        >
+                                            <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 16 16" height="1em" width="1em" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 2.672a.5.5 0 1 0 1 0V.843a.5.5 0 0 0-1 0v1.829Zm4.5.035A.5.5 0 0 0 13.293 2L12 3.293a.5.5 0 1 0 .707.707L14 2.707ZM7.293 4A.5.5 0 1 0 8 3.293L6.707 2A.5.5 0 0 0 6 2.707L7.293 4Zm-.621 2.5a.5.5 0 1 0 0-1H4.843a.5.5 0 1 0 0 1h1.829Zm8.485 0a.5.5 0 1 0 0-1h-1.829a.5.5 0 0 0 0 1h1.829ZM13.293 10A.5.5 0 1 0 14 9.293L12.707 8a.5.5 0 1 0-.707.707L13.293 10ZM9.5 11.157a.5.5 0 0 0 1 0V9.328a.5.5 0 0 0-1 0v1.829Zm1.854-5.097a.5.5 0 0 0 0-.706l-.708-.708a.5.5 0 0 0-.707 0L8.646 5.94a.5.5 0 0 0 0 .707l.708.708a.5.5 0 0 0 .707 0l1.293-1.293Zm-3 3a.5.5 0 0 0 0-.706l-.708-.708a.5.5 0 0 0-.707 0L.646 13.94a.5.5 0 0 0 0 .707l.708.708a.5.5 0 0 0 .707 0L8.354 9.06Z"></path></svg>
+                                        </Button>
                                         <Dropdown value={selectedTypeSearch} options={typeOfSearches} onChange={onChangeOption} optionLabel="name" />
                                     </div>
                                 </div>

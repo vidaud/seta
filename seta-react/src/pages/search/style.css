@@ -218,9 +218,10 @@ h1:after{
     left: 5px;
 }
 
-.custom-thumb {
+.custom-magic {
     border: none !important;
     margin-right: 10px !important;
+    padding: 0.85rem 1.25rem !important;
 }
 
 .suggestions-list .p-button {
@@ -321,4 +322,9 @@ h1:after{
 
 .overlayPanelBody .div-size-1 .p-button {
     margin-bottom: 2%;
+}
+
+.magic {
+    color: #343a40 !important;
+    background: white !important;
 }
