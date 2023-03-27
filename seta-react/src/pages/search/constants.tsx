@@ -2,8 +2,8 @@ import { Observable, of } from "rxjs";
 import { Operators, Term, TermType } from "../../models/term.model";
 
 export const defaultTypeOfSearch = {
-    code: "AC",
-    name: "Autocomplete"
+    code: "RC",
+    name: "Related term clusters"
 }
 export const itemsBreadCrumb = [
     {label: 'Search', url: '/seta-ui/search'},
@@ -11,7 +11,6 @@ export const itemsBreadCrumb = [
 ];
 export const home = { icon: 'pi pi-home', url: '/seta-ui' }
 export const typeOfSearches = [
-    { name: 'Autocomplete', code: 'AC' },
     { name: 'Related term clusters', code: 'RC' },
     { name: 'Related terms', code: 'RT' }
 ];
