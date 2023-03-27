@@ -2,9 +2,13 @@
 FROM ubuntu:22.04
 
 RUN echo "Acquire::http::Proxy \""$HTTP_PROXY"\";" >> /etc/apt/apt.conf
-ENV https_proxy=$HTTP_PROXY
+RUN echo "Acquire::https::Proxy \""$HTTPS_PROXY"\";" >> /etc/apt/apt.conf
+
+ENV https_proxy=$HTTPS_PROXY
 ENV http_proxy=$HTTP_PROXY
-ENV no_proxy="seta-es,seta-mongo,seta-api,seta-nginx,seta-ui,seta-ui-spa"
+
+ENV HTTPS_PROXY=$HTTPS_PROXY
+ENV HTTP_PROXY=$HTTP_PROXY
 
 RUN apt update -y && apt install -y --no-install-recommends  nodejs npm && mkdir /home/seta
 RUN apt install -y  --no-install-recommends curl
@@ -24,11 +28,12 @@ RUN npm install -g npm
 #RUN ng update -g
 
 
-ADD ./package.json $ROOT/package.json
-ADD ./tsconfig.json $ROOT/tsconfig.json
-ADD ./src $ROOT/src
-ADD ./public $ROOT/public
+COPY ./package.json $ROOT/package.json
 RUN npm install
+
+COPY ./tsconfig.json $ROOT/tsconfig.json
+COPY ./src $ROOT/src
+COPY ./public $ROOT/public
 
 RUN npm run build
 

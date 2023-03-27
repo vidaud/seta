@@ -137,7 +137,7 @@
 .p-listbox {
     border: none !important;
 }
-.overlaypanel1 > .p-overlaypanel-content > .p-listbox .p-listbox-list {
+.overlay_panel > .p-overlaypanel-content > .p-listbox .p-listbox-list {
     height: 200px;
 }
 /* .overlaypanel > .p-overlaypanel-content > .p-listbox .p-listbox-list {
@@ -189,27 +189,39 @@ h1:after{
     background-color: white !important;
 }
 
-.overlayPanelHeader {
+.overlayPanelBody {
+    padding-bottom: 1%;
     display: inline-flex;
     width: 100%;
 }
 
-.div-size {
-    width: 50%;
+.div-size-1 {
+    width: 30%;
+    border-right: 1px solid #dee2e6;
+}
+
+.div-size-button {
+    width: 30%;
+}
+.div-size-2 {
+    width: 70%;
 }
 
 .alingItems {
-    align-self: center;
+    width: 70%;
+    display: -webkit-inline-box;
 }
 
 .custom {
     border-radius: 16px !important;
     padding: 0.4rem 0.75rem !important;
+    left: 5px;
 }
 
-.custom-thumb {
+.custom-magic {
     border: none !important;
     margin-right: 10px !important;
+    padding: 0.85rem 1.25rem !important;
 }
 
 .suggestions-list .p-button {
@@ -235,16 +247,20 @@ h1:after{
 }
 
 .suggestions-list .p-button {
-    padding: 0.5rem 1.25rem !important;
+    padding: 0.3rem 0.75rem !important;
 }
 
-.alingItems .p-togglebutton.p-button:not(.p-disabled):not(.p-highlight):hover {
+.suggestions-list .p-c {
+    font-weight: normal !important;
+}
+
+/* .alingItems .p-togglebutton.p-button:not(.p-disabled):not(.p-highlight):hover {
     color: rgb(92, 150, 221) !important;
 }
 
 .alingItems .p-togglebutton.p-button:not(.p-disabled):not(.p-highlight) {
     color: rgb(92, 150, 221) !important;
-}
+} */
 
 .search_dropdown {
     text-align: right;
@@ -252,6 +268,63 @@ h1:after{
 }
 
 .overlayPanelHeader {
-    padding-bottom: 1%;
     border-bottom: 1px solid #ced4da;
+    display: inline-flex;
+    width: 100%;
+}
+
+.highlight-text {
+    font-weight: 700;
+}
+
+.dataTable-list .p-selectbutton {
+    text-align: left !important;
+}
+
+.dataTable-list {
+    overflow-y: scroll;
+    max-height: 300px;
+}
+
+.dataTable-list .pi-check:before {
+    content: none !important;
+}
+
+.dataTable-list .suggestions-list .p-button {
+    padding: 0.2rem 0.65rem !important;
+}
+
+.dataTable-list .p-checkbox-box {
+    border-radius: 50% !important;
+}
+
+.similars .p-selectbutton {
+    text-align: -webkit-left;
+    text-align: -moz-left;
+}
+
+.overlay_panel .p-overlaypanel-close {
+    top: 0.05rem !important;
+    right: 0.05rem !important;
+}
+
+.dataTable-list .p-datatable-thead {
+    display: none !important;
+}
+
+.overlayPanelBody .card {
+    padding-top: 3%;
+}
+
+.overlayPanelBody .suggestions-list {
+    text-align: left;
+}
+
+.overlayPanelBody .div-size-1 .p-button {
+    margin-bottom: 2%;
+}
+
+.magic {
+    color: #343a40 !important;
+    background: white !important;
 }

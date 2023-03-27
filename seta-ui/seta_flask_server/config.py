@@ -24,16 +24,12 @@ class Config:
     #databse name
     DB_NAME="seta"
     
-    #file path that contains the secret key to encode and decode JWTs and session cookies
-    SECRET_KEY_PATH = "/home/seta/models/key.txt"
-    
     #administrators email list - new user is set as admin if email present in this list
     #set from docker ENV variable
     ROOT_USERS = []
     
-    #seta-ui root path - used in third-party authentication callbacks
-    #set from docker ENV variable
-    APP_ROOT_PATH = ""
+    #disable scheduler
+    SCHEDULER_ENABLED = False
     
     #======================================#
     
@@ -41,7 +37,9 @@ class Config:
     #===========Flask-PyMongo Configuration========#
     #https://flask-pymongo.readthedocs.io/en/latest/
     
-    MONGO_URI = f"mongodb://{DB_HOST}:{DB_PORT}/{DB_NAME}"
+    @property
+    def MONGO_URI(self):
+        return f"mongodb://{self.DB_HOST}:{self.DB_PORT}/{self.DB_NAME}"
     
     #======================================#  
     
@@ -110,18 +108,9 @@ class Config:
     #======================================# 
         
     def __init__(self) -> None:             
-        """Read environment variables"""               
-        
-        #read key from the key.txt file
-        if exists(Config.SECRET_KEY_PATH):
-            with open(Config.SECRET_KEY_PATH, "r") as fobj:
-                Config.SECRET_KEY = fobj.readline()
-        else:
-            Config.SECRET_KEY = secrets.token_hex(16)
-            
-            with open(Config.SECRET_KEY_PATH, "w") as f1:
-                f1.write(Config.SECRET_KEY)
-            
+        """Read environment variables"""
+                
+        Config.SECRET_KEY = os.environ["API_SECRET_KEY"]            
         Config.JWT_SECRET_KEY = Config.SECRET_KEY
         
         #Read admin users and change values to lower
@@ -129,10 +118,7 @@ class Config:
         if root_users is not None:
             admins = root_users.split(sep=";")
             Config.ROOT_USERS = list(map(str.lower,admins))
-        
-        #Read flask environment variables
-        Config.APP_ROOT_PATH = os.environ.get('APP_ROOT_PATH', 'http://localhost')
-        
+                
         #Read logging environment variables
         Config.LOG_TYPE = os.environ.get("LOG_TYPE", "stream")
         Config.LOG_LEVEL = os.environ.get("LOG_LEVEL", "INFO")
@@ -143,16 +129,27 @@ class Config:
         Config.LOG_MAX_BYTES = os.environ.get("LOG_MAX_BYTES", 100_000_000)  # 100MB in bytes
         Config.LOG_COPIES = os.environ.get("LOG_COPIES", 5)
         
+        #read database env variables
+        Config.DB_HOST = os.environ.get("DB_HOST")        
+        Config.DB_NAME = os.environ.get("DB_NAME")        
+        port = os.environ.get("DB_PORT")
+        if port:
+            Config.DB_PORT = int(port)
+            
+        #============Flask-GitHub Configuration========#
+        #https://github-flask.readthedocs.io/en/latest/
+        
+        Config.GITHUB_CLIENT_ID = os.environ.get("GITHUB_CLIENT_ID")
+        Config.GITHUB_CLIENT_SECRET = os.environ.get("GITHUB_CLIENT_SECRET")
+        
+        #======================================#
+        
             
 class DevConfig(Config):  
     """Development config"""
     
-    #============Seta Configuration ========#
-    
-    #disable scheduler
-    SCHEDULER_ENABLED = False
-    
-    #======================================#
+    def __init__(self) -> None:
+        super().__init__()    
     
     #============Flask-JWT-Extended Configuration========#
     #https://flask-jwt-extended.readthedocs.io/en/stable/options/
@@ -168,22 +165,13 @@ class DevConfig(Config):
     
     #======================================#
     
-    #============Flask-GitHub Configuration========#
-    #https://github-flask.readthedocs.io/en/latest/
-    
-    #GitHub client id
-    #Register Seta application at https://github.com/settings/applications 
-    GITHUB_CLIENT_ID = "ea09540bb092bd7af2f4"
-    
-    #Seta GitHub application secret
-    GITHUB_CLIENT_SECRET = "b9e76828307f1bb849f7b47a97c1b7c9ca3361df"
-    
-    #======================================#
-    
-    #======================================#
     
 class ProdConfig(Config):
     """Production config"""
+    
+    def __init__(self) -> None:
+        super().__init__()
+    
     #============Seta Configuration ========#
     
     #enable scheduler tasks
@@ -206,14 +194,44 @@ class ProdConfig(Config):
     
     #======================================#
     
-    #============Flask-GitHub Configuration========#
-    #https://github-flask.readthedocs.io/en/latest/
+class TestConfig(Config):
+    """Test config"""
     
-    #GitHub client id
-    #Register Seta application at https://github.com/settings/applications 
-    GITHUB_CLIENT_ID = "ea09540bb092bd7af2f4"
+    def __init__(self) -> None:
+        super().__init__()
+        
+        if Config.DB_HOST is None:
+            Config.DB_HOST = "seta-mongo-test"
+            
+        if Config.DB_PORT is None:
+            Config.DB_PORT = 27017
+            
+        if Config.DB_NAME is None:
+            Config.DB_NAME = "seta-test"
+            
+    #============Flask Configuration========#
+    #https://flask.palletsprojects.com/en/2.2.x/config/
+        
+    #Enable testing mode
+    TESTING = True
     
-    #Seta GitHub application secret
-    GITHUB_CLIENT_SECRET = "b9e76828307f1bb849f7b47a97c1b7c9ca3361df"
+    #Exceptions are re-raised rather than being handled by the app's error handlers.     
+    PROPAGATE_EXCEPTIONS = True
+        
+    #ALLOWED_HOSTS = ['*']
+    
+    #======================================#
+    
+     #============Flask-JWT-Extended Configuration========#
+    #https://flask-jwt-extended.readthedocs.io/en/stable/options/
+           
+    #How long an access token should be valid before it expires.
+    JWT_ACCESS_TOKEN_EXPIRES = timedelta(minutes=15)
+    
+    #How long a refresh token should be valid before it expires.
+    JWT_REFRESH_TOKEN_EXPIRES = timedelta(hours=24)
+    
+    #Controls if the secure flag should be placed on cookies
+    JWT_COOKIE_SECURE = False
     
     #======================================#

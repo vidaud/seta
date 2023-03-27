@@ -44,7 +44,6 @@ class Corpus(Resource):
             security='apikey')
     def delete(self, id):
         try:
-            doc = doc_by_id(id, current_app=app)
             doc = doc_by_id(id, es=app.es, index=app.config['INDEX_PUBLIC'])            
             resource_id = doc.get("source", None)
             

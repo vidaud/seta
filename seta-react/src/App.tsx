@@ -10,13 +10,16 @@ import NotFoundPage from './pages/not-found/not-found';
 import Dashboard from './pages/dashboard/dashboard';
 import { ProtectedRoute } from './components/protected-route/protected-route';
 import Communities from './pages/communities/communities';
+import "primereact/resources/themes/lara-light-blue/theme.css";
+import "primereact/resources/primereact.min.css";
+import "primeicons/primeicons.css"; 
 
 function App() {
   return (
     <div className="App">
-      <link rel="stylesheet" href="https://unpkg.com/primeicons/primeicons.css" />
+      {/* <link rel="stylesheet" href="https://unpkg.com/primeicons/primeicons.css" />
       <link rel="stylesheet" href="https://unpkg.com/primereact/resources/themes/lara-light-blue/theme.css" />
-      <link rel="stylesheet" href="https://unpkg.com/primereact/resources/primereact.min.css" />
+      <link rel="stylesheet" href="https://unpkg.com/primereact/resources/primereact.min.css" /> */}
       <link rel="stylesheet" href="https://unpkg.com/primeflex@3.2.1/primeflex.min.css" />
       <BrowserRouter>
         <Routes>

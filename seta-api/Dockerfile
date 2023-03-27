@@ -1,12 +1,13 @@
 FROM ubuntu:22.04
 
 RUN echo "Acquire::http::Proxy \""$HTTP_PROXY"\";" >> /etc/apt/apt.conf
-ENV https_proxy=$HTTP_PROXY
+RUN echo "Acquire::https::Proxy \""$HTTPS_PROXY"\";" >> /etc/apt/apt.conf
+
+ENV https_proxy=$HTTPS_PROXY
 ENV http_proxy=$HTTP_PROXY
-ENV no_proxy="seta-es,seta-mongo,seta-api,seta-nginx,seta-ui,seta-ui-spa"
-ENV HTTPS_PROXY=$HTTP_PROXY
+
+ENV HTTPS_PROXY=$HTTPS_PROXY
 ENV HTTP_PROXY=$HTTP_PROXY
-ENV NO_PROXY=$no_proxy
 
 RUN apt update -y
 RUN apt install -y  --no-install-recommends curl
@@ -22,7 +23,7 @@ WORKDIR $ROOT
 
 RUN chown -R seta /home/seta 
 
-RUN export  https_proxy=$HTTP_PROXY
+RUN export  https_proxy=$HTTPS_PROXY
 RUN export  http_proxy=$HTTP_PROXY
 
 RUN mkdir -p $ROOT/tika

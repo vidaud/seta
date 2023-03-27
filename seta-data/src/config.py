@@ -1,5 +1,5 @@
 """seta-ui flask configuration."""
-#import os
+import os
     
 class Config:
     
@@ -18,10 +18,20 @@ class Config:
     MODELS_WORD2VEC_FILE_CRC = "wv-sg0-hs1.crc"
     MODELS_INIT_FILE = "models.zip"
     WORD2VEC_JSON_EXPORT = "json_suggestion.json"
-    WORD2VEC_JSON_EXPORT_CRC = "json_suggestion.crc"    
+    WORD2VEC_JSON_EXPORT_CRC = "json_suggestion.crc"  
+    
+    def __init__(self) -> None:             
+        """Read environment variables"""   
+        
+        Config.ES_HOST = os.environ.get("ES_HOST")
     
 class TestConfig(Config):
-    ES_HOST = "seta-es-test:9200"
+    
+    def __init__(self) -> None:
+        super().__init__()
+        
+        if Config.ES_HOST is None:
+            Config.ES_HOST = "seta-es-test:9200"
     
     WORD2VEC_JSON_EXPORT = "json_suggestion_samples.json"
     WORD2VEC_JSON_EXPORT_CRC = "json_suggestion_samples.crc"

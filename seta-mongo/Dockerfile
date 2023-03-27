@@ -1,5 +1,7 @@
 FROM mongo:5
 
-ENV https_proxy=$HTTP_PROXY
+ENV https_proxy=$HTTPS_PROXY
 ENV http_proxy=$HTTP_PROXY
-ENV no_proxy="seta-es,seta-mongo,seta-api,seta-nginx,seta-ui,seta-ui-spa"
+
+ENV HTTPS_PROXY=$HTTPS_PROXY
+ENV HTTP_PROXY=$HTTP_PROXY

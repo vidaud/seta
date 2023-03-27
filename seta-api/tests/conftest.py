@@ -50,6 +50,26 @@ def es(es_host):
     
     es.cleanup()
     
+@pytest.fixture(scope='session', autouse=True)
+def db(db_host, db_port):
+    
+    config = TestConfig()
+        
+    if db_host:
+        config.DB_HOST = db_host
+
+    if db_port:        
+        config.DB_PORT = int(db_port)
+               
+    db = DbTestSetaApi(db_host=config.DB_HOST, db_port=config.DB_PORT, db_name=config.DB_NAME)
+    db.clear_db()
+    db.init_db()   
+
+    yield db   
+
+    #db.clear_db()
+
+    
 
 @pytest.fixture(scope='module')
 def app(es_host, db_host, db_port, web_root):
@@ -68,20 +88,8 @@ def app(es_host, db_host, db_port, web_root):
     app.config["JWT_TOKEN_INFO_URL"] = f"http://{web_root}/authorization/v1/token_info"
     app.config["JWT_TOKEN_AUTH_URL"] = f"http://{web_root}/authentication/v1/user/token"
     
-    with app.app_context():  
-        
-        db_name="seta_test"
-        
-        time_str = str(int(time.time()))
-        db_name += f"_{time_str}"
-               
-        db = DbTestSetaApi(db_host=config.DB_HOST, db_port=config.DB_PORT, db_name=db_name)
-        db.clear_db()
-        db.init_db()   
-    
-        yield app   
-
-        db.clear_db()
+    with app.app_context(): 
+        yield app
 
 @pytest.fixture(scope='module')
 def client(app):
