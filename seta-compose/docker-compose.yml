@@ -42,6 +42,7 @@ services:
       - "seta-api"
       - "seta-ui"
       - "seta-ui-react"
+      - "seta-doc"
     networks:
       - seta-network
 
@@ -75,6 +76,14 @@ services:
       - "seta-es"
     volumes:
       - seta-models3:/home/seta/models
+    networks:
+      - seta-network
+
+  seta-doc:
+    container_name: doc
+    extends:
+      file: common.yml
+      service: doc
     networks:
       - seta-network
 
