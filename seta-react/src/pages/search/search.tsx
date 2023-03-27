@@ -212,7 +212,8 @@ const Search = () => {
             corpusService.getRefreshedToken();
             let details;
             if (enrichQuery) {
-                let result = updateEnrichedQuery(similarsList, ontologyListItems);
+                let currentSearch: any = getSelectedTerms(listOFTerms);
+                let result = currentSearch.concat(" OR ").concat(updateEnrichedQuery(similarsList, ontologyListItems));
                 details = new CorpusSearchPayload({ ...cp, term: result, aggs: 'date_year', n_docs: 100, search_type: typeofSearch, date_range: timeRangeValue });
             } else {
                 details = lastPayload;
@@ -492,7 +493,7 @@ const Search = () => {
                                 <div className='div-size-1'><h5>Autocomplete</h5></div>
                                 <div className='alingItems'>
                                     <div className='div-size-button'>
-                                        { inputText ? <ToggleButton checked={selectAll} disabled={enrichQuery ? true : false} className="custom" aria-label={inputText} onLabel={inputText} offLabel={inputText} tooltip={selectAll ? 'Unselect all terms' : 'Select all terms'} tooltipOptions={{position: 'top'}}
+                                        { inputText ? <ToggleButton checked={selectAll} disabled={enrichQuery || ontologyList.length === 0 ? true : false} className="custom" aria-label={inputText} onLabel={inputText} offLabel={inputText} tooltip={selectAll ? 'Unselect all terms' : 'Select all terms'} tooltipOptions={{position: 'top'}}
                                             onChange={
                                                 (e) => {
                                                     setSelectAll(e.value);
@@ -557,7 +558,7 @@ const Search = () => {
                                 <div className='div-size-2'>
                                     { (selectedTypeSearch.code === 'RC' && enrichQuery === false) ? 
                                             <>
-                                                <DataTable loading={loading} value={ontologyList} showSelectAll={false} className="dataTable-list" selection={selectedRelatedTermsCl} onSelectionChange={
+                                                <DataTable lazy={true} loading={loading} value={ontologyList} showSelectAll={false} className="dataTable-list" selection={selectedRelatedTermsCl} onSelectionChange={
                                                         (e) => selectNode(e.value)
                                                     } 
                                                     dataKey='id' 
