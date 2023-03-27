@@ -1,17 +1,20 @@
-# seta-ui 🏁
+# seta-mongo 💾 
 
-The **seta ui**  folder contains the configuration that enables the access to the web app. \
-In the files **seta-flask-server** it is possible to replicate the application across different servers with minimal reconfiguration. \
-In this folder it is included the code to support the seta-api to validate the authentication token.
+The *seta-mongo* image contains the configuration files necessary for the Mongo Data Base container.
+
+The seta-mongo connects the MongoDB Atlas, the Database-as-a-Service offering by MongoDB. 
+
+The application is connected to the MongoDB through an environment variable.
 
 
 ## Build
 ***
-The image is build it together with all the images through the execution of the docker-compose
+The image is build it together with all the images
 
 ```
     docker compose -f docker-compose.yml -f docker-compose-dev.yml --env-file .env.dev build
 ```
+
 
 ## Contributing
 
