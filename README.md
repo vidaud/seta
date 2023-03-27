@@ -5,15 +5,15 @@ SeTA is a new tool that applies advanced text analysis techniques to large docum
 
 ## General Overview 
 ***
-This project is made up of two modules: \
+This project is made up of two modules:
 * The **frontend** 
-* The **flask-server** one. \
+* The **flask-server** one. 
 
-**Seta-frontend** is an *React* standard workspace enabled application.  \
-**Seta-middleware** is a standard `maven-archetype-webapp` \
-**Seta-flask-server** is a Flask application \
+**Seta-frontend** is an *React* standard workspace enabled application.  
+**Seta-middleware** is a standard `maven-archetype-webapp` 
+**Seta-flask-server** is a Flask application 
 
-The frontend module contains all the static resources that make up the UI business logic  
+The frontend module contains all the static resources that make up the UI business logic  \
 The middleware module contains all the java sources and acts as a proxy / integration layer towards the backend. \
 The flask-server module contains all the python sources and acts as a proxy / authentication layer towards the backend.  
 
@@ -31,37 +31,23 @@ Flask configurations files are:
 ***
 It is necessary to download the project from the git repository
 
-#### **Add GitHub account details**
 
-```
-    git config --global user.name "Your name here"
-    git config --global user.email "your_email@example.com"
-```
-
-#### **Generate SSH keys**
-```
-    ssh-keygen -t rsa -C "your_email@example.com"
-```
-#### **Copy the generated SSH key**
-- On Linux, get the content of the SSH key using the cat command:
-```
-    cat < ~/.ssh/id_rsa.pub
-```
-  
-- For Windows, the key can be generated using git bash (or putty), so open the git bash console and type:
-```
-    ssh-keygen -t rsa
-```
-
-#### **Add SSH to GitHub account**
-Open settings from the profile icon, select SSH and GPG keys, and add the copied SSH key
-```
-    git remote add https://username:password@git@github.com:vidaud/seta.git
-```
 #### **Use the git clone command to clone the project in the current directory, using an SSH link**
 ```
     git clone https://github.com/vidaud/seta.git
 ```
+
+
+## Minimum requirements
+
+* At least 10 GB available free RAM.
+
+* 16 GR (32 GB preferred) RAM, 100 GB free space HDD or SSD (preferred).
+
+* Good Internet speed. You will need to download at least 5GB (> 20GB for all data)
+
+The first run will take time. The next run will be fast.
+
 
 ## Installation
 ***
@@ -81,9 +67,10 @@ It will take some time to download all the dependencies into a node_modules dire
 
 ## Deployment procedure
 ***
+
 ### **Docker composer**
 
-> For the prerequistes on the composer please go to the *README.md* in **cd ./seta-compose**
+From folder **seta-compose** please follow these instructions:
 
 ```
     cd ./seta-compose
@@ -98,8 +85,8 @@ The following commands will use by default the *docker-compose.yml* as the confi
 ```
 
 _Notes:_
-- It will setup all system and data.\
-- It will take a while depending on the Internet speed. Might take 30min to 2h.\
+- It will setup all system and data.
+- It will take a while depending on the Internet speed. Might take 30min to 2h.
 - At some point there will be a message *"SeTA-API is up and running."*
 
 
@@ -145,16 +132,40 @@ After successfully start all the containers you are ready to open your browser a
 ```
     docker compose -f docker-compose.yml -f docker-compose-dev.yml --env-file .env.dev up --force-recreate --build --no-deps seta-ui
 ```
+## Shell scripts
+Scripts as short commands for *'docker compose -f docker-compose.yml -f docker-compose-dev.yml --env-file .env.dev'*
 
-For Linux, there are two shell files *dev-build.sh* and *dev-up.sh* as shorts commands for docker compose -f docker-compose.yml -f docker-compose-dev.yml --env-file .env.dev
+### Windows
+  Run for development build and up:
+ ```
+    dev-build.bat
+    dev-up.bat
+ ```
+Any arguments for the docker compose *build* or *up* commands will be appended in the batch scripts.
+For example:
+```
+    dev-build.bath --no-cache
+ ```
+
+###Linux
 
 For execute permissions run:
 ```
     chmod +x ./dev-build.sh
     chmod +x ./dev-up.sh
 ```
-### Test environment
-***
+Run for development build and up:
+```
+    ./dev-build.sh
+    ./dev-up.sh
+```
+Any arguments for the docker compose *build* or *up* commands will be appended in the shell scripts.
+For example:
+```
+    ./dev-build.sh --no-cache
+```
+
+## Test environment
 Create an ***.env.test*** file containing the variables as described in *.env.example*
 
 ```

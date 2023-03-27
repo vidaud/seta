@@ -1,29 +1,17 @@
-# seta-ui
+# seta-ui 🏁
 
-The **seta ui**  contains the necessary files including the python scripts for the setup of the UI image:
-
-- ./seta_flask_server
-- ./seta-flask-server
-- ./tests
-- app_dev.py
-- app_test.py
-- app.py
+The **seta ui**  folder contains the configuration that enables the access to the web app. \
+In the files **seta-flask-server** it is possible to replicate the application across different servers with minimal reconfiguration. \
+In this folder it is included the code to support the seta-api to validate the authentication token.
 
 
+## Build
+***
+The image is build it together with all the images through the execution of the docker-compose
 
-### (re-)build
 ```
-    docker compose -f docker-compose.yml -f docker-compose-dev.yml --env-file .env.dev build seta-ui
+    docker compose -f docker-compose.yml -f docker-compose-dev.yml --env-file .env.dev build
 ```
-+ Start all services for your environment locally:
-```
-    docker compose -f docker-compose.yml -f docker-compose-dev.yml --env-file .env.dev up
-```
-+ Start all services for your environment locally in detached mode:
-```
-    docker compose -f docker-compose.yml -f docker-compose-dev.yml --env-file .env.dev up -d
-```
-
 
 ## Contributing
 

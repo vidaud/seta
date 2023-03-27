@@ -1,14 +1,6 @@
 # seta-nginx 💻 
 
-The subfolder contains docker files for generating executable images for nginx and the configuration files:
-
-* Dockerfile
-* Dockerfile-dev
-* Dockerfile-test
-* nginx.conf
-* project.conf
-* project_dev.conf
-* project_test.conf
+The **seta-nginx** folder contains the configuration of the server with all the proxy configurations.
 
 
 The images can be built by running:

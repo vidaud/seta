@@ -1,23 +1,14 @@
 # seta-es 🔎
 
-The *seta-es* contains the elastic search image in dockers.
+The **seta-es** folder contains the image where the elastic search engine is store.
 
-The files included are:
+The **Elasticsearch** engine is fast, with it's logic of placing documents distributed across different containers, it provides redundant copies of the data in case of hardware failure. 
 
-* docker-compose.yml
-* Dockerfile
-* Dockerfile-7.15.2
-* Dockerfile-test
+Elasticsearch comes with a wide set of features: *is fast, scalabale, and resilient.* 
 
-**docker-compose.yml**: This file allows you to configure and document the elastic search dependencies. Through this configuration it is possible to create and start the container with the single command (docker-compose up).
+It has a number of powerful built-in features that make storing and searching data even more efficient, such as data rollups and index lifecycle management.
 
-**Dockerfile**: The start docker file for the production environment.
-
-**Dockerfile-7.15.2**: 
-
-**Dockerfile-test**: The start docker file for the test environment.
-
-
+The Elasticsearch engine simplifies data ingest, visualization, and reporting. 
 
 
 ## Build

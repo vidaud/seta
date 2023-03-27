@@ -1,10 +1,10 @@
 # seta-mongo 💾 
 
-The *seta-mongo* subfolder contains the configuration files necessary for the Mongo DB container.
+The *seta-mongo* image contains the configuration files necessary for the Mongo Data Base container.
 
-* docker-compose.yml 
-* Dockerfile
-* Dockerfile-test
+The seta-mongo connects the MongoDB Atlas, the Database-as-a-Service offering by MongoDB. 
+
+The application is connected to the MongoDB through an environment variable.
 
 
 ## Build

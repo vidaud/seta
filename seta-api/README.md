@@ -1,24 +1,11 @@
 # seta-api 📃
 
-The **seta API**  is a python client that communicates with the docker client in order to do the queries to the elastic search that came from the web app.
+The **seta API**  folder contains the image with the python client that serves to communicates with the docker client in order to elaborate the queries to the Elasticsearch engine that come from the web app. 
 
+All the data that flows into the elastic search engine from the different sources. In this image is included the functions by which this raw data is parsed, normalized, and enriched before it is indexed in Elasticsearch. 
 
-The subfolder contains folders, docker files and configuration files for the execution of the API:
+The process of index in Elasticsearch, it is also included in this image, together with the process of manage complex queries against the data and use aggregations to retrieve complex summaries of the data. 
 
-* cd .\apis 
-* cd .\infrastructure
-* cd .\models
-* cd .\results
-* cd .\seta_api
-* cd .\tests
-* app.py
-* app_dev.py
-* app_test.py
-* docker-compose.yml
-* Dockerfile
-* Dockerfile-dev-flask
-* Dockerfile-test
-* gunicorn_conf.py \
 
 
 ## Build
