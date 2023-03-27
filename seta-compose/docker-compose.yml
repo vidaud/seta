@@ -25,8 +25,6 @@ services:
     extends:
       file: common.yml
       service: api
-    volumes:
-      - seta-models3:/home/seta/models
     networks:
       - seta-network
     depends_on:
@@ -54,8 +52,6 @@ services:
       service: ui
     depends_on:
       - "seta-api"
-    volumes:
-      - seta-models3:/home/seta/models
     networks:
       - seta-network
 

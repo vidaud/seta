@@ -184,6 +184,5 @@ Create an ***.env.test*** file containing the variables as described in *.env.ex
  
 ```
 docker compose -f docker-compose-test.yml --env-file .env.test build
-
 docker compose -f docker-compose-test.yml --env-file .env.test up
 ```

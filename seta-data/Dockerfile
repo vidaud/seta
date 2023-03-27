@@ -20,13 +20,13 @@ RUN useradd seta
 ARG ROOT=/home/seta
 
 WORKDIR $ROOT
-ADD requirements.txt $ROOT/requirements.txt
+COPY requirements.txt $ROOT/requirements.txt
 
 RUN pip3 install -r $ROOT/requirements.txt 
 
-ADD src/* $ROOT/
+COPY src/* $ROOT/
 RUN mkdir $ROOT/models_docker
-ADD models/* $ROOT/models_docker/
+COPY models/* $ROOT/models_docker/
 
 #CMD "ls -l /home/seta &&  python /home/seta/app.py"
 CMD ["python3", "/home/seta/app.py"]

@@ -1,0 +1,8 @@
+.dockerignore
+Dockerfile*
+.pytest_cache
+.gitignore
+changelog.txt
+README.md
+node_modules
+tests/
