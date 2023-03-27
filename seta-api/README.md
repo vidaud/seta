@@ -1,6 +1,6 @@
 # seta-api 📃
 
-The **seta API**  contains the files necesary to create new communities through a simple API rest call. It receives the requests about a specific resource on the seta server and creates it.
+The **seta API**  is a python client that communicates with the docker client in order to do the queries to the elastic search that came from the web app.
 
 
 The subfolder contains folders, docker files and configuration files for the execution of the API:

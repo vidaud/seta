@@ -1,0 +1,1 @@
+This folder contains some examples files to train the elastic search service.
