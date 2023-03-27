@@ -10,7 +10,8 @@
     "lint:fix": "eslint --ext ts,tsx . --color --fix",
     "prepare": "cd .. && husky install ./seta-react/.husky",
     "docker:build": "cd ../seta-compose && docker compose -f docker-compose.yml -f docker-compose-dev.yml --env-file .env.dev build",
-    "docker:up": "cd ../seta-compose && docker compose -f docker-compose.yml -f docker-compose-dev.yml --env-file .env.dev up -d"
+    "docker:up": "cd ../seta-compose && docker compose -f docker-compose.yml -f docker-compose-dev.yml --env-file .env.dev up -d",
+    "docker:down": "cd ../seta-compose && docker compose down"
   },
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.5",

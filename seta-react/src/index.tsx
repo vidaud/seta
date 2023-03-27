@@ -3,8 +3,8 @@ import { createRoot } from 'react-dom/client'
 
 import './index.css'
 import App from './App'
-import Footer from './components/Footer/footer'
-import Header from './components/Header/header'
+import Footer from './components/Footer'
+import Header from './components/Header'
 import { environment } from './environments/environment'
 import reportWebVitals from './reportWebVitals'
 
