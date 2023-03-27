@@ -29,10 +29,11 @@ RUN npm install -g npm
 
 
 COPY ./package.json $ROOT/package.json
+RUN npm install
+
 COPY ./tsconfig.json $ROOT/tsconfig.json
 COPY ./src $ROOT/src
 COPY ./public $ROOT/public
-RUN npm install
 
 RUN npm run build
 
