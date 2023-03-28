@@ -8,7 +8,6 @@ services:
 
   seta-api:
     build:
-      context: ../seta-api
       dockerfile: Dockerfile-dev-flask
     volumes:
       - ../seta-api:/home/seta
@@ -20,7 +19,6 @@ services:
 
   seta-ui:
     build:
-       context: ../seta-ui
        dockerfile: Dockerfile-dev-flask
     ports:
       - "5678:5678"
@@ -29,7 +27,6 @@ services:
 
   seta-ui-react:
     build:
-       context: ../seta-react
        dockerfile: Dockerfile-dev
     ports:
       - "3000:3000"
@@ -39,3 +36,11 @@ services:
     environment:
       - NODE_ENV=development
       - CHOKIDAR_USEPOLLING=true
+
+  seta-doc:
+    build:       
+       dockerfile: Dockerfile-dev
+    expose:
+      - "8000"
+    volumes:
+      - ../seta-doc:/home/seta
