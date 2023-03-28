@@ -6,10 +6,7 @@ export const defaultTypeOfSearch = {
   code: 'RC',
   name: 'Related term clusters'
 }
-export const itemsBreadCrumb = [
-  { label: 'Search', url: '/seta-ui/search' },
-  { label: 'Document List' }
-]
+export const itemsBreadCrumb = [{ label: 'Search', url: '/search' }, { label: 'Document List' }]
 export const home = { icon: 'pi pi-home', url: '/seta-ui' }
 export const typeOfSearches = [
   { name: 'Related term clusters', code: 'RC' },

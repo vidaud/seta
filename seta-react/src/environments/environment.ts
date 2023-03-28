@@ -2,7 +2,7 @@ export const environment = {
   production: false,
   test: false,
   baseUrl: `http://localhost`,
-  baseApplicationContext: `/seta-ui/`,
+  baseApplicationContext: `/`,
   restEndPoint: `rest/`,
   _regex: new RegExp(`_`, `g`),
   baseFlaskBackendUrl: 'http://localhost:8080',
