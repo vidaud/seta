@@ -4,7 +4,7 @@ SeTA is a new tool that applies advanced text analysis techniques to large docum
 
 
 ## General Overview 
-***
+
 This project is made up of two modules:
 * The **frontend** 
 * The **flask-server** one. 
@@ -28,7 +28,7 @@ Flask configurations files are:
  - package.json
  
 ## Prerequisites
-***
+
 It is necessary to download the project from the git repository
 
 
@@ -50,7 +50,7 @@ The first run will take time. The next run will be fast.
 
 
 ## Installation
-***
+
 Move to the directory of the project:
 
 ```
@@ -66,7 +66,7 @@ The node_modules directory is not a part of the cloned repository and should be 
 It will take some time to download all the dependencies into a node_modules directory.
 
 ## Deployment procedure
-***
+
 
 ### **Docker composer**
 
@@ -95,7 +95,6 @@ After successfully start all the containers you are ready to open your browser a
 * **for API:** http://localhost/seta-api/doc
 
 ### To stop services:
-***
 ```
     CTRL + C
 ```
@@ -109,7 +108,7 @@ After successfully start all the containers you are ready to open your browser a
     docker compose down
 ```
 ### Development environment
-***
+
 + Create an ***.env.dev*** file containing the variables as described in *.env.example*
 
 ### (re-)build all images
@@ -147,7 +146,7 @@ For example:
     dev-build.bath --no-cache
  ```
 
-###Linux
+### Linux
 
 For execute permissions run:
 ```
@@ -175,7 +174,6 @@ Create an ***.env.test*** file containing the variables as described in *.env.ex
 
 
 ## Contributing
-***
 
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 

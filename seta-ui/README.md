@@ -6,8 +6,7 @@ In this folder it is included the code to support the seta-api to validate the a
 
 
 ## Build
-***
-The image is build it together with all the images through the execution of the docker-compose
+The image is build it together with all the images through the execution of the docker-compose:
 
 ```
     docker compose -f docker-compose.yml -f docker-compose-dev.yml --env-file .env.dev build
