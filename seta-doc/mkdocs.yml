@@ -27,5 +27,10 @@ theme:
         name: Switch to light mode    
       primary: teal
       accent: lime  
+plugins:
+  - search
+  - render_swagger
 nav:
   - Home: index.md
+  - Apis:
+    - Seta-api: seta-api/seta_api_v1.md
