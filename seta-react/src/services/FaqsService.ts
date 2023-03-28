@@ -1,9 +1,9 @@
-import jsonFaqs from '../pages/faqs/faqs.json'
+import jsonFaqs from '../pages/FaqsPage/faqs.json'
 
 export class FaqsService {
-    getTreeNodes() {
-        let test = jsonFaqs.root
-        return test;
-    }
-        
-};
+  getTreeNodes() {
+    const test = jsonFaqs.root
+
+    return test
+  }
+}

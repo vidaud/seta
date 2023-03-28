@@ -1,17 +1,20 @@
-import { User } from "../models/user.model";
-import { Serializer } from "./serializer.interface";
+import type { Serializer } from './serializer.interface'
+
+import { User } from '../models/user.model'
 
 export class UserSerializer implements Serializer {
   fromJson(json: any): User {
-    let user = new User();
+    const user = new User()
+
     user.email = json?.email
     user.firstName = json?.first_name
     user.lastName = json?.last_name
     user.username = json?.username
+
     return user
   }
 
   toJson(user: User) {
-    return JSON.stringify(user);
+    return JSON.stringify(user)
   }
 }

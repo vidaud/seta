@@ -1,0 +1,263 @@
+{
+  "plugins": [
+    "@typescript-eslint",
+    "react-hooks",
+    "unused-imports",
+    "prettier"
+    // "import"
+  ],
+  "extends": [
+    "plugin:@typescript-eslint/recommended",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "react-app",
+    "prettier"
+  ],
+  "rules": {
+    "prettier/prettier": ["error", { "endOfLine": "auto" }],
+    "space-before-function-paren": "off",
+    "@typescript-eslint/space-before-function-paren": ["error", {
+      "anonymous": "always",
+      "named": "never",
+      "asyncArrow": "always"
+    }],
+    "prefer-const": [
+      "error",
+      {
+        "destructuring": "any",
+        "ignoreReadBeforeAssign": false
+      }
+    ],
+    // TODO: Change this to "error" and fix the code
+    // Allows "e" for event, "_" for useless parameter
+    // "id-length": [
+    //   "error",
+    //   {
+    //     "properties": "never",
+    //     "exceptions": ["e", "_"]
+    //   }
+    // ],
+
+    // Overrides standard, allows using `my 'string'` instead of "my 'string'" or 'my \'string\''
+    "quotes": [
+      "error",
+      "single",
+      {
+        "avoidEscape": true,
+        "allowTemplateLiterals": true
+      }
+    ],
+    "no-else-return": "error",
+    "react/react-in-jsx-scope": "off",
+    "no-console": "warn",
+    "jsx-quotes": ["error", "prefer-double"],
+    "arrow-parens": ["error", "as-needed"],
+    "react/jsx-fragments": ["error", "syntax"],
+    "react/jsx-no-target-blank": [
+      "warn",
+      {
+        "allowReferrer": true
+      }
+    ],
+    "react/no-multi-comp": [
+      // TODO: Change this to "error" and refactor the code
+      "warn",
+      {
+        "ignoreStateless": true
+      }
+    ],
+    "react/no-array-index-key": "warn", // TODO: Change this to "error" and fix the code
+    "react/jsx-uses-react": "error",
+    "react/jsx-uses-vars": "error",
+    "react/jsx-key": ["error", { "checkFragmentShorthand": true }],
+    "react/no-direct-mutation-state": "error",
+    "react/no-redundant-should-component-update": "error",
+    "react/no-typos": "error",
+    "react/no-this-in-sfc": "error",
+    "react/no-unknown-property": "error",
+    "react/self-closing-comp": "error",
+    "react/require-render-return": "error",
+    "react/void-dom-elements-no-children": "error",
+    "react/jsx-closing-bracket-location": ["error", "line-aligned"],
+    "react/jsx-equals-spacing": "error",
+    "react/jsx-wrap-multilines": [
+      "error",
+      {
+        "declaration": "parens-new-line",
+        "assignment": "parens-new-line",
+        "return": "parens-new-line",
+        "arrow": "parens-new-line",
+        "logical": "parens-new-line",
+        "condition": "parens",
+        "prop": false
+      }
+    ],
+    "react/jsx-tag-spacing": "error",
+    "react/jsx-props-no-multi-spaces": "error",
+    "react/jsx-curly-brace-presence": "error",
+    "react/jsx-max-props-per-line": [
+      "error",
+      {
+        "maximum": 1,
+        "when": "multiline"
+      }
+    ],
+    "space-in-parens": ["error", "never"],
+    "import/order": [
+      "error",
+      {
+        "newlines-between": "always",
+        "groups": [
+          ["builtin", "external"],
+          "unknown",
+          "internal",
+          "sibling",
+          "index"
+        ],
+        "pathGroups": [
+          {
+            "pattern": "~/{components,pages}/**",
+            "group": "unknown",
+            "position": "after"
+          },
+          {
+            "pattern": "react",
+            "group": "external",
+            "position": "before"
+          }
+        ],
+        "distinctGroup": false,
+        "pathGroupsExcludedImportTypes": ["builtin"],
+        "alphabetize": {
+          "order": "asc",
+          "caseInsensitive": true
+        }
+      }
+    ],
+    "import/no-cycle": "error",
+    "import/first": "error",
+    "import/no-useless-path-segments": "error",
+    "import/no-duplicates": "error",
+    "import/no-unresolved": "error",
+    "import/no-extraneous-dependencies": "error",
+    "import/no-relative-packages": "error",
+    "import/newline-after-import": "error",
+    "unused-imports/no-unused-imports": "warn",
+    "unused-imports/no-unused-vars": [
+      "warn",
+      { "vars": "all", "varsIgnorePattern": "^_", "args": "after-used", "argsIgnorePattern": "^_" }
+    ],
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "warn",
+    "space-before-blocks": "error",
+    "comma-spacing": ["error", { "before": false, "after": true }],
+    "arrow-spacing": ["error", { "before": true, "after": true }],
+    "keyword-spacing": ["error", { "before": true, "after": true }],
+    "no-template-curly-in-string": "off",
+    "no-prototype-builtins": "off",
+    "curly": ["error", "all"],
+    "padding-line-between-statements": "off",
+    "@typescript-eslint/array-type": ["error", { "default": "array" }],
+    "@typescript-eslint/no-non-null-assertion": "warn",
+    // TODO: We should turn this on, but there are some issues with inheritance we need to address first
+    //"@typescript-eslint/method-signature-style": "warn",
+    "@typescript-eslint/padding-line-between-statements": [
+      "error",
+      { "blankLine": "always", "prev": "*", "next": "return" },
+      { "blankLine": "always", "prev": "*", "next": ["block-like"] },
+      { "blankLine": "always", "prev": ["block-like", "multiline-expression"], "next": "*" },
+      { "blankLine": "always", "prev": ["const", "let"], "next": "*" },
+      { "blankLine": "always", "prev": ["case", "default"], "next": "*" },
+      {
+        "blankLine": "any",
+        "prev": ["const", "let"],
+        "next": ["const", "let"]
+      },
+      {
+        "blankLine": "always",
+        "prev": "multiline-expression",
+        "next": "multiline-expression"
+      }
+    ],
+    "@typescript-eslint/no-var-requires": "off",
+    // Must be turned off in favor of typescript-eslint/no-use-before-define
+    "no-use-before-define": "off",
+    "@typescript-eslint/no-use-before-define": ["error"],
+    "@typescript-eslint/no-explicit-any": "warn",
+    "@typescript-eslint/ban-ts-comment": "warn",
+    // Must be turned off in favor of typescript-eslint/no-shadow
+    "no-shadow": "off",
+    "@typescript-eslint/no-shadow": ["warn"],
+    // Must be turned off in favor of typescript-eslint/no-unused-vars
+    "no-unused-vars": "off",
+    "@typescript-eslint/no-unused-vars": "warn", // TODO: Change this to "error" and fix all the components
+    // Must be turned off in favor of typescript-eslint/no-unused-expressions
+    "no-unused-expressions": "off",
+    "@typescript-eslint/no-unused-expressions": ["warn"], // TODO: Change this to "error" and fix all the components
+    "@typescript-eslint/no-extra-semi": "off",
+    // Must be turned off in favor of typescript-eslint/func-call-spacing
+    "func-call-spacing": "off",
+    "@typescript-eslint/func-call-spacing": "error",
+    "@typescript-eslint/consistent-type-imports": [
+      "error",
+      {
+        "prefer": "type-imports",
+        "disallowTypeAnnotations": true
+      }
+    ],
+    /**
+     * COMPLEXITY
+     * Ensure manageable complexity in functions and prevent callback hell.
+     * Consider extracting some of the logic into a separate function.
+     */
+     "complexity": ["warn", { "max": 10 }],
+     "max-params": ["warn", 4],
+     "max-statements": ["warn", 20],
+     "max-statements-per-line": ["warn", { "max": 1 }],
+     "max-nested-callbacks": ["warn", { "max": 3 }],
+     "max-depth": ["warn", { "max": 3 }],
+     "max-lines": [
+      // TODO: Change this to "error" and refactor all the large files
+      "warn",
+      {
+        "max": 300,
+        "skipBlankLines": true,
+        "skipComments": true
+      }
+    ],
+    "max-lines-per-function": [
+      "warn",
+      {
+        "max": 200,
+        "skipBlankLines": true,
+        "skipComments": true
+      }
+    ],
+    "no-param-reassign": "warn",
+    "no-invalid-this": "warn",
+    "func-style": ["warn", "expression"]
+  },
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    },
+    "useJSXTextNode": false
+  },
+  "settings": {
+    "react": {
+      "version": "detect"
+    },
+    "import/resolver": {
+      "typescript": {
+        "alwaysTryTypes": true,
+        "project": ["./tsconfig.json"]
+      },
+      "node": {
+        "moduleDirectory": ["node_modules", "src"]
+      }
+    },
+    "import/parsers": {
+      "@typescript-eslint/parser": [".ts", ".tsx"]
+    }
+  }
+}

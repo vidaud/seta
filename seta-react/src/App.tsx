@@ -1,36 +1,35 @@
-import './App.css';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Home from './pages/home/home';
-import Faqs from './pages/faqs/faqs';
-import Contact from './pages/contact/contact';
-import Search from './pages/search/search';
-import Profile from './pages/profile/profile';
-import Login from './pages/login/login';
-import NotFoundPage from './pages/not-found/not-found';
-import Dashboard from './pages/dashboard/dashboard';
-import { ProtectedRoute } from './components/protected-route/protected-route';
-import Communities from './pages/communities/communities';
-import "primereact/resources/themes/lara-light-blue/theme.css";
-import "primereact/resources/primereact.min.css";
-import "primeicons/primeicons.css"; 
+import './App.css'
+import 'primereact/resources/themes/lara-light-blue/theme.css'
+import 'primereact/resources/primereact.min.css'
+import 'primeicons/primeicons.css'
+
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
+
+import ProtectedRoute from './components/ProtectedRoute'
+import CommunitiesPage from './pages/CommunitiesPage'
+import ContactPage from './pages/ContactPage'
+import DashboardPage from './pages/DashboardPage'
+import FaqsPage from './pages/FaqsPage'
+import HomePage from './pages/HomePage'
+import LoginPage from './pages/LoginPage'
+import NotFoundPage from './pages/NotFoundPage'
+import ProfilePage from './pages/ProfilePage'
+import SearchPage from './pages/SearchPage'
 
 function App() {
   return (
     <div className="App">
-      {/* <link rel="stylesheet" href="https://unpkg.com/primeicons/primeicons.css" />
-      <link rel="stylesheet" href="https://unpkg.com/primereact/resources/themes/lara-light-blue/theme.css" />
-      <link rel="stylesheet" href="https://unpkg.com/primereact/resources/primereact.min.css" /> */}
       <link rel="stylesheet" href="https://unpkg.com/primeflex@3.2.1/primeflex.min.css" />
       <BrowserRouter>
         <Routes>
-          <Route path="/seta-ui" element={<Home />} />
-          <Route path="/seta-ui/home" element={<Home />} />
+          <Route path="/seta-ui" element={<HomePage />} />
+          <Route path="/seta-ui/home" element={<HomePage />} />
           <Route path="*" element={<NotFoundPage />} />
           <Route
             path="/seta-ui/search"
             element={
               <ProtectedRoute>
-                <Search />
+                <SearchPage />
               </ProtectedRoute>
             }
           />
@@ -38,7 +37,7 @@ function App() {
             path="/seta-ui/profile"
             element={
               <ProtectedRoute>
-                <Profile />
+                <ProfilePage />
               </ProtectedRoute>
             }
           />
@@ -46,18 +45,18 @@ function App() {
             path="/seta-ui/dashboard"
             element={
               <ProtectedRoute>
-                <Dashboard />
+                <DashboardPage />
               </ProtectedRoute>
             }
           />
-          <Route path="/seta-ui/communities" element={<Communities />} />
-          <Route path="/seta-ui/faqs" element={<Faqs />} />
-          <Route path="/seta-ui/contact" element={<Contact />} />
-          <Route path="/seta-ui/login" element={<Login />} />
+          <Route path="/seta-ui/communities" element={<CommunitiesPage />} />
+          <Route path="/seta-ui/faqs" element={<FaqsPage />} />
+          <Route path="/seta-ui/contact" element={<ContactPage />} />
+          <Route path="/seta-ui/login" element={<LoginPage />} />
         </Routes>
       </BrowserRouter>
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
