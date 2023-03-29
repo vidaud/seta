@@ -95,7 +95,7 @@ services:
       - no_proxy=${NO_PROXY}
   
   doc:
-    restart: "no"
+    restart: always
     build:
       context: ../seta-doc
       args:
