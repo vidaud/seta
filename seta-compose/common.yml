@@ -110,9 +110,7 @@ services:
       context: ../seta-data
       args:
         - HTTP_PROXY=${HTTP_PROXY}
-        - HTTPS_PROXY=${HTTPS_PROXY}  
-    expose:
-      - "80"
+        - HTTPS_PROXY=${HTTPS_PROXY}
     environment:
       - NO_PROXY=${NO_PROXY}
       - no_proxy=${NO_PROXY}

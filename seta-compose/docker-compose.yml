@@ -84,6 +84,8 @@ services:
     extends:
       file: common.yml
       service: doc
+    expose:
+      - "80"
     networks:
       - seta-network
 
