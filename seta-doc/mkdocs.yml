@@ -5,6 +5,7 @@ theme:
   custom_dir: overrides
   features:
     - navigation.tabs
+    - navigation.tabs.sticky
     - navigation.sections
     - toc.integrate
     - navigation.top
@@ -34,3 +35,9 @@ nav:
   - Home: index.md
   - Apis:
     - Seta-api: seta-api/seta_api_v1.md
+  - FAQS:
+    - FAQS: faqs/faqs_v1.md
+  - License:
+    - License: license/license_v1.md
+pages:
+
