@@ -1,3 +1,9 @@
+---
+icon: material/emoticon-blue_book
+
+
+---
+
 # SeTA *Semantic Text Analyser*
 
 SeTA is a new tool that applies advanced text analysis techniques to large document collections, helping policy analysts to understand the concepts expressed in thousands of documents and to see in a visual manner the relationships between these concepts and their development over time. 
@@ -16,12 +22,12 @@ This project is made up of two modules:
 
 **Seta-frontend** is an *React* standard workspace enabled application. The frontend module contains all the static resources that make up the UI business logic. 
 
-**Seta-middleware** is a standard `maven-archetype-webapp`, contains all the java sources and acts as a proxy / integration layer towards the backend. 
+**Seta-middleware** is a standard {++maven-archetype-webapp++}, contains all the java sources and acts as a proxy / integration layer towards the backend. 
 
 **Seta-flask-server** is a Flask application, contains all the python sources and acts as a proxy / authentication layer towards the backend.
 
 
-All static resources that ensure from `ng build seta-web -c=<environment>` of the the frontend module are copied inside the flask-server **seta-ui** folder's module. 
+All static resources that ensure from {++ng build seta-web -c=<environment>++} of the the frontend module are copied inside the flask-server **seta-ui** folder's module. 
 
 The end result is a ***seta-flask-server*** folder that contains a Flask application that can be deployed on any web container.  
 
@@ -39,12 +45,11 @@ The React configuration files are:
 
 It is necessary to download the project from the git repository
 
-
-> **Use the git clone command to clone the project in the current directory, using an SSH link**
-
-```
-    git clone https://github.com/vidaud/seta.git
-```
+!!! info
+    Use the git **clone** command to clone the project in the current directory, using an SSH link.
+    ```
+        git clone https://github.com/vidaud/seta.git
+    ```
 
 
 ## Minimum requirements
@@ -55,7 +60,8 @@ It is necessary to download the project from the git repository
 
 * Good Internet speed. You will need to download at least 5GB (> 20GB for all data)
 
-The first run will take time, while the next run will be fast.
+!!! warning
+    The first run will take time, while the next run will be fast.
 
 
 ## Installation
@@ -68,13 +74,14 @@ Move to the directory of the project:
     cd RepoName
 ```
 
-The *node_modules* directory is not a part of the cloned repository and should be downloaded using the npm install command to download all the direct and transitive dependencies mentioned in the package.json file:
+The *node_modules* directory is not a part of the cloned repository and should be downloaded using the *npm install* command to download all the direct and transitive dependencies mentioned in the package.json file:
 
 ```
     npm install
 ```
 
-It will take some time to download all the dependencies into the *node_modules* directory.
+!!! warning
+    It will take some time to download all the dependencies into the **node_modules** directory.
 
 ## Deployment procedure
 
@@ -88,29 +95,29 @@ Move to folder **seta-compose** and follow these instructions:
 
 Create an ***.env*** file containing the variables as described in the file  *.env.example*
 
-The following commands will call by default the *docker-compose.yml* as the configuration file and *.env* as the environment file
+The following commands will call by default the {++docker-compose.yml++} as the configuration file and *.env* as the environment file
 
 ```
     docker-compose build
     docker-compose up
 ```
 
-**Notes:**
+???+ note "Notes:"
+  
+    It will setup all system and data.
 
-* It will setup all system and data.
+    It will take a while depending on the Internet speed. Might take 30min to 2h.
 
-* It will take a while depending on the Internet speed. Might take 30min to 2h.
-
-* At some point there will be a message *"SeTA-API is up and running."*
+    At some point there will be a message *"SeTA-API is up and running."*
 
 
 After successfully start all the containers you are ready to open your browser and start typing:
 
-* **for UI:** http://localhost/seta-ui
+* **for UI:** [http://localhost/seta-ui](http://localhost/seta-ui)
 
-* **for API:** http://localhost/seta-api/doc
+* **for API:** [http://localhost/seta-api/doc](http://localhost/seta-api/doc)
 
-* **for DOCS:** http://localhost/docs
+* **for DOCS:** [http://localhost/docs](http://localhost/docs)
 
 #### To stop services:
 ```
@@ -172,7 +179,7 @@ For the scripts with short commands:
     docker compose -f docker-compose.yml -f docker-compose-dev.yml --env-file .env.dev
 ```
 
- is used a .bat file where it can be set up all the neccesary functions, as well as the set up of the proxy.  Here below the execution of this bat files in *Windows* and *Linux*.
+ is used a .bat file where it can be set up all the neccesary functions, as well as the set up of the proxy.  Here below the execution of this bat files in {++Windows++} and {++Linux++}.
 
 #### Windows
 
@@ -183,7 +190,7 @@ Open a *cmd* window and from there go to the *seta-compose* folder, for example,
     dev-up.bat
 ```
 
-From now, any arguments for the docker compose *build* or *up* commands will be appended in the batch scripts.
+From now, any argument for the docker compose *build* or *up* commands will be appended in the batch scripts.
 
 For example:
 
@@ -229,3 +236,6 @@ Create an ***.env.test*** file containing the variables as described in *.env.ex
 +  [API](seta-api/seta_api_v1.md#seta-api-v1) 
 +  [FAQs](faqs/faqs.md#faqs)
 +  [License](license/license_v1.md#license)
+
+[FAQs :octicons-question-16:](faqs/faqs.md#faqs){ .md-button .md-button--primary }
+
