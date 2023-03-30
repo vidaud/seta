@@ -1,5 +1,5 @@
 site_name: SETA Docs
-site_description: SETA - SEmantic Text Analyser
+site_description: SETA - Semantic Text Analyser
 theme:
   name: material
   custom_dir: overrides
@@ -31,13 +31,14 @@ theme:
 plugins:
   - search
   - render_swagger
+markdown_extensions:
+    - toc :
+        permalink: "#"
 nav:
   - Home: index.md
   - Apis:
     - Seta-api: seta-api/seta_api_v1.md
-  - FAQS:
-    - FAQS: faqs/faqs_v1.md
-  - License:
-    - License: license/license_v1.md
-pages:
+  - FAQS: faqs/faqs.md
+  - License: license/license_v1.md
+
 

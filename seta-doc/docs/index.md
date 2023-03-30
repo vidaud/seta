@@ -2,11 +2,9 @@
 
 SeTA is a new tool that applies advanced text analysis techniques to large document collections, helping policy analysts to understand the concepts expressed in thousands of documents and to see in a visual manner the relationships between these concepts and their development over time. 
 
-## User's guide
+![Screenshot](./img/mainscreen.jpg)
 
-+  [Installation]() 
-+  [Tutorial]()
-    
+   
 
 ## General Overview 
 
@@ -14,32 +12,26 @@ This project is made up of two modules:
 
 * The **frontend** 
 
-* The **flask-server** one
+* The **flask-server**
 
-**Seta-frontend** is an *React* standard workspace enabled application. 
+**Seta-frontend** is an *React* standard workspace enabled application. The frontend module contains all the static resources that make up the UI business logic. 
 
-**Seta-middleware** is a standard `maven-archetype-webapp` 
+**Seta-middleware** is a standard `maven-archetype-webapp`, contains all the java sources and acts as a proxy / integration layer towards the backend. 
 
-**Seta-flask-server** is a Flask application 
-
-The frontend module contains all the static resources that make up the UI business logic.
-
-The middleware module contains all the java sources and acts as a proxy / integration layer towards the backend.
-
-The flask-server module contains all the python sources and acts as a proxy / authentication layer towards the backend.
+**Seta-flask-server** is a Flask application, contains all the python sources and acts as a proxy / authentication layer towards the backend.
 
 
-All static resources that ensue from `ng build seta-web -c=<environment>` of the the frontend module are copied inside the flask-server **seta-ui** folder's module. 
+All static resources that ensure from `ng build seta-web -c=<environment>` of the the frontend module are copied inside the flask-server **seta-ui** folder's module. 
 
 The end result is a ***seta-flask-server*** folder that contains a Flask application that can be deployed on any web container.  
 
-Flask configurations files are:
+The Flask configurations files are:
 
  - seta-flask-server/config.py
 
  - seta-flask-server/.env
  
- React configuration files are:
+The React configuration files are:
 
  - package.json
  
@@ -63,9 +55,7 @@ It is necessary to download the project from the git repository
 
 * Good Internet speed. You will need to download at least 5GB (> 20GB for all data)
 
-The first run will take time. 
-
-The next run will be fast.
+The first run will take time, while the next run will be fast.
 
 
 ## Installation
@@ -78,19 +68,19 @@ Move to the directory of the project:
     cd RepoName
 ```
 
-The node_modules directory is not a part of the cloned repository and should be downloaded using the npm install command to download all the direct and transitive dependencies mentioned in the package.json file:
+The *node_modules* directory is not a part of the cloned repository and should be downloaded using the npm install command to download all the direct and transitive dependencies mentioned in the package.json file:
 
 ```
     npm install
 ```
 
-It will take some time to download all the dependencies into a node_modules directory.
+It will take some time to download all the dependencies into the *node_modules* directory.
 
 ## Deployment procedure
 
 ### Docker composer
 
-From folder **seta-compose** please follow these instructions:
+Move to folder **seta-compose** and follow these instructions:
 
 ```
     cd ./seta-compose
@@ -98,7 +88,7 @@ From folder **seta-compose** please follow these instructions:
 
 Create an ***.env*** file containing the variables as described in the file  *.env.example*
 
-The following commands will use by default the *docker-compose.yml* as the configuration file and *.env* as the environment file
+The following commands will call by default the *docker-compose.yml* as the configuration file and *.env* as the environment file
 
 ```
     docker-compose build
@@ -120,64 +110,73 @@ After successfully start all the containers you are ready to open your browser a
 
 * **for API:** http://localhost/seta-api/doc
 
-### To stop services:
+* **for DOCS:** http://localhost/docs
+
+#### To stop services:
 ```
     CTRL + C
 ```
 
-* Start in detach mode:
+#### Start in detach mode:
 
 ```
     docker-compose up -d
 ```
 
-* Stop services after detach mode
+#### Stop services after detach mode
 
 ```
     docker compose down
 ```
 
-### Development environment
+#### Development environment
 
-+ Create an ***.env.dev*** file containing the variables as described in  file *.env.example*
+To deploy in the Development environment:
 
-### (re-)build all images
+Create an ***.env.dev*** file containing the variables as described in  file **.env.example**
+
+#### To (re-)build all images
 
 ```
     docker compose -f docker-compose.yml -f docker-compose-dev.yml --env-file .env.dev build
 ```
 
-### (re-)build only seta-ui image
+#### To (re-)build only seta-ui image
 
 ```
     docker compose -f docker-compose.yml -f docker-compose-dev.yml --env-file .env.dev build seta-ui
 ```
 
-+ Start all services for your environment locally:
+#### Start all services for your environment locally:
 
 ```
     docker compose -f docker-compose.yml -f docker-compose-dev.yml --env-file .env.dev up
 ```
 
-+ Start all services for your environment locally in detached mode:
+#### Start all services for your environment locally in detached mode:
 
 ```
     docker compose -f docker-compose.yml -f docker-compose-dev.yml --env-file .env.dev up -d
 ```
 
-### Rebuild and restart seta-ui services while other services are runing:  
+#### Rebuild and restart seta-ui services while other services are runing:  
 
 ```
     docker compose -f docker-compose.yml -f docker-compose-dev.yml --env-file .env.dev up --force-recreate --build --no-deps seta-ui
 ```
 
-## Shell scripts
+#### Shell scripts
 
-Scripts as short commands for **'docker compose -f docker-compose.yml -f docker-compose-dev.yml --env-file .env.dev'**
+For the scripts with short commands: 
+```
+    docker compose -f docker-compose.yml -f docker-compose-dev.yml --env-file .env.dev
+```
 
-### Windows
+ is used a .bat file where it can be set up all the neccesary functions, as well as the set up of the proxy.  Here below the execution of this bat files in *Windows* and *Linux*.
 
-Open a *cmd* window and from there go to the *seta-compose* folder, then Run for *development* build and up:
+#### Windows
+
+Open a *cmd* window and from there go to the *seta-compose* folder, for example, if we want to run for *development* environment the build and up:
 
 ```
     dev-build.bat
@@ -192,7 +191,7 @@ For example:
     dev-build.bath --no-cache
 ```
 
-### Linux
+#### Linux
 
 For execute permissions run:
 
@@ -216,7 +215,7 @@ For example:
     ./dev-build.sh --no-cache
 ```
 
-## Test environment
+#### Test environment
 
 Create an ***.env.test*** file containing the variables as described in *.env.example*
 
@@ -224,3 +223,9 @@ Create an ***.env.test*** file containing the variables as described in *.env.ex
     docker compose -f docker-compose-test.yml build
     docker compose -f docker-compose-test.yml up
 ```
+
+## User's guide
+
++  [API](seta-api/seta_api_v1.md#seta-api-v1) 
++  [FAQs](faqs/faqs.md#faqs)
++  [License](license/license_v1.md#license)
