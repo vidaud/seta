@@ -242,5 +242,5 @@ Create an ***.env.test*** file containing the variables as described in *.env.ex
 [![MIT][mit-badge]][mit-url]
 
 [mit-badge]: https://img.shields.io/badge/license-mit-blue
-[mit-url]: license/license_v1.md#license
+[mit-url]: license/license_v1.md#mit-license
 
