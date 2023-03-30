@@ -1,9 +1,9 @@
 from interface import Interface
-from seta_flask_server.repository.models.seta_user import SetaUser
+from seta_flask_server.repository.models import SetaUser, UserSession, SessionToken
 
 class IUsersBroker(Interface):
     
-    #---------------- New methods ----------------#
+    #---------------- Get methods ----------------#
     
     def authenticate_user(self, auth_user: SetaUser) -> SetaUser:
         pass
@@ -17,6 +17,23 @@ class IUsersBroker(Interface):
     def get_user_by_email(self, email: str) -> SetaUser:
         pass
     
+    #-------------------------------------------------------#
+    
+    
+    #---------------- User session ----------------#
+     
+    def session_create(self, user_session: UserSession) -> None:
+        pass
+    
+    def session_logout(self, session_id: str) -> None:
+        pass
+    
+    def session_add_token(self, token: SessionToken) -> None:
+        pass
+    
+    def session_token_set_blocked(self, session_id: str, token_jti: str) -> bool:
+        pass
+     
     #-------------------------------------------------------#
 
     

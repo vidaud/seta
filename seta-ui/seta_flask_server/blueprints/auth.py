@@ -1,5 +1,6 @@
 from flask_restx import Api, Resource, fields
 from http import HTTPStatus
+from injector import inject
 
 from datetime import datetime
 from datetime import timedelta
@@ -7,7 +8,7 @@ from datetime import timezone
 
 from flask import Blueprint
 from flask import current_app as app
-from flask import (jsonify, redirect, make_response)
+from flask import (jsonify, redirect, make_response, session)
 
 from flask_jwt_extended import create_access_token
 from flask_jwt_extended import jwt_required
@@ -16,6 +17,8 @@ from flask_jwt_extended import get_jwt_identity, get_jwt
 
 from seta_flask_server.infrastructure.constants import ExternalProviderConstants
 from seta_flask_server.infrastructure.helpers import set_token_info_cookies, unset_token_info_cookies
+
+from seta_flask_server.repository.interfaces import IUsersBroker
 
 auth = Blueprint("auth", __name__)
 
@@ -47,12 +50,23 @@ login_info_model = ns_auth.model("LoginInfo", {
 @ns_auth.route("/logout/callback", methods=['GET'])
 class SetaLogoutCallback(Resource):
     
+    @inject
+    def __init__(self, usersBroker: IUsersBroker, api=None, *args, **kwargs):
+        self.usersBroker = usersBroker
+        super().__init__(api, *args, **kwargs)
+    
     @ns_auth.doc(description="Thid-party provider callback for local logout",
             responses={int(HTTPStatus.FOUND): 'Redirect to home route'  })    
     def get(self):
         """ 
         Redirect from CAS logout request after CAS logout successfully.
         """
+        
+        session_id = session.get("session_id")
+        if session_id:
+            self.usersBroker.session_logout(session_id)
+        
+        session.clear()
         
         response = make_response(redirect(app.home_route))
         unset_jwt_cookies(response)
@@ -64,6 +78,11 @@ class SetaLogoutCallback(Resource):
                doc={"description": "Local logout"})
 @ns_auth.response(int(HTTPStatus.OK), 'Remove tokens from local domain cookies', status_model)
 class SetaLogout(Resource):    
+    
+    @inject
+    def __init__(self, usersBroker: IUsersBroker, api=None, *args, **kwargs):
+        self.usersBroker = usersBroker
+        super().__init__(api, *args, **kwargs)
     
     #@ns_auth.marshal_with(status_model)
     def get(self):
@@ -78,7 +97,13 @@ class SetaLogout(Resource):
         """
         Remove tokens from cookies, but third-party cookies will remain
         """
-        #session.pop("username", None)
+        
+        session_id = session["session_id"]        
+        self.usersBroker.session_logout(session_id)
+        
+        session.clear()
+        
+        
         response = jsonify({"status": "success"})
         unset_jwt_cookies(response)
         unset_token_info_cookies(response=response)

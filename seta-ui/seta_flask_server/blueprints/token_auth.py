@@ -73,29 +73,6 @@ class JWTUserToken(Resource):
         set_refresh_cookies(response, refresh_token)
                 
         return response
-    
-@ns_auth.route("/user/guest", methods=['POST'])
-class JWTGuestToken(Resource):
-    @ns_auth.doc(description="JWT token for guests",
-            responses={200: 'Success'})
-    
-    def post(self):
-        iat = time.time()
-        identity = {"user_id": "guest-" + str(iat)}
-        
-        additional_claims = {
-            "role": "guest",
-        }     
-       
-        access_token = create_access_token(identity=identity, fresh=True, additional_claims=additional_claims)
-        refresh_token = create_refresh_token(identity=identity, additional_claims=additional_claims)
-        response = make_response(jsonify(access_token=access_token, refresh_token=refresh_token))
-
-        set_access_cookies(response, access_token)
-        set_refresh_cookies(response, refresh_token)            
-
-       
-        return jsonify(access_token=access_token, refresh_token=refresh_token)
 
 refresh_parser = ns_auth.parser()
 refresh_parser.add_argument("Authorization", location="headers", required=False, type="apiKey")
