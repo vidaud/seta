@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { InputTextarea } from 'primereact'
+import { InputTextarea } from 'primereact/inputtextarea'
 import './style.css'
 
 const TextareaInput = ({ onChange }) => {

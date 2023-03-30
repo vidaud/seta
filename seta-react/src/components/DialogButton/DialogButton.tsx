@@ -1,6 +1,6 @@
 import { useState } from 'react'
-import { Dialog } from 'primereact'
 import { Button } from 'primereact/button'
+import { Dialog } from 'primereact/dialog'
 
 import './style.css'
 import { CorpusService } from '../../services/corpus/corpus.service'

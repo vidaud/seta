@@ -1,6 +1,8 @@
 import { useRef, useState } from 'react'
-import { FileUpload, ProgressBar, Tag } from 'primereact'
 import { Button } from 'primereact/button'
+import { FileUpload } from 'primereact/fileupload'
+import { ProgressBar } from 'primereact/progressbar'
+import { Tag } from 'primereact/tag'
 
 export const FileUploads = ({ onChange }) => {
   const [totalSize, setTotalSize] = useState(0)
