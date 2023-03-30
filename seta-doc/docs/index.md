@@ -95,13 +95,13 @@ Move to folder **seta-compose** and follow these instructions:
 
 Create an ***.env*** file containing the variables as described in the file  *.env.example*
 
-The following commands will call by default the {++docker-compose.yml++} as the configuration file and *.env* as the environment file
+
+ The following commands will call by default the {++docker-compose.yml++} as the configuration file and *.env* as the environment file
 
 ```
     docker-compose build
     docker-compose up
 ```
-
 ???+ note "Notes:"
   
     It will setup all system and data.
@@ -235,7 +235,12 @@ Create an ***.env.test*** file containing the variables as described in *.env.ex
 
 +  [API](seta-api/seta_api_v1.md#seta-api-v1) 
 +  [FAQs](faqs/faqs.md#faqs)
-+  [License](license/license_v1.md#license)
 
 [Release Notes :notepad_spiral:](release-notes/release-notes.md#Release Notes){ .md-button }
+
+
+[![MIT][mit-badge]][mit-url]
+
+[mit-badge]: https://img.shields.io/badge/license-mit-blue
+[mit-url]: license/license_v1.md#license
 
