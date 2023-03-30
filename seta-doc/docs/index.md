@@ -237,5 +237,5 @@ Create an ***.env.test*** file containing the variables as described in *.env.ex
 +  [FAQs](faqs/faqs.md#faqs)
 +  [License](license/license_v1.md#license)
 
-[FAQs :octicons-question-16:](faqs/faqs.md#faqs){ .md-button .md-button--primary }
+[Release Notes :notepad_spiral:](release-notes/release-notes.md#Release Notes){ .md-button }
 

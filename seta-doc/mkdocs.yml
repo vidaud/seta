@@ -75,7 +75,7 @@ nav:
   - Apis:
     - Seta-api: seta-api/seta_api_v1.md
   - FAQS: faqs/faqs.md
-  - Tutorial: installation/installation.md
+  - Release: release-notes/release-notes.md
   - License: license/license_v1.md
 
 

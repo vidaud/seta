@@ -1,4 +1,4 @@
-## Welcome
+## License 
 
 
 [![MIT][mit-badge]][mit-url]
