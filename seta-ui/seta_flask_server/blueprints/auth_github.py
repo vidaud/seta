@@ -1,13 +1,10 @@
 from flask import Blueprint, abort
 from flask import current_app as app, g
-from flask import (redirect, request, make_response, url_for)
+from flask import request
 
 from urllib.parse import urljoin
 
-from flask_jwt_extended import create_access_token, create_refresh_token
-from flask_jwt_extended import set_access_cookies, set_refresh_cookies
-
-from seta_flask_server.infrastructure.helpers import set_token_info_cookies
+from seta_flask_server.infrastructure.auth_helpers import create_login_response
 from seta_flask_server.infrastructure.extensions import github
 from seta_flask_server.repository.interfaces import IUsersBroker
 from seta_flask_server.repository.models import SetaUser
@@ -60,30 +57,15 @@ def login_callback_github(access_token, userBroker: IUsersBroker):
     github_user["is_admin"] = email in admins
         
     seta_user = SetaUser.from_github_json(github_user)
-    auth_user = userBroker.authenticate_user(seta_user)    
-                        
-    #additional_claims are added via additional_claims_loader method: factory->add_claims_to_access_token    
-    identity = auth_user.to_identity_json()
-    additional_claims = {
-            "role": auth_user.role
-        }
-    
-    access_token = create_access_token(identity, fresh=True, additional_claims=additional_claims)
-    refresh_token = create_refresh_token(identity, additional_claims=additional_claims)
     
     next = request.args.get("next")
     #TODO: verify 'next' domain before redirect, replace with home_route if anything suspicious
     if not next:
         next = app.home_route
+    next = urljoin(next, "?action=login")        
+    
+    response = create_login_response(seta_user=seta_user, userBroker=userBroker, next=next)
         
-    next = urljoin(next, "?action=login")
-                
-    response = make_response(redirect(next))
-    
-    set_access_cookies(response, access_token)
-    set_refresh_cookies(response, refresh_token)
-    set_token_info_cookies(response=response, access_token_encoded=access_token, refresh_token_encoded=refresh_token)
-    
     return response
 
 def _get_user_email() -> str:

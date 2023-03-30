@@ -31,12 +31,12 @@ def create_app(config_object):
     #Tell Flask it is Behind a Proxy
     app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_host=1)
     
-    app.config.from_object(config_object)        
+    app.config.from_object(config_object)    
+    app.home_route = app.config["HOME_ROUTE"]
         
     #use flask.json in all modules instead of python built-in json
     app.json_provider_class = MongodbJSONProvider
-    app.home_route = '/seta-ui/'
-    
+        
     
     register_extensions(app)
     register_blueprints(app)
@@ -45,7 +45,7 @@ def create_app(config_object):
     request_endswith_ignore_list = ['.js', '.css', '.png', '.ico', '.svg', '.map', '.json', 'doc']
     request_starts_with_ignore_list = ['/authorization', '/authentication', '/login', '/logout', '/refresh']
     
-    with app.app_context(): 
+    with app.app_context():         
             
         @app.after_request
         def refresh_jwts(response):

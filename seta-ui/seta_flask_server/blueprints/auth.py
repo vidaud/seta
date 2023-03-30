@@ -116,53 +116,6 @@ class SetaRefresh(Resource):
         set_token_info_cookies(response=response, access_token_encoded=access_token)
 
         return response
-    
-'''
-@ns_auth.route("/login/info", methods=['GET'])
-class SetaLoginInfo(Resource):
-    
-    @ns_auth.doc(description="Token information",
-            responses={int(HTTPStatus.OK): 'Token information',
-                       int(HTTPStatus.UNAUTHORIZED): 'Unauthorized JWT',
-                       int(HTTPStatus.UNPROCESSABLE_ENTITY): 'Invalid token'})
-    @ns_auth.marshal_with(login_info_model)
-    @jwt_required()
-    def get(self):
-        """ 
-        Get token information.
-        """
-        
-        jwt = get_jwt()
-        identity = get_jwt_identity()
-        
-        exp_timestamp = jwt["exp"]
-        
-        access_token_exp = datetime.fromtimestamp(exp_timestamp)
-        provider = str(identity["provider"])
-        
-        logout_url = url_for('auth._seta_logout')
-        
-        if provider.lower() == ExternalProviderConstants.ECAS.lower():
-            logout_url = url_for('auth_ecas.logout_ecas')
-            
-        #get refresh data
-        refresh_exp_timestamp = None
-        refresh_token_exp = None
-        
-        try:
-            jwt_header, jwt_data = verify_jwt_in_request(refresh=True)
-            if jwt_data is not None:
-                refresh_exp_timestamp = jwt_data["exp"]
-        except:
-            app.logger.exception("Refresh token failed retrieval")
-        
-        if refresh_exp_timestamp is not None:
-            refresh_token_exp = datetime.fromtimestamp(refresh_exp_timestamp)
-            
-        return {"access_token_exp": access_token_exp, "refresh_token_exp": refresh_token_exp, 
-                "user_id": identity["user_id"], "auth_provider": provider, 
-                "logout_url": logout_url}
-    ''' 
 
 def refresh_expiring_jwts(response):
     try:

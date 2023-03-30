@@ -1,11 +1,8 @@
 from flask import Blueprint, abort
 from flask import current_app as app
-from flask import (redirect, request, make_response, url_for)
+from flask import (redirect, request, url_for)
 
-from flask_jwt_extended import create_access_token, create_refresh_token
-from flask_jwt_extended import set_access_cookies, set_refresh_cookies
-
-from seta_flask_server.infrastructure.helpers import set_token_info_cookies
+from seta_flask_server.infrastructure.auth_helpers import create_login_response
 from seta_flask_server.repository.interfaces import IUsersBroker
 from seta_flask_server.repository.models import SetaUser
 
@@ -29,10 +26,11 @@ def login():
     # No ticket, the request come from end user, send to CAS login
     app.cas_client.service_url = url_for('auth_ecas.login_callback_ecas', next=next, _external=True) #redirect to the same path after ECAS login
     cas_login_url = app.cas_client.get_login_url()
+    
     app.logger.debug("CAS login URL: %s", cas_login_url)
+    
     return redirect(cas_login_url)        
    
-    
 @auth_ecas.route('/login/callback/ecas', methods=["GET"])
 @inject
 def login_callback_ecas(userBroker: IUsersBroker):
@@ -64,29 +62,14 @@ def login_callback_ecas(userBroker: IUsersBroker):
         attributes["is_admin"] = email in admins
         
         seta_user = SetaUser.from_ecas_json(attributes)
-        auth_user = userBroker.authenticate_user(seta_user)                
-                
-        #additional_claims are added via additional_claims_loader method: factory->add_claims_to_access_token
-        identity = auth_user.to_identity_json()
-        additional_claims = {
-            "role": auth_user.role
-        }
-        
-        access_token = create_access_token(identity, fresh=True, additional_claims=additional_claims)
-        refresh_token = create_refresh_token(identity, additional_claims=additional_claims)
         
         #TODO: verify 'next' domain before redirect, replace with home_route if anything suspicious
-        if not next:
+        if not next:                        
             next = app.home_route
             
         next = urljoin(next, "?action=login")
-                    
-        response = make_response(redirect(next))
         
-        #response.set_cookie('user_auth', user)
-        set_access_cookies(response, access_token)
-        set_refresh_cookies(response, refresh_token)   
-        set_token_info_cookies(response=response, access_token_encoded=access_token, refresh_token_encoded=refresh_token)
+        response = create_login_response(seta_user=seta_user, userBroker=userBroker, next=next)
         
         return response
 
@@ -96,6 +79,7 @@ def logout_ecas():
     
     redirect_url = url_for("auth._seta_logout_callback", _external=True)
     cas_logout_url = app.cas_client.get_logout_url(redirect_url)
+    
     app.logger.debug("CAS logout URL: %s", cas_logout_url)
 
     return redirect(cas_logout_url)
