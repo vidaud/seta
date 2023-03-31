@@ -1,0 +1,8 @@
+#https://squidfunk.github.io/mkdocs-material/
+mkdocs-material===9.1.4
+
+#use minifier for custom js or css https://github.com/byrnereese/mkdocs-minify-plugin
+mkdocs-minify-plugin==0.6.4
+
+#swagger-ui rendering https://github.com/bharel/mkdocs-render-swagger-plugin
+mkdocs-render-swagger-plugin==0.0.4

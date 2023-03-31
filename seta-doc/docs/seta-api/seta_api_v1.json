@@ -1,0 +1,910 @@
+{
+    "swagger": "2.0",
+    "basePath": "/seta-api/api/v1",
+    "paths": {
+        "/compute_embeddings": {
+            "parameters": [
+                {
+                    "description": "File to be uploaded from which building embeddings.",
+                    "name": "file",
+                    "type": "string",
+                    "in": "query"
+                }
+            ],
+            "post": {
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                },
+                "description": "Given a file or a plain text, related embeddings are provided. Embeddings are built using Doc2vec. Tika is used to extract text from the provided file. If both file and text are provided, function will return text embeddings.",
+                "operationId": "post_compute_emb",
+                "parameters": [
+                    {
+                        "description": "File to be uploaded from which building embeddings.",
+                        "name": "file",
+                        "in": "formData",
+                        "type": "file"
+                    },
+                    {
+                        "description": "Plain text from which building embeddings.",
+                        "name": "text",
+                        "in": "query",
+                        "type": "string"
+                    }
+                ],
+                "security": [
+                    {
+                        "apikey": []
+                    }
+                ],
+                "consumes": [
+                    "multipart/form-data"
+                ],
+                "tags": [
+                    "seta-api-embeddings"
+                ]
+            }
+        },
+        "/corpus": {
+            "post": {
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "401": {
+                        "description": "Forbbiden access to the resource"
+                    },
+                    "404": {
+                        "description": "Not Found Error"
+                    }
+                },
+                "description": "Retrieve documents related to a term from EU corpus.EU corpus contains documents of the European Commission: Eur-Lex, CORDIS, JRC PUBSY, EU Open Data Portal, etc..",
+                "operationId": "post_corpus_query",
+                "parameters": [
+                    {
+                        "name": "payload",
+                        "required": true,
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/corpus_post_params"
+                        }
+                    }
+                ],
+                "security": [
+                    {
+                        "apikey": []
+                    }
+                ],
+                "tags": [
+                    "seta-api-corpus"
+                ]
+            },
+            "put": {
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "401": {
+                        "description": "Forbbiden access to the resource"
+                    }
+                },
+                "description": "Put a document into corpus index.",
+                "operationId": "put_corpus_query",
+                "parameters": [
+                    {
+                        "name": "payload",
+                        "required": true,
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/corpus_put_params"
+                        }
+                    }
+                ],
+                "security": [
+                    {
+                        "apikey": []
+                    }
+                ],
+                "tags": [
+                    "seta-api-corpus"
+                ]
+            },
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "401": {
+                        "description": "Forbbiden access to the resource"
+                    },
+                    "404": {
+                        "description": "Not Found Error"
+                    }
+                },
+                "description": "Retrieve documents related to a term from EU corpus.EU corpus contains documents of the European Commission: Eur-Lex, CORDIS, JRC PUBSY, EU Open Data Portal, etc..",
+                "operationId": "get_corpus_query",
+                "parameters": [
+                    {
+                        "name": "term",
+                        "in": "query",
+                        "type": "string",
+                        "description": "Return documents related to the specified term"
+                    },
+                    {
+                        "name": "n_docs",
+                        "in": "query",
+                        "type": "integer",
+                        "description": "Number of documents to be shown (default 10)."
+                    },
+                    {
+                        "name": "from_doc",
+                        "in": "query",
+                        "type": "integer",
+                        "description": "Defines the number of hits to skip, defaulting to 0."
+                    },
+                    {
+                        "name": "search_type",
+                        "in": "query",
+                        "type": "string",
+                        "description": "Defines the type of search to be used admitted values are \"DOCUMENT_SEARCH\", \"CHUNK_SEARCH\", \"ALL_CHUNKS_SEARCH\", default is \"CHUNK_SEARCH\""
+                    },
+                    {
+                        "name": "source",
+                        "in": "query",
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "collectionFormat": "csv",
+                        "description": "By default contains all the corpus: eurlex,bookshop,cordis,pubsy,opendataportal.It is possible to choose from which corpus retrieve documents."
+                    },
+                    {
+                        "name": "collection",
+                        "in": "query",
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "collectionFormat": "csv",
+                        "description": "eurlex metadata collection"
+                    },
+                    {
+                        "name": "subject",
+                        "in": "query",
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "collectionFormat": "csv"
+                    },
+                    {
+                        "name": "reference",
+                        "in": "query",
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "collectionFormat": "csv",
+                        "description": "eurlex metadata reference"
+                    },
+                    {
+                        "name": "eurovoc_concept",
+                        "in": "query",
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "collectionFormat": "csv",
+                        "description": "eurlex metadata eurovoc_concept"
+                    },
+                    {
+                        "name": "eurovoc_domain",
+                        "in": "query",
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "collectionFormat": "csv",
+                        "description": "eurlex metadata eurovoc_dom"
+                    },
+                    {
+                        "name": "eurovoc_mth",
+                        "in": "query",
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "collectionFormat": "csv",
+                        "description": "eurlex metadata eurovoc_mth"
+                    },
+                    {
+                        "name": "ec_priority",
+                        "in": "query",
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "collectionFormat": "csv",
+                        "description": "eurlex metadata ec_priority"
+                    },
+                    {
+                        "name": "sdg_domain",
+                        "in": "query",
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "collectionFormat": "csv",
+                        "description": "eurlex metadata sdg_domain"
+                    },
+                    {
+                        "name": "sdg_subdomain",
+                        "in": "query",
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "collectionFormat": "csv",
+                        "description": "eurlex metadata sdg_subdomain"
+                    },
+                    {
+                        "name": "euro_sci_voc",
+                        "in": "query",
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "collectionFormat": "csv",
+                        "description": "eurlex metadata euro_sci_voc"
+                    },
+                    {
+                        "name": "in_force",
+                        "in": "query",
+                        "type": "string",
+                        "description": "eurlex metadata in_force"
+                    },
+                    {
+                        "name": "sort",
+                        "in": "query",
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "collectionFormat": "csv",
+                        "description": "sort results field:order"
+                    },
+                    {
+                        "name": "semantic_sort_id",
+                        "in": "query",
+                        "type": "string",
+                        "description": "sort results by semantic distance among documents"
+                    },
+                    {
+                        "name": "semantic_sort_id_list",
+                        "in": "query",
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "collectionFormat": "csv",
+                        "description": "sort results by semantic distance among documents"
+                    },
+                    {
+                        "name": "author",
+                        "in": "query",
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "collectionFormat": "csv",
+                        "description": "description"
+                    },
+                    {
+                        "name": "date_range",
+                        "in": "query",
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "collectionFormat": "csv",
+                        "description": "gte:yyyy-mm-dd,lte:yyyy-mm-dd,gt:yyyy-mm-dd,lt:yyyy-mm-dd"
+                    },
+                    {
+                        "name": "aggs",
+                        "in": "query",
+                        "type": "string",
+                        "description": "field to be aggregated, allowed fields are: \"source\", \"eurovoc_concept\", \"date_year\", \"source_collection_reference\""
+                    },
+                    {
+                        "name": "other",
+                        "in": "query",
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "collectionFormat": "csv"
+                    }
+                ],
+                "security": [
+                    {
+                        "apikey": []
+                    }
+                ],
+                "tags": [
+                    "seta-api-corpus"
+                ]
+            }
+        },
+        "/corpus/{id}": {
+            "delete": {
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "401": {
+                        "description": "Forbbiden access to the resource"
+                    },
+                    "404": {
+                        "description": "Not Found Error"
+                    }
+                },
+                "description": "Given the elasticsearch unique _id, the relative document is deleted.",
+                "operationId": "delete_corpus",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "type": "string",
+                        "description": "Delete the document with the specified _id"
+                    }
+                ],
+                "security": [
+                    {
+                        "apikey": []
+                    }
+                ],
+                "tags": [
+                    "seta-api-corpus"
+                ]
+            },
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "401": {
+                        "description": "Forbbiden access to the resource"
+                    },
+                    "404": {
+                        "description": "Not Found Error"
+                    }
+                },
+                "description": "Given the elasticsearch unique _id, the relative document from EU corpus is shown.EU corpus contains documents of the European Commission: Eur-Lex, CORDIS,JRC PUBSY, EU Open Data Portal, etc..",
+                "operationId": "get_corpus",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "type": "string",
+                        "description": "Return the document with the specified _id"
+                    }
+                ],
+                "security": [
+                    {
+                        "apikey": []
+                    }
+                ],
+                "tags": [
+                    "seta-api-corpus"
+                ]
+            }
+        },
+        "/ontology": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "404": {
+                        "description": "Not Found Error"
+                    }
+                },
+                "description": "Return a graph that describes the ontology of the specified term. A set of nodes and relative links are provided.For each node depth, id, size and graph size are returned, depth indicates the depth of the node in the graph, id is the identifier of the term for the node, size indicates the number of occurrences of the term in the document corpus and graph size is useful to visualize the graph.For each link source, target and value are returned, source indicates the node (its id) from which the link starts, target is the node (its id) linked to sourceand value is used to visualize the graph.",
+                "operationId": "get_ontology",
+                "parameters": [
+                    {
+                        "description": "The term from which build the ontology graph.",
+                        "name": "term",
+                        "in": "query",
+                        "type": "string",
+                        "required": true
+                    }
+                ],
+                "security": [
+                    {
+                        "apikey": []
+                    }
+                ],
+                "tags": [
+                    "seta-api-ontology"
+                ]
+            }
+        },
+        "/ontology-list": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "404": {
+                        "description": "Not Found Error"
+                    }
+                },
+                "description": "Return a list of lists of similar terms that describes the ontology of the specified term. Lists are ranked by the relation strenght to a query term. The first node in each list is direct relation to query term. The following terms in each sublist have relation to the first node in a sublist.The result should be interpretd as follows: the first item in each sublist is first level connection to the query term. The following terms in sublists have second level relation to the main query term and direct connection to the head of sublist.",
+                "operationId": "get_ontology_list",
+                "parameters": [
+                    {
+                        "description": "The term from which build the ontology tree.",
+                        "name": "term",
+                        "in": "query",
+                        "type": "string",
+                        "required": true
+                    }
+                ],
+                "security": [
+                    {
+                        "apikey": []
+                    }
+                ],
+                "tags": [
+                    "seta-api-ontology"
+                ]
+            }
+        },
+        "/similar": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "404": {
+                        "description": "Not Found Error"
+                    }
+                },
+                "description": "Given a term, return the 20 most similar terms (semantic similarity). For each term similarity and cardinality (number of occurrences in documents) are reported.",
+                "operationId": "get_similar_words",
+                "parameters": [
+                    {
+                        "description": "The original term.",
+                        "name": "term",
+                        "in": "query",
+                        "type": "string",
+                        "required": true
+                    },
+                    {
+                        "description": "Number of similar terms to be extracted (default 20).",
+                        "name": "n_term",
+                        "in": "query",
+                        "type": "integer"
+                    }
+                ],
+                "security": [
+                    {
+                        "apikey": []
+                    }
+                ],
+                "tags": [
+                    "seta-api-similar"
+                ]
+            }
+        },
+        "/suggestions": {
+            "parameters": [
+                {
+                    "name": "chars",
+                    "in": "query",
+                    "type": "string",
+                    "required": true,
+                    "description": "Initial letters."
+                },
+                {
+                    "name": "n_suggestions",
+                    "in": "query",
+                    "type": "integer",
+                    "description": "Number of terms to be returned (default 6)."
+                }
+            ],
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                },
+                "description": "Retrieve terms by initial letters. By default it returns 6 terms, with the parameter n_suggestions is possible to set the number of suggestions to be shown.",
+                "operationId": "get_suggestions",
+                "security": [
+                    {
+                        "apikey": []
+                    }
+                ],
+                "tags": [
+                    "seta-api-suggestions"
+                ]
+            }
+        }
+    },
+    "info": {
+        "title": "SeTA API",
+        "version": "beta",
+        "description": "SeTA<style>.models {display: none !important}</style> - Semantic Text Analysis. \nSeTa applies advanced text analysis techniques to large document collections, helping policy analysts to understand the concepts expressed in thousands of documents and to see in a visual manner the relationships between these concepts and their development over time.A pilot version of this tool has been populated with hundreds of thousands of documents from EUR-Lex, the EU Bookshop and other sources, and used at the JRC in a number of policy-related use cases including impact assessment, the analysis of large data infrastructures, agri-environment measures and natural disasters. The document collection which have been used, the technical approach chosen and key use cases are described here: https://ec.europa.eu/jrc/en/publication/semantic-text-analysis-tool-seta"
+    },
+    "produces": [
+        "application/json"
+    ],
+    "consumes": [
+        "application/json"
+    ],
+    "securityDefinitions": {
+        "apikey": {
+            "type": "apiKey",
+            "in": "header",
+            "name": "Authorization",
+            "description": "Type in the *'Value'* input box below: **'Bearer &lt;JWT&gt;'**, where JWT is the token"
+        }
+    },
+    "tags": [
+        {
+            "name": "seta-api-suggestions",
+            "description": "Suggestions"
+        },
+        {
+            "name": "seta-api-corpus",
+            "description": "Corpus"
+        },
+        {
+            "name": "seta-api-similar",
+            "description": "Similar"
+        },
+        {
+            "name": "seta-api-ontology",
+            "description": "Ontology"
+        },
+        {
+            "name": "seta-api-embeddings",
+            "description": "Embeddings"
+        }
+    ],
+    "definitions": {
+        "corpus_post_params": {
+            "properties": {
+                "term": {
+                    "type": "string",
+                    "description": "term to be searched",
+                    "example": "data"
+                },
+                "n_docs": {
+                    "type": "integer",
+                    "description": "Number of documents to be shown (default 10)",
+                    "example": 10
+                },
+                "from_doc": {
+                    "type": "integer",
+                    "description": "Defines the number of hits to skip, defaulting to 0.",
+                    "example": 0
+                },
+                "search_type": {
+                    "type": "string",
+                    "description": "search type to be used, possible values are DOCUMENT_SEARCH, CHUNK_SEARCH, ALL_CHUNKS_SEARCH, default is CHUNK_SEARCH"
+                },
+                "source": {
+                    "type": "array",
+                    "description": "By default contains all the corpus: eurlex,cordis,pubsy. It is possible to choose from which corpus retrieve documents.",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "reference": {
+                    "type": "array",
+                    "description": "eurlex metadata reference",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "collection": {
+                    "type": "array",
+                    "description": "eurlex metadata collection",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "eurovoc_domain": {
+                    "type": "array",
+                    "description": "eurlex metadata eurovoc_dom",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "eurovoc_mth": {
+                    "type": "array",
+                    "description": "eurlex metadata eurovoc_mth",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "eurovoc_concept": {
+                    "type": "array",
+                    "description": "eurlex metadata eurovoc_tt",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "ec_priority": {
+                    "type": "array",
+                    "description": "metadata ec_priority",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "sdg_domain": {
+                    "type": "array",
+                    "description": "metadata sdg_domain",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "sdg_subdomain": {
+                    "type": "array",
+                    "description": "metadata sdg_subdomain",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "euro_sci_voc": {
+                    "type": "array",
+                    "description": "metadata euro_sci_voc",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "in_force": {
+                    "type": "string",
+                    "description": "eurlex metadata info_force"
+                },
+                "sort": {
+                    "type": "array",
+                    "description": "sort results field:order",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "semantic_sort_id": {
+                    "type": "string",
+                    "description": "sort results by semantic distance among documents"
+                },
+                "sbert_embedding": {
+                    "type": "array",
+                    "description": "embeddings vector",
+                    "items": {
+                        "type": "number"
+                    }
+                },
+                "semantic_sort_id_list": {
+                    "type": "array",
+                    "description": "sort results by semantic distance among documents",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "sbert_embedding_list": {
+                    "type": "array",
+                    "items": {
+                        "type": "array",
+                        "description": "list of embeddings vector",
+                        "items": {
+                            "type": "number"
+                        }
+                    }
+                },
+                "author": {
+                    "type": "string",
+                    "description": "author"
+                },
+                "date_range": {
+                    "type": "array",
+                    "description": "examples: gte:yyyy-mm-dd,lte:yyyy-mm-dd,gt:yyyy-mm-dd,lt:yyyy-mm-dd",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "aggs": {
+                    "type": "string",
+                    "description": "field to be aggregated, allowed fields are: \"source\", \"eurovoc_concept\", \"date_year\", \"source_collection_reference\""
+                },
+                "other": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "type": "object"
+        },
+        "corpus_put_params": {
+            "properties": {
+                "id": {
+                    "type": "string"
+                },
+                "id_alias": {
+                    "type": "string"
+                },
+                "source": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "abstract": {
+                    "type": "string"
+                },
+                "text": {
+                    "type": "string"
+                },
+                "collection": {
+                    "type": "string"
+                },
+                "reference": {
+                    "type": "string"
+                },
+                "author": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "date": {
+                    "type": "string",
+                    "format": "date"
+                },
+                "link_origin": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "link_alias": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "link_related": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "link_reference": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "mime_type": {
+                    "type": "string"
+                },
+                "in_force": {
+                    "type": "string"
+                },
+                "language": {
+                    "type": "string"
+                },
+                "eurovoc_concept": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/metadata"
+                    }
+                },
+                "eurovoc_domain": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/metadata"
+                    }
+                },
+                "eurovoc_mth": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/metadata"
+                    }
+                },
+                "ec_priority": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/metadata"
+                    }
+                },
+                "sdg_domain": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/metadata"
+                    }
+                },
+                "sdg_subdomain": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/metadata"
+                    }
+                },
+                "euro_sci_voc": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/metadata"
+                    }
+                },
+                "keywords": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/keywords"
+                    }
+                },
+                "other": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "type": "object"
+        },
+        "metadata": {
+            "properties": {
+                "code": {
+                    "type": "string"
+                },
+                "label": {
+                    "type": "string"
+                },
+                "longLabel": {
+                    "type": "string"
+                },
+                "validated": {
+                    "type": "string"
+                },
+                "classifier": {
+                    "type": "string"
+                },
+                "version": {
+                    "type": "string"
+                }
+            },
+            "type": "object"
+        },
+        "keywords": {
+            "properties": {
+                "keyword": {
+                    "type": "string"
+                },
+                "score": {
+                    "type": "number"
+                }
+            },
+            "type": "object"
+        }
+    },
+    "responses": {
+        "ParseError": {
+            "description": "When a mask can't be parsed"
+        },
+        "MaskError": {
+            "description": "When any error occurs on mask"
+        }
+    }
+}
