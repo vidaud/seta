@@ -2,6 +2,8 @@
 
 SeTA is a new tool that applies advanced text analysis techniques to large document collections, helping policy analysts to understand the concepts expressed in thousands of documents and to see in a visual manner the relationships between these concepts and their development over time. 
 
+**Documentation:** For more information click  [here 📖](http://localhost/docs)
+
 
 ## General Overview 
 

@@ -1,82 +1,246 @@
-Welcome to SeTA-UI! 
-===================  
-**SeTA** - *Semantic Text Analyser* - is a new tool that applies advanced text analysis techniques to large document collections, helping policy analysts to understand the concepts expressed in thousands of documents and to see in a visual manner the relationships between these concepts and their development over time. 
-
-General Overview 
-------------  
-This project is made up of two modules, the **frontend** and the **flask-server** one. 
-**Seta-frontend** is an *Angular2* standard workspace enabled application.  
-**Seta-middleware** is a standard `maven-archetype-webapp` 
-**Seta-flask-server** is a Flask application 
-The frontend module contains all the static reaources that make up the UI business logic  
-The middleware module contains all the java sources and acts as a proxy / integration layer towards the backend. 
-The flask-server module contains all the python sources and acts as a proxy / authentication layer towards the backend.  
+---
+icon: material/emoticon-blue_book
 
 
+---
 
-All static resources that ensue from `ng build seta-web -c=<environment>` of the the frontend module are copied inside the flask-server **seta-ui** folder's module.  
+# SeTA *Semantic Text Analyser*
+
+SeTA is a new tool that applies advanced text analysis techniques to large document collections, helping policy analysts to understand the concepts expressed in thousands of documents and to see in a visual manner the relationships between these concepts and their development over time. 
+
+![Screenshot](./img/mainscreen.jpg)
+
+   
+
+## General Overview 
+
+This project is made up of two modules:
+
+* The **frontend** 
+
+* The **flask-server**
+
+**Seta-frontend** is an *React* standard workspace enabled application. The frontend module contains all the static resources that make up the UI business logic. 
+
+**Seta-middleware** is a standard {++maven-archetype-webapp++}, it contains all the java sources and acts as a proxy / integration layer towards the backend. 
+
+**Seta-flask-server** is a Flask application, contains all the python sources and acts as a proxy / authentication layer towards the backend.
+
+
+All static resources that ensure from {++ng build seta-web -c=<environment>++} of the the frontend module are copied inside the flask-server **seta-ui** folder's module. 
+
 The end result is a ***seta-flask-server*** folder that contains a Flask application that can be deployed on any web container.  
-Flask configurations files are:
+
+The Flask configurations files are:
+
  - seta-flask-server/config.py
+
  - seta-flask-server/.env
  
- Angular configuration files are:
+The React configuration file is:
+
  - package.json
- - angular.json
+ 
+## Prerequisites
 
-Installation 
-------------
+The project is located in a git repository:
 
-Create a new virtual environment by choosing a Python interpreter and making a ./venv directory to hold it:
+!!! info
+    Use the git **clone** command to clone the project in the current directory, using an SSH link.
+    ```
+        git clone https://github.com/vidaud/seta.git
+    ```
 
-**python3 -m venv --system-site-packages ./venv**
 
-Activate the virtual environment using a shell-specific command:
+## Minimum requirements
 
-**source ./venv/bin/activate  # sh, bash, or zsh
-. ./venv/bin/activate.fish  # fish
-source ./venv/bin/activate.csh  # csh or tcsh**
+* At least 10 GB available free RAM.
 
-When the virtual environment is active, your shell prompt is prefixed with (venv) .
+* 16 GR (32 GB preferred) RAM, 100 GB free space HDD or SSD (preferred).
 
-Install packages within a virtual environment without affecting the host system setup. Start by upgrading pip :
+* Good Internet speed. You will need to download at least 5GB (> 20GB for all data)
 
-    python -m pip install -U pip
+!!! warning
+    The first run will take time, while the next run will be fast.
 
-Clone with 
 
-    git clone https://alm.emm4u.eu/seta/seta-new.git
-    
-Then install all requirements:
+## Installation
 
-    python -m pip install -r requirements.txt
+Move to the directory of the project:
 
-If you have issue with ImportError: No module named _internal than probably you are using an old version of pip. Issue is described here
+```
+    # make sure that you are in the root directory of the project, use" pwd" or "cd" for windows
 
-    python -m pip install -U --force-reinstall -r requirements.txt
-Inside the project home run:
+    cd RepoName
+```
 
-    ./run_debug_server.sh
+The *node_modules* directory is not a part of the cloned repository and should be downloaded using the *npm install* command to download all the direct and transitive dependencies mentioned in the package.json file:
 
-Deployment procedure
-------------
+```
+    npm install
+```
 
-1. Build the angular code using the command ng build seta-web -c=test
-2. Copy (overwrite everything) everything over from seta-frontend/dist/seta-web/ to seta-flask-server/seta-ui/
-3. Make a new commit on that-branch-name, for commit message, put some message like "Build of previous commits."
-3. Go to seta-test server, i.e:
-    - ssh <username>@works1.emm.tdm.jrc.eu
-    - ssh <username>@seta-test.emm.tdm.jrc.eu
-    - sudo su - seta
-    - enter your server password
-4. Checkout that branch, i.e:
-    - cd seta-new-ui
-    - git checkout that-branch-name
-    - enter your git credentials 
-5. Restart flask server (start from step 'c' if you are already ssh-ed on the correct server) i.e:
-    - ssh <username>@works1
-    - ssh <username>@seta-test
-    - sudo su
-    - insert admin password
-    - systemctl restart seta-ui
-    - systemctl status seta-ui (just to check that guinorn is restarted)
+!!! warning
+    It will take some time to download all the dependencies into the **node_modules** directory.
+
+## Deployment procedure
+
+### Docker composer
+
+Move to folder **seta-compose** and follow these instructions:
+
+```
+    cd ./seta-compose
+```    
+
+Create an ***.env*** file containing the variables as described in the file  *.env.example*
+
+
+ The following commands will call by default the {++docker-compose.yml++} as the configuration file and *.env* as the environment file
+
+```
+    docker-compose build
+    docker-compose up
+```
+???+ note "Notes:"
+  
+    It will setup all system and data.
+
+    It will take a while depending on the Internet speed. Might take 30min to 2h.
+
+    At some point there will be a message *"SeTA-API is up and running."*
+
+
+After successfully start all the containers you are ready to open your browser and start typing:
+
+* **for UI:** [http://localhost/seta-ui](http://localhost/seta-ui)
+
+* **for API:** [http://localhost/seta-api/doc](http://localhost/seta-api/doc)
+
+* **for DOCS:** [http://localhost/docs](http://localhost/docs)
+
+#### To stop services:
+```
+    CTRL + C
+```
+
+#### Start in detach mode:
+
+```
+    docker-compose up -d
+```
+
+#### Stop services after detach mode
+
+```
+    docker compose down
+```
+
+#### Development environment
+
+To deploy in the Development environment:
+
+Create an ***.env.dev*** file containing the variables as described in  file **.env.example**
+
+#### To (re-)build all images
+
+```
+    docker compose -f docker-compose.yml -f docker-compose-dev.yml --env-file .env.dev build
+```
+
+#### To (re-)build only seta-ui image
+
+```
+    docker compose -f docker-compose.yml -f docker-compose-dev.yml --env-file .env.dev build seta-ui
+```
+
+#### Start all services for your environment locally:
+
+```
+    docker compose -f docker-compose.yml -f docker-compose-dev.yml --env-file .env.dev up
+```
+
+#### Start all services for your environment locally in detached mode:
+
+```
+    docker compose -f docker-compose.yml -f docker-compose-dev.yml --env-file .env.dev up -d
+```
+
+#### Rebuild and restart seta-ui services while other services are runing:  
+
+```
+    docker compose -f docker-compose.yml -f docker-compose-dev.yml --env-file .env.dev up --force-recreate --build --no-deps seta-ui
+```
+
+#### Shell scripts
+
+For the scripts with short commands: 
+```
+    docker compose -f docker-compose.yml -f docker-compose-dev.yml --env-file .env.dev
+```
+
+ is used a .bat file where it can be set up all the neccesary functions, as well as the set up of the proxy.  Here below the execution of this bat files in {++Windows++} and {++Linux++}.
+
+#### Windows
+
+Open a *cmd* window and from there go to the *seta-compose* folder, for example, if we want to run for *development* environment the build and up:
+
+```
+    dev-build.bat
+    dev-up.bat
+```
+
+From now, any argument for the docker compose *build* or *up* commands will be appended in the batch scripts.
+
+For example:
+
+```
+    dev-build.bath --no-cache
+```
+
+#### Linux
+
+For execute permissions run:
+
+```
+    chmod +x ./dev-build.sh
+    chmod +x ./dev-up.sh
+```
+
+Run for development build and up:
+
+```
+    ./dev-build.sh
+    ./dev-up.sh
+```
+
+Any arguments for the docker compose *build* or *up* commands will be appended in the shell scripts.
+
+For example:
+
+```
+    ./dev-build.sh --no-cache
+```
+
+#### Test environment
+
+Create an ***.env.test*** file containing the variables as described in *.env.example*
+
+```
+    docker compose -f docker-compose-test.yml build
+    docker compose -f docker-compose-test.yml up
+```
+
+## User's guide
+
++  [API](seta-api/seta_api_v1.md#seta-api-v1) 
++  [FAQs](faqs/faqs.md#faqs)
+
+[Release Notes :notepad_spiral:](release-notes/release-notes.md#Release Notes){ .md-button }
+
+
+[![MIT][mit-badge]][mit-url]
+
+[mit-badge]: https://img.shields.io/badge/license-mit-blue
+[mit-url]: license/license_v1.md#mit-license
+
