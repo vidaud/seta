@@ -3,18 +3,20 @@ import { createRoot } from 'react-dom/client'
 
 import './index.css'
 import App from './App'
-import Footer from './components/Footer'
-import Header from './components/Header'
 import { environment } from './environments/environment'
 import reportWebVitals from './reportWebVitals'
 
-const root = createRoot(document.getElementById('root') as HTMLElement)
+const container = document.getElementById('root')
+
+if (!container) {
+  throw new Error('Root element not found in index.html!')
+}
+
+const root = createRoot(container)
 
 root.render(
   <React.StrictMode>
-    <Header />
     <App />
-    <Footer />
   </React.StrictMode>
 )
 
