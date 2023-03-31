@@ -31,7 +31,10 @@ class IUsersBroker(Interface):
     def session_add_token(self, token: SessionToken) -> None:
         pass
     
-    def session_token_set_blocked(self, session_id: str, token_jti: str) -> bool:
+    def session_token_set_blocked(self, token_jti: str) -> None:
+        pass
+    
+    def session_token_is_blocked(self, token_jti: str) -> bool:
         pass
      
     #-------------------------------------------------------#

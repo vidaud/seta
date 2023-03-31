@@ -109,10 +109,15 @@ class UsersBroker(implements(IUsersBroker)):
     def session_add_token(self, token: SessionToken) -> None:        
         self.sessions_collection.insert_one(token.to_json())
     
-    def session_token_set_blocked(self, session_id: str, token_jti: str) -> bool:        
-        filter = {"session_id": session_id, "token_jti": token_jti}
+    def session_token_set_blocked(self, token_jti: str) -> None:        
+        filter = { "token_jti": token_jti }
         uq={"$set": {"is_blocked": True, "blocked_at": datetime.now(tz=pytz.utc)} }
         self.sessions_collection.update_one(filter, uq)
+        
+    def session_token_is_blocked(self, token_jti: str) -> bool:
+        filter = { "token_jti": token_jti, "is_blocked": True }
+        
+        return self.sessions_collection.count_documents(filter) > 0
      
     #-------------------------------------------------------#
 
@@ -146,9 +151,7 @@ class UsersBroker(implements(IUsersBroker)):
     def user_uid_exists(self, user_id: str) -> bool:        
         filter = {"user_id": user_id, "email": {"$exists" : True}}
                 
-        if self.collection.count_documents(filter, limit = 1):
-            return True
-        return False
+        return self.collection.count_documents(filter, limit = 1) > 0
     
     def _create_new_user(self, user: SetaUser) -> SetaUser:        
         

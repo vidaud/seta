@@ -2,6 +2,7 @@ import logging
 
 from flask import (Flask, request, session, url_for)
 from werkzeug.middleware.proxy_fix import ProxyFix
+from flask_jwt_extended import get_jwt_identity, get_jwt
 
 from .infrastructure.extensions import (scheduler, jwt, logs, github)
 
@@ -17,6 +18,7 @@ from .blueprints.token_info import token_info
 from .blueprints.communities import communities_bp_v1
 
 from .infrastructure.helpers import JSONEncoder, MongodbJSONProvider
+from seta_flask_server.repository.interfaces import IUsersBroker
 
 #from cas import CASClient
 from .infrastructure.cas_client import SetaCasClient
@@ -66,41 +68,29 @@ def create_app(config_object):
         """ Logging after every request. """
         
         if request.path.endswith(tuple(request_endswith_ignore_list)):
-            return response
+            return response        
         
         if app.testing:
             app.logger.debug(request.path + ": " + str(response.status_code) + ", json: " + str(response.data))
             return response
-        
-        user = session.get("username")
-        if not user:
-            user="None"
-        
-        '''
-        #seta-nginx is logging the access
-        
-        logger = logging.getLogger("app.access")
-        logger.info(
-            "%s [%s] %s %s %s %s %s %s %s",
-            request.remote_addr,
-            dt.utcnow().strftime("%d/%b/%Y:%H:%M:%S.%f")[:-3],
-            request.method,
-            request.path,
-            request.scheme,
-            response.status,
-            response.content_length,
-            request.referrer,
-            request.user_agent,
-        )
-        '''
+                
+        user_id = "unknown"                
+        try:
+            identity = get_jwt_identity()
+            
+            if identity:
+                user_id = identity["user_id"]
+        except:
+            pass
+            
         
         try:
           logger_db = logging.getLogger("mongo")
-          if logger_db:
+          if logger_db:              
             logger_db.info("seta-ui request " + request.path, 
                            extra={
-                               "username": user,
-                               "address": request.remote_addr, 
+                                "user_id": user_id,
+                                "address": request.remote_addr, 
                                 "method": request.method,
                                 "path": request.full_path,
                                 "status": response.status,
@@ -126,6 +116,15 @@ def create_app(config_object):
             "source_limit": source_limit
         }
         return additional_claims
+    
+    # Callback function to check if a JWT exists in the database blocklist
+    @jwt.token_in_blocklist_loader
+    def check_if_token_revoked(jwt_header, jwt_payload: dict) -> bool:
+        jti = jwt_payload["jti"]
+        
+        usersBroker = app_injector.injector.get(IUsersBroker)        
+        return usersBroker.session_token_is_blocked(jti)
+        
         
     app_injector = FlaskInjector(
         app=app,
