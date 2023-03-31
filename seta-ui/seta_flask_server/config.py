@@ -31,6 +31,8 @@ class Config:
     #disable scheduler
     SCHEDULER_ENABLED = False
     
+    HOME_ROUTE = "/"
+    
     #======================================#
     
     
@@ -112,6 +114,9 @@ class Config:
                 
         Config.SECRET_KEY = os.environ["API_SECRET_KEY"]            
         Config.JWT_SECRET_KEY = Config.SECRET_KEY
+        
+        #set web home route
+        Config.HOME_ROUTE = os.environ.get("HOME_ROUTE", "/seta-ui")
         
         #Read admin users and change values to lower
         root_users = os.environ.get('ROOT_USERS')

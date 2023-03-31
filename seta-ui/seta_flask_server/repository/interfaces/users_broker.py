@@ -1,9 +1,9 @@
 from interface import Interface
-from seta_flask_server.repository.models.seta_user import SetaUser
+from seta_flask_server.repository.models import SetaUser
 
 class IUsersBroker(Interface):
     
-    #---------------- New methods ----------------#
+    #---------------- Get methods ----------------#
     
     def authenticate_user(self, auth_user: SetaUser) -> SetaUser:
         pass
@@ -18,7 +18,7 @@ class IUsersBroker(Interface):
         pass
     
     #-------------------------------------------------------#
-
+   
     
     def move_documents(self, sourceCollection: str, targetCollection: str, filter: dict):
         pass

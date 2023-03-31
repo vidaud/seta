@@ -1,18 +1,24 @@
 from flask_restx import Api, Resource, fields
 from flask import Blueprint
-from flask import jsonify, request, abort, make_response
+from flask import jsonify, abort, make_response
 from flask_jwt_extended import create_access_token, create_refresh_token
 from flask_jwt_extended import set_access_cookies, set_refresh_cookies
 from flask_jwt_extended import get_jwt_identity, jwt_required
 from flask_cors import CORS
-import time
+
 from seta_flask_server.infrastructure.helpers import validate_public_key
 
 from injector import inject
 from seta_flask_server.repository.interfaces import IUsersBroker, IRsaKeysBroker
 
+from datetime import timedelta
+
 token_auth = Blueprint('token_auth', __name__)
 CORS(token_auth)
+
+#do not use JWT_ACCESS_TOKEN_EXPIRES & JWT_REFRESH_TOKEN_EXPIRES from config
+TOKEN_EXPIRES_DELTA = timedelta(minutes=15)
+REFRESH_TOKEN_EXPIRES_DELTA = timedelta(minutes=60)
 
 auth_api = Api(token_auth, 
                version="1.0",
@@ -65,37 +71,15 @@ class JWTUserToken(Resource):
                 "role": user.role
             }       
        
-        access_token = create_access_token(identity=identity, fresh=True, additional_claims=additional_claims)
-        refresh_token = create_refresh_token(identity=identity, additional_claims=additional_claims)
+        access_token = create_access_token(identity=identity, fresh=True, additional_claims=additional_claims, expires_delta=TOKEN_EXPIRES_DELTA)
+        refresh_token = create_refresh_token(identity=identity, additional_claims=additional_claims, expires_delta=REFRESH_TOKEN_EXPIRES_DELTA)
+        
         response = make_response(jsonify(access_token=access_token, refresh_token=refresh_token))
 
         set_access_cookies(response, access_token)
         set_refresh_cookies(response, refresh_token)
                 
         return response
-    
-@ns_auth.route("/user/guest", methods=['POST'])
-class JWTGuestToken(Resource):
-    @ns_auth.doc(description="JWT token for guests",
-            responses={200: 'Success'})
-    
-    def post(self):
-        iat = time.time()
-        identity = {"user_id": "guest-" + str(iat)}
-        
-        additional_claims = {
-            "role": "guest",
-        }     
-       
-        access_token = create_access_token(identity=identity, fresh=True, additional_claims=additional_claims)
-        refresh_token = create_refresh_token(identity=identity, additional_claims=additional_claims)
-        response = make_response(jsonify(access_token=access_token, refresh_token=refresh_token))
-
-        set_access_cookies(response, access_token)
-        set_refresh_cookies(response, refresh_token)            
-
-       
-        return jsonify(access_token=access_token, refresh_token=refresh_token)
 
 refresh_parser = ns_auth.parser()
 refresh_parser.add_argument("Authorization", location="headers", required=False, type="apiKey")
@@ -126,7 +110,7 @@ class JWTRefreshToken(Resource):
                 "role": user.role
             }
         
-        access_token = create_access_token(identity=identity, fresh=False, additional_claims=additional_claims)
+        access_token = create_access_token(identity=identity, fresh=False, additional_claims=additional_claims, expires_delta=TOKEN_EXPIRES_DELTA)
         return jsonify(access_token=access_token)        
     
 
