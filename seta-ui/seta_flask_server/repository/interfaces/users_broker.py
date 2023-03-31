@@ -1,5 +1,5 @@
 from interface import Interface
-from seta_flask_server.repository.models import SetaUser, UserSession, SessionToken
+from seta_flask_server.repository.models import SetaUser
 
 class IUsersBroker(Interface):
     
@@ -18,27 +18,7 @@ class IUsersBroker(Interface):
         pass
     
     #-------------------------------------------------------#
-    
-    
-    #---------------- User session ----------------#
-     
-    def session_create(self, user_session: UserSession) -> None:
-        pass
-    
-    def session_logout(self, session_id: str) -> None:
-        pass
-    
-    def session_add_token(self, token: SessionToken) -> None:
-        pass
-    
-    def session_token_set_blocked(self, token_jti: str) -> None:
-        pass
-    
-    def session_token_is_blocked(self, token_jti: str) -> bool:
-        pass
-     
-    #-------------------------------------------------------#
-
+   
     
     def move_documents(self, sourceCollection: str, targetCollection: str, filter: dict):
         pass

@@ -3,7 +3,7 @@ from flask import current_app as app
 from flask import (redirect, request, url_for)
 
 from seta_flask_server.infrastructure.auth_helpers import create_login_response
-from seta_flask_server.repository.interfaces import IUsersBroker
+from seta_flask_server.repository.interfaces import IUsersBroker, ISessionsBroker
 from seta_flask_server.repository.models import SetaUser
 
 from urllib.parse import urljoin
@@ -33,7 +33,7 @@ def login():
    
 @auth_ecas.route('/login/callback/ecas', methods=["GET"])
 @inject
-def login_callback_ecas(userBroker: IUsersBroker):
+def login_callback_ecas(userBroker: IUsersBroker, sessionBroker: ISessionsBroker):
     """ Callback after ECAS successful authentication """
     
     next = request.args.get("next")
@@ -69,7 +69,8 @@ def login_callback_ecas(userBroker: IUsersBroker):
             
         next = urljoin(next, "?action=login")
         
-        response = create_login_response(seta_user=seta_user, userBroker=userBroker, next=next)
+        auth_user = userBroker.authenticate_user(seta_user)
+        response = create_login_response(seta_user=auth_user, sessionBroker=sessionBroker, next=next)
         
         return response
 

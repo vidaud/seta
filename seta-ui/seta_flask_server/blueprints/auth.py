@@ -17,8 +17,9 @@ from flask_jwt_extended import get_jwt_identity, get_jwt
 
 from seta_flask_server.infrastructure.constants import ExternalProviderConstants
 from seta_flask_server.infrastructure.helpers import set_token_info_cookies, unset_token_info_cookies
+from seta_flask_server.infrastructure.auth_helpers import create_session_token
 
-from seta_flask_server.repository.interfaces import IUsersBroker
+from seta_flask_server.repository.interfaces import ISessionsBroker
 
 auth = Blueprint("auth", __name__)
 
@@ -51,8 +52,8 @@ login_info_model = ns_auth.model("LoginInfo", {
 class SetaLogoutCallback(Resource):
     
     @inject
-    def __init__(self, usersBroker: IUsersBroker, api=None, *args, **kwargs):
-        self.usersBroker = usersBroker
+    def __init__(self, sessionsBroker: ISessionsBroker, api=None, *args, **kwargs):
+        self.sessionsBroker = sessionsBroker
         super().__init__(api, *args, **kwargs)
     
     @ns_auth.doc(description="Thid-party provider callback for local logout",
@@ -64,7 +65,7 @@ class SetaLogoutCallback(Resource):
         
         session_id = session.get("session_id")
         if session_id:
-            self.usersBroker.session_logout(session_id)
+            self.sessionsBroker.session_logout(session_id)
         
         session.clear()
         
@@ -80,8 +81,8 @@ class SetaLogoutCallback(Resource):
 class SetaLogout(Resource):    
     
     @inject
-    def __init__(self, usersBroker: IUsersBroker, api=None, *args, **kwargs):
-        self.usersBroker = usersBroker
+    def __init__(self, sessionsBroker: ISessionsBroker, api=None, *args, **kwargs):
+        self.sessionsBroker = sessionsBroker
         super().__init__(api, *args, **kwargs)
     
     #@ns_auth.marshal_with(status_model)
@@ -98,8 +99,10 @@ class SetaLogout(Resource):
         Remove tokens from cookies, but third-party cookies will remain
         """
         
-        session_id = session["session_id"]        
-        self.usersBroker.session_logout(session_id)
+        session_id = session.get("session_id")
+        
+        if session_id:
+            self.sessionsBroker.session_logout(session_id)
         
         session.clear()
         
@@ -114,6 +117,11 @@ class SetaLogout(Resource):
                doc={"description": "Refresh access token"})
 @ns_auth.response(int(HTTPStatus.OK), 'Set new access token in cookies', status_model)
 class SetaRefresh(Resource):
+    
+    @inject
+    def __init__(self, sessionsBroker: ISessionsBroker, api=None, *args, **kwargs):
+        self.sessionsBroker = sessionsBroker
+        super().__init__(api, *args, **kwargs)
     
     @jwt_required(refresh=True)
     def get(self):
@@ -135,6 +143,11 @@ class SetaRefresh(Resource):
             additional_claims = {"role": role}
 
         access_token = create_access_token(identity = identity, fresh=False, additional_claims=additional_claims)
+        
+        session_id = session.get("session_id")
+        if session_id:
+            st = create_session_token(session_id=session_id, token=access_token)
+            self.sessionsBroker.session_add_token(st)
 
         response = jsonify({"status": "success"})
         set_access_cookies(response, access_token)        
@@ -143,6 +156,8 @@ class SetaRefresh(Resource):
         return response
 
 def refresh_expiring_jwts(response):
+    new_access_token = None
+    
     try:
         token_expires = app.config['JWT_ACCESS_TOKEN_EXPIRES']
                 
@@ -153,13 +168,14 @@ def refresh_expiring_jwts(response):
         jwt = get_jwt()      
         exp_timestamp = jwt["exp"]
         now = datetime.now(timezone.utc)        
-                
+        
+        #refresh any token that is within the second half of its expiration time
         expire_minutes = (token_expires.total_seconds() / 60) // 2
         delta = timedelta(minutes=expire_minutes)
         
-        target_timestamp = datetime.timestamp(now + delta)
+        target_timestamp = datetime.timestamp(now + delta)     
 
-        app.logger.debug("Refresh token only if " + str(target_timestamp) + " > " + str(exp_timestamp))
+        #app.logger.debug("Refresh token only if " + str(target_timestamp) + " > " + str(exp_timestamp))
 
         if target_timestamp > exp_timestamp:
                         
@@ -169,18 +185,20 @@ def refresh_expiring_jwts(response):
             if role is not None:
                 additional_claims = {"role": role}
             
-            access_token = create_access_token(identity=identity, fresh=False, additional_claims=additional_claims)
-            set_access_cookies(response, access_token)
-            set_token_info_cookies(response=response, access_token_encoded=access_token)
+            new_access_token = create_access_token(identity=identity, fresh=False, additional_claims=additional_claims)
+            set_access_cookies(response, new_access_token)
+            set_token_info_cookies(response=response, access_token_encoded=new_access_token)
             
+            '''
             app.logger.debug("target_timestamp: " 
                         + str(datetime.fromtimestamp(target_timestamp)) 
                         + ", exp_timestamp: " 
                         + str(datetime.fromtimestamp(exp_timestamp)))
+            '''
             app.logger.debug("Expiring access token was refreshed.")            
     except Exception as e:
         # Case where there is not a valid JWT. Just return the original response
         app.logger.exception("Could not refresh the expiring token.")        
-        return response
+        return response, new_access_token
     finally:
-        return response  
+        return response, new_access_token

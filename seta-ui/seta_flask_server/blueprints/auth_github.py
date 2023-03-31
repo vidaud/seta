@@ -6,7 +6,7 @@ from urllib.parse import urljoin
 
 from seta_flask_server.infrastructure.auth_helpers import create_login_response
 from seta_flask_server.infrastructure.extensions import github
-from seta_flask_server.repository.interfaces import IUsersBroker
+from seta_flask_server.repository.interfaces import IUsersBroker, ISessionsBroker
 from seta_flask_server.repository.models import SetaUser
 
 from injector import inject
@@ -32,7 +32,7 @@ def token_getter():
 @auth_github.route('/login/callback/github', methods=["GET"])
 @github.authorized_handler
 @inject
-def login_callback_github(access_token, userBroker: IUsersBroker):
+def login_callback_github(access_token, userBroker: IUsersBroker, sessionBroker: ISessionsBroker):
     """Callback after Github successful authentication"""
     
     if access_token is None:
@@ -64,7 +64,8 @@ def login_callback_github(access_token, userBroker: IUsersBroker):
         next = app.home_route
     next = urljoin(next, "?action=login")        
     
-    response = create_login_response(seta_user=seta_user, userBroker=userBroker, next=next)
+    auth_user = userBroker.authenticate_user(seta_user)
+    response = create_login_response(seta_user=auth_user, sessionBroker=sessionBroker, next=next)
         
     return response
 

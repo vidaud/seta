@@ -18,7 +18,8 @@ from .blueprints.token_info import token_info
 from .blueprints.communities import communities_bp_v1
 
 from .infrastructure.helpers import JSONEncoder, MongodbJSONProvider
-from seta_flask_server.repository.interfaces import IUsersBroker
+from seta_flask_server.repository.interfaces import ISessionsBroker
+from seta_flask_server.infrastructure.auth_helpers import create_session_token
 
 #from cas import CASClient
 from .infrastructure.cas_client import SetaCasClient
@@ -51,6 +52,8 @@ def create_app(config_object):
             
         @app.after_request
         def refresh_jwts(response):
+            """Create a new access token if the current one is close to expiring date"""
+            
             if app.testing:
                 return response      
             
@@ -59,8 +62,19 @@ def create_app(config_object):
             
             if request.path.startswith(tuple(request_starts_with_ignore_list)):
                 return response
+                        
+            response, new_access_token = refresh_expiring_jwts(response)
             
-            return refresh_expiring_jwts(response)
+            if new_access_token:                
+                session_id = session.get("session_id")
+                
+                if session_id:                    
+                    st = create_session_token(session_id=session_id, token=new_access_token)
+                    
+                    sessionsBroker = app_injector.injector.get(ISessionsBroker)
+                    sessionsBroker.session_add_token(st)
+                    
+            return response
         
             
     @app.after_request
@@ -122,8 +136,8 @@ def create_app(config_object):
     def check_if_token_revoked(jwt_header, jwt_payload: dict) -> bool:
         jti = jwt_payload["jti"]
         
-        usersBroker = app_injector.injector.get(IUsersBroker)        
-        return usersBroker.session_token_is_blocked(jti)
+        sessionsBroker = app_injector.injector.get(ISessionsBroker)        
+        return sessionsBroker.session_token_is_blocked(jti)
         
         
     app_injector = FlaskInjector(
