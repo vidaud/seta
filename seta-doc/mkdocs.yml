@@ -29,7 +29,7 @@ theme:
         bug: octicons/bug-16
         example: octicons/beaker-16
         quote: octicons/quote-16
-    logo: material/tree
+    logo: material/note-search-outline
     favicon: img/favicon.png
   palette:
     - scheme: default
