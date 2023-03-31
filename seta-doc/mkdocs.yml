@@ -4,9 +4,8 @@ theme:
   name: material
   custom_dir: overrides
   features:
-    - navigation.tabs
-    - navigation.tabs.sticky
-    - navigation.sections
+    - navigation.tracking
+    - navigation.expand
     - toc.follow
     - toc.integrate
     - navigation.top
@@ -37,14 +36,14 @@ theme:
       toggle:
         icon: material/toggle-switch-off-outline 
         name: Switch to dark mode
-      primary: teal
-      accent: purple 
+      primary: blue
+      accent: indigo 
     - scheme: slate 
       toggle:
         icon: material/toggle-switch
         name: Switch to light mode    
-      primary: teal
-      accent: lime  
+      primary: cyan
+      accent: teal  
 plugins:
   - search
   - render_swagger
@@ -69,14 +68,23 @@ markdown_extensions:
             class: mermaid
             format: !!python/name:pymdownx.superfences.fence_code_format
     - footnotes
+    - md_in_html
 
 
 nav:
   - Home: index.md
+  - General Overview: 
+    - Overview: general/overview.md
   - Apis:
     - Seta-api: seta-api/seta_api_v1.md
-  - FAQS: faqs/faqs.md
-  - Release: release-notes/release-notes.md
+  - User-Guide: 
+    - Tutorial: tutorial/tutorial.md
+  - Deployment: 
+    - Deployment Overview: deployment/deployment.md
+  - FAQS: 
+    - Help: faqs/faqs.md
+  - Release: 
+    - Release Notes: release-notes/release-notes.md
   - License: license/license_v1.md
 
 
