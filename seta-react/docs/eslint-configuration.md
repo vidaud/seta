@@ -63,4 +63,4 @@ The goal is to gradually fix the warnings and move some of the rules to errors, 
 
 To not increase the scope of this effort, **please try to fix all the warnings in any new code you add to the project**.
 
-You can see the list of all the rules in the [ESLint configuration file](../.eslintrc.json).
+<!-- You can see the list of all the rules in the [ESLint configuration file](../.eslintrc.json). -->

@@ -14,7 +14,7 @@ import HomePage from './pages/HomePage'
 import LoginPage from './pages/LoginPage'
 import NotFoundPage from './pages/NotFoundPage'
 import ProfilePage from './pages/ProfilePage'
-import SearchPage from './pages/SearchPage'
+import SearchPageCopy from './pages/SearchPage'
 
 function App() {
   return (
@@ -29,7 +29,7 @@ function App() {
             path="/seta-ui/search"
             element={
               <ProtectedRoute>
-                <SearchPage />
+                <SearchPageCopy />
               </ProtectedRoute>
             }
           />

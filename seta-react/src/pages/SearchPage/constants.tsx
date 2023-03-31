@@ -1,6 +1,9 @@
 import { of } from 'rxjs'
 
 import { Operators, Term, TermType } from '../../models/term.model'
+import { SimilarsService } from '../../services/corpus/similars.service'
+
+export const similarService = new SimilarsService()
 
 export const defaultTypeOfSearch = {
   code: 'RC',
