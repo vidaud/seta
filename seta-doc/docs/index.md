@@ -22,7 +22,7 @@ This project is made up of two modules:
 
 **Seta-frontend** is an *React* standard workspace enabled application. The frontend module contains all the static resources that make up the UI business logic. 
 
-**Seta-middleware** is a standard {++maven-archetype-webapp++}, contains all the java sources and acts as a proxy / integration layer towards the backend. 
+**Seta-middleware** is a standard {++maven-archetype-webapp++}, it contains all the java sources and acts as a proxy / integration layer towards the backend. 
 
 **Seta-flask-server** is a Flask application, contains all the python sources and acts as a proxy / authentication layer towards the backend.
 
@@ -37,13 +37,13 @@ The Flask configurations files are:
 
  - seta-flask-server/.env
  
-The React configuration files are:
+The React configuration file is:
 
  - package.json
  
 ## Prerequisites
 
-It is necessary to download the project from the git repository
+The project is located in a git repository:
 
 !!! info
     Use the git **clone** command to clone the project in the current directory, using an SSH link.
