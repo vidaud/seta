@@ -1,3 +1,22 @@
+## Installation
+
+Move to the directory of the project:
+
+```
+    # make sure that you are in the root directory of the project, use" pwd" or "cd" for windows
+
+    cd RepoName
+```
+
+The *node_modules* directory is not a part of the cloned repository and should be downloaded using the *npm install* command to download all the direct and transitive dependencies mentioned in the package.json file:
+
+```
+    npm install
+```
+
+!!! warning
+    It will take some time to download all the dependencies into the **node_modules** directory.
+
 ### Docker composer
 
 Move to folder **seta-compose** and follow these instructions:

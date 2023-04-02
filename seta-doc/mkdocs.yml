@@ -72,19 +72,19 @@ markdown_extensions:
 
 
 nav:
-  - Home: index.md
-  - General Overview: 
+  - Home: 
+    - Intro: index.md
+  - General Overview:
     - Overview: general/overview.md
+  - Deployment:
+    - Deployment Overview: deployment/deployment.md
   - Apis:
     - Seta-api: seta-api/seta_api_v1.md
-  - User-Guide: 
-    - Tutorial: tutorial/tutorial.md
-  - Deployment: 
-    - Deployment Overview: deployment/deployment.md
-  - FAQS: 
-    - Help: faqs/faqs.md
-  - Release: 
-    - Release Notes: release-notes/release-notes.md
+  - User Guide:
+    - Getting Started: user-guide/user-guide.md
+  - Help:
+    - FAQS: faqs/faqs.md
+  - Release: release-notes/release-notes.md
   - License: license/license_v1.md
 
 
