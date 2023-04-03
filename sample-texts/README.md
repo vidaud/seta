@@ -1,4 +1,4 @@
-# sample-texts
+# sample-texts 📓 
 
 The **sample-text** folder contains some json files used to train the elastic search engine.
 

@@ -146,6 +146,18 @@
       "warn",
       { "vars": "all", "varsIgnorePattern": "^_", "args": "after-used", "argsIgnorePattern": "^_" }
     ],
+    "no-restricted-imports": [
+      "error",
+      {
+        "paths": [{
+          "name": "primereact",
+          "message": "Please import each component from 'primereact/<component>'."
+        }],
+        "patterns": [
+          "!primereact/*"
+        ]
+      }
+    ],
     "react-hooks/rules-of-hooks": "error",
     "react-hooks/exhaustive-deps": "warn",
     "space-before-blocks": "error",

@@ -1,13 +1,14 @@
 from interface import implements
 from injector import inject
+import pytz
 
-from datetime import datetime, timedelta, timezone
+from datetime import datetime, timedelta
 from pymongo.results import InsertManyResult
 
 from seta_flask_server.repository.interfaces import IDbConfig, IUsersBroker
 from .db_user_permissions import UserPermissionsBroker
 
-from seta_flask_server.repository.models import SetaUser, ExternalProvider, UserClaim, SystemScope
+from seta_flask_server.repository.models import SetaUser, ExternalProvider, UserClaim, SystemScope, UserSession, SessionToken
 from seta_flask_server.infrastructure.scope_constants import SystemScopeConstants
 
 class UsersBroker(implements(IUsersBroker)):
@@ -82,47 +83,7 @@ class UsersBroker(implements(IUsersBroker)):
         return seta_user
     
     #-------------------------------------------------------#
-    
-    '''
-    def add_user(self, user: Any):
-        usersCollection = self.collection
-        if user.get("role") is None:
-            user["role"] = "user"
-
-        u = {
-            "username": user["uid"],
-            "first_name": user["first_name"],
-            "last_name": user["last_name"],
-            "email": user["email"],
-            "domain": user["domain"],
-            "role": user["role"],
-            "created-at": str(datetime.now())
-        }
-
-        usersCollection.insert_one(u)
-    '''
-    '''
-    def get_user_by_username(self, username: str):
-        usersCollection = self.collection
-        uq = {"username": username, "email":{"$exists" : True}}
-
-        return usersCollection.find_one(uq)
-    '''
-    
-    '''
-    def update_user(self, username: str, field: str, value: Any):
-        usersCollection = self.collection
-        userQuery = {"username": username}
-
-        user = usersCollection.find_one(userQuery)
-        if user is None:
-            return
-
-        updateParameter = {"$set": {field: value, "modified-at": str(time.time())}}
-
-        usersCollection.update_one({"username": username}, updateParameter)
-    '''
-    
+        
     def move_documents(self, sourceCollection: str, targetCollection: str, filter: dict):
         sc = self.db[sourceCollection]
         tc = self.db[targetCollection]
@@ -130,7 +91,7 @@ class UsersBroker(implements(IUsersBroker)):
         sourceDocs = sc.find(filter)
         result: InsertManyResult = tc.insert_many(sourceDocs, False, True)
         
-        now = datetime.now(timezone.utc)
+        now = datetime.now(tz=pytz.utc)
         tc.update_many({"_id": {"$in": result.inserted_ids}}, {"$set": {"revoked_at": now}})
         
         r = sc.delete_many({"_id": {"$in": result.inserted_ids}})
@@ -138,7 +99,7 @@ class UsersBroker(implements(IUsersBroker)):
     
     def delete_old_user(self):
         ar = self.db["archive"]
-        now = datetime.now(timezone.utc)
+        now = datetime.now(tz=pytz.utc)
         nowMinusThreeWeeks = str(now - timedelta(weeks=3))
         r = ar.delete_many({
             "$or": [
@@ -152,9 +113,7 @@ class UsersBroker(implements(IUsersBroker)):
     def user_uid_exists(self, user_id: str) -> bool:        
         filter = {"user_id": user_id, "email": {"$exists" : True}}
                 
-        if  self.collection.count_documents(filter, limit = 1):
-            return True
-        return False
+        return self.collection.count_documents(filter, limit = 1) > 0
     
     def _create_new_user(self, user: SetaUser) -> SetaUser:        
         

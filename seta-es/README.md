@@ -12,8 +12,8 @@ The Elasticsearch engine simplifies data ingest, visualization, and reporting.
 
 
 ## Build
-***
-The image is build it together with all the images
+
+The image is build it together with all the images through the execution of the docker-compose:
 
 ```
     docker compose -f docker-compose.yml -f docker-compose-dev.yml --env-file .env.dev build

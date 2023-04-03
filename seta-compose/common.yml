@@ -93,13 +93,24 @@ services:
     environment:
       - NO_PROXY=${NO_PROXY}
       - no_proxy=${NO_PROXY}
+  
+  doc:
+    restart: always
+    build:
+      context: ../seta-doc
+      args:
+        - HTTP_PROXY=${HTTP_PROXY}
+        - HTTPS_PROXY=${HTTPS_PROXY}
+    environment:
+      - NO_PROXY=${NO_PROXY}
+      - no_proxy=${NO_PROXY}  
 
   data:
     build: 
       context: ../seta-data
       args:
         - HTTP_PROXY=${HTTP_PROXY}
-        - HTTPS_PROXY=${HTTPS_PROXY}  
+        - HTTPS_PROXY=${HTTPS_PROXY}
     environment:
       - NO_PROXY=${NO_PROXY}
       - no_proxy=${NO_PROXY}

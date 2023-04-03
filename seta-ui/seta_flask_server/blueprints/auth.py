@@ -1,5 +1,6 @@
 from flask_restx import Api, Resource, fields
 from http import HTTPStatus
+from injector import inject
 
 from datetime import datetime
 from datetime import timedelta
@@ -7,7 +8,7 @@ from datetime import timezone
 
 from flask import Blueprint
 from flask import current_app as app
-from flask import (jsonify, redirect, make_response)
+from flask import (jsonify, redirect, make_response, session)
 
 from flask_jwt_extended import create_access_token
 from flask_jwt_extended import jwt_required
@@ -16,6 +17,9 @@ from flask_jwt_extended import get_jwt_identity, get_jwt
 
 from seta_flask_server.infrastructure.constants import ExternalProviderConstants
 from seta_flask_server.infrastructure.helpers import set_token_info_cookies, unset_token_info_cookies
+from seta_flask_server.infrastructure.auth_helpers import create_session_token
+
+from seta_flask_server.repository.interfaces import ISessionsBroker
 
 auth = Blueprint("auth", __name__)
 
@@ -47,12 +51,23 @@ login_info_model = ns_auth.model("LoginInfo", {
 @ns_auth.route("/logout/callback", methods=['GET'])
 class SetaLogoutCallback(Resource):
     
+    @inject
+    def __init__(self, sessionsBroker: ISessionsBroker, api=None, *args, **kwargs):
+        self.sessionsBroker = sessionsBroker
+        super().__init__(api, *args, **kwargs)
+    
     @ns_auth.doc(description="Thid-party provider callback for local logout",
             responses={int(HTTPStatus.FOUND): 'Redirect to home route'  })    
     def get(self):
         """ 
         Redirect from CAS logout request after CAS logout successfully.
         """
+        
+        session_id = session.get("session_id")
+        if session_id:
+            self.sessionsBroker.session_logout(session_id)
+        
+        session.clear()
         
         response = make_response(redirect(app.home_route))
         unset_jwt_cookies(response)
@@ -64,6 +79,11 @@ class SetaLogoutCallback(Resource):
                doc={"description": "Local logout"})
 @ns_auth.response(int(HTTPStatus.OK), 'Remove tokens from local domain cookies', status_model)
 class SetaLogout(Resource):    
+    
+    @inject
+    def __init__(self, sessionsBroker: ISessionsBroker, api=None, *args, **kwargs):
+        self.sessionsBroker = sessionsBroker
+        super().__init__(api, *args, **kwargs)
     
     #@ns_auth.marshal_with(status_model)
     def get(self):
@@ -78,7 +98,15 @@ class SetaLogout(Resource):
         """
         Remove tokens from cookies, but third-party cookies will remain
         """
-        #session.pop("username", None)
+        
+        session_id = session.get("session_id")
+        
+        if session_id:
+            self.sessionsBroker.session_logout(session_id)
+        
+        session.clear()
+        
+        
         response = jsonify({"status": "success"})
         unset_jwt_cookies(response)
         unset_token_info_cookies(response=response)
@@ -89,6 +117,11 @@ class SetaLogout(Resource):
                doc={"description": "Refresh access token"})
 @ns_auth.response(int(HTTPStatus.OK), 'Set new access token in cookies', status_model)
 class SetaRefresh(Resource):
+    
+    @inject
+    def __init__(self, sessionsBroker: ISessionsBroker, api=None, *args, **kwargs):
+        self.sessionsBroker = sessionsBroker
+        super().__init__(api, *args, **kwargs)
     
     @jwt_required(refresh=True)
     def get(self):
@@ -110,61 +143,21 @@ class SetaRefresh(Resource):
             additional_claims = {"role": role}
 
         access_token = create_access_token(identity = identity, fresh=False, additional_claims=additional_claims)
+        
+        session_id = session.get("session_id")
+        if session_id:
+            st = create_session_token(session_id=session_id, token=access_token)
+            self.sessionsBroker.session_add_token(st)
 
         response = jsonify({"status": "success"})
         set_access_cookies(response, access_token)        
         set_token_info_cookies(response=response, access_token_encoded=access_token)
 
         return response
-    
-'''
-@ns_auth.route("/login/info", methods=['GET'])
-class SetaLoginInfo(Resource):
-    
-    @ns_auth.doc(description="Token information",
-            responses={int(HTTPStatus.OK): 'Token information',
-                       int(HTTPStatus.UNAUTHORIZED): 'Unauthorized JWT',
-                       int(HTTPStatus.UNPROCESSABLE_ENTITY): 'Invalid token'})
-    @ns_auth.marshal_with(login_info_model)
-    @jwt_required()
-    def get(self):
-        """ 
-        Get token information.
-        """
-        
-        jwt = get_jwt()
-        identity = get_jwt_identity()
-        
-        exp_timestamp = jwt["exp"]
-        
-        access_token_exp = datetime.fromtimestamp(exp_timestamp)
-        provider = str(identity["provider"])
-        
-        logout_url = url_for('auth._seta_logout')
-        
-        if provider.lower() == ExternalProviderConstants.ECAS.lower():
-            logout_url = url_for('auth_ecas.logout_ecas')
-            
-        #get refresh data
-        refresh_exp_timestamp = None
-        refresh_token_exp = None
-        
-        try:
-            jwt_header, jwt_data = verify_jwt_in_request(refresh=True)
-            if jwt_data is not None:
-                refresh_exp_timestamp = jwt_data["exp"]
-        except:
-            app.logger.exception("Refresh token failed retrieval")
-        
-        if refresh_exp_timestamp is not None:
-            refresh_token_exp = datetime.fromtimestamp(refresh_exp_timestamp)
-            
-        return {"access_token_exp": access_token_exp, "refresh_token_exp": refresh_token_exp, 
-                "user_id": identity["user_id"], "auth_provider": provider, 
-                "logout_url": logout_url}
-    ''' 
 
 def refresh_expiring_jwts(response):
+    new_access_token = None
+    
     try:
         token_expires = app.config['JWT_ACCESS_TOKEN_EXPIRES']
                 
@@ -175,13 +168,14 @@ def refresh_expiring_jwts(response):
         jwt = get_jwt()      
         exp_timestamp = jwt["exp"]
         now = datetime.now(timezone.utc)        
-                
+        
+        #refresh any token that is within the second half of its expiration time
         expire_minutes = (token_expires.total_seconds() / 60) // 2
         delta = timedelta(minutes=expire_minutes)
         
-        target_timestamp = datetime.timestamp(now + delta)
+        target_timestamp = datetime.timestamp(now + delta)     
 
-        app.logger.debug("Refresh token only if " + str(target_timestamp) + " > " + str(exp_timestamp))
+        #app.logger.debug("Refresh token only if " + str(target_timestamp) + " > " + str(exp_timestamp))
 
         if target_timestamp > exp_timestamp:
                         
@@ -191,18 +185,20 @@ def refresh_expiring_jwts(response):
             if role is not None:
                 additional_claims = {"role": role}
             
-            access_token = create_access_token(identity=identity, fresh=False, additional_claims=additional_claims)
-            set_access_cookies(response, access_token)
-            set_token_info_cookies(response=response, access_token_encoded=access_token)
+            new_access_token = create_access_token(identity=identity, fresh=False, additional_claims=additional_claims)
+            set_access_cookies(response, new_access_token)
+            set_token_info_cookies(response=response, access_token_encoded=new_access_token)
             
+            '''
             app.logger.debug("target_timestamp: " 
                         + str(datetime.fromtimestamp(target_timestamp)) 
                         + ", exp_timestamp: " 
                         + str(datetime.fromtimestamp(exp_timestamp)))
+            '''
             app.logger.debug("Expiring access token was refreshed.")            
     except Exception as e:
         # Case where there is not a valid JWT. Just return the original response
         app.logger.exception("Could not refresh the expiring token.")        
-        return response
+        return response, new_access_token
     finally:
-        return response  
+        return response, new_access_token
