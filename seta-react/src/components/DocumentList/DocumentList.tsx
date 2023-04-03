@@ -1,15 +1,22 @@
 import { useState, useEffect, useRef } from 'react'
-import { DataTable, MultiSelect } from 'primereact'
 import { Column } from 'primereact/column'
+import type { DataTableExpandedRows } from 'primereact/datatable'
+import { DataTable } from 'primereact/datatable'
+import { MultiSelect } from 'primereact/multiselect'
 import { ProgressBar } from 'primereact/progressbar'
 import './style.css'
 
 const DocumentList = list => {
   const isMounted = useRef(false)
   const [items, setItems] = useState<any>([])
-  const [expandedRows, setExpandedRows] = useState(null)
   const [basicFirst, setBasicFirst] = useState(0)
   const [basicRows, setBasicRows] = useState(10)
+
+  // DataTable.onRowToggle sends this type (including any[]) as e.data
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const [expandedRows, setExpandedRows] = useState<any[] | DataTableExpandedRows | undefined>(
+    undefined
+  )
 
   useEffect(() => {
     const documentsList = list.documents.data

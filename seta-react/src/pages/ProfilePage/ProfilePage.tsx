@@ -1,6 +1,6 @@
 import { useState } from 'react'
-import { InputText } from 'primereact'
 import { Button } from 'primereact/button'
+import { InputText } from 'primereact/inputtext'
 import { InputTextarea } from 'primereact/inputtextarea'
 
 import { defaultNoPublicKeyMessage } from '../../common/constants'

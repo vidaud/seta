@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { TabView, TabPanel } from 'primereact'
+import { TabView, TabPanel } from 'primereact/tabview'
 
 import PostSearch from '../PostSearch'
 import SearchType from '../SearchType'
