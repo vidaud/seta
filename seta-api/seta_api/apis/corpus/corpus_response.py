@@ -1,6 +1,5 @@
 from seta_api.infrastructure.helpers import is_field_in_doc
 from seta_api.infrastructure.ApiLogicError import ApiLogicError
-from .corpus_build import fill_body_for_aggregations, compose_request_for_msearch
 
 from nltk.tokenize import word_tokenize
 from nltk.text import ConcordanceIndex
@@ -38,11 +37,7 @@ def handle_corpus_response(aggs, res, search_type, semantic_sort_id, term):
                                            "collection": is_field_in_doc(document['_source'], "collection"),
                                            "reference": is_field_in_doc(document['_source'], "reference"),
                                            "author": is_field_in_doc(document['_source'], "author"),
-                                           "eurovoc_concept": is_field_in_doc(document['_source'], "eurovoc_concept"),
-                                           "ec_priority": is_field_in_doc(document['_source'], "ec_priority"),
-                                           "sdg_domain": is_field_in_doc(document['_source'], "sdg_domain"),
-                                           "sdg_subdomain": is_field_in_doc(document['_source'], "sdg_subdomain"),
-                                           "euro_sci_voc": is_field_in_doc(document['_source'], "euro_sci_voc"),
+                                           "taxonomy": is_field_in_doc(document['_source'], "taxonomy"),
                                            "keywords": is_field_in_doc(document['_source'], "keywords"),
                                            "other": is_field_in_doc(document['_source'], "other"),
                                            "concordance": concordance_field})
@@ -56,7 +51,7 @@ def retrieve_total_number(response, search_type):
         return response['aggregations']['total']['value']
 
 
-def compose_multi_agg_response_tree(response_buckets):
+def compose_source_collection_reference_response_tree(response_buckets):
     aggregation = {}
     for item in response_buckets:
         s = item["key"][0]
@@ -91,18 +86,49 @@ def compose_multi_agg_response_tree(response_buckets):
     return tree
 
 
-def handle_aggs_response(aggs, response, documents):
-    if aggs:
-        documents["aggregations"] = {}
-        if aggs == "date_year":
-            years = response["aggregations"]["years"]["buckets"]
-            documents["aggregations"]["years"] = {}
-            for year in years:
-                documents["aggregations"]["years"][year["key_as_string"]] = year["doc_count"]
-        elif aggs == "source_collection_reference":
-            documents["aggregations"] = compose_multi_agg_response_tree(response["aggregations"][aggs]["buckets"])
+def compose_taxonomy_response_tree(response_buckets, aggs):
+
+    def build_tree(partial_tree, branch, count):
+        parent = branch[0]
+        if parent not in partial_tree:
+            partial_tree[parent] = {}
+        if len(branch) > 1:
+            child = branch[1]
+            if "subcategories" not in partial_tree[parent]:
+                partial_tree[parent]["subcategories"] = {}
+            x = build_tree(dict(partial_tree[parent]["subcategories"]), branch[1:], count)
+            partial_tree[parent]["subcategories"][child] = x[child]
         else:
-            documents["aggregations"] = response["aggregations"][aggs]["buckets"]
+            partial_tree[parent]["doc_count"] = count
+        return partial_tree
+
+    taxonomy = aggs.split(":")[1]
+    taxonomy_tree = {}
+    for item in response_buckets:
+        if item["key"].startswith(taxonomy):
+            taxonomy_branch = item["key"].split(":")
+            taxonomy_tree = build_tree(taxonomy_tree, taxonomy_branch, item["doc_count"])
+
+    return taxonomy_tree
+
+
+def handle_aggs_response(aggs, response, documents):
+    if not aggs:
+        return documents
+    documents["aggregations"] = {}
+    for agg in aggs:
+        if agg == "date_year":
+            years = response["aggregations"]["years"]["buckets"]
+            documents["aggregations"][agg] = []
+            for year in years:
+                y = {"year": year["key_as_string"], "doc_count": year["doc_count"]}
+                documents["aggregations"][agg].append(y)
+        elif agg == "source_collection_reference":
+            documents["aggregations"][agg] = compose_source_collection_reference_response_tree(response["aggregations"][agg]["buckets"])
+        elif agg.startswith("taxonomy:"):
+            documents["aggregations"][agg] = compose_taxonomy_response_tree(response["aggregations"]["taxonomy"]["buckets"], agg)
+        else:
+            documents["aggregations"][agg] = response["aggregations"][agg]["buckets"]
     return documents
 
 

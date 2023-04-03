@@ -1,4 +1,19 @@
-{"mappings":
+{"settings": {
+    "analysis": {
+      "analyzer": {
+        "custom_path_tree": {
+          "tokenizer": "custom_hierarchy"
+        }
+      },
+      "tokenizer": {
+        "custom_hierarchy": {
+          "type": "path_hierarchy",
+          "delimiter": ":"
+        }
+      }
+    }
+  },
+"mappings":
     {"properties":
       {"@timestamp":{"type":"date"}
       ,"@version":{"type":"text","fields":{"keyword":{"type":"keyword","ignore_above":256}}}
@@ -29,48 +44,15 @@
       ,"link_reference":{"type":"text","fields":{"keyword":{"type":"keyword","ignore_above":256}}}
       ,"link_related":{"type":"text","fields":{"keyword":{"type":"keyword","ignore_above":256}}}
       ,"mime_type":{"type":"text","fields":{"keyword":{"type":"keyword","ignore_above":256}}}
-
-      ,"ec_priority":{"type":"nested","dynamic":"false","properties":{"classifier":{"type":"keyword"}
-                                                                     ,"label":{"type":"keyword"}
-                                                                     ,"validated":{"type":"keyword"}
-                                                                     ,"version":{"type":"keyword"}}}
-      ,"euro_sci_voc":{"type":"nested","dynamic":"false","properties":{"classifier":{"type":"keyword"}
-                                                                      ,"label":{"type":"keyword"}
-                                                                      ,"code":{"type":"keyword"}
-                                                                      ,"longLabel":{"type":"keyword"}
-                                                                      ,"validated":{"type":"keyword"}
-                                                                      ,"version":{"type":"keyword"}}}
-      ,"eurovoc_concept":{"type":"nested","dynamic":"false","properties":{"classifier":{"type":"keyword"}
-                                                                         ,"label":{"type":"keyword"}
-                                                                         ,"code":{"type":"keyword"}
-                                                                         ,"longLabel":{"type":"keyword"}
-                                                                         ,"validated":{"type":"keyword"}
-                                                                         ,"version":{"type":"keyword"}}}
-      ,"eurovoc_domain":{"type":"nested","dynamic":"false","properties":{"classifier":{"type":"keyword"}
-                                                                        ,"label":{"type":"keyword"}
-                                                                        ,"code":{"type":"keyword"}
-                                                                        ,"longLabel":{"type":"keyword"}
-                                                                        ,"validated":{"type":"keyword"}
-                                                                        ,"version":{"type":"keyword"}}}
-      ,"eurovoc_mth":{"type":"nested","dynamic":"false","properties":{"classifier":{"type":"keyword"}
-                                                                     ,"label":{"type":"keyword"}
-                                                                     ,"code":{"type":"keyword"}
-                                                                     ,"longLabel":{"type":"keyword"}
-                                                                     ,"validated":{"type":"keyword"}
-                                                                     ,"version":{"type":"keyword"}}}
-      ,"sdg_domain":{"type":"nested","dynamic":"false","properties":{"classifier":{"type":"keyword"}
-                                                                    ,"label":{"type":"keyword"}
-                                                                    ,"code":{"type":"keyword"}
-                                                                    ,"longLabel":{"type":"keyword"}
-                                                                    ,"validated":{"type":"keyword"}
-                                                                    ,"version":{"type":"keyword"}}}
-      ,"sdg_subdomain":{"type":"nested","dynamic":"false","properties":{"classifier":{"type":"keyword"}
+      ,"taxonomy":{"type":"nested","dynamic":"false","properties":{"classifier":{"type":"keyword"}
                                                                        ,"label":{"type":"keyword"}
                                                                        ,"code":{"type":"keyword"}
                                                                        ,"longLabel":{"type":"keyword"}
                                                                        ,"validated":{"type":"keyword"}
-                                                                       ,"version":{"type":"keyword"}}}
-
+                                                                       ,"version":{"type":"keyword"}
+                                                                       ,"name_in_path":{"type":"keyword"}
+                                                                       ,"name":{"type":"keyword"} }}
+      ,"taxonomy_path": {"type":"text", "analyzer": "custom_path_tree", "search_analyzer": "keyword", "fielddata": true}
       ,"sbert_embedding":{"type":"dense_vector","dims":768,"index":true,"similarity":"cosine"}
       ,"other":{"type":"flattened"}
 }}}

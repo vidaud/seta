@@ -44,8 +44,7 @@ class Corpus(Resource):
             security='apikey')
     def delete(self, id):
         try:
-            doc = doc_by_id(id, current_app=app)
-            doc = doc_by_id(id, es=app.es, index=app.config['INDEX_PUBLIC'])            
+            doc = doc_by_id(id, es=app.es, index=app.config['INDEX_PUBLIC'])
             resource_id = doc.get("source", None)
             
             if not validate_delete_permission(resource_id):
@@ -60,7 +59,8 @@ class Corpus(Resource):
         except:
             app.logger.exception("Corpus->delete")
             abort(500, "Internal server error")
-        
+
+
 corpus_put_data = corpus_api.model(
     "corpus_put_params",
     {
@@ -81,13 +81,8 @@ corpus_put_data = corpus_api.model(
         "mime_type": fields.String(),
         "in_force": fields.String(),
         "language": fields.String(),
-        "eurovoc_concept": fields.List(fields.Nested(corpus_api.model('metadata', metadata))),
-        "eurovoc_domain": fields.List(fields.Nested(corpus_api.model('metadata', metadata))),
-        "eurovoc_mth": fields.List(fields.Nested(corpus_api.model('metadata', metadata))),
-        "ec_priority": fields.List(fields.Nested(corpus_api.model('metadata', metadata))),
-        "sdg_domain": fields.List(fields.Nested(corpus_api.model('metadata', metadata))),
-        "sdg_subdomain": fields.List(fields.Nested(corpus_api.model('metadata', metadata))),
-        "euro_sci_voc": fields.List(fields.Nested(corpus_api.model('metadata', metadata))),
+        "taxonomy": fields.List(fields.Nested(corpus_api.model('metadata', metadata))),
+        "taxonomy_path": fields.List(fields.String()),
         "keywords": fields.List(fields.Nested(corpus_api.model('keywords', keywords))),
         "other": fields.List(other)
     }
@@ -103,14 +98,8 @@ query_corpus_post_data = corpus_api.model(
         'source': fields.List(fields.String(), description='By default contains all the corpus: eurlex,cordis,pubsy. It is possible to choose from which corpus retrieve documents.'),
         'reference': fields.List(fields.String(), description='eurlex metadata reference'),
         'collection': fields.List(fields.String(), description='eurlex metadata collection'),
-        'eurovoc_domain': fields.List(fields.String(), description='eurlex metadata eurovoc_dom'),
-        'eurovoc_mth': fields.List(fields.String(), description='eurlex metadata eurovoc_mth'),
-        'eurovoc_concept': fields.List(fields.String(), description='eurlex metadata eurovoc_tt'),
-        'ec_priority': fields.List(fields.String(), description='metadata ec_priority'),
-        'sdg_domain': fields.List(fields.String(), description='metadata sdg_domain'),
-        'sdg_subdomain': fields.List(fields.String(), description='metadata sdg_subdomain'),
-        'euro_sci_voc': fields.List(fields.String(), description='metadata euro_sci_voc'),
-        'in_force': fields.String(description='eurlex metadata info_force'),
+        'taxonomy': fields.List(fields.Nested(corpus_api.model('metadata', metadata)), description='taxonomy generic field'),
+        'in_force': fields.String(description='eurlex metadata into_force'),
         'sort': fields.List(fields.String(), description='sort results field:order'),
         'semantic_sort_id': fields.String(description='sort results by semantic distance among documents'),
         'sbert_embedding': fields.List(fields.Float, description='embeddings vector'),
@@ -118,8 +107,8 @@ query_corpus_post_data = corpus_api.model(
         'sbert_embedding_list': fields.List(fields.List(fields.Float, description='list of embeddings vector')),
         'author': fields.String(description='author'),
         'date_range': fields.List(fields.String, description='examples: gte:yyyy-mm-dd,lte:yyyy-mm-dd,gt:yyyy-mm-dd,lt:yyyy-mm-dd'),
-        'aggs': fields.String(description='field to be aggregated, allowed fields are: "source", "eurovoc_concept", '
-                                          '"date_year", "source_collection_reference"'),
+        'aggs': fields.List(fields.String, description='field to be aggregated, allowed fields are: "source", '
+                                          '"date_year", "source_collection_reference", "taxonomy:taxonomyname"'),
         'other': fields.List(other, descritpion='"other":[{"other.crc":"de1cbd1eecdd19cb0d527f3a3433c6958e4b8b1b02ce69c960e02a611f27b036"}]')    }
 )      
         
@@ -153,31 +142,17 @@ class CorpusQuery(Resource):
                 or is_field_in_doc(args, 'aggs') \
                 or is_field_in_doc(args, 'source'):
             try:
-                documents = corpus(is_field_in_doc(args, 'term')
-                                 , is_field_in_doc(args, 'n_docs')
-                                 , is_field_in_doc(args, 'from_doc')
-                                 , is_field_in_doc(args, 'source')
-                                 , is_field_in_doc(args, 'collection')
-                                 , is_field_in_doc(args, 'reference')
-                                 , is_field_in_doc(args, 'eurovoc_concept')
-                                 , is_field_in_doc(args, 'eurovoc_domain')
-                                 , is_field_in_doc(args, 'eurovoc_mth')
-                                 , is_field_in_doc(args, 'ec_priority')
-                                 , is_field_in_doc(args, 'sdg_domain')
-                                 , is_field_in_doc(args, 'sdg_subdomain')
-                                 , is_field_in_doc(args, 'euro_sci_voc')
-                                 , is_field_in_doc(args, 'in_force')
-                                 , is_field_in_doc(args, 'sort')
-                                 , is_field_in_doc(args, 'semantic_sort_id')
-                                 , is_field_in_doc(args, 'sbert_embedding')
-                                 , is_field_in_doc(args, 'semantic_sort_id_list')
-                                 , is_field_in_doc(args, 'sbert_embedding_list')
-                                 , is_field_in_doc(args, 'author')
-                                 , is_field_in_doc(args, 'date_range')
-                                 , is_field_in_doc(args, 'aggs')
-                                 , is_field_in_doc(args, 'search_type')
-                                 , is_field_in_doc(args, 'other') 
-                                 , current_app=app)                
+                documents = corpus(is_field_in_doc(args, 'term'), is_field_in_doc(args, 'n_docs'),
+                                   is_field_in_doc(args, 'from_doc'), is_field_in_doc(args, 'source'),
+                                   is_field_in_doc(args, 'collection'), is_field_in_doc(args, 'reference'),
+                                   is_field_in_doc(args, 'in_force'), is_field_in_doc(args, 'sort'),
+                                   is_field_in_doc(args, 'taxonomy'),
+                                   is_field_in_doc(args, 'semantic_sort_id'), is_field_in_doc(args, 'sbert_embedding'),
+                                   is_field_in_doc(args, 'semantic_sort_id_list'),
+                                   is_field_in_doc(args, 'sbert_embedding_list'), is_field_in_doc(args, 'author'),
+                                   is_field_in_doc(args, 'date_range'), is_field_in_doc(args, 'aggs'),
+                                   is_field_in_doc(args, 'search_type'), is_field_in_doc(args, 'other'),
+                                   current_app=app)
                 return jsonify(documents)
             except ApiLogicError as aex:
                 abort(404, str(aex))
@@ -215,21 +190,14 @@ class CorpusQuery(Resource):
                               'It is possible to choose from which corpus retrieve documents.',
                     'collection': 'eurlex metadata collection',
                     'reference': 'eurlex metadata reference',
-                    'eurovoc_concept': 'eurlex metadata eurovoc_concept',
-                    'eurovoc_domain': 'eurlex metadata eurovoc_dom',
-                    'eurovoc_mth': 'eurlex metadata eurovoc_mth',
-                    'ec_priority': 'eurlex metadata ec_priority',
-                    'sdg_domain': 'eurlex metadata sdg_domain',
-                    'sdg_subdomain': 'eurlex metadata sdg_subdomain',
-                    'euro_sci_voc': 'eurlex metadata euro_sci_voc',
                     'in_force': 'eurlex metadata in_force',
                     'sort': 'sort results field:order',
                     'semantic_sort_id': 'sort results by semantic distance among documents',
                     'semantic_sort_id_list': 'sort results by semantic distance among documents',
                     'author': 'description',
                     'date_range': 'gte:yyyy-mm-dd,lte:yyyy-mm-dd,gt:yyyy-mm-dd,lt:yyyy-mm-dd',
-                    'aggs': 'field to be aggregated, allowed fields are: "source", "eurovoc_concept", "date_year", '
-                            '"source_collection_reference"'},
+                    'aggs': 'field to be aggregated, allowed fields are: "source", "date_year", '
+                            '"source_collection_reference", "taxonomy:taxonomyname"'},
             responses={200: 'Success', 401: 'Forbbiden access to the resource', 404: 'Not Found Error'},
             security='apikey')
     def get(self):
@@ -249,11 +217,9 @@ class CorpusQuery(Resource):
         if args['term'] or args['semantic_sort_id'] or args['semantic_sort_id_list'] or args['aggs'] or args['source']:
             try:
                 documents = corpus(args['term'], args['n_docs'], args['from_doc'], args['source'], args['collection'],
-                          args['reference'], args['eurovoc_concept'], args['eurovoc_domain'], args['eurovoc_mth'],
-                          args['ec_priority'], args['sdg_domain'], args['sdg_subdomain'], args['euro_sci_voc'],
-                          args['in_force'], args['sort'], args['semantic_sort_id'], None, args['semantic_sort_id_list'],
-                          None, args['author'], args['date_range'], args['aggs'], args['search_type'], args['other'],
-                          current_app=app)                
+                                   args['reference'], args['in_force'], args['sort'], None, args['semantic_sort_id'],
+                                   None, args['semantic_sort_id_list'], None, args['author'], args['date_range'],
+                                   args['aggs'], args['search_type'], args['other'], current_app=app)
                 
                 return jsonify(documents)
             except ApiLogicError as aex:
@@ -261,6 +227,4 @@ class CorpusQuery(Resource):
             except:
                 app.logger.exception("CorpusQuery->get")
                 abort(500, "Internal server error")
-        
-    
-    
+

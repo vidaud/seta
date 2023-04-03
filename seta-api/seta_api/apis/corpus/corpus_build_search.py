@@ -2,29 +2,47 @@ from flask import json
 import re
 
 
-def build_search_query(search_term, sources, collection, reference, eurovoc_concept, eurovoc_dom, eurovoc_mth,
-                       ec_priority, sdg_domain, sdg_subdomain, euro_sci_voc, in_force, author, date_range,
-                       search_type, other):
+def build_taxonomy_nested_query(taxonomy):
+    if taxonomy:
+        # TODO for more than one taxonomy schema add should clause
+        nested_query = {"nested": {"path": "taxonomy", "query": {"bool": {"must": []}}}}
+        for field in taxonomy:
+            for attribute, value in field.items():
+                nested_block = {"match": {"taxonomy." + attribute: value}}
+                nested_query["nested"]["query"]["bool"]["must"].append(nested_block)
+        return nested_query
+    return None
+
+
+def build_search_query(search_term, sources, collection, reference, in_force, author, date_range, search_type, other,
+                       taxonomy):
     query = build_search_query_json(search_term)
 
-    metadata_param_blocks = build_metadata_param_blocks(collection, reference, eurovoc_concept, eurovoc_dom,
-                                                        eurovoc_mth, ec_priority, sdg_domain, sdg_subdomain,
-                                                        euro_sci_voc,
-                                                        in_force, author, date_range, sources, search_type, other)
+    metadata_param_blocks = build_metadata_param_blocks(collection, reference, in_force, author, date_range,
+                                                        sources, search_type, other)
+    taxonomy_nested_query = build_taxonomy_nested_query(taxonomy)
 
+    query = add_metadata_block_to_query(metadata_param_blocks, query, taxonomy_nested_query)
+
+    return query
+
+
+def add_metadata_block_to_query(metadata_param_blocks, query, taxonomy_nested_query):
     if len(metadata_param_blocks) > 0:
         if not query:
             query = {"bool": {"must": []}}
         for block in metadata_param_blocks:
             query['bool']['must'].append(block)
-    elif not query:
+    if taxonomy_nested_query:
+        if not query:
+            query = {"bool": {"must": []}}
+        query['bool']['must'].append(taxonomy_nested_query)
+    if not query:
         query = {"match_all": {}}
     return query
 
 
-def build_metadata_param_blocks(collection, reference, eurovoc_concept, eurovoc_dom, eurovoc_mth,
-                                ec_priority, sdg_domain, sdg_subdomain, euro_sci_voc,
-                                in_force, author, date_range, sources, search_type, other):
+def build_metadata_param_blocks(collection, reference, in_force, author, date_range, sources, search_type, other):
     full_block = []
     if sources:
         or_block = {"bool": {"should": []}}
@@ -42,48 +60,6 @@ def build_metadata_param_blocks(collection, reference, eurovoc_concept, eurovoc_
         for param in reference:
             block = {"match": {"reference.keyword": param}}
             full_block.append(block)
-    if eurovoc_concept:
-        or_block = {"bool": {"should": []}}
-        for param in eurovoc_concept:
-            block = {"match": {"eurovoc_concept.keyword": param}}
-            or_block['bool']['should'].append(block)
-        full_block.append(or_block)
-    if eurovoc_dom:
-        or_block = {"bool": {"should": []}}
-        for param in eurovoc_dom:
-            block = {"match": {"eurovoc_domain.keyword": param}}
-            or_block['bool']['should'].append(block)
-        full_block.append(or_block)
-    if eurovoc_mth:
-        or_block = {"bool": {"should": []}}
-        for param in eurovoc_mth:
-            block = {"match": {"eurovoc_mth.keyword": param}}
-            or_block['bool']['should'].append(block)
-        full_block.append(or_block)
-    if ec_priority:
-        or_block = {"bool": {"should": []}}
-        for param in ec_priority:
-            block = {"match": {"ec_priority.keyword": param}}
-            or_block['bool']['should'].append(block)
-        full_block.append(or_block)
-    if sdg_domain:
-        or_block = {"bool": {"should": []}}
-        for param in sdg_domain:
-            block = {"match": {"sdg_domain.keyword": param}}
-            or_block['bool']['should'].append(block)
-        full_block.append(or_block)
-    if sdg_subdomain:
-        or_block = {"bool": {"should": []}}
-        for param in sdg_subdomain:
-            block = {"match": {"sdg_subdomain.keyword": param}}
-            or_block['bool']['should'].append(block)
-        full_block.append(or_block)
-    if euro_sci_voc:
-        or_block = {"bool": {"should": []}}
-        for param in euro_sci_voc:
-            block = {"match": {"euro_sci_voc.keyword": param}}
-            or_block['bool']['should'].append(block)
-        full_block.append(or_block)
     if in_force is not None:
         block = {"match": {"in_force": in_force}}
         full_block.append(block)
@@ -104,7 +80,7 @@ def build_metadata_param_blocks(collection, reference, eurovoc_concept, eurovoc_
         full_block.append(block)
     if other:
         for oth in other:
-            block = {"match": oth}
+            block = {"match": {"other": oth}}
             full_block.append(block)
     return full_block
 
@@ -114,9 +90,9 @@ def build_search_query_json(search_term):
         search_term = search_term.replace('/', '\\\/')
         if 'AND' in search_term or 'OR' in search_term:
             search_term = search_term.replace('"', '\\"')
-            query_string = '{"bool": {"must": [{"query_string": {"fields": ["title^10","abstract^3","chunk_text"],"query": "' \
-                           + search_term + '","type": "phrase" }}]}}'
-            
+            query_string = '{"bool": {"must": [{"query_string": {"fields": ["title^10","abstract^3","chunk_text"],' \
+                           '"query": "' + search_term + '","type": "phrase" }}]}}'
+
             query = json.loads(query_string)
         else:
             search_term_best, search_term_phrase = parse_search_term(search_term)
@@ -145,7 +121,7 @@ def bluid_search_phrase_block(search_term_phrase):
             "zero_terms_query": "all"
         }}
         full_block.append(block)
-    return full_block 
+    return full_block
 
 
 def parse_search_term(search_term):
@@ -163,4 +139,5 @@ def parse_search_term(search_term):
         return best, phrase
     else:
         best = search_term
-        return best, phrase   
+        return best, phrase
+

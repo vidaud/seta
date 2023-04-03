@@ -1,4 +1,4 @@
-from flask_restx import reqparse, fields, inputs
+from flask_restx import reqparse, fields
 
 corpus_parser = reqparse.RequestParser()
 corpus_parser.add_argument('term')
@@ -9,20 +9,13 @@ corpus_parser.add_argument('source', action='split')
 corpus_parser.add_argument('collection', action='split')
 corpus_parser.add_argument('subject', action='split')
 corpus_parser.add_argument('reference', action='split')
-corpus_parser.add_argument('eurovoc_concept', action='split')
-corpus_parser.add_argument('eurovoc_domain', action='split')
-corpus_parser.add_argument('eurovoc_mth', action='split')
-corpus_parser.add_argument('ec_priority', action='split')
-corpus_parser.add_argument('sdg_domain', action='split')
-corpus_parser.add_argument('sdg_subdomain', action='split')
-corpus_parser.add_argument('euro_sci_voc', action='split')
 corpus_parser.add_argument('in_force')
 corpus_parser.add_argument('sort', action='split')
 corpus_parser.add_argument('semantic_sort_id')
 corpus_parser.add_argument('semantic_sort_id_list', action='split')
 corpus_parser.add_argument('author', action='split')
 corpus_parser.add_argument('date_range', action='split')
-corpus_parser.add_argument('aggs')  
+corpus_parser.add_argument('aggs', action='split')
 corpus_parser.add_argument('other', action='split')  
 
 other = fields.Wildcard(fields.String())
@@ -30,12 +23,15 @@ other = fields.Wildcard(fields.String())
 
 
 metadata = {}
+metadata["name"] = fields.String()
 metadata["code"] = fields.String()
 metadata["label"] = fields.String()
 metadata["longLabel"] = fields.String()
 metadata["validated"] = fields.String()
 metadata["classifier"] = fields.String()
 metadata["version"] = fields.String()
+metadata["name_in_path"] = fields.String()
+
 
 keywords = {}
 keywords["keyword"] = fields.String()
