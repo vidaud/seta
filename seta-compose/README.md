@@ -1,43 +1,36 @@
-cd ./seta-compose
-docker-compose build
-docker-compose up
+# seta-compose ⚙️
 
-# it will setup all system and data.
-# it will take a while depending on the Internet speed. Might take 30min to 2h.
-# At some point there will be a message "SeTA-API is up and running."
-# The build of seta-ui-spa container will need about 10 minutes to complete and see the result in the output folder 'seta-ui\seta-flask-server\seta-ui'
-# After that you are ready to open your browser and start typing:  
-# for UI: http://localhost/seta-ui
-# for API http://localhost/seta-api/doc
+The **seta-compose** image defines and run the  multi-container Docker applications. With Compose, we use a YAML file to configure the application services.
 
-# to stop services:
+Compose folder has the commands for managing the whole lifecycle of the application:
 
-CTRL + C
+    - Start, stop, and rebuild services
+    - View the status of running services
+    - Stream the log output of running services
+    - Run a one-off command on a service
 
-# and it will stop gracefuly
-# if you started in detached mode ('docker-compose up -d') you can stop services with 
 
-docker-compose down
+ > As part of the deployment in the project, for the execution of the image, please refer to the README.md file of the main project page.   
 
-# the minimum requirements are:
-# at least 10GB available free RAM.
-# 16 GR (32GB prefered) RAM, 100GB free space HDD or SSD (prefered).
-# good Internet speed. You will need to download at least 5GB (> 20GB for all data)
+## Build
+The image is build it together with all the images through the execution of the docker-compose
 
-# The first run will take time. The next run will be fast.
+```
+    docker compose -f docker-compose.yml -f docker-compose-dev.yml --env-file .env.dev build
+```
 
-docker-compose -f docker-compose-dev.yml build
-# (re-)build all images
 
-docker-compose -f docker-compose-dev.yml build seta-ui
-# (re-)build only seta-ui image
+## Contributing
 
-docker-compose -f docker-compose-dev.yml up
-# start all services for your environment locally
+Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
-docker-compose -f docker-compose-dev.yml up -d
-# start all services for your environment locally in detached mode
+Please make sure to update tests as appropriate.
 
-docker-compose -f docker-compose-dev.yml up  --force-recreate --build --no-deps seta-ui
-# rebuild and restart seta-ui services while other services are runing. 
+## License
+
+[![MIT][mit-badge]][mit-url]
+
+[mit-badge]: https://img.shields.io/badge/license-mit-blue
+[mit-url]: https://choosealicense.com/licenses/mit/
+
 

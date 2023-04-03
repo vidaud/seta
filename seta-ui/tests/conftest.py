@@ -1,10 +1,11 @@
 import pytest
 import time
 
-from seta_flask_server.config_test import TestConfig
+from seta_flask_server.config import TestConfig
 from seta_flask_server.factory import create_app
 
 from tests.infrastructure.mongodb.db import DbTestSetaApi
+import os
 
 """
     For testing in docker run: pytest -s tests/ --db_host=seta-mongo --db_port=27017
@@ -22,8 +23,15 @@ def db_host(request):
 def db_port(request):
     return request.config.getoption('--db_port')
 
+@pytest.fixture(scope="session", autouse=True)
+def init_os():
+    #set the required env read in config
+    os.environ["API_SECRET_KEY"] = "testkey1"
+    
+    return True
+
 @pytest.fixture(scope='module')
-def app(db_host, db_port):
+def app(db_host, db_port):    
     configuration = TestConfig() 
     
     #configuration.DB_HOST = "localhost"

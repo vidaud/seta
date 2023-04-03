@@ -1,83 +1,101 @@
-import axios from 'axios';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { environment } from '../environments/environment';
-import { User } from '../models/user.model';
-import storageService from './storage.service';
-import restService from './rest.service';
+import axios from 'axios'
+import type { Observable } from 'rxjs'
+import { BehaviorSubject } from 'rxjs'
 import { getCookie } from 'typescript-cookie'
 
-const AUTH_API = environment.baseUrl;
+import storageService from './storage.service'
+
+import { environment } from '../environments/environment'
+import type { User } from '../models/user.model'
+
+const AUTH_API = environment.baseUrl
 
 class AuthentificationService {
-  public currentUserSubject: BehaviorSubject<User | null> = new BehaviorSubject<User| null>(null);
+  public currentUserSubject: BehaviorSubject<User | null> = new BehaviorSubject<User | null>(null)
 
   getRefreshedAccessToken(token: string) {
-    return axios.post(AUTH_API + 'refresh', {});
+    return axios.post(AUTH_API + 'refresh', {})
   }
 
   constructor() {
-    if(storageService.isLoggedIn()){
-      this.currentUserSubject.next(storageService.getUser());
+    if (storageService.isLoggedIn()) {
+      this.currentUserSubject.next(storageService.getUser())
+
+      // We return early if the user is already logged in.
+      return
     }
-    const searchParam = new URLSearchParams(window.location.search);
-    if(searchParam != null){
-      const action = searchParam.get('action');
-      if(action === 'login'){
-        this.loadProfile();
-      }
-    }      
+
+    const url = new URL(window.location.href)
+    const action = url.searchParams.get('action')
+
+    if (action === 'login') {
+      url.searchParams.delete('action')
+
+      // We must replace the current URL with the one without the `action` parameter.
+      // Using `replaceState` instead of `pushState` because we don't want to add a new entry to the browser's history.
+      // eslint-disable-next-line no-restricted-globals
+      history.replaceState(null, '', url)
+
+      this.loadProfile()
+    }
   }
 
   loadProfile() {
-    this.profile();
+    this.profile()
   }
 
   setaLogout() {
-    (axios.post(AUTH_API + '/logout', {'Cache-Control': 'no-cache', 'Pragma': 'no-cache'}) as any)
-    .then(() => {
-      window.location.href = "/logout/ecas";
-      this.currentUserSubject.next(null);
-      storageService.clean();    
-    });
+    ;(
+      axios.post(AUTH_API + '/logout', { 'Cache-Control': 'no-cache', Pragma: 'no-cache' }) as any
+    ).then(() => {
+      window.location.href = '/logout/ecas'
+      this.currentUserSubject.next(null)
+      storageService.clean()
+    })
   }
 
   setaLocalLogout() {
-    (axios.post(AUTH_API + '/logout', {'Cache-Control': 'no-cache', 'Pragma': 'no-cache'}))
-    .then(() => {
-      window.location.href = "/login";  
-    }) as any;
+    axios
+      .post(AUTH_API + '/logout', { 'Cache-Control': 'no-cache', Pragma: 'no-cache' })
+      .then(() => {
+        window.location.href = '/login'
+      }) as any
   }
 
   profile(): Observable<User | null> {
     axios
       .get<User>(AUTH_API + '/rest/v1/user-info')
-      .then((response) => {
-        var user = response.data;
-        storageService.saveUser(user);
-        this.currentUserSubject.next(user);
+      .then(response => {
+        const user = response.data
+
+        storageService.saveUser(user)
+        this.currentUserSubject.next(user)
       })
-      .catch((error) => {
-        console.log(error);
-      });
-    return this.currentUserSubject;
+      .catch(error => {
+        console.log(error)
+      })
+
+    return this.currentUserSubject
   }
 
   async refreshToken(): Promise<any> {
-    const csrf_token = getCookie('csrf_refresh_token');
-      return axios.get(AUTH_API + '/refresh', {
-        headers:{"X-CSRF-TOKEN": csrf_token}
+    const csrf_token = getCookie('csrf_refresh_token')
+
+    return axios
+      .get(AUTH_API + '/refresh', {
+        headers: { 'X-CSRF-TOKEN': csrf_token }
       })
       .then((response: any) => {
-        return response;
+        return response
       })
-      .catch((error) => {
+      .catch(error => {
         if (error.response) {
-          if(error.response.status === 401){
+          if (error.response.status === 401) {
             //redirect to logout
-            this.setaLocalLogout();
+            this.setaLocalLogout()
           }
         }
-      }) as any;
+      }) as any
   }
 }
-export default new AuthentificationService();
+export default new AuthentificationService()

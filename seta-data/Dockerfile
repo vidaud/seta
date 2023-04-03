@@ -1,15 +1,14 @@
 FROM ubuntu:22.04
 
 RUN echo "Acquire::http::Proxy \""$HTTP_PROXY"\";" >> /etc/apt/apt.conf
+RUN echo "Acquire::https::Proxy \""$HTTPS_PROXY"\";" >> /etc/apt/apt.conf
 
-RUN cat /etc/apt/apt.conf
-ENV https_proxy=$HTTP_PROXY
+#RUN cat /etc/apt/apt.conf
+ENV https_proxy=$HTTPS_PROXY
 ENV http_proxy=$HTTP_PROXY
-ENV no_proxy="seta-es,seta-mongo,seta-api,seta-nginx,seta-ui,seta-ui-spa"
-ENV HTTPS_PROXY=$HTTP_PROXY
-ENV HTTP_PROXY=$HTTP_PROXY
-ENV NO_PROXY=$no_proxy
 
+ENV HTTPS_PROXY=$HTTPS_PROXY
+ENV HTTP_PROXY=$HTTP_PROXY
 
 RUN apt update -y
 RUN apt install -y  --no-install-recommends python3-pip
@@ -21,13 +20,13 @@ RUN useradd seta
 ARG ROOT=/home/seta
 
 WORKDIR $ROOT
-ADD requirements.txt $ROOT/requirements.txt
+COPY requirements.txt $ROOT/requirements.txt
 
 RUN pip3 install -r $ROOT/requirements.txt 
 
-ADD src/* $ROOT/
+COPY src/* $ROOT/
 RUN mkdir $ROOT/models_docker
-ADD models/* $ROOT/models_docker/
+COPY models/* $ROOT/models_docker/
 
 #CMD "ls -l /home/seta &&  python /home/seta/app.py"
 CMD ["python3", "/home/seta/app.py"]

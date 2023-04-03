@@ -59,8 +59,7 @@ class Corpus(Resource):
         except:
             app.logger.exception("Corpus->delete")
             abort(500, "Internal server error")
-
-
+        
 corpus_put_data = corpus_api.model(
     "corpus_put_params",
     {

@@ -1,0 +1,117 @@
+services:
+  mongo:
+    restart: always
+    build: 
+      context: ../seta-mongo
+      args:
+        - HTTP_PROXY=${HTTP_PROXY}
+        - HTTPS_PROXY=${HTTPS_PROXY}
+    expose:
+      - "27017"
+    environment:
+      - NO_PROXY=${NO_PROXY}
+      - no_proxy=${NO_PROXY}
+
+  es:
+    restart: always
+    build: 
+      context: ../seta-es
+      args:
+        - HTTP_PROXY=${HTTP_PROXY}
+        - HTTPS_PROXY=${HTTPS_PROXY}      
+    expose:
+      - "9200"
+      - "9300"
+    mem_limit: "4g"
+    environment:
+      - NO_PROXY=${NO_PROXY}
+      - no_proxy=${NO_PROXY}
+      - xpack.security.enabled=false
+      - discovery.type=single-node
+      - xpack.security.http.ssl.enabled=false
+      - xpack.security.transport.ssl.enabled=false
+      - ingest.geoip.downloader.enabled=false
+
+  api:
+    restart: always
+    build: 
+      context: ../seta-api
+      args:
+        - HTTP_PROXY=${HTTP_PROXY}
+        - HTTPS_PROXY=${HTTPS_PROXY}      
+    expose:
+      - "8081"
+    mem_limit: "8g"
+    environment:
+      - NO_PROXY=${NO_PROXY}
+      - no_proxy=${NO_PROXY}
+      - ES_HOST
+      - DB_HOST
+      - DB_PORT
+      - DB_NAME
+
+  nginx:
+    restart: always
+    build: 
+      context: ../seta-nginx
+      args:
+        - HTTP_PROXY=${HTTP_PROXY}
+        - HTTPS_PROXY=${HTTPS_PROXY}       
+    environment:
+      - NO_PROXY=${NO_PROXY}
+      - no_proxy=${NO_PROXY}
+
+  ui:
+    restart: always
+    build: 
+      context: ../seta-ui
+      args:
+        - HTTP_PROXY=${HTTP_PROXY}
+        - HTTPS_PROXY=${HTTPS_PROXY}  
+    expose:
+      - "8080" 
+    environment:
+      - NO_PROXY=${NO_PROXY}
+      - no_proxy=${NO_PROXY}
+      - ROOT_USERS=${ROOT_USERS}
+      - API_SECRET_KEY
+      - GITHUB_CLIENT_ID
+      - GITHUB_CLIENT_SECRET
+      - DB_HOST
+      - DB_PORT
+      - DB_NAME
+
+  ui-react:
+    restart: always
+    build: 
+      context: ../seta-react
+      args:
+        - HTTP_PROXY=${HTTP_PROXY}
+        - HTTPS_PROXY=${HTTPS_PROXY}  
+    expose:
+      - "3000"
+    environment:
+      - NO_PROXY=${NO_PROXY}
+      - no_proxy=${NO_PROXY}
+  
+  doc:
+    restart: always
+    build:
+      context: ../seta-doc
+      args:
+        - HTTP_PROXY=${HTTP_PROXY}
+        - HTTPS_PROXY=${HTTPS_PROXY}
+    environment:
+      - NO_PROXY=${NO_PROXY}
+      - no_proxy=${NO_PROXY}  
+
+  data:
+    build: 
+      context: ../seta-data
+      args:
+        - HTTP_PROXY=${HTTP_PROXY}
+        - HTTPS_PROXY=${HTTPS_PROXY}
+    environment:
+      - NO_PROXY=${NO_PROXY}
+      - no_proxy=${NO_PROXY}
+      - ES_HOST

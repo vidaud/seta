@@ -14,10 +14,10 @@ from config import Config as DevConfig, TestConfig
 
 app_env = os.environ.get('APP_ENV')
 
-Config = DevConfig
-
-if app_env is not None and app_env == "test":
-    Config = TestConfig
+if app_env is not None and app_env.lower() == "test":
+    config = TestConfig()
+else:
+    config = DevConfig()
 
 
 def getsha256(filename):
@@ -32,7 +32,7 @@ def getsha256(filename):
 
 
 def wait_for_es():
-    esh = f"http://{Config.ES_HOST}/_cluster/health?pretty"
+    esh = f"http://{config.ES_HOST}/_cluster/health?pretty"
     print('waiting for ES', esh, flush=True)
     try:
         es_session = requests.Session()
@@ -53,17 +53,17 @@ def wait_for_es():
 
 def suggestion_update_job():
     try:
-        models_path = Config.MODELS_PATH
-        if os.path.exists(models_path + Config.WORD2VEC_JSON_EXPORT_CRC):
-            crc = open(models_path + Config.WORD2VEC_JSON_EXPORT_CRC, 'r').read()
+        models_path = config.MODELS_PATH
+        if os.path.exists(models_path + config.WORD2VEC_JSON_EXPORT_CRC):
+            crc = open(models_path + config.WORD2VEC_JSON_EXPORT_CRC, 'r').read()
         else:
-            crc = getsha256(models_path + Config.WORD2VEC_JSON_EXPORT)
-            f = open(models_path + Config.WORD2VEC_JSON_EXPORT_CRC, mode='w')
+            crc = getsha256(models_path + config.WORD2VEC_JSON_EXPORT)
+            f = open(models_path + config.WORD2VEC_JSON_EXPORT_CRC, mode='w')
             f.write(crc)
             f.close()
     
-        index_suggestion = Config.INDEX_SUGGESTION
-        es = Elasticsearch("http://" + Config.ES_HOST, verify_certs=False, request_timeout=300, max_retries=10, retry_on_timeout=True)
+        index_suggestion = config.INDEX_SUGGESTION
+        es = Elasticsearch("http://" + config.ES_HOST, verify_certs=False, request_timeout=300, max_retries=10, retry_on_timeout=True)
         print(es)
     
         current_w2v_crc, crc_id = get_crc_from_es(es, index_suggestion)
@@ -94,12 +94,12 @@ def suggestion_update_job():
 def gen_data(crc):
     print("suggestion indexing started", flush=True)
 
-    with open(Config.MODELS_PATH + Config.WORD2VEC_JSON_EXPORT) as json_file:
+    with open(config.MODELS_PATH + config.WORD2VEC_JSON_EXPORT) as json_file:
         data = json.load(json_file)
 
     for suggestion in data:
         yield {
-                "_index": Config.INDEX_SUGGESTION,
+                "_index": config.INDEX_SUGGESTION,
                 "phrase": suggestion["phrase"],
                 "most_similar": suggestion["most_similar"],
                 "size": suggestion["size"],
@@ -110,8 +110,8 @@ def delete_all_suggestion(crc):
     if crc:
         print("suggestion delete started",flush=True)
         query = {"query": {"bool": {"must": [{"match": {"crc.keyword": crc}}]}}}
-        es = Elasticsearch("http://" + Config.ES_HOST, verify_certs=False, request_timeout=300)
-        res = es.delete_by_query(index=Config.INDEX_SUGGESTION, body=query, wait_for_completion=False)
+        es = Elasticsearch("http://" + config.ES_HOST, verify_certs=False, request_timeout=300)
+        res = es.delete_by_query(index=config.INDEX_SUGGESTION, body=query, wait_for_completion=False)
         print(res,flush=True)
         print("suggestion delete finished",flush=True)
 
@@ -119,18 +119,18 @@ def delete_all_suggestion(crc):
 def seta_es_init_map():
     es_session = requests.Session()
     headers = {"Content-Type": "application/json"}
-    fn = Config.MODELS_PATH + Config.ES_INIT_DATA_CONFIG_FILE
+    fn = config.MODELS_PATH + config.ES_INIT_DATA_CONFIG_FILE
     f = open(fn, 'r')
     data_format = f.read()
     f.close()
-    for indx in Config.INDEX:
-        check_index_exists_or_create_it(Config.ES_HOST, data_format, es_session, headers, indx)
+    for indx in config.INDEX:
+        check_index_exists_or_create_it(config.ES_HOST, data_format, es_session, headers, indx)
     #suggestion index
-    fn = Config.MODELS_PATH + Config.ES_SUGGESTION_INIT_DATA_CONFIG_FILE
+    fn = config.MODELS_PATH + config.ES_SUGGESTION_INIT_DATA_CONFIG_FILE
     f = open(fn, 'r')
     data_format = f.read()
     f.close()
-    check_index_exists_or_create_it(Config.ES_HOST, data_format, es_session, headers, Config.INDEX_SUGGESTION)
+    check_index_exists_or_create_it(config.ES_HOST, data_format, es_session, headers, config.INDEX_SUGGESTION)
 
 
 def check_index_exists_or_create_it(host, dataformat, es_session, headers, indx):
@@ -143,23 +143,23 @@ def check_index_exists_or_create_it(host, dataformat, es_session, headers, indx)
 
 
 def copy_models_files():
-    dst = Config.MODELS_PATH + Config.ES_INIT_DATA_CONFIG_FILE
-    src = Config.MODELS_DOCKER_PATH + Config.ES_INIT_DATA_CONFIG_FILE
+    dst = config.MODELS_PATH + config.ES_INIT_DATA_CONFIG_FILE
+    src = config.MODELS_DOCKER_PATH + config.ES_INIT_DATA_CONFIG_FILE
     shutil.copyfile(src, dst)
 
-    dst = Config.MODELS_PATH + Config.WORD2VEC_JSON_EXPORT
-    src = Config.MODELS_DOCKER_PATH + Config.WORD2VEC_JSON_EXPORT
+    dst = config.MODELS_PATH + config.WORD2VEC_JSON_EXPORT
+    src = config.MODELS_DOCKER_PATH + config.WORD2VEC_JSON_EXPORT
     shutil.copyfile(src, dst)
 
-    dst = Config.MODELS_PATH + Config.WORD2VEC_JSON_EXPORT_CRC
-    src = Config.MODELS_DOCKER_PATH + Config.WORD2VEC_JSON_EXPORT_CRC
+    dst = config.MODELS_PATH + config.WORD2VEC_JSON_EXPORT_CRC
+    src = config.MODELS_DOCKER_PATH + config.WORD2VEC_JSON_EXPORT_CRC
     
     #file WORD2VEC_JSON_EXPORT_CRC will be generated in suggestion_update_job()
     if os.path.exists(src):
         shutil.copyfile(src, dst)
 
-    dst = Config.MODELS_PATH + Config.ES_SUGGESTION_INIT_DATA_CONFIG_FILE
-    src = Config.MODELS_DOCKER_PATH + Config.ES_SUGGESTION_INIT_DATA_CONFIG_FILE
+    dst = config.MODELS_PATH + config.ES_SUGGESTION_INIT_DATA_CONFIG_FILE
+    src = config.MODELS_DOCKER_PATH + config.ES_SUGGESTION_INIT_DATA_CONFIG_FILE
     shutil.copyfile(src, dst)
 
 

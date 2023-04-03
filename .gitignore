@@ -138,3 +138,6 @@ node_modules
 
 #vscode
 .vscode
+
+# Misc
+.DS_Store

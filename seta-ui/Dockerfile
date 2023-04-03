@@ -1,9 +1,13 @@
 FROM ubuntu:22.04
 
 RUN echo "Acquire::http::Proxy \""$HTTP_PROXY"\";" >> /etc/apt/apt.conf
-ENV https_proxy=$HTTP_PROXY
+RUN echo "Acquire::https::Proxy \""$HTTPS_PROXY"\";" >> /etc/apt/apt.conf
+
+ENV https_proxy=$HTTPS_PROXY
 ENV http_proxy=$HTTP_PROXY
-ENV no_proxy="seta-es,seta-mongo,seta-api,seta-nginx,seta-ui,seta-ui-spa"
+
+ENV HTTPS_PROXY=$HTTPS_PROXY
+ENV HTTP_PROXY=$HTTP_PROXY
 
 RUN apt update -y 
 RUN apt install -y  --no-install-recommends curl
@@ -19,7 +23,6 @@ RUN apt-get install -yq tzdata && \
     ln -fs /usr/share/zoneinfo/UTC /etc/localtime && \
     dpkg-reconfigure -f noninteractive tzdata
 
-RUN mkdir -p $ROOT/models
 COPY ./requirements.txt $ROOT/requirements.txt
 
 WORKDIR $ROOT
@@ -27,11 +30,4 @@ RUN pip install -r requirements.txt
 
 COPY . $ROOT
 
-
-ENV ROOT_USERS="vidas.daudaravicius@ec.europa.eu;lucia.noce@ext.ec.europa.eu;Andrei.Patrascu@ext.ec.europa.eu;adriana.lleshi@ext.ec.europa.eu"
-#ENV APP_ROOT_PATH="https://seta-dev.jrc.cec.eu.int"
-
 CMD ["gunicorn", "--conf", "/home/seta/gunicorn_conf.py", "--bind", "0.0.0.0:8080", "--capture-output" , "--access-logformat", "[seta.ui] %(h)s %(l)s %(u)s %(t)s %(r)s %(s)s %(b)s | %(f)s | %(a)s", "--chdir", "/home/seta", "app:app"]
-
-#for error displays:
-#CMD flask --app app --debug run -h "0.0.0.0" --port 8080
