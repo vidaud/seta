@@ -22,7 +22,7 @@ from seta_flask_server.repository.interfaces import ISessionsBroker
 from seta_flask_server.infrastructure.auth_helpers import create_session_token
 
 #from cas import CASClient
-from .infrastructure.cas_client import SetaCasClient
+from seta_flask_server.infrastructure.clients.cas_client import SetaCasClient
 
 from flask_injector import FlaskInjector
 from .dependency import MongoDbClientModule
