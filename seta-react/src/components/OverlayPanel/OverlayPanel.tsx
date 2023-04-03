@@ -1,24 +1,21 @@
 import './style.css'
-import { useState } from 'react'
 import { OverlayPanel } from 'primereact/overlaypanel'
 
-import EnrichQueryButton from '../EnrichQueryButton'
-import RelatedTermsList from '../RelatedTermsList'
-import SearchTypeDropdown from '../SearchTypeDropdown'
-import SelectAllTerms from '../SelectAllTerms'
-import SimilarsSelect from '../SimilarsSelect'
-import SuggestionsSelect from '../SuggestionsSelect'
+import EnrichQueryButton from './components/EnrichQueryButton'
+import RelatedTermsList from './components/RelatedTermsList/RelatedTermsList'
+import SearchTypeDropdown from './components/SearchTypeDropdown'
+import SelectAllTerms from './components/SelectAllTerms'
+import SimilarsSelect from './components/SimilarsSelect'
+import SuggestionsSelect from './components/SuggestionsSelect'
 
-export const OverlayPanelDialog = props => {
-  const [selectAll, setSelectAll] = useState(false)
+import { useSearchContext } from '../../context/search-context'
 
-  const onSelectedAllButton = value => {
-    setSelectAll(value)
-  }
+export const OverlayPanelDialog = () => {
+  const searchContext = useSearchContext()
 
   return (
     <OverlayPanel
-      ref={props.op}
+      ref={searchContext?.op}
       showCloseIcon
       id="overlay_panel1"
       style={{ width: '55%', left: '19%' }}
@@ -30,15 +27,11 @@ export const OverlayPanelDialog = props => {
         </div>
         <div className="alingItems">
           <div className="div-size-button">
-            {props.text_focused ? (
-              <SelectAllTerms text={props.text_focused} onSelectedAllButton={onSelectedAllButton} />
-            ) : (
-              <span />
-            )}
+            {searchContext?.inputText ? <SelectAllTerms /> : <span />}
           </div>
           <div className="search_dropdown div-size-2">
-            <EnrichQueryButton onToggleEnrichQuery={props.onToggleEnrichQuery} />
-            <SearchTypeDropdown onSelectedTypeSearch={props.onSelectedTypeSearch} />
+            <EnrichQueryButton />
+            <SearchTypeDropdown />
           </div>
         </div>
       </div>
@@ -46,40 +39,21 @@ export const OverlayPanelDialog = props => {
         <div className="div-size-1">
           <>
             <div className="card flex justify-content-center">
-              <SuggestionsSelect
-                current_search={props.current_search}
-                text_focused={props.text_focused}
-                dialog={props.op}
-                onChangeTerm={props.onChangeTerm}
-              />
+              <SuggestionsSelect />
             </div>
           </>
         </div>
         <div className="div-size-2">
-          {props.selectionValue.code === 'RC' && props.enrichQuery === false ? (
+          {searchContext?.selectedTypeSearch.code === 'RC' &&
+          searchContext?.enrichQuery === false ? (
             <>
-              <RelatedTermsList
-                current_search={props.current_search}
-                text_focused={props.text_focused}
-                onChangeTerm={props.onChangeTerm}
-                onChangeSelectAll={selectAll}
-                enrichQueryButton={props.enrichQuery}
-                onChangeQuery={props.onChangeQuery}
-                listofTerms={props.listofTerms}
-              />
+              <RelatedTermsList />
             </>
-          ) : props.selectionValue.code === 'RT' && props.enrichQuery === false ? (
+          ) : searchContext?.selectedTypeSearch.code === 'RT' &&
+            searchContext?.enrichQuery === false ? (
             <>
               <div className="card flex justify-content-center similars">
-                <SimilarsSelect
-                  current_search={props.current_search}
-                  text_focused={props.text_focused}
-                  onChangeTerm={props.onChangeTerm}
-                  onChangeSelectAll={selectAll}
-                  enrichQueryButton={props.enrichQuery}
-                  onChangeQuery={props.onChangeQuery}
-                  listofTerms={props.listofTerms}
-                />
+                <SimilarsSelect />
               </div>
             </>
           ) : (

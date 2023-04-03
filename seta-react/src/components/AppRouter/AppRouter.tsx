@@ -8,6 +8,7 @@ import {
 
 import RequireAuth from './components/RequireAuth'
 
+import { SearchProvider } from '../../context/search-context'
 import AppLayout from '../../layouts/AppLayout'
 import CommunitiesPage from '../../pages/CommunitiesPage'
 import ContactPage from '../../pages/ContactPage'
@@ -30,9 +31,11 @@ const routes = createRoutesFromElements(
     <Route
       path="search"
       element={
-        <RequireAuth>
-          <SearchPage />
-        </RequireAuth>
+        <SearchProvider>
+          <RequireAuth>
+            <SearchPage />
+          </RequireAuth>
+        </SearchProvider>
       }
     />
     <Route

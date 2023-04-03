@@ -1,51 +1,55 @@
-import { useState } from 'react'
 import { Checkbox } from 'primereact/checkbox'
 import { Slider } from 'primereact/slider'
 import { Tooltip } from 'primereact/tooltip'
 
 import './style.css'
 
-import AggregationsChart from '../AggregationsChart'
+import AggregationsChart from './components/AggregationsChart'
 
-const TimeRange = ({ onTimeRange, list }) => {
-  const [range, setRange] = useState<any>([1958, 2023])
-  const [checked, setChecked] = useState<boolean>(false)
+import { useSearchContext } from '../../../../context/search-context'
+
+const TimeRange = () => {
+  const searchContext = useSearchContext()
 
   const onChangeTimeRange = e => {
-    setRange(e.value)
+    searchContext?.setRange(e.value)
     const time = 'gte:' + `${e.value[0]}` + ',lte:' + `${e.value[1]}`
 
-    onTimeRange(time)
+    searchContext?.setTimeRangeValue(time)
   }
 
   return (
     <div className="slider">
       <h5>Time Range</h5>
       <div className="field-checkbox">
-        <Checkbox inputId="include_zero" checked={checked} onChange={e => setChecked(e.checked)} />
+        <Checkbox
+          inputId="include_zero"
+          checked={searchContext?.includeZero}
+          onChange={e => searchContext?.setIncludeZero(e.checked)}
+        />
         <label htmlFor="include_zero">Include 0</label>
       </div>
       <Tooltip
         target=".slider>.p-slider-handle"
-        content={`[${range[0]}-${range[1]}]`}
+        content={`[${searchContext?.range[0]}-${searchContext?.range[1]}]`}
         position="top"
         event="focus"
         className="hoverClass"
       />
       <Slider
         className="slider"
-        value={range}
+        value={searchContext?.range}
         min={1958}
         max={2023}
         onChange={onChangeTimeRange}
         range
       />
       <div className="p-slider-horizontal">
-        <div className="left-range">{range[0]}</div>
-        <div className="right-range">{range[1]}</div>
+        <div className="left-range">{searchContext?.range[0]}</div>
+        <div className="right-range">{searchContext?.range[1]}</div>
       </div>
       <div>
-        <AggregationsChart aggregations={list} />
+        <AggregationsChart />
       </div>
     </div>
   )

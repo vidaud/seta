@@ -4,28 +4,24 @@ import type { DataTableExpandedRows } from 'primereact/datatable'
 import { DataTable } from 'primereact/datatable'
 import { MultiSelect } from 'primereact/multiselect'
 import { ProgressBar } from 'primereact/progressbar'
-import './style.css'
 
-const DocumentList = list => {
+import './style.css'
+import { useSearchContext } from '../../../../context/search-context'
+
+const DocumentList = () => {
   const isMounted = useRef(false)
-  const [items, setItems] = useState<any>([])
   const [basicFirst, setBasicFirst] = useState(0)
   const [basicRows, setBasicRows] = useState(10)
-
-  // DataTable.onRowToggle sends this type (including any[]) as e.data
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const searchContext = useSearchContext()
   const [expandedRows, setExpandedRows] = useState<any[] | DataTableExpandedRows | undefined>(
     undefined
   )
 
   useEffect(() => {
-    const documentsList = list.documents.data
-
-    setItems(documentsList)
     isMounted.current = true
-  }, [expandedRows, list])
+  }, [expandedRows])
 
-  const onBasicPageChange = (event: any) => {
+  const onBasicPageChange = event => {
     setBasicFirst(event.first)
     setBasicRows(event.rows)
   }
@@ -151,7 +147,7 @@ const DocumentList = list => {
     <div className="datatable-rowexpansion">
       <div className="card list">
         <DataTable
-          value={items}
+          value={searchContext?.items}
           paginator
           expandedRows={expandedRows}
           onRowToggle={e => setExpandedRows(e.data)}
@@ -159,7 +155,7 @@ const DocumentList = list => {
           rowExpansionTemplate={rowExpansionTemplate}
           first={basicFirst}
           rows={basicRows}
-          totalRecords={items?.length}
+          totalRecords={searchContext?.items?.length}
           rowsPerPageOptions={[5, 10, 20, 30]}
           onPage={onBasicPageChange}
           paginatorTemplate="CurrentPageReport FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink RowsPerPageDropdown"

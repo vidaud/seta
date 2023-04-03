@@ -1,122 +1,71 @@
-import { useState, useEffect, useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import { Button } from 'primereact/button'
-import type { OverlayPanel } from 'primereact/overlaypanel'
 
-import type { Term } from '../../models/term.model'
-import {
-  defaultTypeOfSearch,
-  getListOfTerms,
-  getSelectedTerms
-} from '../../pages/SearchPage/constants'
+import SearchBox from './components/SearchBox'
+import SearchButton from './components/SearchButton'
+
+import { useSearchContext } from '../../context/search-context'
+import { getListOfTerms, getSelectedTerms } from '../../pages/SearchPage/constants'
 import { CorpusService } from '../../services/corpus/corpus.service'
 import { CorpusSearchPayload } from '../../store/corpus-search-payload'
 import OverlayPanelDialog from '../OverlayPanel/OverlayPanel'
-import SearchBox from '../SearchBox'
 import './style.css'
-import SearchButton from '../SearchButton'
 
-export const SearchSection = props => {
-  const [inputText, setInputText] = useState<Term[] | any>('')
-  const [listOFTerms, setListOFTerms] = useState<Term[]>([])
-  const [lastPayload, setLastPayload] = useState<any>()
-  const [copyQyery, setCopyQuery] = useState<Term[] | any>([])
-  const [enrichQuery, setEnrichQuery] = useState(false)
-  const [selectedTypeSearch, setSelectedTypeSearch] = useState<any>(defaultTypeOfSearch)
+export const SearchSection = () => {
   const isMounted = useRef(false)
-  const op = useRef<OverlayPanel>(null)
   const corpusService = new CorpusService()
+
+  const searchContext = useSearchContext()
 
   useEffect(() => {
     if (isMounted) {
-      op.current?.hide()
+      searchContext?.op.current?.hide()
     }
   }, [])
 
   useEffect(() => {
     isMounted.current = true
 
-    if (String(props.current_search) !== '') {
-      if (!enrichQuery) {
-        setListOFTerms(getListOfTerms(String(props.current_search)))
-        setCopyQuery(getSelectedTerms(listOFTerms))
+    if (String(searchContext?.term) !== '') {
+      if (!searchContext?.enrichQuery) {
+        searchContext?.setListOFTerms(getListOfTerms(String(searchContext?.term)))
+        searchContext?.setCopyQuery(getSelectedTerms(searchContext?.listOFTerms))
       }
     }
 
-    const result = String(props.current_search).split(',').join(' ')
+    const result = String(searchContext?.term).split(',').join(' ')
 
-    props.onChangeTerm(result)
+    searchContext?.setTerm(result)
     //update corpus api call parameters
-    setLastPayload(
+    searchContext?.setLastPayload(
       new CorpusSearchPayload({
-        term: copyQyery,
+        term: searchContext?.copyQuery,
         aggs: 'date_year',
         n_docs: 100,
-        search_type: props.typeofSearch,
-        date_range: props.timeRangeValue
+        search_type: searchContext?.typeofSearch,
+        date_range: searchContext?.timeRangeValue
       })
     )
 
     corpusService.getRefreshedToken()
-  }, [props, enrichQuery, copyQyery, selectedTypeSearch, listOFTerms])
-
-  const getInputText = value => {
-    if (value !== '') {
-      setInputText(value)
-    }
-  }
+    corpusService.getDocuments(searchContext?.lastPayload).then(data => {
+      if (data) {
+        searchContext?.setItems(data.documents)
+        searchContext?.setAggregations(data.aggregations)
+      }
+    })
+  }, [])
 
   const toggleOverlayPanel = () => {
     // console.log(event)
   }
 
-  const changeSelectedTypeSearch = value => {
-    setSelectedTypeSearch(value)
-  }
-
-  const toggleEnrichQuery = value => {
-    setEnrichQuery(value)
-  }
-
-  const onChangeQuery = value => {
-    setCopyQuery(value)
-  }
-
   return (
     <>
-      <SearchBox
-        text_focused={inputText}
-        current_search={props.current_search}
-        onChangeTerm={props.onChangeTerm}
-        onChangeInput={getInputText}
-        op={props.op}
-      />
-      <OverlayPanelDialog
-        text_focused={inputText}
-        current_search={props.current_search}
-        enrichQuery={enrichQuery}
-        op={props.op}
-        onToggleEnrichQuery={toggleEnrichQuery}
-        onSelectedTypeSearch={changeSelectedTypeSearch}
-        onChangeTerm={props.onChangeTerm}
-        listofTerms={listOFTerms}
-        onChangeQuery={onChangeQuery}
-        selectionValue={selectedTypeSearch}
-      />
+      <SearchBox />
+      <OverlayPanelDialog />
       <Button icon="pi pi-ellipsis-v" className="ellipsis-v" onClick={toggleOverlayPanel} />
-      <SearchButton
-        current_search={props.current_search}
-        enrichQuery={enrichQuery}
-        listofTerms={listOFTerms}
-        lastPayload={lastPayload}
-        typeofSearch={props.typeofSearch}
-        timeRangeValue={props.timeRangeValue}
-        onChangeTerm={props.onChangeTerm}
-        onChangeItems={props.onChangeItems}
-        onChangeAggregations={props.onChangeAggregations}
-        onChangeShowContent={props.onChangeShowContent}
-        onSelectedTypeSearch={changeSelectedTypeSearch}
-        onChangeQuery={onChangeQuery}
-      />
+      <SearchButton />
     </>
   )
 }

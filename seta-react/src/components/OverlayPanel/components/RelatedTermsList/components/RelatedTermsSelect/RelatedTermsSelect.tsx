@@ -1,13 +1,16 @@
 import { SelectButton } from 'primereact/selectbutton'
 
-export const RelatedTermsSelect = (rowDataList, ontologyValues, onSelectedNode) => {
+import { useSearchContext } from '../../../../../../context/search-context'
+
+export const RelatedTermsSelect = (rowDataList, onSelectedNode) => {
+  const searchContext = useSearchContext()
   const getSelectedNode = e => {
     onSelectedNode(e.value)
   }
 
   return (
     <SelectButton
-      value={ontologyValues}
+      value={searchContext?.ontologyValue}
       className="suggestions-list"
       onChange={e => {
         getSelectedNode(e)

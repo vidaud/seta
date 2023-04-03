@@ -1,19 +1,22 @@
 import { useEffect, useState } from 'react'
 import { Chart } from 'primereact/chart'
 
-const AggregationsChart = ({ aggregations }) => {
+import { useSearchContext } from '../../../../../../context/search-context'
+
+const AggregationsChart = () => {
   const [basicData, setBasicData] = useState<any>()
+  const searchContext = useSearchContext()
 
   useEffect(() => {
-    if (aggregations) {
-      if (aggregations.length > 0 || aggregations.years) {
+    if (searchContext?.aggregations) {
+      if (searchContext?.aggregations.length > 0 || searchContext?.aggregations.years) {
         const details = {
-          labels: Object.keys(aggregations.years),
+          labels: Object.keys(searchContext?.aggregations.years),
           datasets: [
             {
               label: 'Documents / Year',
               backgroundColor: '#42A5F5',
-              data: Object.values(aggregations.years)
+              data: Object.values(searchContext?.aggregations.years)
             }
           ]
         }
@@ -21,7 +24,7 @@ const AggregationsChart = ({ aggregations }) => {
         setBasicData(details)
       }
     }
-  }, [aggregations])
+  }, [])
 
   // TODO: Move the configurations outside of the component, or to a separate file
 

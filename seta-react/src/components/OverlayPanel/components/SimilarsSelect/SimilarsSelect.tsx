@@ -1,28 +1,19 @@
-import { useEffect, useState, useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import { SelectButton } from 'primereact/selectbutton'
 
 import './style.css'
-import { getSelectedTerms, isPhrase } from '../../pages/SearchPage/constants'
-import { SimilarsService } from '../../services/corpus/similars.service'
+import { useSearchContext } from '../../../../context/search-context'
+import { getSelectedTerms, isPhrase } from '../../../../pages/SearchPage/constants'
+import { SimilarsService } from '../../../../services/corpus/similars.service'
 
-export const SimilarsSelect = ({
-  current_search,
-  text_focused,
-  onChangeTerm,
-  onChangeSelectAll,
-  enrichQueryButton,
-  onChangeQuery,
-  listofTerms
-}) => {
-  const [similarValues, setSimilarValues] = useState(null)
-  const [similarTerms, setSimilarTerms] = useState<any>(null)
-  const [similarsList, setSimilarsList] = useState([])
+export const SimilarsSelect = () => {
+  const searchContext = useSearchContext()
   const prevTermRef = useRef()
 
   const similarService = new SimilarsService()
 
   useEffect(() => {
-    similarService.retrieveSimilars(text_focused).then(data => {
+    similarService.retrieveSimilars(searchContext?.inputText).then(data => {
       if (data && data.length > 0) {
         const list: any = []
 
@@ -30,18 +21,18 @@ export const SimilarsSelect = ({
           list.push(element.similar_word)
         })
 
-        setSimilarTerms(list)
+        searchContext?.setSimilarTerms(list)
       }
     })
 
-    toggleEnrichQuery(enrichQueryButton)
+    toggleEnrichQuery(searchContext?.enrichButton)
 
-    if (onChangeSelectAll) {
-      selectAllTerms(similarTerms)
+    if (searchContext?.selectAll) {
+      selectAllTerms(searchContext?.similarTerms)
     } else {
       selectAllTerms([])
     }
-  }, [similarValues])
+  }, [])
 
   const getSimilarsTerms = lastKeywords => {
     const similarsTermsList: any = []
@@ -59,7 +50,7 @@ export const SimilarsSelect = ({
                   : list.push(element.similar_word)
               })
 
-              setSimilarTerms(list)
+              searchContext?.setSimilarTerms(list)
               similarsTermsList.push(...[list])
             }
           }
@@ -78,7 +69,7 @@ export const SimilarsSelect = ({
     if (value) {
       const regExp = /\(|\)|\[|\]/g
 
-      const splitedANDOperator = getSelectedTerms(listofTerms).split(` AND `)
+      const splitedANDOperator = getSelectedTerms(searchContext?.listOFTerms).split(` AND `)
       const splitedOROperator: any = []
 
       splitedANDOperator.forEach(element => {
@@ -92,7 +83,7 @@ export const SimilarsSelect = ({
           splitedOROperator.push(getSimilarsTerms(element.split(' OR ')))
         }
 
-        setSimilarsList(splitedOROperator)
+        searchContext?.setSimilarsList(splitedOROperator)
       })
     }
   }
@@ -101,7 +92,7 @@ export const SimilarsSelect = ({
     const listOfTerms: any = []
 
     if (prevTermRef.current === null) {
-      prevTermRef.current = current_search
+      prevTermRef.current = searchContext?.term
     }
 
     if (selectedNodes.length > 0) {
@@ -113,44 +104,44 @@ export const SimilarsSelect = ({
         return listOfTerms.indexOf(subject) === index
       })
 
-      setSimilarValues(uniqueTerms)
+      searchContext?.setSimilarValues(uniqueTerms)
       transformPhrases(uniqueTerms)
     }
 
     if (selectedNodes.length === 0) {
-      setSimilarValues(listOfTerms)
-      onChangeTerm(prevTermRef.current)
+      searchContext?.setSimilarValues(listOfTerms)
+      searchContext?.setTerm(prevTermRef.current)
     }
   }
 
   const transformPhrases = terms => {
     const listOfValues: any = []
-    let result = current_search
+    let result = searchContext?.term
 
     terms.forEach(item => {
       isPhrase(item) ? listOfValues.push(`"${item}"`) : listOfValues.push(item)
     })
 
-    if (!enrichQueryButton) {
+    if (!searchContext?.enrichButton) {
       const copyTerm = String(listOfValues).split(',').join(' OR ')
 
-      onChangeQuery(copyTerm)
-    } else if (enrichQueryButton) {
+      searchContext?.setCopyQuery(copyTerm)
+    } else if (searchContext?.enrichButton) {
       // updateEnrichedQuery(similarsList, ontologyListItems)
     }
 
     result = result + ' ' + listOfValues.join(' ')
-    onChangeTerm(result)
+    searchContext?.setTerm(result)
   }
 
   return (
     <SelectButton
-      value={similarValues}
+      value={searchContext?.similarValues}
       className="suggestions-list"
       onChange={e => {
         selectAllTerms(e.value)
       }}
-      options={similarTerms}
+      options={searchContext?.similarTerms}
       multiple={true}
     />
   )

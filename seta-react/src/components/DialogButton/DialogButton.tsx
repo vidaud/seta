@@ -3,11 +3,12 @@ import { Button } from 'primereact/button'
 import { Dialog } from 'primereact/dialog'
 
 import './style.css'
+import FileUploads from './components/FileUploads'
+import TextareaInput from './components/TextareaInput'
+
 import { CorpusService } from '../../services/corpus/corpus.service'
 import { EmbeddingsService } from '../../services/corpus/embeddings.service'
 import { CorpusSearchPayload } from '../../store/corpus-search-payload'
-import FileUploads from '../FileUploads'
-import TextareaInput from '../TextareaInput'
 
 const DialogButton = ({ onChange, onChangeText, onChangeFile, onChangeContentVisibility }) => {
   const [displayBasic, setDisplayBasic] = useState(false)
