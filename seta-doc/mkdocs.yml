@@ -76,8 +76,7 @@ extra:
     provider: mike
 
 nav:
-  - Home: 
-    - What is SeTA: 
+  - What is SeTA: 
       - What it does: index.md
       - What you would use it: general/overview.md
       - Who should\ can use it: general/overview.md
@@ -87,7 +86,6 @@ nav:
   - Using SeTA:
     - Set-up: user-guide/user-guide.md
     - Web Interface: user-guide/user-guide.md
-    - Apis: deployment/deployment.md
     - Seta-api: seta-api/seta_api_v1.md
   - Maintaining and developing SeTA:
     - Minimun Requirements: deployment/deployment.md
