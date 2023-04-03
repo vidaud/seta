@@ -47,6 +47,8 @@ theme:
 plugins:
   - search
   - render_swagger
+  - mike
+    
 markdown_extensions:
     - toc :
         permalink: true
@@ -69,22 +71,30 @@ markdown_extensions:
             format: !!python/name:pymdownx.superfences.fence_code_format
     - footnotes
     - md_in_html
-
+extra:
+  version:
+    provider: mike
 
 nav:
   - Home: 
-    - Intro: index.md
-  - General Overview:
-    - Overview: general/overview.md
-  - Deployment:
-    - Deployment Overview: deployment/deployment.md
-  - Apis:
+    - What is SeTA: 
+      - What it does: index.md
+      - What you would use it: general/overview.md
+      - Who should\ can use it: general/overview.md
+      - How it runs: general/overview.md
+      - What are the inputs: general/overview.md
+      - What are the outputs: general/overview.md      
+  - Using SeTA:
+    - Set-up: user-guide/user-guide.md
+    - Web Interface: user-guide/user-guide.md
+    - Apis: deployment/deployment.md
     - Seta-api: seta-api/seta_api_v1.md
-  - User Guide:
-    - Getting Started: user-guide/user-guide.md
-  - Help:
+  - Maintaining and developing SeTA:
+    - Minimun Requirements: deployment/deployment.md
+    - Deployment: deployment/deployment.md 
+    - Advanced Tutorial: deployment/deployment.md
     - FAQS: faqs/faqs.md
-  - Release: release-notes/release-notes.md
-  - License: license/license_v1.md
+    - Release: release-notes/release-notes.md
+    - License: license/license_v1.md
 
 
