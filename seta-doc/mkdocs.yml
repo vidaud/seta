@@ -85,13 +85,15 @@ nav:
       - What are the outputs: general/overview.md      
   - Using SeTA:
     - Set-up: user-guide/user-guide.md
-    - Web Interface: user-guide/user-guide.md
+    - Web Interface:
+      - Search: user-guide/web-interface.md
+      - Communities: user-guide/communities.md
     - Seta-api: seta-api/seta_api_v1.md
-  - Maintaining and developing SeTA:
-    - Minimun Requirements: deployment/deployment.md
-    - Deployment: deployment/deployment.md 
-    - Advanced Tutorial: deployment/deployment.md
     - FAQS: faqs/faqs.md
+  - Deployment SeTA:
+    - Minimun Requirements: deployment/min-requirements.md
+    - Deployment: deployment/deployment.md 
+    - Advanced Tutorial: deployment/advanced-tutorial.md
     - Release: release-notes/release-notes.md
     - License: license/license_v1.md
 
