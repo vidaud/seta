@@ -26,8 +26,6 @@ const DialogButton = ({ onChange, onChangeText, onChangeFile, onChangeContentVis
 
   const getTextUploadValue = (string, textSearch) => {
     setTextareaValue(string)
-    textSearch = undefined
-    console.log(`textarea value: ${textareaValue}`)
     onChangeText(textareaValue)
 
     if (textareaValue !== '') {
@@ -39,7 +37,6 @@ const DialogButton = ({ onChange, onChangeText, onChangeFile, onChangeContentVis
 
   const getDocumentUploadValue = file => {
     setFileToUpload(file)
-    console.log(`file: ${fileToUpload}`)
 
     if (file) {
       onChangeFile(file.name)

@@ -13,9 +13,9 @@ import type { Term } from '../../models/term.model'
 
 const SearchPage = () => {
   const [showContent, setShowContent] = useState(false)
-  const [term, setTerm] = useState<Term[] | any>([])
-  const [items, setItems] = useState<any>([])
-  const [aggregations, setAggregations] = useState<any>([])
+  const [term, setTerm] = useState<Term[]>([])
+  const [items, setItems] = useState([])
+  const [aggregations, setAggregations] = useState([])
   const [documentList, setDocumentList] = useState([])
   const [typeofSearch, setTypeofSearch] = useState()
   const [timeRangeValue, setTimeRangeValue] = useState()

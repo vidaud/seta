@@ -22,9 +22,9 @@ export const RelatedTermsList = ({
   onChangeQuery,
   listofTerms
 }) => {
-  const [ontologyValue, setOntologyValue] = useState<any>(null)
+  const [ontologyValue, setOntologyValue] = useState(null)
   const [ontologyList, setOntologyList] = useState<any>(null)
-  const [ontologyListItems, setOntologyListItems] = useState<any>([])
+  const [ontologyListItems, setOntologyListItems] = useState([])
   const [selectedColumns, setSelectedColumns] = useState(columns)
   const [selectedRelatedTermsCl, setSelectedRelatedTermsCl] = useState(null)
   const prevTermRef = useRef()
@@ -130,7 +130,7 @@ export const RelatedTermsList = ({
 
   const transformPhrases = terms => {
     const listOfValues: any = []
-    let result: any = current_search
+    let result = current_search
 
     terms.forEach(item => {
       isPhrase(item) ? listOfValues.push(`"${item}"`) : listOfValues.push(item)
@@ -147,14 +147,6 @@ export const RelatedTermsList = ({
     result = result + ' ' + listOfValues.join(' ')
     onChangeTerm(result)
   }
-
-  // const toggleSelectAll = (items, allList) => {
-  //   if (items.length === allList.length) {
-  //     onChangeSelectAll(true)
-  //   } else {
-  //     onChangeSelectAll(false)
-  //   }
-  // }
 
   const updateEnrichedQuery = clusters => {
     if (clusters.length > 1) {

@@ -17,7 +17,7 @@ import SearchButton from '../SearchButton'
 
 export const SearchSection = props => {
   const [inputText, setInputText] = useState<Term[] | any>('')
-  const [listOFTerms, setListOFTerms] = useState<Term[] | any>([])
+  const [listOFTerms, setListOFTerms] = useState<Term[]>([])
   const [lastPayload, setLastPayload] = useState<any>()
   const [copyQyery, setCopyQuery] = useState<Term[] | any>([])
   const [enrichQuery, setEnrichQuery] = useState(false)
@@ -65,8 +65,8 @@ export const SearchSection = props => {
     }
   }
 
-  const toggleOverlayPanel = event => {
-    console.log(event)
+  const toggleOverlayPanel = () => {
+    // console.log(event)
   }
 
   const changeSelectedTypeSearch = value => {

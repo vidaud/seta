@@ -6,7 +6,7 @@ import { SuggestionsService } from '../../services/corpus/suggestions.service'
 import './style.css'
 
 export const SuggestionsSelect = ({ current_search, text_focused, dialog, onChangeTerm }) => {
-  const [suggestionsValue, setSuggestionsValue] = useState<any>(null)
+  const [suggestionsValue, setSuggestionsValue] = useState(null)
   const [suggestedTerms, setSuggestedTerms] = useState<any>(null)
 
   const suggestionsService = new SuggestionsService()

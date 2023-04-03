@@ -14,9 +14,9 @@ export const SimilarsSelect = ({
   onChangeQuery,
   listofTerms
 }) => {
-  const [similarValues, setSimilarValues] = useState<any>(null)
+  const [similarValues, setSimilarValues] = useState(null)
   const [similarTerms, setSimilarTerms] = useState<any>(null)
-  const [similarsList, setSimilarsList] = useState<any>([])
+  const [similarsList, setSimilarsList] = useState([])
   const prevTermRef = useRef()
 
   const similarService = new SimilarsService()
@@ -121,15 +121,11 @@ export const SimilarsSelect = ({
       setSimilarValues(listOfTerms)
       onChangeTerm(prevTermRef.current)
     }
-
-    // if (similarTerms !== null) {
-    //   toggleSelectAll(selectedNodes, similarTerms)
-    // }
   }
 
   const transformPhrases = terms => {
     const listOfValues: any = []
-    let result: any = current_search
+    let result = current_search
 
     terms.forEach(item => {
       isPhrase(item) ? listOfValues.push(`"${item}"`) : listOfValues.push(item)
@@ -146,14 +142,6 @@ export const SimilarsSelect = ({
     result = result + ' ' + listOfValues.join(' ')
     onChangeTerm(result)
   }
-
-  // const toggleSelectAll = (items, allList) => {
-  //   if (items.length === allList.length) {
-  //     onChangeSelectAll(true)
-  //   } else {
-  //     onChangeSelectAll(false)
-  //   }
-  // }
 
   return (
     <SelectButton

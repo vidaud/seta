@@ -13,8 +13,8 @@ export const SearchTypeDropdown = ({ onSelectedTypeSearch }) => {
     { name: 'Related terms', code: 'RT' }
   ]
 
-  const [selectedTypeSearch, setSelectedTypeSearch] = useState<any>(defaultTypeOfSearch)
-  const onChangeOption = (e: { value: any }) => {
+  const [selectedTypeSearch, setSelectedTypeSearch] = useState(defaultTypeOfSearch)
+  const onChangeOption = (e: { value }) => {
     setSelectedTypeSearch(e.value)
     onSelectedTypeSearch(e.value)
   }
