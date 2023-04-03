@@ -1,6 +1,4 @@
 import pytest
-import time
-from elasticsearch import Elasticsearch
 
 from seta_api.config import TestConfig
 from seta_api.factory import create_app
@@ -67,7 +65,7 @@ def db(db_host, db_port):
 
     yield db   
 
-    #db.clear_db()
+    db.clear_db()
 
     
 
