@@ -91,7 +91,7 @@ nav:
     - Seta-api: seta-api/seta_api_v1.md
     - FAQS: faqs/faqs.md
   - Deployment SeTA:
-    - Minimun Requirements: deployment/min-requirements.md
+    - Minimum Requirements: deployment/min-requirements.md
     - Deployment: deployment/deployment.md 
     - Advanced Tutorial: deployment/advanced-tutorial.md
     - Release: release-notes/release-notes.md
