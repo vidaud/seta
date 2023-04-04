@@ -1,5 +1,5 @@
 import pytest
-import time
+import requests
 
 from seta_flask_server.config import TestConfig
 from seta_flask_server.factory import create_app
@@ -52,7 +52,7 @@ def db(db_host, db_port):
 
     yield db   
 
-    #db.clear_db()
+    db.clear_db()
 
 @pytest.fixture(scope='module')
 def app(db_host, db_port, web_root):    
@@ -70,7 +70,7 @@ def app(db_host, db_port, web_root):
     app = create_app(configuration)
     app.testing = True
     
-    app.config["PRIVATE_API_URL"] = f"http://{web_root}/seta-api-private/v1/"
+    app.config["PRIVATE_API_URL"] = f"http://{web_root}/seta-api-private/v1"
     
     with app.app_context(): 
         yield app
@@ -78,4 +78,14 @@ def app(db_host, db_port, web_root):
 @pytest.fixture(scope='module')
 def client(app):
     with app.test_client() as client:
-        yield client      
+        yield client
+        
+@pytest.fixture(scope="module")
+def seta_api_corpus(web_root: str):
+    seta_api_corpus = f"http://{web_root}/seta-api-test/corpus"
+       
+    yield seta_api_corpus
+    
+    #remove everything from ES
+    cleanup_url = f"http://{web_root}/seta-api-test/cleanup"
+    requests.post(cleanup_url)    
