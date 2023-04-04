@@ -1,10 +1,8 @@
 from flask_restx import Api, Resource, fields
-from flask import Blueprint
 from flask import jsonify, abort, make_response
 from flask_jwt_extended import create_access_token, create_refresh_token
 from flask_jwt_extended import set_access_cookies, set_refresh_cookies
 from flask_jwt_extended import get_jwt_identity, jwt_required
-from flask_cors import CORS
 
 from seta_flask_server.infrastructure.helpers import validate_public_key
 
@@ -13,14 +11,13 @@ from seta_flask_server.repository.interfaces import IUsersBroker, IRsaKeysBroker
 
 from datetime import timedelta
 
-token_auth = Blueprint('token_auth', __name__)
-CORS(token_auth)
+
 
 #do not use JWT_ACCESS_TOKEN_EXPIRES & JWT_REFRESH_TOKEN_EXPIRES from config
 TOKEN_EXPIRES_DELTA = timedelta(minutes=15)
 REFRESH_TOKEN_EXPIRES_DELTA = timedelta(minutes=60)
 
-auth_api = Api(token_auth, 
+auth_api = Api( 
                version="1.0",
                title="JWT token authentication",
                doc="/doc",
