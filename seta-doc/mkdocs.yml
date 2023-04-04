@@ -78,11 +78,11 @@ extra:
 nav:
   - What is SeTA: 
       - What it does: index.md
-      - What you would use it: general/overview.md
-      - Who should\ can use it: general/overview.md
-      - How it runs: general/overview.md
-      - What are the inputs: general/overview.md
-      - What are the outputs: general/overview.md      
+      - Why you would use it: general/why-use-it.md
+      - Who should/can use it: general/who-use-it.md
+      - How it runs: general/how-runs.md
+      - What are the inputs: general/what-inputs.md
+      - What are the outputs: general/what-outputs.md      
   - Using SeTA:
     - Set-up: user-guide/user-guide.md
     - Web Interface:

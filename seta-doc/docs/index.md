@@ -9,7 +9,7 @@ SeTA uses advanced text mining techniques to help users to screen and query larg
 
 Users can search EU documents based on keywords and then screen the results and apply filters all very quickly and accurately.
 
-### How can SeTA provide all of this information to users?
+## How can SeTA provide all of this information to users?
 
 Let's start from the beginning.
 
@@ -30,20 +30,23 @@ SeTA then ingests the documents and cleans all of their text content.
 
 When this is done, the documents and metadata are ready to be stored in {++Elastic Search++}, a special database that SeTA uses. 
 
+### AI Models
+
 The next step is to train ==AI models== by using full text documents and their phrases from elastic search. This training helps the models to learn relations between the meanings of the words in the text provided. 
 
 For instance, an algorithm called {++Word2Vec++} processes phrases. This algorithm takes input words and groups them together based on the similarity of their meanings. This similarity is calculated using complex mathematical formulas based on the context of the words. 
 
-Another AI model {++BERT++} is used to understand the meanings of full text documents. Bert works by taking sentences of the document as input it iterativlye hides some words making the model learn them using their context. By repeating this process, the algorithm understands the content of an entire document. The BERT output is used to retrain the labeling of EU documents on ontologies. 
+Another AI model {++BERT++} is used to understand the meanings of full text documents. BERT works by taking sentences of the document as input it iterativlye hides some words making the model learn them using their context. By repeating this process, the algorithm understands the content of an entire document. The BERT output is used to retrain the labeling of EU documents on ontologies. 
 
 A similar algorithm, {++sBERT++} is based on sentences and provides further training to the model. By training the models with new documents as they are published, we can ensure that the knowledge they contain represents EU documents accurately. 
 
 This knowledge is used to enrich document metadata by providing content driven labels and by expanding the labels based on existing ontologies.
 
+### API
+
 A specific APi have been built to access this knowledge and can be used to receive suggestions of similar terms and related documents.
 
-
-In the end, these API also feed the set interface providing users with the information they are looking for. 
+In the end, this API also feed the user interface providing users with the information they are looking for. 
 
 {--This map shows the whole process that allows users to analyze context and find documents related to their search, providing reliable results for policy making.--}
 
