@@ -11,4 +11,4 @@ In the user interface you can input a word, a phrase, a title, a piece of text o
 
 In the API the inputs depend on the query
 
-![Screenshot](../img/api.png)
+![Screenshot](../img/api.jpg)
