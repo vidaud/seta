@@ -21,7 +21,7 @@ export const SearchSection = () => {
     if (isMounted) {
       searchContext?.op.current?.hide()
     }
-  }, [])
+  }, [searchContext?.op])
 
   useEffect(() => {
     isMounted.current = true

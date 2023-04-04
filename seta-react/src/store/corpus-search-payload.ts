@@ -5,7 +5,7 @@ import { Operators, TermType } from '../models/term.model'
 export class CorpusSearchPayload extends Resource {
   public id?: number | string
   public _id?: number | string
-  public term: Term[]
+  public term: string
   public n_docs?: number
   public from_doc?: number
   public search_type?: string
@@ -32,7 +32,7 @@ export class CorpusSearchPayload extends Resource {
     let httpParams: any = new URLSearchParams()
 
     if (this.term && this.term.length > 0) {
-      httpParams = httpParams.set(`term`, this.getSelectedTerms(this.term))
+      httpParams = httpParams.set(`term`, this.term.toString())
     }
 
     if (this.n_docs) {

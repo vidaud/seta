@@ -58,7 +58,7 @@ const DialogButton = ({ onChange, onChangeText, onChangeFile, onChangeContentVis
         vector: embeddings,
         n_docs: 100,
         source: ['cordis'],
-        term: []
+        term: ''
       })
 
       corpusService.postDocuments(lastPayload).then(data => {
@@ -75,7 +75,7 @@ const DialogButton = ({ onChange, onChangeText, onChangeFile, onChangeContentVis
     dialogFuncMap[`${name}`](false)
   }
 
-  const renderFooter = (name: any) => {
+  const renderFooter = (name: string) => {
     return (
       <div>
         <Button

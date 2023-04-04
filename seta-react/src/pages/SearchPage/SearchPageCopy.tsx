@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { BreadCrumb } from 'primereact/breadcrumb'
 
 import { itemsBreadCrumb, home } from './constants'
@@ -10,9 +11,10 @@ import { useSearchContext } from '../../context/search-context'
 
 const SearchPage = () => {
   const searchContext = useSearchContext()
+  const [documentList, setDocumentList] = useState<any>([])
 
   const getDocumentList = () => {
-    searchContext?.setDocumentList(searchContext?.items)
+    setDocumentList(searchContext?.items)
   }
 
   const getTextValue = text => {

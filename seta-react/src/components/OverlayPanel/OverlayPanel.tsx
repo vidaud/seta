@@ -25,7 +25,7 @@ export const OverlayPanelDialog = () => {
         <div className="div-size-1">
           <h5>Autocomplete</h5>
         </div>
-        <div className="alingItems">
+        <div className="alignItems">
           <div className="div-size-button">
             {searchContext?.inputText ? <SelectAllTerms /> : <span />}
           </div>

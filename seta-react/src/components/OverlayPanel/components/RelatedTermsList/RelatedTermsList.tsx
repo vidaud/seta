@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Column } from 'primereact/column'
 import { DataTable } from 'primereact/datatable'
 
@@ -6,6 +6,7 @@ import './style.css'
 import RelatedTermsSelect from './components/RelatedTermsSelect'
 
 import { useSearchContext } from '../../../../context/search-context'
+import type { Term } from '../../../../models/term.model'
 import {
   columns,
   getListOfTerms,
@@ -16,9 +17,10 @@ import {
 import { OntologyListService } from '../../../../services/corpus/ontology-list.service'
 
 export const RelatedTermsList = () => {
+  const [selectedRelatedTermsCl, setSelectedRelatedTermsCl] = useState(null)
   const selectedColumns = columns
   const searchContext = useSearchContext()
-  const prevTermRef = useRef()
+  const prevTermRef = useRef<Term[] | string | undefined>()
 
   const ontologyListService = new OntologyListService()
 
@@ -31,10 +33,14 @@ export const RelatedTermsList = () => {
 
     toggleEnrichQuery(searchContext?.enrichButton)
 
-    if (searchContext?.selectAll) {
-      toggleAllItems()
+    if (searchContext?.selectedTypeSearch.code === 'RC') {
+      if (searchContext?.selectAll) {
+        selectNode(searchContext?.ontologyList)
+      } else if (!searchContext?.selectAll) {
+        selectNode([])
+      }
     }
-  }, [])
+  }, [searchContext?.selectAll])
 
   const getOntologyTerms = lastKeywords => {
     const ontologyTermList: any = []
@@ -78,16 +84,8 @@ export const RelatedTermsList = () => {
     }
   }
 
-  const toggleAllItems = () => {
-    if (searchContext?.selectAll) {
-      selectNode(searchContext?.ontologyList)
-    } else if (!searchContext?.selectAll) {
-      selectNode([])
-    }
-  }
-
   const selectNode = selectedNodes => {
-    searchContext?.setSelectedRelatedTermsCl(selectedNodes)
+    setSelectedRelatedTermsCl(selectedNodes)
     const listOfClusterTerms: any = []
 
     if (prevTermRef.current === undefined) {
@@ -116,7 +114,15 @@ export const RelatedTermsList = () => {
       searchContext?.setTerm(prevTermRef.current)
     }
 
-    // toggleSelectAll(selectedNodes, ontologyList)
+    toggleSelectAll(selectedNodes, searchContext?.ontologyList)
+  }
+
+  const toggleSelectAll = (items, allList) => {
+    if (items.length === allList.length) {
+      searchContext?.setSelectAll(true)
+    } else {
+      searchContext?.setSelectAll(false)
+    }
   }
 
   const transformPhrases = terms => {
@@ -185,7 +191,7 @@ export const RelatedTermsList = () => {
       value={searchContext?.ontologyList}
       showSelectAll={false}
       className="dataTable-list"
-      selection={searchContext?.selectedRelatedTermsCl}
+      selection={selectedRelatedTermsCl}
       onSelectionChange={e => selectNode(e.value)}
       dataKey="id"
       responsiveLayout="scroll"

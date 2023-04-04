@@ -15,8 +15,7 @@ export class CorpusSearchPayloadSerializer implements Serializer {
     }
 
     if (resource.term && resource.term.length > 0) {
-      searchPayload =
-        searchPayload + `\"term\": ${JSON.stringify(resource.getSelectedTerms(resource.term))},`
+      searchPayload = searchPayload + `\"term\": ${resource.term},`
     }
 
     if (resource.n_docs) {

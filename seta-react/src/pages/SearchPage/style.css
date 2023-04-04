@@ -196,7 +196,7 @@ h1:after{
     width: 70%;
 }
 
-.alingItems {
+.alignItems {
     width: 70%;
     display: -webkit-inline-box;
 }
@@ -236,14 +236,6 @@ h1:after{
 .suggestions-list .p-c {
     font-weight: normal !important;
 }
-
-/* .alingItems .p-togglebutton.p-button:not(.p-disabled):not(.p-highlight):hover {
-    color: rgb(92, 150, 221) !important;
-}
-
-.alingItems .p-togglebutton.p-button:not(.p-disabled):not(.p-highlight) {
-    color: rgb(92, 150, 221) !important;
-} */
 
 .search_dropdown {
     text-align: right;

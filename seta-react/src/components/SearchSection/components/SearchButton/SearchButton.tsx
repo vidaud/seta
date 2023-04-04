@@ -10,9 +10,8 @@ import './style.css'
 export const SearchButton = () => {
   const searchContext = useSearchContext()
   const corpusService = new CorpusService()
-
   const onSearch = () => {
-    if (String(searchContext?.term) !== null && searchContext?.term.length >= 2) {
+    if (String(searchContext?.term) !== null && String(searchContext?.term).length >= 2) {
       corpusService.getRefreshedToken()
       let details
 
