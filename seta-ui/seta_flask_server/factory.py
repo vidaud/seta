@@ -1,28 +1,29 @@
 import logging
 
-from flask import (Flask, request, session, url_for)
+from flask import (Flask, request, session, url_for, Blueprint)
+from flask_cors import CORS
 from werkzeug.middleware.proxy_fix import ProxyFix
-from flask_jwt_extended import get_jwt_identity, get_jwt
+from flask_jwt_extended import get_jwt_identity
 
 from .infrastructure.extensions import (scheduler, jwt, logs, github)
 
 from .blueprints.base_routes import base_routes
-from .blueprints.auth import auth, refresh_expiring_jwts
+from .blueprints.auth import local_auth_api, refresh_expiring_jwts
 from .blueprints.auth_ecas import auth_ecas
 from .blueprints.auth_github import auth_github
 from .blueprints.rest import rest
 from .blueprints.rsa import rsa
-from .blueprints.token_auth import token_auth
-from .blueprints.token_info import token_info
+from .blueprints.token_auth import auth_api as authentication_api
+from .blueprints.token_info import authorization_api
 
-from .blueprints.communities import communities_bp_v1
+from .blueprints.communities import api as communities_api
 
 from .infrastructure.helpers import JSONEncoder, MongodbJSONProvider
 from seta_flask_server.repository.interfaces import ISessionsBroker
 from seta_flask_server.infrastructure.auth_helpers import create_session_token
 
 #from cas import CASClient
-from .infrastructure.cas_client import SetaCasClient
+from seta_flask_server.infrastructure.clients.cas_client import SetaCasClient
 
 from flask_injector import FlaskInjector
 from .dependency import MongoDbClientModule
@@ -152,11 +153,29 @@ def create_app(config_object):
     return app
     
 def register_blueprints(app):
+    
+    add_specs = True
+    if app.config.get("DISABLE_SWAGGER_DOCUMENTATION"):
+        add_specs = False
+            
+    local_auth = Blueprint("auth", __name__)
+    local_auth_api.init_app(app=local_auth, add_specs=add_specs)
+    
+    token_info = Blueprint("token_info", __name__)
+    authorization_api.init_app(app=token_info, add_specs=add_specs)
+    
+    communities_bp_v1 = Blueprint('communities-api-v1', __name__)
+    communities_api.init_app(app=communities_bp_v1, add_specs=add_specs)
+    
+    token_auth = Blueprint('token_auth', __name__)
+    CORS(token_auth)
+    authentication_api.init_app(app=token_auth)
+    
     app.register_blueprint(rest, url_prefix="/rest/v1")
     app.register_blueprint(base_routes, url_prefix="/seta-ui")    
     app.register_blueprint(rsa, url_prefix="/rsa/v1")
     
-    app.register_blueprint(auth, url_prefix="")
+    app.register_blueprint(local_auth, url_prefix="")
     app.register_blueprint(auth_ecas, url_prefix="")
     app.register_blueprint(auth_github, url_prefix="")
     

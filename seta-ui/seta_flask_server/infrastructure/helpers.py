@@ -12,6 +12,7 @@ from flask import Response
 from flask.json.provider import JSONProvider, _default
 from flask_jwt_extended import decode_token, verify_jwt_in_request
 from flask_jwt_extended.config import config as jwt_config
+from functools import reduce
 
 class MongodbJSONProvider(JSONProvider):
     def __init__(self, app: Flask) -> None:
@@ -177,3 +178,9 @@ def unset_token_info_cookies(response: Response):
     
     unset_app_cookie(response=response, key="access_expire_cookie")
     unset_app_cookie(response=response, key="refresh_expire_cookie")
+    
+def join_slash(a, b):
+    return a.rstrip('/') + '/' + b.lstrip('/')
+
+def urljoin_segments(*args):
+    return reduce(join_slash, args) if args else ''

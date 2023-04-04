@@ -31,19 +31,20 @@ class PrivateSetaResource(Resource):
 
     @private_resource_ns.doc(description='Delete all resource data',
                              responses={int(HTTPStatus.OK): "Resource deleted.",
-                                        int(HTTPStatus.NOT_FOUND): "Resource id not found."})
+                                        int(HTTPStatus.INTERNAL_SERVER_ERROR): "ElasticSearch delete query failed."})
     def delete(self, id):
         """Delete resource data from ES"""
-        if not resource_exists(id, current_app=app):
-            abort(404, "Resource does not exist.")
-
-        body = {"query": {"bool": {"must": [{"match": {"source.keyword": id}}]}}}
-        try:
-            app.es.delete_by_query(index=app.config['INDEX_PUBLIC'], body=body)
-        except Exception as ex:
-            message = str(ex)
-            app.logger.exception(message)
-            abort(401, message)
+        
+        if resource_exists(id, current_app=app):
+            body = {"query": {"bool": {"must": [{"match": {"source.keyword": id}}]}}}
+            try:
+                app.es.delete_by_query(index=app.config['INDEX_PUBLIC'], body=body)
+            except Exception as ex:
+                message = str(ex)
+                app.logger.exception(message)
+                
+                #it's safe to forward the error message
+                abort(HTTPStatus.INTERNAL_SERVER_ERROR, message)
 
         message = f"All data for the resource '{id}' deleted."
         response = jsonify(status="success", message=message)
