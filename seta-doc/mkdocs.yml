@@ -5,7 +5,7 @@ theme:
   custom_dir: overrides
   features:
     - navigation.tracking
-    - navigation.expand
+    - navigation.path
     - toc.follow
     - toc.integrate
     - navigation.top
@@ -42,7 +42,7 @@ theme:
       toggle:
         icon: material/toggle-switch
         name: Switch to light mode    
-      primary: cyan
+      primary: indigo
       accent: teal  
 plugins:
   - search
