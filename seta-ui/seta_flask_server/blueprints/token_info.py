@@ -1,6 +1,5 @@
 from flask_restx import Api, Resource, fields
 
-from flask import Blueprint
 from flask import jsonify, abort
 from flask_jwt_extended import decode_token
 from flask_jwt_extended.exceptions import JWTExtendedException
@@ -13,9 +12,7 @@ from injector import inject
 
 from seta_flask_server.infrastructure.scope_constants import ResourceScopeConstants
 
-token_info = Blueprint("token_info", __name__)
-
-authorization_api = Api(token_info, 
+authorization_api = Api( 
                version="1.0",
                title="JWT token authorization",
                doc="/doc",

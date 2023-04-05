@@ -1,5 +1,4 @@
 from flask_restx import Api
-from flask import Blueprint
 from .community import communities_ns
 from .community_membership import membership_ns
 from .community_change_requests import community_change_request_ns
@@ -25,9 +24,7 @@ authorizations = {
     }
 }
 
-communities_bp_v1 = Blueprint('communities-api-v1', __name__)
-
-api = Api(communities_bp_v1,
+api = Api(
          title='SeTA Communities API',
          version='1.0',
          description='SeTA Communities API',

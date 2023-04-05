@@ -6,7 +6,6 @@ from datetime import datetime
 from datetime import timedelta
 from datetime import timezone
 
-from flask import Blueprint
 from flask import current_app as app
 from flask import (jsonify, redirect, make_response, session)
 
@@ -21,9 +20,7 @@ from seta_flask_server.infrastructure.auth_helpers import create_session_token
 
 from seta_flask_server.repository.interfaces import ISessionsBroker
 
-auth = Blueprint("auth", __name__)
-
-local_auth_api = Api(auth, 
+local_auth_api = Api( 
                version="1.0",
                title="SeTA Authentication",
                doc="/login/doc",

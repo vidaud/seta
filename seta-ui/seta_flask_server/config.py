@@ -1,9 +1,7 @@
 """seta-ui flask configuration."""
 
 from datetime import timedelta
-from os.path import exists
 import os
-import secrets
 
     
 class Config:
@@ -31,7 +29,13 @@ class Config:
     #disable scheduler
     SCHEDULER_ENABLED = False
     
+    #web application home url
     HOME_ROUTE = "/"
+    
+    #seta-api url for internal docker LAN calls
+    PRIVATE_API_URL = "http://seta-api:8081/seta-api-private/v1/"
+    
+    DISABLE_SWAGGER_DOCUMENTATION = False
     
     #======================================#
     
@@ -182,6 +186,8 @@ class ProdConfig(Config):
     #enable scheduler tasks
     SCHEDULER_ENABLED = True
     
+    DISABLE_SWAGGER_DOCUMENTATION = True
+    
     #======================================#
     
     
@@ -213,6 +219,12 @@ class TestConfig(Config):
             
         if Config.DB_NAME is None:
             Config.DB_NAME = "seta-test"
+            
+    #============Seta Configuration ========#
+                
+    PRIVATE_API_URL = "http://seta-api-test:8081/seta-api-private/v1/"
+    
+    #======================================#
             
     #============Flask Configuration========#
     #https://flask.palletsprojects.com/en/2.2.x/config/

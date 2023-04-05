@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "DISABLE_ESLINT_PLUGIN=true react-scripts build",
     "eject": "react-scripts eject",
     "lint": "eslint --ext ts,tsx . --color",
     "lint:fix": "eslint --ext ts,tsx . --color --fix",

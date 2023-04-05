@@ -11,7 +11,7 @@ from flask_jwt_extended import get_jwt_identity, verify_jwt_in_request
 
 from seta_api.infrastructure.extensions import (jwt, logs)
 from seta_api.apis import apis_bp_v1
-from seta_api.private import private_bp_v1
+from seta_api.private import private_bp_v1, test_bp
 
 import requests
 
@@ -134,6 +134,9 @@ def wait_for_es(app):
 def register_blueprints(app):
     app.register_blueprint(apis_bp_v1)
     app.register_blueprint(private_bp_v1)
+    
+    if app.config.get("TESTING") or app.testing:
+        app.register_blueprint(test_bp)
 
 def register_extensions(app):
     jwt.init_app(app)    
