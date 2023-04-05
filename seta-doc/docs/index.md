@@ -23,7 +23,6 @@ stateDiagram
     EURLex --> SeTA
 ```
 
-
 These data consist of text documents and the metadata that describe them. 
 
 SeTA then ingests the documents and cleans all of their text content.
