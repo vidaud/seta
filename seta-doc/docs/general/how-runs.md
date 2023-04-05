@@ -1,27 +1,4 @@
-This project is made up of two modules:
-
-* The **frontend** 
-* The **flask-server** one. 
-
-**Seta-frontend** is a *React* standard workspace enabled application.  
-**Seta-middleware** is a standard `maven-archetype-webapp` 
-**Seta-flask-server** is a Flask application 
-
-The frontend module contains all the static resources that make up the UI business logic  \
-The middleware module contains all the java sources and acts as a proxy / integration layer towards the backend. \
-The flask-server module contains all the python sources and acts as a proxy / authentication layer towards the backend.  
-
-
-All static resources that ensue from `ng build seta-web -c=<environment>` of the the frontend module are copied inside the flask-server **seta-ui** folder's module.  
-The end result is a ***seta-flask-server*** folder that contains a Flask application that can be deployed on any web container.  
-Flask configurations files are:
- - seta-flask-server/config.py
- - seta-flask-server/.env
-
-
-###  Methodology
-
- As described previously, SeTA follows two distinct steps for the creation of the knowledge base: 
+As described previously, SeTA follows two distinct steps for the creation of the knowledge base: 
 
 a. Document collection, cleaning and storage 
 
@@ -44,10 +21,7 @@ The corpus of the public policy-related European documents counts more than {--5
 ==- A full copy (590.000 documents) of the US federal legislation since 199416==
 
 
-Metadata in various formats are harvested from the document sources, harmonised into a common format and sent to a RabbitMQ pipeline for further processing. The actual document content is downloaded and processed in later steps. 
-
-This approach, processing metadata independently from the document contents, is a key prerequisite for building a unified corpus of documents as this source abstraction layer permits a wide variety of sources to be ingested.
-
+Metadata in various formats are harvested from the document sources, harmonised into a common format and sent to a ==RabbitMQ== pipeline for further processing. The actual document content is downloaded and processed in later steps. 
 
 All the texts collected are in English only (except for some older legal texts where multiple languages are interleaved on the same page). 
 
@@ -66,7 +40,7 @@ Documents are retrieved through ==SPARQL, SOAP, OAI-PHM, FTP or HTTP protocol pa
 
 After metadata have been harvested and interpreted, the documents must be downloaded and processed. 
 
-The fully automated and repeatable data cleaning mechanism, developed over two years is not perfect and is being constantly improved. We keep learning the needs and requirements of neural networks to produce quality results. 
+The fully automated and repeatable data cleaning mechanism, developed over two years is being constantly improved. We keep learning the needs and requirements of neural networks to produce quality results. 
 
 The typical process to create a general corpus involves:
 
@@ -98,18 +72,10 @@ This is the pivotal point of the whole analytical process. Neural networks can l
 The EC public knowledge corpus sports rather consistent language and thus the features could have been created from phrases instead of words like in general language.
 
 #### 2.1.1 Phrase compositionality
-This is possibly the single most critical step where textual features in the form of phrases have been engineered. Many months were spent attempting to create “the best” phrase engine with these results:
 
-+ Word ngrams are useless in a corpus with fixed vocabulary and complicated phrases
- 
-+ Dependency tagging (e.g. JJ*NN* for a chain of adjectives and nouns) misses many important phrases
-    
-+	We hoped that the Google Text-Rank algorithm would be able to catch compound phrases
+This is possibly the single most critical step where textual features in the form of phrases have been engineered. 
 
-+ Dependency parsing of a noun phrase as produced by the *Stanford CoreNLP17 java engine*[^1] or better *spaCy18*[^2] python library can provide high quality dependency tagging and identify the noun phrase correctly, but catch many artefacts on the way
-
-+ Iteratively cleaned noun phrases created from noun dependency trees can then produce even very high-quality phrases:
-
+Iteratively cleaned noun phrases created from noun dependency trees can then produce even very high-quality phrases:
 
 All together there are about 1 million phrases with a ==frequency higher than 50 out of 26 million identified cleaned phrases.==
 
@@ -154,7 +120,8 @@ The first tests involve basic similarity queries to reflect our corpus: the conc
 
 The next test utilises an interesting property of the vector representation of word meanings: it is possible to perform mathematical calculations with the vectors with interesting results. The standard example used to demonstrate this, for a large, general purpose corpus of English, is to calculate the effect of taking the word vector for "king", subtracting that for "man", and adding the vector for "woman": the result is found to be (very close to) the word vector for "queen". This approach is exploited in our text analysis, for example to discover directives in particular fields. For our particular corpus, which mostly contains legal texts, we find that the word vector calculation for king – man + woman does not give queen, but the closest phrases we find are “education officer”, ”member of parliament” and “immigration officer”. Rather than reflecting a gender bias, this (and many other examples tested) seems to reflect the lack of gender information in our corpus of technical and legal texts. The gender vector in our vector space is therefore non-representative.
 
-This highlights an important point: we are dealing with scientific and technical reports and legal texts and their language bears completely different information from general text. The analyst must be aware of this focus when analysing the content.
+!!! note
+    This highlights an important point: we are dealing with scientific and technical reports and legal texts and their language bears completely different information from general text. The analyst must be aware of this focus when analysing the content.
 
 
 

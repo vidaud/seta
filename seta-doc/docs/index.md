@@ -41,6 +41,8 @@ A similar algorithm, {++sBERT++} is based on sentences and provides further trai
 
 This knowledge is used to enrich document metadata by providing content driven labels and by expanding the labels based on existing ontologies.
 
+At this point the full text of all documents can be searched through a simple interface, and users are able to target their search either to the individual document collections or to search across all collections in a harmonised way.
+
 ### API
 
 A specific APi have been built to access this knowledge and can be used to receive suggestions of similar terms and related documents.
