@@ -9,6 +9,6 @@ In the user interface you can input a word, a phrase, a title, a piece of text o
 
 ## API input
 
-In the API, the inputs depend on the query [to describe the type of inputs according to the API query]
+In the API, the inputs can be according to the type of query needed.
 
 ![Screenshot](../img/api.jpg)
