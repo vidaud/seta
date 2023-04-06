@@ -1,5 +1,8 @@
 # seta-mongo 💾 
 
+* [Dockerfile](../seta-mongo/Dockerfile)
+
+
 The *seta-mongo* image contains the configuration files necessary for the Mongo Data Base container.
 
 The seta-mongo connects the MongoDB Atlas, the Database-as-a-Service offering by MongoDB. 

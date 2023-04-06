@@ -1,5 +1,20 @@
 # seta-compose ⚙️
 
+* [.env](../seta-compose/.env)
+* [.env.dev](../seta-compose/.env.dev)
+* [.env.example](../seta-compose/.env.example)
+* [.gitignore](../seta-compose/.gitignore)
+* [common.yml](../seta-compose/common.yml)
+* [dev-build.bat](../seta-compose/dev-build.bat)
+* [dev-build.sh](../seta-compose/dev-build.sh)
+* [dev-up.bat](../seta-compose/dev-up.bat)
+* [dev-up.sh](../seta-compose/dev-up.sh)
+* [docker-compose-dev.yml](../seta-compose/docker-compose-dev.yml)
+* [docker-compose-test.yml](../seta-compose/docker-compose-test.yml)
+* [docker-compose.yml](../seta-compose/docker-compose.yml)
+
+
+
 
 # Minimum requirements
   
