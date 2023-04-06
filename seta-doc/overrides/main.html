@@ -1,5 +1,20 @@
 {% extends "base.html" %}
 
+{% block header%}
+  <div class="container-fluid">
+    <a href="https://ec.europa.eu/info/index_en">
+    <img
+      alt="EC Logo"
+      src="https://commission.europa.eu/themes/contrib/oe_theme/dist/ec/images/logo/positive/logo-ec--en.svg"
+      height="40"
+      class="mr-2"
+    />
+    </a>
+  </div>
+	{{ super() }}  
+{% endblock %}
+
+
 {% block scripts %}
   <!-- Add scripts that need to run before here -->
   {{ super() }}

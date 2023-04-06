@@ -32,18 +32,7 @@ theme:
     logo: material/note-search-outline
     favicon: img/favicon.png
   palette:
-    - scheme: default
-      toggle:
-        icon: material/toggle-switch-off-outline 
-        name: Switch to dark mode
-      primary: blue
-      accent: indigo 
-    - scheme: slate 
-      toggle:
-        icon: material/toggle-switch
-        name: Switch to light mode    
-      primary: indigo
-      accent: teal  
+    - scheme: seta
 plugins:
   - search
   - render_swagger
@@ -77,7 +66,10 @@ markdown_extensions:
 extra:
   version:
     provider: mike
-
+  
+extra_css:
+  - stylesheets/extra.css
+ 
 nav:
   - What is SeTA: 
       - What it does: index.md
