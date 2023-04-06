@@ -57,8 +57,9 @@ li {
 
 .container-fluid {
     margin-right: auto;
-    padding-left: 50px;
+    padding-left: 267px;
     padding-right: 15px;
+    margin-top: 13px;
 }
 
 [data-md-color-scheme="seta"] {

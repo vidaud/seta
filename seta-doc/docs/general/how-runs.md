@@ -1,3 +1,8 @@
+
+![Screenshot](../img/machine_learning.png)
+
+
+
 As described previously, SeTA follows two distinct steps for the creation of the knowledge base: 
 
 a. Document collection, cleaning and storage 
@@ -122,6 +127,7 @@ The next test utilises an interesting property of the vector representation of w
 
 !!! note
     This highlights an important point: we are dealing with scientific and technical reports and legal texts and their language bears completely different information from general text. The analyst must be aware of this focus when analysing the content.
+
 
 
 
