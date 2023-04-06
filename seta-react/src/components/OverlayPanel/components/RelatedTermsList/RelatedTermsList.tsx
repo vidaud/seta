@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import { Column } from 'primereact/column'
 import { DataTable } from 'primereact/datatable'
 
@@ -24,24 +24,6 @@ export const RelatedTermsList = () => {
 
   const ontologyListService = new OntologyListService()
 
-  useEffect(() => {
-    ontologyListService.retrieveOntologyList(searchContext?.inputText).then(data => {
-      if (data) {
-        searchContext?.setOntologyList(transformOntologyList(data))
-      }
-    })
-
-    toggleEnrichQuery(searchContext?.enrichButton)
-
-    if (searchContext?.selectedTypeSearch.code === 'RC') {
-      if (searchContext?.selectAll) {
-        selectNode(searchContext?.ontologyList)
-      } else if (!searchContext?.selectAll) {
-        selectNode([])
-      }
-    }
-  }, [searchContext?.selectAll])
-
   const getOntologyTerms = lastKeywords => {
     const ontologyTermList: any = []
 
@@ -57,7 +39,7 @@ export const RelatedTermsList = () => {
     return ontologyTermList
   }
 
-  const toggleEnrichQuery = value => {
+  searchContext.toggleEnrichQuery = value => {
     // ex: "(bin) AND (regulation OR guideline) AND (standard)"
     //send request to ontologyList for each keyword
     //send request to corpus with the ontology list of all keywords
@@ -81,10 +63,12 @@ export const RelatedTermsList = () => {
 
         searchContext?.setOntologyListItems(splitedOROperator)
       })
+    } else {
+      searchContext?.callService(searchContext?.selectedTypeSearch.code)
     }
   }
 
-  const selectNode = selectedNodes => {
+  searchContext.selectNode = selectedNodes => {
     setSelectedRelatedTermsCl(selectedNodes)
     const listOfClusterTerms: any = []
 
@@ -133,15 +117,20 @@ export const RelatedTermsList = () => {
       isPhrase(item) ? listOfValues.push(`"${item}"`) : listOfValues.push(item)
     })
 
-    if (!searchContext?.enrichButton) {
+    if (!searchContext?.enrichQuery) {
       const copyTerm = String(listOfValues).split(',').join(' OR ')
 
       searchContext?.setCopyQuery(copyTerm)
-    } else if (searchContext?.enrichButton) {
+    } else if (searchContext?.enrichQuery) {
       updateEnrichedQuery(searchContext?.ontologyListItems)
     }
 
-    result = result + ' ' + listOfValues.join(' ')
+    if (prevTermRef.current) {
+      result = prevTermRef.current + ' ' + listOfValues.join(' ')
+    } else {
+      result = listOfValues.join(' ')
+    }
+
     searchContext?.setTerm(result)
   }
 
@@ -171,14 +160,9 @@ export const RelatedTermsList = () => {
       return result
     }
   }
-  const callSelectedNode = value => {
-    if (value) {
-      selectNode(value)
-    }
-  }
 
   const activityBodyTemplate = rowData => {
-    return <RelatedTermsSelect rowDataList={rowData} onSelectedNode={callSelectedNode} />
+    return <RelatedTermsSelect rowDataList={rowData} />
   }
 
   const columnComponents = selectedColumns.map(({ header }) => {
@@ -192,7 +176,7 @@ export const RelatedTermsList = () => {
       showSelectAll={false}
       className="dataTable-list"
       selection={selectedRelatedTermsCl}
-      onSelectionChange={e => selectNode(e.value)}
+      onSelectionChange={e => searchContext?.selectNode(e.value)}
       dataKey="id"
       responsiveLayout="scroll"
     >

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import { SelectButton } from 'primereact/selectbutton'
 
 import './style.css'
@@ -13,30 +13,6 @@ export const SimilarsSelect = () => {
   const prevTermRef = useRef<Term[] | string | undefined>()
 
   const similarService = new SimilarsService()
-
-  useEffect(() => {
-    similarService.retrieveSimilars(searchContext?.inputText).then(data => {
-      if (data && data.length > 0) {
-        const list: any = []
-
-        data.forEach(element => {
-          list.push(element.similar_word)
-        })
-
-        searchContext?.setSimilarTerms(list)
-      }
-    })
-
-    toggleEnrichQuery(searchContext?.enrichButton)
-
-    if (searchContext?.selectedTypeSearch.code === 'RT') {
-      if (searchContext?.selectAll) {
-        selectAllTerms(searchContext?.similarTerms)
-      } else if (!searchContext?.selectAll) {
-        selectAllTerms([])
-      }
-    }
-  }, [searchContext?.selectAll])
 
   const getSimilarsTerms = lastKeywords => {
     const similarsTermsList: any = []
@@ -65,12 +41,17 @@ export const SimilarsSelect = () => {
     return similarsTermsList
   }
 
-  const toggleEnrichQuery = value => {
+  searchContext.toggleEnrichQuery = value => {
     // ex: "(bin) AND (regulation OR guideline) AND (standard)"
     //send request to ontologyList for each keyword
     //send request to corpus with the ontology list of all keywords
 
     if (value) {
+      if (!searchContext?.enrichQuery) {
+        searchContext?.setListOFTerms(getListOfTerms(String(searchContext?.term)))
+        searchContext?.setCopyQuery(getSelectedTerms(searchContext?.listOFTerms))
+      }
+
       const regExp = /\(|\)|\[|\]/g
 
       const splitedANDOperator = getSelectedTerms(searchContext?.listOFTerms).split(` AND `)
@@ -89,13 +70,15 @@ export const SimilarsSelect = () => {
 
         searchContext?.setSimilarsList(splitedOROperator)
       })
+    } else {
+      searchContext?.callService(searchContext?.selectedTypeSearch.code)
     }
   }
 
-  const selectAllTerms = selectedNodes => {
+  searchContext.selectAllTerms = selectedNodes => {
     const listOfTerms: any = []
 
-    if (prevTermRef.current === null) {
+    if (prevTermRef.current === undefined) {
       prevTermRef.current = searchContext?.term
     }
 
@@ -136,15 +119,20 @@ export const SimilarsSelect = () => {
       isPhrase(item) ? listOfValues.push(`"${item}"`) : listOfValues.push(item)
     })
 
-    if (!searchContext?.enrichButton) {
+    if (!searchContext?.enrichQuery) {
       const copyTerm = String(listOfValues).split(',').join(' OR ')
 
       searchContext?.setCopyQuery(copyTerm)
-    } else if (searchContext?.enrichButton) {
+    } else if (searchContext?.enrichQuery) {
       updateEnrichedQuery(searchContext?.similarsList)
     }
 
-    result = result + ' ' + listOfValues.join(' ')
+    if (prevTermRef.current) {
+      result = prevTermRef.current + ' ' + listOfValues.join(' ')
+    } else {
+      result = listOfValues.join(' ')
+    }
+
     searchContext?.setTerm(result)
   }
 
@@ -171,7 +159,7 @@ export const SimilarsSelect = () => {
       value={similarValues}
       className="suggestions-list"
       onChange={e => {
-        selectAllTerms(e.value)
+        searchContext?.selectAllTerms(e.value)
       }}
       options={searchContext?.similarTerms}
       multiple={true}

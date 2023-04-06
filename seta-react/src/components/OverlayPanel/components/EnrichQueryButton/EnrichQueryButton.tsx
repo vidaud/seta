@@ -9,19 +9,20 @@ export const EnrichQueryButton = () => {
   const searchContext = useSearchContext()
 
   const toggleEnrichButton = () => {
-    const toggled = !searchContext?.enrichButton
+    const toggled = !searchContext?.enrichQuery
 
-    searchContext?.setEnrichButton(toggled)
+    searchContext?.setEnrichQuery(toggled)
+    searchContext?.toggleEnrichQuery(toggled)
   }
 
   return (
     <Button
-      className={searchContext?.enrichButton ? 'custom-magic' : 'custom-magic magic'}
+      className={searchContext?.enrichQuery ? 'custom-magic' : 'custom-magic magic'}
       tooltip="Enrich query automatically"
       tooltipOptions={{ position: 'bottom' }}
       onClick={toggleEnrichButton}
     >
-      {searchContext?.enrichButton ? (
+      {searchContext?.enrichQuery ? (
         <img src={magic_icon_fill} alt="Enrich Query" />
       ) : (
         <img src={magic_icon} alt="Enrich Query" />

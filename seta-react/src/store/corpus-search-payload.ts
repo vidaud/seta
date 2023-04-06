@@ -25,7 +25,7 @@ export class CorpusSearchPayload extends Resource {
   public semantic_sort_id?: string
   public vector?: number[]
   public author?: string
-  public date_range?: string[]
+  public date_range?: string
   public aggs?: string
 
   prepareCorpusParams() {
@@ -115,7 +115,7 @@ export class CorpusSearchPayload extends Resource {
     }
 
     if (this.date_range && this.date_range.length > 0) {
-      httpParams = httpParams.set(`date_range`, this.date_range.join(`,`))
+      httpParams = httpParams.set(`date_range`, this.date_range)
     }
 
     if (this.aggs && this.aggs !== ``) {

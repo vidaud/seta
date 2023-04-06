@@ -16,9 +16,9 @@ const TimeRange = () => {
 
   const onChangeTimeRange = e => {
     setRange(e.value)
-    // const time = 'gte:' + `${e.value[0]}` + ',lte:' + `${e.value[1]}`
+    const time = 'gte:' + `${e.value[0]}` + ',lte:' + `${e.value[1]}`
 
-    searchContext?.setTimeRangeValue(e.value)
+    searchContext?.setTimeRangeValue(time)
   }
 
   return (
