@@ -1,7 +1,8 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useContext } from 'react'
 import { Chart } from 'primereact/chart'
 
-import { useSearchContext } from '../../../../../../context/search-context'
+import { SearchContext } from '../../../../../../context/search-context'
+import type Search from '../../../../../../types/search'
 
 interface Model {
   labels: string[]
@@ -14,18 +15,18 @@ interface Model {
 
 const AggregationsChart = () => {
   const [basicData, setBasicData] = useState<Model>()
-  const searchContext = useSearchContext()
+  const { aggregations } = useContext(SearchContext) as Search
 
   useEffect(() => {
-    if (searchContext?.aggregations) {
-      if (searchContext?.aggregations.years.length > 0 || searchContext?.aggregations.years) {
+    if (aggregations) {
+      if (aggregations.years.length > 0 || aggregations.years) {
         const details = {
-          labels: Object.keys(searchContext?.aggregations.years),
+          labels: Object.keys(aggregations.years),
           datasets: [
             {
               label: 'Documents / Year',
               backgroundColor: '#42A5F5',
-              data: Object.values(searchContext?.aggregations.years)
+              data: Object.values(aggregations.years)
             }
           ]
         }
@@ -33,9 +34,7 @@ const AggregationsChart = () => {
         setBasicData(details)
       }
     }
-  }, [searchContext?.aggregations])
-
-  // TODO: Move the configurations outside of the component, or to a separate file
+  }, [aggregations])
 
   const getLightTheme = () => {
     const basicOptions = {

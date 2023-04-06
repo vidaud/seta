@@ -17,6 +17,22 @@ export const SelectAllTerms = () => {
       tooltipOptions={{ position: 'top' }}
       onChange={e => {
         searchContext?.setSelectAll(e.value)
+
+        if (searchContext?.selectedTypeSearch.code === 'RC') {
+          if (e.value) {
+            searchContext?.selectNode(searchContext?.ontologyList)
+          } else if (!e.value) {
+            searchContext?.selectNode([])
+          }
+        }
+
+        if (searchContext?.selectedTypeSearch.code === 'RT') {
+          if (e.value) {
+            searchContext?.selectAllTerms(searchContext?.similarTerms)
+          } else if (!e.value) {
+            searchContext?.selectAllTerms([])
+          }
+        }
       }}
     />
   )

@@ -23,8 +23,8 @@ export default interface Search {
   >
   typeofSearch: string
   setTypeofSearch: React.Dispatch<React.SetStateAction<string>>
-  timeRangeValue: string[] | undefined
-  setTimeRangeValue: React.Dispatch<React.SetStateAction<string[] | undefined>>
+  timeRangeValue: string | undefined
+  setTimeRangeValue: React.Dispatch<React.SetStateAction<string | undefined>>
   op: React.RefObject<OverlayPanel>
   selectedTypeSearch: {
     code: string
@@ -62,4 +62,9 @@ export default interface Search {
   setSuggestedTerms: React.Dispatch<any>
   similarTerms: any
   setSimilarTerms: React.Dispatch<any>
+  selectNode: (selectedNodes: any) => void
+  selectAllTerms: (selectedNodes: any) => void
+  callService: (selectedNodes: any) => void
+  toggleEnrichQuery: (selectedNodes: any) => void
+  getAggregations: (aggregations: any) => void
 }

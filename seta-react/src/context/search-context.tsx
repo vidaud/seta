@@ -8,7 +8,7 @@ import type Search from '../types/search'
 
 export const SearchContext = React.createContext<Search | null>(null)
 
-type Props = {
+export type Props = {
   children: React.ReactNode
 }
 type Aggregation = {
@@ -21,7 +21,7 @@ export const SearchProvider = ({ children }: Props) => {
   const [items, setItems] = React.useState<[]>([])
   const [aggregations, setAggregations] = React.useState<Aggregation>()
   const [typeofSearch, setTypeofSearch] = React.useState<string>('CHUNK_SEARCH')
-  const [timeRangeValue, setTimeRangeValue] = React.useState<string[] | undefined>()
+  const [timeRangeValue, setTimeRangeValue] = React.useState<string | undefined>()
   const [selectedTypeSearch, setSelectedTypeSearch] = React.useState(defaultTypeOfSearch)
   const [inputText, setInputText] = React.useState<string>('')
   const [listOFTerms, setListOFTerms] = React.useState<Term[]>([])
@@ -36,6 +36,11 @@ export const SearchProvider = ({ children }: Props) => {
   const [ontologyListItems, setOntologyListItems] = React.useState<string[]>([])
   const [suggestedTerms, setSuggestedTerms] = React.useState<any>(null)
   const [similarTerms, setSimilarTerms] = React.useState<any>(null)
+  const selectNode = () => void {}
+  const selectAllTerms = () => void {}
+  const callService = () => void {}
+  const toggleEnrichQuery = () => void {}
+  const getAggregations = () => void {}
   const op = React.useRef<OverlayPanel>(null)
 
   return (
@@ -81,7 +86,12 @@ export const SearchProvider = ({ children }: Props) => {
         suggestedTerms,
         setSuggestedTerms,
         similarTerms,
-        setSimilarTerms
+        setSimilarTerms,
+        selectNode,
+        selectAllTerms,
+        callService,
+        toggleEnrichQuery,
+        getAggregations
       }}
     >
       {children}
