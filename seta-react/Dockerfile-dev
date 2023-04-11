@@ -12,25 +12,22 @@ ENV HTTP_PROXY=$HTTP_PROXY
 RUN apt update -y && apt install -y --no-install-recommends  nodejs npm
 RUN apt install -y  --no-install-recommends curl
 
-ARG ROOT=/home/seta
-
 RUN npm update -g
 RUN npm install -g n
 RUN n lts
-RUN npm install -g primereact
-RUN npm install -g primeicons
-RUN npm install -g axios
-#update npm to the latest version (fix EACCES error on node_modules/.cache in npm v>9)
+# Update npm to the latest version (fix EACCES error on node_modules/.cache in npm v>9)
 RUN npm install -g npm
+
+ARG ROOT=/home/seta
 
 WORKDIR $ROOT
 
-ENV PATH $ROOT/node_modules/.bin:$PATH
-
-COPY ./package.json $ROOT/package.json
-COPY ./tsconfig.json $ROOT/tsconfig.json
-
+# Install dependencies
+COPY package.json .
 RUN npm install
 
-CMD chdir /home/seta/ \
-    && npm start --host '0.0.0.0' --port 3000 
+# Copy source code
+COPY . .
+
+# Run the development server
+CMD npm start -- --host '0.0.0.0' --port 3000

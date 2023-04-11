@@ -2,10 +2,11 @@
   "compilerOptions": {
     "target": "es6",
     "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
+      "DOM",
+      "DOM.iterable",
+      "ESNext"
     ],
+    "types": ["vite/client", "vite-plugin-svgr/client"],
     "strictPropertyInitialization": false,
     "noImplicitAny": false,
     "allowJs": true,
@@ -20,7 +21,8 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react-jsx"
+    "jsx": "react-jsx",
+    "jsxImportSource": "@emotion/react"
   },
   "include": [
     "src"

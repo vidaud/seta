@@ -1,16 +1,13 @@
-import 'primereact/resources/themes/lara-light-blue/theme.css'
-import 'primereact/resources/primereact.min.css'
-import 'primeicons/primeicons.css'
+import { MantineProvider } from '@mantine/core'
 
 import AppRouter from './components/AppRouter'
+import { emotionCache, theme } from './styles'
 
 const App = () => {
   return (
-    <div className="App">
-      <link rel="stylesheet" href="https://unpkg.com/primeflex@3.2.1/primeflex.min.css" />
-
+    <MantineProvider withGlobalStyles withNormalizeCSS emotionCache={emotionCache} theme={theme}>
       <AppRouter />
-    </div>
+    </MantineProvider>
   )
 }
 

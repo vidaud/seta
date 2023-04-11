@@ -9,7 +9,7 @@ const NotFoundPage = () => {
       <h1 style={{ color: 'red', fontSize: 100 }}>404</h1>
       <h3>Page Not Found</h3>
       <p>
-        <Link to="/seta-ui/">Go Home</Link>
+        <Link to="/">Go Home</Link>
       </p>
     </div>
   )
