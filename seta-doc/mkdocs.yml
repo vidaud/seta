@@ -46,8 +46,8 @@ markdown_extensions:
         emoji_index: !!python/name:materialx.emoji.twemoji
         emoji_generator: !!python/name:materialx.emoji.to_svg
     - admonition
+    - codehilite
     - pymdownx.details
-    - pymdownx.superfences
     - pymdownx.critic
     - pymdownx.caret
     - pymdownx.keys
@@ -83,7 +83,8 @@ nav:
     - Web Interface:
       - Search: user-guide/web-interface.md
       - Communities: user-guide/communities.md
-    - Seta-api: seta-api/seta_api_v1.md
+    - API Interface:
+      - Seta-api: seta-api/seta_api_v1.md
     - FAQS: faqs/faqs.md
   - Deployment SeTA:
     - Minimum Requirements: deployment/min-requirements.md
