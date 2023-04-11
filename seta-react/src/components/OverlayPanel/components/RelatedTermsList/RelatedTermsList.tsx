@@ -1,11 +1,11 @@
-import { useRef, useState } from 'react'
+import { useRef, useState, useContext } from 'react'
 import { Column } from 'primereact/column'
 import { DataTable } from 'primereact/datatable'
 
 import './style.css'
 import RelatedTermsSelect from './components/RelatedTermsSelect'
 
-import { useSearchContext } from '../../../../context/search-context'
+import { SearchContext, useSearchContext } from '../../../../context/search-context'
 import type { Term } from '../../../../models/term.model'
 import {
   columns,
@@ -15,12 +15,33 @@ import {
   transformOntologyList
 } from '../../../../pages/SearchPage/constants'
 import { OntologyListService } from '../../../../services/corpus/ontology-list.service'
+import type Search from '../../../../types/search'
 
 export const RelatedTermsList = () => {
-  const [selectedRelatedTermsCl, setSelectedRelatedTermsCl] = useState(null)
   const selectedColumns = columns
   const searchContext = useSearchContext()
   const prevTermRef = useRef<Term[] | string | undefined>()
+  const [selectSingle, setSelectSingle] = useState(false)
+  const {
+    term,
+    setTerm,
+    listOFTerms,
+    enrichQuery,
+    setCopyQuery,
+    ontologyValue,
+    selectNode,
+    setSelectedRelatedTermsCl,
+    ontologyList,
+    setSelectAll,
+    setOntologyList,
+    selectedRelatedTermsCl,
+    ontologyListItems,
+    setOntologyListItems,
+    setOntologyValue,
+    selectedTypeSearch,
+    callService,
+    toggleEnrichQuery
+  } = useContext(SearchContext) as Search
 
   const ontologyListService = new OntologyListService()
 
@@ -30,7 +51,7 @@ export const RelatedTermsList = () => {
     lastKeywords.forEach(lastKeyword => {
       ontologyListService.retrieveOntologyList(lastKeyword).then(data => {
         if (data) {
-          searchContext?.setOntologyList(transformOntologyList(data))
+          setOntologyList(transformOntologyList(data))
           ontologyTermList.push(...[String(data).split(',')])
         }
       })
@@ -47,7 +68,7 @@ export const RelatedTermsList = () => {
     if (value) {
       const regExp = /\(|\)|\[|\]/g
 
-      const splitedANDOperator = getSelectedTerms(searchContext?.listOFTerms).split(` AND `)
+      const splitedANDOperator = getSelectedTerms(listOFTerms).split(` AND `)
       const splitedOROperator: any = []
 
       splitedANDOperator.forEach(element => {
@@ -61,25 +82,26 @@ export const RelatedTermsList = () => {
           splitedOROperator.push(getOntologyTerms(element.split(' OR ')))
         }
 
-        searchContext?.setOntologyListItems(splitedOROperator)
+        setOntologyListItems(splitedOROperator)
       })
     } else {
-      searchContext?.callService(searchContext?.selectedTypeSearch.code)
+      callService(selectedTypeSearch.code)
     }
   }
 
   searchContext.selectNode = selectedNodes => {
-    setSelectedRelatedTermsCl(selectedNodes)
     const listOfClusterTerms: any = []
 
     if (prevTermRef.current === undefined) {
-      prevTermRef.current = searchContext?.term
+      prevTermRef.current = term
     }
 
     if (selectedNodes.length > 0) {
       selectedNodes.forEach(item => {
         if (item.node) {
+          setSelectedRelatedTermsCl(selectedNodes)
           listOfClusterTerms.push(...item.node)
+          setSelectSingle(true)
         } else {
           listOfClusterTerms.push(item)
         }
@@ -89,40 +111,45 @@ export const RelatedTermsList = () => {
         return listOfClusterTerms.indexOf(subject) === index
       })
 
-      searchContext?.setOntologyValue(uniqueValues)
+      setOntologyValue(uniqueValues)
       transformPhrases(uniqueValues)
     }
 
     if (selectedNodes.length === 0) {
-      searchContext?.setOntologyValue(listOfClusterTerms)
-      searchContext?.setTerm(prevTermRef.current)
+      setSelectedRelatedTermsCl(selectedNodes)
+      setOntologyValue(listOfClusterTerms)
+      setTerm(prevTermRef.current)
     }
 
-    toggleSelectAll(selectedNodes, searchContext?.ontologyList)
+    if (selectSingle) {
+      toggleSelectAll(selectedNodes, ontologyList)
+    } else if (!selectSingle && ontologyValue !== null) {
+      toggleSelectAll(selectedNodes, ontologyValue)
+    }
   }
 
   const toggleSelectAll = (items, allList) => {
     if (items.length === allList.length) {
-      searchContext?.setSelectAll(true)
+      setSelectAll(true)
     } else {
-      searchContext?.setSelectAll(false)
+      setSelectAll(false)
     }
   }
 
   const transformPhrases = terms => {
     const listOfValues: any = []
-    let result = searchContext?.term
+    let result = term
 
     terms.forEach(item => {
       isPhrase(item) ? listOfValues.push(`"${item}"`) : listOfValues.push(item)
     })
 
-    if (!searchContext?.enrichQuery) {
+    if (!enrichQuery) {
       const copyTerm = String(listOfValues).split(',').join(' OR ')
 
-      searchContext?.setCopyQuery(copyTerm)
-    } else if (searchContext?.enrichQuery) {
-      updateEnrichedQuery(searchContext?.ontologyListItems)
+      setCopyQuery(copyTerm)
+    } else if (enrichQuery) {
+      updateEnrichedQuery(ontologyListItems)
     }
 
     if (prevTermRef.current) {
@@ -131,14 +158,14 @@ export const RelatedTermsList = () => {
       result = listOfValues.join(' ')
     }
 
-    searchContext?.setTerm(result)
+    setTerm(result)
   }
 
   const updateEnrichedQuery = clusters => {
     if (clusters.length > 1) {
       const result = clusters.join(' AND ').split(',').join(' ')
 
-      searchContext?.setCopyQuery(getSelectedTerms(getListOfTerms(result)))
+      setCopyQuery(getSelectedTerms(getListOfTerms(result)))
 
       return getSelectedTerms(getListOfTerms(result))
     } else if (clusters.length === 1 && clusters[0].length > 0) {
@@ -155,7 +182,7 @@ export const RelatedTermsList = () => {
 
       const result = newItems.join(' OR ').split(',').join(' OR ')
 
-      searchContext?.setCopyQuery(result)
+      setCopyQuery(result)
 
       return result
     }
@@ -172,11 +199,13 @@ export const RelatedTermsList = () => {
   return (
     <DataTable
       lazy={true}
-      value={searchContext?.ontologyList}
+      value={ontologyList}
       showSelectAll={false}
       className="dataTable-list"
       selection={selectedRelatedTermsCl}
-      onSelectionChange={e => searchContext?.selectNode(e.value)}
+      onSelectionChange={e => {
+        selectNode(e.value)
+      }}
       dataKey="id"
       responsiveLayout="scroll"
     >

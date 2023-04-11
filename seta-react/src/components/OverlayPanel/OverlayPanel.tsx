@@ -1,4 +1,5 @@
 import './style.css'
+import { useContext } from 'react'
 import { OverlayPanel } from 'primereact/overlaypanel'
 
 import EnrichQueryButton from './components/EnrichQueryButton'
@@ -8,14 +9,15 @@ import SelectAllTerms from './components/SelectAllTerms'
 import SimilarsSelect from './components/SimilarsSelect'
 import SuggestionsSelect from './components/SuggestionsSelect'
 
-import { useSearchContext } from '../../context/search-context'
+import { SearchContext } from '../../context/search-context'
+import type Search from '../../types/search'
 
 export const OverlayPanelDialog = () => {
-  const searchContext = useSearchContext()
+  const { op, inputText, selectedTypeSearch, enrichQuery } = useContext(SearchContext) as Search
 
   return (
     <OverlayPanel
-      ref={searchContext?.op}
+      ref={op}
       showCloseIcon
       id="overlay_panel1"
       style={{ width: '55%', left: '19%' }}
@@ -26,9 +28,7 @@ export const OverlayPanelDialog = () => {
           <h5>Autocomplete</h5>
         </div>
         <div className="alignItems">
-          <div className="div-size-button">
-            {searchContext?.inputText ? <SelectAllTerms /> : <span />}
-          </div>
+          <div className="div-size-button">{inputText ? <SelectAllTerms /> : <span />}</div>
           <div className="search_dropdown div-size-2">
             <EnrichQueryButton />
             <SearchTypeDropdown />
@@ -44,13 +44,11 @@ export const OverlayPanelDialog = () => {
           </>
         </div>
         <div className="div-size-2">
-          {searchContext?.selectedTypeSearch.code === 'RC' &&
-          searchContext?.enrichQuery === false ? (
+          {selectedTypeSearch.code === 'RC' && enrichQuery === false ? (
             <>
               <RelatedTermsList />
             </>
-          ) : searchContext?.selectedTypeSearch.code === 'RT' &&
-            searchContext?.enrichQuery === false ? (
+          ) : selectedTypeSearch.code === 'RT' && enrichQuery === false ? (
             <>
               <div className="card flex justify-content-center similars">
                 <SimilarsSelect />

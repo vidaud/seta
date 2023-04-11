@@ -1,13 +1,14 @@
-import { useState } from 'react'
+import { useState, useContext } from 'react'
 import { SelectButton } from 'primereact/selectbutton'
 import { Tooltip } from 'primereact/tooltip'
 
 import './style.css'
-import { useSearchContext } from '../../../../context/search-context'
+import { SearchContext } from '../../../../context/search-context'
+import type Search from '../../../../types/search'
 
 const SearchType = () => {
   const [searchTooltip, setSearchTooltip] = useState('Look at the first paragraph only')
-  const searchContext = useSearchContext()
+  const { typeofSearch, setTypeofSearch } = useContext(SearchContext) as Search
 
   const searchOptions = [
     { name: '1', value: 'CHUNK_SEARCH', tooltip: 'Look at the first paragraph only' },
@@ -24,7 +25,7 @@ const SearchType = () => {
   }
 
   const onChangeSearchType = e => {
-    searchContext?.setTypeofSearch(e.value)
+    setTypeofSearch(e.value)
   }
 
   return (
@@ -39,7 +40,7 @@ const SearchType = () => {
       />
       <SelectButton
         className="select"
-        value={searchContext?.typeofSearch}
+        value={typeofSearch}
         options={searchOptions}
         onChange={onChangeSearchType}
         onMouseEnter={onFocusOption}

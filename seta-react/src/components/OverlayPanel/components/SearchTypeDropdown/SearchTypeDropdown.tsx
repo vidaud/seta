@@ -1,50 +1,61 @@
+import { useContext } from 'react'
 import './style.css'
 import { Dropdown } from 'primereact/dropdown'
 
-import { useSearchContext } from '../../../../context/search-context'
+import { SearchContext, useSearchContext } from '../../../../context/search-context'
 import { transformOntologyList, typeOfSearches } from '../../../../pages/SearchPage/constants'
 import { OntologyListService } from '../../../../services/corpus/ontology-list.service'
 import { SimilarsService } from '../../../../services/corpus/similars.service'
 import { SuggestionsService } from '../../../../services/corpus/suggestions.service'
+import type Search from '../../../../types/search'
 
 export const SearchTypeDropdown = () => {
   const searchContext = useSearchContext()
   const suggestionsService = new SuggestionsService()
   const ontologyListService = new OntologyListService()
   const similarService = new SimilarsService()
+  const {
+    inputText,
+    selectedTypeSearch,
+    setSimilarTerms,
+    setSuggestedTerms,
+    callService,
+    setOntologyList,
+    setSelectedTypeSearch
+  } = useContext(SearchContext) as Search
 
   const onChangeOption = (e: { value }) => {
-    searchContext?.setSelectedTypeSearch(e.value)
-    searchContext?.callService(e.value.code)
+    setSelectedTypeSearch(e.value)
+    callService(e.value.code)
   }
 
   searchContext.callService = code => {
-    suggestionsService.retrieveSuggestions(searchContext?.inputText).then(data => {
+    suggestionsService.retrieveSuggestions(inputText).then(data => {
       if (data) {
-        searchContext?.setSuggestedTerms(data)
+        setSuggestedTerms(data)
       }
     })
 
     if (code === 'RC') {
       setTimeout(() => {
-        ontologyListService.retrieveOntologyList(searchContext?.inputText).then(data => {
+        ontologyListService.retrieveOntologyList(inputText).then(data => {
           if (data) {
-            searchContext?.setOntologyList(transformOntologyList(data))
+            setOntologyList(transformOntologyList(data))
           }
         })
       }, 250)
     } else if (code === 'RT') {
-      similarService.retrieveSimilars(searchContext?.inputText).then(data => {
+      similarService.retrieveSimilars(inputText).then(data => {
         if (data) {
           if (data.length > 0) {
-            const list: any = []
+            const list: string[] = []
 
             if (data && data.length > 0) {
               data.forEach(element => {
                 list.push(element.similar_word)
               })
 
-              searchContext?.setSimilarTerms(list)
+              setSimilarTerms(list)
             }
           }
         }
@@ -54,7 +65,7 @@ export const SearchTypeDropdown = () => {
 
   return (
     <Dropdown
-      value={searchContext?.selectedTypeSearch}
+      value={selectedTypeSearch}
       options={typeOfSearches}
       onChange={onChangeOption}
       optionLabel="name"

@@ -1,7 +1,7 @@
-import { useEffect } from 'react'
+import { useEffect, useContext } from 'react'
 import { InputText } from 'primereact/inputtext'
 
-import { useSearchContext } from '../../../../context/search-context'
+import { SearchContext } from '../../../../context/search-context'
 import {
   getListOfTerms,
   getSelectedTerms,
@@ -13,86 +13,112 @@ import './style.css'
 import { OntologyListService } from '../../../../services/corpus/ontology-list.service'
 import { SimilarsService } from '../../../../services/corpus/similars.service'
 import { SuggestionsService } from '../../../../services/corpus/suggestions.service'
+import type Search from '../../../../types/search'
 
 export const SearchBox = () => {
-  const searchContext = useSearchContext()
   const suggestionsService = new SuggestionsService()
   const ontologyListService = new OntologyListService()
   const similarService = new SimilarsService()
+  const {
+    term,
+    setTerm,
+    op,
+    setCopyQuery,
+    setListOFTerms,
+    enrichQuery,
+    listOFTerms,
+    selectedTypeSearch,
+    similarsList,
+    ontologyListItems,
+    setInputText,
+    setSuggestedTerms,
+    setOntologyList,
+    setSimilarTerms,
+    inputText
+  } = useContext(SearchContext) as Search
 
   useEffect(() => {
-    if (String(searchContext?.term) !== '') {
-      searchContext?.setListOFTerms(getListOfTerms(searchContext?.term))
+    if (String(term) !== '') {
+      setListOFTerms(getListOfTerms(term))
 
-      if (!searchContext?.enrichQuery) {
-        searchContext?.setCopyQuery(getSelectedTerms(searchContext?.listOFTerms))
+      if (!enrichQuery) {
+        setCopyQuery(getSelectedTerms(listOFTerms))
       } else {
-        const currentSearch: any = getSelectedTerms(searchContext?.listOFTerms)
+        const currentSearch: any = getSelectedTerms(listOFTerms)
 
-        if (searchContext?.selectedTypeSearch.code === 'RT') {
-          updateSimilarsQuery(searchContext?.similarsList)
+        if (selectedTypeSearch.code === 'RT') {
+          updateSimilarsQuery(similarsList)
         }
 
-        if (searchContext?.selectedTypeSearch.code === 'RC') {
-          updateOntologiesQuery(searchContext?.ontologyListItems)
+        if (selectedTypeSearch.code === 'RC') {
+          updateOntologiesQuery(ontologyListItems)
         }
 
         const result = currentSearch
           .concat(' OR ')
           .concat(
-            searchContext?.selectedTypeSearch.code === 'RT'
-              ? updateSimilarsQuery(searchContext?.similarsList)
-              : updateOntologiesQuery(searchContext?.ontologyListItems)
+            selectedTypeSearch.code === 'RT'
+              ? updateSimilarsQuery(similarsList)
+              : updateOntologiesQuery(ontologyListItems)
           )
 
-        searchContext?.setCopyQuery(result)
+        setCopyQuery(result)
       }
     }
-  }, [searchContext])
+  }, [
+    enrichQuery,
+    listOFTerms,
+    ontologyListItems,
+    selectedTypeSearch,
+    setCopyQuery,
+    setListOFTerms,
+    similarsList,
+    term
+  ])
 
   const onUpdateSelectedTerm = e => {
     if (e.target.value !== '') {
       const keyword = getWordAtNthPosition(e.target.value, e.target.selectionStart)
 
-      searchContext?.setInputText(keyword[0])
+      setInputText(keyword[0])
       setTimeout(() => {
-        if (!searchContext?.enrichQuery) {
+        if (!enrichQuery) {
           suggestionsService.retrieveSuggestions(keyword[0]).then(data => {
             if (data) {
-              searchContext?.setSuggestedTerms(data)
+              setSuggestedTerms(data)
             }
           })
         }
       }, 250)
 
-      if (searchContext?.selectedTypeSearch.code === 'RC') {
+      if (selectedTypeSearch.code === 'RC') {
         setTimeout(() => {
-          if (!searchContext?.enrichQuery) {
+          if (!enrichQuery) {
             getOntologyList(keyword[0])
           }
         }, 250)
-      } else if (searchContext?.selectedTypeSearch.code === 'RT') {
+      } else if (selectedTypeSearch.code === 'RT') {
         setTimeout(() => {
-          if (!searchContext?.enrichQuery) {
+          if (!enrichQuery) {
             getSimilarsList(keyword[0])
           }
         }, 250)
       }
 
-      searchContext?.op.current?.show(e, e.target)
-      searchContext?.setTerm(e.target.value)
+      op.current?.show(e, e.target)
+      setTerm(e.target.value)
     } else {
-      searchContext?.setTerm(e.target.value)
-      searchContext?.setSuggestedTerms([])
-      searchContext?.setOntologyList([])
-      searchContext?.setSimilarTerms([])
+      setTerm(e.target.value)
+      setSuggestedTerms([])
+      setOntologyList([])
+      setSimilarTerms([])
     }
   }
 
   const getOntologyList = lastKeyword => {
     ontologyListService.retrieveOntologyList(lastKeyword).then(data => {
       if (data) {
-        searchContext?.setOntologyList(transformOntologyList(data))
+        setOntologyList(transformOntologyList(data))
       }
     })
   }
@@ -108,7 +134,7 @@ export const SearchBox = () => {
               list.push(element.similar_word)
             })
 
-            searchContext?.setSimilarTerms(list)
+            setSimilarTerms(list)
           }
         }
       }
@@ -116,17 +142,17 @@ export const SearchBox = () => {
   }
 
   const updateSimilarsQuery = similarList => {
-    if (searchContext?.selectedTypeSearch.code === 'RT') {
+    if (selectedTypeSearch.code === 'RT') {
       if (similarList.length > 1) {
         const result = similarList.join(' AND ').split(',').join(' ')
 
-        searchContext?.setCopyQuery(getSelectedTerms(getListOfTerms(result)))
+        setCopyQuery(getSelectedTerms(getListOfTerms(result)))
 
         return getSelectedTerms(getListOfTerms(result))
       } else if (similarList.length === 1 && similarList[0].length > 0) {
         const result = similarList[0].join(' OR ').split(',').join(' OR ')
 
-        searchContext?.setCopyQuery(result)
+        setCopyQuery(result)
 
         return result
       }
@@ -137,7 +163,7 @@ export const SearchBox = () => {
     if (ontologyList.length > 1) {
       const result = ontologyList.join(' AND ').split(',').join(' ')
 
-      searchContext?.setCopyQuery(getSelectedTerms(getListOfTerms(result)))
+      setCopyQuery(getSelectedTerms(getListOfTerms(result)))
 
       return getSelectedTerms(getListOfTerms(result))
     } else if (ontologyList.length === 1 && ontologyList[0].length > 0) {
@@ -154,7 +180,7 @@ export const SearchBox = () => {
 
       const result = newItems.join(' OR ').split(',').join(' OR ')
 
-      searchContext?.setCopyQuery(result)
+      setCopyQuery(result)
 
       return result
     }
@@ -164,8 +190,8 @@ export const SearchBox = () => {
     <InputText
       type="search"
       aria-haspopup
-      value={String(searchContext?.term)}
-      data-text={searchContext?.inputText}
+      value={String(term)}
+      data-text={inputText}
       aria-controls="overlay_panel1"
       className="select-product-button"
       placeholder="Type term and/or drag and drop here document"

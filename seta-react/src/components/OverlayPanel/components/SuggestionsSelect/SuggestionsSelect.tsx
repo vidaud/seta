@@ -1,26 +1,23 @@
-import { useState } from 'react'
+import { useState, useContext } from 'react'
 import { SelectButton } from 'primereact/selectbutton'
 
-import { useSearchContext } from '../../../../context/search-context'
+import { SearchContext } from '../../../../context/search-context'
 import { isPhrase } from '../../../../pages/SearchPage/constants'
 import './style.css'
+import type Search from '../../../../types/search'
 
 export const SuggestionsSelect = () => {
-  const searchContext = useSearchContext()
+  const { op, inputText, term, setTerm, suggestedTerms } = useContext(SearchContext) as Search
   const [suggestionsValue, setSuggestionsValue] = useState(null)
 
   const suggestionsTemplate = value => {
-    const string = value.substr(
-      0,
-      value.toLowerCase().indexOf(searchContext?.inputText.toLowerCase())
-    )
+    const string = value.substr(0, value.toLowerCase().indexOf(inputText.toLowerCase()))
     const endString = value.substr(
-      value.toLowerCase().indexOf(searchContext?.inputText.toLowerCase()) +
-        searchContext?.inputText.length
+      value.toLowerCase().indexOf(inputText.toLowerCase()) + inputText.length
     )
     const highlightedText = value.substr(
-      value.toLowerCase().indexOf(searchContext?.inputText.toLowerCase()),
-      searchContext?.inputText.length
+      value.toLowerCase().indexOf(inputText.toLowerCase()),
+      inputText.length
     )
 
     return (
@@ -41,26 +38,23 @@ export const SuggestionsSelect = () => {
       onChange={e => {
         setSuggestionsValue(e.value)
 
-        if (String(searchContext?.term) !== '') {
+        if (String(term) !== '') {
           // Check for white space
           if (isPhrase(e.value)) {
-            const result = String(searchContext?.term).replace(
-              searchContext?.inputText,
-              `"${e.value}"`
-            )
+            const result = String(term).replace(inputText, `"${e.value}"`)
 
-            searchContext?.setTerm(result)
+            setTerm(result)
           } else {
-            const result = String(searchContext?.term).replace(searchContext?.inputText, e.value)
+            const result = String(term).replace(inputText, e.value)
 
-            searchContext?.setTerm(result)
+            setTerm(result)
           }
         }
 
-        searchContext?.op.current?.hide()
+        op.current?.hide()
       }}
       itemTemplate={suggestionsTemplate}
-      options={searchContext?.suggestedTerms}
+      options={suggestedTerms}
     />
   )
 }

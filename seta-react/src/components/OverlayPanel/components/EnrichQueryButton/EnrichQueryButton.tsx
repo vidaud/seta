@@ -1,28 +1,31 @@
+import { useContext } from 'react'
 import './style.css'
 import { Button } from 'primereact/button'
 
-import { useSearchContext } from '../../../../context/search-context'
+import { SearchContext, useSearchContext } from '../../../../context/search-context'
 import magic_icon from '../../../../icons/svg/magic_icon.svg'
 import magic_icon_fill from '../../../../icons/svg/magic_icon_fill.svg'
+import type Search from '../../../../types/search'
 
 export const EnrichQueryButton = () => {
   const searchContext = useSearchContext()
+  const { enrichQuery, setEnrichQuery } = useContext(SearchContext) as Search
 
   const toggleEnrichButton = () => {
-    const toggled = !searchContext?.enrichQuery
+    const toggled = !enrichQuery
 
-    searchContext?.setEnrichQuery(toggled)
-    searchContext?.toggleEnrichQuery(toggled)
+    setEnrichQuery(toggled)
+    searchContext.toggleEnrichQuery(toggled)
   }
 
   return (
     <Button
-      className={searchContext?.enrichQuery ? 'custom-magic' : 'custom-magic magic'}
+      className={enrichQuery ? 'custom-magic' : 'custom-magic magic'}
       tooltip="Enrich query automatically"
       tooltipOptions={{ position: 'bottom' }}
       onClick={toggleEnrichButton}
     >
-      {searchContext?.enrichQuery ? (
+      {enrichQuery ? (
         <img src={magic_icon_fill} alt="Enrich Query" />
       ) : (
         <img src={magic_icon} alt="Enrich Query" />

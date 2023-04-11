@@ -32,7 +32,7 @@ export const SearchSection = () => {
     //update corpus api call parameters
 
     corpusService.getRefreshedToken()
-  }, [term])
+  }, [term, setTerm])
 
   const toggleOverlayPanel = () => {
     // console.log(event)

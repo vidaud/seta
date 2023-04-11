@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useContext } from 'react'
 import { Column } from 'primereact/column'
 import type { DataTableExpandedRows } from 'primereact/datatable'
 import { DataTable } from 'primereact/datatable'
@@ -6,13 +6,14 @@ import { MultiSelect } from 'primereact/multiselect'
 import { ProgressBar } from 'primereact/progressbar'
 
 import './style.css'
-import { useSearchContext } from '../../../../context/search-context'
+import { SearchContext } from '../../../../context/search-context'
+import type Search from '../../../../types/search'
 
 const DocumentList = () => {
   const isMounted = useRef(false)
   const [basicFirst, setBasicFirst] = useState(0)
   const [basicRows, setBasicRows] = useState(10)
-  const searchContext = useSearchContext()
+  const { items } = useContext(SearchContext) as Search
   const [expandedRows, setExpandedRows] = useState<any[] | DataTableExpandedRows | undefined>(
     undefined
   )
@@ -147,7 +148,7 @@ const DocumentList = () => {
     <div className="datatable-rowexpansion">
       <div className="card list">
         <DataTable
-          value={searchContext?.items}
+          value={items}
           paginator
           expandedRows={expandedRows}
           onRowToggle={e => setExpandedRows(e.data)}
@@ -155,7 +156,7 @@ const DocumentList = () => {
           rowExpansionTemplate={rowExpansionTemplate}
           first={basicFirst}
           rows={basicRows}
-          totalRecords={searchContext?.items?.length}
+          totalRecords={items?.length}
           rowsPerPageOptions={[5, 10, 20, 30]}
           onPage={onBasicPageChange}
           paginatorTemplate="CurrentPageReport FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink RowsPerPageDropdown"

@@ -1,45 +1,54 @@
-import { useEffect } from 'react'
+import { useEffect, useContext } from 'react'
 import { Button } from 'primereact/button'
 
-import { useSearchContext } from '../../../../context/search-context'
+import { SearchContext } from '../../../../context/search-context'
 import { CorpusService } from '../../../../services/corpus/corpus.service'
 import { CorpusSearchPayload } from '../../../../store/corpus-search-payload'
-
 import './style.css'
+import type Search from '../../../../types/search'
 
 export const SearchButton = () => {
-  const searchContext = useSearchContext()
+  const {
+    term,
+    lastPayload,
+    setLastPayload,
+    setItems,
+    setAggregations,
+    copyQuery,
+    typeofSearch,
+    timeRangeValue,
+    setShowContent
+  } = useContext(SearchContext) as Search
   const corpusService = new CorpusService()
 
   useEffect(() => {
-    if (String(searchContext?.term) !== '') {
-      searchContext?.setLastPayload(
+    if (String(term) !== '') {
+      setLastPayload(
         new CorpusSearchPayload({
-          term: searchContext?.copyQuery,
+          term: copyQuery,
           aggs: 'date_year',
           n_docs: 100,
-          search_type: searchContext?.typeofSearch,
-          date_range: searchContext?.timeRangeValue
+          search_type: typeofSearch,
+          date_range: timeRangeValue
         })
       )
     }
-  }, [searchContext])
+  }, [copyQuery, setLastPayload, term, timeRangeValue, typeofSearch])
 
   const onSearch = () => {
-    if (String(searchContext?.term) !== null && String(searchContext?.term).length >= 2) {
+    if (String(term) !== null && String(term).length >= 2) {
       corpusService.getRefreshedToken()
 
-      corpusService.getDocuments(searchContext?.lastPayload).then(data => {
+      corpusService.getDocuments(lastPayload).then(data => {
         if (data) {
-          searchContext?.setItems(data.documents)
-          searchContext?.setAggregations(data.aggregations)
+          setItems(data.documents)
+          setAggregations(data.aggregations)
         }
       })
 
-      searchContext?.getAggregations(searchContext?.aggregations)
-      searchContext?.setShowContent(true)
+      setShowContent(true)
     } else {
-      searchContext?.setShowContent(false)
+      setShowContent(false)
     }
   }
 

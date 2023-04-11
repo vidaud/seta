@@ -32,15 +32,16 @@ export const SearchProvider = ({ children }: Props) => {
   const [enrichButton, setEnrichButton] = React.useState(false)
   const [similarsList, setSimilarsList] = React.useState<string[]>([])
   const [ontologyValue, setOntologyValue] = React.useState(null)
-  const [ontologyList, setOntologyList] = React.useState<string[]>([])
+  const [ontologyList, setOntologyList] = React.useState<any[]>([])
   const [ontologyListItems, setOntologyListItems] = React.useState<string[]>([])
   const [suggestedTerms, setSuggestedTerms] = React.useState<any>(null)
   const [similarTerms, setSimilarTerms] = React.useState<any>(null)
+  const [selectedRelatedTermsCl, setSelectedRelatedTermsCl] = React.useState<any[] | null>(null)
+  const [similarValues, setSimilarValues] = React.useState(null)
   const selectNode = () => void {}
   const selectAllTerms = () => void {}
   const callService = () => void {}
   const toggleEnrichQuery = () => void {}
-  const getAggregations = () => void {}
   const op = React.useRef<OverlayPanel>(null)
 
   return (
@@ -91,7 +92,10 @@ export const SearchProvider = ({ children }: Props) => {
         selectAllTerms,
         callService,
         toggleEnrichQuery,
-        getAggregations
+        selectedRelatedTermsCl,
+        setSelectedRelatedTermsCl,
+        similarValues,
+        setSimilarValues
       }}
     >
       {children}

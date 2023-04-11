@@ -1,36 +1,40 @@
+import { useContext } from 'react'
 import './style.css'
 import { ToggleButton } from 'primereact/togglebutton'
 
-import { useSearchContext } from '../../../../context/search-context'
+import { SearchContext, useSearchContext } from '../../../../context/search-context'
+import type Search from '../../../../types/search'
 
 export const SelectAllTerms = () => {
+  const { inputText, similarTerms, selectedTypeSearch, ontologyList, selectAll, setSelectAll } =
+    useContext(SearchContext) as Search
   const searchContext = useSearchContext()
 
   return (
     <ToggleButton
-      checked={searchContext?.selectAll}
+      checked={selectAll}
       className="custom"
-      aria-label={searchContext?.inputText}
-      onLabel={searchContext?.inputText}
-      offLabel={searchContext?.inputText}
-      tooltip={searchContext?.selectAll ? 'Unselect all terms' : 'Select all terms'}
+      aria-label={inputText}
+      onLabel={inputText}
+      offLabel={inputText}
+      tooltip={selectAll ? 'Unselect all terms' : 'Select all terms'}
       tooltipOptions={{ position: 'top' }}
       onChange={e => {
-        searchContext?.setSelectAll(e.value)
+        setSelectAll(e.value)
 
-        if (searchContext?.selectedTypeSearch.code === 'RC') {
+        if (selectedTypeSearch.code === 'RC') {
           if (e.value) {
-            searchContext?.selectNode(searchContext?.ontologyList)
+            searchContext.selectNode(ontologyList)
           } else if (!e.value) {
-            searchContext?.selectNode([])
+            searchContext.selectNode([])
           }
         }
 
-        if (searchContext?.selectedTypeSearch.code === 'RT') {
+        if (selectedTypeSearch.code === 'RT') {
           if (e.value) {
-            searchContext?.selectAllTerms(searchContext?.similarTerms)
+            searchContext.selectAllTerms(similarTerms)
           } else if (!e.value) {
-            searchContext?.selectAllTerms([])
+            searchContext.selectAllTerms([])
           }
         }
       }}

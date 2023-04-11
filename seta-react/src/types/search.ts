@@ -52,9 +52,9 @@ export default interface Search {
   setEnrichButton: React.Dispatch<React.SetStateAction<boolean>>
   similarsList: string[]
   setSimilarsList: React.Dispatch<React.SetStateAction<string[]>>
-  ontologyValue: null
-  setOntologyValue: React.Dispatch<React.SetStateAction<null>>
-  ontologyList: string[]
+  ontologyValue: any
+  setOntologyValue: React.Dispatch<React.SetStateAction<any>>
+  ontologyList: any[]
   setOntologyList: React.Dispatch<string[]>
   ontologyListItems: string[]
   setOntologyListItems: React.Dispatch<React.SetStateAction<string[]>>
@@ -66,5 +66,8 @@ export default interface Search {
   selectAllTerms: (selectedNodes: any) => void
   callService: (selectedNodes: any) => void
   toggleEnrichQuery: (selectedNodes: any) => void
-  getAggregations: (aggregations: any) => void
+  selectedRelatedTermsCl: any[] | null
+  setSelectedRelatedTermsCl: React.Dispatch<React.SetStateAction<any[] | null>>
+  similarValues: null
+  setSimilarValues: React.Dispatch<React.SetStateAction<null>>
 }

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 import { Checkbox } from 'primereact/checkbox'
 import { Slider } from 'primereact/slider'
 import { Tooltip } from 'primereact/tooltip'
@@ -7,10 +7,11 @@ import './style.css'
 
 import AggregationsChart from './components/AggregationsChart'
 
-import { useSearchContext } from '../../../../context/search-context'
+import { SearchContext } from '../../../../context/search-context'
+import type Search from '../../../../types/search'
 
 const TimeRange = () => {
-  const searchContext = useSearchContext()
+  const { setTimeRangeValue } = useContext(SearchContext) as Search
   const [range, setRange] = useState<any>([1958, 2023])
   const [includeZero, setIncludeZero] = useState<boolean>(false)
 
@@ -18,7 +19,7 @@ const TimeRange = () => {
     setRange(e.value)
     const time = 'gte:' + `${e.value[0]}` + ',lte:' + `${e.value[1]}`
 
-    searchContext?.setTimeRangeValue(time)
+    setTimeRangeValue(time)
   }
 
   return (
