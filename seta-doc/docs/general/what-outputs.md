@@ -1,27 +1,36 @@
 # User interface
 
-After searching within the user interface, it possible to see a list of results in the bottom of the window:
-
-![Screenshot](../img/search_results.png){ width="800" }
-
-
+=== "List of results"
+    After click on the search button, below the search bar, you can see the list of results    :
+    ![Screenshot](../img/search_results.png)
 
 
 
 
-
-
-If you click in the side arrow of every result, you can see more details of the single result:
-
-![Screenshot](../img/search_results_detail.png){ width="800" }
+=== "Details of the single result"
+    If you click on a single result you can see more detailed information:
+    ![Screenshot](../img/search_results_detail.png)
 
 
 
 # API
-For the API interface, depending on the type of request: *get, post, put, delete* the various results will be described in a JSON file format. 
 
-e.g.: 
-Example of a result after a get execution.
+- For the API interface, depending on the type of request: *get, post, put, delete* the various results will be described in a JSON file format. 
 
- ![Screenshot](../img/api_get.png){ width="800" }
+=== "Result after a *get* execution."
+        
+    ![Screenshot](../img/api_get.png)
+
+=== "Result after a *put* execution."
+        
+    ![Screenshot](../img/api_put.png)
+
+=== "Result after a *post* execution."
+        
+    ![Screenshot](../img/api_post.png)  
+
+=== "Result after a *delete* execution."
+        
+    ![Screenshot](../img/api_delete.png)   
+
 
