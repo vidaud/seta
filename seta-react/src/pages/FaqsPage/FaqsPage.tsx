@@ -11,7 +11,7 @@ const FaqsPage = () => {
   const [nodes, setNodes] = useState<any>()
   const nodeService = new FaqsService()
 
-  const breadCrumbsItems = [{ label: 'Faqs', url: '/seta-ui/faqs' }]
+  const breadCrumbsItems = [{ label: 'Faqs', url: '/faqs' }]
 
   const home = { icon: 'pi pi-home', url: '/seta-ui' }
 

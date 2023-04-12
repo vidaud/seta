@@ -1,10 +1,10 @@
 import pytest
-import time
+import requests
 
 from seta_flask_server.config import TestConfig
 from seta_flask_server.factory import create_app
 
-from tests.infrastructure.mongodb.db import DbTestSetaApi
+from tests.infrastructure.init.db import DbTestSetaApi
 import os
 
 """
@@ -14,6 +14,7 @@ import os
 def pytest_addoption(parser):
     parser.addoption("--db_host", action="store", default="localhost", help="database host server") 
     parser.addoption("--db_port", action="store", default="27018", help="database port")
+    parser.addoption("--web_root", action="store", default="localhost:8080", help="database port")
 
 @pytest.fixture(scope="session")
 def db_host(request):
@@ -23,6 +24,10 @@ def db_host(request):
 def db_port(request):
     return request.config.getoption('--db_port')
 
+@pytest.fixture(scope="session")
+def web_root(request):
+    return request.config.getoption('--web_root')
+
 @pytest.fixture(scope="session", autouse=True)
 def init_os():
     #set the required env read in config
@@ -30,8 +35,27 @@ def init_os():
     
     return True
 
+@pytest.fixture(scope='module', autouse=True)
+def db(db_host, db_port):
+    
+    config = TestConfig()
+        
+    if db_host:
+        config.DB_HOST = db_host
+
+    if db_port:        
+        config.DB_PORT = int(db_port)
+               
+    db = DbTestSetaApi(db_host=config.DB_HOST, db_port=config.DB_PORT, db_name=config.DB_NAME)
+    db.clear_db()
+    db.init_db()   
+
+    yield db   
+
+    db.clear_db()
+
 @pytest.fixture(scope='module')
-def app(db_host, db_port):    
+def app(db_host, db_port, web_root):    
     configuration = TestConfig() 
     
     #configuration.DB_HOST = "localhost"
@@ -43,21 +67,25 @@ def app(db_host, db_port):
     if db_port:        
         configuration.DB_PORT = int(db_port)
 
-    time_str = str(int(time.time()))
-    configuration.DB_NAME = configuration.DB_NAME + f"_{time_str}"
-
     app = create_app(configuration)
     app.testing = True
     
-    with app.app_context(): 
-        db = DbTestSetaApi()
-        db.init_db()   
+    app.config["PRIVATE_API_URL"] = f"http://{web_root}/seta-api-private/v1"
     
-        yield app   
-
-        db.clear_db()
+    with app.app_context(): 
+        yield app
 
 @pytest.fixture(scope='module')
 def client(app):
     with app.test_client() as client:
-        yield client      
+        yield client
+        
+@pytest.fixture(scope="module")
+def seta_api_corpus(web_root: str):
+    seta_api_corpus = f"http://{web_root}/seta-api-test/corpus"
+       
+    yield seta_api_corpus
+    
+    #remove everything from ES
+    cleanup_url = f"http://{web_root}/seta-api-test/cleanup"
+    requests.post(cleanup_url)    

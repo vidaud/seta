@@ -4,7 +4,23 @@ The *seta-react* contains the image that works to launch the web app of SeTA pro
 
 Within the Dockerfile is stablished the configuration for the execution of the app so it can be executed when the build of the project is launched.
 
-
+.
+└── seta-react/     
+    ├── .husky    
+    ├── docs/     
+    │   └── eslint-configuration.md     
+    ├── node-modules     
+    ├── public     
+    ├── src    
+    ├── dockerfile    
+    └── file/    
+        ├── and   
+        ├── folder   
+        ├── nesting.   
+        └── You can even/   
+            └── use/     
+                ├── markdown    
+                └── bullets!      
 ## Build
 The image is build it together with all the images through the execution of the docker-compose:
 ```

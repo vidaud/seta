@@ -1,5 +1,6 @@
 from flask import current_app as app, jsonify
-from flask_jwt_extended import jwt_required, get_jwt_identity
+from flask_jwt_extended import get_jwt_identity
+from werkzeug.exceptions import HTTPException
 
 from flask_restx import Namespace, Resource, abort
 
@@ -9,6 +10,7 @@ from seta_flask_server.repository.interfaces import IResourcesBroker, IUsersBrok
 from seta_flask_server.repository.models import ResourceModel, EntityScope
 from seta_flask_server.infrastructure.decorators import auth_validator
 from seta_flask_server.infrastructure.scope_constants import ResourceScopeConstants, CommunityScopeConstants
+from seta_flask_server.infrastructure.clients.private_api_client import PrivateResourceClient
 
 from http import HTTPStatus
 from .models.resource_dto import (new_resource_parser, update_resource_parser, resource_model, resource_limits_model)
@@ -73,27 +75,33 @@ class CommunityResourceList(Resource):
             
             resource_id = resource_dict["resource_id"]
             id_exists = self.resourcesBroker.resource_id_exists(resource_id)
-                       
+                        
             if not id_exists:
-                model = ResourceModel(resource_id=resource_id, community_id=community_id, 
-                                    title=resource_dict["title"], abstract=resource_dict["abstract"],                                    
-                                    creator_id=identity["user_id"])
+                # verify for orphan resources in seta-api
+                client = PrivateResourceClient(resource_id=resource_id)
+                id_exists = client.exists()
+            
+            if id_exists:
+                error = f"Resource id '{resource_id}' already exists, must be unique."
+                abort(HTTPStatus.CONFLICT, error, status="fail")           
+            
+            model = ResourceModel(resource_id=resource_id, community_id=community_id, 
+                                title=resource_dict["title"], abstract=resource_dict["abstract"],
+                                creator_id=identity["user_id"])
 
-                 #set resouce scopes for the creator_id
-                scopes = [
-                    EntityScope(user_id=model.creator_id,  id=model.resource_id, scope=ResourceScopeConstants.Edit).to_resource_json(),
-                    EntityScope(user_id=model.creator_id,  id=model.resource_id, scope=ResourceScopeConstants.DataAdd).to_resource_json(),
-                    EntityScope(user_id=model.creator_id,  id=model.resource_id, scope=ResourceScopeConstants.DataDelete).to_resource_json()
-                          ]
-                
-                self.resourcesBroker.create(model=model,scopes=scopes)
+                #set resouce scopes for the creator_id
+            scopes = [
+                EntityScope(user_id=model.creator_id,  id=model.resource_id, scope=ResourceScopeConstants.Edit).to_resource_json(),
+                EntityScope(user_id=model.creator_id,  id=model.resource_id, scope=ResourceScopeConstants.DataAdd).to_resource_json(),
+                EntityScope(user_id=model.creator_id,  id=model.resource_id, scope=ResourceScopeConstants.DataDelete).to_resource_json()
+                        ]
+            
+            self.resourcesBroker.create(model=model,scopes=scopes)
+        except HTTPException:
+            raise
         except:
             app.logger.exception("CommunityResourceList->post")
             abort(HTTPStatus.INTERNAL_SERVER_ERROR)
-        
-        if id_exists:
-            error = f"Resource id '{resource_id}' already exists, must be unique."
-            abort(HTTPStatus.CONFLICT, error, status="fail")
 
 
         response = jsonify(status="success", message="New resource  added")
@@ -200,9 +208,10 @@ class CommunityResource(Resource):
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
         
         try:            
-            self.resourcesBroker.delete(id)
+            client = PrivateResourceClient(resource_id=id)
+            client.delete()
             
-            #TODO: delete resource from elastic search (from here or from the client side?)
+            self.resourcesBroker.delete(id)            
         except:
             app.logger.exception("CommunityResource->delete")
             abort(HTTPStatus.INTERNAL_SERVER_ERROR)   

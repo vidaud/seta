@@ -1,32 +1,39 @@
-from seta_flask_server.repository.mongo_implementation import DbConfig
+from pymongo import MongoClient
 from seta_flask_server.repository.models import SetaUser, RsaKey
-from flask import current_app, g, json
+
+from pathlib import Path
+
+import json
 import datetime
 import pytz
-from abc import ABC, abstractmethod
 
-class DbTest(ABC):
-    def __init__(self) -> None:
-        config = DbConfig(current_app=current_app, g=g)
-        self.db = config.get_db()
 
-    @abstractmethod
-    def init_db(self):
-        pass
+class DbTestSetaApi:
+    def __init__(self, db_host:str, db_port:int, db_name: str) -> None:
+        self.db_host = db_host
+        self.db_port = db_port
+        self.db_name = db_name
+        
+        client = MongoClient(self.db_host, self.db_port)
+        self.db = client[self.db_name] 
         
     def clear_db(self):
+        """Delete database"""
+        
         for c in self.db.list_collection_names():
             self.db.drop_collection(c)
 
-class DbTestSetaApi(DbTest):
-    def __init__(self) -> None:
-        super().__init__()
-
     def init_db(self):
+        """
+        Initialize test database and its collections
+        """
+        
         created_at = datetime.datetime.now(tz=pytz.utc)
-        data_path="../tests/infrastructure/data"
+        base_path = Path(__file__).parent
+        users_file_path="../data/users.json"
+        users_full_path = (base_path / users_file_path).resolve()
              
-        with current_app.open_resource(f"{data_path}/users.json") as fp:
+        with open(users_full_path) as fp:
             data = json.load(fp)
       
         collection = self.db["users"]
@@ -37,9 +44,11 @@ class DbTestSetaApi(DbTest):
             collection.insert_one(su.to_json())
 
             #insert public key
-            pub_path = f"{data_path}/{su.user_id}.pub"
-            with current_app.open_resource(resource=pub_path) as fk:
-                key = fk.read().decode("utf8")
+            pub_path=f"../data/{su.user_id}.pub"        
+            full_path = (base_path / pub_path).resolve()
+            
+            with open(full_path, encoding="utf-8") as fk:
+                key = fk.read()
                 rk = RsaKey(user_id=su.user_id, rsa_value=key, created_at=created_at)
                 collection.insert_one(rk.to_json())
 

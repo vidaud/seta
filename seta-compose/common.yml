@@ -1,7 +1,7 @@
 services:
   mongo:
     restart: always
-    build: 
+    build:
       context: ../seta-mongo
       args:
         - HTTP_PROXY=${HTTP_PROXY}
@@ -14,11 +14,11 @@ services:
 
   es:
     restart: always
-    build: 
+    build:
       context: ../seta-es
       args:
         - HTTP_PROXY=${HTTP_PROXY}
-        - HTTPS_PROXY=${HTTPS_PROXY}      
+        - HTTPS_PROXY=${HTTPS_PROXY}
     expose:
       - "9200"
       - "9300"
@@ -34,11 +34,11 @@ services:
 
   api:
     restart: always
-    build: 
+    build:
       context: ../seta-api
       args:
         - HTTP_PROXY=${HTTP_PROXY}
-        - HTTPS_PROXY=${HTTPS_PROXY}      
+        - HTTPS_PROXY=${HTTPS_PROXY}
     expose:
       - "8081"
     mem_limit: "8g"
@@ -52,24 +52,24 @@ services:
 
   nginx:
     restart: always
-    build: 
+    build:
       context: ../seta-nginx
       args:
         - HTTP_PROXY=${HTTP_PROXY}
-        - HTTPS_PROXY=${HTTPS_PROXY}       
+        - HTTPS_PROXY=${HTTPS_PROXY}
     environment:
       - NO_PROXY=${NO_PROXY}
       - no_proxy=${NO_PROXY}
 
   ui:
     restart: always
-    build: 
+    build:
       context: ../seta-ui
       args:
         - HTTP_PROXY=${HTTP_PROXY}
-        - HTTPS_PROXY=${HTTPS_PROXY}  
+        - HTTPS_PROXY=${HTTPS_PROXY}
     expose:
-      - "8080" 
+      - "8080"
     environment:
       - NO_PROXY=${NO_PROXY}
       - no_proxy=${NO_PROXY}
@@ -83,17 +83,17 @@ services:
 
   ui-react:
     restart: always
-    build: 
+    build:
       context: ../seta-react
       args:
         - HTTP_PROXY=${HTTP_PROXY}
-        - HTTPS_PROXY=${HTTPS_PROXY}  
+        - HTTPS_PROXY=${HTTPS_PROXY}
     expose:
       - "3000"
     environment:
       - NO_PROXY=${NO_PROXY}
       - no_proxy=${NO_PROXY}
-  
+
   doc:
     restart: always
     build:
@@ -103,10 +103,10 @@ services:
         - HTTPS_PROXY=${HTTPS_PROXY}
     environment:
       - NO_PROXY=${NO_PROXY}
-      - no_proxy=${NO_PROXY}  
+      - no_proxy=${NO_PROXY}
 
   data:
-    build: 
+    build:
       context: ../seta-data
       args:
         - HTTP_PROXY=${HTTP_PROXY}
