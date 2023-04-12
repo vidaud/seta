@@ -180,7 +180,7 @@ def register_blueprints(app):
     app.register_blueprint(token_auth, url_prefix="/authentication/v1")
     app.register_blueprint(token_info, url_prefix="/authorization/v1")
 
-    app.register_blueprint(communities_bp_v1, url_prefix="/api/communities/v1")
+    app.register_blueprint(communities_bp_v1, url_prefix="/api/v1")
     
 def register_extensions(app):    
     github.init_app(app)
