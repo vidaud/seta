@@ -241,3 +241,17 @@ export const transformOntologyList = (nodes: any) => {
 
   return list
 }
+
+export const checkSubset = (parentArray, subsetArray) => {
+  const set = new Set(parentArray)
+  let nodes: any = {}
+
+  if (subsetArray.every(x => set.has(x))) {
+    nodes = {
+      id: subsetArray[0],
+      node: subsetArray
+    }
+  }
+
+  return nodes
+}

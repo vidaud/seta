@@ -93,7 +93,7 @@ export const SearchButton = () => {
         corpusService
           .getDocuments(
             new CorpusSearchPayload({
-              term: copyQuery,
+              term: copyQuery === '' ? String(term) : copyQuery,
               aggs: 'date_year',
               n_docs: 100,
               search_type: typeofSearch,

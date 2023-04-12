@@ -1,2 +1,2 @@
 // export { default } from './SearchPage'
-export { default } from './SearchPageCopy'
+export { default } from './SearchPage'
