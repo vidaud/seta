@@ -1,7 +1,6 @@
 import type { OverlayPanel } from 'primereact/overlaypanel'
 
 import type { Term } from '../models/term.model'
-import type { CorpusSearchPayload } from '../store/corpus-search-payload'
 
 export default interface Search {
   showContent: boolean
@@ -44,8 +43,6 @@ export default interface Search {
   setEnrichQuery: React.Dispatch<React.SetStateAction<boolean>>
   copyQuery: string | undefined
   setCopyQuery: React.Dispatch<string | undefined>
-  lastPayload: CorpusSearchPayload | undefined
-  setLastPayload: React.Dispatch<React.SetStateAction<CorpusSearchPayload | undefined>>
   selectAll: boolean
   setSelectAll: React.Dispatch<React.SetStateAction<boolean>>
   enrichButton: boolean
@@ -70,4 +67,6 @@ export default interface Search {
   setSelectedRelatedTermsCl: React.Dispatch<React.SetStateAction<any[] | null>>
   similarValues: null
   setSimilarValues: React.Dispatch<React.SetStateAction<null>>
+  loading: boolean
+  setLoading: React.Dispatch<React.SetStateAction<boolean>>
 }

@@ -3,7 +3,6 @@ import type { OverlayPanel } from 'primereact/overlaypanel'
 
 import type { Term } from '../models/term.model'
 import { defaultTypeOfSearch } from '../pages/SearchPage/constants'
-import type { CorpusSearchPayload } from '../store/corpus-search-payload'
 import type Search from '../types/search'
 
 export const SearchContext = React.createContext<Search | null>(null)
@@ -27,7 +26,6 @@ export const SearchProvider = ({ children }: Props) => {
   const [listOFTerms, setListOFTerms] = React.useState<Term[]>([])
   const [enrichQuery, setEnrichQuery] = React.useState(false)
   const [copyQuery, setCopyQuery] = React.useState<string | undefined>('')
-  const [lastPayload, setLastPayload] = React.useState<CorpusSearchPayload | undefined>()
   const [selectAll, setSelectAll] = React.useState(false)
   const [enrichButton, setEnrichButton] = React.useState(false)
   const [similarsList, setSimilarsList] = React.useState<string[]>([])
@@ -38,6 +36,7 @@ export const SearchProvider = ({ children }: Props) => {
   const [similarTerms, setSimilarTerms] = React.useState<any>(null)
   const [selectedRelatedTermsCl, setSelectedRelatedTermsCl] = React.useState<any[] | null>(null)
   const [similarValues, setSimilarValues] = React.useState(null)
+  const [loading, setLoading] = React.useState(true)
   const selectNode = () => void {}
   const selectAllTerms = () => void {}
   const callService = () => void {}
@@ -70,8 +69,6 @@ export const SearchProvider = ({ children }: Props) => {
         setEnrichQuery,
         copyQuery,
         setCopyQuery,
-        lastPayload,
-        setLastPayload,
         selectAll,
         setSelectAll,
         enrichButton,
@@ -95,7 +92,9 @@ export const SearchProvider = ({ children }: Props) => {
         selectedRelatedTermsCl,
         setSelectedRelatedTermsCl,
         similarValues,
-        setSimilarValues
+        setSimilarValues,
+        loading,
+        setLoading
       }}
     >
       {children}

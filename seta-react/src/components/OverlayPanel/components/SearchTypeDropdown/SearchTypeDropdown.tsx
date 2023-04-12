@@ -21,7 +21,8 @@ export const SearchTypeDropdown = () => {
     setSuggestedTerms,
     callService,
     setOntologyList,
-    setSelectedTypeSearch
+    setSelectedTypeSearch,
+    setLoading
   } = useContext(SearchContext) as Search
 
   const onChangeOption = (e: { value }) => {
@@ -38,6 +39,7 @@ export const SearchTypeDropdown = () => {
 
     if (code === 'RC') {
       setTimeout(() => {
+        setLoading(true)
         ontologyListService.retrieveOntologyList(inputText).then(data => {
           if (data) {
             setOntologyList(transformOntologyList(data))

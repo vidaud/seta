@@ -1,14 +1,8 @@
-import { useEffect, useContext } from 'react'
+import { useContext } from 'react'
 import { InputText } from 'primereact/inputtext'
 
 import { SearchContext } from '../../../../context/search-context'
-import {
-  getListOfTerms,
-  getSelectedTerms,
-  getWordAtNthPosition,
-  isPhrase,
-  transformOntologyList
-} from '../../../../pages/SearchPage/constants'
+import { getWordAtNthPosition, transformOntologyList } from '../../../../pages/SearchPage/constants'
 import './style.css'
 import { OntologyListService } from '../../../../services/corpus/ontology-list.service'
 import { SimilarsService } from '../../../../services/corpus/similars.service'
@@ -23,63 +17,21 @@ export const SearchBox = () => {
     term,
     setTerm,
     op,
-    setCopyQuery,
-    setListOFTerms,
     enrichQuery,
-    listOFTerms,
     selectedTypeSearch,
-    similarsList,
-    ontologyListItems,
     setInputText,
     setSuggestedTerms,
     setOntologyList,
     setSimilarTerms,
-    inputText
+    inputText,
+    setLoading
   } = useContext(SearchContext) as Search
-
-  useEffect(() => {
-    if (String(term) !== '') {
-      setListOFTerms(getListOfTerms(term))
-
-      if (!enrichQuery) {
-        setCopyQuery(getSelectedTerms(listOFTerms))
-      } else {
-        const currentSearch: any = getSelectedTerms(listOFTerms)
-
-        if (selectedTypeSearch.code === 'RT') {
-          updateSimilarsQuery(similarsList)
-        }
-
-        if (selectedTypeSearch.code === 'RC') {
-          updateOntologiesQuery(ontologyListItems)
-        }
-
-        const result = currentSearch
-          .concat(' OR ')
-          .concat(
-            selectedTypeSearch.code === 'RT'
-              ? updateSimilarsQuery(similarsList)
-              : updateOntologiesQuery(ontologyListItems)
-          )
-
-        setCopyQuery(result)
-      }
-    }
-  }, [
-    enrichQuery,
-    listOFTerms,
-    ontologyListItems,
-    selectedTypeSearch,
-    setCopyQuery,
-    setListOFTerms,
-    similarsList,
-    term
-  ])
 
   const onUpdateSelectedTerm = e => {
     if (e.target.value !== '') {
       const keyword = getWordAtNthPosition(e.target.value, e.target.selectionStart)
 
+      setLoading(true)
       setInputText(keyword[0])
       setTimeout(() => {
         if (!enrichQuery) {
@@ -89,7 +41,7 @@ export const SearchBox = () => {
             }
           })
         }
-      }, 250)
+      }, 500)
 
       if (selectedTypeSearch.code === 'RC') {
         setTimeout(() => {
@@ -121,6 +73,8 @@ export const SearchBox = () => {
         setOntologyList(transformOntologyList(data))
       }
     })
+
+    setLoading(false)
   }
 
   const getSimilarsList = lastKeyword => {
@@ -139,51 +93,6 @@ export const SearchBox = () => {
         }
       }
     })
-  }
-
-  const updateSimilarsQuery = similarList => {
-    if (selectedTypeSearch.code === 'RT') {
-      if (similarList.length > 1) {
-        const result = similarList.join(' AND ').split(',').join(' ')
-
-        setCopyQuery(getSelectedTerms(getListOfTerms(result)))
-
-        return getSelectedTerms(getListOfTerms(result))
-      } else if (similarList.length === 1 && similarList[0].length > 0) {
-        const result = similarList[0].join(' OR ').split(',').join(' OR ')
-
-        setCopyQuery(result)
-
-        return result
-      }
-    }
-  }
-
-  const updateOntologiesQuery = ontologyList => {
-    if (ontologyList.length > 1) {
-      const result = ontologyList.join(' AND ').split(',').join(' ')
-
-      setCopyQuery(getSelectedTerms(getListOfTerms(result)))
-
-      return getSelectedTerms(getListOfTerms(result))
-    } else if (ontologyList.length === 1 && ontologyList[0].length > 0) {
-      const newOntologyList = ontologyList[0]
-      const newItems: any = []
-
-      if (newOntologyList !== '' || newOntologyList.length > 0) {
-        newOntologyList.forEach(list => {
-          list.forEach(li => {
-            isPhrase(li) ? newItems.push(`"${li}"`) : newItems.push(li)
-          })
-        })
-      }
-
-      const result = newItems.join(' OR ').split(',').join(' OR ')
-
-      setCopyQuery(result)
-
-      return result
-    }
   }
 
   return (

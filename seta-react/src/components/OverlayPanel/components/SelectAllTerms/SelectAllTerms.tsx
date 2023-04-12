@@ -6,8 +6,15 @@ import { SearchContext, useSearchContext } from '../../../../context/search-cont
 import type Search from '../../../../types/search'
 
 export const SelectAllTerms = () => {
-  const { inputText, similarTerms, selectedTypeSearch, ontologyList, selectAll, setSelectAll } =
-    useContext(SearchContext) as Search
+  const {
+    inputText,
+    similarTerms,
+    selectedTypeSearch,
+    ontologyList,
+    selectAll,
+    setSelectAll,
+    enrichQuery
+  } = useContext(SearchContext) as Search
   const searchContext = useSearchContext()
 
   return (
@@ -17,6 +24,7 @@ export const SelectAllTerms = () => {
       aria-label={inputText}
       onLabel={inputText}
       offLabel={inputText}
+      disabled={enrichQuery || ontologyList.length === 0 ? true : false}
       tooltip={selectAll ? 'Unselect all terms' : 'Select all terms'}
       tooltipOptions={{ position: 'top' }}
       onChange={e => {

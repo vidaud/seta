@@ -40,7 +40,8 @@ export const RelatedTermsList = () => {
     setOntologyValue,
     selectedTypeSearch,
     callService,
-    toggleEnrichQuery
+    setLoading,
+    loading
   } = useContext(SearchContext) as Search
 
   const ontologyListService = new OntologyListService()
@@ -54,6 +55,8 @@ export const RelatedTermsList = () => {
           setOntologyList(transformOntologyList(data))
           ontologyTermList.push(...[String(data).split(',')])
         }
+
+        setLoading(false)
       })
     })
 
@@ -199,6 +202,7 @@ export const RelatedTermsList = () => {
   return (
     <DataTable
       lazy={true}
+      loading={loading}
       value={ontologyList}
       showSelectAll={false}
       className="dataTable-list"
