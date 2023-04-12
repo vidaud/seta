@@ -7,7 +7,6 @@ from flask_jwt_extended import get_jwt_identity
 
 from .infrastructure.extensions import (scheduler, jwt, logs, github)
 
-from .blueprints.base_routes import base_routes
 from .blueprints.auth import local_auth_api, refresh_expiring_jwts
 from .blueprints.auth_ecas import auth_ecas
 from .blueprints.auth_github import auth_github
@@ -171,8 +170,7 @@ def register_blueprints(app):
     CORS(token_auth)
     authentication_api.init_app(app=token_auth)
     
-    app.register_blueprint(rest, url_prefix="/rest/v1")
-    app.register_blueprint(base_routes, url_prefix="/seta-ui")    
+    app.register_blueprint(rest, url_prefix="/rest/v1")   
     app.register_blueprint(rsa, url_prefix="/rsa/v1")
     
     app.register_blueprint(local_auth, url_prefix="")
