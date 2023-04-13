@@ -31,8 +31,14 @@ Since there is a variety of web service document retrieval end-points and there 
 
 Documents are retrieved through SPARQL, SOAP, FTP or HTTP protocol parsing, even though every source has its own specificities.
 
-
 After metadata have been harvested and interpreted, the documents must be downloaded and processed. 
+
+> #### Taxonomy
+
+> Data taxonomy is the classification of data into categories and sub-categories. It provides a unified view of the data in a system and introduces common terminologies and semantics across multiple systems. Taxonomies represent the formal structure of classes or types of objects within a domain.
+
+In SeTA, the received metadata from the datasources can be reconfigured, thanks to the dynamic generation of data taxonomy.
+
 
 The fully automated and repeatable data cleaning mechanism, is being constantly improved. We keep learning the needs and requirements of neural networks to produce quality results. 
 
@@ -59,44 +65,27 @@ At this point the full text of all documents can be searched through a simple in
 
 ### 2.1 Neural networks training
 
-This is the pivotal point of the whole analytical process. Neural networks can learn any function and only data availability defines how complex the function can be.
+This is the pivotal point of the whole analytical process. Neural networks can learn any function and only data availability defines how complex the function can be.  For SeTA it has been used **textacy**[^1].
 
-The EC public knowledge corpus sports rather consistent language and thus the features could have been created from phrases instead of words like in general language.
+**textacy** is a Python library for performing a variety of natural language processing (NLP) tasks, built on the high-performance **spaCy**[^2] library. With the fundamentals: *tokenization, part-of-speech tagging, dependency parsing, etc.* delegated to another library, **textacy** focuses primarily on the tasks that come before and follow after.
 
-#### 2.1.1 Phrase compositionality ==TO CHECK==
+#### Features:
 
-This is possibly the single most critical step where textual features in the form of phrases have been engineered. 
+* Access and extend spaCy's core functionality for working with one or many documents through convenient methods and custom extensions
 
-In the next step we harmonise the different variants of common phrases by taking the most commonly occurring variant as canonical, and using it to replace other variants. For example, the variants "real time", "real-time" and "realtime" are all replaced with "real- time", as this has the highest frequency in our corpus. Without this step, the network will become a spell-checker.
+* Load prepared datasets with both text content and metadata
 
-Once the final set of phrases has been created, the separate words constituting each phrase are combined into a single token by replacing the spaces separating them with underscores. In this way the phrase "member state" becomes the token "member_state". This step increases the quality of the trained networks, as the meaning of the phrase is encoded separately from the meanings of its constituent words.
+* Clean, normalize, and explore raw text before processing it with spaCy
 
-The implementation of these steps is performed by extracting titles, abstracts and identified sentences from the whole corpus, identifying, harmonising and replacing phrases and then storing as a text file outside of the ES database. An idea of the scale is given by the size of this text file, around 23 GB. For analysis of term development by (half)decades, separate text files were created for 1950s-1980s, 1990-1994, 1995-1999, 2000-2004, 2005-2009, 2010-2014, 2015-2018.
+* Extract structured information from processed documents, including n-grams, entities, acronyms, keyterms, and SVO triples
 
-#### 2.1.2	Final text preparation
-As the last step before the neural network training is further normalisation: 
+* Compare strings and sequences using a variety of similarity metrics
 
-The only character allowed in the text are a-z, 0-9, /, -, _, (space)
+* Tokenize and vectorize documents then train, interpret, and visualize topic models
 
-All words not containing at least one character a-z are removed.
+* Compute text readability and lexical diversity statistics, including Flesch-Kincaid grade level, multilingual Flesch Reading Ease, and Type-Token Ratio
 
-This general corpus now contains 7 billion words and phrases, about 80 million sentences and 23 GB of plain text.
 
-#### 2.1.3	Actual neural network training ==TO CHECK==
-
-Currently this is the topology in use:
-
-- Skip-gram Word2Vec for similarity queries
-
-The training of one network using Word2Vec topology takes about 20 hours on a fast Linux workstation with 36 physical cores and plenty of RAM. Models persisted to hard disk take about 5GB.
-
-#### 2.1.4	Verification and accuracy tests ==TO CHECK==
-The trained model networks now represent the billions of words and phrases found in the corpus as short mathematical vectors. Derived from the positions of the words in the input corpus, these vectors not only represent each of the words, but also capture some of the meaning of each word, found from the context of surrounding words. This approach means that the meaning captured for each word is strongly dependent on the corpus used for training.
-
-Each of the trained networks is tested against the same similarity test which was designed to match the characteristics of our large, single language corpus.
-The first tests involve basic similarity queries to reflect our corpus: the concept most similar to “cap” is not “hat” but “common_agricultural_policy”. “wfd” results in both water_framework_directive and waste_ framework_directive, “eee” in “electrical_and_electronic_equipment”, “wwtp” in “waste_water_treatment_plant” but also in “wwtps” and “municipal_sewage”.
-
-The next test utilises an interesting property of the vector representation of word meanings: it is possible to perform mathematical calculations with the vectors with interesting results. The standard example used to demonstrate this, for a large, general purpose corpus of English, is to calculate the effect of taking the word vector for "king", subtracting that for "man", and adding the vector for "woman": the result is found to be (very close to) the word vector for "queen". This approach is exploited in our text analysis, for example to discover directives in particular fields. For our particular corpus, which mostly contains legal texts, we find that the word vector calculation for king – man + woman does not give queen, but the closest phrases we find are “education officer”, ”member of parliament” and “immigration officer”. Rather than reflecting a gender bias, this (and many other examples tested) seems to reflect the lack of gender information in our corpus of technical and legal texts. The gender vector in our vector space is therefore non-representative.
 
 !!! note
     This highlights an important point: we are dealing with scientific and technical reports and legal texts and their language bears completely different information from general text. The analyst must be aware of this focus when analysing the content.
@@ -104,9 +93,10 @@ The next test utilises an interesting property of the vector representation of w
 
 
 
-[^1]: https://stanfordnlp.github.io/CoreNLP/
-[^2]: https://spacy.io/
-[^3]: https://radimrehurek.com/gensim/ 
+[^1]: https://pypi.org/project/textacy/
+[^2]: https://spacy.io/usage/spacy-101
+
+
 
 
 
