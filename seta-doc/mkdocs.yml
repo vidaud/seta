@@ -32,18 +32,7 @@ theme:
     logo: material/note-search-outline
     favicon: img/favicon.png
   palette:
-    - scheme: default
-      toggle:
-        icon: material/toggle-switch-off-outline 
-        name: Switch to dark mode
-      primary: blue
-      accent: indigo 
-    - scheme: slate 
-      toggle:
-        icon: material/toggle-switch
-        name: Switch to light mode    
-      primary: indigo
-      accent: teal  
+    - scheme: seta
 plugins:
   - search
   - render_swagger
@@ -52,13 +41,16 @@ plugins:
 markdown_extensions:
     - toc :
         permalink: true
+    - def_list
+    - pymdownx.tasklist:
+        custom_checkbox: true
     - attr_list
     - pymdownx.emoji:
         emoji_index: !!python/name:materialx.emoji.twemoji
         emoji_generator: !!python/name:materialx.emoji.to_svg
     - admonition
+    - codehilite
     - pymdownx.details
-    - pymdownx.superfences
     - pymdownx.critic
     - pymdownx.caret
     - pymdownx.keys
@@ -69,15 +61,18 @@ markdown_extensions:
           - name: mermaid
             class: mermaid
             format: !!python/name:pymdownx.superfences.fence_code_format
+    - pymdownx.tabbed:
+        alternate_style: true
     - footnotes
     - md_in_html
-    - def_list
-    - pymdownx.tasklist:
-        custom_checkbox: true
+    
 extra:
   version:
     provider: mike
-
+  
+extra_css:
+  - stylesheets/extra.css
+ 
 nav:
   - What is SeTA: 
       - What it does: index.md
@@ -91,7 +86,8 @@ nav:
     - Web Interface:
       - Search: user-guide/web-interface.md
       - Communities: user-guide/communities.md
-    - Seta-api: seta-api/seta_api_v1.md
+    - API Interface:
+      - Seta-api: seta-api/seta_api_v1.md
     - FAQS: faqs/faqs.md
   - Deployment SeTA:
     - Minimum Requirements: deployment/min-requirements.md
