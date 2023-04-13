@@ -1,6 +1,5 @@
-# FAQS
+# Search 
 
-## Search 
 ### How can I see the recent searches? 
         
 1. From the ^^Search^^ page.  

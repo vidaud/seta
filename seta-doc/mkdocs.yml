@@ -88,7 +88,8 @@ nav:
       - Communities: user-guide/communities.md
     - API Interface:
       - Seta-api: seta-api/seta_api_v1.md
-    - FAQS: faqs/faqs.md
+    - FAQS: 
+      - FAQS: faqs/faqs.md
   - Deployment SeTA:
     - Deployment: deployment/deployment.md 
     - Advanced Tutorial: deployment/advanced-tutorial.md
