@@ -1,7 +1,8 @@
-- Within the search page it is possible search:
-    * By term
-    * By phrase
-    * By document or text
+Within the search page it is possible to search:
+
+* By term
+* By phrase
+* By document or text
     
 
 ## Search by term:

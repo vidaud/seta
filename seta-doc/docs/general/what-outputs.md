@@ -17,19 +17,19 @@
 
 - For the API interface, depending on the type of request: *get, post, put, delete* the various results will be described in a JSON file format. 
 
-=== "Result after a *get* execution."
+=== "Result after a *get* execution"
         
     ![Screenshot](../img/api_get.png)
 
-=== "Result after a *put* execution."
+=== "Result after a *put* execution"
         
     ![Screenshot](../img/api_put.png)
 
-=== "Result after a *post* execution."
+=== "Result after a *post* execution"
         
     ![Screenshot](../img/api_post.png)  
 
-=== "Result after a *delete* execution."
+=== "Result after a *delete* execution"
         
     ![Screenshot](../img/api_delete.png)   
 

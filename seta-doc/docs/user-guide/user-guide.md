@@ -1,12 +1,12 @@
 
 SeTA has two user interfaces:
 
-- Web Interface
+- Web App
 
-- API interface
+- API
 
 ## Web interface
-The Seta Web interface is a user friendly user interact where you can start searching directly from the interface.
+The Seta Web interface is a user friendly interact where you can start searching directly from the interface.
  
  ![Screenshot](../img/main_screen.jpg){ width="600" }
 
@@ -48,7 +48,7 @@ Connect with EU Login account (*you can also use GitHub authentication, but EU L
 
 After successful authentication, check that you have the following entries in the new *seta database - users collection*:
 
-=== "Partial object for the new seta account:"
+=== "Partial object for the new seta account"
     ```
         {
             "user_id": "5Mq7bNYnhtaiS6BDLvcZ",
@@ -59,7 +59,7 @@ After successful authentication, check that you have the following entries in th
     ```
 
 
-=== "Provider object:"
+=== "Provider object"
     ```
         {
             "user_id": "5Mq7bNYnhtaiS6BDLvcZ",
@@ -71,7 +71,7 @@ After successful authentication, check that you have the following entries in th
         }
     ```
 
-=== "Community create scope:"
+=== "Community create scope"
     ```
         {
             "user_id": "5Mq7bNYnhtaiS6BDLvcZ",
@@ -80,7 +80,7 @@ After successful authentication, check that you have the following entries in th
         }
     ```
 
-=== "Role claim (claim_value can different):"
+=== "Role claim (claim_value can different)"
     ```
         {
             "user_id": "5Mq7bNYnhtaiS6BDLvcZ",
@@ -90,7 +90,7 @@ After successful authentication, check that you have the following entries in th
     ```
 
 !!! info
-    user_id is a randomly generated short guid for each new account
+    **user_id** is a randomly generated short guid for each new account
 #### Community API
 
 Open a new tab in the same browser for the community api swagger documentation: [http://localhost/api/communities/v1/doc](http://localhost/api/communities/v1/doc)
@@ -182,7 +182,7 @@ Expand **Resources** region and then Try out **POST** /resources/community/{comm
 
 Check the following:
 
-=== "Resource entry in the *seta database - resources* collection:"
+=== "Resource entry in the *seta database - resources* collection"
     
     ```
         {
@@ -197,7 +197,7 @@ Check the following:
         }
     ```
 
-=== "The objects for the resource scopes in the *seta database - users* collection:"
+=== "The objects for the resource scopes in the *seta database - users* collection"
     ```
         {
             "user_id": "5Mq7bNYnhtaiS6BDLvcZ",

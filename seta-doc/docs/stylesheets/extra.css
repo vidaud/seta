@@ -6,20 +6,20 @@
     font: normal normal 400 0.875rem/1.5rem arial,sans-serif;
     font-weight: 500;
     color: white;
+    list-style-type:none;
 }
 
 .description {
     color: #d8e2ee;
     font: normal normal 400 0.675rem/1.25rem arial,sans-serif;
+    list-style-type:none;
 }
 
-li {
-    list-style: none;
-}
 
 .section{
     padding: 1rem;
     width: 33%;
+    list-style-type:none;
 }
 
 .listHeader {
@@ -29,22 +29,25 @@ li {
     border-bottom-width: 2px;
     border-bottom: 1px solid #dde1e6;
     padding-bottom: 0.5rem;
+    list-style-type:none;
 }
 
 .listUl {
     font-size: .675rem;
-    list-style: none;
     margin-bottom: 0;
     margin-top: 0.5rem;
     padding-inline-start: 0;
     color: white;
+    list-style-type:none;
 }
 .md-copyright, .md-social {
     width: 100%;
+    list-style-type:none;
 }
 
 .footer__divider {
     border-top: 1px solid #dde1e6;
+    
 }
 
 .md-copyright__highlight {
@@ -53,7 +56,9 @@ li {
 
 [dir=ltr] .md-typeset ul {
     margin-left: 0em;
+    
 }
+
 
 .container-fluid {
     margin-right: auto;

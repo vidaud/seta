@@ -5,9 +5,9 @@
 
 As described previously, SeTA follows two distinct steps for the creation of the knowledge base: 
 
-a. Document collection, cleaning and storage 
+1. Document collection, cleaning and storage 
 
-b. Text analysis and modelling 
+2. Text analysis and modelling 
 
 
 ## 1. Document collection, cleaning and storage
@@ -21,9 +21,9 @@ All the texts collected are in English only (except for some older legal texts w
 
 The reasons for this decision are:
 
-1. English language sentence dependency parsing is rather straightforward and there are several open source semantic parsers with excellent tuning for this language.
+- [x] English language sentence dependency parsing is rather straightforward and there are several open source semantic parsers with excellent tuning for this language.
 
-2. We are interested in extracting knowledge from plain text and as the translation of, for example, a directive into all EU languages does not create new knowledge, processing a single language well should capture the available information.
+- [x] We are interested in extracting knowledge from plain text and as the translation of, for example, a directive into all EU languages does not create new knowledge, processing a single language well should capture the available information.
 
 > #### Taxonomy
 

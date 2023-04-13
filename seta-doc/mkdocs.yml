@@ -17,10 +17,10 @@ theme:
   language: en
   icon:
     admonition:
-        note: octicons/tag-16
+        note: octicons/note-16
         abstract: octicons/checklist-16
         info: octicons/info-16
-        tip: octicons/squirrel-16
+        tip: octicons/flame-16
         success: octicons/check-16
         question: octicons/question-16
         warning: octicons/alert-16
@@ -82,7 +82,7 @@ nav:
       - What are the inputs: general/what-inputs.md
       - What are the outputs: general/what-outputs.md      
   - Using SeTA:
-    - Set-up: user-guide/user-guide.md
+    - Setup: user-guide/user-guide.md
     - Web Interface:
       - Search: user-guide/web-interface.md
       - Communities: user-guide/communities.md
@@ -90,7 +90,6 @@ nav:
       - Seta-api: seta-api/seta_api_v1.md
     - FAQS: faqs/faqs.md
   - Deployment SeTA:
-    - Minimum Requirements: deployment/min-requirements.md
     - Deployment: deployment/deployment.md 
     - Advanced Tutorial: deployment/advanced-tutorial.md
     - Release: release-notes/release-notes.md
