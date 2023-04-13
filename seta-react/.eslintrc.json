@@ -3,12 +3,13 @@
     "@typescript-eslint",
     "react-hooks",
     "unused-imports",
+    "tailwindcss",
     "prettier"
-    // "import"
   ],
   "extends": [
     "plugin:@typescript-eslint/recommended",
     "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:tailwindcss/recommended",
     "react-app",
     "prettier"
   ],
