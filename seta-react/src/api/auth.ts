@@ -36,3 +36,6 @@ export const useUserInfo = (options: UseUserInfoOptions) =>
   })
 
 export const refreshToken = async () => api.get(REFRESH_TOKEN_API_PATH, apiConfig)
+
+export const logout = async () =>
+  api.post('/logout', { 'Cache-Control': 'no-cache', Pragma: 'no-cache' }, apiConfig)
