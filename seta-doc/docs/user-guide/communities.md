@@ -68,8 +68,8 @@ Only **community admins** can change the community name.
 3. Click ^^Become Admin^^ below ^^Admins & Moderators^^.  
 4. Click Confirm. 
 
-
-Only one admin spot can be claimed. Once the creator has left the community creator status can't be granted to an admin or moderator. If you can't claim the admin role in a community it may be because there are moderators or other people have recently been accepted to become an admin.
+!!! danger "Note"
+    Only one admin spot can be claimed. Once the creator has left the community, creator status can't be granted to an admin or moderator. If you can't claim the admin role in a community it may be because there are moderators or other people have recently been accepted to become an admin.
 
 
 ### Difference between a member visitor and participant in open communities
