@@ -4,15 +4,16 @@ from seta_api.infrastructure.ApiLogicError import ApiLogicError
 from nltk.tokenize import word_tokenize
 from nltk.text import ConcordanceIndex
 import re
+from seta_api.apis.corpus import taxonomy
 
 
-def handle_corpus_response(aggs, res, search_type, semantic_sort_id, term):
+def handle_corpus_response(aggs, res, search_type, semantic_sort_id, term, current_app):
     documents = {"total_docs": None, "documents": []}
     for response in res["responses"]:
         if "error" in response:
             raise ApiLogicError('Malformed query.')
         documents["total_docs"] = retrieve_total_number(response, search_type)
-        documents = handle_aggs_response(aggs, response, documents)
+        documents = handle_aggs_response(aggs, response, documents, current_app)
         for document in response["hits"]["hits"]:
             abstract = document['_source']['abstract'] if isinstance(document['_source']['abstract'], str) else ""
             text = is_field_in_doc(document['_source'], "chunk_text")
@@ -86,33 +87,16 @@ def compose_source_collection_reference_response_tree(response_buckets):
     return tree
 
 
-def compose_taxonomy_response_tree(response_buckets, aggs):
-
-    def build_tree(partial_tree, branch, count):
-        parent = branch[0]
-        if parent not in partial_tree:
-            partial_tree[parent] = {}
-        if len(branch) > 1:
-            child = branch[1]
-            if "subcategories" not in partial_tree[parent]:
-                partial_tree[parent]["subcategories"] = {}
-            x = build_tree(dict(partial_tree[parent]["subcategories"]), branch[1:], count)
-            partial_tree[parent]["subcategories"][child] = x[child]
-        else:
-            partial_tree[parent]["doc_count"] = count
-        return partial_tree
-
-    taxonomy = aggs.split(":")[1]
-    taxonomy_tree = {}
+def compose_taxonomy_response_tree(response_buckets, aggs, current_app):
+    taxonomy_arg = aggs.split(":")[1]
+    tax = taxonomy.Taxonomy(es=current_app.es, index=current_app.config["INDEX"], taxonomy=taxonomy_arg)
     for item in response_buckets:
-        if item["key"].startswith(taxonomy):
-            taxonomy_branch = item["key"].split(":")
-            taxonomy_tree = build_tree(taxonomy_tree, taxonomy_branch, item["doc_count"])
-
-    return taxonomy_tree
+        if item["key"].startswith(taxonomy_arg):
+            tax.add_tree(tax.tree, item, key="key", separator=":")
+    return tax.tree
 
 
-def handle_aggs_response(aggs, response, documents):
+def handle_aggs_response(aggs, response, documents, current_app):
     if not aggs:
         return documents
     documents["aggregations"] = {}
@@ -126,7 +110,9 @@ def handle_aggs_response(aggs, response, documents):
         elif agg == "source_collection_reference":
             documents["aggregations"][agg] = compose_source_collection_reference_response_tree(response["aggregations"][agg]["buckets"])
         elif agg.startswith("taxonomy:"):
-            documents["aggregations"][agg] = compose_taxonomy_response_tree(response["aggregations"]["taxonomy"]["buckets"], agg)
+            if "taxonomy" not in documents["aggregations"]:
+                documents["aggregations"]["taxonomy"] = []
+            documents["aggregations"]["taxonomy"].append(compose_taxonomy_response_tree(response["aggregations"]["taxonomy"]["buckets"], agg, current_app))
         else:
             documents["aggregations"][agg] = response["aggregations"][agg]["buckets"]
     return documents

@@ -82,5 +82,5 @@ def corpus(term, n_docs, from_doc, sources, collection, reference, in_force, sor
     # print(json.dumps(body))
     request = compose_request_for_msearch(body, current_app)
     res = current_app.es.msearch(searches=request)
-    documents = handle_corpus_response(aggs, res, search_type, semantic_sort_id, term)
+    documents = handle_corpus_response(aggs, res, search_type, semantic_sort_id, term, current_app)
     return documents

@@ -1,1 +1,146 @@
-{"source": "cordis", "mime_type": "URL", "language": "en", "id": "cordis:project:96952", "id_alias": "CORDIS:project:96952", "title": "AEROMUCO: AEROdynamic Surfaces by advanced MUltifunctional COatings", "abstract": "The main objective of the AEROMUCO project is to develop and evaluate a number of alternative \u2013 and highly innovative \u2013 active and passive multi-functional surface protection systems for future generation of aircraft, leading to a significant improvement in fuel efficiency an...", "text": "The main objective of the AEROMUCO project is to develop and evaluate a number of alternative \u2013 and highly innovative \u2013 active and passive multi-functional surface protection systems for future generation of aircraft, leading to a significant improvement in fuel efficiency and a reduction in CO2 and NOx emissions. Two technological routes to achieve this goal will be explored:\n\u2022\tThe reduction of the energy consumption for inflight de-icing through the development of coatings that exploit the use of a new generation of low-energy consuming active de-icing systems.\n\u2022\tThe development of durable and effective active and passive surface protection systems that will facilitate and maintain laminar boundary layers on aerodynamic surfaces. These coatings will reduce insect adhesion through novel, low-surface-energy concepts and remove insect residue through photoactive/enzymatic activity on nanotextured coatings.\nThe high-speed airflow over aircraft can contain sand, water droplets, insects, ice crystals and other particles, and there thus exists a significant challenge to produce protective coatings for this varied and demanding environment. AEROMUCO will develop multifunctional coatings with both anti-contamination and anti-icing properties that will also protect the aircraft\u2019s skin from erosion. These novel coatings will be customized to the requirements of the location on the wing (e.g. leading edge contamination avoidance, upper surface runback ice prevention).\nThe multi-disciplinary approach will yield technological improvements beyond the state of the art through a structured, but innovative, research strategy. A comprehensive set of unique tests will be performed, including ice build-up tests (microscopic and full-scale icing wind tunnel tests), comparative rain erosion tests, abrasion tests, and an assessment of kinetic of enzyme processes.", "date": "2019-08-01", "author": ["Photon et Polymers", "INSTITUT DE RECHERCHES EN INGENIERIE DES SURFACES SAS", "SAAB AKTIEBOLAG", "CSEM CENTRE SUISSE D'ELECTRONIQUE ET DE MICROTECHNIQUE SA - RECHERCHE ET DEVELOPPEMENT", "University of Food Technologies", "INSTITIUID TEICNEOLAIOCHTA BHAILE ATHA CLIATH", "ALENIA AERMACCHI SPA", "AIRBUS DEFENCE AND SPACE GMBH", "UNIVERSITY OF LIMERICK", "UNIVERSITA DEGLI STUDI DI PADOVA", "DASSAULT AVIATION", "C.I.R.A. CENTRO ITALIANO RICERCHE AEROSPAZIALI SCPA", "ALENIA AERMACCHI SPA"], "collection": "project;Project", "euro_sci_voc": [{"code": "/25/75/461/1239/1737", "label": "aircraft", "longLabel": "/engineering and technology/mechanical engineering/vehicle engineering/aerospace engineering/aircraft", "validated": "true", "classifier": "cordis", "version": "1"}, {"code": "/25/63/391", "label": "coating and films", "longLabel": "/engineering and technology/materials engineering/coating and films", "validated": "true", "classifier": "cordis", "version": "1"}, {"code": "/23/49/345/1039", "label": "entomology", "longLabel": "/natural sciences/biological sciences/zoology/entomology", "validated": "true", "classifier": "cordis", "version": "1"}, {"code": "/25/67/425", "label": "energy and fuels", "longLabel": "/engineering and technology/environmental engineering/energy and fuels", "validated": "true", "classifier": "cordis", "version": "1"}, {"code": "/23/49/315/997/1613/1617", "label": "enzymes", "longLabel": "/natural sciences/biological sciences/biochemistry/biomolecules/proteins/enzymes", "validated": "true", "classifier": "cordis", "version": "1"}], "link_origin": "https://cordis.europa.eu/project/rcn/96952", "other": {"crc": "ab8ffb5fd8e7193ce787ce30347c61aee38f04b42e39916be30add69de51d778"}}
+{
+  "source": "cordis",
+  "mime_type": "URL",
+  "language": "en",
+  "id": "cordis:project:96952",
+  "id_alias": "CORDIS:project:96952",
+  "title": "AEROMUCO: AEROdynamic Surfaces by advanced MUltifunctional COatings",
+  "abstract": "The main objective of the AEROMUCO project is to develop and evaluate a number of alternative \u2013 and highly innovative \u2013 active and passive multi-functional surface protection systems for future generation of aircraft, leading to a significant improvement in fuel efficiency an...",
+  "text": "The main objective of the AEROMUCO project is to develop and evaluate a number of alternative \u2013 and highly innovative \u2013 active and passive multi-functional surface protection systems for future generation of aircraft, leading to a significant improvement in fuel efficiency and a reduction in CO2 and NOx emissions. Two technological routes to achieve this goal will be explored:\n\u2022\tThe reduction of the energy consumption for inflight de-icing through the development of coatings that exploit the use of a new generation of low-energy consuming active de-icing systems.\n\u2022\tThe development of durable and effective active and passive surface protection systems that will facilitate and maintain laminar boundary layers on aerodynamic surfaces. These coatings will reduce insect adhesion through novel, low-surface-energy concepts and remove insect residue through photoactive/enzymatic activity on nanotextured coatings.\nThe high-speed airflow over aircraft can contain sand, water droplets, insects, ice crystals and other particles, and there thus exists a significant challenge to produce protective coatings for this varied and demanding environment. AEROMUCO will develop multifunctional coatings with both anti-contamination and anti-icing properties that will also protect the aircraft\u2019s skin from erosion. These novel coatings will be customized to the requirements of the location on the wing (e.g. leading edge contamination avoidance, upper surface runback ice prevention).\nThe multi-disciplinary approach will yield technological improvements beyond the state of the art through a structured, but innovative, research strategy. A comprehensive set of unique tests will be performed, including ice build-up tests (microscopic and full-scale icing wind tunnel tests), comparative rain erosion tests, abrasion tests, and an assessment of kinetic of enzyme processes.",
+  "date": "2019-08-01",
+  "author": [
+    "Photon et Polymers",
+    "INSTITUT DE RECHERCHES EN INGENIERIE DES SURFACES SAS",
+    "SAAB AKTIEBOLAG",
+    "CSEM CENTRE SUISSE D'ELECTRONIQUE ET DE MICROTECHNIQUE SA - RECHERCHE ET DEVELOPPEMENT",
+    "University of Food Technologies",
+    "INSTITIUID TEICNEOLAIOCHTA BHAILE ATHA CLIATH",
+    "ALENIA AERMACCHI SPA",
+    "AIRBUS DEFENCE AND SPACE GMBH",
+    "UNIVERSITY OF LIMERICK",
+    "UNIVERSITA DEGLI STUDI DI PADOVA",
+    "DASSAULT AVIATION",
+    "C.I.R.A. CENTRO ITALIANO RICERCHE AEROSPAZIALI SCPA",
+    "ALENIA AERMACCHI SPA"
+  ],
+  "collection": "project;Project",
+  "taxonomy": [
+    {
+      "code": "64605fff-1946-4fd4-b021-e2e83b71dcac",
+      "label": "engineering and technology",
+      "longLabel": "engineering and technology",
+      "validated": "true",
+      "classifier": "cordis",
+      "version": "1",
+      "name": "euro_sci_voc",
+      "name_in_path": "engineering_and_technology"
+    },
+    {
+      "code": "ea994073-d367-4ed7-9df3-4477a9c6cf6f",
+      "label": "mechanical engineering",
+      "longLabel": "/engineering and technology/mechanical engineering",
+      "validated": "true",
+      "classifier": "cordis",
+      "version": "1",
+      "name": "euro_sci_voc",
+      "name_in_path": "mechanical_engineering"
+    },
+    {
+      "code": "aa18770d-daaf-4ef7-8229-d371b933adab",
+      "label": "vehicle engineering",
+      "longLabel": "/engineering and technology/mechanical engineering/vehicle engineering",
+      "validated": "true",
+      "classifier": "cordis",
+      "version": "1",
+      "name": "euro_sci_voc",
+      "name_in_path": "vehicle_engineering"
+    },
+    {
+      "code": "b400cbdb-9e22-43cf-8933-0e034a0a5871",
+      "label": "aerospace engineering",
+      "longLabel": "/engineering and technology/mechanical engineering/vehicle engineering/aerospace engineering",
+      "validated": "true",
+      "classifier": "cordis",
+      "version": "1",
+      "name": "euro_sci_voc",
+      "name_in_path": "aerospace_engineering"
+    },
+    {
+      "code": "02695258-7117-47a3-8b32-bbf861dae234",
+      "label": "aircraft",
+      "longLabel": "/engineering and technology/mechanical engineering/vehicle engineering/aerospace engineering/aircraft",
+      "validated": "true",
+      "classifier": "cordis",
+      "version": "1",
+      "name": "euro_sci_voc",
+      "name_in_path": "aircraft"
+    },
+    {
+      "code": "dc9a4100-9eb3-4956-8fd8-b67ea07a70ad",
+      "label": "materials engineering",
+      "longLabel": "/engineering and technology/materials engineering",
+      "validated": "true",
+      "classifier": "cordis",
+      "version": "1",
+      "name": "euro_sci_voc",
+      "name_in_path": "materials_engineering"
+    },
+    {
+      "code": "7a868b71-b645-4d74-9c49-8e9ced9e8c1b",
+      "label": "coating and films",
+      "longLabel": "/engineering and technology/materials engineering/coating and films",
+      "validated": "true",
+      "classifier": "cordis",
+      "version": "1",
+      "name": "euro_sci_voc",
+      "name_in_path": "coating_and_films"
+    },
+    {
+      "code": "/23",
+      "label": "natural sciences",
+      "longLabel": "/natural_sciences",
+      "validated": "true",
+      "classifier": "cordis",
+      "version": "1",
+      "name": "euro_sci_voc",
+      "name_in_path": "natural sciences"
+    },
+    {
+      "code": "/23/49",
+      "label": "biological sciences",
+      "longLabel": "/natural sciences/biological sciences",
+      "validated": "true",
+      "classifier": "cordis",
+      "version": "1",
+      "name": "euro_sci_voc",
+      "name_in_path": "biological_sciences"
+    },
+    {
+      "code": "/23/49/345",
+      "label": "zoology",
+      "longLabel": "/natural sciences/biological sciences/zoology",
+      "validated": "true",
+      "classifier": "cordis",
+      "version": "1",
+      "name": "euro_sci_voc",
+      "name_in_path": "zoology"
+    },
+    {
+      "code": "/23/49/345/1039",
+      "label": "entomology",
+      "longLabel": "/natural sciences/biological sciences/zoology/entomology",
+      "validated": "true",
+      "classifier": "cordis",
+      "version": "1",
+      "name": "euro_sci_voc",
+      "name_in_path": "entomology"
+    }
+  ],
+  "taxonomy_path": ["euro_sci_voc:engineering_and_technology:mechanical_engineering:vehicle_engineering:aerospace_engineering:aircraft",
+                    "euro_sci_voc:engineering_and_technology:materials_engineering:coating_and_films",
+                    "euro_sci_voc:natural_sciences:biological_sciences:zoology:entomology"],
+  "link_origin": "https://cordis.europa.eu/project/rcn/96952",
+  "other": {
+    "crc": "ab8ffb5fd8e7193ce787ce30347c61aee38f04b42e39916be30add69de51d778"
+  }
+}

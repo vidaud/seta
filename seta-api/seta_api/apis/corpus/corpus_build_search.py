@@ -4,12 +4,11 @@ import re
 
 def build_taxonomy_nested_query(taxonomy):
     if taxonomy:
-        # TODO for more than one taxonomy schema add should clause
-        nested_query = {"nested": {"path": "taxonomy", "query": {"bool": {"must": []}}}}
+        nested_query = {"nested": {"path": "taxonomy", "query": {"bool": {"should": []}}}}
         for field in taxonomy:
             for attribute, value in field.items():
                 nested_block = {"match": {"taxonomy." + attribute: value}}
-                nested_query["nested"]["query"]["bool"]["must"].append(nested_block)
+                nested_query["nested"]["query"]["bool"]["should"].append(nested_block)
         return nested_query
     return None
 
