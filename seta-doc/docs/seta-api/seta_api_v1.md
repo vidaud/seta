@@ -1,5 +1,5 @@
 # SETA-API
-The SeTA API set functions and procedures that allow to access data and feature other services. 
+The SeTA API provides functions and procedures that allow to access data and feature other services. 
 
 ## seta-api-suggestions
 
@@ -23,17 +23,17 @@ Put a document into corpus index.
 ![Screenshot](../img/put-corpus-result.png)
 
 ### GET /corpus
-Retrieve documents related to a term from EU corpus.EU corpus contains documents of the European Commission: Eur-Lex, CORDIS, JRC PUBSY, EU Open Data Portal, etc..
+Retrieve documents related to a term from EU corpus.
 ![Screenshot](../img/get-corpus.png)
 ![Screenshot](../img/get-corpus-result.png)
 
 
 ### POST /corpus
-Retrieve documents related to a term from EU corpus.EU corpus contains documents of the European Commission: Eur-Lex, CORDIS, JRC PUBSY, EU Open Data Portal, etc..
+Retrieve documents related to a term from EU corpus.
 ![Screenshot](../img/post-corpus.png)
 
 ### GET /corpus/{id}
-Given the elasticsearch unique _id, the relative document from EU corpus is shown.EU corpus contains documents of the European Commission: Eur-Lex, CORDIS,JRC PUBSY, EU Open Data Portal, etc..
+Given the elasticsearch unique _id, the relative document from EU corpus is shown.
 ![Screenshot](../img/get-corpus-id.png)
 ![Screenshot](../img/get-corpus-id-result.png)
 

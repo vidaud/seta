@@ -41,7 +41,7 @@ An Artificial Intelligence model is a program or an algorithm that utilizes data
 
 The first step is to create an AI model, which uses a complex algorithm or layers of algorithms that interpret data and make decisions based on that data.[^3] 
 
-The next step is to train AI models by using full text documents and their phrases from elastic search. This training helps the models to learn relations between the meanings of the words in the text provided. 
+The next step is to train AI models by using full text documents and their phrases from Elasticsearch. This training helps the models to learn relations between the meanings of the words in the text provided. 
 
 ### Word2Vec
 
@@ -57,7 +57,10 @@ The output of the Word2vec neural net is a vocabulary in which each item has a v
 
 ### sBERT
 
-A similar algorithm, **sBERT** is based on sentences and provides further training to the model. By training the models with new documents as they are published, we can ensure that the knowledge they contain represents EU documents accurately. 
+A similar algorithm, **sBERT** is based on sentences and provides further training to the model. 
+
+
+By training the models with new documents as they are published, we can ensure that the knowledge they contain represents EU documents accurately. 
 
 This knowledge is used to enrich document metadata by providing content driven labels and by expanding the labels based on existing ontologies.
 
@@ -69,9 +72,9 @@ At this point the full text of all documents can be searched through a simple in
 
 ### API
 
-A specific APi have been built to access this knowledge and can be used to receive suggestions of similar terms and upload metadata of related documents.
+A specific API has been built to access this knowledge and can be used to receive suggestions of similar terms and upload metadata of related documents.
 
-In the end, this API also feed the user interface providing users with the information they are looking for. 
+In the end, this API also feeds the user interface providing users with the information they are looking for. 
 
 
 ![Screenshot](./img/API_design.png)

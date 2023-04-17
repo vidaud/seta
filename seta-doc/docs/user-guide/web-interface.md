@@ -23,23 +23,18 @@ If you want to search uploading a document or put a text, just click in the clou
 
 ![Screenshot](../img/upload.png){ width="700" }
 
+### Post Search 
+        
+After launching a search, a new section with the results will appear below the search box (see image below). In the left side of the new section there is a side bar with two tabs: ^^Refine Search^^ and ^^Post Search^^.  Click on tab Post Search and the table of filters will be replaced by the histogram which can be used to apply filters. Click on a specific part of the histogram and the list of documents will be updated and you will see only the related documents to the specific part of the histogram clicked.
+
+![Image title](../img/search_results_detail.png)
+
 ### Refine Search
 
 In tab ^^Refine Search^^ you can see the list of filters available to apply to the search query: 
 
  - Type of visualization  
- - Quick Filters         
- - Repositories           
- - Document References   
- - Publication Years     
- - References etc.          
-
-![Image title](../img/search_results_detail.png)
-
-### Post Search 
-        
-After launching a search, a new section with the results will appear below the search box. In the left side of the new section there is a side bar with two tabs: ^^Refine Search^^ and ^^Post Search^^.  Click on tab Post Search and the table of filters will be replaced by the histogram which can be used to apply filters. Click on a specific part of the histogram and the list of documents will be updated and you will see only the related documents to the specific part of the histogram clicked.
-
+ - Publication Years.
 
 ### Sort results 
 

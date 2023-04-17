@@ -1,9 +1,9 @@
 
 SeTA has two user interfaces:
 
-- Web App
+- Web App, for normal users,
 
-- API
+- API, for advanced users (programmers).
 
 ## Web interface
 The Seta Web interface is a user friendly interact where you can start searching directly from the interface.
@@ -229,6 +229,4 @@ Seta-API will get at each request another authorization decoded token from seta-
 !!! note "Note:" 
     You can verify the authorization token at [http://localhost/authorization/v1/doc](http://localhost/authorization/v1/doc) passing the JWT access token as payload.
 
-Start using the methods under **seta-api-corpus** region.
-
-![Screenshot](../img/api_corpus.png)   
+At this point, API usage is set up. 
