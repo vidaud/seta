@@ -9,9 +9,17 @@ type ListMenuItemProps = {
   value: string
   selected?: boolean
   onClick?: () => void
+  onMouseEnter?: () => void
 }
 
-const ListMenuItem = ({ className, label, value, selected, onClick }: ListMenuItemProps) => {
+const ListMenuItem = ({
+  className,
+  label,
+  value,
+  selected,
+  onClick,
+  onMouseEnter
+}: ListMenuItemProps) => {
   const ref = useRef<HTMLButtonElement>(null)
   const cls = clsx(className, { selected })
 
@@ -30,6 +38,7 @@ const ListMenuItem = ({ className, label, value, selected, onClick }: ListMenuIt
       type="button"
       role="menuitem"
       onClick={handleClick}
+      onMouseEnter={onMouseEnter}
     >
       <Text fz="md">{label}</Text>
     </Box>

@@ -16,7 +16,7 @@ export const root: ThemedCSS = theme => css`
 
   color: ${theme.colors.dark[9]};
 
-  &:hover {
+  &.selected {
     background-color: ${theme.colors.gray[1]};
   }
 `

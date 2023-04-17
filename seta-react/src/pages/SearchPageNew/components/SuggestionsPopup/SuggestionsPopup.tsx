@@ -6,7 +6,7 @@ import * as S from './styles'
 
 import type { ChildrenProp } from '../../../../types/children-props'
 import AutocompleteSuggestions from '../AutocompleteSuggestions'
-import OntologyTerms from '../OntologyTerms'
+import TermClusters from '../TermClusters'
 
 type Props = PopoverProps & ChildrenProp
 
@@ -28,7 +28,7 @@ const SuggestionsPopup = ({ opened, onChange, children, ...props }: Props) => {
       <Popover.Dropdown css={S.popup} className="flex">
         <AutocompleteSuggestions css={S.popupLeft} />
         <Divider orientation="vertical" />
-        <OntologyTerms css={S.popupRight} />
+        <TermClusters css={S.popupRight} />
 
         <ActionIcon
           variant="light"

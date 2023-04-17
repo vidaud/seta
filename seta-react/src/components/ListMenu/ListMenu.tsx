@@ -2,7 +2,6 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Box, ScrollArea } from '@mantine/core'
 
 import ListMenuItem from './components/ListMenuItem'
-import * as S from './styles'
 
 const isListOfStrings = (items: string[] | { label: string; value: string }[]): items is string[] =>
   !!items.length && typeof items[0] === 'string'
@@ -80,13 +79,6 @@ const ListMenu = ({ className, items, onSelect }: Props) => {
     [moveSelection, onSelectHandler, selectedValue]
   )
 
-  const handleItemClick = (value: string) => {
-    console.log('handleItemClick', value)
-
-    setSelectedValue(value)
-    onSelectHandler(value)
-  }
-
   useEffect(() => {
     document.addEventListener('keydown', handleKeyDown)
 
@@ -95,8 +87,17 @@ const ListMenu = ({ className, items, onSelect }: Props) => {
     }
   }, [handleKeyDown])
 
+  const handleItemClick = (value: string) => {
+    setSelectedValue(value)
+    onSelectHandler(value)
+  }
+
+  const handleItemMouseEnter = (value: string) => {
+    setSelectedValue(value)
+  }
+
   return (
-    <Box className={className} css={S.root} tabIndex={-1}>
+    <Box className={className} tabIndex={-1}>
       <ScrollArea.Autosize mah={400} type="scroll" viewportRef={viewport}>
         {formattedItems.map(item => (
           <ListMenuItem
@@ -104,6 +105,7 @@ const ListMenu = ({ className, items, onSelect }: Props) => {
             {...item}
             selected={item.value === selectedValue}
             onClick={() => handleItemClick(item.value)}
+            onMouseEnter={() => handleItemMouseEnter(item.value)}
           />
         ))}
       </ScrollArea.Autosize>

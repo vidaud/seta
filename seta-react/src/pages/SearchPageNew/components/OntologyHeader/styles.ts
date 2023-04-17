@@ -1,11 +1,9 @@
 import { css } from '@emotion/react'
 
-export const root: ThemedCSS = theme => css`
-  /* margin-right: 2rem; */
-`
+const SELECTORS_WIDTH = '100px'
 
-export const left = css`
-  width: 100px;
+export const left: ThemedCSS = theme => css`
+  width: ${SELECTORS_WIDTH};
 `
 
 export const checkbox = css`
@@ -14,6 +12,6 @@ export const checkbox = css`
   }
 `
 
-export const selector = css`
-  margin-left: -100px;
+export const relatedSelector = css`
+  margin-left: -${SELECTORS_WIDTH};
 `
