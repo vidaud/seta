@@ -1,17 +1,13 @@
 # SeTA *Semantic Text Analyser*
 
-
-<iframe width='560' height='315' src='https://www.youtube.com/embed/jd6iXKr2UZg' title='YouTube video player' allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share' allowFullScreen> </iframe>
-
-
-The European Union Bodies publish a vast amount of information which is made available by the different pubblications.
+The European Union Bodies publish a vast amount of information which is made available via different channels.
 Making sense of this textual content and finding links between documents is difficult if not impossible just by having humans read it. 
 
 The **semantic text analyzer** or **SeTA** is a software tool that accomplishes these tasks.
 
 SeTA uses advanced text mining techniques to help users to screen and query large document collections.
 
-Users can search EU documents based on keywords and then screen the results and apply filters all very quickly and accurately.
+Users can search EU documents based on keywords and then screen the results and apply filters, all very quickly and accurately.
 
 ## How can SeTA provide all of this information to users?
 
@@ -27,31 +23,53 @@ stateDiagram
 
 ![Screenshot](./img/data_sources.png)
 
+- EUR-Lex is the online database of all official EU legal documents. It provides the official and most comprehensive access to EU legal documents.
+- CORDIS contains the results from the projects funded by the EU's framework programs for research and innovation. 
+- Pubsy is the publications repository of the European Commission's Joint Research Centre. 
+- European Parlament is the EU's law-making body. It is directly elected by EU voters every 5 years. 
 
 These data consist of text documents and the metadata that describe them. 
 
-SeTA then ingests the documents and cleans all of their text content.
+SeTA ingests and, after some cleaning of the text content, stores the documents and metadata in **Elasticsearch**, a special database. 
 
-When this is done, the documents and metadata are ready to be stored in **Elastic Search**, a special database that SeTA uses. 
+### Elasticsearch
+Elasticsearch is a distributed, free and open search and analytics engine for all types of data, including textual, numerical, geospatial, structured, and unstructured. Elasticsearch is built on Apache Lucene and was first released in 2010 by Elasticsearch N.V. (now known as Elastic).  Raw data flows into Elasticsearch from a variety of sources, including logs, system metrics, and web applications. Data ingestion is the process by which this raw data is parsed, normalized, and enriched before it is indexed in Elasticsearch. Once indexed in Elasticsearch, users can run complex queries against their data and use aggregations to retrieve complex summaries of their data.[^1]
 
 ### AI Models
 
+An Artificial Intelligence model is a program or an algorithm that utilizes datasets to find patterns within that data. This allows the model to reach certain conclusions and make predictions when provided with the necessary information.[^2] 
+
+The first step is to create an AI model, which uses a complex algorithm or layers of algorithms that interpret data and make decisions based on that data.[^3] 
+
 The next step is to train AI models by using full text documents and their phrases from elastic search. This training helps the models to learn relations between the meanings of the words in the text provided. 
 
+### Word2Vec
+
 For instance, an algorithm called **Word2Vec** processes phrases. This algorithm takes input words and groups them together based on the similarity of their meanings. This similarity is calculated using complex mathematical formulas based on the context of the words. 
+
+Word2vec is a two-layer neural net that processes text by “vectorizing” words. Its input is a text corpus and its output is a set of vectors: feature vectors that represent words in that corpus. While Word2vec is not a deep neural network, it turns text into a numerical form that deep neural networks can understand.[^4]
+
+The purpose and usefulness of Word2vec is to group the vectors of similar words together in vectorspace. That is, it detects similarities mathematically. Word2vec creates vectors that are distributed numerical representations of word features, features such as the context of individual words. It does so without human intervention.
+
+Given enough data, usage and contexts, Word2vec can make highly accurate guesses about a word’s meaning based on past appearances. Those guesses can be used to establish a word’s association with other words (e.g. “man” is to “boy” what “woman” is to “girl”), or cluster documents and classify them by topic. Those clusters can form the basis of search, sentiment analysis and recommendations in such diverse fields as scientific research, legal discovery, e-commerce and customer relationship management.
+
+The output of the Word2vec neural net is a vocabulary in which each item has a vector attached to it, which can be fed into a deep-learning net or simply queried to detect relationships between words.
+
+### sBERT
 
 A similar algorithm, **sBERT** is based on sentences and provides further training to the model. By training the models with new documents as they are published, we can ensure that the knowledge they contain represents EU documents accurately. 
 
 This knowledge is used to enrich document metadata by providing content driven labels and by expanding the labels based on existing ontologies.
 
+!!! info "Ontology"
+    Ontology shows properties and relations between a set of concepts and categories within a  subject area or domain. It is a branch of linguistics called semantics, the study of meaning. With ontology, a machine can accurately interpret the meaning of the word “diamond” in relation to a baseball player, jeweler, or card suit. It can also help interpret the word “chicken” as either food or an animal or differentiate between “bank” as a place of business or land alongside a river or lake.[^5]
+
 At this point the full text of all documents can be searched through a simple interface, and users are able to target their search either to the individual document collections or to search across all collections in a harmonised way.
-
-
 
 
 ### API
 
-A specific APi have been built to access this knowledge and can be used to receive suggestions of similar terms and related documents.
+A specific APi have been built to access this knowledge and can be used to receive suggestions of similar terms and upload metadata of related documents.
 
 In the end, this API also feed the user interface providing users with the information they are looking for. 
 
@@ -59,4 +77,9 @@ In the end, this API also feed the user interface providing users with the infor
 ![Screenshot](./img/API_design.png)
 
 
+[^1]:https://www.elastic.co/what-is/elasticsearch
+[^2]:https://plat.ai/blog/what-you-know-about-ai-model/
+[^3]:https://www.intel.com/content/www/us/en/analytics/data-modeling.html
+[^4]:http://wiki.pathmind.com/word2vec
+[^5]:https://www.expert.ai/blog/how_ontology_works_and_adds_value_to_nlu/
    

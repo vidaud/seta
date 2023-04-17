@@ -1,10 +1,8 @@
 As previously described, SeTA can be use:
 
+- To upload highly complex documents and unstructured content and need promptly output data using the record & document classification. 
 
-
-- To upload highly complex documents and unstructured content and need promptly output data using the record & document classification and image & inline annotation workbenches. 
-
-- Turn your document data into intelligence with the leading AI-powered data extraction models. Use our AI models to extract data from any complex document in seconds. 
+- Turn your document data into intelligence with the leading AI-powered data extraction models. 
 
 ![Image title](../img/why-use-it.png){ align=right width=600 }
 
