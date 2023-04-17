@@ -97,7 +97,7 @@ const ListMenu = ({ className, items, onSelect }: Props) => {
 
   return (
     <Box className={className} css={S.root} tabIndex={-1}>
-      <ScrollArea.Autosize mah={300} type="scroll" viewportRef={viewport}>
+      <ScrollArea.Autosize mah={400} type="scroll" viewportRef={viewport}>
         {formattedItems.map(item => (
           <ListMenuItem
             key={item.value}

@@ -2,7 +2,7 @@ import { css } from '@emotion/react'
 
 export const popup: ThemedCSS = theme => css`
   border-color: ${theme.colors.gray[4]};
-  min-height: 300px;
+  min-height: 400px;
   padding: ${theme.spacing.sm};
 
   .seta-Popover-arrow {
