@@ -48,49 +48,50 @@ Connect with EU Login account (*you can also use GitHub authentication, but EU L
 
 After successful authentication, check that you have the following entries in the new *seta database - users collection*:
 
-=== "Partial object for the new seta account"
-    ```
-        {
-            "user_id": "5Mq7bNYnhtaiS6BDLvcZ",
-            "email": "email@domain",
-            "user_type": "user",
-            "status": "active",
-        }
-    ```
+Partial object for the new seta account:
+```
+    {
+        "user_id": "5Mq7bNYnhtaiS6BDLvcZ",
+        "email": "email@domain",
+        "user_type": "user",
+        "status": "active",
+    }
+```
 
 
-=== "Provider object"
-    ```
-        {
-            "user_id": "5Mq7bNYnhtaiS6BDLvcZ",
-            "provider_uid": "ecas_id",
-            "provider": "ECAS",
-            "first_name": "First name",
-            "last_name": "Last name",
-            "domain": "eu.europa.ec"
-        }
-    ```
+Provider object:
+```
+    {
+        "user_id": "5Mq7bNYnhtaiS6BDLvcZ",
+        "provider_uid": "ecas_id",
+        "provider": "ECAS",
+        "first_name": "First name",
+        "last_name": "Last name",
+        "domain": "eu.europa.ec"
+    }
+```
 
-=== "Community create scope"
-    ```
-        {
-            "user_id": "5Mq7bNYnhtaiS6BDLvcZ",
-            "system_scope": "/seta/community/create",
-            "area": "community"
-        }
-    ```
+Community create scope:
+```
+    {
+        "user_id": "5Mq7bNYnhtaiS6BDLvcZ",
+        "system_scope": "/seta/community/create",
+        "area": "community"
+    }
+```
 
-=== "Role claim (claim_value can different)"
-    ```
-        {
-            "user_id": "5Mq7bNYnhtaiS6BDLvcZ",
-            "claim_type": "roles",
-            "claim_value": "Administrator"
-        }
-    ```
+Role claim (claim_value can different):
+```
+    {
+        "user_id": "5Mq7bNYnhtaiS6BDLvcZ",
+        "claim_type": "roles",
+        "claim_value": "Administrator"
+    }
+```
 
 !!! info
     **user_id** is a randomly generated short guid for each new account
+
 #### Community API
 
 Open a new tab in the same browser for the community api swagger documentation: [http://localhost/api/communities/v1/doc](http://localhost/api/communities/v1/doc)
@@ -120,30 +121,30 @@ The server response should be a 201 code with a JSON body:
 
 Check the following entries in the *seta database - communities* collection:
 
-=== "community object"
+community object
 
-    ```
-        {
-            "community_id": "seta",
-            "title": "Seta",
-            "description": "Seta community",
-            "membership": "closed",
-            "data_type": "evidence",
-            "status": "active",
-            "creator_id": "5Mq7bNYnhtaiS6BDLvcZ"
-        }
-    ```
+```
+    {
+        "community_id": "seta",
+        "title": "Seta",
+        "description": "Seta community",
+        "membership": "closed",
+        "data_type": "evidence",
+        "status": "active",
+        "creator_id": "5Mq7bNYnhtaiS6BDLvcZ"
+    }
+```
 
-=== "membership object"
-    ```
-        {
-            "community_id": "seta",
-            "user_id": "5Mq7bNYnhtaiS6BDLvcZ",
-            "role": "CommunityOwner",
-            "join_date": "2023-03-06T17:34:48.538+00:00",
-            "status": "active"
-        }
-    ```
+membership object
+```
+    {
+        "community_id": "seta",
+        "user_id": "5Mq7bNYnhtaiS6BDLvcZ",
+        "role": "CommunityOwner",
+        "join_date": "2023-03-06T17:34:48.538+00:00",
+        "status": "active"
+    }
+```
 Check the objects for the community scopes in the *seta database - users* collection:
 ```
     {
@@ -180,41 +181,40 @@ Expand **Resources** region and then Try out **POST** /resources/community/{comm
 ![Screenshot](../img/create-resource.png)
 
 
-Check the following:
-
-=== "Resource entry in the *seta database - resources* collection"
+Check that the Resource entry in the *seta database - resources* collection:
     
-    ```
-        {
-            "resource_id": "cordis",
-            "community_id": "seta",
-            "title": "Cordis",
-            "abstract": "Cordis resource",
-            "access": "community",
-            "limits": {"total_files_no": 50,"total_storage_mb": 1024,"file_size_mb": 50},
-            "status": "active",
-            "creator_id": "5Mq7bNYnhtaiS6BDLvcZ"
-        }
-    ```
+```
+    {
+        "resource_id": "cordis",
+        "community_id": "seta",
+        "title": "Cordis",
+        "abstract": "Cordis resource",
+        "access": "community",
+        "limits": {"total_files_no": 50,"total_storage_mb": 1024,"file_size_mb": 50},
+        "status": "active",
+        "creator_id": "5Mq7bNYnhtaiS6BDLvcZ"
+    }
+```
 
-=== "The objects for the resource scopes in the *seta database - users* collection"
-    ```
-        {
-            "user_id": "5Mq7bNYnhtaiS6BDLvcZ",
-            "resource_id": "cordis",
-            "resource_scope": "/seta/resource/edit"
-        },
-        {
-            "user_id": "5Mq7bNYnhtaiS6BDLvcZ",
-            "resource_id": "cordis",
-            "resource_scope": "/seta/resource/data/add"
-        },
-        {
-            "user_id": "5Mq7bNYnhtaiS6BDLvcZ",
-            "resource_id": "cordis",
-            "resource_scope": "/seta/resource/data/delete"
-        }
-    ```
+
+Check that the objects for the resource scopes in the *seta database - users* collection
+```
+    {
+        "user_id": "5Mq7bNYnhtaiS6BDLvcZ",
+        "resource_id": "cordis",
+        "resource_scope": "/seta/resource/edit"
+    },
+    {
+        "user_id": "5Mq7bNYnhtaiS6BDLvcZ",
+        "resource_id": "cordis",
+        "resource_scope": "/seta/resource/data/add"
+    },
+    {
+        "user_id": "5Mq7bNYnhtaiS6BDLvcZ",
+        "resource_id": "cordis",
+        "resource_scope": "/seta/resource/data/delete"
+    }
+```
 
 #### SeTA-API Corpus
 

@@ -79,9 +79,7 @@ nav:
       - What it does: index.md
       - Methodology: general/how-runs.md
       - Why you would use it: general/why-use-it.md
-      - Who should/can use it: general/who-use-it.md
-      - What are the inputs: general/what-inputs.md
-      - What are the outputs: general/what-outputs.md      
+      - Who should/can use it: general/who-use-it.md      
   - Using SeTA:
     - Setup: user-guide/user-guide.md
     - Web Interface:

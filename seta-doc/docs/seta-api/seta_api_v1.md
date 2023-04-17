@@ -1,42 +1,47 @@
 # SETA-API
+The SeTA API set functions and procedures that allow to access data and feature other services. 
 
 ## seta-api-suggestions
 
+The suggestions is the related terms list that is generated after setting a term. 
+
 ### GET /suggestions
 
-??? quote "Retrieve terms by initial letters. By default it returns 6 terms, with the parameter *n_suggestions* is possible to set the number of suggestions to be shown."
+Retrieve terms by initial letters. By default it returns 6 terms, with the parameter *n_suggestions* is possible to set the number of suggestions to be shown.
     
-    ![Screenshot](../img/get-suggestions.png)
-    ![Screenshot](../img/get-suggestions-result.png)
+![Screenshot](../img/get-suggestions.png)
+![Screenshot](../img/get-suggestions-result.png)
 
 
 
 ## seta-api-corpus
+The corpus, is a collection of text organized into json files. The SeTA API provides with the following functions to manage the corpus.
 
 ### PUT /corpus
-??? quote "Put a document into corpus index."
-    ![Screenshot](../img/put-corpus.png)
-    ![Screenshot](../img/put-corpus-result.png)
+Put a document into corpus index.
+![Screenshot](../img/put-corpus.png)
+![Screenshot](../img/put-corpus-result.png)
 
 ### GET /corpus
-??? quote "Retrieve documents related to a term from EU corpus.EU corpus contains documents of the European Commission: Eur-Lex, CORDIS, JRC PUBSY, EU Open Data Portal, etc.."
-    ![Screenshot](../img/get-corpus.png)
-    ![Screenshot](../img/get-corpus-result.png)
+Retrieve documents related to a term from EU corpus.EU corpus contains documents of the European Commission: Eur-Lex, CORDIS, JRC PUBSY, EU Open Data Portal, etc..
+![Screenshot](../img/get-corpus.png)
+![Screenshot](../img/get-corpus-result.png)
 
 
 ### POST /corpus
-??? quote "Retrieve documents related to a term from EU corpus.EU corpus contains documents of the European Commission: Eur-Lex, CORDIS, JRC PUBSY, EU Open Data Portal, etc.."
+Retrieve documents related to a term from EU corpus.EU corpus contains documents of the European Commission: Eur-Lex, CORDIS, JRC PUBSY, EU Open Data Portal, etc..
+![Screenshot](../img/post-corpus.png)
 
 ### GET /corpus/{id}
-??? quote "Given the elasticsearch unique _id, the relative document from EU corpus is shown.EU corpus contains documents of the European Commission: Eur-Lex, CORDIS,JRC PUBSY, EU Open Data Portal, etc.."
-    ![Screenshot](../img/get-corpus-id.png)
-    ![Screenshot](../img/get-corpus-id-result.png)
+Given the elasticsearch unique _id, the relative document from EU corpus is shown.EU corpus contains documents of the European Commission: Eur-Lex, CORDIS,JRC PUBSY, EU Open Data Portal, etc..
+![Screenshot](../img/get-corpus-id.png)
+![Screenshot](../img/get-corpus-id-result.png)
 
 ### DELETE /corpus/{id}
 
-??? quote "Given the elasticsearch unique _id, the relative document is deleted."
-    ![Screenshot](../img/delete-corpus-id.png)
-    ![Screenshot](../img/delete-corpus-id-result.png)
+Given the elasticsearch unique _id, the relative document is deleted.
+![Screenshot](../img/delete-corpus-id.png)
+![Screenshot](../img/delete-corpus-id-result.png)
 
 ## seta-api-similar
 

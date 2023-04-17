@@ -1,4 +1,12 @@
 
+The following diagram describes the workflow of SeTA.
+ 
+1. Everything stars by receiving as input from different sources the data that will fill the database.
+2. The data is processed (cleaned, algorithms)
+3. The processed data is used to create the AI Models
+4. The data is ready to be used for the searching. 
+
+
 ![Screenshot](../img/machine_learning_icons.png)
 
 
