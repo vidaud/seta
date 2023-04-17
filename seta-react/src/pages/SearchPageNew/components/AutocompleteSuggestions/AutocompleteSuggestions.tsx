@@ -32,7 +32,7 @@ type Props = {
 const AutocompleteSuggestions = ({ className }: Props) => {
   return (
     <Box className={className} css={S.root}>
-      <ListMenu items={terms} />
+      <ListMenu items={terms} onSelect={value => console.log(value)} />
     </Box>
   )
 }
