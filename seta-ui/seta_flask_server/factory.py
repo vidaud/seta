@@ -10,8 +10,7 @@ from .infrastructure.extensions import (scheduler, jwt, logs, github)
 from .blueprints.auth import local_auth_api, refresh_expiring_jwts
 from .blueprints.auth_ecas import auth_ecas
 from .blueprints.auth_github import auth_github
-from .blueprints.rest import rest
-from .blueprints.rsa import rsa
+from .blueprints.user_profile import profile
 from .blueprints.token_auth import auth_api as authentication_api
 from .blueprints.token_info import authorization_api
 
@@ -46,7 +45,7 @@ def create_app(config_object):
     register_cas_client(app)
            
     request_endswith_ignore_list = ['.js', '.css', '.png', '.ico', '.svg', '.map', '.json', 'doc']
-    request_starts_with_ignore_list = ['/authorization', '/authentication', '/login', '/logout', '/refresh']
+    request_starts_with_ignore_list = ['/authorization', '/authentication', '/seta-ui/api/v1/login', '/seta-ui/api/v1/logout', '/seta-ui/api/v1/refresh']
     
     with app.app_context():         
             
@@ -153,6 +152,8 @@ def create_app(config_object):
     
 def register_blueprints(app):
     
+    API_ROOT="/seta-ui/api"
+    
     add_specs = True
     if app.config.get("DISABLE_SWAGGER_DOCUMENTATION"):
         add_specs = False
@@ -170,17 +171,16 @@ def register_blueprints(app):
     CORS(token_auth)
     authentication_api.init_app(app=token_auth)
     
-    app.register_blueprint(rest, url_prefix="/rest/v1")   
-    app.register_blueprint(rsa, url_prefix="/rsa/v1")
+    app.register_blueprint(profile, url_prefix=f"{API_ROOT}/v1/me")   
     
-    app.register_blueprint(local_auth, url_prefix="")
-    app.register_blueprint(auth_ecas, url_prefix="")
-    app.register_blueprint(auth_github, url_prefix="")
+    app.register_blueprint(local_auth, url_prefix=f"{API_ROOT}/v1")
+    app.register_blueprint(auth_ecas, url_prefix=f"{API_ROOT}/v1")
+    app.register_blueprint(auth_github, url_prefix=f"{API_ROOT}/v1")
     
     app.register_blueprint(token_auth, url_prefix="/authentication/v1")
     app.register_blueprint(token_info, url_prefix="/authorization/v1")
 
-    app.register_blueprint(communities_bp_v1, url_prefix="/api/v1")
+    app.register_blueprint(communities_bp_v1, url_prefix=f"{API_ROOT}/v1")
     
 def register_extensions(app):    
     github.init_app(app)

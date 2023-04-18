@@ -1,7 +1,7 @@
 from .util import auth_headers
 from flask.testing import FlaskClient
 
-API_V1 = "/api/v1"
+API_V1 = "/seta-ui/api/v1"
 
 def get_user_permissions(client: FlaskClient, access_token:str, community_id: str, user_id: str):
     url = f"{API_V1}/permissions/community/{community_id}/user/{user_id}"

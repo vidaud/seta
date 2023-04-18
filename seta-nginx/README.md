@@ -22,5 +22,5 @@ At some point there will be a message *"Accepting connections at http://localhos
 
 
 After that you are ready to open your browser and start typing:  
-* **for UI:** http://localhost/seta-ui
+* **for UI:** http://localhost
 * **for API:** http://localhost/seta-api/doc

@@ -45,7 +45,7 @@ Create an ***.env*** file containing the variables as described in the file  *.e
 
 After successfully start all the containers you are ready to open your browser and start typing:
 
-* **for UI:** [http://localhost/seta-ui](http://localhost/seta-ui)
+* **for UI:** [http://localhost](http://localhost)
 
 * **for API:** [http://localhost/seta-api/doc](http://localhost/seta-api/doc)
 

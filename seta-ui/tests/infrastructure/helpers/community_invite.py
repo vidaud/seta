@@ -1,7 +1,7 @@
 from .util import auth_headers
 from flask.testing import FlaskClient
 
-API_V1 = "/api/v1"
+API_V1 = "/seta-ui/api/v1"
 
 def create_community_invite(client: FlaskClient, access_token:str, community_id: str, emails: list[str], message: str):
     url = f"{API_V1}/communities/{community_id}/invites"

@@ -1,7 +1,7 @@
 from .util import auth_headers
 from flask.testing import FlaskClient
 
-API_V1 = "/api/v1"
+API_V1 = "/seta-ui/api/v1"
 
 def get_resource(client: FlaskClient, access_token:str, resource_id: str):
     url = f"{API_V1}/resources/{resource_id}"
