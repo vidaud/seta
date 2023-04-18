@@ -23,5 +23,14 @@ export const root: ThemedCSS = theme => css`
 export const chip: ThemedCSS = theme => css`
   .seta-Chip-label {
     color: ${theme.colors.dark[6]};
+
+    &[data-checked='true'] {
+      color: white;
+      background-color: ${theme.colors.teal[6]};
+
+      .seta-Chip-iconWrapper {
+        color: white;
+      }
+    }
   }
 `
