@@ -134,7 +134,8 @@ def test_fail_non_existing_community(client: FlaskClient, user_id: str, communit
     response = update_community(client=client, access_token=access_token, 
                     id=community_id, title="title", description="description", 
                     data_type="representative", status="active")
-    assert response.status_code == HTTPStatus.NO_CONTENT    
+    assert response.status_code == HTTPStatus.NOT_FOUND    
+    
          
 
 '''===========================================================''' 
@@ -206,7 +207,7 @@ def test_fail_create_resource_non_existent_community(client: FlaskClient, user_i
 
     response = create_resource(client=client, access_token=access_token, community_id=community_id,
                     resource_id="ocean", title="Ocean", abstract="Ocean resource for test")
-    assert response.status_code == HTTPStatus.NO_CONTENT        
+    assert response.status_code == HTTPStatus.NOT_FOUND        
 
 @pytest.mark.parametrize("user_id, community_id", [("seta_community_manager", "blue")])
 def test_fail_create_resource_forbidden(client: FlaskClient, user_id: str, community_id: str):

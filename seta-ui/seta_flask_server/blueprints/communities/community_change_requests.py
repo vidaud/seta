@@ -117,7 +117,7 @@ class CommunityChangeRequest(Resource):
         
     @community_change_request_ns.doc(description='Retrieve change request for the community.',
     responses={int(HTTPStatus.OK): "'Retrieved change request.",
-               int(HTTPStatus.NO_CONTENT): "Request not found.",
+               int(HTTPStatus.NOT_FOUND): "Request not found.",
                int(HTTPStatus.FORBIDDEN): "Insufficient rights, scope 'community/change_request/approve' required"
                },
     security='CSRF')
@@ -132,7 +132,7 @@ class CommunityChangeRequest(Resource):
         request = self.changeRequestsBroker.get_request(community_id=community_id, request_id=request_id)
         
         if request is None:
-            return '', HTTPStatus.NO_CONTENT
+            abort(HTTPStatus.NOT_FOUND)
 
         user = self.usersBroker.get_user_by_id(auth_id)
         if user is None:
@@ -149,7 +149,7 @@ class CommunityChangeRequest(Resource):
     responses={
                 int(HTTPStatus.OK): "Request updated.", 
                 int(HTTPStatus.FORBIDDEN): "Insufficient rights, scope 'community/membership/approve' required",
-                int(HTTPStatus.NO_CONTENT): "Request not found."
+                int(HTTPStatus.NOT_FOUND): "Request not found."
                 },
     security='CSRF')
     @community_change_request_ns.expect(update_change_request_parser)
@@ -184,7 +184,7 @@ class CommunityChangeRequest(Resource):
             abort(HTTPStatus.INTERNAL_SERVER_ERROR)   
            
         if request is None:
-            return '', HTTPStatus.NO_CONTENT
+            abort(HTTPStatus.NOT_FOUND)
         
         message = f"Request {status}."
         response = jsonify(status="success", message=message)

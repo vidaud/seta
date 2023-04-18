@@ -32,7 +32,7 @@ class CommunityResource(Resource):
 
     @resources_ns.doc(description='Retrieve resource',        
         responses={int(HTTPStatus.OK): "Retrieved resource.",
-                   int(HTTPStatus.NO_CONTENT): "Resource id not found."
+                   int(HTTPStatus.NOT_FOUND): "Resource id not found."
                   },
         security='CSRF')
     @resources_ns.marshal_with(resource_model, mask="*")
@@ -41,13 +41,13 @@ class CommunityResource(Resource):
         resource = self.resourcesBroker.get_by_id(id)
         
         if resource is None:
-            return '', HTTPStatus.NO_CONTENT
+            abort(HTTPStatus.NOT_FOUND)
         
         return resource
 
     @resources_ns.doc(description='Update resource fields',        
         responses={int(HTTPStatus.OK): "Resource updated.", 
-                   int(HTTPStatus.NO_CONTENT): "Resource id not found.",
+                   int(HTTPStatus.NOT_FOUND): "Resource id not found.",
                    int(HTTPStatus.FORBIDDEN): "Insufficient rights, scope 'resource/edit' required"},
         security='CSRF')
     @resources_ns.expect(update_resource_parser)
@@ -65,7 +65,7 @@ class CommunityResource(Resource):
 
         resource = self.resourcesBroker.get_by_id(id)
         if resource is None:
-            return '', HTTPStatus.NO_CONTENT
+            abort(HTTPStatus.NOT_FOUND)
 
         community_scopes = [CommunityScopeConstants.Owner, CommunityScopeConstants.Manager]
         if not user.has_resource_scope(id=id, scope=ResourceScopeConstants.Edit) and not user.has_any_community_scope(id=resource.community_id, scopes=community_scopes):
@@ -90,7 +90,7 @@ class CommunityResource(Resource):
 
     @resources_ns.doc(description='Delete all resource entries',
         responses={int(HTTPStatus.OK): "Resource deleted.", 
-                    int(HTTPStatus.NO_CONTENT): "Resource id not found.",
+                    int(HTTPStatus.NOT_FOUND): "Resource id not found.",
                    int(HTTPStatus.FORBIDDEN): "Insufficient rights, scope 'resource/edit' required"},
         security='CSRF')
     @auth_validator()
@@ -109,7 +109,7 @@ class CommunityResource(Resource):
 
         resource = self.resourcesBroker.get_by_id(id)
         if resource is None:
-            return '', HTTPStatus.NO_CONTENT
+            abort(HTTPStatus.NOT_FOUND)
 
         community_scopes = [CommunityScopeConstants.Owner, CommunityScopeConstants.Manager]
         if not user.has_resource_scope(id=id, scope=ResourceScopeConstants.Edit) and not user.has_any_community_scope(id=resource.community_id, scopes=community_scopes):

@@ -34,7 +34,7 @@ class CommunityResourceList(Resource):
 
     @community_resources_ns.doc(description='Retrieve resources for this community.',
         responses={int(HTTPStatus.OK): "'Retrieved resources.",
-                   int(HTTPStatus.NO_CONTENT): "Community not found"},
+                   int(HTTPStatus.NOT_FOUND): "Community not found"},
         security='CSRF')
     @community_resources_ns.marshal_list_with(resource_model, mask="*")
     @auth_validator()    
@@ -42,13 +42,13 @@ class CommunityResourceList(Resource):
         '''Retrieve resources'''
 
         if not self.communitiesBroker.community_id_exists(community_id):
-            return '', HTTPStatus.NO_CONTENT
+            abort(HTTPStatus.NOT_FOUND)
 
         return self.resourcesBroker.get_all_by_community_id(community_id)
 
     @community_resources_ns.doc(description='Create new resource.',        
         responses={int(HTTPStatus.CREATED): "Added resource.", 
-                   int(HTTPStatus.NO_CONTENT): "Community not found",
+                   int(HTTPStatus.NOT_FOUND): "Community not found",
                    int(HTTPStatus.FORBIDDEN): "Insufficient rights, scope 'resource/create' required"},
         security='CSRF')
     @community_resources_ns.expect(new_resource_parser)
@@ -64,7 +64,7 @@ class CommunityResourceList(Resource):
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
 
         if not self.communitiesBroker.community_id_exists(community_id):
-            return '', HTTPStatus.NO_CONTENT
+            abort(HTTPStatus.NOT_FOUND)
 
         if not user.has_community_scope(id=community_id, scope=CommunityScopeConstants.CreateResource):
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")        
