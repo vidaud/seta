@@ -1,4 +1,6 @@
 import { css } from '@emotion/react'
+import styled from '@emotion/styled'
+import { Chip as MantineChip } from '@mantine/core'
 
 export const root: ThemedCSS = theme => css`
   border-top: dashed 1px ${theme.colors.gray[3]};
@@ -18,19 +20,28 @@ export const root: ThemedCSS = theme => css`
   &:hover + & {
     border-color: transparent;
   }
-`
 
-export const chip: ThemedCSS = theme => css`
-  .seta-Chip-label {
-    color: ${theme.colors.dark[6]};
-
-    &[data-checked='true'] {
-      color: white;
-      background-color: ${theme.colors.teal[6]};
-
-      .seta-Chip-iconWrapper {
-        color: white;
-      }
-    }
+  .seta-Checkbox-input {
+    cursor: pointer;
   }
 `
+
+export const Chip = styled(MantineChip)(({ theme, color }) => {
+  const checkedStyle = theme.fn.variant({ variant: 'filled', color })
+  const defaultColor = theme.colors.dark[6]
+
+  return css`
+    .seta-Chip-label {
+      color: ${defaultColor};
+
+      &[data-checked='true'] {
+        color: ${checkedStyle.color};
+        background-color: ${checkedStyle.background};
+
+        .seta-Chip-iconWrapper {
+          color: ${checkedStyle.color};
+        }
+      }
+    }
+  `
+})

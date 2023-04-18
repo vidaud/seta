@@ -1,5 +1,7 @@
 import { useState } from 'react'
-import { Flex, Text } from '@mantine/core'
+import { Flex } from '@mantine/core'
+
+import TokensInput from '~/pages/SearchPageNew/components/TokensInput/TokensInput'
 
 import SearchInput from './components/SearchInput'
 import SuggestionsPopup from './components/SuggestionsPopup'
@@ -12,7 +14,7 @@ const SearchPageNew = () => {
 
   return (
     <Flex direction="column" align="center" css={S.pageWrapper}>
-      <Text>Discover and Link Knowledge in EU Documents</Text>
+      <TokensInput />
 
       <SuggestionsPopup opened={suggestionOpen} onChange={setSuggestionOpen}>
         <SearchInput css={S.inputWrapper} onClick={openPopup} onChange={openPopup} />
