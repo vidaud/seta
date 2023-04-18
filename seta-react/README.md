@@ -3,16 +3,15 @@
 * [.husky/](../seta-react/.husky)
   * [pre-commit](../seta-react/.husky/pre-commit)
 * [docs/](../seta-react/docs)
-  * [eslint-configuration.md](../seta-react/docs/eslint-configuration.md)
+  * [eslint-configuration.md](../seta-react/docs/eslint-configuration.md) - Contains the configuration for ESlint open-source library, to enforce rules about maintaining the code standard across the project.
 * [public/](../seta-react/public)
   * [img/](../seta-react/public/img)
   * [favicon.ico](../seta-react/public/favicon.ico)
-  * [index.html](../seta-react/public/index.html)
   * [logo192.png](../seta-react/public/logo192.png)
   * [logo512.png](../seta-react/public/logo512.png)
   * [manifest.json](../seta-react/public/manifest.json)
   * [robots.txt](../seta-react/public/robots.txt)
-* [src/](../seta-react/src)
+* [src/](../seta-react/src)  - stores all of source code that is used. Usually there are actions, components, pages/screens, reducers and routes/navigations.
   * [assets/](../seta-react/src/assets)
   * [common/](../seta-react/src/common)
   * [components/](../seta-react/src/components)
@@ -45,9 +44,10 @@
 
 
 
-The *seta-react* contains the image that works to launch the web app of SeTA project.
+The *seta-react* contains the image that launch the web app of SeTA project.
 
 Within the Dockerfile is stablished the configuration for the execution of the app so it can be executed when the build of the project is launched.
+
 
 ## Build
 The image is build it together with all the images through the execution of the docker-compose:

@@ -2,7 +2,7 @@
 
 * [Dockerfile](../seta-es/Dockerfile)
 
-The **seta-es** folder contains the image where the elastic search engine is store.
+The **seta-es** folder contains the image where the Elasticsearch engine is store.
 
 The **Elasticsearch** engine is fast, with it's logic of placing documents distributed across different containers, it provides redundant copies of the data in case of hardware failure. 
 

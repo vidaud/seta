@@ -31,9 +31,9 @@ The reasons for this decision are:
 
 Data taxonomy is the classification of data into categories and sub-categories. It provides a unified view of the data in a system and introduces common terminologies and semantics across multiple systems. Taxonomies represent the formal structure of classes or types of objects within a domain. A taxonomy formalizes the hierarchical relationships among concepts and specifies the term to be used to refer to each; it prescribes structure and terminology.[^1] 
 
-In SeTA, the received metadata from the datasources can be reconfigured, thanks to the dynamic generation of data taxonomy.  In the API, the user can redefine the taxonomy he wants to be used. The process starts with the user defining the structure data that he needs and setting it into the API. 
+In SeTA, the received metadata from the datasources can be reconfigured.  Through the API, the user can redefine the taxonomy he wants to use. The process starts with the user defining the structure data that needs and setting it into the API interface. 
 
-In the following example it is possible to see how it is possible to reconfigure the taxonomy:
+The following example describes a possible to reconfigure the taxonomy:
 
 ``` json
 "aggregations": {
