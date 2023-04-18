@@ -81,7 +81,7 @@ nav:
       - Why you would use it: general/why-use-it.md
       - Who should/can use it: general/who-use-it.md      
   - Using SeTA:
-    - Setup: user-guide/user-guide.md
+    - Setup: user-guide/setup.md
     - Web Interface:
       - Search: user-guide/web-interface.md
       - Communities: user-guide/communities.md

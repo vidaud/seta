@@ -196,7 +196,6 @@ Check that the Resource entry in the *seta database - resources* collection:
     }
 ```
 
-
 Check that the objects for the resource scopes in the *seta database - users* collection
 ```
     {
