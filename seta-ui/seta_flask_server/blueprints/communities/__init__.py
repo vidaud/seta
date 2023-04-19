@@ -1,4 +1,6 @@
 from flask_restx import Api
+from flask import Blueprint, current_app
+
 from .community import communities_ns
 from .community_membership import membership_ns
 from .community_change_requests import community_change_request_ns
@@ -25,11 +27,16 @@ authorizations = {
     }
 }
 
-api = Api(
+doc='/communities/doc'
+if current_app.config.get("DISABLE_SWAGGER_DOCUMENTATION"):
+    doc = False
+
+communities_bp_v1 = Blueprint('communities-api-v1', __name__)
+api = Api( communities_bp_v1,
          title='SeTA Communities API',
          version='1.0',
          description='SeTA Communities API',
-         doc='/communities/doc',
+         doc=doc,
          authorizations=authorizations
          )
 

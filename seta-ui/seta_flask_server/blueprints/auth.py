@@ -1,18 +1,15 @@
-from flask_restx import Api, Resource, fields
 from http import HTTPStatus
 from injector import inject
 
-from datetime import datetime
-from datetime import timedelta
-from datetime import timezone
-
 from flask import current_app as app
-from flask import (jsonify, redirect, make_response, session)
+from flask import (jsonify, redirect, make_response, session, Blueprint)
 
 from flask_jwt_extended import create_access_token
 from flask_jwt_extended import jwt_required
 from flask_jwt_extended import set_access_cookies, unset_jwt_cookies
 from flask_jwt_extended import get_jwt_identity, get_jwt
+
+from flask_restx import Api, Resource, fields
 
 from seta_flask_server.infrastructure.constants import ExternalProviderConstants
 from seta_flask_server.infrastructure.helpers import set_token_info_cookies, unset_token_info_cookies
@@ -20,10 +17,15 @@ from seta_flask_server.infrastructure.auth_helpers import create_session_token
 
 from seta_flask_server.repository.interfaces import ISessionsBroker
 
-local_auth_api = Api( 
+doc='/login/doc'
+if app.config.get("DISABLE_SWAGGER_DOCUMENTATION"):
+    doc = False
+
+local_auth = Blueprint("auth", __name__)
+local_auth_api = Api( local_auth,
                version="1.0",
                title="SeTA Authentication",
-               doc="/login/doc",
+               doc=doc,
                description="Local authentication methods",
                default_swagger_filename="login/swagger_auth.json",
                )
@@ -151,51 +153,3 @@ class SetaRefresh(Resource):
         set_token_info_cookies(response=response, access_token_encoded=access_token)
 
         return response
-
-def refresh_expiring_jwts(response):
-    new_access_token = None
-    
-    try:
-        token_expires = app.config['JWT_ACCESS_TOKEN_EXPIRES']
-                
-        if token_expires is None:
-            app.logger.debug("set token_expires to 15 min")
-            token_expires = timedelta(minutes=15)
-                
-        jwt = get_jwt()      
-        exp_timestamp = jwt["exp"]
-        now = datetime.now(timezone.utc)        
-        
-        #refresh any token that is within the second half of its expiration time
-        expire_minutes = (token_expires.total_seconds() / 60) // 2
-        delta = timedelta(minutes=expire_minutes)
-        
-        target_timestamp = datetime.timestamp(now + delta)     
-
-        #app.logger.debug("Refresh token only if " + str(target_timestamp) + " > " + str(exp_timestamp))
-
-        if target_timestamp > exp_timestamp:
-                        
-            identity = get_jwt_identity()
-            additional_claims = None
-            role = jwt.get("role", None)
-            if role is not None:
-                additional_claims = {"role": role}
-            
-            new_access_token = create_access_token(identity=identity, fresh=False, additional_claims=additional_claims)
-            set_access_cookies(response, new_access_token)
-            set_token_info_cookies(response=response, access_token_encoded=new_access_token)
-            
-            '''
-            app.logger.debug("target_timestamp: " 
-                        + str(datetime.fromtimestamp(target_timestamp)) 
-                        + ", exp_timestamp: " 
-                        + str(datetime.fromtimestamp(exp_timestamp)))
-            '''
-            app.logger.debug("Expiring access token was refreshed.")            
-    except Exception as e:
-        # Case where there is not a valid JWT. Just return the original response
-        app.logger.exception("Could not refresh the expiring token.")        
-        return response, new_access_token
-    finally:
-        return response, new_access_token
