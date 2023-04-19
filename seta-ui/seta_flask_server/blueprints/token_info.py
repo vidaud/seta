@@ -1,6 +1,6 @@
 from flask_restx import Api, Resource, fields
 
-from flask import jsonify, abort, Blueprint
+from flask import jsonify, abort, Blueprint, current_app
 from flask_jwt_extended import decode_token
 from flask_jwt_extended.exceptions import JWTExtendedException
 from flask import current_app as app
@@ -12,11 +12,15 @@ from injector import inject
 
 from seta_flask_server.infrastructure.scope_constants import ResourceScopeConstants
 
+doc="/doc"
+if current_app.config.get("DISABLE_SWAGGER_DOCUMENTATION"):
+    doc = False
+
 token_info = Blueprint("token_info", __name__)
-authorization_api = Api( token_info,
+authorization_api = Api(token_info,
                version="1.0",
                title="JWT token authorization",
-               doc="/doc",
+               doc=doc,
                description="JWT authorization for seta apis"               
                )
 ns_authorization = authorization_api.namespace("", "Authorization endpoints")

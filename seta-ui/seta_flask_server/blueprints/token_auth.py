@@ -1,5 +1,5 @@
 from flask_restx import Api, Resource, fields
-from flask import jsonify, abort, make_response, Blueprint, current_app
+from flask import jsonify, abort, make_response, Blueprint
 from flask_jwt_extended import create_access_token, create_refresh_token
 from flask_jwt_extended import set_access_cookies, set_refresh_cookies
 from flask_jwt_extended import get_jwt_identity, jwt_required
@@ -18,16 +18,12 @@ from datetime import timedelta
 TOKEN_EXPIRES_DELTA = timedelta(minutes=15)
 REFRESH_TOKEN_EXPIRES_DELTA = timedelta(minutes=60)
 
-doc='/doc'
-if current_app.config.get("DISABLE_SWAGGER_DOCUMENTATION"):
-    doc = False
-
 token_auth = Blueprint('token_auth', __name__)
 CORS(token_auth)
-auth_api = Api( token_auth,
+auth_api = Api(token_auth,
                version="1.0",
                title="JWT token authentication",
-               doc=doc,
+               doc="/doc",
                description="JWT authetication for user and guests"
                )
 ns_auth = auth_api.namespace("", "Authentication endpoints")
