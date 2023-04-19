@@ -1,5 +1,15 @@
 # SETA-API
-The SeTA API provides the functions and procedures to access data from a developer point of view.       
+
+The SeTA API exposes the data and functionality in a consistent JSON format. It has various methods that can be performed on them over HTTP, like GET, POST, PUT, and DELETE. Where POST is used to create resources, and PUT to update resources.
+
+The main categories are:    
+- suggestions    
+- corpus     
+- similar      
+- ontology       
+- embeddings        
+
+       
 Here below all the functions available.
 
 ## seta-api-suggestions
@@ -84,7 +94,7 @@ Given a file or a plain text, related embeddings are provided. Embeddings are bu
 
 ## Models
 
-In this section you can see the models that were used in the different executions options of the API.
+The models section describes the patterns that were used in the different executions of the API.
 
 ![Screenshot](../img/models.png)
 

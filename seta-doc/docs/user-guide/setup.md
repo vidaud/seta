@@ -1,21 +1,21 @@
 
 SeTA has two user interfaces:
 
-- Web App, for normal users,
+- Web App: Allows the user to interact through the Web page with the content in a Web browser, which acts as a client.
 
-- API, for advanced users (programmers).
+- API: An Application Programming Interface exposing data and functionality in a consistent format.
 
 ## Web interface
-The Seta Web interface is a user friendly interact where you can start searching directly from the interface.
+The Seta Web interface is a user friendly interact.
  
  ![Screenshot](../img/main_screen.jpg){ width="600" }
 
 
 The features of this web interface are:
 
-- Search tool
+- Search tool: An online search engine tool designed to search for metadata on the SeTA database based on the user's search query. It sorts the results, and makes an ordered list of these results according to the search algorithms.
 
-- Communities
+- Communities: A digital platform for people with a common interest that connect and communicate with one another.
 
 
 In order to access these features, you need either to login an EU login account or a GitHub authentication.

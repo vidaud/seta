@@ -1,3 +1,4 @@
+
 Within the search page it is possible to search:
 
 * By term
@@ -5,60 +6,59 @@ Within the search page it is possible to search:
 * By document or text
     
 
-### Search by term:
+### Search by term
 As in the image below, if we put a term in the search bar, the app will list the related terms. Furthermore if we click on the *wizard* ![Image title](../img/wizard.png)
  icon, the query can be enriched with terms related.
 
 ![Screenshot](../img/search_term.png){ width="700" }
 
 
-### Search by phrase:
+### Search by phrase
 Search by phrase requires to put the double quotes *" "* in between the phrase, afterwards, as with the term search, it can be possible to click on the *wizard* icon, the query can be enriched with terms related.
 ![Screenshot](../img/search_phrase.png){ width="700" }
 
 
-### Search by document or text:
+### Search by document or text
 
 If you want to search uploading a document or put a text, just click in the cloud button and a pop up window will appear:
 
 ![Screenshot](../img/upload.png){ width="700" }
 
 
-After launching a search, a new section with the results will appear below the search box (see image below). 
+### Options
+After launching a search, a new section with the results will appear below the search box (see image below) together with some options:
 
-#### - Post Search 
-       
-In the left side of the new section there is a side bar with two tabs: ^^Refine Search^^ and ^^Post Search^^.  Click on tab Post Search and the table of filters will be replaced by the histogram which can be used to apply filters. Click on a specific part of the histogram and the list of documents will be updated and you will see only the related documents to the specific part of the histogram clicked.
+- Post Search   
+In the left side of the new section it is possible to find tab Post Search. Here there is an histogram which can be used to apply filters. Click on a specific part of the histogram and the list of documents will be updated displaying only the related documents according to the specific part of the histogram clicked.
 
+- Refine Search      
+In tab Refine Search it is possible to see the list of filters available to apply to the search query:     
+    - Search type  
+    - Time Range        
 
-#### - Refine Search
-
-In tab ^^Refine Search^^ you can see the list of filters available to apply to the search query: 
-
- - Search type  
- - Time Range
-
-#### - Sort results 
-
+- Sort results        
 On top of the results section on column ^^Score^^ and column ^^Year^^ there is the ^^Sort By arrow^^ option. 
 
 If the user clicks on the *increase/decrease arrows* the arrow will *increase/decrease* and the items of the list will change their order.
 
 To select the columns you want to see on the results table, go to the top of the results section on the left corner of the list of documents, click in the dropdown bar in there you will see the list of column headers selected by default. Uncheck the columns you do not want to see.  You can use this option to *show/hide* columns on preference.
 
-#### - Diagram of Concepts
-      
-Each item of the result list has an expand icon on the left corner. Click on it and the item will be expanded. 
+- Detail result                
+Each item of the result list has an expand icon **>** on the left corner. By clicking on it, it is possible to see more details about the single item:          
+    - Collection        
+    - Date           
+    - Eurovoc concepts
+    - Document reference
+    - Source
+    - In force
 
-After the click it will be possible to see the ^^Diagram of Concepts^^ of the expanded item. The ^^Diagram of Concept^^ list can be drag and dropped on the search bar and set this way the search query.
+Furthermore, there is a table with the left and right context of the result.
 
-#### - Concepts tab
-
+### Concepts tab           
 It is possible to see the visual representation of the topic. The Concept map will help you organize the results and explore the relationships in a topic. Through the concept map it is possible to organize and represent the searched term and explore the connections between elements.  
 
 
-#### - Document Map tab
-
+### Document Map tab         
 Mapping is the process of relating the structure values or content of a document in one format to the values and fields in an alternate document format. In the Document Map tab you will see the maps between different related documents to your search.  
 
 
