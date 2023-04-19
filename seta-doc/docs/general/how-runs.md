@@ -31,45 +31,84 @@ The reasons for this decision are:
 
 Data taxonomy is the classification of data into categories and sub-categories. It provides a unified view of the data in a system and introduces common terminologies and semantics across multiple systems. Taxonomies represent the formal structure of classes or types of objects within a domain. A taxonomy formalizes the hierarchical relationships among concepts and specifies the term to be used to refer to each; it prescribes structure and terminology.[^1] 
 
-In SeTA, the received metadata from the datasources can be reconfigured.  Through the API, the user can redefine the taxonomy he wants to use. The process starts with the user defining the structure data that needs and setting it into the API interface. 
+In SeTA, the user can define the taxonomy that is going to be used.  After the user select the terms that represent the broadest category and then allocate the tremaining terms to these categories. He can setup in throught the API interface. Is important to maintain, as much as possible, a consistent level of specificity within a category. The taxonomies can be of different types — flat, hierarchical, network, etc.
+In our experience, a hierarchical structure is most suited. So among the hierarchical types, there are three kinds: 
 
-The following example describes a possible to reconfigure the taxonomy:
+  1.  Standard Hierarchy     
+    Standard hierarchy taxonomy consists of a single root, which is subdivided into categories as necessary to structure the information and is often represented as a tree. It is easy to understand a single hierarchy structure and develop a mental model to find information. 
+
+  2.  Polyhierarchy     
+    A term in a taxonomy can be repeated in different categories. This is referred to as a ‘polyhierarchy’.
+    It is not recommended because, sometimes, it also causes confusion. Polyhierarchy is against the first and second principles of naming taxonomy terms: “Terms should be unambiguous and mutually exclusive”. It also disregards another important principle for selecting terms for your taxonomy. That is, users of taxonomy are more important than the kind of information it will organize. When there are trade-offs to be made, design for the end-user, not for the ease of tagging. 
+
+  3. Faceted       
+    A faceted classification system is multi-dimensional. It consists of multiple taxonomies or ‘facets’, whereby the top-level node of each represents a different type of taxonomy, attribute, or context. 
+    The following example describes the setup of a taxonomy:
 
 ``` json
 "aggregations": {
     "taxonomy": [
       [
         {
-          "doc_count": 6,
-          "name": "taxonomy1",
+          "doc_count": 7,
+          "name": "euro_sci_voc",
           "subcategory": [
             {
-              "classifier": "vidas",
-              "code": "/25/59/377",
+              "classifier": "cordis",
+              "code": "/23",
               "doc_count": 6,
-              "label": "domain12",
-              "longLabel": "domain12",
-              "name": "domain1",
+              "label": "natural sciences",
+              "longLabel": "/natural sciences",
+              "name": "natural_sciences",
               "subcategory": [
                 {
-                  "classifier": "vidas",
-                  "code": "/25/59/377",
-                  "doc_count": 6,
-                  "label": "mts12",
-                  "longLabel": "mts12",
-                  "name": "mts1",
+                  "classifier": "cordis",
+                  "code": "/23/49",
+                  "doc_count": 4,
+                  "label": "biological sciences",
+                  "longLabel": "/natural sciences/biological sciences",
+                  "name": "biological_sciences",
                   "subcategory": [
                     {
-                      "classifier": "vidas",
-                      "code": "/25/59/377",
-                      "doc_count": 6,
-                      "label": "concept32",
-                      "longLabel": "concept32",
-                      "name": "concept3",
-                      "subcategory": []
+                      "classifier": "cordis",
+                      "code": "/23/49/335",
+                      "doc_count": 2,
+                      "label": "ecology",
+                      "longLabel": "/natural sciences/biological sciences/ecology",
+                      "name": "ecology",
+                      "subcategory": [
+                        {
+                          "classifier": "cordis",
+                          "code": "/23/49/335/1009",
+                          "doc_count": 2,
+                          "label": "ecosystems",
+                          "longLabel": "/natural sciences/biological sciences/ecology/ecosystems",
+                          "name": "ecosystems",
+                          "subcategory": []
+                        }
+                      ]
+                    },
+                    {
+                      "classifier": "cordis",
+                      "code": "/23/49/345",
+                      "doc_count": 2,
+                      "label": "zoology",
+                      "longLabel": "/natural sciences/biological sciences/zoology",
+                      "name": "zoology",
+                      "subcategory": [
+                        {
+                          "classifier": "cordis",
+                          "code": "/23/49/345/1039",
+                          "doc_count": 2,
+                          "label": "entomology",
+                          "longLabel": "/natural sciences/biological sciences/zoology/entomology",
+                          "name": "entomology",
+                          "subcategory": []
+                        }
+                      ]
                     }
                   ]
-                }
+                }                
               ]
             }
           ]
@@ -120,13 +159,6 @@ Three key ingredients are needed for successful chunking:
 
 The implementation of these steps is performed by extracting titles, abstracts and identified sentences from the whole corpus, identifying, harmonising and replacing phrases and then storing.
 
-#### Final text preparation
-
-{--The last step before the neural network training is further normalisation: The only characters allowed in the text are a-z, 0-9, /, -, _ (space).--}
-
-All words not containing at least one character a-z are removed.
-
-This general corpus now contains 7 billion words and phrases, about 80 million sentences and 23 GB of plain text.
 
 #### Actual neural network training
 

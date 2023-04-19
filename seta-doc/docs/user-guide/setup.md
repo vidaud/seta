@@ -31,6 +31,8 @@ Once you are logged in, you can see in the top menu the link to the Search and t
 
 ## API interface
 
+The SeTA API provides the functions and procedures to access data from a developer point of view.
+
 ### Prerequisites
 
 The Docker containers must be running.
