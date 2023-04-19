@@ -115,7 +115,7 @@ class Community(Resource):
     
     @communities_ns.doc(description='Retrieve community, if user is a member of it',        
         responses={int(HTTPStatus.OK): "Retrieved community.",
-                   int(HTTPStatus.NO_CONTENT): "Community id not found."
+                   int(HTTPStatus.NOT_FOUND): "Community id not found."
                   },
         security='CSRF')
     @communities_ns.marshal_with(community_model, mask="*")
@@ -125,13 +125,13 @@ class Community(Resource):
         community = self.communitiesBroker.get_by_id(id)
         
         if community is None:
-            return '', HTTPStatus.NO_CONTENT
+            abort(HTTPStatus.NOT_FOUND)
         
         return community
     
     @communities_ns.doc(description='Update community fields',        
         responses={int(HTTPStatus.OK): "Community updated.", 
-                   int(HTTPStatus.NO_CONTENT): "Community id not found",
+                   int(HTTPStatus.NOT_FOUND): "Community id not found",
                    int(HTTPStatus.FORBIDDEN): "Insufficient rights, scope 'community/edit' required"},
         security='CSRF')
     @communities_ns.expect(update_community_parser)
@@ -149,7 +149,7 @@ class Community(Resource):
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
 
         if not self.communitiesBroker.community_id_exists(id):
-            return '', HTTPStatus.NO_CONTENT
+            abort(HTTPStatus.NOT_FOUND)
 
         if not user.has_community_scope(id=id, scope=CommunityScopeConstants.Manager):
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")       

@@ -17,7 +17,7 @@ function ProfilePage(props) {
 
   if (storageService.isLoggedIn()) {
     currentUser = storageService.getUser()
-    RestService.getPublicRsaKey(currentUser.username).then(r => {
+    RestService.getPublicRsaKey().then(r => {
       setpublicKey(r.data.value)
     })
   }

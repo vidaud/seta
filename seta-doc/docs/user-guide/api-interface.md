@@ -8,7 +8,7 @@ If the seta database exists, then remove it with either MongoDB Compass or bash 
 
 EU Login Authentication
 
-Open browser and go to seta-ui login page: http://localhost/seta-ui/login.
+Open browser and go to seta-ui login page: [/login](/login).
 
 Connect with EU Login account (you can also use GitHub authentication, but EU Login will be user as an example here)
 
@@ -58,7 +58,7 @@ role claim (claim_value can different):
 
 Community API
 
-Open a new tab in the same browser for the community api swagger documentation: http://localhost/api/communities/v1/doc
+Open a new tab in the same browser for the community api swagger documentation: http://localhost/seta-ui/api/v1/communities/doc
 
 Open the browser developer tool and copy the value of the 'csrf_access_token' cookie
 

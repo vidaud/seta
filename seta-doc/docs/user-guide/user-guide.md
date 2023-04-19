@@ -42,7 +42,7 @@ The Docker containers must be running.
 
 #### EU Login Authentication
 
-Open browser and go to seta-ui login page: [http://localhost/seta-ui/login](http://localhost/seta-ui/login).
+Open browser and go to seta-ui login page: [/login](/login).
 
 Connect with EU Login account (*you can also use GitHub authentication, but EU Login will be use as an example here*)
 
@@ -93,7 +93,7 @@ After successful authentication, check that you have the following entries in th
     user_id is a randomly generated short guid for each new account
 #### Community API
 
-Open a new tab in the same browser for the community api swagger documentation: [http://localhost/api/communities/v1/doc](http://localhost/api/communities/v1/doc)
+Open a new tab in the same browser for the community api swagger documentation: [http://localhost/seta-ui/api/v1/communities/doc](http://localhost/seta-ui/api/v1/communities/doc)
 
 Open the browser developer tool and copy the value of the ^^csrf_access_token^^ cookie
 

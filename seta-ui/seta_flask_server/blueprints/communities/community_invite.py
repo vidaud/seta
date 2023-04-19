@@ -32,7 +32,7 @@ class CommunityCreateChangeRequest(Resource):
         
     @community_invite_ns.doc(description='Retrieve pending invites for this community.',
         responses={int(HTTPStatus.OK): "'Retrieved pending invites.",
-                   int(HTTPStatus.NO_CONTENT): "Community not found",
+                   int(HTTPStatus.NOT_FOUND): "Community not found",
                    int(HTTPStatus.FORBIDDEN): "Insufficient rights, scope 'community/invite' required"},
         security='CSRF')
     @community_invite_ns.marshal_list_with(invite_model, mask="*")
@@ -50,13 +50,13 @@ class CommunityCreateChangeRequest(Resource):
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
             
         if not self.communitiesBroker.community_id_exists(community_id):
-            return '', HTTPStatus.NO_CONTENT
+            abort(HTTPStatus.NOT_FOUND)
         
         return self.invitesBroker.get_all_by_status_and_community_id(community_id=community_id, status=InviteStatusConstants.Pending)
         
     @community_invite_ns.doc(description='Create new invites.',        
         responses={int(HTTPStatus.CREATED): "Added invites.", 
-                   int(HTTPStatus.NO_CONTENT): "Community not found",
+                   int(HTTPStatus.NOT_FOUND): "Community not found",
                    int(HTTPStatus.FORBIDDEN): "Insufficient rights, scope 'community/invite' required"},
         security='CSRF')
     @community_invite_ns.expect(new_invite_parser)
@@ -74,7 +74,7 @@ class CommunityCreateChangeRequest(Resource):
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
             
         if not self.communitiesBroker.community_id_exists(community_id):
-            return '', HTTPStatus.NO_CONTENT
+            abort(HTTPStatus.NOT_FOUND)
         
         request_dict = new_invite_parser.parse_args()
         emails = request_dict["email"]

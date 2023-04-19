@@ -13,10 +13,6 @@ const AUTH_API = environment.baseUrl
 class AuthentificationService {
   public currentUserSubject: BehaviorSubject<User | null> = new BehaviorSubject<User | null>(null)
 
-  getRefreshedAccessToken(token: string) {
-    return axios.post(AUTH_API + 'refresh', {})
-  }
-
   constructor() {
     if (storageService.isLoggedIn()) {
       this.currentUserSubject.next(storageService.getUser())
@@ -48,7 +44,7 @@ class AuthentificationService {
     ;(
       axios.post(AUTH_API + '/logout', { 'Cache-Control': 'no-cache', Pragma: 'no-cache' }) as any
     ).then(() => {
-      window.location.href = '/logout/ecas'
+      window.location.href = AUTH_API + '/logout/ecas'
       this.currentUserSubject.next(null)
       storageService.clean()
     })
@@ -64,7 +60,7 @@ class AuthentificationService {
 
   profile(): Observable<User | null> {
     axios
-      .get<User>(AUTH_API + '/rest/v1/user-info')
+      .get<User>(AUTH_API + '/me/user-info')
       .then(response => {
         const user = response.data
 
