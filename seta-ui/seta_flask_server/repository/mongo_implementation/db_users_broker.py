@@ -29,10 +29,12 @@ class UsersBroker(implements(IUsersBroker)):
                     seta_user.authenticated_provider = p
                     
             if seta_user.authenticated_provider is None:
-                seta_user.authenticated_provider = ExternalProvider(seta_user.user_id, 
-                                     auth_user.authenticated_provider.provider_uid,
-                                     auth_user.authenticated_provider.provider,
-                                     auth_user.authenticated_provider.domain)
+                seta_user.authenticated_provider = ExternalProvider(user_id=seta_user.user_id, 
+                                     provider_uid=auth_user.authenticated_provider.provider_uid,
+                                     provider=auth_user.authenticated_provider.provider,
+                                     first_name=auth_user.authenticated_provider.first_name,
+                                     last_name=auth_user.authenticated_provider.last_name,
+                                     domain=auth_user.authenticated_provider.domain)
                 
                 self._create_external_provider(seta_user.authenticated_provider)
         else:
@@ -138,7 +140,7 @@ class UsersBroker(implements(IUsersBroker)):
                         
                 #insert default system scopes
                 scopes = [
-                    SystemScope(user.user_id, SystemScopeConstants.CreateCommunity, "community").to_json()
+                    SystemScope(user_id=user.user_id, system_scope=SystemScopeConstants.CreateCommunity, area="community").to_json()
                           ]
                 self.collection.insert_many(scopes, session=session)
 

@@ -1,29 +1,17 @@
 from flask import json
+from dataclasses import dataclass, asdict
 
+@dataclass(kw_only=True)
 class SystemScope:
-    def __init__(self, user_id, scope, area) -> None:
-        self.user_id = user_id
-        self.area = area
-        self.scope = scope
-
-    def __iter__(self):
-        yield from {
-            "user_id": self.user_id,            
-            "system_scope": self.scope,
-            "area": self.area
-        }.items()
-        
-    def __str__(self) -> str:
-        return json.dumps(self.to_json())
-    
-    def __repr__(self) -> str:
-        return self.__str__()
+    user_id: str
+    area: str
+    system_scope: str
 
     def to_json(self) -> dict:
-        return dict(self)
+        return asdict(self)
 
     @classmethod 
     def from_db_json(cls, json_dict):
-        return cls(json_dict["user_id"],
-                   json_dict["system_scope"],
-                   json_dict["area"])
+        return cls(user_id=json_dict["user_id"],
+                   area=json_dict["area"],
+                   system_scope=json_dict["system_scope"])

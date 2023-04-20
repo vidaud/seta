@@ -1,6 +1,6 @@
 import logging
 
-from flask import (Flask, request, session, url_for, Blueprint)
+from flask import (Flask, request, session, url_for)
 from werkzeug.middleware.proxy_fix import ProxyFix
 from flask_jwt_extended import get_jwt_identity
 
