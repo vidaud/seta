@@ -1,22 +1,11 @@
 import logging
 
 from flask import (Flask, request, session, url_for, Blueprint)
-from flask_cors import CORS
 from werkzeug.middleware.proxy_fix import ProxyFix
 from flask_jwt_extended import get_jwt_identity
 
 from .infrastructure.extensions import (scheduler, jwt, logs, github)
-
-from .blueprints.base_routes import base_routes
-from .blueprints.auth import local_auth_api, refresh_expiring_jwts
-from .blueprints.auth_ecas import auth_ecas
-from .blueprints.auth_github import auth_github
-from .blueprints.rest import rest
-from .blueprints.rsa import rsa
-from .blueprints.token_auth import auth_api as authentication_api
-from .blueprints.token_info import authorization_api
-
-from .blueprints.communities import api as communities_api
+from .infrastructure.auth_helpers import refresh_expiring_jwts
 
 from .infrastructure.helpers import JSONEncoder, MongodbJSONProvider
 from seta_flask_server.repository.interfaces import ISessionsBroker
@@ -43,11 +32,14 @@ def create_app(config_object):
         
     
     register_extensions(app)
-    register_blueprints(app)
+    
+    with app.app_context():
+        register_blueprints(app)
+        
     register_cas_client(app)
            
     request_endswith_ignore_list = ['.js', '.css', '.png', '.ico', '.svg', '.map', '.json', 'doc']
-    request_starts_with_ignore_list = ['/authorization', '/authentication', '/login', '/logout', '/refresh']
+    request_starts_with_ignore_list = ['/authorization', '/authentication', '/seta-ui/api/v1/login', '/seta-ui/api/v1/logout', '/seta-ui/api/v1/refresh']
     
     with app.app_context():         
             
@@ -64,7 +56,7 @@ def create_app(config_object):
             if request.path.startswith(tuple(request_starts_with_ignore_list)):
                 return response
                         
-            response, new_access_token = refresh_expiring_jwts(response)
+            response, new_access_token = refresh_expiring_jwts(app, response)
             
             if new_access_token:                
                 session_id = session.get("session_id")
@@ -139,50 +131,40 @@ def create_app(config_object):
         
         sessionsBroker = app_injector.injector.get(ISessionsBroker)        
         return sessionsBroker.session_token_is_blocked(jti)
-        
+     
+    if app.config['SCHEDULER_ENABLED']:            
+        from seta_flask_server.infrastructure.scheduler import (tasks, events)            
+        scheduler.start()   
         
     app_injector = FlaskInjector(
         app=app,
         modules=[MongoDbClientModule()],
-    )
-    
-    if app.config['SCHEDULER_ENABLED']:            
-        from seta_flask_server.infrastructure.scheduler import (tasks, events)            
-        scheduler.start()
+    )    
     
     return app
     
 def register_blueprints(app):
     
-    add_specs = True
-    if app.config.get("DISABLE_SWAGGER_DOCUMENTATION"):
-        add_specs = False
-            
-    local_auth = Blueprint("auth", __name__)
-    local_auth_api.init_app(app=local_auth, add_specs=add_specs)
+    from .blueprints.communities import communities_bp_v1
+    from .blueprints.auth import local_auth
+    from .blueprints.auth_ecas import auth_ecas
+    from .blueprints.auth_github import auth_github
+    from .blueprints.user_profile import profile
+    from .blueprints.token_auth import token_auth
+    from .blueprints.token_info import token_info
     
-    token_info = Blueprint("token_info", __name__)
-    authorization_api.init_app(app=token_info, add_specs=add_specs)
+    API_ROOT="/seta-ui/api"
+                    
+    app.register_blueprint(profile, url_prefix=f"{API_ROOT}/v1/me")   
     
-    communities_bp_v1 = Blueprint('communities-api-v1', __name__)
-    communities_api.init_app(app=communities_bp_v1, add_specs=add_specs)
-    
-    token_auth = Blueprint('token_auth', __name__)
-    CORS(token_auth)
-    authentication_api.init_app(app=token_auth)
-    
-    app.register_blueprint(rest, url_prefix="/rest/v1")
-    app.register_blueprint(base_routes, url_prefix="/seta-ui")    
-    app.register_blueprint(rsa, url_prefix="/rsa/v1")
-    
-    app.register_blueprint(local_auth, url_prefix="")
-    app.register_blueprint(auth_ecas, url_prefix="")
-    app.register_blueprint(auth_github, url_prefix="")
+    app.register_blueprint(local_auth, url_prefix=f"{API_ROOT}/v1")
+    app.register_blueprint(auth_ecas, url_prefix=f"{API_ROOT}/v1")
+    app.register_blueprint(auth_github, url_prefix=f"{API_ROOT}/v1")
     
     app.register_blueprint(token_auth, url_prefix="/authentication/v1")
     app.register_blueprint(token_info, url_prefix="/authorization/v1")
 
-    app.register_blueprint(communities_bp_v1, url_prefix="/api/communities/v1")
+    app.register_blueprint(communities_bp_v1, url_prefix=f"{API_ROOT}/v1")
     
 def register_extensions(app):    
     github.init_app(app)

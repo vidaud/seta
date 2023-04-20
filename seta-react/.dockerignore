@@ -6,3 +6,11 @@ changelog.txt
 README.md
 node_modules
 tests/
+.husky/
+docs/
+.eslintignore
+.eslintrc.json
+.lintstagedrc
+.prettierignore
+.prettierrc.json
+changelog.txt

@@ -38,13 +38,13 @@ const navLinkTemplate: MenuItemTemplateType = item => {
 }
 
 const navStart = (
-  <Link to="/seta-ui/" className="mr-5">
-    <img alt="SeTa Logo" src="img/SeTA-logocut-negative.png" height="40" />
+  <Link to="/" className="mr-5">
+    <img alt="SeTa Logo" src="/img/SeTA-logocut-negative.png" height="40" />
   </Link>
 )
 
 const navEnd = (
-  <Link to="/seta-ui/login">
+  <Link to="/login">
     <span className="p-menuitem-icon pi pi-sign-in p-menuitem p-menuitem-link border-round" />
   </Link>
 )
@@ -64,26 +64,26 @@ const Header = () => {
     {
       label: 'Search',
       className: 'seta-item',
-      url: '/seta-ui/search',
+      url: '/search',
       visible: authenticated,
       template: navLinkTemplate
     },
     {
       label: 'Communities',
       className: 'seta-item',
-      url: '/seta-ui/communities',
+      url: '/communities',
       template: navLinkTemplate
     },
     {
       label: 'Faqs',
       className: 'seta-item',
-      url: '/seta-ui/faqs',
+      url: '/faqs',
       template: navLinkTemplate
     },
     {
       label: 'Contact',
       className: 'seta-item',
-      url: '/seta-ui/contact',
+      url: '/contact',
       template: navLinkTemplate
     }
   ]
@@ -95,14 +95,14 @@ const Header = () => {
     {
       label: 'Profile',
       icon: 'pi pi-fw pi-user',
-      url: '/seta-ui/profile',
+      url: '/profile',
       template: navLinkTemplate,
       command: hideMenuCommand
     },
     {
       label: 'Dashboard',
       icon: 'pi pi-fw pi-wrench',
-      url: '/seta-ui/dashboard',
+      url: '/dashboard',
       template: navLinkTemplate,
       command: hideMenuCommand
     },

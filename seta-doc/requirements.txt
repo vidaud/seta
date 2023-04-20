@@ -6,3 +6,6 @@ mkdocs-minify-plugin==0.6.4
 
 #swagger-ui rendering https://github.com/bharel/mkdocs-render-swagger-plugin
 mkdocs-render-swagger-plugin==0.0.4
+
+# mike
+mike==1.1.2

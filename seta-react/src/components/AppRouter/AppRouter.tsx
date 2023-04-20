@@ -19,8 +19,7 @@ import NotFoundPage from '../../pages/NotFoundPage'
 import ProfilePage from '../../pages/ProfilePage'
 import SearchPage from '../../pages/SearchPage'
 
-// TODO: Change this to '/'
-const ROOT_PATH = '/seta-ui'
+const ROOT_PATH = '/'
 
 const routes = createRoutesFromElements(
   <Route path={ROOT_PATH} element={<AppLayout />}>

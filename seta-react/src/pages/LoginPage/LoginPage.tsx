@@ -5,10 +5,10 @@ import './style.css'
 
 const LoginPage = () => {
   const onLoadingClick = () => {
-    window.location.href = '/login/ecas'
+    window.location.href = '/seta-ui/api/v1/login/ecas'
   }
   const loginGithub = () => {
-    window.location.href = '/login/github'
+    window.location.href = '/seta-ui/api/v1/login/github'
   }
 
   return (

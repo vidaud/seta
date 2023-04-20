@@ -30,7 +30,7 @@ class CommunityPermissionList(Resource):
 
     @permissions_ns.doc(description='Retrieve user-scope list for this community.',
         responses={int(HTTPStatus.OK): "'Retrieved permissions list.",
-                   int(HTTPStatus.NO_CONTENT): "Community not found"},
+                   int(HTTPStatus.NOT_FOUND): "Community not found"},
         security='CSRF')
     @permissions_ns.marshal_list_with(user_scope_model, mask="*")
     @auth_validator()    
@@ -38,7 +38,7 @@ class CommunityPermissionList(Resource):
         '''Retrieve all community user permissions'''
         
         if not self.communitiesBroker.community_id_exists(community_id):
-            return '', HTTPStatus.NO_CONTENT
+            abort(HTTPStatus.NOT_FOUND)
 
         identity = get_jwt_identity()
         auth_id = identity["user_id"]
@@ -66,7 +66,7 @@ class CommunityUserPermissions(Resource):
 
     @permissions_ns.doc(description='Retrieve user scopes for a community.',
         responses={int(HTTPStatus.OK): "'Retrieved permissions list.",
-                   int(HTTPStatus.NO_CONTENT): "Community not found"},
+                   int(HTTPStatus.NOT_FOUND): "Community not found"},
         security='CSRF')
     @permissions_ns.marshal_list_with(user_scope_model, mask="*")
     @auth_validator()    
@@ -74,7 +74,7 @@ class CommunityUserPermissions(Resource):
         '''Retrieve user permissions for community'''
         
         if not self.communitiesBroker.community_id_exists(community_id):
-            return '', HTTPStatus.NO_CONTENT
+            abort(HTTPStatus.NOT_FOUND)
 
         identity = get_jwt_identity()
         auth_id = identity["user_id"]
@@ -92,7 +92,7 @@ class CommunityUserPermissions(Resource):
     responses={
                 int(HTTPStatus.OK): "User permissions updated.", 
                 int(HTTPStatus.FORBIDDEN): "Insufficient rights, scope 'community/edit' required",
-                int(HTTPStatus.NO_CONTENT): "Community not found."
+                int(HTTPStatus.NOT_FOUND): "Community not found."
                 },
     security='CSRF')
     @permissions_ns.expect(community_scopes_parser)
@@ -101,7 +101,7 @@ class CommunityUserPermissions(Resource):
         '''Add/Replace user permissions'''
 
         if not self.communitiesBroker.community_id_exists(community_id):
-            return '', HTTPStatus.NO_CONTENT
+            abort(HTTPStatus.NOT_FOUND)
         
         identity = get_jwt_identity()
         auth_id = identity["user_id"]   
