@@ -1,17 +1,20 @@
 import { css } from '@emotion/react'
 
-const SELECTORS_WIDTH = '100px'
-
-export const left: ThemedCSS = theme => css`
-  width: ${SELECTORS_WIDTH};
+export const root: ThemedCSS = theme => css`
+  padding-bottom: ${theme.spacing.sm};
+  margin-left: ${theme.spacing.sm};
+  margin-right: calc(${theme.spacing.lg} * 2);
 `
 
-export const checkbox = css`
-  .seta-Checkbox-input {
-    cursor: pointer;
+export const termChip = css`
+  font-weight: 600;
+
+  .seta-Chip-label[data-checked] {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+
+    .seta-Chip-iconWrapper {
+      display: none;
+    }
   }
-`
-
-export const relatedSelector = css`
-  margin-left: -${SELECTORS_WIDTH};
 `

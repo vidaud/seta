@@ -41,6 +41,10 @@ export const Chip = styled(MantineChip)(({ theme, color }) => {
         .seta-Chip-iconWrapper {
           color: ${checkedStyle.color};
         }
+
+        &:hover {
+          background-color: ${checkedStyle.hover};
+        }
       }
     }
   `

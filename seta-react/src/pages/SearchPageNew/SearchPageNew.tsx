@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { css } from '@emotion/react'
 import { Flex } from '@mantine/core'
 
 import TokensInput from '~/pages/SearchPageNew/components/TokensInput/TokensInput'
@@ -14,7 +15,11 @@ const SearchPageNew = () => {
 
   return (
     <Flex direction="column" align="center" css={S.pageWrapper}>
-      <TokensInput />
+      <TokensInput
+        css={css`
+          width: 600px;
+        `}
+      />
 
       <SuggestionsPopup opened={suggestionOpen} onChange={setSuggestionOpen}>
         <SearchInput css={S.inputWrapper} onClick={openPopup} onChange={openPopup} />

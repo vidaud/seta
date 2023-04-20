@@ -8,7 +8,7 @@ type Props = {
   value?: string
 }
 
-const TokensInput = ({ value }: Props) => {
+const TokensInput = ({ className, value }: Props) => {
   const [currentWord, setCurrentWord] = useState<string | null>(null)
   const [innerValue, setInnerValue] = useState(value ?? '')
 
@@ -16,6 +16,12 @@ const TokensInput = ({ value }: Props) => {
 
   const handleInput = () => {
     if (!inputRef.current) {
+      return
+    }
+
+    if (!innerValue.trim().match(/\s/)) {
+      setCurrentWord(null)
+
       return
     }
 
@@ -37,6 +43,9 @@ const TokensInput = ({ value }: Props) => {
     const cls = word === currentWord ? 'highlighted' : ''
 
     return (
+      // <span key={index} className={cls}>
+      //   {word}
+      // </span>
       <span key={index}>
         <span className={cls}>{word}</span>
         {index < innerValue.split(' ').length - 1 && ' '}
@@ -45,7 +54,7 @@ const TokensInput = ({ value }: Props) => {
   })
 
   return (
-    <Box css={S.container}>
+    <Box className={className} css={S.container}>
       <TextInput
         ref={inputRef}
         css={S.input}
@@ -53,6 +62,7 @@ const TokensInput = ({ value }: Props) => {
         value={innerValue}
         onChange={e => setInnerValue(e.target.value)}
         onMouseUp={handleInput}
+        onKeyUp={handleInput}
       />
       <Text css={S.renderer}>{highlightedText}</Text>
     </Box>
