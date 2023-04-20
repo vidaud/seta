@@ -22,20 +22,29 @@ export const renderer: ThemedCSS = theme => css`
   line-height: calc(2.625rem - 0.125rem);
   padding-left: calc(2.625rem / 3);
   pointer-events: none;
+  white-space: pre;
 
   span > span {
     display: inline-block;
+    position: relative;
     transition: background-color 0.2s ease-in-out;
+  }
 
-    /* & + span::before {
-      content: ' ';
-      display: block;
-    } */
+  span.expression-marker {
+    position: absolute;
+    bottom: 2px;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background-color: ${theme.fn.rgba(theme.colors.dark[2], 0.4)};
   }
 
   span.highlighted {
-    /* background-color: hsl(128deg 92% 71% / 35%); */
-    background-color: hsl(188deg 92% 71% / 28%);
-    border-bottom: solid 2px hsl(188deg 92% 71% / 50%);
+    background-color: ${theme.fn.rgba(theme.colors.teal[2], 0.4)};
+    border-bottom: solid 2px ${theme.fn.rgba(theme.colors.teal[2], 0.7)};
+  }
+
+  span.quote {
+    color: ${theme.colors.grape[5]};
   }
 `
