@@ -36,13 +36,11 @@ def embeddings_query(semantic_sort_id, emb_vector, semantic_sort_id_list, emb_ve
     return query_to_use
 
 
-def build_corpus_request(term, n_docs, from_doc, sources, collection, reference, eurovoc_concept, eurovoc_dom,
-                         eurovoc_mth, ec_priority, sdg_domain, sdg_subdomain, euro_sci_voc, in_force, sort,
+def build_corpus_request(term, n_docs, from_doc, sources, collection, reference, in_force, sort, taxonomy,
                          semantic_sort_id, emb_vector, semantic_sort_id_list, emb_vector_list, author, date_range,
                          aggs, search_type, other, current_app):
-    query = build_search_query(term, sources, collection, reference, eurovoc_concept, eurovoc_dom, eurovoc_mth,
-                               ec_priority, sdg_domain, sdg_subdomain, euro_sci_voc, in_force, author, date_range,
-                               search_type, other)
+    query = build_search_query(term, sources, collection, reference, in_force, author, date_range, search_type,
+                               other, taxonomy)
     query_to_use = check_embeddings_query(current_app, emb_vector, emb_vector_list, query, semantic_sort_id,
                                           semantic_sort_id_list)
 
@@ -55,8 +53,7 @@ def build_corpus_request(term, n_docs, from_doc, sources, collection, reference,
                     "title",          "abstract",        "chunk_text",     "chunk_number", "collection",
                     "reference",      "author",          "date",           "link_origin",  "link_alias",
                     "link_related",   "link_reference",  "mime_type",      "in_force",
-                    "language",       "eurovoc_concept", "eurovoc_domain", "eurovoc_mth",  "ec_priority",
-                    "sdg_domain",     "sdg_subdomain",   "euro_sci_voc",   "keywords",     "other"]
+                    "language",  "taxonomy", "keywords",     "other"]
     }
 
     if search_type == "CHUNK_SEARCH":
@@ -99,23 +96,28 @@ def check_embeddings_query(current_app, emb_vector, emb_vector_list, query, sema
 
 
 def fill_body_for_aggregations(aggs, body):
-    list_of_aggs_fields = ["source", "eurovoc_concept", "date_year", "source_collection_reference"]
-
-    if aggs and (aggs not in list_of_aggs_fields):
-        raise ApiLogicError('Malformed query. Wrong aggs parameter')
-
-    if aggs:
-        if aggs == "source" or aggs == "eurovoc_concept":
-            agg_body = {"terms": {"field": aggs + '.keyword'}}
-            body = add_aggs(agg_body, aggs, body)
-        if aggs == "date_year":
-            agg_body = {"date_histogram": {"field": "date", "calendar_interval": "year", "format": "yyyy"}}
-            body = add_aggs(agg_body, "years", body)
-        if aggs == "source_collection_reference":
-            agg_body = {"multi_terms": {"terms": [{"field": "source.keyword"},
-                                                  {"field": "collection.keyword", "missing": "NO_CLASS"},
-                                                  {"field": "reference.keyword", "missing": "NO_CLASS"}]}}
-            body = add_aggs(agg_body, aggs, body)
+    aggregation_size = 1000
+    if not aggs:
+        return body
+    for agg in aggs:
+        match agg:
+            case agg if agg.startswith("taxonomy:"):
+                agg_body = {"terms": {"field": "taxonomy_path", "size": aggregation_size}}
+                body = add_aggs(agg_body, "taxonomy", body)
+            case "source":
+                agg_body = {"terms": {"field": agg + '.keyword', "size": aggregation_size}}
+                body = add_aggs(agg_body, agg, body)
+            case "date_year":
+                agg_body = {"date_histogram": {"field": "date", "calendar_interval": "year", "format": "yyyy"}}
+                body = add_aggs(agg_body, "years", body)
+            case "source_collection_reference":
+                agg_body = {"multi_terms": {"terms": [{"field": "source.keyword"},
+                                                      {"field": "collection.keyword", "missing": "NO_CLASS"},
+                                                      {"field": "reference.keyword", "missing": "NO_CLASS"}],
+                                            "size": aggregation_size}}
+                body = add_aggs(agg_body, agg, body)
+            case _:
+                raise ApiLogicError('Malformed query. Wrong aggs parameter.')
     return body
 
 

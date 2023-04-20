@@ -19,6 +19,15 @@
           }
         }
       },
+      "crc_data_mapping": {
+        "type": "text",
+        "fields": {
+          "keyword": {
+            "type": "keyword",
+            "ignore_above": 256
+          }
+        }
+      },
       "most_similar": {
         "properties": {
           "score": {
