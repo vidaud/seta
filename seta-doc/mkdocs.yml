@@ -84,10 +84,10 @@ nav:
   - Who should/can use it: general/who-use-it.md      
   - Using SeTA:
     - Setup: user-guide/setup.md
-    - Web Interface:
-      - Search: user-guide/web-interface.md
+    - Web App:
+      - Search: user-guide/web-app.md
       - Communities: user-guide/communities.md
-    - API Interface:
+    - API:
       - Seta-api: seta-api/seta_api_v1.md
     - FAQS: 
       - FAQS: faqs/faqs.md

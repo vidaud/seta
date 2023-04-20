@@ -1,5 +1,5 @@
 
-Within the search page it is possible to search:
+Within the search page the options to search are:
 
 * By term
 * By phrase
@@ -7,22 +7,28 @@ Within the search page it is possible to search:
     
 
 ### Search by term
-As in the image below, if we put a term in the search bar, the app will list the related terms. Furthermore if we click on the *wizard* ![Image title](../img/wizard.png)
- icon, the query can be enriched with terms related.
+If we search by a term, when we start typing in the search bar, a dropdown box appears automatically, in this dropdown box we see two sections:
 
-![Screenshot](../img/search_term.png){ width="700" }
+- a section with a list of *autocomplete* words (left side), 
+- a section with a map of the *related terms* to search (right side). Also in this section, there is the possibility to choose for *related terms* or *related terms clusters*. And finally there is a *wizard* ![Image title](../img/wizard.png) tool to use if we want to **enrich query automatically**. 
+
+
+![Screenshot](../img/search_term.png)
 
 
 ### Search by phrase
-Search by phrase requires to put the double quotes *" "* in between the phrase, afterwards, as with the term search, it can be possible to click on the *wizard* icon, the query can be enriched with terms related.
-![Screenshot](../img/search_phrase.png){ width="700" }
+If we want to search by phrase it is necessary to enclose with double quotes *" "* the phrase, after that, as with the term search, the dropdown box will appear automatically with the two sections
+
+
+![Screenshot](../img/search_phrase.png)
 
 
 ### Search by document or text
 
-If you want to search uploading a document or put a text, just click in the cloud button and a pop up window will appear:
+If you want to search by uploading a document or by a text, just click in the cloud button ![Image title](../img/cloud-button.png){ width=30} and a pop up window will appear. In this window, there are two sections; the first one on top is to upload the document, we can either select the path where the document is located or we can drag and drop. In both cases it is possible to cancel the upload file before the search, with the button ![Image title](../img/cancel-upload.png){ width=30}.
+In the lower section of the pop-up it is possible to paste the text you want to search. In both cases it is always possible to cancel the seacrh and the pop-up window will close.
 
-![Screenshot](../img/upload.png){ width="700" }
+![Screenshot](../img/upload.png)
 
 
 ### Options
