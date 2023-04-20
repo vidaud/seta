@@ -17,6 +17,7 @@
     {"properties":
       {"@timestamp":{"type":"date"}
       ,"@version":{"type":"text","fields":{"keyword":{"type":"keyword","ignore_above":256}}}
+      ,"crc_data_mapping": {"type": "text", "fields": {"keyword": {"type": "keyword", "ignore_above": 256}}}
       ,"date":{"type":"date"}
       ,"source":{"type":"text","fields":{"keyword":{"type":"keyword","ignore_above":256}}}
 

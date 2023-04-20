@@ -42,7 +42,6 @@ def insert_doc(args, es, index):
     new_doc["language"] = is_field_in_doc(args, "language")
     new_doc["taxonomy"] = is_field_in_doc(args, "taxonomy")
     new_doc["taxonomy_path"] = is_field_in_doc(args, "taxonomy_path")
-    new_doc["euro_sci_voc"] = is_field_in_doc(args, "euro_sci_voc")
     new_doc["other"] = is_field_in_doc(args, "other")
     new_doc["keywords"] = is_field_in_doc(args, "keywords")
 
