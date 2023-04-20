@@ -18,14 +18,15 @@ def add_document(url: str):
     return requests.put(url, json=data)
 
 @pytest.mark.parametrize("user_id, community_id, resource_id", [("seta_admin", "blue", "orphan")])
-def test_orphan(client: FlaskClient, seta_api_corpus: str, user_id: str, community_id: str, resource_id: str):
+def test_orphan(client: FlaskClient, authentication_url: str, seta_api_corpus: str, user_id: str, community_id: str, resource_id: str):
     response = add_document(url=seta_api_corpus)
     assert response.status_code == HTTPStatus.OK
 
-    response = login_user(client=client, user_id=user_id)    
+    response = login_user(auth_url=authentication_url, user_id=user_id)    
     assert response.status_code == HTTPStatus.OK
-    assert "access_token" in response.json
-    access_token = response.json["access_token"]
+    response_json = response.json()
+    assert "access_token" in response_json
+    access_token = response_json["access_token"]
     
     response = create_community(client=client, access_token=access_token, 
                     id="blue", title="Blue Community", description="Blue Community for test", data_type="representative")

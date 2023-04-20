@@ -207,7 +207,7 @@ class TestConfig(Config):
     
     #============Flask-JWT-Extended Configuration========#
     #api endpoint to decode the JWT token
-    JWT_TOKEN_INFO_URL="http://seta-ui-test:8080/authorization/v1/token_info"
+    JWT_TOKEN_INFO_URL="http://seta-auth-test:8082/authorization/v1/token_info"
     #======================================#
     
     #============Flask-APScheduler Configuration========#
