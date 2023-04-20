@@ -45,7 +45,7 @@ The next step is to train AI models by using full text documents and their phras
 
 ### Word2Vec
 
-For instance, an algorithm called **Word2Vec** processes phrases. This algorithm takes input words and groups them together based on the similarity of their meanings. This similarity is calculated using complex mathematical formulas based on the context of the words. 
+The algorithm **Word2Vec** processes phrases. This algorithm takes input words and groups them together based on the similarity of their meanings. This similarity is calculated using complex mathematical formulas based on the context of the words. 
 
 Word2vec is a two-layer neural net that processes text by “vectorizing” words. Its input is a text corpus and its output is a set of vectors: feature vectors that represent words in that corpus. While Word2vec is not a deep neural network, it turns text into a numerical form that deep neural networks can understand.[^4]
 
@@ -57,36 +57,28 @@ The output of the Word2vec neural net is a vocabulary in which each item has a v
 
 ### sBERT
 
-**BERT** is an open source machine learning framework for natural language processing (NLP). BERT is designed to help computers understand the meaning of ambiguous language in text by using surrounding text to establish context. The BERT framework was pre-trained using text from Wikipedia and can be fine-tuned with question and answer datasets.  BERT, which stands for Bidirectional Encoder Representations from Transformers, is based on Transformers, a deep learning model in which every output element is connected to every input element, and the weightings between them are dynamically calculated based upon their connection. (In NLP, this process is called attention.)[^5]
+**sBert** is a modification of the standard pretrained **BERT** network. sBert uses siamese and triplet networks to create sentence embeddings for each sentence that can then be compared using a cosine-similarity, making semantic search for a large number of sentences feasible.
 
+**BERT** is an open source machine learning framework for natural language processing (NLP). Is designed to help computers understand the meaning of ambiguous language in text by using surrounding text to establish context. The BERT framework was pre-trained using text from Wikipedia and can be fine-tuned with question and answer datasets.  BERT, which stands for *Bidirectional Encoder Representations from Transformers*, is based on Transformers[^5], a deep learning model in which every output element is connected to every input element, and the weightings between them are dynamically calculated based upon their connection. (In NLP, this process is called attention.)[^6]
 
-A similar algorithm, **sBERT** is based on sentences and provides further training to the model.  SBERT uses a siamese architecture, where it contains 2 BERT architectures that are essentially identical and share the same weights, and SBERT processes 2 sentences as pairs during training. While the original research paper tried several pooling methods, they found mean-pooling was the best approach. Pooling is a technique for generalizing features in a network, and in this case, mean pooling works by averaging groups of features in the BERT. After the pooling is done, we now have 2 embeddings: 1 for sentence A and 1 for sentence B. When the model is training, SBERT concatenates the 2 embeddings which will then run through a softmax classifier and be trained using a softmax-loss function. At inference — or when the model actually begins predicting — the two embeddings are then compared using a cosine similarity function, which will output a similarity score for the two sentences.[^6] 
+**sBERT** is based on sentences and provides further training to the model.  SBERT uses a siamese architecture, where it contains 2 BERT architectures that are essentially identical and share the same weights, and SBERT processes 2 sentences as pairs during training. While the original research paper tried several pooling methods, they found mean-pooling was the best approach. Pooling is a technique for generalizing features in a network, and in this case, mean pooling works by averaging groups of features in the BERT. After the pooling is done, we now have 2 embeddings: 1 for sentence A and 1 for sentence B. When the model is training, SBERT concatenates the 2 embeddings which will then run through a softmax classifier and be trained using a softmax-loss function. At inference — or when the model actually begins predicting — the two embeddings are then compared using a cosine similarity function, which will output a similarity score for the two sentences.[^7] 
 
 By training the models with new documents as they are published, we can ensure that the knowledge they contain represents EU documents accurately. 
 
 This knowledge is used to enrich document metadata and by expanding the labels based on existing ontologies.
 
 !!! info "Ontology"
-    Ontology shows properties and relations between a set of concepts and categories within a  subject area or domain. It is a branch of linguistics called semantics, the study of meaning. With ontology, a machine can accurately interpret the meaning of the word “diamond” in relation to a baseball player, jeweler, or card suit. It can also help interpret the word “chicken” as either food or an animal or differentiate between “bank” as a place of business or land alongside a river or lake.[^7]
+    Ontology shows properties and relations between a set of concepts and categories within a  subject area or domain. It is a branch of linguistics called semantics, the study of meaning. With ontology, a machine can accurately interpret the meaning of the word “diamond” in relation to a baseball player, jeweler, or card suit. It can also help interpret the word “chicken” as either food or an animal or differentiate between “bank” as a place of business or land alongside a river or lake.[^8]
 
 At this point the full text of all documents can be searched through a simple interface, and users are able to target their search either to the individual document collections or to search across all collections in a harmonised way.
-
-
-### API
-
-A specific API has been built to access this knowledge and can be used to receive suggestions of similar terms and upload metadata of related documents.
-
-In the end, this API also feeds the user interface providing users with the information they are looking for. 
-
-
-![Screenshot](./img/API_design.png)
 
 
 [^1]:https://www.elastic.co/what-is/elasticsearch
 [^2]:https://plat.ai/blog/what-you-know-about-ai-model/
 [^3]:https://www.intel.com/content/www/us/en/analytics/data-modeling.html
 [^4]:http://wiki.pathmind.com/word2vec
-[^5]:https://www.techtarget.com/searchenterpriseai/definition/BERT-language-model
-[^6]:https://towardsdatascience.com/an-intuitive-explanation-of-sentence-bert-1984d144a868
-[^7]:https://www.expert.ai/blog/how_ontology_works_and_adds_value_to_nlu/
+[^5]:https://blogs.nvidia.com/blog/2022/03/25/what-is-a-transformer-model/
+[^6]:https://www.techtarget.com/searchenterpriseai/definition/BERT-language-model
+[^7]:https://towardsdatascience.com/an-intuitive-explanation-of-sentence-bert-1984d144a868
+[^8]:https://www.expert.ai/blog/how_ontology_works_and_adds_value_to_nlu/
    

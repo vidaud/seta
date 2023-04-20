@@ -5,7 +5,7 @@ The following diagram describes the workflow of SeTA.
 1. Everything starts by receiving as input from different sources the data that will fill the database.
 2. The data is processed (cleaned, algorithms)
 3. The processed data is used to create the AI Models
-4. The data is ready to be used for the searching. 
+4. The data is ready to use for the searching. 
 
 
 ![Screenshot](../img/machine_learning_icons.png)
@@ -17,7 +17,7 @@ As described previously, SeTA follows two distinct steps for the creation of the
 
 ### Corpus preparation
 
-The corpus of the public policy-related European documents counts more than 500.000 documents, coming from the following sources: EUR-LEX, CORDIS, JRC PUBSY, EUROPARL.
+The corpus of the public policy-related European documents comes from the following sources: EUR-LEX, CORDIS, JRC PUBSY, EUROPARL.
 
 All the texts collected are in English only (except for some older legal texts where multiple languages are interleaved on the same page). 
 
@@ -31,8 +31,8 @@ The reasons for this decision are:
 
 Data taxonomy is the classification of data into categories and sub-categories. It provides a unified view of the data in a system and introduces common terminologies and semantics across multiple systems. Taxonomies represent the formal structure of classes or types of objects within a domain. A taxonomy formalizes the hierarchical relationships among concepts and specifies the term to be used to refer to each; it prescribes structure and terminology.[^1] 
 
-In SeTA, the user can define the taxonomy that is going to be used.  After the user select the terms that represent the broadest category and then allocate the tremaining terms to these categories. He can setup in throught the API interface. Is important to maintain, as much as possible, a consistent level of specificity within a category. The taxonomies can be of different types — flat, hierarchical, network, etc.
-In our experience, a hierarchical structure is most suited. So among the hierarchical types, there are three kinds: 
+In SeTA, the user can define the taxonomy that is going to be used.  After the user select the terms that represent the broadest category and then allocate the remaining terms to these categories. The user can setup the new taxonomy throught the API interface. 
+Is important to maintain, as much as possible, a consistent level of specificity within a category. The taxonomies can be of different types — flat, hierarchical, network, etc.  Base in experience, a hierarchical structure is most suited. Among the hierarchical types, there are three kinds: 
 
   1.  Standard Hierarchy     
     Standard hierarchy taxonomy consists of a single root, which is subdivided into categories as necessary to structure the information and is often represented as a tree. It is easy to understand a single hierarchy structure and develop a mental model to find information. 
@@ -43,6 +43,9 @@ In our experience, a hierarchical structure is most suited. So among the hierarc
 
   3. Faceted       
     A faceted classification system is multi-dimensional. It consists of multiple taxonomies or ‘facets’, whereby the top-level node of each represents a different type of taxonomy, attribute, or context. 
+
+
+
     The following example describes the setup of a taxonomy:
 
 ``` json
@@ -145,7 +148,7 @@ This new document structure is stored within the ElasticSearch (ES) database whi
 #### Neural networks training
 
 Neural networks can learn any function and only data availability defines how complex the function can be. Therefore, the data preparation, feature engineering and domain coverage become essential elements for obtaining meaningful and analysable results from neural network training.
-The EC public knowledge corpus sports rather consistent language and thus the features could have been created from chunks instead of words like in general language.
+The EC public knowledge corpus offers a consistent language and thus the features that have been created from chunks instead of words like in general language.
 
 #### Chunk compositionality
 

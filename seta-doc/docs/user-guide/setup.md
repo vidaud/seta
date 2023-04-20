@@ -11,7 +11,7 @@ The Seta Web interface is a user friendly interact.
  ![Screenshot](../img/main_screen.jpg){ width="600" }
 
 
-The features of this web interface are:
+In the web interface it is possible to find:
 
 - Search tool: An online search engine tool designed to search for metadata on the SeTA database based on the user's search query. It sorts the results, and makes an ordered list of these results according to the search algorithms.
 
@@ -44,7 +44,7 @@ The Docker containers must be running.
 
 #### EU Login Authentication
 
-Open browser and go to seta-ui login page: [http://localhost/seta-ui/login](http://localhost/seta-ui/login).
+Open browser and go to seta-ui  [login](http://localhost/seta-ui/login) page.
 
 Connect with EU Login account (*you can also use GitHub authentication, but EU Login will be use as an example here*)
 
@@ -96,7 +96,7 @@ Role claim (claim_value can different):
 
 #### Community API
 
-Open a new tab in the same browser for the community api swagger documentation: [http://localhost/api/communities/v1/doc](http://localhost/api/communities/v1/doc)
+Open a new tab in the same browser for the [community api swagger documentation](http://localhost/api/communities/v1/doc)
 
 Open the browser developer tool and copy the value of the ^^csrf_access_token^^ cookie
 
@@ -219,15 +219,15 @@ Check that the objects for the resource scopes in the *seta database - users* co
 
 #### SeTA-API Corpus
 
-Open a new tab in the same browser for the seta-api swagger documentation: [http://localhost/seta-api/doc](http://localhost/seta-api/doc)
+Open a new tab in the same browser for the [seta-api swagger documentation](http://localhost/seta-api/doc)
 
 !!! tip "Only if you want to use seta-api in another browser:"
     * open the browser developer tool and copy the value of the **_access_token_cookie** cookie
     * click on the **Authorize** button to open the Available authorizations dialog; in the apikey text input set **Bearer** value then click on the *Authorize* button.
 
-Seta-API will get at each request another authorization decoded token from seta-ui at [http://localhost/authorization/v1/token_info](http://localhost/authorization/v1/token_info) endpoint using the authenticated JWT.
+Seta-API will get at each request another authorization decoded token from seta-ui through the [token info](http://localhost/authorization/v1/token_info) endpoint using the authenticated JWT.
 
 !!! note "Note:" 
-    You can verify the authorization token at [http://localhost/authorization/v1/doc](http://localhost/authorization/v1/doc) passing the JWT access token as payload.
+    You can verify the authorization token at [authorization doc](http://localhost/authorization/v1/doc) passing the JWT access token as payload.
 
 At this point, API usage is set up. 
