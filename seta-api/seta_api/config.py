@@ -91,7 +91,7 @@ class Config:
     JWT_TOKEN_LOCATION=["headers", "cookies"]
     
     #api endpoint to decode the JWT token
-    JWT_TOKEN_INFO_URL="http://seta-ui:8080/authorization/v1/token_info"
+    JWT_TOKEN_INFO_URL="http://seta-auth:8082/authorization/v1/token_info"
     #======================================#
     
     #============Flask-APScheduler Configuration========#
