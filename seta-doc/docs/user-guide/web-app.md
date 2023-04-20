@@ -25,14 +25,19 @@ If we want to search by phrase it is necessary to enclose with double quotes *" 
 
 ### Search by document or text
 
-If you want to search by uploading a document or by a text, just click in the cloud button ![Image title](../img/cloud-button.png){ width=30} and a pop up window will appear. In this window, there are two sections; the first one on top is to upload the document, we can either select the path where the document is located or we can drag and drop. In both cases it is possible to cancel the upload file before the search, with the button ![Image title](../img/cancel-upload.png){ width=30}.
-In the lower section of the pop-up it is possible to paste the text you want to search. In both cases it is always possible to cancel the seacrh and the pop-up window will close.
+If you want to search by uploading a document or by a text, just click in the cloud button ![Image title](../img/cloud-button.png){ width=30} and a pop up window will appear. In this window, there are two sections; the first one on top is to upload the document, we can either select the path where the document is located or we can drag and drop. Either uploading or by drag and drop it is always possible to cancel the upload of the file before the search, with the button ![Image title](../img/cancel-upload.png){ width=30}.
+
+
+In the lower section of the pop-up it is possible to paste the text you want to search. 
+
+
+If we don't want to search with this option, it is always possible to cancel the search with the *cancel* button at the bottom of the pop up, and the pop-up window will close.
 
 ![Screenshot](../img/upload.png)
 
 
 ### Options
-After launching a search, a new section with the results will appear below the search box (see image below) together with some options:
+After launching a search, a new section with the results will appear below the search box (see image below). Together with the results there are some options to improve the search:
 
 - Post Search   
 In the left side of the new section it is possible to find tab Post Search. Here there is an histogram which can be used to apply filters. Click on a specific part of the histogram and the list of documents will be updated displaying only the related documents according to the specific part of the histogram clicked.
@@ -58,7 +63,7 @@ Each item of the result list has an expand icon **>** on the left corner. By cli
     - Source
     - In force
 
-Furthermore, there is a table with the left and right context of the result.
+Furthermore, you can see a table with the left and right context of the sinlge result.
 
 ### Concepts tab           
 It is possible to see the visual representation of the topic. The Concept map will help you organize the results and explore the relationships in a topic. Through the concept map it is possible to organize and represent the searched term and explore the connections between elements.  
