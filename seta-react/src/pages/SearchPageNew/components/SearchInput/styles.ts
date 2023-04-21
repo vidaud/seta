@@ -16,6 +16,10 @@ export const input = css`
     height: ${INPUT_HEIGHT};
     border-radius: 0;
   }
+
+  .renderer {
+    line-height: calc(${INPUT_HEIGHT} - 2px);
+  }
 `
 
 export const rightButton = css`

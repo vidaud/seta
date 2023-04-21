@@ -1,7 +1,7 @@
 import { css } from '@emotion/react'
 
 export const pageWrapper = css`
-  padding: 2rem;
+  padding: 3rem 2rem;
 `
 
 export const inputWrapper: ThemedCSS = theme => css`

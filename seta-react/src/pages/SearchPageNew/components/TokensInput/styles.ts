@@ -19,8 +19,7 @@ export const renderer: ThemedCSS = theme => css`
   bottom: 1px;
   left: 1px;
   right: 1px;
-  height: 2.625rem;
-  line-height: 2.5rem;
+  line-height: calc(2.625rem - 2px);
   margin: 0 0.875rem;
   pointer-events: none;
   white-space: pre;

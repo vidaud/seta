@@ -1,8 +1,10 @@
 import { forwardRef } from 'react'
-import { ActionIcon, Button, Flex, TextInput } from '@mantine/core'
+import { ActionIcon, Button, Flex } from '@mantine/core'
 import { IconCloudUp, IconSearch } from '@tabler/icons-react'
 
 import * as S from './styles'
+
+import TokensInput from '../TokensInput'
 
 type Props = {
   className?: string
@@ -19,7 +21,7 @@ const SearchInput = forwardRef<HTMLDivElement, Props>(
           <IconCloudUp />
         </ActionIcon>
 
-        <TextInput
+        <TokensInput
           className="flex-1"
           css={S.input}
           size="md"
@@ -27,7 +29,7 @@ const SearchInput = forwardRef<HTMLDivElement, Props>(
           autoFocus
           value={value}
           onClick={onClick}
-          onChange={e => onChange?.(e.currentTarget.value)}
+          onChange={onChange}
         />
 
         <Button css={S.rightButton} size="md" leftIcon={<IconSearch />}>
