@@ -1,7 +1,7 @@
 # seta-data 📚
 
 
-* [models/](../seta-data/models)
+* [models/](../seta-data/models)  - in this folder it is possible to find the related  files for the preparation of the suggestions proposed in the Web App and the API
   * [data-mapping.json](../seta-data/models/data-mapping.json)
   * [json_suggestion_samples.json](../seta-data/models/json_suggestion_samples.json)
   * [suggestion-data-mapping.json](../seta-data/models/suggestion-data-mapping.json)

@@ -9,12 +9,10 @@ The main categories are:
 - ontology       
 - embeddings        
 
-       
-Here below all the functions available.
-
+ 
 ## seta-api-suggestions
 
-The suggestions is the related terms list that is generated after setting a term. 
+The suggestions is the related terms list that is generated after setting a term. ***In the preparation of the ***
 
 ### GET /suggestions
 

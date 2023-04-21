@@ -149,7 +149,7 @@ In public communities:
 - If participant approval is turned on then the member must first be approved as a participant before they can participate in chats. 
 - Visitors can't participate in chats even if theyre approved as participants.
 
-### Sort posts in a community {-- I admin--}
+### Sort posts in a community
                         
 1. From the ^^Header^^ menu click ^^Communities^^.  
 2. Click ^^Community settings^^ in the left menu.  
@@ -157,7 +157,7 @@ In public communities:
 4. Select the default order for all posts in your community.
 
 
-### Manage topics in a community {-- I admin--} 
+### Manage topics in a community
                         
 Topics are hashtags added to community posts to help people discover content they might be interested in. Community admins can pin a topic if they want people to find it easily or hide a topic if they don't want it to be prominent.    
 
@@ -172,34 +172,6 @@ Topics are hashtags added to community posts to help people discover content the
 1. From the ^^Header^^ menu click ^^Communities^^.  
 2. Select ^^Topics^^ at the top of the community.  
 3. Next to the topic you want to hide click more and select ^^Hide topic.^^
-
-### Invite new members to the community
-                     
-In SeTA web app there are two options:   
-
-**Invite with email:**  
-    Admins can invite new members to a community by email.  The email will include a link to the community where the person can confirm that they want to join. In public communities they'll be automatically approved. In private communities they'll have to be approved by a community admin. Only the person who received the email can join the community with that link.  
-    
-1. From the ^^Header^^ menu click ^^Communities^^.  
-2. Click + Invite below the cover photo.  
-3. Select Invite with email.  
-4. Add email addresses. 
-5. Click Send invite.   
-
-**Invite with link:**  
-    Admins and members can use a link to invite others to a community. Once someone receives the invite to join the community they'll then have to request to join and be approved by a community admin. The link will expire after either 48 hours or 20 people click on it whichever comes first. After the link expires you can create a new link. Keep in mind that people who receive the link from you might understand youre a member of this community.   
-    
-1. From the ^^Header^^ menu click ^^Communities^^.  
-2. Click + Invite below the cover photo.  
-3. Select Invite with link.  
-4. Click the link to copy it then share it. 
-
-!!! abstract "Note"
-    Once someone is invited to join a community they'll be able to preview the community before deciding if theyd like to join the community unless they were invited to the community by email. 
-    
-    If someone is previewing the community they wont be included in the total member count. 
-    
-    If you invite people to a community an admin may need to approve the request before they can join. Admins and members can only invite a limited number of people to join each day.
 
 
 ### Remove or ban someone from a community
@@ -223,37 +195,7 @@ In SeTA web app there are two options:
 !!! info
     Removed members will have to request to join the community again if they wish to rejoin. Banned members wont be able to find the community in search or see any of its content and they can't be invitedto the community again by members.
 
-### Pause a community {-- I admin--} 
-                        
-If youre an admin of a community you can pause your community if you need a break from maintaining it or if you need time to catch up on tasks such as managing posts or membership. A message will be added to the top of the community explaining that all activity is paused. New posts comments and reactions are paused for everyone including admins. If youre a community admin and you want to permanently remove your community you can delete it.   
-
-**To pause a community:**   
-
-1. From the ^^Header^^ menu click ^^Communities^^.  
-2. Click below the cover photo.  
-3. Select ^^Pause community^^.  
-4. Select a reason for pausing the community then click Continue. To confirm you want to pause your community click Continue again.  
-5. You will then have the option to write a community announcement about the pause and schedule when the community will automatically resume.  
-6. Click ^^Pause Community^^ at the bottom.   
-
-**To change when a community will automatically resume:**   
-
-1. From the ^^Header^^ menu click ^^Communities^^.  
-2. Click ^^Edit^^ below the cover photo then adjust the date and time and click Confirm.   
-
-**To resume a community:** 
-
-1. From the ^^Header^^ menu click ^^Communities^^.  
-2. Click ^^Resume^^ below the cover photo then click Confirm. 
-
-**When a community is paused members can still:**
-
-- Delete their existing posts or comments.  
-- Access their information.  
-- Leave the community.
-
-
-### Delete a community {-- I admin--} 
+### Delete a community
            
 If youre a community admin you can delete your community by removing all members (in private communities) or banning all members (in public communities) and then leaving the community as long as the community creator has left the community or you are the community creator. When no members remain in the community it will automatically be deleted. Deleting a community is permanent and cannot be reversed. Alternatively you can pause a community.   
 
@@ -275,7 +217,7 @@ If youre a community admin you can delete your community by removing all members
                         
 1. From the ^^Header^^ menu click ^^Communities^^.  
 2. In the search bar enter the name of the community youre looking for.   
-3. Select the community then click + ^^Join Community^^ below the cover photo.  
+3. Select the community then click + ^^Join Community^^.  
 4. Click ^^Join Community.^^
 
 Once you join a community, you will be able to: 
