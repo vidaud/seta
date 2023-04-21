@@ -104,6 +104,7 @@ services:
     environment:
       - NO_PROXY=${NO_PROXY}
       - no_proxy=${NO_PROXY}
+      - DOC_HOST=${DOC_HOST}
 
   data:
     build:

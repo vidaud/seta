@@ -1,5 +1,9 @@
 # SeTA *Semantic Text Analyser*
 
+<!--  {{ customer.web }} -->
+
+
+
 The European Union Bodies publish a vast amount of information which is made available via different channels.
 Making sense of this textual content and finding links between documents is difficult if not impossible just by having humans read it. 
 

@@ -96,6 +96,7 @@ The models section describes the patterns that were used in the different execut
 
 ![Screenshot](../img/models.png)
 
+## Swagger
 
 In the following swagger implementation it is possible to start using the API, *^^do not forget to follow the instructions in the set up page^^*:
 

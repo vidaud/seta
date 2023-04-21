@@ -18,7 +18,7 @@ In the SeTA Web App we can find:
 - Communities: A digital platform for people with a common interest to discuss or share about that connect and communicate with one another.
 
 
-To access these features, you need either to login with an EU login account or with a GitHub authentication.
+To access these features, you need either to login with an EU login[^1] account or with a GitHub authentication.
 
  ![Screenshot](../img/login.jpg){ width="600" }
 
@@ -231,3 +231,6 @@ Seta-API will get at each request another authorization decoded token from seta-
     You can verify the authorization token at [authorization doc](http://localhost/authorization/v1/doc) passing the JWT access token as payload.
 
 At this point, API usage is set up. 
+
+
+[^1]:https://webgate.ec.europa.eu/ern/userguide/Content/A.HOW%20TO%20JOIN/Register%20on%20EU-Login.htm
