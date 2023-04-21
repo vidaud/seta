@@ -1,5 +1,6 @@
 import type { RefObject } from 'react'
 import { useCallback, useState } from 'react'
+import { clsx } from '@mantine/core'
 
 type TokenMatch = {
   token: string
@@ -64,35 +65,40 @@ const useTokens = (inputRef: RefObject<HTMLInputElement>) => {
     }
 
     const value = inputRef.current.value
+
+    // Split the input value into tokens, which are either expressions in quotes or single words
     const tokens = value.match(/"[^"\\]*(\\.[^"\\]*)*"|\S+/g)
 
     if (!tokens) {
       return value
     }
 
-    // The index helps match the token around the cursor position
+    // The index helps match the token around the cursor position,
+    // in case there are multiple identical tokens in the input
     let index = 0
 
     const highlightedTokens = tokens.map((token, i) => {
       const isCurrentToken = token === currentToken?.token && index === currentToken.index
       const isExpression = token.length > 1 && token.startsWith('"') && token.endsWith('"')
 
-      const cls = isCurrentToken ? 'highlighted' : ''
+      const cls = {
+        root: clsx({ current: isCurrentToken && tokens.length > 1, expression: isExpression }),
+        token: clsx({ highlighted: isCurrentToken })
+      }
 
       const quote = isExpression && <span className="quote">"</span>
       const tokenValue = isExpression ? token.slice(1, -1) : token
-      const expressionMarker = isExpression && <span className="expression-marker">=</span>
 
       index += token.length + 1
 
       return (
-        <span key={index}>
-          <span className={cls}>
+        <span key={index} className={cls.root}>
+          <span className={cls.token}>
             {quote}
             {tokenValue}
             {quote}
 
-            {expressionMarker}
+            <span className="marker" />
           </span>
 
           {i < tokens.length - 1 && ' '}
