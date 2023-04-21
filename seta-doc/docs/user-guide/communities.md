@@ -1,11 +1,11 @@
 ## General
 The communities of the SeTA web app is a shared space where members engage with each other to connect and learn about similar interests opinions of different type of publications. 
 
-In the SeTA web app we have two types of communities: open communities and private communities.   
+In the SeTA web app we have two types of communities: public communities and private communities.   
 
-* **Open Community**:  Anyone with access to the web app can view all discussion forums and information in the online community. Anyone can join the community and contribute  to the community.   
+* **Public Community**:  Anyone with access to the web app can view all discussion forums and information in the online community. Anyone can join the community and contribute  to the community.   
 
-* **Private Community**:  The information and conversations can only be accessed by users with log-ins(often sent via invitation to a specific group or pre-loaded into the community platforms membership database). All users are forced to ask for authorization to join and then been able to see content and conversations. In this type of communities the administrators have the ability to deny access to users who dont fit membership credentials (i.e. *members customers participants in a specific industry*)
+* **Private Community**:  The information and conversations can only be accessed by users with log-ins(often sent via invitation to a specific group or pre-loaded into the community platforms membership database). All users are forced to ask for authorization to join and then been able to see content and conversations. In this type of communities the administrators have the ability to deny access to users who don't fit membership credentials (i.e. *members customers participants in a specific industry*)
 
 ### Create a community
                         
@@ -14,16 +14,8 @@ In the SeTA web app we have two types of communities: open communities and priva
 3. Enter your community name.  
 4. Select the privacy option. If you selected private select whether to make your community visible or hidden.  
 5. Add people to your community.  
-6. Click Create. Once you create your community you personalize it by uploading a cover photo and adding a description. You can update the community by changing the community description and making an announcement.
+6. Click Create. Once you create your community by adding a description. You can update the community by changing the community description and making an announcement.
 
-!!! info
-    Only admins can upload or change cover photos for their community.  
-    1. From the ^^Header^^ menu click ^^Communities^^.  
-    2. Click ^^Edit^^ in the bottom right corner of the cover photo and select where youd like to choosean image from or select Reposition.  
-    3. Select the image drag to reposition and click Save Changes. 
-
-!!! abstract "Note"
-    Keep in mind that the recommended size for community cover photos is 1640px by 856px (or 1. 91:1 ratio).
 
 
 ### Change the name of a community                
@@ -72,15 +64,15 @@ Only **community admins** can change the community name.
     Only one admin spot can be claimed. Once the creator has left the community, creator status can't be granted to an admin or moderator. If you can't claim the admin role in a community it may be because there are moderators or other people have recently been accepted to become an admin.
 
 
-### Difference between a member visitor and participant in open communities
+### Difference between a member visitor and participant in public communities
                         
-In open communities you can interact with a community as a member or as a visitor. Once a member or visitor posts or comments in the community they become a participant. 
+In public communities you can interact with a community as a member or as a visitor. Once a member or visitor posts or comments in the community they become a participant. 
 
 -  **Member**:  someone who has joined the community. 
     - No admin approval required. 
     - Can post and comment. 
     
-- **Visitor**: someone who isnt a member of the community. 
+- **Visitor**: someone who isn't a member of the community. 
     - No admin approval required. 
     - Can post and comment. 
     
@@ -91,11 +83,11 @@ In open communities you can interact with a community as a member or as a visito
 
 ## Manage a community 
 
-In open communities people can become members without admin approval and visitors (people who arent members)can post and comment. You can choose to approve members and visitors as participants before they publish a post or comment for the first time. Once someone is approved as a participant you can still require admin approval of their future posts. If youre an admin of a private community you can choose to turn on membership approval for your community. This means admins or moderators will have to approve membership requests before someone can join the community.
+In public communities people can become members without admin approval and visitors (people who arent members)can post and comment. You can choose to approve members and visitors as participants before they publish a post or comment for the first time. Once someone is approved as a participant you can still require admin approval of their future posts. If youre an admin of a private community you can choose to turn on membership approval for your community. This means admins or moderators will have to approve membership requests before someone can join the community.
 
 ### Manage the post for a community
                
-In open communities visitors (people who arent members) can post and comment if admins allow and people can become members without admin approval. You can still review and approve people before they can post or comment.
+In public communities visitors (people who arent members) can post and comment if admins allow and people can become members without admin approval. You can still review and approve people before they can post or comment.
 
 
 ### Remove posts in a community
@@ -152,7 +144,7 @@ Community admins and moderators can create chats. In some communities admins can
 
 Any community member can join a community chat and read all content including content sent before they joined. 
 
-In open communities: 
+In public communities: 
 
 - If participant approval is turned on then the member must first be approved as a participant before they can participate in chats. 
 - Visitors can't participate in chats even if theyre approved as participants.
@@ -167,7 +159,7 @@ In open communities:
 
 ### Manage topics in a community {-- I admin--} 
                         
-Topics are hashtags added to community posts to help people discover content they might be interested in. Community admins can pin a topic if they want people to find it easily or hide a topic if they dont want it to be prominent.    
+Topics are hashtags added to community posts to help people discover content they might be interested in. Community admins can pin a topic if they want people to find it easily or hide a topic if they don't want it to be prominent.    
 
 **To pin a topic:**   
 
@@ -186,7 +178,7 @@ Topics are hashtags added to community posts to help people discover content the
 In SeTA web app there are two options:   
 
 **Invite with email:**  
-    Admins can invite new members to a community by email.  The email will include a link to the community where the person can confirm that they want to join. In open communities they'll be automatically approved. In private communities they'll have to be approved by a community admin. Only the person who received the email can join the community with that link.  
+    Admins can invite new members to a community by email.  The email will include a link to the community where the person can confirm that they want to join. In public communities they'll be automatically approved. In private communities they'll have to be approved by a community admin. Only the person who received the email can join the community with that link.  
     
 1. From the ^^Header^^ menu click ^^Communities^^.  
 2. Click + Invite below the cover photo.  
@@ -263,13 +255,13 @@ If youre an admin of a community you can pause your community if you need a brea
 
 ### Delete a community {-- I admin--} 
            
-If youre a community admin you can delete your community by removing all members (in private communities) or banning all members (in open communities) and then leaving the community as long as the community creator has left the community or you are the community creator. When no members remain in the community it will automatically be deleted. Deleting a community is permanent and cannot be reversed. Alternatively you can pause a community.   
+If youre a community admin you can delete your community by removing all members (in private communities) or banning all members (in public communities) and then leaving the community as long as the community creator has left the community or you are the community creator. When no members remain in the community it will automatically be deleted. Deleting a community is permanent and cannot be reversed. Alternatively you can pause a community.   
 
 **To delete a community:**   
 
 1. From the ^^Header^^ menu click ^^Communities^^.  
-2. Click ^^Members^^ (for private communities) or ^^People^^ (for open communities) at the top of the community.  
-3. Click next to each members name and select ^^Remove member^^ (for private communities) or ^^Ban from community^^ (for open communities).  
+2. Click ^^Members^^ (for private communities) or ^^People^^ (for public communities) at the top of the community.  
+3. Click next to each members name and select ^^Remove member^^ (for private communities) or ^^Ban from community^^ (for public communities).  
 4. Click Confirm. 
 
 !!! info
@@ -307,10 +299,10 @@ Once you join a community, you will be able to:
 
 
 ### See the members of a community
-Anyone can see who is a member of an open community. In a private community you have to be a member to see who the other members are. 
+Anyone can see who is a member of an public community. In a private community you have to be a member to see who the other members are. 
 
 1. From the ^^Header^^ menu click ^^Communities^^.   
-2. Click ^^Members^^ (for private communities) or ^^People^^ (for open communities) at the top of the community. 
+2. Click ^^Members^^ (for private communities) or ^^People^^ (for public communities) at the top of the community. 
 
 The member list will update automatically as people join and leave the community.
 
@@ -319,7 +311,7 @@ The member list will update automatically as people join and leave the community
 1. From the ^^Header^^ menu click ^^Communities^^.  
 2. Click the box next to your profile picture near the top of the page. 
 
-From here you can write a post. You might need to select three black vertical dots to find all of the available post formats. If you dont see a post option available in your community it could be because the community admins dont allow this kind of post in your community. In open communities admins might require approval before you can post or comment for the first time. The approval process might involve answering participation labels and agreeing to the community rules. Only admins and moderators can see your answers.
+From here you can write a post. You might need to select three black vertical dots to find all of the available post formats. If you don't see a post option available in your community it could be because the community admins don't allow this kind of post in your community. In public communities admins might require approval before you can post or comment for the first time. The approval process might involve answering participation labels and agreeing to the community rules. Only admins and moderators can see your answers.
 
 ### Delete posts and comments from a community
 

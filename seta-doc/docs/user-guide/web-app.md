@@ -13,14 +13,20 @@ If we search by a term, when we start typing in the search bar, a dropdown box a
 - a section with a map of the *related terms* to search (right side). Also in this section, there is the possibility to choose for *related terms* or *related terms clusters*. And finally there is a *wizard* ![Image title](../img/wizard.png) tool to use if we want to **enrich query automatically**. 
 
 
-![Screenshot](../img/search_term.png)
+<figure markdown>
+  ![Image title](../img/search_term.png)
+  <figcaption>Search by term</figcaption>
+</figure>
 
 
 ### Search by phrase
 If we want to search by phrase it is necessary to enclose with double quotes *" "* the phrase, after that, as with the term search, the dropdown box will appear automatically with the two sections
 
 
-![Screenshot](../img/search_phrase.png)
+<figure markdown>
+  ![Image title](../img/search_phrase.png)
+  <figcaption>Search by phrase</figcaption>
+</figure>
 
 
 ### Search by document or text
@@ -33,11 +39,14 @@ In the lower section of the pop-up it is possible to paste the text you want to 
 
 If we don't want to search with this option, it is always possible to cancel the search with the *cancel* button at the bottom of the pop up, and the pop-up window will close.
 
-![Screenshot](../img/upload.png)
+<figure markdown>
+  ![Image title](../img/upload.png)
+  <figcaption>Search by document or text</figcaption>
+</figure>
 
 
 ### Options
-After launching a search, a new section with the results will appear below the search box (see image below). Together with the results there are some options to improve the search:
+After launching a search, a new section with the results will appear below the search box (see image *Detailed results*). Together with the results there are some options to improve the search:
 
 - Post Search   
 In the left side of the new section it is possible to find tab Post Search. Here there is an histogram which can be used to apply filters. Click on a specific part of the histogram and the list of documents will be updated displaying only the related documents according to the specific part of the histogram clicked.
@@ -72,6 +81,7 @@ It is possible to see the visual representation of the topic. The Concept map wi
 ### Document Map tab         
 Mapping is the process of relating the structure values or content of a document in one format to the values and fields in an alternate document format. In the Document Map tab you will see the maps between different related documents to your search.  
 
-
-
-![Image title](../img/search_results_detail.png)
+<figure markdown>
+  ![Image title](../img/search_results_detail.png)
+  <figcaption>Detailed results</figcaption>
+</figure>

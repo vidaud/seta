@@ -1,6 +1,3 @@
-repo_url: http://localhost/
-edit_uri: docs/
-
 site_name: SeTA Docs
 site_description: SeTA - Semantic Text Analyser
 theme:
