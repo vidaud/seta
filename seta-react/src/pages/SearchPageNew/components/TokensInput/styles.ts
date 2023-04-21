@@ -20,8 +20,8 @@ export const renderer: ThemedCSS = theme => css`
   left: 1px;
   right: 1px;
   height: 2.625rem;
-  line-height: calc(2.625rem - 0.125rem);
-  margin: 0 calc(2.625rem / 3);
+  line-height: 2.5rem;
+  margin: 0 0.875rem;
   pointer-events: none;
   white-space: pre;
   overflow: hidden;
@@ -34,7 +34,7 @@ export const renderer: ThemedCSS = theme => css`
 
   span.marker {
     position: absolute;
-    bottom: 2px;
+    bottom: 0;
     left: 0;
     right: 0;
     height: 1px;
@@ -46,6 +46,7 @@ export const renderer: ThemedCSS = theme => css`
   span.expression {
     .marker {
       opacity: 1;
+      bottom: 2px;
     }
   }
 
@@ -56,8 +57,14 @@ export const renderer: ThemedCSS = theme => css`
 
     .marker {
       opacity: 1;
-      height: 2px;
+      height: 1px;
       background-color: ${theme.fn.rgba(theme.colors.teal[4], 0.7)};
+    }
+  }
+
+  span.expression.current {
+    .marker {
+      bottom: 0;
     }
   }
 
@@ -65,8 +72,16 @@ export const renderer: ThemedCSS = theme => css`
     color: ${theme.colors.grape[5]};
   }
 
-  &:not(.focused) .current .marker {
-    bottom: 0;
-    height: 1px;
+  &.focused {
+    span.current {
+      .highlighted {
+        background-color: ${theme.fn.rgba(theme.colors.teal[2], 0.3)};
+      }
+
+      .marker {
+        bottom: 2px;
+        height: 2px;
+      }
+    }
   }
 `
