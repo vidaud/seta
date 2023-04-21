@@ -45,7 +45,9 @@ export const renderer: ThemedCSS = theme => css`
   span.expression {
     .marker {
       opacity: 1;
-      bottom: 2px;
+      bottom: 4px;
+      margin-left: 0.3rem;
+      margin-right: 0.3rem;
     }
   }
 
@@ -64,6 +66,7 @@ export const renderer: ThemedCSS = theme => css`
   span.expression.current {
     .marker {
       bottom: 0;
+      margin: 0;
     }
   }
 
