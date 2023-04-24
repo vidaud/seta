@@ -27,16 +27,10 @@ def create_app(config_object):
     register_blueprints(app)
       
     @jwt.additional_claims_loader   
-    def add_claims_to_access_token(identity):  
-        # TODO update source and limit with mongodb fields
-        #usersBroker = app_injector.injector.get(IUsersBroker)            
-        
-        source_limit = {"source": identity["user_id"], "limit": 5}
-        
+    def add_claims_to_access_token(identity):        
         additional_claims = {
-            "iss": "SETA Flask server",
-            "sub": identity["user_id"],
-            "source_limit": source_limit
+            "iss": "SETA Auth Server",
+            "sub": identity["user_id"]
         }
         return additional_claims
     

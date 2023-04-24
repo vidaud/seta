@@ -45,6 +45,12 @@ class Config:
 
     #Where to look for a JWT when processing a request in the specified order.
     JWT_TOKEN_LOCATION=["headers", "cookies"]
+    
+    #How long an access token should be valid before it expires.
+    JWT_ACCESS_TOKEN_EXPIRES = timedelta(minutes=15)
+
+    #How long a refresh token should be valid before it expires.
+    JWT_REFRESH_TOKEN_EXPIRES = timedelta(minutes=60)
     #======================================#
 
     #===========LogSetup Configuration========#
@@ -104,34 +110,12 @@ class DevConfig(Config):
     def __init__(self) -> None:
         super().__init__()
 
-    #============Flask-JWT-Extended Configuration========#
-    #https://flask-jwt-extended.readthedocs.io/en/stable/options/
-
-    #How long an access token should be valid before it expires.
-    JWT_ACCESS_TOKEN_EXPIRES = timedelta(minutes=60)
-
-    #How long a refresh token should be valid before it expires.
-    JWT_REFRESH_TOKEN_EXPIRES = timedelta(hours=2)
-
-    #======================================#
-
 
 class ProdConfig(Config):
     """Production config"""
 
     def __init__(self) -> None:
         super().__init__()
-
-    #============Flask-JWT-Extended Configuration========#
-    #https://flask-jwt-extended.readthedocs.io/en/stable/options/
-
-    #How long an access token should be valid before it expires.
-    JWT_ACCESS_TOKEN_EXPIRES = timedelta(minutes=60)
-
-    #How long a refresh token should be valid before it expires.
-    JWT_REFRESH_TOKEN_EXPIRES = timedelta(days=2)
-
-    #======================================#
 
 class TestConfig(Config):
     """Test config"""
@@ -158,16 +142,5 @@ class TestConfig(Config):
     PROPAGATE_EXCEPTIONS = True
 
     #ALLOWED_HOSTS = ['*']
-
-    #======================================#
-
-     #============Flask-JWT-Extended Configuration========#
-    #https://flask-jwt-extended.readthedocs.io/en/stable/options/
-
-    #How long an access token should be valid before it expires.
-    JWT_ACCESS_TOKEN_EXPIRES = timedelta(minutes=15)
-
-    #How long a refresh token should be valid before it expires.
-    JWT_REFRESH_TOKEN_EXPIRES = timedelta(hours=24)
 
     #======================================#

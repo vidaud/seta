@@ -12,12 +12,6 @@ from seta_auth.repository.interfaces import IUsersBroker, IRsaKeysBroker
 
 from datetime import timedelta
 
-
-
-#do not use JWT_ACCESS_TOKEN_EXPIRES & JWT_REFRESH_TOKEN_EXPIRES from config
-TOKEN_EXPIRES_DELTA = timedelta(minutes=15)
-REFRESH_TOKEN_EXPIRES_DELTA = timedelta(minutes=60)
-
 token_auth = Blueprint('token_auth', __name__)
 CORS(token_auth)
 auth_api = Api(token_auth,
@@ -71,8 +65,8 @@ class JWTUserToken(Resource):
                 "role": user.role
             }       
        
-        access_token = create_access_token(identity=identity, fresh=True, additional_claims=additional_claims, expires_delta=TOKEN_EXPIRES_DELTA)
-        refresh_token = create_refresh_token(identity=identity, additional_claims=additional_claims, expires_delta=REFRESH_TOKEN_EXPIRES_DELTA)
+        access_token = create_access_token(identity=identity, fresh=True, additional_claims=additional_claims)
+        refresh_token = create_refresh_token(identity=identity, additional_claims=additional_claims)
         
         response = make_response(jsonify(access_token=access_token, refresh_token=refresh_token))
 
@@ -106,9 +100,10 @@ class JWTRefreshToken(Resource):
         if user is None:
             abort(401, "Invalid User")
             
+        #other additional_claims are added via additional_claims_loader method: factory->add_claims_to_access_token
         additional_claims = {
                 "role": user.role
             }
         
-        access_token = create_access_token(identity=identity, fresh=False, additional_claims=additional_claims, expires_delta=TOKEN_EXPIRES_DELTA)
+        access_token = create_access_token(identity=identity, fresh=False, additional_claims=additional_claims)
         return jsonify(access_token=access_token)

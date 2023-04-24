@@ -20,20 +20,9 @@ class ResourcesBroker(implements(IResourcesBroker)):
         memberships = community_collection.find(memberships_filter, {"community_id": 1})        
         community_ids = [i["community_id"] for i in memberships]
                 
-        #1 -get active resources
+        #get active resources
         filter = {"community_id": {"$in": community_ids}, "status": ResourceStatusConstants.Active, "access":{"$exists" : 1}}        
         resources = self.collection.find(filter)
         
-        #create a list with resource ids
-        result = [c["resource_id"] for c in resources]
-        
-        #2 - get public resources
-        filter = {"access": ResourceAccessContants.Public, "access":{"$exists" : 1}}
-        public_resources = self.collection.find(filter)
-                
-        for pr in public_resources:
-            if not pr["resource_id"] in result:                
-                result.append(pr["resource_id"])
-
-
-        return result
+        #return resource ids
+        return [c["resource_id"] for c in resources]
