@@ -16,4 +16,8 @@ class ResourceStatusConstants:
     
 class ResourceAccessContants:
     Public = "public"
-    Community = "community"    
+    Community = "community"  
+    
+class AuthorizedArea:
+    Resources = "resources"    
+    List=[Resources]

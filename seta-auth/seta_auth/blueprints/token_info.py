@@ -1,4 +1,4 @@
-from flask_restx import Api, Resource, fields
+from flask_restx import Api, Resource, fields, reqparse
 
 from flask import jsonify, abort, Blueprint
 from flask_jwt_extended import decode_token
@@ -11,7 +11,7 @@ from werkzeug.exceptions import HTTPException
 from seta_auth.repository.interfaces import IUsersBroker, IResourcesBroker, ISessionsBroker
 from injector import inject
 
-from seta_auth.infrastructure.constants import ResourceScopeConstants
+from seta_auth.infrastructure.constants import ResourceScopeConstants, AuthorizedArea
 
 
 token_info = Blueprint("token_info", __name__)
@@ -23,21 +23,18 @@ authorization_api = Api(token_info,
                )
 ns_authorization = authorization_api.namespace("", "Authorization endpoints")
 
-'''
-request_parser = RequestParser()
+request_parser = reqparse.RequestParser()
 request_parser.add_argument("token",
                             location="json", 
                             required=True,
                             nullable=False,                                  
                             help="Encoded token")
-'''                        
+request_parser.add_argument("auth_area", 
+                            location="json",
+                            required=False,
+                            action='append',
+                            help=f"Authorized areas, a list of {AuthorizedArea.List}")
 
-request_parser = ns_authorization.model(
-    "EncodedToken",
-    {
-        'token': fields.String(required=True, description="Encoded token")
-    }
-)
 
 @ns_authorization.route("/token_info", methods=['POST'])
 class TokenInfo(Resource):
@@ -61,6 +58,7 @@ class TokenInfo(Resource):
         
         r = authorization_api.payload
         token = r["token"]
+        areas = r["auth_area"]
                         
         decoded_token = None
         try:
@@ -71,25 +69,26 @@ class TokenInfo(Resource):
                 if self.sessionBroker.session_token_is_blocked(jti):
                     abort(401, "Blocked token")
                     
-            #get user resource scopes
-            seta_id = decoded_token.get("seta_id")
-            if seta_id:
-                user = self.usersBroker.get_user_by_id(seta_id["user_id"])
-                
-                permissions = {"add": [], "delete": [], "view": []}  
-                              
-                if user is not None:
-                    if user.resource_scopes is not None:
-                        data_add_resources = filter(lambda r: r.scope.lower() == ResourceScopeConstants.DataAdd.lower(), user.resource_scopes)                        
-                        permissions["add"] = [obj.id for obj in data_add_resources]
-                        
-                        data_delete_resources = filter(lambda r: r.scope.lower() == ResourceScopeConstants.DataDelete.lower(), user.resource_scopes)                        
-                        permissions["delete"] = [obj.id for obj in data_delete_resources]
-
-                    #get queryable resource
-                    permissions["view"] = self.resourcesBroker.get_all_queryable_by_user_id(user.user_id)
+            if areas is not None and AuthorizedArea.Resources in areas:
+                #get user permissions for all resources
+                seta_id = decoded_token.get("seta_id")
+                if seta_id:
+                    user = self.usersBroker.get_user_by_id(seta_id["user_id"])
                     
-                decoded_token["resource_permissions"] = permissions
+                    permissions = {"add": [], "delete": [], "view": []}  
+                                
+                    if user is not None:
+                        if user.resource_scopes is not None:
+                            data_add_resources = filter(lambda r: r.scope.lower() == ResourceScopeConstants.DataAdd.lower(), user.resource_scopes)                        
+                            permissions["add"] = [obj.id for obj in data_add_resources]
+                            
+                            data_delete_resources = filter(lambda r: r.scope.lower() == ResourceScopeConstants.DataDelete.lower(), user.resource_scopes)                        
+                            permissions["delete"] = [obj.id for obj in data_delete_resources]
+
+                        #get queryable resource
+                        permissions["view"] = self.resourcesBroker.get_all_queryable_by_user_id(user.user_id)
+                        
+                    decoded_token["resource_permissions"] = permissions
         
         except HTTPException as he:
             app.logger.exception(str(he))

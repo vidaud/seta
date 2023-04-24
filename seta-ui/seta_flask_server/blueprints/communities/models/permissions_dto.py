@@ -26,4 +26,4 @@ community_scopes_parser.add_argument("scope",
                                   nullable=False,
                                   type=community_scope_list,
                                   action='append',
-                                  help=f"Scopes list, one of {CommunityScopeConstants.EditList}")
+                                  help=f"Scopes list, any of {CommunityScopeConstants.EditList}")

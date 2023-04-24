@@ -28,11 +28,10 @@ class SetaJWTManager(JWTManager):
             if self.token_info_url is None:
                 return None
             headers = {"Content-Type": "application/json"}
-            json = {"token": encoded_token}
+            json = {"token": encoded_token, "auth_area": ["resources"]}
             
-            r = requests.post(url=self.token_info_url,json=json, headers=headers)
-            decoded_token = r.json()
-            
+            r = requests.post(url=self.token_info_url, json=json, headers=headers)
+            decoded_token = r.json()            
             
             #verification copied from flask_jwt_extended.tokens.py->_decode_token
             if jwt_config.identity_claim_key not in decoded_token:

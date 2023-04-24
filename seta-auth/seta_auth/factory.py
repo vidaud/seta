@@ -62,4 +62,4 @@ def register_extensions(app):
     try:
         logs.init_app(app)
     except:
-        app.logger.error("logs config failed")
+        app.logger.exception("logs config failed")
