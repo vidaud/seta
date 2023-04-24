@@ -35,8 +35,7 @@ request_parser.add_argument("token",
 request_parser = ns_authorization.model(
     "EncodedToken",
     {
-        'token': fields.String(required=True, description="Encoded token"),
-        'csrf': fields.String(required=False, description="CSRF value")
+        'token': fields.String(required=True, description="Encoded token")
     }
 )
 
@@ -62,13 +61,10 @@ class TokenInfo(Resource):
         
         r = authorization_api.payload
         token = r["token"]
-        csrf_value = None
-        if "csrf" in r:
-            csrf_value = r["csrf"]
                         
         decoded_token = None
         try:
-            decoded_token = decode_token(encoded_token=token, csrf_value=csrf_value)
+            decoded_token = decode_token(encoded_token=token)
             
             jti = decoded_token.get("jti")
             if jti:

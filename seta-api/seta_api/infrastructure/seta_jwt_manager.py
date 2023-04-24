@@ -6,9 +6,17 @@ from flask_jwt_extended.exceptions import CSRFError
 from flask_jwt_extended.exceptions import JWTDecodeError
 import requests
 from hmac import compare_digest
-from flask import current_app
+from flask import Flask
 
 class SetaJWTManager(JWTManager):
+    
+    token_info_url=None
+    logger = None
+    
+    def init_app(self, app: Flask, add_context_processor: bool = False) -> None:
+        super().init_app(app=app, add_context_processor=add_context_processor)
+        self.token_info_url = app.config.get("JWT_TOKEN_INFO_URL")
+    
     """
     Override _decode_jwt_from_config
     """
@@ -16,17 +24,15 @@ class SetaJWTManager(JWTManager):
         self, encoded_token: str, csrf_value=None, allow_expired: bool = False
     ) -> dict:              
         
-        try:            
-            url = current_app.config.get("JWT_TOKEN_INFO_URL")
-            if url is None:
+        try:    
+            if self.token_info_url is None:
                 return None
             headers = {"Content-Type": "application/json"}
             json = {"token": encoded_token}
             
-            r = requests.post(url=url,json=json, headers=headers)
+            r = requests.post(url=self.token_info_url,json=json, headers=headers)
             decoded_token = r.json()
             
-            current_app.logger.debug(decoded_token)
             
             #verification copied from flask_jwt_extended.tokens.py->_decode_token
             if jwt_config.identity_claim_key not in decoded_token:
@@ -41,9 +47,7 @@ class SetaJWTManager(JWTManager):
             if "jti" not in decoded_token:
                 decoded_token["jti"] = None
                 
-            if csrf_value:
-                current_app.logger.debug("Verify csrf " + csrf_value)
-                
+            if csrf_value:                
                 if "csrf" not in decoded_token:
                     raise JWTDecodeError("Missing claim: csrf")
                 if not compare_digest(decoded_token["csrf"], csrf_value):
@@ -52,11 +56,8 @@ class SetaJWTManager(JWTManager):
             
             return decoded_token
         except ConnectionError as ce:
-            current_app.logger.exception(str(ce))
+            raise JWTDecodeError(str(ce))
         except JSONDecodeError as je:
-            current_app.logger.exception(str(je))
+            raise JWTDecodeError(str(je))
         except Exception as e:
-            current_app.logger.exception(str(e))
-            
-        return None
-            
+            raise JWTDecodeError(str(e))            
