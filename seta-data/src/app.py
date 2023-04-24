@@ -69,7 +69,7 @@ def suggestion_update_job():
         if crc != current_w2v_crc:
             try:
                 print("starting suggestion upload", flush=True)
-                bulk(es, gen_data(crc))
+                bulk(es, gen_data(crc), request_timeout=300)
                 crc_model = {"crc_model": crc}
 
                 if current_w2v_crc:
