@@ -84,38 +84,13 @@ class UsersBroker(implements(IUsersBroker)):
             
         return seta_user
     
-    #-------------------------------------------------------#
-        
-    def move_documents(self, sourceCollection: str, targetCollection: str, filter: dict):
-        sc = self.db[sourceCollection]
-        tc = self.db[targetCollection]
-        
-        sourceDocs = sc.find(filter)
-        result: InsertManyResult = tc.insert_many(sourceDocs, False, True)
-        
-        now = datetime.now(tz=pytz.utc)
-        tc.update_many({"_id": {"$in": result.inserted_ids}}, {"$set": {"revoked_at": now}})
-        
-        r = sc.delete_many({"_id": {"$in": result.inserted_ids}})
-        return r.deleted_count
-    
-    def delete_old_user(self):
-        ar = self.db["archive"]
-        now = datetime.now(tz=pytz.utc)
-        nowMinusThreeWeeks = str(now - timedelta(weeks=3))
-        r = ar.delete_many({
-            "$or": [
-                {"created_at": {"$lt":  nowMinusThreeWeeks}},
-                {"revoked_at": {"$lt":  nowMinusThreeWeeks}}
-            ]
-        })
-        return r.deleted_count
-    
-     #-------------Private methods ----------------------#        
     def user_uid_exists(self, user_id: str) -> bool:        
         filter = {"user_id": user_id, "email": {"$exists" : True}}
                 
         return self.collection.count_documents(filter, limit = 1) > 0
+  
+     #-------------Private methods ----------------------#        
+    
     
     def _create_new_user(self, user: SetaUser) -> SetaUser:        
         
