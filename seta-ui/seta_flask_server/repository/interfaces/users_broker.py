@@ -17,11 +17,5 @@ class IUsersBroker(Interface):
     def get_user_by_email(self, email: str) -> SetaUser:
         pass
     
-    #-------------------------------------------------------#
-   
-    
-    def move_documents(self, sourceCollection: str, targetCollection: str, filter: dict):
-        pass
-    
-    def delete_old_user(self):
+    def user_uid_exists(self, user_id: str) -> bool:
         pass
