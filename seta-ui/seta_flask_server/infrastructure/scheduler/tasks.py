@@ -21,5 +21,5 @@ def job_delete_archived_data():
     with scheduler.app.app_context():
         config = DbConfig(current_app=current_app, g=g)
         usersBroker = UsersBroker(config)
-        usersBroker.delete_old_user()
+        #usersBroker.delete_old_user()
     
