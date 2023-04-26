@@ -33,7 +33,7 @@ After clonning the project, move to the directory of the project:
     cd [project folder]
 ```
 
-### Docker compose
+### Docker setup
 
 From the root folder move to folder **seta-compose**: 
 
@@ -81,7 +81,7 @@ After this, if we have moved, we go back to folder **seta-compose** and from the
 
 This command creates a docker image based on the Dockerfile called by default **docker-compose.yml** as the configuration file and **.env** as the environment file.
 
-### Compose
+### Up
 
 After finishing the build, launch the command to start and run the services:
 

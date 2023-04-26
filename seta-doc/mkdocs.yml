@@ -82,7 +82,7 @@ nav:
   - Methodology: general/how-runs.md
   - Why you would use it: general/why-use-it.md
   - Who should/can use it: general/who-use-it.md
-  - Dockers: general/docker-architecture.md      
+  - Docker: general/docker-architecture.md      
   - Set-up SeTA:
     - Deployment: setup/deployment.md 
     - Release: release-notes/release-notes.md
