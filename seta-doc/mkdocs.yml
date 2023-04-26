@@ -84,7 +84,7 @@ nav:
   - Who should/can use it: general/who-use-it.md
   - Dockers: general/docker-architecture.md      
   - Set-up SeTA:
-    - Compose: setup/compose.md 
+    - Deployment: setup/deployment.md 
     - Release: release-notes/release-notes.md
   - Using SeTA:
     - Setup: user-guide/setup.md

@@ -66,6 +66,7 @@ Before building, it is neccesary to setup the models file which keeps the relate
 
 {++From repository XXXX download file json_suggestion.json and copy into folder ./seta-data/models/++}
 
+### Build
 
 After this, if we have moved, we go back to folder **seta-compose** and from there we launch the build command: 
 
@@ -74,6 +75,8 @@ After this, if we have moved, we go back to folder **seta-compose** and from the
 ```    
 
 This command creates a docker image based on the Dockerfile called by default **docker-compose.yml** as the configuration file and *.env* as the environment file.
+
+### Compose
 
 After finishing the build, launch the command to start and run the services:
 
@@ -99,6 +102,8 @@ After successfully start all the containers you are ready to open your browser a
 * **API:** [/seta-api/doc](/seta-api/doc)
 
 * **Documentation:** [/docs](/docs)
+
+### Stopping commands
 
 #### To stop services 
 ```
