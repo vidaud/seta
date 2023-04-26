@@ -17,7 +17,7 @@ from seta_flask_server.infrastructure.constants import (ResourceAccessContants, 
 '''==================== Community ======================================='''
 
 @pytest.mark.parametrize("user_id", ["seta_community_manager"])
-def test_create_community(client: FlaskClient, user_id: str):
+def test_create_community(client: FlaskClient, authentication_url:str, user_id: str):
     """
     Scenario: 'user2' registers new data community
 
@@ -26,10 +26,11 @@ def test_create_community(client: FlaskClient, user_id: str):
     Then: new data community 'blue' registration is confirmed
     """
     
-    response = login_user(client=client, user_id=user_id)    
+    response = login_user(auth_url=authentication_url, user_id=user_id)    
     assert response.status_code == HTTPStatus.OK
-    assert "access_token" in response.json
-    access_token = response.json["access_token"]
+    response_json = response.json()
+    assert "access_token" in response_json
+    access_token = response_json["access_token"]
 
     response = create_community(client=client, access_token=access_token, 
                     id="blue", title="Blue Community", description="Blue Community for test", data_type="representative")
@@ -38,7 +39,7 @@ def test_create_community(client: FlaskClient, user_id: str):
 @pytest.mark.parametrize("user_id, community_id, expected", [("seta_community_manager", "blue", HTTPStatus.CREATED),
                     ("seta_community_manager", "blue", HTTPStatus.CONFLICT),
                     ("seta_admin", "blue", HTTPStatus.FORBIDDEN),])
-def test_create_community_change_request(client: FlaskClient, user_id: str, community_id: str, expected: int):
+def test_create_community_change_request(client: FlaskClient, authentication_url:str, user_id: str, community_id: str, expected: int):
     """
     Scenario: 'user2' is changing membership to 'opened' for 'blue' community
 
@@ -50,10 +51,11 @@ def test_create_community_change_request(client: FlaskClient, user_id: str, comm
     """
 
     
-    response = login_user(client=client, user_id=user_id)    
+    response = login_user(auth_url=authentication_url, user_id=user_id)    
     assert response.status_code == HTTPStatus.OK
-    assert "access_token" in response.json
-    access_token = response.json["access_token"]
+    response_json = response.json()
+    assert "access_token" in response_json
+    access_token = response_json["access_token"]
 
     response = create_community_change_request(client=client, access_token=access_token, community_id=community_id,
                 field_name=CommunityRequestFieldConstants.Membership, new_value=CommunityMembershipConstants.Opened, old_value=CommunityMembershipConstants.Closed)    
@@ -61,15 +63,16 @@ def test_create_community_change_request(client: FlaskClient, user_id: str, comm
 
 
 @pytest.mark.parametrize("user_id", [("seta_admin")])
-def test_community_approve_change_request(client: FlaskClient, user_id: str):  
+def test_community_approve_change_request(client: FlaskClient, authentication_url:str, user_id: str):  
     """
         'user1' approves the pending change request
     """
 
-    response = login_user(client=client, user_id=user_id)    
+    response = login_user(auth_url=authentication_url, user_id=user_id)    
     assert response.status_code == HTTPStatus.OK
-    assert "access_token" in response.json
-    access_token = response.json["access_token"] 
+    response_json = response.json()
+    assert "access_token" in response_json
+    access_token = response_json["access_token"]
 
     response = get_community_pending_change_requests(client=client, access_token=access_token)
     assert response.status_code == HTTPStatus.OK
@@ -95,7 +98,7 @@ def test_community_approve_change_request(client: FlaskClient, user_id: str):
 '''==================== Resource ======================================='''
 
 @pytest.mark.parametrize("user_id, community_id", [("seta_community_manager", "blue")])
-def test_create_resource(client: FlaskClient, user_id: str, community_id: str):
+def test_create_resource(client: FlaskClient, authentication_url:str, user_id: str, community_id: str):
     """
     Scenario: 'user2' is registering new data source 'ocean' in data community 'blue'
 
@@ -107,10 +110,11 @@ def test_create_resource(client: FlaskClient, user_id: str, community_id: str):
     """
 
     
-    response = login_user(client=client, user_id=user_id)    
+    response = login_user(auth_url=authentication_url, user_id=user_id)    
     assert response.status_code == HTTPStatus.OK
-    assert "access_token" in response.json
-    access_token = response.json["access_token"]
+    response_json = response.json()
+    assert "access_token" in response_json
+    access_token = response_json["access_token"]
 
     response = create_resource(client=client, access_token=access_token, community_id=community_id,
                     resource_id="ocean", title="Ocean", abstract="Ocean resource for test")
@@ -119,7 +123,7 @@ def test_create_resource(client: FlaskClient, user_id: str, community_id: str):
 @pytest.mark.parametrize("user_id, resource_id, expected", [("seta_community_manager", "ocean", HTTPStatus.CREATED),
                     ("seta_community_manager", "ocean", HTTPStatus.CONFLICT),
                     ("seta_admin", "ocean", HTTPStatus.FORBIDDEN),])
-def test_create_resource_change_request(client: FlaskClient, user_id: str, resource_id: str, expected: int):
+def test_create_resource_change_request(client: FlaskClient, authentication_url:str, user_id: str, resource_id: str, expected: int):
     """
     Scenario: 'user2' requests changes for 'ocean' resource
 
@@ -130,10 +134,11 @@ def test_create_resource_change_request(client: FlaskClient, user_id: str, resou
     Then: new change request is confirmed
     """
     
-    response = login_user(client=client, user_id=user_id)    
+    response = login_user(auth_url=authentication_url, user_id=user_id)    
     assert response.status_code == HTTPStatus.OK
-    assert "access_token" in response.json
-    access_token = response.json["access_token"]
+    response_json = response.json()
+    assert "access_token" in response_json
+    access_token = response_json["access_token"]
 
     response = create_resource_change_request(client=client, access_token=access_token, resource_id=resource_id,
                 field_name=ResourceRequestFieldConstants.Access, new_value=ResourceAccessContants.Public, old_value=ResourceAccessContants.Community)    
@@ -151,15 +156,16 @@ def test_create_resource_change_request(client: FlaskClient, user_id: str, resou
     assert response.status_code == expected
 
 @pytest.mark.parametrize("user_id", [("seta_admin")])
-def test_resource_update_change_requests(client: FlaskClient, user_id: str):  
+def test_resource_update_change_requests(client: FlaskClient, authentication_url:str, user_id: str):  
     """
         'user1' approves the 'access' and rejects 'limits' pending change requests
     """
 
-    response = login_user(client=client, user_id=user_id)    
+    response = login_user(auth_url=authentication_url, user_id=user_id)    
     assert response.status_code == HTTPStatus.OK
-    assert "access_token" in response.json
-    access_token = response.json["access_token"] 
+    response_json = response.json()
+    assert "access_token" in response_json
+    access_token = response_json["access_token"]
 
     response = get_resource_pending_change_requests(client=client, access_token=access_token)
     assert response.status_code == HTTPStatus.OK

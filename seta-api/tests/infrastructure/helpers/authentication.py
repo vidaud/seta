@@ -7,7 +7,6 @@ from typing import Tuple
 import requests
 
 from flask import json
-from flask.testing import FlaskClient
 
 from .util import get_private_key
 

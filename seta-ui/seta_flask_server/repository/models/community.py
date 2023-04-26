@@ -1,51 +1,34 @@
-import datetime
+from datetime import datetime
 from flask import json
-from dataclasses import dataclass, asdict
+from dataclasses import dataclass, asdict, field
 
+@dataclass
 class CommunityModel:
+    community_id: str
+    title: str
+    description: str
+    membership: str
+    data_type: str
+    status: str
+    creator_id: str = None
+    created_at: datetime = None
+    modified_at: datetime = None
+    creator: dict = field(init=False, repr=False)    
     
-    def __init__(self, community_id, title, description, membership, data_type, status, creator_id=None, created_at = None, modified_at = None) -> None:
-        self.community_id = community_id.lower()
-        self.title = title
-        self.description = description
-        self.membership = membership
-        self.data_type = data_type
-        self.status = status
-        self.creator_id = creator_id
-        self.created_at = created_at
-        self.modified_at = modified_at
-        
-        self.creator = {"user_id": creator_id, "full_name": None, "email": None}
-        
-    def __iter__(self):
-        yield from {
-            "community_id": self.community_id,
-            "title": self.title,
-            "description": self.description,
-            "membership": self.membership,
-            "data_type": self.data_type,
-            "status": self.status,
-            "creator_id": self.creator_id,
-            "created_at": self.created_at,
-            "modified_at": self.modified_at
-        }.items()
-        
-    def __str__(self):
-        return json.dumps(self.to_json())
-    
-    def __repr__(self):
-        return self.__str__()
+    def __post_init__(self):
+        self.community_id = self.community_id.lower()        
+        self.creator = {"user_id": self.creator_id, "full_name": None, "email": None}        
 
-    def to_json(self):
-        return dict(self)
-    
-    def to_json_view(self):
-        json = dict(self)
-        json["creator"] = self.creator
+    def to_json(self) -> dict:
+        json = asdict(self)
+        json.pop("creator")
         
         return json
     
-    def to_json_update(self):
+    def to_json_view(self) -> dict:
+        return asdict(self)
+    
+    def to_json_update(self) -> dict:
         return{
             "title": self.title,
             "description": self.description,
@@ -55,7 +38,7 @@ class CommunityModel:
         }
     
     @classmethod 
-    def from_db_json(cls, json_dict):
+    def from_db_json(cls, json_dict: dict):
         return cls(community_id=json_dict["community_id"],
                    title=json_dict["title"],
                    description=json_dict["description"],
@@ -79,11 +62,11 @@ class CommunityChangeRequestModel:
     reviewed_by: str = None
     review_date: datetime = None
     
-    def to_json(self):
+    def to_json(self) -> dict:
         return asdict(self)
     
-    def to_json_update(self):
-        return{            
+    def to_json_update(self) -> dict:
+        return {            
             "status": self.status,
             "review_date": self.review_date,
             "reviewed_by": self.reviewed_by
@@ -101,5 +84,3 @@ class CommunityChangeRequestModel:
                    initiated_date=json_dict["initiated_date"],
                    reviewed_by=json_dict["reviewed_by"],
                    review_date=json_dict["review_date"])
-    
-            

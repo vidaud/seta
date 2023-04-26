@@ -22,8 +22,27 @@ def community_scope_list(value):
 community_scopes_parser = RequestParser(bundle_errors=True)
 community_scopes_parser.add_argument("scope", 
                                   location="form",
-                                  required=True,
-                                  nullable=False,
+                                  required=False,
                                   type=community_scope_list,
                                   action='append',
-                                  help=f"Scopes list, one of {CommunityScopeConstants.EditList}")
+                                  help=f"Scopes list, any of {CommunityScopeConstants.EditList}")
+
+
+def resource_scope_list(value):
+    '''Validation method for scope value in list'''    
+    value = value.lower()
+    
+    if value not in ResourceScopeConstants.EditList:
+        raise ValueError(
+            "Resource scope has to be one of '" + str(ResourceScopeConstants.EditList) + "'."
+        )
+        
+    return value
+
+resource_scopes_parser = RequestParser(bundle_errors=True)
+resource_scopes_parser.add_argument("scope", 
+                                  location="form",
+                                  required=False,
+                                  type=resource_scope_list,
+                                  action='append',
+                                  help=f"Scopes list, any of {ResourceScopeConstants.EditList}")

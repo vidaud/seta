@@ -39,6 +39,7 @@ services:
     ports:
       - "80:80"
     depends_on:
+      - "seta-auth"
       - "seta-api"
       - "seta-ui"
       - "seta-ui-react"
@@ -86,6 +87,16 @@ services:
       service: doc
     expose:
       - "80"
+    networks:
+      - seta-network
+
+  seta-auth:
+    container_name: auth
+    extends:
+      file: common.yml
+      service: auth
+    depends_on:
+      - "seta-mongo"
     networks:
       - seta-network
 

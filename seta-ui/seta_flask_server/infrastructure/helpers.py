@@ -66,15 +66,6 @@ class JSONEncoder(flask_json.JSONEncoder):
                 return json_util.default(obj, **self._default_kwargs)
             except TypeError:
                 return obj
-
-def validate_public_key(public, message, signature):
-    try:
-        public_key = RSA.import_key(public)
-        digest = SHA256.new(message.encode())
-        pkcs1_15.new(public_key).verify(digest, binascii.unhexlify(signature))
-    except Exception as e:
-        return False
-    return True
     
 def set_app_cookie(
     response: Response, key: str, value: str, max_age=None, domain=None
