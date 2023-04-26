@@ -1,14 +1,10 @@
 from interface import implements
 from injector import inject
-import pytz
-
-from datetime import datetime, timedelta
-from pymongo.results import InsertManyResult
 
 from seta_flask_server.repository.interfaces import IDbConfig, IUsersBroker
 from .db_user_permissions import UserPermissionsBroker
 
-from seta_flask_server.repository.models import SetaUser, ExternalProvider, UserClaim, SystemScope, UserSession, SessionToken
+from seta_flask_server.repository.models import SetaUser, ExternalProvider, UserClaim, SystemScope
 from seta_flask_server.infrastructure.scope_constants import SystemScopeConstants
 
 class UsersBroker(implements(IUsersBroker)):
