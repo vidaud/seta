@@ -102,11 +102,11 @@ In this case is recommended to start in detach mode as this allows the docker co
 
 After successfully start all the containers you are ready to open your browser and start typing:
 
-* **User Web App:** [/](/)
+* **User Web App:** [[location] /](/)
 
-* **API:** [/seta-api/doc](/seta-api/doc)
+* **API:** [[location] /seta-api/doc](/seta-api/doc)
 
-* **Documentation:** [/docs](/docs)
+* **Documentation:** [[location] /docs](/docs)
 
 ### Stopping commands
 
