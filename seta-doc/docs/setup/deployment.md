@@ -27,7 +27,7 @@ Use the git **clone** command to clone the project in the select directory, usin
 After clonning the project, move to the directory of the project:
 
 !!! warning
-    make sure that you are in the root directory of the project, use **pwd** or **cd** for windows
+    Make sure that you are in the root directory of the project, use **pwd** or **cd** for windows
 
 ```
     cd [project folder]
@@ -73,7 +73,7 @@ and copy into folder **./seta-data/models/**
 
 ### Build
 
-After this, if we have moved, we go back to folder **seta-compose** and from there we launch the build command: 
+If we have moved, we go back to folder **seta-compose** and from there we launch the build command: 
 
 ```
      docker-compose build
@@ -89,9 +89,12 @@ After finishing the build, launch the command to start and run the services:
     docker-compose up -d
 ```
 
-In this case is recommended to start in detach mode as this allows the docker container to run in the background of your terminal. Furthermore, using detached mode also allows you to close the opened terminal session without stopping the container.
+!!! info
+    Is recommended to start in *detach mode (-d)* as this allows the docker container to run in the background of your terminal. Furthermore, using detached mode also allows you to close the opened terminal session without stopping the container.
 
-???+ note "Notes:"
+
+
+!!! note "Notes:"
   
     This commands will setup all system and data.
 
@@ -100,13 +103,15 @@ In this case is recommended to start in detach mode as this allows the docker co
     At some point there will be a message *"SeTA-API is up and running."*
 
 
-After successfully start all the containers you are ready to open your browser and start typing:
+After successfully start all the containers you are ready to open your browser and go to one of the following links:
 
 * **User Web App:** [[location] /](/)
 
 * **API:** [[location] /seta-api/doc](/seta-api/doc)
 
 * **Documentation:** [[location] /docs](/docs)
+
+
 
 ### Stopping commands
 
@@ -121,131 +126,38 @@ After successfully start all the containers you are ready to open your browser a
     docker compose down
 ```
 
-## Development environment
-
-To deploy in the Development environment:
-
-Create an ***.env.dev*** file containing the variables as described in  file **.env.example** and then you can launch the build and up commands:
-
-```
-    docker compose -f docker-compose-dev.yml build
-    docker compose -f docker-compose-dev.yml up
-```
-
-
-## Test environment
-
-Create an ***.env.test*** file containing the variables as described in *.env.example* and then you can launch the build and up commands:
-
-```
-    docker compose -f docker-compose-test.yml build
-    docker compose -f docker-compose-test.yml up
-```
-
-
 ## Starting commands
 
 
-Here below more commands that will help you to build and start the services in the different environments.
+Here below more commands that will help you to build and start the services.
 
 
-#### To (re-)build all images (production, test and development environment)
-
-```
-    docker compose -f docker-compose.yml -f docker-compose-dev.yml -f docker-compose-test.yml --env-file .env.dev .env.test build
-```
-
-#### To (re-)build only seta-ui image (production, test and development environment)
+#### To (re-)build all images
 
 ```
-    docker compose -f docker-compose.yml -f docker-compose-dev.yml -f docker-compose-test.yml --env-file .env.dev .env.test seta-ui
+    docker compose -f docker-compose.yml --env-file build
+```
+
+#### To (re-)build only seta-ui image (Web App interface)
+
+```
+    docker compose -f docker-compose.yml --env-file  seta-ui
 ```
 
 #### Start all services for your environment locally
 
 ```
-    docker compose -f docker-compose.yml -f docker-compose-dev.yml -f docker-compose-test.yml --env-file .env.dev .env.test up
+    docker compose -f docker-compose.yml --env-file up
 ```
 
 #### Start all services for your environment locally in detached mode
 
 ```
-    docker compose -f docker-compose.yml -f docker-compose-dev.yml --f docker-compose-test.yml --env-file .env.dev .env.test up -d
+    docker compose -f docker-compose.yml --env-file up -d
 ```
 
 #### Rebuild and restart seta-ui services while other services are runing
 
 ```
-    docker compose -f docker-compose.yml -f docker-compose-dev.yml -f docker-compose-test.yml --env-file .env.dev .env.test up --force-recreate --build --no-deps seta-ui
+    docker compose -f docker-compose.yml --env-file up --force-recreate --build --no-deps seta-ui
 ```
-
-#### Shell scripts
-
-For the scripts with short commands: 
-```
-    docker compose -f docker-compose.yml -f docker-compose-dev.yml --env-file .env.dev
-```
-
- It can be used a *.bat* file where it can be set up all the neccesary functions, as well as the set up of the proxy.  
- 
- 
- Here below an example:
-
- **build.bat**
- 
- 
- ```
-    docker compose -f docker-compose.yml -f docker-compose-dev.yml --env-file .env.dev build %*
- ```
-
- **up.bat**
- ```
-
-    docker compose -f docker-compose.yml -f docker-compose-dev.yml --env-file .env.dev up %*
-
- ```
- 
- 
- Here below the example of how to execute this bat files in {++Windows++} and {++Linux++}.
-
-#### Windows
-
-Open a *cmd* window and from there go to the *seta-compose* folder, for example, if we want to run for *development* environment the build and up:
-
-```
-    dev-build.bat
-    dev-up.bat
-```
-
-From now, any argument for the docker compose *build* or *up* commands will be appended in the batch scripts.
-
-For example:
-
-```
-    dev-build.bath --no-cache
-```
-
-#### Linux
-
-For execute permissions run:
-
-```
-    chmod +x ./dev-build.sh
-    chmod +x ./dev-up.sh
-```
-
-Run for development build and up:
-
-```
-    ./dev-build.sh
-    ./dev-up.sh
-```
-
-Any arguments for the docker compose *build* or *up* commands will be appended in the shell scripts.
-
-For example:
-
-```
-    ./dev-build.sh --no-cache
-```
-
