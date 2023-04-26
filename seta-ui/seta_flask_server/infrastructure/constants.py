@@ -11,6 +11,8 @@ class UserRoleConstants:
     Admin = "Administrator"
     User = "User"
     
+    List = [Admin, User]
+    
 class ClaimTypeConstants:
     RoleClaimType = "roles"
 
