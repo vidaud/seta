@@ -6,72 +6,86 @@
 
 * Good Internet speed. You will need to download at least 5GB (> 20GB for all data)
 
-# Prerequisites 
 
-- You need to have a GitHub account [https://github.com/](https://github.com/) to download the project. 
+## Prerequisites 
 
-Use the git **clone** command to clone the project in the current directory, using an SSH link.
+- It is neccesary to have a GitHub account [https://github.com/](https://github.com/) to download the project. 
+
+Use the git **clone** command to clone the project in the select directory, using an SSH link.
     ```
         git clone https://github.com/vidaud/seta.git
     ```
 
 
-- Install Docker compose version 2.  *For reference to install in Linux, Maco or Windows:* [https://docs.docker.com/compose/install/](https://docs.docker.com/compose/install/)
+- Install **Docker compose V2**.  *For reference to install in Linux, Maco or Windows:* [https://docs.docker.com/compose/install/](https://docs.docker.com/compose/install/)
 
 
 
-# Installation of the project
+## Installation of the project
 
 After clonning the project, move to the directory of the project:
 
 *make sure that you are in the root directory of the project, use" pwd" or "cd" for windows*
 
 ```
-    cd [RepoName]
+    cd [project folder]
 ```
 
-to add more
-### Docker composer
+### Docker compose
 
-Move to folder **seta-compose** and follow these instructions:
+From the root folder move to folder **seta-compose**: 
 
 ```
     cd ./seta-compose
 ```    
 
-In the ***.env*** file change the necessary information, where is required for the variables described in the file  
+Follow these instructions:
+
+In the ***.env*** file change the necessary information, where is required, for the variables:  
 
 ```
-    # http and https proxies, --blank for none--
-    HTTP_PROXY="http://proxyusername:proxypwd@proxyaddress:proxyport"
-    HTTPS_PROXY="http://proxyusername:proxypwd@proxyaddress:proxyport"
+# http and https proxies, --blank for none--
+HTTP_PROXY="http://proxyusername:proxypwd@proxyaddress:proxyport"
+HTTPS_PROXY="http://proxyusername:proxypwd@proxyaddress:proxyport"
 
 
-    # set-up of no proxy control for docker containers 
-    NO_PROXY="seta-es,seta-data,seta-mongo,seta-api,seta-nginx,seta-ui,seta-ui-react,seta-auth"
+# set-up of no proxy control for docker containers 
+NO_PROXY="seta-es,seta-data,seta-mongo,seta-api,seta-nginx,seta-ui,seta-ui-react,seta-auth"
 
 
-    ##### Seta-UI variables  ####
-    # Set-up of the administrators emails, the system create local users, if no user found it is create it.
-    ROOT_USERS="vidas.daudaravicius@ec.europa.eu;lucia.noce@ext.ec.europa.eu;Andrei.Patrascu@ext.ec.europa.eu;adriana.lleshi@ext.ec.europa.eu"
+##### Seta-UI variables  ####
+# Set-up of the administrators emails, the system create local users, if no user found it is create it.
+ROOT_USERS="ROOT_USERS="email@emailDomain"
 ```
 
 ### Models
 
-*From repository XXXX download file json_suggestion.json and copy into folder ./seta-data/models*
+Before building, it is neccesary to setup the models file which keeps the related suggestions of the words in the text provided. 
 
 
-### Compose and Build
 
-The following commands will call by default the {++docker-compose.yml++} as the configuration file and *.env* as the environment file
+{++From repository XXXX download file json_suggestion.json and copy into folder ./seta-data/models/++}
+
+
+After this, if we have moved, we go back to folder **seta-compose** and from there we launch the build command: 
 
 ```
-    docker-compose build
-    docker-compose up
+     docker-compose build
+```    
+
+This command creates a docker image based on the Dockerfile called by default **docker-compose.yml** as the configuration file and *.env* as the environment file.
+
+After finishing the build, launch the command to start and run the services:
+
 ```
+    docker-compose up -d
+```
+
+In this case is recommended to start in detach mode as this allows the docker container to run in the background of your terminal. Furthermore, using detached mode also allows you to close the opened terminal session without stopping the container.
+
 ???+ note "Notes:"
   
-    It will setup all system and data.
+    This commands will setup all system and data.
 
     It will take a while depending on the Internet speed. Might take 30min to 2h.
 
@@ -80,63 +94,75 @@ The following commands will call by default the {++docker-compose.yml++} as the 
 
 After successfully start all the containers you are ready to open your browser and start typing:
 
-* **for UI:** [http://localhost/seta-ui](http://localhost/seta-ui)
+* **User Web App:** [/](/)
 
-* **for API:** [http://localhost/seta-api/doc](http://localhost/seta-api/doc)
+* **API:** [/seta-api/doc](/seta-api/doc)
 
-* **for DOCS:** [http://localhost/docs](http://localhost/docs)
+* **Documentation:** [/docs](/docs)
 
-#### To stop services
+#### To stop services 
 ```
     CTRL + C
 ```
 
-#### Start in detach mode
-
-```
-    docker-compose up -d
-```
-
-#### Stop services after detach mode
+#### Stop services started in detach mode
 
 ```
     docker compose down
 ```
 
-#### Development environment
+## Development environment
 
 To deploy in the Development environment:
 
-Create an ***.env.dev*** file containing the variables as described in  file **.env.example**
-
-#### To (re-)build all images
+Create an ***.env.dev*** file containing the variables as described in  file **.env.example** and then you can launh the build and up commands:
 
 ```
-    docker compose -f docker-compose.yml -f docker-compose-dev.yml --env-file .env.dev build
+    docker compose -f docker-compose-dev.yml build
+    docker compose -f docker-compose-dev.yml up
 ```
 
-#### To (re-)build only seta-ui image
+
+## Test environment
+
+Create an ***.env.test*** file containing the variables as described in *.env.example* and then you can launh the build and up commands:
 
 ```
-    docker compose -f docker-compose.yml -f docker-compose-dev.yml --env-file .env.dev build seta-ui
+    docker compose -f docker-compose-test.yml build
+    docker compose -f docker-compose-test.yml up
+```
+
+
+## Starting commands
+
+#### To (re-)build all images (production, test and development environment)
+
+```
+    docker compose -f docker-compose.yml -f docker-compose-dev.yml -f docker-compose-test.yml --env-file .env.dev .env.test build
+```
+
+#### To (re-)build only seta-ui image (production, test and development environment)
+
+```
+    docker compose -f docker-compose.yml -f docker-compose-dev.yml -f docker-compose-test.yml --env-file .env.dev .env.test seta-ui
 ```
 
 #### Start all services for your environment locally
 
 ```
-    docker compose -f docker-compose.yml -f docker-compose-dev.yml --env-file .env.dev up
+    docker compose -f docker-compose.yml -f docker-compose-dev.yml -f docker-compose-test.yml --env-file .env.dev .env.test up
 ```
 
 #### Start all services for your environment locally in detached mode
 
 ```
-    docker compose -f docker-compose.yml -f docker-compose-dev.yml --env-file .env.dev up -d
+    docker compose -f docker-compose.yml -f docker-compose-dev.yml --f docker-compose-test.yml --env-file .env.dev .env.test up -d
 ```
 
 #### Rebuild and restart seta-ui services while other services are runing
 
 ```
-    docker compose -f docker-compose.yml -f docker-compose-dev.yml --env-file .env.dev up --force-recreate --build --no-deps seta-ui
+    docker compose -f docker-compose.yml -f docker-compose-dev.yml -f docker-compose-test.yml --env-file .env.dev .env.test up --force-recreate --build --no-deps seta-ui
 ```
 
 #### Shell scripts
@@ -146,7 +172,22 @@ For the scripts with short commands:
     docker compose -f docker-compose.yml -f docker-compose-dev.yml --env-file .env.dev
 ```
 
- is used a .bat file where it can be set up all the neccesary functions, as well as the set up of the proxy.  Here below the execution of this bat files in {++Windows++} and {++Linux++}.
+ It can be used a .bat file where it can be set up all the neccesary functions, as well as the set up of the proxy.  Here below an example:
+
+ **build.bat**
+ ```
+    docker compose -f docker-compose.yml -f docker-compose-dev.yml --env-file .env.dev build %*
+ ```
+
+ **up.bat**
+ ```
+
+    docker compose -f docker-compose.yml -f docker-compose-dev.yml --env-file .env.dev up %*
+
+ ```
+ 
+ 
+ Here below the example of how to execute this bat files in {++Windows++} and {++Linux++}.
 
 #### Windows
 
@@ -189,11 +230,3 @@ For example:
     ./dev-build.sh --no-cache
 ```
 
-#### Test environment
-
-Create an ***.env.test*** file containing the variables as described in *.env.example*
-
-```
-    docker compose -f docker-compose-test.yml build
-    docker compose -f docker-compose-test.yml up
-```
