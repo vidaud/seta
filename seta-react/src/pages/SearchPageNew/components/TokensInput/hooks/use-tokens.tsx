@@ -1,66 +1,67 @@
 import type { RefObject } from 'react'
-import { useCallback, useState } from 'react'
+import { useCallback } from 'react'
 import { clsx } from '@mantine/core'
 
-type TokenMatch = {
-  token: string
-  index: number
-}
+import { useSearch } from '~/pages/SearchPageNew/components/SuggestionsPopup/contexts/search-context'
+
+// type TokenMatch = {
+//   token: string
+//   index: number
+// }
 
 const useTokens = (inputRef: RefObject<HTMLInputElement>) => {
-  const [currentToken, setCurrentToken] = useState<TokenMatch | null>(null)
+  // const [currentToken, setCurrentToken] = useState<TokenMatch | null>(null)
 
-  const updateCurrentToken = useCallback(
-    (forcedValue?: string) => {
-      if (!inputRef.current) {
-        return
+  const { currentToken, setCurrentToken } = useSearch()
+
+  const updateCurrentToken = useCallback(() => {
+    if (!inputRef.current) {
+      return
+    }
+
+    const value = inputRef.current.value
+
+    if (!value.trim().match(/\s/)) {
+      setCurrentToken(null)
+
+      return
+    }
+
+    const position = inputRef.current.selectionStart ?? 0
+
+    const regex = /("[^"]*")/g
+
+    let match: RegExpExecArray | null
+    let token: string | null = null
+    let index = 0
+
+    // First, try to match an expression in quotes relative to the cursor position
+    while ((match = regex.exec(value)) !== null) {
+      const start = match.index
+      const end = start + match[0].length
+
+      if (position >= start && position <= end) {
+        token = match[1]
+        index = start
+        break
       }
+    }
 
-      const value = forcedValue ?? inputRef.current.value
+    // If no match was found, we're dealing with a single word
+    if (!token) {
+      const leftText = value.slice(0, position)
+      const rightText = value.slice(position)
 
-      if (!value.trim().match(/\s/)) {
-        setCurrentToken(null)
+      const leftBoundary = leftText.lastIndexOf(' ') + 1
+      const rightBoundary =
+        (rightText.indexOf(' ') === -1 ? rightText.length : rightText.indexOf(' ')) + position
 
-        return
-      }
+      token = value.slice(leftBoundary, rightBoundary)
+      index = leftBoundary
+    }
 
-      const position = inputRef.current.selectionStart ?? 0
-
-      const regex = /("[^"]*")/g
-
-      let match: RegExpExecArray | null
-      let token: string | null = null
-      let index = 0
-
-      // First, try to match an expression in quotes relative to the cursor position
-      while ((match = regex.exec(value)) !== null) {
-        const start = match.index
-        const end = start + match[0].length
-
-        if (position >= start && position <= end) {
-          token = match[1]
-          index = start
-          break
-        }
-      }
-
-      // If no match was found, we're dealing with a single word
-      if (!token) {
-        const leftText = value.slice(0, position)
-        const rightText = value.slice(position)
-
-        const leftBoundary = leftText.lastIndexOf(' ') + 1
-        const rightBoundary =
-          (rightText.indexOf(' ') === -1 ? rightText.length : rightText.indexOf(' ')) + position
-
-        token = value.slice(leftBoundary, rightBoundary)
-        index = leftBoundary
-      }
-
-      setCurrentToken({ token, index })
-    },
-    [inputRef]
-  )
+    setCurrentToken({ token, index })
+  }, [inputRef, setCurrentToken])
 
   const renderTokens = useCallback(() => {
     if (!inputRef.current) {
@@ -112,7 +113,7 @@ const useTokens = (inputRef: RefObject<HTMLInputElement>) => {
     return highlightedTokens
   }, [inputRef, currentToken?.token, currentToken?.index])
 
-  return { updateCurrentToken, renderTokens }
+  return { updateCurrentToken, renderTokens, currentToken }
 }
 
 export default useTokens

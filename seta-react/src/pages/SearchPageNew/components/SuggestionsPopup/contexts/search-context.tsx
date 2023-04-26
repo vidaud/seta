@@ -1,18 +1,36 @@
-import { createContext, useContext } from 'react'
+import { createContext, useContext, useState } from 'react'
 
 import type { ChildrenProp } from '~/types/children-props'
 
-type SearchContextProps = {
+import type { TokenMatch } from '../types/token'
+
+type SearchProviderProps = {
   onSuggestionSelected?: (suggestion: string) => void
+  inputValue: string
+  setInputValue: (value: string) => void
 }
 
-type SearchProviderProps = ChildrenProp & SearchContextProps
+type SearchContextProps = SearchProviderProps & {
+  currentToken: TokenMatch | null
+  setCurrentToken: (token: TokenMatch | null) => void
+}
 
 const SearchContext = createContext<SearchContextProps | undefined>(undefined)
 
-export const SearchProvider = ({ children, onSuggestionSelected }: SearchProviderProps) => {
+export const SearchProvider = ({
+  children,
+  onSuggestionSelected,
+  inputValue,
+  setInputValue
+}: SearchProviderProps & ChildrenProp) => {
+  const [currentToken, setCurrentToken] = useState<TokenMatch | null>(null)
+
   const value: SearchContextProps = {
-    onSuggestionSelected
+    onSuggestionSelected,
+    currentToken,
+    setCurrentToken,
+    inputValue,
+    setInputValue
   }
 
   return <SearchContext.Provider value={value}>{children}</SearchContext.Provider>
