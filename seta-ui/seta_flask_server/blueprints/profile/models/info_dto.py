@@ -7,6 +7,7 @@ provider_model = Model("ExternalProvider",
                            "provider": fields.String(description="External provider", enum=ExternalProviderConstants.List),
                            "firstName": fields.String(description="User first name"),
                            "lastName": fields.String(description="User last name"),
+                           "is_current_auth": fields.Boolean(description="Authenticates current user")
                        })
 
 application_model = Model("Application",

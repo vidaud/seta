@@ -22,8 +22,8 @@ class UserInfo(Resource):
         
         super().__init__(api, *args, **kwargs)
      
-    @account_info_ns.doc(description='Retrieve community list for this user.',        
-        responses={int(HTTPStatus.OK): "'Retrieved community list.",
+    @account_info_ns.doc(description='Retrieve info for this user.',        
+        responses={int(HTTPStatus.OK): "'Retrieved info.",
                    int(HTTPStatus.NOT_FOUND): "User not found",},
         
         security='CSRF')
@@ -49,3 +49,52 @@ class UserInfo(Resource):
                 "email": user.email,
                 "role": user.role
                 }
+   
+@account_info_ns.route('/', endpoint="my_account", methods=['GET'])        
+class SetaAccount(Resource):
+    @inject
+    def __init__(self, usersBroker: IUsersBroker, api=None, *args, **kwargs):
+        self.usersBroker = usersBroker
+        
+        super().__init__(api, *args, **kwargs)
+       
+    @account_info_ns.doc(description='Retrieve account details.',        
+        responses={int(HTTPStatus.OK): "'Retrieved account.",
+                   int(HTTPStatus.NOT_FOUND): "User not found or disabled",},
+        
+        security='CSRF')
+    @account_info_ns.marshal_list_with(account_model, mask="*") 
+    @jwt_required()
+    def get(self):
+        """Retrive account details"""
+
+        identity = get_jwt_identity()        
+        
+        user = self.usersBroker.get_user_by_id_and_provider(user_id=identity["user_id"], 
+                    provider_uid=identity["provider_uid"], 
+                    provider=identity["provider"])
+        
+        if user is None:
+            app.logger.error(f"User {str(identity)} not found in the database!")
+            abort(HTTPStatus.NOT_FOUND, "User not found in the database!")
+            
+        account_info = {
+            "username": user.user_id,                  
+            "email": user.email,                    
+            "role": user.role,
+            "external_providers": [],
+            "applications": []
+        }
+        
+        for provider in user.external_providers:
+            ep = {
+                "provider_uid": provider.provider_uid,
+                "provider": provider.provider,
+                "firstName": provider.first_name,
+                "lastName": provider.last_name,
+                "is_current_auth": provider.provider == user.authenticated_provider.provider
+            }
+            
+            account_info["external_providers"].append(ep)
+        
+        return account_info

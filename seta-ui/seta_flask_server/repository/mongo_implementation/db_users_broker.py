@@ -42,31 +42,22 @@ class UsersBroker(implements(IUsersBroker)):
             
         return seta_user  
     
-    def get_user_by_id_and_provider(self, user_id: str, provider_uid: str, provider: str) -> SetaUser:        
-        filter = {"user_id": user_id}
+    def get_user_by_id_and_provider(self, user_id: str, provider_uid: str, provider: str, load_scopes: bool = False) -> SetaUser:       
+               
+        seta_user = self.get_user_by_id(user_id=user_id, load_scopes=load_scopes)
         
-        user = self.collection.find_one(filter)
-        
-        if user is None:
+        if seta_user is None:
             return None
         
-        provider = self._get_external_provider(user_id,provider_uid, provider)
+        seta_user.authenticated_provider = self._get_external_provider(user_id, provider_uid, provider)
                 
-        if provider is None:
+        if seta_user.authenticated_provider is None:
             return None
-        
-        if user["user_id"] != provider.user_id:
-            return None
-        
-        seta_user = SetaUser.from_db_json(user)
-        seta_user.authenticated_provider = provider
-        seta_user.claims = self._get_user_claims_from_db(user_id)
         
         return seta_user
-        
-    
-    def get_user_by_id(self, user_id: str) -> SetaUser:
-        filter = {"user_id": user_id}
+       
+    def get_user_by_id(self, user_id: str, load_scopes: bool = True) -> SetaUser:
+        filter = {"user_id": user_id, "email": {"$exists" : True}}
         
         user = self.collection.find_one(filter)
         
@@ -77,10 +68,25 @@ class UsersBroker(implements(IUsersBroker)):
         seta_user.external_providers = self._get_user_providers_from_db(seta_user.user_id)            
         seta_user.claims = self._get_user_claims_from_db(seta_user.user_id)
 
-        permissionsBroker = UserPermissionsBroker(config=self.config)
-        seta_user.community_scopes = permissionsBroker.get_all_user_community_scopes(seta_user.user_id)
-        seta_user.resource_scopes = permissionsBroker.get_all_user_resource_scopes(seta_user.user_id)
-        seta_user.system_scopes = permissionsBroker.get_all_user_system_scopes(seta_user.user_id)
+        if load_scopes:
+            permissionsBroker = UserPermissionsBroker(config=self.config)
+            seta_user.community_scopes = permissionsBroker.get_all_user_community_scopes(seta_user.user_id)
+            seta_user.resource_scopes = permissionsBroker.get_all_user_resource_scopes(seta_user.user_id)
+            seta_user.system_scopes = permissionsBroker.get_all_user_system_scopes(seta_user.user_id)
+            
+        return seta_user
+    
+    def get_user_by_email(self, email: str) -> SetaUser:
+        if not email:
+            return None
+        
+        user = self.collection.find_one({"email": email.lower()})
+        if user is None:
+            return None
+        
+        seta_user = SetaUser.from_db_json(user)
+        seta_user.external_providers = self._get_user_providers_from_db(seta_user.user_id)            
+        seta_user.claims = self._get_user_claims_from_db(seta_user.user_id)
             
         return seta_user
     
@@ -89,7 +95,10 @@ class UsersBroker(implements(IUsersBroker)):
                 
         return self.collection.count_documents(filter, limit = 1) > 0
   
-     #-------------Private methods ----------------------#        
+    
+    #-------------------------------------------------------#
+    
+    #-------------Private methods ----------------------#        
     
     
     def _create_new_user(self, user: SetaUser) -> SetaUser:        
@@ -120,8 +129,7 @@ class UsersBroker(implements(IUsersBroker)):
                 self.collection.insert_many(scopes, session=session)
 
         
-        return user     
-        
+        return user        
     
     def _create_external_provider(self, provider: ExternalProvider):         
         self.collection.insert_one(provider.to_json())    
@@ -134,32 +142,7 @@ class UsersBroker(implements(IUsersBroker)):
             return None
         
         return ExternalProvider.from_db_json(provider)
-    
-    def get_user_by_email(self, email: str) -> SetaUser:
-        if not email:
-            return None        
         
-        '''
-        filter = {"email": email}
-        #case insesitive search
-        collation={
-            'locale': 'en', 
-            'strength': 2
-        }
-
-        user = self.collection.find_one(filter=filter, collation=collation)
-        '''
-        
-        user = self.collection.find_one({"email": email.lower()})
-        if user is None:
-            return None
-        
-        seta_user = SetaUser.from_db_json(user)
-        seta_user.external_providers = self._get_user_providers_from_db(seta_user.user_id)            
-        seta_user.claims = self._get_user_claims_from_db(seta_user.user_id)
-            
-        return seta_user
-    
     def _get_user_providers_from_db(self, user_id: str) -> list[ExternalProvider]:
         user_providers = []
         
