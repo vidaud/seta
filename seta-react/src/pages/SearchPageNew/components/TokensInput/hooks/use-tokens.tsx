@@ -10,54 +10,57 @@ type TokenMatch = {
 const useTokens = (inputRef: RefObject<HTMLInputElement>) => {
   const [currentToken, setCurrentToken] = useState<TokenMatch | null>(null)
 
-  const updateCurrentToken = () => {
-    if (!inputRef.current) {
-      return
-    }
-
-    const value = inputRef.current.value
-
-    if (!value.trim().match(/\s/)) {
-      setCurrentToken(null)
-
-      return
-    }
-
-    const position = inputRef.current.selectionStart ?? 0
-
-    const regex = /("[^"]*")/g
-
-    let match: RegExpExecArray | null
-    let token: string | null = null
-    let index = 0
-
-    // First, try to match an expression in quotes relative to the cursor position
-    while ((match = regex.exec(value)) !== null) {
-      const start = match.index
-      const end = start + match[0].length
-
-      if (position >= start && position <= end) {
-        token = match[1]
-        index = start
-        break
+  const updateCurrentToken = useCallback(
+    (forcedValue?: string) => {
+      if (!inputRef.current) {
+        return
       }
-    }
 
-    // If no match was found, we're dealing with a single word
-    if (!token) {
-      const leftText = value.slice(0, position)
-      const rightText = value.slice(position)
+      const value = forcedValue ?? inputRef.current.value
 
-      const leftBoundary = leftText.lastIndexOf(' ') + 1
-      const rightBoundary =
-        (rightText.indexOf(' ') === -1 ? rightText.length : rightText.indexOf(' ')) + position
+      if (!value.trim().match(/\s/)) {
+        setCurrentToken(null)
 
-      token = value.slice(leftBoundary, rightBoundary)
-      index = leftBoundary
-    }
+        return
+      }
 
-    setCurrentToken({ token, index })
-  }
+      const position = inputRef.current.selectionStart ?? 0
+
+      const regex = /("[^"]*")/g
+
+      let match: RegExpExecArray | null
+      let token: string | null = null
+      let index = 0
+
+      // First, try to match an expression in quotes relative to the cursor position
+      while ((match = regex.exec(value)) !== null) {
+        const start = match.index
+        const end = start + match[0].length
+
+        if (position >= start && position <= end) {
+          token = match[1]
+          index = start
+          break
+        }
+      }
+
+      // If no match was found, we're dealing with a single word
+      if (!token) {
+        const leftText = value.slice(0, position)
+        const rightText = value.slice(position)
+
+        const leftBoundary = leftText.lastIndexOf(' ') + 1
+        const rightBoundary =
+          (rightText.indexOf(' ') === -1 ? rightText.length : rightText.indexOf(' ')) + position
+
+        token = value.slice(leftBoundary, rightBoundary)
+        index = leftBoundary
+      }
+
+      setCurrentToken({ token, index })
+    },
+    [inputRef]
+  )
 
   const renderTokens = useCallback(() => {
     if (!inputRef.current) {
