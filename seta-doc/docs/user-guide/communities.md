@@ -9,12 +9,14 @@ In the SeTA Web App we have two types of communities: public communities and pri
 
 ### Create a community
                         
-1. From the ^^Header^^ menu click ^^Communities^^.  
-2. Click ^^Create new community^^.  
-3. Enter your community name.  
-4. Select the privacy option. If you selected private select whether to make your community visible or hidden.  
-5. Add people to your community.  
-6. Click Create. Once you create your community by adding a description. You can update the community by changing the community description and making an announcement.
+1. From the side menu click on ^^Manage^^ -> ^^My communities^^.  
+2. Click on the top right botton ^^New community^^.  
+3. Enter the community id, name and description.  
+4. Select the membership option: *Private, Public*.  
+5. Select the *Data Type*: *Evidence, Representative*.  
+6. Click Save. Once you create your community you will be sent back to your communites list. 
+7. From your community list you can invite new members.
+8. You can update the community by changing the community description and making an announcement.
 
 
 
@@ -83,11 +85,11 @@ In public communities you can interact with a community as a member or as a visi
 
 ## Manage a community 
 
-In public communities people can become members without admin approval and visitors (people who arent members)can post and comment. You can choose to approve members and visitors as participants before they publish a post or comment for the first time. Once someone is approved as a participant you can still require admin approval of their future posts. If youre an admin of a private community you can choose to turn on membership approval for your community. This means admins or moderators will have to approve membership requests before someone can join the community.
+In public communities people can become members without admin approval and visitors (people who aren't members)can post and comment. You can choose to approve members and visitors as participants before they publish a post or comment for the first time. Once someone is approved as a participant you can still require admin approval of their future posts. If youre an admin of a private community you can choose to turn on membership approval for your community. This means admins or moderators will have to approve membership requests before someone can join the community.
 
 ### Manage the post for a community
                
-In public communities visitors (people who arent members) can post and comment if admins allow and people can become members without admin approval. You can still review and approve people before they can post or comment.
+In public communities visitors (people who aren't members) can post and comment if admins allow and people can become members without admin approval. You can still review and approve people before they can post or comment.
 
 
 ### Remove posts in a community
@@ -207,7 +209,7 @@ If youre a community admin you can delete your community by removing all members
 4. Click Confirm. 
 
 !!! info
-    Once you've removed the other members click next to your name and select Leave Community. Click Leave Community again to confirm. Community members arent notified when you delete a community.
+    Once you've removed the other members click next to your name and select Leave Community. Click Leave Community again to confirm. Community members aren't notified when you delete a community.
 
 
 ## Join a Community 

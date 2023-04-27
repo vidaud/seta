@@ -12,7 +12,7 @@ The main categories are:
  
 ## seta-api-suggestions
 
-The suggestions is the related terms list that is generated after setting a term. ***In the preparation of the ***
+The suggestions is the related terms list that is generated after setting a term. **In the preparation of the**
 
 ### GET /suggestions
 
@@ -66,7 +66,7 @@ Given a term, return the 20 most similar terms (semantic similarity). For each t
 
 ### GET /ontology
 
-Return a graph that describes the ontology of the specified term. A set of nodes and relative links are provided.For each node depth, id, size and graph size are returned, depth indicates the depth of the node in the graph, id is the identifier of the term for the node, size indicates the number of occurrences of the term in the document corpus and graph size is useful to visualize the graph.For each link source, target and value are returned, source indicates the node (its id) from which the link starts, target is the node (its id) linked to source and value is used to visualize the graph.
+Return a graph that describes the ontology of the specified term. A set of nodes and relative links are provided.  For each node depth, id, size and graph size are returned, depth indicates the depth of the node in the graph, id is the identifier of the term for the node, size indicates the number of occurrences of the term in the document corpus and graph size is useful to visualize the graph.  For each link source, target and value are returned, source indicates the node (its id) from which the link starts, target is the node (its id) linked to source and value is used to visualize the graph.
 
 ![Screenshot](../img/get-ontology.png)
 ![Screenshot](../img/get-ontology-results.png)

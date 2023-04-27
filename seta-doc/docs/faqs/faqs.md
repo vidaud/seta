@@ -3,7 +3,7 @@
 ??? abstract "How can I refine the results of my search?" 
         
     1. From the ^^Search^^ page.  
-    2. Launch a search a new section with the results will appear below the search box.  
+    2. Launch a search, a new section with the results will appear below the search box.  
     3. In the left side of the new section there is a side bar with two tabs: ^^Refine Search^^ and ^^Post Search^^. 
 
     In tab ^^Refine Search^^ you can see the list of filters available to apply to the search query: 
@@ -18,7 +18,7 @@
 ??? abstract "How can I use Post Search?" 
         
     1. From the ^^Search^^ page.  
-    2. Launch a search a new section with the results will appear below the search box.  
+    2. Launch a search, a new section with the results will appear below the search box.  
     3. In the left side of the new section there is a side bar with two tabs: ^^Refine Search^^ and ^^Post Search^^.  
     4. Click on tab Post Search and the table of filters will be replaced by the histogram which can be used to apply filters.  
     5. Click on a specific part of the histogram and the list of documents will be updated and you will see only the related documents to the specific part of the histogram clicked.
@@ -27,19 +27,21 @@
 ??? abstract "How can I see the metadata information of the results file from the result list?" 
                         
     1. From the ^^Search^^ page.  
-    2. Launch a search a new section with the results will appear below the search box.  
+    2. Launch a search, a new section with the results will appear below the search box.  
     3. Each item of the result list has an expand icon on the left corner. Click on it and the item will be expanded.  
-    4. After the click it will be possible to see the ^^Metadata of the selected document Context and Diagram of Concepts^^.  
+    4. After the click it will be possible to see the ^^Metadata of the selected document^^ and the  ^^Context and Diagram of Concepts^^.  
     5. Under the ^^Context section^^ you can also expand the full text by  just clicking in the ^^plus^^ icon.
 
 
 ??? abstract "How can I use the Diagram of Concepts?" 
       
     1. From the ^^Search^^ page.  
-    2. Launch a search a new section with the results will appear below the search box.  
+    2. Launch a search, a new section with the results will appear below the search box.  
     3. Each item of the result list has an expand icon on the left corner. Click on it and the item will be expanded. 
 
-    After the click it will be possible to see the ^^Diagram of Concepts^^ of the expanded item. The ^^Diagram of Concept^^ list can be drag and dropped on the search bar and set this way the search query.
+    After the click it will be possible to see the ^^Diagram of Concepts^^ of the expanded item.   
+    
+    The ^^Diagram of Concept^^ list can be drag and dropped on the search bar and set this way the search query.
 
 ## Communities 
 
@@ -73,7 +75,7 @@
     **To claim the admin role:**  
 
     1. From the ^^Header^^ menu click ^^Communities^^.  
-    2. Click More below your communitys cover photo then click ^^Members^^.  
+    2. Click ^^More^^ below your communitys cover photo then click ^^Members^^.  
     3. Click ^^Become Admin^^ below ^^Admins & Moderators^^.  
     4. Click Confirm. 
 
@@ -88,7 +90,7 @@
         - No admin approval required. 
         - Can post and comment. 
         
-    - **Visitor**: someone who isnt a member of the community. 
+    - **Visitor**: someone who isn't a member of the community. 
         - No admin approval required. 
         - Can post and comment. 
         
@@ -117,16 +119,16 @@
 
 ??? abstract "How do I invite new members to the community?" 
                      
-    In SeTA web app there are two options:   
+ {--    In SeTA web app there are two options:   --}
 
-    **Invite with email:**  
+ {--    **Invite with email:**  
         Admins can invite new members to a community by email.  The email will include a link to the community where the person can confirm that they want to join. In open communities they'll be automatically approved. In private communities they'll have to be approved by a community admin. Only the person who received the email can join the community with that link.  
         
     1. From the ^^Header^^ menu click ^^Communities^^.  
     2. Click + Invite below the cover photo.  
     3. Select Invite with email.  
     4. Add email addresses. 
-    5. Click Send invite.   
+    5. Click Send invite.   --}
 
     **Invite with link:**  
         Admins and members can use a link to invite others to a community. Once someone receives the invite to join the community they'll then have to request to join and be approved by a community admin. The link will expire after either 48 hours or 20 people click on it whichever comes first. After the link expires you can create a new link. Keep in mind that people who receive the link from you might understand youre a member of this community.   
@@ -136,7 +138,7 @@
     3. Select Invite with link.  
     4. Click the link to copy it then share it. 
 
-    Once someone is invited to join a community they'll be able to preview the community before deciding if theyd like to join the community unless they were invited to the community by email. If someone is previewing the community they wont be included in the total member count. If you invite people to a community an admin may need to approve the request before they can join. Admins and members can only invite a limited number of people to join each day.
+    Once someone is invited to join a community they'll be able to preview the community before deciding if theyd like to join the community unless they were invited to the community by email. If someone is previewing the community they won't be included in the total member count. If you invite people to a community an admin may need to approve the request before they can join. Admins and members can only invite a limited number of people to join each day.
 
 
 ??? abstract " How do I remove or ban someone from a community?" 
@@ -150,14 +152,14 @@
     5. If youre removing the member and youd also like to ban them click ^^Ban^^ [name].  
     6. Click ^^Confirm^^.   
 
-    **To remove a ban youve put on someone:**   
+    **To remove a ban you've put on someone:**   
 
     1. From the ^^Header^^ menu click ^^Communities^^.  
     2. Click ^^Members^^ below the cover photo.  
     3. Click ^^Unban^^ next to the name of the person youd like to unban.  
     4. Click ^^Unban^^ to confirm. 
 
-    Removed members will have to request to join the community again if they wish to rejoin. Banned members wont be able to find the community in search or see any of its content and they can't be invitedto the community again by members.
+    Removed members will have to request to join the community again if they wish to rejoin. Banned members won't be able to find the community in search or see any of its content and they can't be invited to the community again by members.
 
 ## Join a Community 
 
@@ -181,7 +183,7 @@
 
 ??? abstract "How can I see the members of a community?" 
                         
-    Anyone can see whos a member of an open community. In a private community you have to be a member to see who the other members are. 
+    Anyone can see who is a member of an open community. In a private community you have to be a member to see who the other members are. 
 
     **See the members of a community:**  
     1. From the ^^Header^^ menu click ^^Communities^^.   
@@ -201,14 +203,14 @@
 
     **When you leave a community:** 
 
-    - Members wont be notified if you leave. 
+    - Members won't be notified if you leave. 
     - Youre removed from the member list and the community will be removed from your list of communities.
 
 
 ??? abstract " How do I see a list of my communities?" 
                      
     1. From the ^^Header^^ menu click ^^Communities^^.  
-    2. In the left menu is ^^Communities You Manage^^ and ^^Communities Youve Joined.^^
+    2. In the left menu is ^^Communities You Manage^^ and ^^Communities you've Joined.^^
 
 ??? abstract " How do I report something I see in a community?" 
                        
