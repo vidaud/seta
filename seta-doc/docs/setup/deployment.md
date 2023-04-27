@@ -9,9 +9,9 @@
 
 ## Prerequisites 
 
-- It is neccesary to have a GitHub account [https://github.com/](https://github.com/) to download the project. 
+- It is neccesary to install [Git](https://git-scm.com/downloads). 
 
-- Install **Docker compose V2**.  *For reference to install in Linux, Maco or Windows:* [https://docs.docker.com/compose/install/](https://docs.docker.com/compose/install/)
+- Install [Docker compose V2](https://docs.docker.com/compose/install/).*For reference to install in Linux, Maco or Windows*
 
 
 
@@ -43,7 +43,32 @@ From the root folder move to folder **seta-compose**:
 
 Follow these instructions:
 
-In the ***.env*** file change the necessary information, where is required, for the variables:  
+In the **common.yml** file make sure in service **es** the memory limit in var mem_limit is 4g
+
+```
+    es:
+        restart: always
+        build:
+        context: ../seta-es
+        args:
+            - HTTP_PROXY=${HTTP_PROXY}
+            - HTTPS_PROXY=${HTTPS_PROXY}
+        expose:
+        - "9200"
+        - "9300"
+        mem_limit: "4g"
+        environment:
+        - NO_PROXY=${NO_PROXY}
+        - no_proxy=${NO_PROXY}
+        - xpack.security.enabled=false
+        - discovery.type=single-node
+        - xpack.security.http.ssl.enabled=false
+        - xpack.security.transport.ssl.enabled=false
+        - ingest.geoip.downloader.enabled=false
+```
+
+In the ***.env*** file change the necessary information, where is required, for the variables:
+
 
 ```
     # http and https proxies, --blank for none--
@@ -56,9 +81,10 @@ In the ***.env*** file change the necessary information, where is required, for 
 
 
     ##### Seta-UI variables  ####
-    # Set-up of the administrators emails, the system create local users, if no user found it is create it.
-    ROOT_USERS="ROOT_USERS="email@emailDomain"
+    # Set-up of the administrators emails, the system create local users. There should be always at least one admin user defined always. It cannot be empty.    ROOT_USERS="ROOT_USERS="email@emailDomain"
 ```
+
+
 
 ### Models
 
@@ -86,7 +112,8 @@ This command creates a docker image based on the Dockerfile called by default **
 After finishing the build, launch the command to start and run the services:
 
 ```
-    docker-compose up -d
+    docker-compose seta-data up
+    docker-compose seta-ui seta-nginx up
 ```
 
 !!! info
