@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useState } from 'react'
 import type { ActionIconProps, ChipProps, SelectItem } from '@mantine/core'
 import { Text, Select, Chip, ActionIcon, Flex, Tooltip } from '@mantine/core'
 import { IconWand } from '@tabler/icons-react'
@@ -12,20 +12,16 @@ const viewOptions: SelectItem[] = [
   { label: 'Related Terms', value: 'terms' }
 ]
 
-const OntologyHeader = () => {
+type Props = {
+  className?: string
+}
+
+const OntologyHeader = ({ className }: Props) => {
   const { currentToken } = useSearch()
 
   const [termSelected, setTermSelected] = useState(false)
   const [enriched, setEnriched] = useState(false)
   const [currentView, setCurrentView] = useState(viewOptions[0].value)
-
-  // Save the previous token to display it while the popup is closing
-  // (the current token becomes null)
-  const prevTokenRef = useRef<string | null>(null)
-
-  if (currentToken?.token) {
-    prevTokenRef.current = currentToken.token
-  }
 
   const termTooltip = termSelected ? 'Unselect all related terms' : 'Select all related terms'
   const termVariant: ChipProps['variant'] = termSelected ? 'filled' : 'outline'
@@ -48,7 +44,7 @@ const OntologyHeader = () => {
     setEnriched(current => !current)
   }
 
-  const hasToken = !!currentToken?.token || !!prevTokenRef.current
+  const hasToken = !!currentToken?.token
 
   const token = hasToken ? (
     <Tooltip label={termTooltip}>
@@ -61,13 +57,13 @@ const OntologyHeader = () => {
           checked={termSelected}
           onChange={value => setTermSelected(value)}
         >
-          {currentToken?.token ?? prevTokenRef.current}
+          {currentToken.token}
         </Chip>
       </div>
     </Tooltip>
   ) : (
     <Text size="sm" color="gray">
-      Select a term to see related suggestions
+      Type or select a term to see related suggestions
     </Text>
   )
 
@@ -80,10 +76,9 @@ const OntologyHeader = () => {
   )
 
   return (
-    <Flex align="center" justify="space-between" css={S.root}>
+    <Flex css={S.root} className={className} align="center" justify="space-between">
       <Flex align="center" gap="sm">
         {token}
-
         {enrichButton}
       </Flex>
 

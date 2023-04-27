@@ -14,10 +14,11 @@ type LabelValue = {
 type Props = {
   className?: string
   items: string[] | LabelValue[]
+  currentWord?: string
   onSelect?: (value: string) => void
 }
 
-const ListMenu = ({ className, items, onSelect }: Props) => {
+const ListMenu = ({ className, items, currentWord, onSelect }: Props) => {
   const viewport = useRef<HTMLDivElement>(null)
 
   const formattedItems: LabelValue[] = useMemo(
@@ -104,6 +105,7 @@ const ListMenu = ({ className, items, onSelect }: Props) => {
             key={item.value}
             {...item}
             selected={item.value === selectedValue}
+            highlightText={currentWord}
             onClick={() => handleItemClick(item.value)}
             onMouseEnter={() => handleItemMouseEnter(item.value)}
           />

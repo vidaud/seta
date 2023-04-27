@@ -20,3 +20,8 @@ export const root: ThemedCSS = theme => css`
     background-color: ${theme.colors.gray[1]};
   }
 `
+
+export const highlight = css`
+  font-weight: 700;
+  color: black;
+`

@@ -8,6 +8,7 @@ type ListMenuItemProps = {
   label: string
   value: string
   selected?: boolean
+  highlightText?: string
   onClick?: () => void
   onMouseEnter?: () => void
 }
@@ -17,6 +18,7 @@ const ListMenuItem = ({
   label,
   value,
   selected,
+  highlightText,
   onClick,
   onMouseEnter
 }: ListMenuItemProps) => {
@@ -27,6 +29,26 @@ const ListMenuItem = ({
     ref.current?.blur()
     onClick?.()
   }
+
+  const indexMatch = highlightText ? label.toLowerCase().indexOf(highlightText.toLowerCase()) : -1
+
+  const highlightIndex = indexMatch >= 0 ? indexMatch : label.length
+  const hasMatch = !!highlightText && indexMatch >= 0
+
+  const startLabel = label.substring(0, highlightIndex)
+  const endLabel = hasMatch ? label.substring(highlightIndex + highlightText.length) : null
+
+  const highlightLabel = hasMatch
+    ? label.substring(highlightIndex, highlightIndex + highlightText.length)
+    : null
+
+  const labelRender = (
+    <Text fz="sm">
+      {startLabel}
+      {highlightLabel && <span css={S.highlight}>{highlightLabel}</span>}
+      {endLabel}
+    </Text>
+  )
 
   return (
     <Box
@@ -40,7 +62,7 @@ const ListMenuItem = ({
       onClick={handleClick}
       onMouseEnter={onMouseEnter}
     >
-      <Text fz="md">{label}</Text>
+      {labelRender}
     </Box>
   )
 }

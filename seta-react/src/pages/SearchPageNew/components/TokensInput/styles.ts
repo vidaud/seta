@@ -8,13 +8,13 @@ export const input = css`
   width: 100%;
 
   .seta-TextInput-input {
-    color: transparent;
-    caret-color: black;
+    background: none;
   }
 `
 
 export const renderer: ThemedCSS = theme => css`
   position: absolute;
+  z-index: -1;
   top: 1px;
   bottom: 1px;
   left: 1px;
@@ -24,6 +24,7 @@ export const renderer: ThemedCSS = theme => css`
   pointer-events: none;
   white-space: pre;
   overflow: hidden;
+  color: transparent;
 
   span > span {
     display: inline-block;

@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from 'react'
+import { createContext, useContext, useRef } from 'react'
 
 import type { ChildrenProp } from '~/types/children-props'
 
@@ -8,11 +8,14 @@ type SearchProviderProps = {
   onSuggestionSelected?: (suggestion: string) => void
   inputValue: string
   setInputValue: (value: string) => void
+  currentToken: TokenMatch | null
+  setCurrentToken: (token: TokenMatch | null) => void
 }
 
 type SearchContextProps = SearchProviderProps & {
-  currentToken: TokenMatch | null
-  setCurrentToken: (token: TokenMatch | null) => void
+  input: HTMLInputElement | null
+  setInputRef: (ref: HTMLInputElement) => void
+  setPosition: (position: number) => void
 }
 
 const SearchContext = createContext<SearchContextProps | undefined>(undefined)
@@ -21,16 +24,31 @@ export const SearchProvider = ({
   children,
   onSuggestionSelected,
   inputValue,
-  setInputValue
+  setInputValue,
+  currentToken,
+  setCurrentToken
 }: SearchProviderProps & ChildrenProp) => {
-  const [currentToken, setCurrentToken] = useState<TokenMatch | null>(null)
+  const inputRef = useRef<HTMLInputElement | null>(null)
+
+  const setInputRef = (ref: HTMLInputElement) => {
+    inputRef.current = ref
+  }
+
+  const setPosition = (position: number) => {
+    if (inputRef.current) {
+      inputRef.current.setSelectionRange(position, position)
+    }
+  }
 
   const value: SearchContextProps = {
     onSuggestionSelected,
     currentToken,
     setCurrentToken,
     inputValue,
-    setInputValue
+    setInputValue,
+    input: inputRef.current,
+    setInputRef,
+    setPosition
   }
 
   return <SearchContext.Provider value={value}>{children}</SearchContext.Provider>

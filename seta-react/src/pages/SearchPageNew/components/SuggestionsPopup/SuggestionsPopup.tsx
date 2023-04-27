@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import type { PopoverProps } from '@mantine/core'
 import { Divider, ActionIcon, Popover } from '@mantine/core'
 import { IconX } from '@tabler/icons-react'
@@ -16,23 +16,37 @@ type Props = {
   onOpenChange?: PopoverProps['onChange']
 }
 
+const TOKEN_RESET_DELAY = 100
+
 const SuggestionsPopup = ({ opened, onOpenChange }: Props) => {
   const { inputValue, setInputValue, setCurrentToken } = useSearch()
 
   const [popupOpen, setPopupOpen] = useState(opened ?? false)
 
+  const closingTimeoutRef = useRef<number | null>(null)
+
+  // Delay the token reset to avoid it disappearing before the animation ends when the popup is closing
+  useEffect(() => {
+    if (!popupOpen) {
+      closingTimeoutRef.current = setTimeout(() => {
+        setCurrentToken(null)
+      }, TOKEN_RESET_DELAY)
+    }
+
+    return () => {
+      if (closingTimeoutRef.current) {
+        clearTimeout(closingTimeoutRef.current)
+      }
+    }
+  }, [popupOpen, setCurrentToken])
+
   const handlePopupChange = (value: boolean) => {
     setPopupOpen(value)
     onOpenChange?.(value)
-
-    if (!value) {
-      setCurrentToken(null)
-    }
   }
 
   const handleInputChange = (value: string) => {
     setInputValue(value)
-
     handlePopupChange(true)
   }
 
@@ -48,6 +62,7 @@ const SuggestionsPopup = ({ opened, onOpenChange }: Props) => {
       arrowSize={12}
       shadow="sm"
       offset={-2}
+      withinPortal
     >
       <Popover.Target>
         <SearchInput

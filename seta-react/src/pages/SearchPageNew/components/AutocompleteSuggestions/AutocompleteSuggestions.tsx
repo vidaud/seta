@@ -32,11 +32,27 @@ type Props = {
 }
 
 const AutocompleteSuggestions = ({ className }: Props) => {
-  const { onSuggestionSelected } = useSearch()
+  const { onSuggestionSelected, currentToken, setPosition } = useSearch()
+
+  const handleSuggestionSelected = (suggestion: string) => {
+    onSuggestionSelected?.(suggestion)
+
+    if (!currentToken) {
+      return
+    }
+
+    // setTimeout(() => {
+    // setPosition(currentToken.index + suggestion.length + (suggestion.match(/\s/g) ? 2 : 0))
+    // }, 0)
+  }
 
   return (
     <Box className={className} css={S.root}>
-      <ListMenu items={terms} onSelect={onSuggestionSelected} />
+      <ListMenu
+        items={terms}
+        currentWord={currentToken?.word}
+        onSelect={handleSuggestionSelected}
+      />
     </Box>
   )
 }

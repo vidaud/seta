@@ -8,7 +8,10 @@ import type {
 } from 'react'
 import { useEffect, useImperativeHandle, forwardRef, useRef, useState } from 'react'
 import type { TextInputProps } from '@mantine/core'
-import { Box, TextInput, Text, clsx } from '@mantine/core'
+import { ActionIcon, Box, TextInput, Text, clsx } from '@mantine/core'
+import { IconX } from '@tabler/icons-react'
+
+import { useSearch } from '~/pages/SearchPageNew/components/SuggestionsPopup/contexts/search-context'
 
 import useTokens from './hooks/use-tokens'
 import * as S from './styles'
@@ -46,9 +49,11 @@ const TokensInput = forwardRef<HTMLInputElement, Props>(
     useImperativeHandle(ref, () => inputRef.current as HTMLInputElement)
 
     const { updateCurrentToken, renderTokens } = useTokens(inputRef)
+    const { setInputRef } = useSearch()
 
     const mustSetPosition = nextPositionRef.current !== null
 
+    // Set the cursor position after the input value has been updated
     useEffect(() => {
       if (mustSetPosition && inputRef.current) {
         inputRef.current.setSelectionRange(nextPositionRef.current, nextPositionRef.current)
@@ -63,13 +68,12 @@ const TokensInput = forwardRef<HTMLInputElement, Props>(
       if (inputRef.current) {
         inputRef.current.value = String(value) ?? ''
         updateCurrentToken()
-
-        // const scroll = inputRef.current.scrollWidth
-
-        // inputRef.current.scrollLeft = scroll
-        // syncScroll(scroll)
       }
     }, [value, updateCurrentToken])
+
+    if (inputRef.current) {
+      setInputRef(inputRef.current)
+    }
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
       const position = e.target.selectionStart ?? 0
@@ -102,11 +106,11 @@ const TokensInput = forwardRef<HTMLInputElement, Props>(
     }
 
     const handleKeyUp: KeyboardEventHandler<HTMLInputElement> = e => {
-      const keys = ['ArrowLeft', 'ArrowRight', 'Meta']
+      // const keys = ['ArrowLeft', 'ArrowRight', 'Meta']
 
-      if (keys.includes(e.key)) {
-        updateCurrentToken()
-      }
+      // if (keys.includes(e.key)) {
+      //   updateCurrentToken()
+      // }
 
       onKeyUp?.(e)
     }
@@ -126,11 +130,6 @@ const TokensInput = forwardRef<HTMLInputElement, Props>(
       onBlur?.(e)
     }
 
-    const handleScroll = (e: UIEvent<HTMLInputElement>) => {
-      syncScroll(e.currentTarget.scrollLeft)
-      onScroll?.(e)
-    }
-
     const syncScroll = (scroll: number) => {
       if (!rendererRef.current) {
         return
@@ -139,12 +138,35 @@ const TokensInput = forwardRef<HTMLInputElement, Props>(
       rendererRef.current.scrollLeft = scroll
     }
 
+    const handleScroll = (e: UIEvent<HTMLInputElement>) => {
+      syncScroll(e.currentTarget.scrollLeft)
+      onScroll?.(e)
+    }
+
+    const handleSelect = () => {
+      updateCurrentToken()
+    }
+
+    const handleClear = () => {
+      setInnerValue('')
+      onChange?.('')
+
+      inputRef.current?.focus()
+    }
+
+    const clearButton = !!innerValue && (
+      <ActionIcon size="sm" onClick={handleClear}>
+        <IconX />
+      </ActionIcon>
+    )
+
     return (
       <Box className={className} css={S.container}>
         <TextInput
           ref={inputRef}
           css={S.input}
           size="md"
+          rightSection={clearButton}
           value={innerValue}
           onChange={handleChange}
           onInput={handleInput}
@@ -154,6 +176,7 @@ const TokensInput = forwardRef<HTMLInputElement, Props>(
           onFocus={handleFocus}
           onBlur={handleBlur}
           onScroll={handleScroll}
+          onSelect={handleSelect}
           {...props}
         />
         <Text ref={rendererRef} css={S.renderer} className={clsx('renderer', { focused })}>
