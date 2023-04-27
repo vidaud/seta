@@ -140,50 +140,60 @@ Creators and managers can remove documents from their community {== and give fee
 3. Click on the *delete* icon.  
 4. Click Confirm. 
 
-## Join a Community 
-
-
 ### To join a community
                         
-1. From the side menu click on ^^Manage^^ -> ^^My Resources^^.  
+1. From the side menu click on ^^Discover^^ -> ^^Communities^^.  
 2. In the search bar enter the name of the community you are looking for.   
-3. Select the community then click + ^^Join Community^^.  
-4. Click ^^Join Community.^^
-
-Once you join a community, you will be able to: 
-
-- Discuss topics of the community interest. 
-- Learn together. 
-- Collaborate on personal projects or course goals. 
-- Share advice and related news. 
-- Face-to-face meetings. 
-- Social media groups. 
-- Discussions. 
-- Webinars. 
-- Group activities.
-
-### Find new communities 
-                        
-1. From the side menu click on ^^Manage^^ -> ^^My Resources^^.   
-2. From your Feed click ^^Communities^^ in the left menu.  
-3. Click ^^Discover^^ to see ^^Suggested for You^^ ^^Categories^^ or ^^More Suggestions.^^
-4. How can I see the members of a community? 
-
+3. Select the community then click + ^^Join^^.  
+4. On the pop up window write a message and click ^^Join^^
 
 ### See the members of a community
 Anyone can see who is a member of an public community. In a private community you have to be a member to see who the other members are. 
 
-1. From the side menu click on ^^Manage^^ -> ^^My Resources^^.    
-2. Click ^^Members^^ (for private communities) or ^^People^^ (for public communities) at the top of the community. 
+1. From the side menu click on ^^Manage^^ -> ^^My Communities^^.    
+2. Click ^^Members^^ in section ^^Stats^^. 
 
-The member list will update automatically as people join and leave the community.
+### Create a Resource in a community
 
-### Upload document to a community
+You can create a Resource inside a Community or from the menu My Resources
+
+
+**Create a Resource in a Community**   
+1. From the side menu click on ^^Manage^^ -> ^^My Communities^^.  
+2. You can either enter in the search bar the name of the community you are looking for or select from the community list.   
+3. Click in the community you want to add the resource.  
+4. Click in button ^^New Resource^^  
+5. Setup the *Title, Abstract, Membership, To be Approved* and click *Save*
+
+
+**Create a Resource from My Resources**   
+1. From the side menu click on ^^Manage^^ -> ^^My Resources^^.  
+2. Click in button ^^Add Resource^^  
+3. Setup the *Title, Abstract, Membership, To be Approved* and click *Save*
+
+### Upload document in a community
+
+You can upload a document inside a Community Resource or from the menu My Resources
+
+**Upload a document in a Community**   
+
+1. From the side menu click on ^^Manage^^ -> ^^My Communities^^.   
+2. Select the Community from the list 
+3. On the resources section, click on the ^^Resource^^ you want to upload the document. 
+4. After you upload the document, click ^^Next^^ to setup the *Metadata*, the *Taxonomy* and review the data before saving the document. 
+
+
+**Upload a document in a Resource**   
 
 1. From the side menu click on ^^Manage^^ -> ^^My Resources^^.   
-2. Click the box next to your profile picture near the top of the page. 
+2. Select the Resource from the list 
+3. Click on button ^^Upload^^ on the Documents section. 
+4. After you upload the document, click ^^Next^^ to setup the *Metadata*, the *Taxonomy* and review the data before saving the document.
 
-From here you can upload a document. You might need to select three black vertical dots to find all of the available document formats. If you don't see a document option available in your community it could be because the community creators don't allow this kind of document in your community. In public communities creators might require approval before you can upload a document. for the first time. The approval process might involve answering participation labels and agreeing to the community rules. Only creators and managers can see your answers.
+
+
+!!! note
+    In public communities creators might require approval before you can upload a document. for the first time. The approval process might involve answering participation labels and agreeing to the community rules. Only creators and managers can see your answers.
 
 ### Delete documents from a community
 
