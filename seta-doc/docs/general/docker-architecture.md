@@ -103,7 +103,7 @@ File *docker-compose.yml* with the base configuration and with reference to file
 ### Containers
 For SeTA we are using two types of containers:     
 
-- Stateless Containers: These types of containers do not persist data, i.e., their data is deleted as soon as they are stopped.    In SeTA the containers of this type are: *seta-api*, *seta-nginx*, *seta-ui*, *seta-doc*, *seta-react*    
+- Stateless Containers: These types of containers do not persist data, i.e., their data is deleted as soon as they are stopped.    In SeTA the containers of this type are:    
 
     - seta-api: service that communicates with the docker client in order to elaborate the queries to the Elasticsearch engine that come from the web app.   Is included the functions by which this raw data is parsed, normalized, and enriched before it is indexed in Elasticsearch.   The process of index in Elasticsearch, it is also included in this container. 
 
@@ -118,16 +118,16 @@ For SeTA we are using two types of containers:
 
     - seta-react: contains the react code of the web app interface.
 
-- Stateful Containers: These types of containers persist data and are typically used to run stateful applications such as databases, message queues, and file servers. The data stored inside the container is persistent even if the container is stopped or recreated.  In SeTA the containers *seta-es* and *seta-mongo* are this type.
+- Stateful Containers: These types of containers persist data and are typically used to run stateful applications such as databases, message queues, and file servers. The data stored inside the container is persistent even if the container is stopped or recreated.  In SeTA the containers are:    
 
-    - seta-data: this container functions mainly to populate de ElasticSearch database, if the database is empty at the begining, it will fill the ElasticSearch database.
+    - seta-data: this container functions mainly to populate de Elasticsearch database, if the database is empty at the begining, it will fill the Elasticsearch database.
 
     - seta-mongo: contains the operational databases for SETA web services and web application, also includes users management, comunity, resources managament and other operational data.
 
 
 ### Docker desktop
 
-From the docker desktop we can see the containers, please note that the displayed names are just labels, for the deployment we used the services names. : 
+From the docker desktop we can see the containers, please note that the displayed names are just labels, for the deployment we used the services names: 
 ![Screenshot](../img/docker-desktop.png)
 
 
