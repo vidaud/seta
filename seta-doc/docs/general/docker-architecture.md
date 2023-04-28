@@ -110,7 +110,7 @@ For SeTA we are using two types of containers:
     - seta-auth: it host the web service for authentication for register users. Also for the external applications as well internal applications. This service is intended for the communication from the web service that has authorization through a public driver key defined by register users and also a second part used for internal communication. 
     - seta-doc: contains the documentation files is not a dynamic container.
 
-    - seta-es: contains the image where the Elasticsearch engine is store.  The **Elasticsearch** engine is fast, with it's logic of placing documents distributed across different containers, it provides redundant copies of the data in case of hardware failure. It has a number of powerful built-in features that make storing and searching data even more efficient, such as data rollups and index lifecycle management.
+    - seta-es: contains the image where the Elasticsearch engine is store.  The Elasticsearch engine is fast, with it's logic of placing documents distributed across different containers, it provides redundant copies of the data in case of hardware failure. It has a number of powerful built-in features that make storing and searching data even more efficient, such as data rollups and index lifecycle management.
 
     - seta-nginx: contains the proxy server configurations for all the endpoints to be reachable outside, in particular for web services.
 
