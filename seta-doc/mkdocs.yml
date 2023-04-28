@@ -83,7 +83,7 @@ nav:
   - Why you would use it: general/why-use-it.md
   - Who should/can use it: general/who-use-it.md
   - Docker: general/docker-architecture.md      
-  - Set-up SeTA:
+  - Install SeTA:
     - Deployment: setup/deployment.md 
     - Release: release-notes/release-notes.md
   - Using SeTA:

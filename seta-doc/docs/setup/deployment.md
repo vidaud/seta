@@ -6,6 +6,7 @@
 
 * Good Internet speed. You will need to download at least 5GB (> 20GB for all data)
 
+The following setup and deployment is for ^^Production^^ environment.
 
 ## Prerequisites 
 
@@ -17,12 +18,12 @@
 
 ### Git clone
 
-Use the git **clone** command to clone the project in the select directory, using an SSH link.
+From the Git interface use the git **clone** command to clone the project in the select directory, using an SSH link.
 ```
     git clone https://github.com/vidaud/seta.git
 ```
 
-After clonning the project, move to the directory of the project:
+After clonning the project, we open a command line shell and move to the root directory of the project:
 
 !!! warning
     Make sure that you are in the root directory of the project, use **pwd** or **cd** for windows
@@ -106,12 +107,25 @@ If we have moved, we go back to folder **seta-compose** and from there we launch
 This command creates a docker image based on the Dockerfile called by default **docker-compose.yml** as the configuration file and **.env** as the environment file.
 
 ### Up
-
+it has to be where the containers are running
 After finishing the build, launch the command to start and run the services:
 
+First the service to initialise the ElasticSearch:
+
 ```
-    docker-compose seta-data up
-    docker-compose seta-ui seta-nginx up
+    docker-compose up seta-data     
+
+```    
+
+In order to be sure that the start of service seta-data finishes correctly there must be a message like: 
+
+> data exited with code 0
+
+
+Later we start the rest of the services, for now is just necessary to start the seta-nginx as the other services are attached to start together with this service:     
+
+```
+    docker-compose up seta-nginx -d
 ```
 
 !!! info
@@ -119,13 +133,11 @@ After finishing the build, launch the command to start and run the services:
 
 
 
-!!! note "Notes:"
-  
-    This commands will setup all system and data.
+This commands will setup all system and data.
 
-    It will take a while depending on the Internet speed. Might take 30min to 2h.
+It will take a while depending on the Internet speed. Might take 30min to 2h.
 
-    At some point there will be a message *"SeTA-API is up and running."*
+At some point there will be a message **SeTA-API is up and running**
 
 
 After successfully start all the containers you are ready to open your browser and go to one of the following links:
@@ -149,40 +161,4 @@ After successfully start all the containers you are ready to open your browser a
 
 ```
     docker-compose down
-```
-
-## Starting commands
-
-
-Here below more commands that will help you to build and start the services.
-
-
-#### To (re-)build all images
-
-```
-    docker-compose -f docker-compose.yml --env-file build
-```
-
-#### To (re-)build only seta-ui image (Web App interface)
-
-```
-    docker-compose -f docker-compose.yml --env-file  seta-ui
-```
-
-#### Start all services for your environment locally
-
-```
-    docker-compose -f docker-compose.yml --env-file up
-```
-
-#### Start all services for your environment locally in detached mode
-
-```
-    docker-compose -f docker-compose.yml --env-file up -d
-```
-
-#### Rebuild and restart seta-ui services while other services are runing
-
-```
-    docker-compose -f docker-compose.yml --env-file up --force-recreate --build --no-deps seta-ui
 ```

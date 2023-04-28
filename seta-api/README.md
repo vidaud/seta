@@ -30,7 +30,7 @@
 
 The **seta API**  folder contains the image with the python client that serves to communicates with the docker client in order to elaborate the queries to the Elasticsearch engine that come from the web app. 
 
-All the data that flows into the elastic search engine from the different sources. In this image is included the functions by which this raw data is parsed, normalized, and enriched before it is indexed in Elasticsearch. 
+It has all the configuration need it to make the data that flows into the elastic search engine from the different sources. In this image is included the functions by which this raw data is parsed, normalized, and enriched before it is indexed in Elasticsearch. 
 
 The process of index in Elasticsearch, it is also included in this image, together with the process of manage complex queries against the data and use aggregations to retrieve complex summaries of the data. 
 

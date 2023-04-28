@@ -256,7 +256,7 @@ If your ability to upload a document or participate in a Community has been turn
 
 
 ### See a list of Resources
-{== *are Resources from everybody?*==}
+{== *are public Resources from other communities?*==}
 
 1. From the side menu click on ^^Discover^^ -> ^^Resources^^.   
 2. You can either enter in the search bar the name of the Resource you are looking for, or select it from the Resource list.

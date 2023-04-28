@@ -1,6 +1,6 @@
 # seta-nginx 💻 
 
-The **seta-nginx** folder contains the configuration of the server with all the proxy configurations.
+The **seta-nginx** contains the proxy server configurations for all the endpoints to be reachable outside, in particular for web services.
 
 * [Dockerfile](../seta-nginx/Dockerfile) - contains all the commands to assemble an image.
 * [nginx.conf](../seta-nginx/nginx.conf) - Includes directives for web traffic handling, which are generally known as **universal** .
