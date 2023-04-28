@@ -1,14 +1,30 @@
 from dataclasses import dataclass, asdict
+from .seta_user import SetaUser
 
 @dataclass(kw_only=True)
 class SetaApplication: 
-    user_id: str   
+    user_id: str = None  
     app_name: str    
-    app_description: str
+    app_description: str = None
     parent_user_id: str
+   
+    #user object
+    user: SetaUser = None    
+    #parent user object
+    parent_user: SetaUser = None
+    
+    @property
+    def status(self):
+        if self.user:
+            return self.user.status
+        return 'unknown'
 
     def to_json(self) -> dict:
-        return asdict(self)
+        json = asdict(self)
+        json.pop("user", None)
+        json.pop("parent_user", None)
+        
+        return json
     
     @classmethod 
     def from_db_json(cls, json_dict):

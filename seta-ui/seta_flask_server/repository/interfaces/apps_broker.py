@@ -47,7 +47,7 @@ class IAppsBroker(Interface):
         
         pass
     
-    def create(self, app: SetaApplication, copy_parent_scopes: True, copy_parent_rsa: bool = False):
+    def create(self, app: SetaApplication, copy_parent_scopes: bool = True, copy_parent_rsa: bool = False):
         """
         Creates an application
         

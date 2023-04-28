@@ -13,6 +13,13 @@ class UserRoleConstants:
     
     List = [Admin, User]
     
+class UserStatusConstants:
+    Active = "active"
+    Disabled = "disabled"
+    Blocked = "blocked"
+    
+    List = [Active, Disabled, Blocked]    
+    
 class ClaimTypeConstants:
     RoleClaimType = "roles"
 

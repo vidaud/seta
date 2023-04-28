@@ -36,7 +36,7 @@ class UserSession:
     
     def to_json(self):
         to_return = asdict(self)
-        to_return.pop("session_tokens")
+        to_return.pop("session_tokens", None)
         
         return to_return
         

@@ -9,12 +9,13 @@ from .system_scope import SystemScope
 from .external_provider import ExternalProvider
 
 from seta_flask_server.infrastructure.constants import ExternalProviderConstants
-from seta_flask_server.infrastructure.constants import ClaimTypeConstants, UserRoleConstants
+from seta_flask_server.infrastructure.constants import ClaimTypeConstants, UserRoleConstants, UserStatusConstants
 
 class SetaUser:
     
-    def __init__(self, user_id, email, user_type, status, created_at = None, modified_at = None) -> None:
+    def __init__(self, user_id: str, email: str, user_type: str, status: str, created_at: datetime = None, modified_at: datetime = None) -> None:
         self.user_id = user_id
+        self.email = None
         if email:
             self.email = email.lower()
         self.user_type = user_type
@@ -220,12 +221,11 @@ class SetaUser:
     def from_ecas_json(cls, json_dct):
         user_id = SetaUser.generate_uuid()
         
-        user = cls(user_id,
-                   json_dct['email'], 
-                   'user',
-                   'active',
-                   datetime.now(tz=pytz.utc),
-                   None)
+        user = cls(user_id=user_id,
+                   email=json_dct['email'],
+                   user_type='user',
+                   status=UserStatusConstants.Active,
+                   created_at=datetime.now(tz=pytz.utc))
         
         user.authenticated_provider = ExternalProvider(user_id=user_id, 
                                                     provider_uid=json_dct['uid'], 
@@ -246,12 +246,11 @@ class SetaUser:
     def from_github_json(cls, json_dct):
         user_id = SetaUser.generate_uuid()
         
-        user = cls(user_id,
-                   json_dct['email'], 
-                   'user',
-                   'active',
-                   datetime.now(tz=pytz.utc),
-                   None)
+        user = cls(user_id=user_id,
+                   email=json_dct['email'],
+                   user_type='user',
+                   status=UserStatusConstants.Active,
+                   created_at=datetime.now(tz=pytz.utc))
         
         name = str(json_dct["name"]).split(maxsplit=1)
         first_name = name[0]
