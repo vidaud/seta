@@ -7,9 +7,19 @@ In the SeTA Web App we have two types of communities: public communities and pri
 
 * **Private Community**:  The information and conversations can only be accessed by users with log-ins(often sent via invitation to a specific group or pre-loaded into the Community platforms membership database). All users are forced to ask for authorization to join and then been able to see content and conversations. In this type of communities the administrators have the ability to deny access to users who don't fit membership credentials (i.e. *members customers participants in a specific industry*)
 
-## Dashboard
 
-The main screen of the Communities is the ^^Dashboard^^. Here you can see the information related to 
+## Communities Web Interface
+
+The main screen of the Communities is the ^^Dashboard^^. Here you can see the information related to the communities:    
+
+
+- The Communities created by the user
+- The Resources created by the user
+- The members of the Communities 
+- The notifications
+- The latest request from users to the Communities
+- The newest members to the Communities
+- The last Resources created
 
 ### Create a Community
                         
@@ -225,9 +235,9 @@ If your ability to upload a document or participate in a Community has been turn
 
 ### Leave a Community
 
-1. From the side menu click on ^^Manage^^ -> ^^My Communities^^.   
+1. From the side menu click on ^^Discover^^ -> ^^Communities^^.   
 2. You can either enter in the search bar the name of the Community you are looking for, or select it from the Community list.  
-3. Click ^^Leave Community^^ to confirm. 
+3. Click on ^^Joined^^  and confirm to leave the Community. 
 
 !!! note "When you leave a Community:" 
     - Members won't be notified if you leave. 
@@ -243,6 +253,13 @@ If your ability to upload a document or participate in a Community has been turn
 
 1. From the side menu click on ^^Manage^^ -> ^^My Resources^^.   
 2. You will see a list of the Resources in the page.
+
+
+### See a list of Resources
+{== *are Resources from everybody?*==}
+
+1. From the side menu click on ^^Discover^^ -> ^^Resources^^.   
+2. You can either enter in the search bar the name of the Resource you are looking for, or select it from the Resource list.
 
 
 ### {== How to report something in a Community ==}
