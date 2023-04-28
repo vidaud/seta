@@ -6,7 +6,7 @@ import type {
   MouseEventHandler,
   UIEvent
 } from 'react'
-import { useEffect, useImperativeHandle, forwardRef, useRef, useState } from 'react'
+import { useImperativeHandle, forwardRef, useRef, useState } from 'react'
 import type { TextInputProps } from '@mantine/core'
 import { ActionIcon, Box, TextInput, Text, clsx } from '@mantine/core'
 import { IconX } from '@tabler/icons-react'
@@ -37,7 +37,7 @@ const TokensInput = forwardRef<HTMLInputElement, Props>(
     },
     ref
   ) => {
-    const [innerValue, setInnerValue] = useState(value ?? '')
+    // const [innerValue, setInnerValue] = useState(value ?? '')
     const [focused, setFocused] = useState(false)
 
     const inputRef = useRef<HTMLInputElement>(null)
@@ -54,44 +54,45 @@ const TokensInput = forwardRef<HTMLInputElement, Props>(
     const mustSetPosition = nextPositionRef.current !== null
 
     // Set the cursor position after the input value has been updated
-    useEffect(() => {
-      if (mustSetPosition && inputRef.current) {
-        inputRef.current.setSelectionRange(nextPositionRef.current, nextPositionRef.current)
-        nextPositionRef.current = null
-      }
-    }, [mustSetPosition])
+    // useEffect(() => {
+    //   if (mustSetPosition && inputRef.current) {
+    //     inputRef.current.setSelectionRange(nextPositionRef.current, nextPositionRef.current)
+    //     nextPositionRef.current = null
+    //   }
+    // }, [mustSetPosition])
 
-    useEffect(() => {
-      setInnerValue(value ?? '')
+    // useEffect(() => {
+    //   // setInnerValue(value ?? '')
 
-      // Update the input value to correctly render updated tokens
-      if (inputRef.current) {
-        inputRef.current.value = String(value) ?? ''
-        updateCurrentToken()
-      }
-    }, [value, updateCurrentToken])
+    //   // Update the input value to correctly render updated tokens
+    //   if (inputRef.current) {
+    //     inputRef.current.value = String(value) ?? ''
+    //     updateCurrentToken()
+    //   }
+    // }, [value, updateCurrentToken])
 
     if (inputRef.current) {
       setInputRef(inputRef.current)
     }
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-      const position = e.target.selectionStart ?? 0
+      // updateCurrentToken()
+      // const position = e.target.selectionStart ?? 0
 
       // Don't allow multiple consecutive spaces in the input
-      const val = e.target.value.replace(/\s+/g, ' ')
+      const val = e.target.value //.replace(/\s+/g, ' ')
 
       // If the user is typing in the middle of the input and we removed spaces,
       // keep the cursor in place
-      nextPositionRef.current =
-        val.length !== e.target.value.length && position < val.length ? position : null
+      // nextPositionRef.current =
+      //   val.length !== e.target.value.length && position < val.length ? position : null
 
-      setInnerValue(val)
+      // setInnerValue(val)
       onChange?.(val)
     }
 
     const handleInput: FormEventHandler<HTMLInputElement> = e => {
-      updateCurrentToken()
+      // updateCurrentToken()
       onInput?.(e)
     }
 
@@ -102,15 +103,28 @@ const TokensInput = forwardRef<HTMLInputElement, Props>(
         e.preventDefault()
       }
 
+      const position = e.currentTarget.selectionStart ?? 0
+      const val = e.currentTarget.value
+
+      if (
+        e.key === ' ' &&
+        (val[position - 1] === ' ' || val[position] === ' ')
+        // (val.slice(position - 2, position) === '  ' ||
+        //   val.slice(position, position + 2) === '  ' ||
+        //   val.slice(position - 1, position + 1) === '  ')
+      ) {
+        e.preventDefault()
+      }
+
       onKeyDown?.(e)
     }
 
     const handleKeyUp: KeyboardEventHandler<HTMLInputElement> = e => {
-      // const keys = ['ArrowLeft', 'ArrowRight', 'Meta']
+      const keys = ['ArrowLeft', 'ArrowRight', 'Meta']
 
-      // if (keys.includes(e.key)) {
-      //   updateCurrentToken()
-      // }
+      if (keys.includes(e.key)) {
+        updateCurrentToken()
+      }
 
       onKeyUp?.(e)
     }
@@ -144,17 +158,18 @@ const TokensInput = forwardRef<HTMLInputElement, Props>(
     }
 
     const handleSelect = () => {
-      updateCurrentToken()
+      // updateCurrentToken()
     }
 
     const handleClear = () => {
-      setInnerValue('')
+      // setInnerValue('')
       onChange?.('')
+      updateCurrentToken()
 
       inputRef.current?.focus()
     }
 
-    const clearButton = !!innerValue && (
+    const clearButton = !!value && (
       <ActionIcon size="sm" onClick={handleClear}>
         <IconX />
       </ActionIcon>
@@ -167,7 +182,7 @@ const TokensInput = forwardRef<HTMLInputElement, Props>(
           css={S.input}
           size="md"
           rightSection={clearButton}
-          value={innerValue}
+          value={value}
           onChange={handleChange}
           onInput={handleInput}
           onKeyDown={handleKeyDown}

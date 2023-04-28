@@ -1,5 +1,6 @@
 import { Divider, Flex, ScrollArea } from '@mantine/core'
 
+import { useSearch } from '~/pages/SearchPageNew/components/SuggestionsPopup/contexts/search-context'
 import TermsCluster from '~/pages/SearchPageNew/components/TermClusters/components/TermsCluster/TermsCluster'
 
 import OntologyHeader from '../OntologyHeader'
@@ -74,6 +75,32 @@ type Props = {
 }
 
 const OntologyTerms = ({ className }: Props) => {
+  const { onSelectedTermsAdd, onSelectedTermsRemove, currentToken, setPosition, input } =
+    useSearch()
+
+  const focusInput = () => {
+    if (!currentToken) {
+      return
+    }
+
+    input?.blur()
+
+    setTimeout(() => {
+      setPosition(currentToken.index + currentToken.token.length)
+      input?.focus()
+    }, 0)
+  }
+
+  const handleSelectedTermsAdd = (terms: string[]) => {
+    onSelectedTermsAdd(terms)
+    focusInput()
+  }
+
+  const handleSelectedTermsRemove = (terms: string[]) => {
+    onSelectedTermsRemove(terms)
+    focusInput()
+  }
+
   return (
     <Flex className={className} direction="column">
       <OntologyHeader />
@@ -81,8 +108,13 @@ const OntologyTerms = ({ className }: Props) => {
 
       <ScrollArea.Autosize mah={330} type="scroll" mt="md">
         {data.map((terms, index) => (
-          // eslint-disable-next-line react/no-array-index-key
-          <TermsCluster key={index} terms={terms} />
+          <TermsCluster
+            // eslint-disable-next-line react/no-array-index-key
+            key={index}
+            terms={terms}
+            onSelectedTermsAdd={handleSelectedTermsAdd}
+            onSelectedTermsRemove={handleSelectedTermsRemove}
+          />
         ))}
       </ScrollArea.Autosize>
     </Flex>

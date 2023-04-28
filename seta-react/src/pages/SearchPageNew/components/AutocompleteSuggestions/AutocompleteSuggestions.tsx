@@ -32,7 +32,7 @@ type Props = {
 }
 
 const AutocompleteSuggestions = ({ className }: Props) => {
-  const { onSuggestionSelected, currentToken, setPosition } = useSearch()
+  const { onSuggestionSelected, currentToken, setPosition, input } = useSearch()
 
   const handleSuggestionSelected = (suggestion: string) => {
     onSuggestionSelected?.(suggestion)
@@ -41,9 +41,12 @@ const AutocompleteSuggestions = ({ className }: Props) => {
       return
     }
 
-    // setTimeout(() => {
-    // setPosition(currentToken.index + suggestion.length + (suggestion.match(/\s/g) ? 2 : 0))
-    // }, 0)
+    input?.blur()
+
+    setTimeout(() => {
+      setPosition(currentToken.index + suggestion.length + (suggestion.match(/\s/g) ? 2 : 0))
+      input?.focus()
+    }, 0)
   }
 
   return (

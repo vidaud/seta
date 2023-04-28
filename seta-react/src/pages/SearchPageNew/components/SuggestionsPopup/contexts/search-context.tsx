@@ -10,6 +10,8 @@ type SearchProviderProps = {
   setInputValue: (value: string) => void
   currentToken: TokenMatch | null
   setCurrentToken: (token: TokenMatch | null) => void
+  onSelectedTermsAdd: (terms: string[]) => void
+  onSelectedTermsRemove: (terms: string[]) => void
 }
 
 type SearchContextProps = SearchProviderProps & {
@@ -26,7 +28,9 @@ export const SearchProvider = ({
   inputValue,
   setInputValue,
   currentToken,
-  setCurrentToken
+  setCurrentToken,
+  onSelectedTermsAdd,
+  onSelectedTermsRemove
 }: SearchProviderProps & ChildrenProp) => {
   const inputRef = useRef<HTMLInputElement | null>(null)
 
@@ -46,6 +50,8 @@ export const SearchProvider = ({
     setCurrentToken,
     inputValue,
     setInputValue,
+    onSelectedTermsAdd,
+    onSelectedTermsRemove,
     input: inputRef.current,
     setInputRef,
     setPosition

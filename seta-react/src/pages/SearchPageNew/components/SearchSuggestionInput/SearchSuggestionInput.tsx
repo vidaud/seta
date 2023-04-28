@@ -13,11 +13,26 @@ const SearchSuggestionInput = () => {
 
     if (currentToken) {
       const { index, token } = currentToken
-
       const newValue = value.slice(0, index) + replaceWith + value.slice(index + token.length)
 
       setValue(newValue)
     }
+  }
+
+  const handleTermsAdded = (terms: string[]) => {
+    const newTerms = terms.map(term => (term.match(/\s/g) ? `"${term}"` : term))
+    const newValue = `${value} ${newTerms.join(' ')}`
+
+    setValue(newValue)
+  }
+
+  const handleTermsRemoved = (terms: string[]) => {
+    const newValue = terms.reduce(
+      (acc, term) => acc.replace(term.match(/\s/g) ? ` "${term}"` : ` ${term}`, ''),
+      value
+    )
+
+    setValue(newValue)
   }
 
   return (
@@ -27,6 +42,8 @@ const SearchSuggestionInput = () => {
       currentToken={currentToken}
       setCurrentToken={setCurrentToken}
       onSuggestionSelected={handleSuggestionSelected}
+      onSelectedTermsAdd={handleTermsAdded}
+      onSelectedTermsRemove={handleTermsRemoved}
     >
       <SuggestionsPopup />
     </SearchProvider>

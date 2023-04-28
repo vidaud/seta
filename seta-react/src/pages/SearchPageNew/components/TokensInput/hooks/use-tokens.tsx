@@ -1,5 +1,5 @@
 import type { RefObject } from 'react'
-import { useCallback } from 'react'
+import { useEffect, useRef, useCallback } from 'react'
 import { clsx } from '@mantine/core'
 
 import { useSearch } from '~/pages/SearchPageNew/components/SuggestionsPopup/contexts/search-context'
@@ -31,7 +31,11 @@ const getCurrentWord = (value: string, position: number) => {
 const useTokens = (inputRef: RefObject<HTMLInputElement>) => {
   const { currentToken, setCurrentToken } = useSearch()
 
-  const updateCurrentToken = useCallback(() => {
+  const timeoutRef = useRef<number | null>(null)
+
+  const value = inputRef.current?.value
+
+  const internalUpdateToken = useCallback(() => {
     if (!inputRef.current) {
       return
     }
@@ -75,6 +79,36 @@ const useTokens = (inputRef: RefObject<HTMLInputElement>) => {
     setCurrentToken({ token, word, index, isExpression })
   }, [inputRef, setCurrentToken])
 
+  const updateCurrentToken = useCallback(() => {
+    // if (!inputRef.current) {
+    //   return
+    // }
+
+    // if (timeoutRef.current) {
+    //   clearTimeout(timeoutRef.current)
+    // }
+
+    // timeoutRef.current = setTimeout(() => {
+    internalUpdateToken()
+    // }, 200)
+  }, [internalUpdateToken])
+
+  useEffect(() => {
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current)
+    }
+
+    timeoutRef.current = setTimeout(() => {
+      internalUpdateToken()
+    }, 200)
+
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current)
+      }
+    }
+  }, [value, internalUpdateToken])
+
   const renderTokens = useCallback(() => {
     if (!inputRef.current) {
       return null
@@ -105,6 +139,7 @@ const useTokens = (inputRef: RefObject<HTMLInputElement>) => {
       const quote = isExpression && <span className="quote">"</span>
       const tokenValue = isExpression ? token.slice(1, -1) : token
 
+      // console.log(value[index - 1])
       index += token.length + 1
 
       return (
