@@ -11,9 +11,7 @@
 
 - It is neccesary to install [Git](https://git-scm.com/downloads). 
 
-- Install [Docker compose V2](https://docs.docker.com/compose/install/).*For reference to install in Linux, Maco or Windows*
-
-
+- Install [Docker compose V2](https://docs.docker.com/compose/install/).     *For reference to install in Linux, Mac or Windows*
 
 ## Installation of the project
 
@@ -150,7 +148,7 @@ After successfully start all the containers you are ready to open your browser a
 #### Stop services started in detach mode
 
 ```
-    docker compose down
+    docker-compose down
 ```
 
 ## Starting commands
@@ -162,29 +160,29 @@ Here below more commands that will help you to build and start the services.
 #### To (re-)build all images
 
 ```
-    docker compose -f docker-compose.yml --env-file build
+    docker-compose -f docker-compose.yml --env-file build
 ```
 
 #### To (re-)build only seta-ui image (Web App interface)
 
 ```
-    docker compose -f docker-compose.yml --env-file  seta-ui
+    docker-compose -f docker-compose.yml --env-file  seta-ui
 ```
 
 #### Start all services for your environment locally
 
 ```
-    docker compose -f docker-compose.yml --env-file up
+    docker-compose -f docker-compose.yml --env-file up
 ```
 
 #### Start all services for your environment locally in detached mode
 
 ```
-    docker compose -f docker-compose.yml --env-file up -d
+    docker-compose -f docker-compose.yml --env-file up -d
 ```
 
 #### Rebuild and restart seta-ui services while other services are runing
 
 ```
-    docker compose -f docker-compose.yml --env-file up --force-recreate --build --no-deps seta-ui
+    docker-compose -f docker-compose.yml --env-file up --force-recreate --build --no-deps seta-ui
 ```

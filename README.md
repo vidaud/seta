@@ -156,7 +156,6 @@ After finishing the build, launch the command to start and run the services:
 > Is recommended to start in **detach mode (-d)** as this allows the docker container to run in the background of your terminal. Furthermore, using detached mode also allows you to close the opened terminal session without stopping the container.    
 
 
-
 > **Notes:**
   
 > - This commands will setup all system and data.
@@ -174,17 +173,17 @@ After successfully start all the containers you are ready to open your browser a
 
 * **Documentation:** [location] /docs
 
-### Stopping commands
+## Stopping commands
 
-#### To stop services 
+### To stop services 
 ```
     CTRL + C
 ```
 
-#### Stop services started in detach mode
+### Stop services started in detach mode
 
 ```
-    docker compose down
+    docker-compose down
 ```
 
 ## Development environment
@@ -194,8 +193,10 @@ To deploy in the Development environment:
 Create an ***.env.dev*** file containing the variables as described in  file **.env.example** and then you can launch the build and up commands:
 
 ```
-    docker compose -f docker-compose-dev.yml build
-    docker compose -f docker-compose-dev.yml up
+    docker-compose -f docker-compose-dev.yml build
+    docker-compose -f docker-compose-dev.yml up
+    docker-compose seta-data up
+    docker-compose seta-ui seta-nginx up
 ```
 
 
@@ -204,8 +205,8 @@ Create an ***.env.dev*** file containing the variables as described in  file **.
 Create an ***.env.test*** file containing the variables as described in *.env.example* and then you can launch the build and up commands:
 
 ```
-    docker compose -f docker-compose-test.yml build
-    docker compose -f docker-compose-test.yml up
+    docker-compose -f docker-compose-test.yml build
+    docker-compose -f docker-compose-test.yml up
 ```
 
 
@@ -215,41 +216,41 @@ Create an ***.env.test*** file containing the variables as described in *.env.ex
 Here below more commands that will help you to build and start the services in the different environments.
 
 
-#### To (re-)build all images (production, test and development environment)
+### To (re-)build all images (production, test and development environment)
 
 ```
-    docker compose -f docker-compose.yml -f docker-compose-dev.yml -f docker-compose-test.yml --env-file .env.dev .env.test build
+    docker-compose -f docker-compose.yml -f docker-compose-dev.yml -f docker-compose-test.yml --env-file .env.dev .env.test build
 ```
 
-#### To (re-)build only seta-ui image (production, test and development environment)
+### To (re-)build only seta-ui image (production, test and development environment)
 
 ```
-    docker compose -f docker-compose.yml -f docker-compose-dev.yml -f docker-compose-test.yml --env-file .env.dev .env.test seta-ui
+    docker-compose -f docker-compose.yml -f docker-compose-dev.yml -f docker-compose-test.yml --env-file .env.dev .env.test seta-ui
 ```
 
-#### Start all services for your environment locally
+### Start all services for your environment locally
 
 ```
-    docker compose -f docker-compose.yml -f docker-compose-dev.yml -f docker-compose-test.yml --env-file .env.dev .env.test up
+    docker-compose -f docker-compose.yml -f docker-compose-dev.yml -f docker-compose-test.yml --env-file .env.dev .env.test up
 ```
 
-#### Start all services for your environment locally in detached mode
+### Start all services for your environment locally in detached mode
 
 ```
-    docker compose -f docker-compose.yml -f docker-compose-dev.yml --f docker-compose-test.yml --env-file .env.dev .env.test up -d
+    docker-compose -f docker-compose.yml -f docker-compose-dev.yml --f docker-compose-test.yml --env-file .env.dev .env.test up -d
 ```
 
-#### Rebuild and restart seta-ui services while other services are runing
+### Rebuild and restart seta-ui services while other services are runing
 
 ```
-    docker compose -f docker-compose.yml -f docker-compose-dev.yml -f docker-compose-test.yml --env-file .env.dev .env.test up --force-recreate --build --no-deps seta-ui
+    docker-compose -f docker-compose.yml -f docker-compose-dev.yml -f docker-compose-test.yml --env-file .env.dev .env.test up --force-recreate --build --no-deps seta-ui
 ```
 
-### **Shell scripts**
+## Shell scripts
 
 For the scripts with short commands: 
 ```
-    docker compose -f docker-compose.yml -f docker-compose-dev.yml --env-file .env.dev
+    docker-compose -f docker-compose.yml -f docker-compose-dev.yml --env-file .env.dev
 ```
 
  It can be used a *.bat* file where it can be set up all the neccesary functions, as well as the set up of the proxy.  
@@ -261,20 +262,20 @@ For the scripts with short commands:
  
  
  ```
-    docker compose -f docker-compose.yml -f docker-compose-dev.yml --env-file .env.dev build %*
+    docker-compose -f docker-compose.yml -f docker-compose-dev.yml --env-file .env.dev build %*
  ```
 
  **up.bat**
  ```
 
-    docker compose -f docker-compose.yml -f docker-compose-dev.yml --env-file .env.dev up %*
+    docker-compose -f docker-compose.yml -f docker-compose-dev.yml --env-file .env.dev up %*
 
  ```
  
  
  Here below the example of how to execute this bat files in {++Windows++} and {++Linux++}.
 
-#### **Windows**
+### **Windows**
 
 Open a *cmd* window and from there go to the *seta-compose* folder, for example, if we want to run for *development* environment the build and up:
 
@@ -291,7 +292,7 @@ For example:
     dev-build.bath --no-cache
 ```
 
-#### **Linux**
+### **Linux**
 
 For execute permissions run:
 
@@ -316,14 +317,13 @@ For example:
 ```
 
 
-
-
-
 ## Contributing
 
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
 Please make sure to update tests as appropriate.
+
+
 
 ## License
 
