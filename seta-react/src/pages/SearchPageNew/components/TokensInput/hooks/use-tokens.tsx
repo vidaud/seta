@@ -3,8 +3,9 @@ import { useEffect, useRef, useCallback } from 'react'
 import { clsx } from '@mantine/core'
 
 import { useSearch } from '~/pages/SearchPageNew/components/SuggestionsPopup/contexts/search-context'
+import type { Token } from '~/pages/SearchPageNew/components/SuggestionsPopup/types/token'
 
-const EXPRESSION_REGEX = /"[^"\\]*(\\.[^"\\]*)*"|\S+/g
+const EXPRESSION_REGEX = /("[^"\\]*(\\.[^"\\]*)*"|\S+)(\s*)/g
 
 /**
  * Returns the current word and its position in the given string value based on the cursor position.
@@ -34,6 +35,31 @@ const useTokens = (inputRef: RefObject<HTMLInputElement>) => {
   const timeoutRef = useRef<number | null>(null)
 
   const value = inputRef.current?.value
+
+  const getTokens = useCallback((): Token[] => {
+    if (!value) {
+      return []
+    }
+
+    const tokens: Token[] = []
+
+    let match: RegExpExecArray | null
+
+    while ((match = EXPRESSION_REGEX.exec(value)) !== null) {
+      const start = match.index
+      const token = match[1]
+      const spacesAfter = match[3]?.length ?? 0
+
+      tokens.push({
+        token,
+        index: start,
+        isExpression: !!token.match(/\s/),
+        spacesAfter
+      })
+    }
+
+    return tokens
+  }, [value])
 
   const internalUpdateToken = useCallback(() => {
     if (!inputRef.current) {
@@ -99,7 +125,11 @@ const useTokens = (inputRef: RefObject<HTMLInputElement>) => {
     }
 
     timeoutRef.current = setTimeout(() => {
-      internalUpdateToken()
+      const tokens = getTokens()
+
+      console.log('tokens', tokens)
+
+      // internalUpdateToken()
     }, 200)
 
     return () => {
@@ -114,22 +144,27 @@ const useTokens = (inputRef: RefObject<HTMLInputElement>) => {
       return null
     }
 
-    const value = inputRef.current.value
+    const tokens = getTokens()
 
-    // Split the input value into tokens, which are either expressions in quotes or single words
-    const tokens = value.match(EXPRESSION_REGEX)
-
-    if (!tokens) {
-      return value
+    if (!tokens.length) {
+      return null
     }
+
+    // const value = inputRef.current.value
+
+    // // Split the input value into tokens, which are either expressions in quotes or single words
+    // const tokens = value.match(EXPRESSION_REGEX)
+
+    // if (!tokens) {
+    //   return value
+    // }
 
     // The index helps match the token around the cursor position,
     // in case there are multiple identical tokens in the input
     let index = 0
 
-    const highlightedTokens = tokens.map((token, i) => {
+    const highlightedTokens = tokens.map(({ token, spacesAfter, isExpression }, i) => {
       const isCurrentToken = token === currentToken?.token && index === currentToken.index
-      const isExpression = token.length > 1 && token.startsWith('"') && token.endsWith('"')
 
       const cls = {
         root: clsx({ current: isCurrentToken && tokens.length > 1, expression: isExpression }),
@@ -139,8 +174,7 @@ const useTokens = (inputRef: RefObject<HTMLInputElement>) => {
       const quote = isExpression && <span className="quote">"</span>
       const tokenValue = isExpression ? token.slice(1, -1) : token
 
-      // console.log(value[index - 1])
-      index += token.length + 1
+      index += token.length + (spacesAfter ?? 0)
 
       return (
         <span key={index} className={cls.root}>
@@ -152,7 +186,8 @@ const useTokens = (inputRef: RefObject<HTMLInputElement>) => {
             <span className="marker" />
           </span>
 
-          {i < tokens.length - 1 && ' '}
+          {/* {i < tokens.length - 1 && ' '} */}
+          {spacesAfter && String(' ').repeat(spacesAfter)}
         </span>
       )
     })

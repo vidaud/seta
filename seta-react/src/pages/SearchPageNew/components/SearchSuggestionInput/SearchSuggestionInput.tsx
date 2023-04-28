@@ -6,6 +6,7 @@ import type { TokenMatch } from '~/pages/SearchPageNew/components/SuggestionsPop
 
 const SearchSuggestionInput = () => {
   const [value, setValue] = useState('')
+  const [tokens, setTokens] = useState<TokenMatch[]>([])
   const [currentToken, setCurrentToken] = useState<TokenMatch | null>(null)
 
   const handleSuggestionSelected = (suggestion: string) => {
@@ -39,6 +40,8 @@ const SearchSuggestionInput = () => {
     <SearchProvider
       inputValue={value}
       setInputValue={setValue}
+      tokens={tokens}
+      setTokens={setTokens}
       currentToken={currentToken}
       setCurrentToken={setCurrentToken}
       onSuggestionSelected={handleSuggestionSelected}

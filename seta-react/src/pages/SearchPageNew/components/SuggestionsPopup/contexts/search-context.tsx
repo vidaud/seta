@@ -8,6 +8,8 @@ type SearchProviderProps = {
   onSuggestionSelected?: (suggestion: string) => void
   inputValue: string
   setInputValue: (value: string) => void
+  tokens: TokenMatch[]
+  setTokens: (tokens: TokenMatch[]) => void
   currentToken: TokenMatch | null
   setCurrentToken: (token: TokenMatch | null) => void
   onSelectedTermsAdd: (terms: string[]) => void
@@ -24,11 +26,13 @@ const SearchContext = createContext<SearchContextProps | undefined>(undefined)
 
 export const SearchProvider = ({
   children,
-  onSuggestionSelected,
   inputValue,
   setInputValue,
+  tokens,
+  setTokens,
   currentToken,
   setCurrentToken,
+  onSuggestionSelected,
   onSelectedTermsAdd,
   onSelectedTermsRemove
 }: SearchProviderProps & ChildrenProp) => {
@@ -45,11 +49,13 @@ export const SearchProvider = ({
   }
 
   const value: SearchContextProps = {
-    onSuggestionSelected,
-    currentToken,
-    setCurrentToken,
     inputValue,
     setInputValue,
+    tokens,
+    setTokens,
+    currentToken,
+    setCurrentToken,
+    onSuggestionSelected,
     onSelectedTermsAdd,
     onSelectedTermsRemove,
     input: inputRef.current,

@@ -1,6 +1,10 @@
-export type TokenMatch = {
+export type Token = {
   token: string
-  word: string
   index: number
   isExpression?: boolean
+  spacesAfter?: number
+}
+
+export type TokenMatch = Token & {
+  word: string
 }

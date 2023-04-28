@@ -108,10 +108,9 @@ const TokensInput = forwardRef<HTMLInputElement, Props>(
 
       if (
         e.key === ' ' &&
-        (val[position - 1] === ' ' || val[position] === ' ')
-        // (val.slice(position - 2, position) === '  ' ||
-        //   val.slice(position, position + 2) === '  ' ||
-        //   val.slice(position - 1, position + 1) === '  ')
+        (val.slice(position - 2, position) === '  ' ||
+          val.slice(position, position + 2) === '  ' ||
+          val.slice(position - 1, position + 1) === '  ')
       ) {
         e.preventDefault()
       }
