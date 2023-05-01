@@ -4,7 +4,7 @@ beautifulsoup4
 elasticsearch==8.2.0
 #elasticsearch-dsl
 #ln elasticsearch-dsl==7.0.0
-Flask==2.1.1
+Flask==2.3.2
 #ln Flask==1.1.1
 Flask-Cors==3.0.10
 python-secrets==22.6.1
