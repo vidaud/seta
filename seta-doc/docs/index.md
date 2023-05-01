@@ -33,11 +33,11 @@ stateDiagram
 
 These data consist of text documents and the metadata that describe them.      
 
-SeTA ingests and, after some cleaning of the text content, stores the documents and metadata in **Elasticsearch**, a special database.     
+SeTA ingests and, after some cleaning of the text content, stores the documents and metadata in **ElasticSearch**, a special database.     
 
 
-### Elasticsearch
-Elasticsearch is a distributed, free and open search and analytics engine for all types of data, including textual, numerical, geospatial, structured and unstructured. Elasticsearch is built on Apache Lucene and was first released in 2010 by Elasticsearch N.V. (now known as Elastic).  Raw data flows into Elasticsearch from a variety of sources, including logs, system metrics, and web applications. Data ingestion is the process by which this raw data is parsed, normalized, and enriched before it is indexed in Elasticsearch. Once indexed in Elasticsearch, users can run complex queries against their data and use aggregations to retrieve complex summaries of their data.[^1] *(NB: clicking on a footnote takes you there and back again)*
+### ElasticSearch
+ElasticSearch is a distributed, free and open search and analytics engine for all types of data, including textual, numerical, geospatial, structured and unstructured. ElasticSearch is built on Apache Lucene and was first released in 2010 by ElasticSearch N.V. (now known as Elastic).  Raw data flows into ElasticSearch from a variety of sources, including logs, system metrics, and web applications. Data ingestion is the process by which this raw data is parsed, normalized, and enriched before it is indexed in ElasticSearch. Once indexed in ElasticSearch, users can run complex queries against their data and use aggregations to retrieve complex summaries of their data.[^1] *(NB: clicking on a footnote takes you there and back again)*
 
 ### AI Models
 
@@ -45,7 +45,7 @@ An Artificial Intelligence model is a program or an algorithm that utilizes data
 
 The first step is to create an AI model, which uses a complex algorithm or layers of algorithms that interpret data and make decisions based on that data.[^3] 
 
-The next step is to train the AI model by using full text documents and their phrases from Elasticsearch. This training enables the models to learn relations between the meanings of the words in the text provided. 
+The next step is to train the AI model by using full text documents and their phrases from ElasticSearch. This training enables the models to learn relations between the meanings of the words in the text provided. 
 
 
 ### Word2Vec
