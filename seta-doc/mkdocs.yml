@@ -79,18 +79,17 @@ extra_css:
  
 nav:
   - What is SeTA: index.md
+  - Who should use it and why: general/who_use_it_and_why.md   
   - Methodology: general/how-runs.md
-  - Why you would use it: general/why-use-it.md
-  - Who should/can use it: general/who-use-it.md
-  - Docker: general/docker-architecture.md      
-  - Install SeTA:
-    - Deployment: setup/deployment.md 
-    - Release: release-notes/release-notes.md
   - Using SeTA:
     - Setup: user-guide/setup.md
     - Web App:
       - Search: user-guide/web-app.md
       - Communities: user-guide/communities.md
+  - Install SeTA:
+    - Docker: setup/docker-architecture.md
+    - Deployment: setup/deployment.md 
+    - Release: setup/release-notes.md
   - Seta-API: seta-api/seta_api_v1.md
   - FAQS: faqs/faqs.md
   - License: license/license_v1.md

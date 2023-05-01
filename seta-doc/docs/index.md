@@ -1,17 +1,16 @@
-# SeTA *Semantic Text Analyser*
-
 <!--  {{ customer.web }} -->
 
+The European Union Bodies publish a vast amount of information which is made available via different channels.      
+Making sense of the textual content and finding links between documents is difficult if not impossible just by having humans read it. 
 
 
-The European Union Bodies publish a vast amount of information which is made available via different channels.
-Making sense of this textual content and finding links between documents is difficult if not impossible just by having humans read it. 
 
-The **semantic text analyzer** or **SeTA** is a software tool that accomplishes these tasks.
+The **Semantic Text Analyzer** or **SeTA** is a software tool that supports these tasks.     
 
-SeTA uses advanced text mining techniques to help users to screen and query large document collections.
+SeTA uses advanced text mining techniques to help users screen and query these large document collections.   
 
-Users can search EU documents based on keywords and then screen the results and apply filters, all very quickly and accurately.
+Users can search EU documents based on keywords and then screen the results and apply filters, all very quickly and accurately.    
+
 
 ## How can SeTA provide all of this information to users?
 
@@ -27,17 +26,18 @@ stateDiagram
 
 ![Screenshot](./img/data_sources.png)
 
-- EUR-Lex is the online database of all official EU legal documents. It provides the official and most comprehensive access to EU legal documents.
-- CORDIS contains the results from the projects funded by the EU's framework programs for research and innovation. 
-- Pubsy is the publications repository of the European Commission's Joint Research Centre. 
-- European Parlament is the EU's law-making body. It is directly elected by EU voters every 5 years. 
+- EUR-Lex is the online database of all EU legal documents, providing the official and most comprehensive access to them.      
+- CORDIS contains the results from the projects funded by the EU's framework programs for research and innovation.      
+- Pubsy is the publications repository of the European Commission's Joint Research Centre.     
+- As a fourth main data source, SeTA covers the publications of the European Parliament.     
 
-These data consist of text documents and the metadata that describe them. 
+These data consist of text documents and the metadata that describe them.      
 
-SeTA ingests and, after some cleaning of the text content, stores the documents and metadata in **Elasticsearch**, a special database. 
+SeTA ingests and, after some cleaning of the text content, stores the documents and metadata in **Elasticsearch**, a special database.     
+
 
 ### Elasticsearch
-Elasticsearch is a distributed, free and open search and analytics engine for all types of data, including textual, numerical, geospatial, structured, and unstructured. Elasticsearch is built on Apache Lucene and was first released in 2010 by Elasticsearch N.V. (now known as Elastic).  Raw data flows into Elasticsearch from a variety of sources, including logs, system metrics, and web applications. Data ingestion is the process by which this raw data is parsed, normalized, and enriched before it is indexed in Elasticsearch. Once indexed in Elasticsearch, users can run complex queries against their data and use aggregations to retrieve complex summaries of their data.[^1]
+Elasticsearch is a distributed, free and open search and analytics engine for all types of data, including textual, numerical, geospatial, structured and unstructured. Elasticsearch is built on Apache Lucene and was first released in 2010 by Elasticsearch N.V. (now known as Elastic).  Raw data flows into Elasticsearch from a variety of sources, including logs, system metrics, and web applications. Data ingestion is the process by which this raw data is parsed, normalized, and enriched before it is indexed in Elasticsearch. Once indexed in Elasticsearch, users can run complex queries against their data and use aggregations to retrieve complex summaries of their data.[^1] *(NB: clicking on a footnote takes you there and back again)*
 
 ### AI Models
 
@@ -45,36 +45,38 @@ An Artificial Intelligence model is a program or an algorithm that utilizes data
 
 The first step is to create an AI model, which uses a complex algorithm or layers of algorithms that interpret data and make decisions based on that data.[^3] 
 
-The next step is to train AI models by using full text documents and their phrases from Elasticsearch. This training helps the models to learn relations between the meanings of the words in the text provided. 
+The next step is to train the AI model by using full text documents and their phrases from Elasticsearch. This training enables the models to learn relations between the meanings of the words in the text provided. 
+
 
 ### Word2Vec
 
 The algorithm **Word2Vec** processes phrases. This algorithm takes input words and groups them together based on the similarity of their meanings. This similarity is calculated using complex mathematical formulas based on the context of the words. 
 
-Word2vec is a two-layer neural net that processes text by “vectorizing” words. Its input is a text corpus and its output is a set of vectors: feature vectors that represent words in that corpus. While Word2vec is not a deep neural network, it turns text into a numerical form that deep neural networks can understand.[^4]
+Word2vec is a two-layer neural net that processes text by “vectorizing” words. Its input is a text corpus and its output is a set of vectors: feature vectors that represent words in that corpus. Word2vec creates vectors that are distributed numerical representations of word features, features such as the context of individual words. It does so without human intervention. While Word2vec is not a deep neural network, it turns text into a numerical form that deep neural networks can understand.[^4] Its output is a vocabulary in which each item has a vector attached to it, which can be fed into a deep-learning net or simply queried to detect relationships between words.
 
-The purpose and usefulness of Word2vec is to group the vectors of similar words together in vectorspace. That is, it detects similarities mathematically. Word2vec creates vectors that are distributed numerical representations of word features, features such as the context of individual words. It does so without human intervention.
+The purpose and usefulness of Word2vec is to group the vectors of similar words together in vectorspace. That is, it detects similarities mathematically. 
 
 Given enough data, usage and contexts, Word2vec can make highly accurate guesses about a word’s meaning based on past appearances. Those guesses can be used to establish a word’s association with other words (e.g. “man” is to “boy” what “woman” is to “girl”), or cluster documents and classify them by topic. Those clusters can form the basis of search, sentiment analysis and recommendations in such diverse fields as scientific research, legal discovery, e-commerce and customer relationship management.
 
-The output of the Word2vec neural net is a vocabulary in which each item has a vector attached to it, which can be fed into a deep-learning net or simply queried to detect relationships between words.
+
 
 ### sBERT
 
-**sBert** is a modification of the standard pretrained **BERT** network. sBert uses siamese and triplet networks to create sentence embeddings for each sentence that can then be compared using a cosine-similarity, making semantic search for a large number of sentences feasible.
+**sBert** is a modification of the standard pretrained **BERT** network..
 
-**BERT** is an open source machine learning framework for natural language processing (NLP). Is designed to help computers understand the meaning of ambiguous language in text by using surrounding text to establish context. The BERT framework was pre-trained using text from Wikipedia and can be fine-tuned with question and answer datasets.  BERT, which stands for *Bidirectional Encoder Representations from Transformers*, is based on Transformers[^5], a deep learning model in which every output element is connected to every input element, and the weightings between them are dynamically calculated based upon their connection. (In NLP, this process is called attention.)[^6]
+**BERT**, which stands for *Bidirectional Encoder Representations from Transformers*, is an open source machine learning framework for natural language processing (NLP) originating from Google [https://en.wikipedia.org/wiki/BERT_(language_model)]. Is designed to help computers understand the meaning of ambiguous language in text by using surrounding text to establish context. The BERT framework was pre-trained using text from Wikipedia and can be fine-tuned with question and answer datasets.  BERTis based on Transformers[^5], a deep learning model in which every output element is connected to every input element, and the weightings between them are dynamically calculated based upon their connection. (In NLP, this process is called attention.)[^6]
 
-**sBERT** is based on sentences and provides further training to the model.  SBERT uses a siamese architecture, where it contains 2 BERT architectures that are essentially identical and share the same weights, and SBERT processes 2 sentences as pairs during training. While the original research paper tried several pooling methods, they found mean-pooling was the best approach. Pooling is a technique for generalizing features in a network, and in this case, mean pooling works by averaging groups of features in the BERT. After the pooling is done, we now have 2 embeddings: 1 for sentence A and 1 for sentence B. When the model is training, SBERT concatenates the 2 embeddings which will then run through a softmax classifier and be trained using a softmax-loss function. At inference — or when the model actually begins predicting — the two embeddings are then compared using a cosine similarity function, which will output a similarity score for the two sentences.[^7] 
+**sBERT** is based on sentences and provides further training to the model, making semantic search for a large number of sentences feasible. SBERT uses a siamese architecture, where it contains two BERT architectures that are essentially identical and share the same weights, and SBERT processes two sentences as pairs during training. While the original research paper tried several pooling methods, they found mean-pooling was the best approach. Pooling is a technique for generalizing features in a network, and in this case, mean pooling works by averaging groups of features in the BERT. After the pooling is done, we now have two embeddings: one for sentence A and one for sentence B. When the model is training, SBERT concatenates the two embeddings which will then run through a softmax classifier and be trained using a softmax-loss function. At inference — or when the model actually begins predicting — the two embeddings are then compared using a cosine similarity function, which will output a similarity score for the two sentences.[^7] 
 
-By training the models with new documents as they are published, we can ensure that the knowledge they contain represents EU documents accurately. 
+By training the models with new documents as they are published, we can ensure that the knowledge the models contain continues to represent EU documents accurately. 
 
-This knowledge is used to enrich document metadata and by expanding the labels based on existing ontologies.
+This knowledge is used to enrich document metadata and by expanding the labels (the meanings or categories attached to words) based on existing ontologies.
 
 !!! info "Ontology"
     Ontology shows properties and relations between a set of concepts and categories within a  subject area or domain. It is a branch of linguistics called semantics, the study of meaning. With ontology, a machine can accurately interpret the meaning of the word “diamond” in relation to a baseball player, jeweler, or card suit. It can also help interpret the word “chicken” as either food or an animal or differentiate between “bank” as a place of business or land alongside a river or lake.[^8]
 
 At this point the full text of all documents can be searched through a simple interface, and users are able to target their search either to the individual document collections or to search across all collections in a harmonised way.
+
 
 
 [^1]:https://www.elastic.co/what-is/elasticsearch
