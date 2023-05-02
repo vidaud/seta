@@ -19,7 +19,7 @@ type Props = {
 const TOKEN_RESET_DELAY = 100
 
 const SuggestionsPopup = ({ opened, onOpenChange }: Props) => {
-  const { inputValue, setInputValue, setCurrentToken } = useSearch()
+  const { setCurrentToken } = useSearch()
 
   const [popupOpen, setPopupOpen] = useState(opened ?? false)
 
@@ -46,7 +46,7 @@ const SuggestionsPopup = ({ opened, onOpenChange }: Props) => {
   }
 
   const handleInputChange = (value: string) => {
-    setInputValue(value)
+    // setInputValue(value)
     handlePopupChange(true)
   }
 
@@ -62,14 +62,14 @@ const SuggestionsPopup = ({ opened, onOpenChange }: Props) => {
       arrowSize={12}
       shadow="sm"
       offset={-2}
-      withinPortal
+      // withinPortal
     >
       <Popover.Target>
         <SearchInput
           css={S.inputWrapper}
-          value={inputValue}
+          // value={inputValue}
           onClick={openPopup}
-          onChange={handleInputChange}
+          // onChange={handleInputChange}
         />
       </Popover.Target>
 

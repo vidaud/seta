@@ -77,20 +77,20 @@ const useTokens = (value: string, inputRef: RefObject<HTMLInputElement>) => {
   }, [updateCurrentToken])
 
   useEffect(() => {
-    if (updateRef.current) {
-      clearTimeout(updateRef.current)
-    }
+    // if (updateRef.current) {
+    //   clearTimeout(updateRef.current)
+    // }
 
-    updateRef.current = window.setTimeout(() => {
-      setTokens(newTokens)
-      updateRef.current = null
+    // updateRef.current = window.setTimeout(() => {
+    //   setTokens(newTokens)
+    //   updateRef.current = null
 
-      updateCurrentTokenDeferred()
-    }, 0)
+    //   updateCurrentTokenDeferred()
+    // }, 0)
 
-    // setTokens(newTokens)
+    setTokens(newTokens)
 
-    // updateCurrentTokenDeferred()
+    updateCurrentTokenDeferred()
   }, [newTokens, setTokens, updateCurrentTokenDeferred])
 
   const renderTokens = useCallback(() => {
