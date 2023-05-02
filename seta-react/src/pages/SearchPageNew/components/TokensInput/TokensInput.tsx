@@ -50,18 +50,18 @@ const TokensInput = forwardRef<HTMLInputElement, Props>(
 
     useImperativeHandle(ref, () => inputRef.current as HTMLInputElement)
 
-    const { updateCurrentToken, hideHighlight, renderTokens } = useTokens(inputRef)
+    const { updateCurrentToken, renderTokens } = useTokens(String(value), inputRef)
     const { setInputRef } = useSearch()
 
     const mustSetPosition = nextPositionRef.current !== null
 
-    // const updateTokesDeferred = () => {
+    // const updateCurrentTokenDeferred = () => {
     //   if (timeoutRef.current) {
     //     clearTimeout(timeoutRef.current)
     //   }
 
     //   timeoutRef.current = window.setTimeout(() => {
-    //     updateTokens()
+    //     updateCurrentToken()
     //     timeoutRef.current = null
     //   }, 200)
     // }
@@ -105,9 +105,9 @@ const TokensInput = forwardRef<HTMLInputElement, Props>(
     }
 
     const handleInput: FormEventHandler<HTMLInputElement> = e => {
-      hideHighlight()
       // updateCurrentToken()
       // updateTokesDeferred()
+      // updateCurrentTokenDeferred()
       onInput?.(e)
     }
 
@@ -154,7 +154,6 @@ const TokensInput = forwardRef<HTMLInputElement, Props>(
     }
 
     const handleBlur: FocusEventHandler<HTMLInputElement> = e => {
-      hideHighlight()
       setFocused(false)
       onBlur?.(e)
     }
