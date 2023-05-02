@@ -4,6 +4,7 @@ from flask_restx import Namespace, Resource
 from http import HTTPStatus
 from injector import inject
 from Crypto.PublicKey import RSA
+from flask import jsonify
 
 from seta_flask_server.repository.interfaces import IRsaKeysBroker
 from .models.rsa_dto import rsa_model, rsa_pair_model
@@ -68,7 +69,7 @@ class RsaKey(Resource):
         }
         
     @rsa_ns.doc(description='Delete the public RSA key',        
-        responses={int(HTTPStatus.OK): "Rsa key was delete"},
+        responses={int(HTTPStatus.OK): "The public key was deleted"},
         security='CSRF')
     @jwt_required()
     def delete(self):
@@ -76,3 +77,6 @@ class RsaKey(Resource):
         
         identity = get_jwt_identity()
         self.rsaKeysBroker.delete_by_user_id(identity["user_id"])
+        
+        message = f"Public key deleted"        
+        return jsonify(status="success", message=message)

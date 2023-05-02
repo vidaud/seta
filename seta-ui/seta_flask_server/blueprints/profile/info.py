@@ -34,9 +34,13 @@ class UserInfo(Resource):
         
         identity = get_jwt_identity()        
         
-        user = self.usersBroker.get_user_by_id_and_provider(user_id=identity["user_id"], 
-                    provider_uid=identity["provider_uid"], 
-                    provider=identity["provider"])
+        if "provider_uid" in identity:
+            user = self.usersBroker.get_user_by_id_and_provider(user_id=identity["user_id"], 
+                        provider_uid=identity["provider_uid"], 
+                        provider=identity["provider"])
+        else:
+            user = self.usersBroker.get_user_by_id(user_id=identity["user_id"], load_scopes=False)
+            user.authenticated_provider = user.external_providers[0]
         
         if user is None:
             app.logger.error(f"User {str(identity)} not found in the database!")
@@ -70,9 +74,13 @@ class SetaAccount(Resource):
 
         identity = get_jwt_identity()        
         
-        user = self.usersBroker.get_user_by_id_and_provider(user_id=identity["user_id"], 
-                    provider_uid=identity["provider_uid"], 
-                    provider=identity["provider"])
+        if "provider_uid" in identity:
+            user = self.usersBroker.get_user_by_id_and_provider(user_id=identity["user_id"], 
+                        provider_uid=identity["provider_uid"], 
+                        provider=identity["provider"])
+        else:
+            user = self.usersBroker.get_user_by_id(user_id=identity["user_id"], load_scopes=False)
+            user.authenticated_provider = user.external_providers[0]
         
         if user is None:
             app.logger.error(f"User {str(identity)} not found in the database!")
