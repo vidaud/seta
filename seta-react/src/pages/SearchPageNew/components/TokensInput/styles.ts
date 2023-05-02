@@ -40,7 +40,7 @@ export const renderer: ThemedCSS = theme => css`
     height: 1px;
     opacity: 0;
     background-color: ${theme.fn.rgba(theme.colors.dark[2], 0.4)};
-    transition: all 0.2s ease;
+    transition: all 0.2s ease-in-out;
   }
 
   span.expression {
@@ -71,9 +71,9 @@ export const renderer: ThemedCSS = theme => css`
     }
   }
 
-  span.quote {
+  /* span.quote {
     color: ${theme.colors.grape[5]};
-  }
+  } */
 
   &.focused {
     span.current {

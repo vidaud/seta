@@ -2,11 +2,14 @@ import { useState } from 'react'
 
 import SuggestionsPopup from '~/pages/SearchPageNew/components/SuggestionsPopup'
 import { SearchProvider } from '~/pages/SearchPageNew/components/SuggestionsPopup/contexts/search-context'
-import type { TokenMatch } from '~/pages/SearchPageNew/components/SuggestionsPopup/types/token'
+import type {
+  Token,
+  TokenMatch
+} from '~/pages/SearchPageNew/components/SuggestionsPopup/types/token'
 
 const SearchSuggestionInput = () => {
   const [value, setValue] = useState('')
-  const [tokens, setTokens] = useState<TokenMatch[]>([])
+  const [tokens, setTokens] = useState<Token[]>([])
   const [currentToken, setCurrentToken] = useState<TokenMatch | null>(null)
 
   const handleSuggestionSelected = (suggestion: string) => {

@@ -2,14 +2,14 @@ import { createContext, useContext, useRef } from 'react'
 
 import type { ChildrenProp } from '~/types/children-props'
 
-import type { TokenMatch } from '../types/token'
+import type { Token, TokenMatch } from '../types/token'
 
 type SearchProviderProps = {
   onSuggestionSelected?: (suggestion: string) => void
   inputValue: string
   setInputValue: (value: string) => void
-  tokens: TokenMatch[]
-  setTokens: (tokens: TokenMatch[]) => void
+  tokens: Token[]
+  setTokens: (tokens: Token[]) => void
   currentToken: TokenMatch | null
   setCurrentToken: (token: TokenMatch | null) => void
   onSelectedTermsAdd: (terms: string[]) => void

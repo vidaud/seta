@@ -43,15 +43,28 @@ const TokensInput = forwardRef<HTMLInputElement, Props>(
     const inputRef = useRef<HTMLInputElement>(null)
     const rendererRef = useRef<HTMLDivElement>(null)
 
+    const timeoutRef = useRef<number | null>(null)
+
     // Save the cursor position without re-rendering
     const nextPositionRef = useRef<number | null>(null)
 
     useImperativeHandle(ref, () => inputRef.current as HTMLInputElement)
 
-    const { updateCurrentToken, renderTokens } = useTokens(inputRef)
+    const { updateCurrentToken, hideHighlight, renderTokens } = useTokens(inputRef)
     const { setInputRef } = useSearch()
 
     const mustSetPosition = nextPositionRef.current !== null
+
+    // const updateTokesDeferred = () => {
+    //   if (timeoutRef.current) {
+    //     clearTimeout(timeoutRef.current)
+    //   }
+
+    //   timeoutRef.current = window.setTimeout(() => {
+    //     updateTokens()
+    //     timeoutRef.current = null
+    //   }, 200)
+    // }
 
     // Set the cursor position after the input value has been updated
     // useEffect(() => {
@@ -92,7 +105,9 @@ const TokensInput = forwardRef<HTMLInputElement, Props>(
     }
 
     const handleInput: FormEventHandler<HTMLInputElement> = e => {
+      hideHighlight()
       // updateCurrentToken()
+      // updateTokesDeferred()
       onInput?.(e)
     }
 
@@ -139,6 +154,7 @@ const TokensInput = forwardRef<HTMLInputElement, Props>(
     }
 
     const handleBlur: FocusEventHandler<HTMLInputElement> = e => {
+      hideHighlight()
       setFocused(false)
       onBlur?.(e)
     }

@@ -1,5 +1,5 @@
 import type { RefObject } from 'react'
-import { useEffect, useRef, useCallback } from 'react'
+import { useEffect, useState, useRef, useCallback } from 'react'
 import { clsx } from '@mantine/core'
 
 import { useSearch } from '~/pages/SearchPageNew/components/SuggestionsPopup/contexts/search-context'
@@ -30,7 +30,8 @@ const getCurrentWord = (value: string, position: number) => {
 }
 
 const useTokens = (inputRef: RefObject<HTMLInputElement>) => {
-  const { currentToken, setCurrentToken } = useSearch()
+  const [noHighligh, setNoHighligh] = useState(false)
+  const { currentToken, setCurrentToken, tokens, setTokens } = useSearch()
 
   const timeoutRef = useRef<number | null>(null)
 
@@ -41,7 +42,7 @@ const useTokens = (inputRef: RefObject<HTMLInputElement>) => {
       return []
     }
 
-    const tokens: Token[] = []
+    const result: Token[] = []
 
     let match: RegExpExecArray | null
 
@@ -50,7 +51,7 @@ const useTokens = (inputRef: RefObject<HTMLInputElement>) => {
       const token = match[1]
       const spacesAfter = match[3]?.length ?? 0
 
-      tokens.push({
+      result.push({
         token,
         index: start,
         isExpression: !!token.match(/\s/),
@@ -58,8 +59,39 @@ const useTokens = (inputRef: RefObject<HTMLInputElement>) => {
       })
     }
 
-    return tokens
+    return result
   }, [value])
+
+  const hideHighlight = () => {
+    setNoHighligh(true)
+  }
+
+  // const internalUpdateToken = useCallback(() => {
+  //   if (!inputRef.current) {
+  //     return
+  //   }
+
+  //   const position = inputRef.current.selectionStart ?? 0
+
+  //   let found: Token | null = null
+
+  //   for (const token of tokens) {
+  //     const start = token.index
+  //     const end = start + token.token.length
+
+  //     if (position >= start && position <= end) {
+  //       found = token
+  //       break
+  //     }
+  //   }
+
+  //   if (found) {
+  //     setCurrentToken({
+  //       ...found,
+  //       word: found.token
+  //     })
+  //   }
+  // }, [inputRef, setCurrentToken, tokens])
 
   const internalUpdateToken = useCallback(() => {
     if (!inputRef.current) {
@@ -105,6 +137,10 @@ const useTokens = (inputRef: RefObject<HTMLInputElement>) => {
     setCurrentToken({ token, word, index, isExpression })
   }, [inputRef, setCurrentToken])
 
+  const clearCurrentToken = useCallback(() => {
+    setCurrentToken(null)
+  }, [setCurrentToken])
+
   const updateCurrentToken = useCallback(() => {
     // if (!inputRef.current) {
     //   return
@@ -125,11 +161,19 @@ const useTokens = (inputRef: RefObject<HTMLInputElement>) => {
     }
 
     timeoutRef.current = setTimeout(() => {
-      const tokens = getTokens()
+      const tk = getTokens()
 
-      console.log('tokens', tokens)
+      setTokens(tk)
+
+      console.log('tokens', tk)
+
+      setNoHighligh(false)
+
+      updateCurrentToken()
 
       // internalUpdateToken()
+
+      timeoutRef.current = null
     }, 200)
 
     return () => {
@@ -137,14 +181,12 @@ const useTokens = (inputRef: RefObject<HTMLInputElement>) => {
         clearTimeout(timeoutRef.current)
       }
     }
-  }, [value, internalUpdateToken])
+  }, [value, setTokens, getTokens, updateCurrentToken])
 
   const renderTokens = useCallback(() => {
     if (!inputRef.current) {
       return null
     }
-
-    const tokens = getTokens()
 
     if (!tokens.length) {
       return null
@@ -163,8 +205,9 @@ const useTokens = (inputRef: RefObject<HTMLInputElement>) => {
     // in case there are multiple identical tokens in the input
     let index = 0
 
-    const highlightedTokens = tokens.map(({ token, spacesAfter, isExpression }, i) => {
-      const isCurrentToken = token === currentToken?.token && index === currentToken.index
+    const highlightedTokens = tokens.map(({ token, spacesAfter, isExpression }) => {
+      const isCurrentToken =
+        !noHighligh && token === currentToken?.token && index === currentToken.index
 
       const cls = {
         root: clsx({ current: isCurrentToken && tokens.length > 1, expression: isExpression }),
@@ -193,9 +236,9 @@ const useTokens = (inputRef: RefObject<HTMLInputElement>) => {
     })
 
     return highlightedTokens
-  }, [inputRef, currentToken?.token, currentToken?.index])
+  }, [inputRef, tokens, currentToken?.token, currentToken?.index, noHighligh])
 
-  return { updateCurrentToken, renderTokens, currentToken }
+  return { updateCurrentToken, clearCurrentToken, renderTokens, hideHighlight }
 }
 
 export default useTokens
