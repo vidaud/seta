@@ -161,7 +161,6 @@ corpus_delete_id_response = {}
 corpus_delete_id_response["deleted_document_id"] = fields.String
 
 corpus_get_id_response = {}
-corpus_get_id_response["_id"] = fields.String()
 corpus_get_id_response["abstract"] = fields.String()
 corpus_get_id_response["author"] = fields.List(fields.String())
 corpus_get_id_response["chunk_number"] = fields.Integer()
