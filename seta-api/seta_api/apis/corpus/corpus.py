@@ -122,12 +122,12 @@ class CorpusQuery(Resource):
                 args["source"] = view_resources
         except ForbiddenResourceError as fre:
             abort(HTTPStatus.FORBIDDEN, fre.message)
-        
+
         if is_field_in_doc(args, 'term') or is_field_in_doc(args, 'semantic_sort_id') \
                 or is_field_in_doc(args, 'semantic_sort_id_list')\
                 or is_field_in_doc(args, 'sbert_embedding') or is_field_in_doc(args, 'sbert_embedding_list') \
                 or is_field_in_doc(args, 'aggs') \
-                or is_field_in_doc(args, 'source'):
+                or is_field_in_doc(args, 'source') or is_field_in_doc(args, 'taxonomy'):
             try:
                 documents = corpus(is_field_in_doc(args, 'term'), is_field_in_doc(args, 'n_docs'),
                                    is_field_in_doc(args, 'from_doc'), is_field_in_doc(args, 'source'),
@@ -214,7 +214,6 @@ class CorpusQuery(Resource):
                                    args['reference'], args['in_force'], args['sort'], None, args['semantic_sort_id'],
                                    None, args['semantic_sort_id_list'], None, args['author'], args['date_range'],
                                    args['aggs'], args['search_type'], args['other'], current_app=app)
-                
                 return jsonify(documents)
             except ApiLogicError as aex:
                 abort(404, str(aex))

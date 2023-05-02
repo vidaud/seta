@@ -47,7 +47,9 @@ def insert_doc(args, es, index):
 
     res = es.index(index=index, document=new_doc)
     doc_id = res["_id"]
-    embs = Embeddings.embeddings_from_doc_fields(args["title"], args["abstract"], args["text"])
+    embs = Embeddings.embeddings_from_doc_fields(is_field_in_doc(args, "title"),
+                                                 is_field_in_doc(args, "abstract"),
+                                                 is_field_in_doc(args, "text"))
     first = True
     for emb in embs:
         if first:

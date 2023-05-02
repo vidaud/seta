@@ -33,7 +33,6 @@ class SetaES:
     
     def cleanup(self) -> None:
         try:
-            #body = {"query": {"match_all": {}}}
             self.es.delete_by_query(index=self.index, query={"match_all": {}})
         except Exception as e:
             print(e)
