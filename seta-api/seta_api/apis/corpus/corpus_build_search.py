@@ -6,9 +6,11 @@ def build_taxonomy_nested_query(taxonomy):
     if taxonomy:
         nested_query = {"nested": {"path": "taxonomy", "query": {"bool": {"should": []}}}}
         for field in taxonomy:
+            bool_block = {"bool": {"must": []}}
             for attribute, value in field.items():
-                nested_block = {"match": {"taxonomy." + attribute: value}}
-                nested_query["nested"]["query"]["bool"]["should"].append(nested_block)
+                must_block = {"match": {"taxonomy." + attribute: value}}
+                bool_block["bool"]["must"].append(must_block)
+            nested_query["nested"]["query"]["bool"]["should"].append(bool_block)
         return nested_query
     return None
 

@@ -110,9 +110,7 @@ def handle_aggs_response(aggs, response, documents, current_app):
         elif agg == "source_collection_reference":
             documents["aggregations"][agg] = compose_source_collection_reference_response_tree(response["aggregations"][agg]["buckets"])
         elif agg.startswith("taxonomy:"):
-            if "taxonomy" not in documents["aggregations"]:
-                documents["aggregations"]["taxonomy"] = []
-            documents["aggregations"]["taxonomy"].append(compose_taxonomy_response_tree(response["aggregations"]["taxonomy"]["buckets"], agg, current_app))
+            documents["aggregations"]["taxonomy"] = compose_taxonomy_response_tree(response["aggregations"]["taxonomy"]["buckets"], agg, current_app)
         else:
             documents["aggregations"][agg] = response["aggregations"][agg]["buckets"]
     return documents

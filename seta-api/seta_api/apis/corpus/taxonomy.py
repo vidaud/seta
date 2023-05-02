@@ -41,7 +41,7 @@ class Taxonomy:
     def __init__(self, es, index, taxonomy):
         self.tree = []
         self.es = es
-        self.isndex = index
+        self.index = index
         self.taxonomy = taxonomy
 
     def add_single_category(self, parent, tax, doc_count):
