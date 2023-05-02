@@ -30,10 +30,14 @@ def web_root(request):
 
 @pytest.fixture(scope="session", autouse=True)
 def init_os():
-    #set the required env read in config
+    #! set the same API_SECRET_KEY in the .env.test file
     os.environ["API_SECRET_KEY"] = "testkey1"
     
     return True
+
+@pytest.fixture(scope="session")
+def authentication_url():    
+    return "http://localhost:8080/authentication/v1/user/token"
 
 @pytest.fixture(scope='module', autouse=True)
 def db(db_host, db_port):

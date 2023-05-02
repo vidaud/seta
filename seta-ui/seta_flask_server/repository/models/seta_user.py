@@ -1,5 +1,5 @@
 from flask import json
-import datetime
+from datetime import datetime
 import pytz
 import shortuuid
 
@@ -190,7 +190,7 @@ class SetaUser:
         if self._system_scopes is None:
             return False
 
-        return any(cs.scope == scope for cs in self._system_scopes)
+        return any(cs.system_scope == scope for cs in self._system_scopes)
 
     def has_any_system_scope(self, scopes: list[str]) -> bool:
         if self._system_scopes is None:
@@ -223,12 +223,15 @@ class SetaUser:
                    json_dct['email'], 
                    'user',
                    'active',
-                   datetime.datetime.now(tz=pytz.utc),
+                   datetime.now(tz=pytz.utc),
                    None)
         
-        user.authenticated_provider = ExternalProvider(user_id, json_dct['uid'], ExternalProviderConstants.ECAS, 
-                                                        json_dct['firstName'], json_dct['lastName']
-                                                        ,json_dct['domain'])
+        user.authenticated_provider = ExternalProvider(user_id=user_id, 
+                                                    provider_uid=json_dct['uid'], 
+                                                    provider=ExternalProviderConstants.ECAS, 
+                                                    first_name=json_dct['firstName'], 
+                                                    last_name=json_dct['lastName'],
+                                                    domain=json_dct['domain'])
         
         is_admin = json_dct.get('is_admin')
         if not is_admin:
@@ -246,7 +249,7 @@ class SetaUser:
                    json_dct['email'], 
                    'user',
                    'active',
-                   datetime.datetime.now(tz=pytz.utc),
+                   datetime.now(tz=pytz.utc),
                    None)
         
         name = str(json_dct["name"]).split(maxsplit=1)
@@ -256,9 +259,10 @@ class SetaUser:
         else:
             last_name = ""
         
-        user._authenticated_provider = ExternalProvider(user_id, json_dct['login'], ExternalProviderConstants.GITHUB, 
-                                                        first_name, last_name
-                                                        ,json_dct['company'])
+        user._authenticated_provider = ExternalProvider(user_id=user_id, provider_uid=json_dct['login'], 
+                                                        provider=ExternalProviderConstants.GITHUB, 
+                                                        first_name=first_name, last_name=last_name,
+                                                        domain=json_dct['company'])
         
         is_admin = json_dct.get('is_admin')
         if not is_admin:

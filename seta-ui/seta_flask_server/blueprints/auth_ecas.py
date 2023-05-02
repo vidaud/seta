@@ -56,23 +56,24 @@ def login_callback_ecas(userBroker: IUsersBroker, sessionBroker: ISessionsBroker
     
     if not user:
         abort(401, "Failed to verify ticket.")
-    else:  # Login successful, redirect according to `next` query parameter. 
-        admins = app.config["ROOT_USERS"]
-        email = str(attributes["email"]).lower()
-        attributes["is_admin"] = email in admins
+    
+    # Login successful, redirect according to `next` query parameter. 
+    admins = app.config["ROOT_USERS"]
+    email = str(attributes["email"]).lower()
+    attributes["is_admin"] = email in admins
+    
+    seta_user = SetaUser.from_ecas_json(attributes)
+    
+    #TODO: verify 'next' domain before redirect, replace with home_route if anything suspicious
+    if not next:                        
+        next = app.home_route
         
-        seta_user = SetaUser.from_ecas_json(attributes)
-        
-        #TODO: verify 'next' domain before redirect, replace with home_route if anything suspicious
-        if not next:                        
-            next = app.home_route
-            
-        next = urljoin(next, "?action=login")
-        
-        auth_user = userBroker.authenticate_user(seta_user)
-        response = create_login_response(seta_user=auth_user, sessionBroker=sessionBroker, next=next)
-        
-        return response
+    next = urljoin(next, "?action=login")
+    
+    auth_user = userBroker.authenticate_user(seta_user)
+    response = create_login_response(seta_user=auth_user, sessionBroker=sessionBroker, next=next)
+    
+    return response
 
 @auth_ecas.route("/logout/ecas")
 def logout_ecas():

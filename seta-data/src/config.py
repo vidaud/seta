@@ -3,7 +3,7 @@ import os
     
 class Config:
     
-    ES_HOST = "seta-es:9200"
+    ES_HOST = None
     ES_INIT_DATA_CONFIG_FILE = "data-mapping.json"
     ES_SUGGESTION_INIT_DATA_CONFIG_FILE = "suggestion-data-mapping.json"
 
@@ -14,9 +14,6 @@ class Config:
     
     MODELS_DOCKER_PATH = "/home/seta/models_docker/"    
     MODELS_PATH = "/home/seta/models/"
-    MODELS_WORD2VEC_FILE = "wv-sg0-hs1.bin"
-    MODELS_WORD2VEC_FILE_CRC = "wv-sg0-hs1.crc"
-    MODELS_INIT_FILE = "models.zip"
     WORD2VEC_JSON_EXPORT = "json_suggestion.json"
     WORD2VEC_JSON_EXPORT_CRC = "json_suggestion.crc"  
     

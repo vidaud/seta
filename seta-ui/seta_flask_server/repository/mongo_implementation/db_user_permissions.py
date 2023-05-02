@@ -82,37 +82,51 @@ class UserPermissionsBroker(implements(IUserPermissionsBroker)):
         ''' Replace all system scopes for 'user_id' '''
 
         cFilter = {"user_id": user_id, "system_scope":{"$exists" : True}, "area":{"$exists" : True}}
-
+        sList = [s.to_json() for s in scopes]
+        
         with self.db.client.start_session(causal_consistency=True) as session:
             #delete existing system scopes
-            self.collection.delete_many(cFilter, session=session)
-
-            sList = [s.to_json() for s in scopes]
+            self.collection.delete_many(cFilter, session=session)  
+            #insert new scopes          
             self.collection.insert_many(sList, session=session)
 
-    def replace_all_user_community_scopes(self, user_id: str, community_id: str, scopes: list[EntityScope]) -> None:
+    def replace_all_user_community_scopes(self, user_id: str, community_id: str, scopes: list[str]) -> None:
         ''' Replace all community scopes for 'user_id' and 'community_id' '''
 
         cFilter = {"user_id": user_id, "community_id": community_id, "community_scope":{"$exists" : True}}
+                
+        sList = []
+        if scopes:
+            for scope in scopes:
+                es = EntityScope(user_id=user_id, id = community_id, scope=scope)
+                sList.append(es.to_community_json())
 
         with self.db.client.start_session(causal_consistency=True) as session:
             #delete existing system scopes
             self.collection.delete_many(cFilter, session=session)
+            
+            if len(sList) > 0:
+                #insert new scopes
+                self.collection.insert_many(sList, session=session)
 
-            sList = [s.to_community_json() for s in scopes]
-            self.collection.insert_many(sList, session=session)
-
-    def replace_all_user_resource_scopes(self, user_id: str, resource_id: str, scopes: list[EntityScope]) -> None:
+    def replace_all_user_resource_scopes(self, user_id: str, resource_id: str, scopes: list[str]) -> None:
         ''' Replace all resource scopes for 'user_id' and 'resource_id' '''
 
         cFilter = {"user_id": user_id, "resource_id": resource_id, "resource_scope":{"$exists" : True}}
 
+        sList = []
+        if scopes:
+            for scope in scopes:
+                es = EntityScope(user_id=user_id, id = resource_id, scope=scope)
+                sList.append(es.to_resource_json())
+        
         with self.db.client.start_session(causal_consistency=True) as session:
             #delete existing system scopes
             self.collection.delete_many(cFilter, session=session)
-
-            sList = [s.to_resource_json() for s in scopes]
-            self.collection.insert_many(sList, session=session)
+            
+            if len(sList) > 0:
+                #insert new scopes
+                self.collection.insert_many(sList, session=session)
 
     def get_all_resource_scopes(self, resource_id: str) -> list[EntityScope]:
         '''Return all resource scopes for resource id '''

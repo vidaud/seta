@@ -1,6 +1,6 @@
 import logging
 
-from flask import (Flask, request, session, url_for, Blueprint)
+from flask import (Flask, request, session, url_for)
 from werkzeug.middleware.proxy_fix import ProxyFix
 from flask_jwt_extended import get_jwt_identity
 
@@ -111,16 +111,10 @@ def create_app(config_object):
         return response 
     
     @jwt.additional_claims_loader   
-    def add_claims_to_access_token(identity):  
-        # TODO update source and limit with mongodb fields
-        #usersBroker = app_injector.injector.get(IUsersBroker)            
-        
-        source_limit = {"source": identity["user_id"], "limit": 5}
-        
+    def add_claims_to_access_token(identity):        
         additional_claims = {
-            "iss": "SETA Flask server",
-            "sub": identity["user_id"],
-            "source_limit": source_limit
+            "iss": "SETA API server",
+            "sub": identity["user_id"]
         }
         return additional_claims
     
@@ -150,8 +144,6 @@ def register_blueprints(app):
     from .blueprints.auth_ecas import auth_ecas
     from .blueprints.auth_github import auth_github
     from .blueprints.user_profile import profile
-    from .blueprints.token_auth import token_auth
-    from .blueprints.token_info import token_info
     
     API_ROOT="/seta-ui/api"
                     
@@ -160,9 +152,6 @@ def register_blueprints(app):
     app.register_blueprint(local_auth, url_prefix=f"{API_ROOT}/v1")
     app.register_blueprint(auth_ecas, url_prefix=f"{API_ROOT}/v1")
     app.register_blueprint(auth_github, url_prefix=f"{API_ROOT}/v1")
-    
-    app.register_blueprint(token_auth, url_prefix="/authentication/v1")
-    app.register_blueprint(token_info, url_prefix="/authorization/v1")
 
     app.register_blueprint(communities_bp_v1, url_prefix=f"{API_ROOT}/v1")
     

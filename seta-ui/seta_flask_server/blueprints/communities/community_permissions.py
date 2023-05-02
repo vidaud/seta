@@ -1,4 +1,4 @@
-from flask import current_app, jsonify
+from flask import jsonify
 from flask_jwt_extended import get_jwt_identity
 
 from flask_restx import Namespace, Resource, abort
@@ -6,8 +6,7 @@ from http import HTTPStatus
 from injector import inject
 
 from seta_flask_server.infrastructure.decorators import auth_validator
-from seta_flask_server.repository.interfaces import IUsersBroker, IUserPermissionsBroker, ICommunitiesBroker, IResourcesBroker
-from seta_flask_server.repository.models import EntityScope, SystemScope
+from seta_flask_server.repository.interfaces import IUsersBroker, IUserPermissionsBroker, ICommunitiesBroker
 from seta_flask_server.infrastructure.scope_constants import CommunityScopeConstants
 
 from seta_flask_server.blueprints.communities.models.permissions_dto import user_scope_model, community_scopes_parser
@@ -45,7 +44,7 @@ class CommunityPermissionList(Resource):
         user = self.usersBroker.get_user_by_id(auth_id)
         if user is None:
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
-        if not user.has_community_scope(id=community_id, scope=CommunityScopeConstants.Manager):
+        if not user.has_any_community_scope(id=community_id, scopes=[CommunityScopeConstants.Manager, CommunityScopeConstants.Owner]):
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
 
         return self.permissionsBroker.get_all_community_scopes(community_id=community_id)
@@ -66,7 +65,7 @@ class CommunityUserPermissions(Resource):
 
     @permissions_ns.doc(description='Retrieve user scopes for a community.',
         responses={int(HTTPStatus.OK): "'Retrieved permissions list.",
-                   int(HTTPStatus.NOT_FOUND): "Community not found"},
+                   int(HTTPStatus.NOT_FOUND): "Community or user not found"},
         security='CSRF')
     @permissions_ns.marshal_list_with(user_scope_model, mask="*")
     @auth_validator()    
@@ -74,7 +73,10 @@ class CommunityUserPermissions(Resource):
         '''Retrieve user permissions for community'''
         
         if not self.communitiesBroker.community_id_exists(community_id):
-            abort(HTTPStatus.NOT_FOUND)
+            abort(HTTPStatus.NOT_FOUND, "Community id not found")
+            
+        if not self.usersBroker.user_uid_exists(user_id):
+            abort(HTTPStatus.NOT_FOUND, "User id not found")        
 
         identity = get_jwt_identity()
         auth_id = identity["user_id"]
@@ -83,7 +85,7 @@ class CommunityUserPermissions(Resource):
         if user is None:            
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")        
 
-        if (not user.has_community_scope(id=community_id, scope=CommunityScopeConstants.Manager)):
+        if not user.has_any_community_scope(id=community_id, scopes=[CommunityScopeConstants.Manager, CommunityScopeConstants.Owner]):
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
 
         return self.permissionsBroker.get_user_community_scopes_by_id(community_id=community_id, user_id=user_id)
@@ -92,7 +94,7 @@ class CommunityUserPermissions(Resource):
     responses={
                 int(HTTPStatus.OK): "User permissions updated.", 
                 int(HTTPStatus.FORBIDDEN): "Insufficient rights, scope 'community/edit' required",
-                int(HTTPStatus.NOT_FOUND): "Community not found."
+                int(HTTPStatus.NOT_FOUND): "Community or user not found."
                 },
     security='CSRF')
     @permissions_ns.expect(community_scopes_parser)
@@ -101,7 +103,10 @@ class CommunityUserPermissions(Resource):
         '''Add/Replace user permissions'''
 
         if not self.communitiesBroker.community_id_exists(community_id):
-            abort(HTTPStatus.NOT_FOUND)
+            abort(HTTPStatus.NOT_FOUND, "Community id not found")
+            
+        if not self.usersBroker.user_uid_exists(user_id):
+            abort(HTTPStatus.NOT_FOUND, "User id not found")
         
         identity = get_jwt_identity()
         auth_id = identity["user_id"]   
@@ -115,16 +120,12 @@ class CommunityUserPermissions(Resource):
         scopes = request_dict["scope"]
 
         #verify owner scope in the list
-        if CommunityScopeConstants.Owner in scopes:
+        if scopes and CommunityScopeConstants.Owner in scopes:
             #only an owner can add another owner
             if not user.has_community_scope(id=community_id, scope=CommunityScopeConstants.Owner):
-                abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
+                abort(HTTPStatus.FORBIDDEN, "Insufficient rights, you must be an owner of the community.")
 
-        scope_list = []
-        for scope in scopes:
-            scope_list.append(EntityScope(user_id=user_id, id=community_id, scope=scope))
-
-        self.permissionsBroker.replace_all_user_community_scopes(user_id=user_id, community_id=community_id, scopes=scope_list)
+        self.permissionsBroker.replace_all_user_community_scopes(user_id=user_id, community_id=community_id, scopes=scopes)
 
         response = jsonify(status="success", message="User permissions updated")
         response.status_code = HTTPStatus.OK

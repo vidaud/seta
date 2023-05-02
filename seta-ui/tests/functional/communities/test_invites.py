@@ -12,7 +12,7 @@ from seta_flask_server.infrastructure.constants import (InviteStatusConstants)
 
 '''==================== Community ======================================='''
 @pytest.mark.parametrize("user_id", ["seta_admin"])
-def test_create_community(client: FlaskClient, user_id: str):
+def test_create_community(client: FlaskClient, authentication_url:str, user_id: str):
     """
     Scenario: 'user1' registers new data community
 
@@ -21,10 +21,11 @@ def test_create_community(client: FlaskClient, user_id: str):
     Then: new data community 'blue' registration is confirmed
     """
     
-    response = login_user(client=client, user_id=user_id)    
+    response = login_user(auth_url=authentication_url, user_id=user_id)    
     assert response.status_code == HTTPStatus.OK
-    assert "access_token" in response.json
-    access_token = response.json["access_token"]
+    response_json = response.json()
+    assert "access_token" in response_json
+    access_token = response_json["access_token"]
 
     response = create_community(client=client, access_token=access_token, 
                     id="blue", title="Blue Community", description="Blue Community for test", data_type="representative")
@@ -34,7 +35,7 @@ def test_create_community(client: FlaskClient, user_id: str):
 '''==================== Invite ======================================='''   
 @pytest.mark.parametrize("user_id, community_id, email, expected", [("seta_admin", "blue", "seta_community_manager@localtest.eu", HTTPStatus.CREATED),                    
                     ("seta_community_manager", "blue", "seta_admin@localtest.eu", HTTPStatus.FORBIDDEN),])
-def test_create_community_invite(client: FlaskClient, user_id: str, community_id: str, email:str, expected: int):
+def test_create_community_invite(client: FlaskClient, authentication_url:str, user_id: str, community_id: str, email:str, expected: int):
     """
     Scenario: 'user1' is sending an invitation to a registered user email
 
@@ -46,10 +47,11 @@ def test_create_community_invite(client: FlaskClient, user_id: str, community_id
     """
 
     
-    response = login_user(client=client, user_id=user_id)    
+    response = login_user(auth_url=authentication_url, user_id=user_id)    
     assert response.status_code == HTTPStatus.OK
-    assert "access_token" in response.json
-    access_token = response.json["access_token"]
+    response_json = response.json()
+    assert "access_token" in response_json
+    access_token = response_json["access_token"]
 
     response = create_community_invite(client=client, access_token=access_token, community_id=community_id,
                 message="Join my community", emails=[email])    
@@ -57,16 +59,17 @@ def test_create_community_invite(client: FlaskClient, user_id: str, community_id
     
     
 @pytest.mark.parametrize("user_id, community_id", [("seta_community_manager", "blue")])
-def test_accept_invite(client: FlaskClient, user_id: str, community_id: str):
+def test_accept_invite(client: FlaskClient, authentication_url:str, user_id: str, community_id: str):
     """
         'user2' accepts the invtiation to 'blue' community
     """
     
     #this is used just to get the invite id, the invitation link will be genrated in the invite message
-    response = login_user(client=client, user_id="seta_admin")    
+    response = login_user(auth_url=authentication_url, user_id="seta_admin")    
     assert response.status_code == HTTPStatus.OK
-    assert "access_token" in response.json
-    access_token = response.json["access_token"]
+    response_json = response.json()
+    assert "access_token" in response_json
+    access_token = response_json["access_token"]
     
     response = get_community_pending_invites(client=client, access_token=access_token, community_id=community_id)
     assert response.status_code == HTTPStatus.OK
@@ -74,10 +77,11 @@ def test_accept_invite(client: FlaskClient, user_id: str, community_id: str):
     assert "invite_id" in response.json[0]
     invite_id = response.json[0]["invite_id"]
     
-    response = login_user(client=client, user_id=user_id)    
+    response = login_user(auth_url=authentication_url, user_id=user_id)    
     assert response.status_code == HTTPStatus.OK
-    assert "access_token" in response.json
-    access_token = response.json["access_token"]
+    response_json = response.json()
+    assert "access_token" in response_json
+    access_token = response_json["access_token"]
     
     response = get_invite(client=client,access_token=access_token,invite_id=invite_id)
     assert response.status_code == HTTPStatus.OK
