@@ -69,7 +69,7 @@ When creating a taxonomy, consider:
 
 The following example describes part of a taxonomy:
 
-![Screenshot](../img/taxonomy.png){width=500}
+![Screenshot](../img/taxonomy.png){width=600}
 
 <!--```
   /natural sciences
