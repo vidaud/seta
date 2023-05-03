@@ -4,12 +4,13 @@ import { Divider, ActionIcon, Popover } from '@mantine/core'
 import { IconX } from '@tabler/icons-react'
 
 import { useSearch } from '~/pages/SearchPageNew/components/SuggestionsPopup/contexts/search-context'
+import { useSearchInput } from '~/pages/SearchPageNew/components/SuggestionsPopup/contexts/search-input-context'
+import TermClusters from '~/pages/SearchPageNew/components/TermClusters'
 
 import * as S from './styles'
 
 import AutocompleteSuggestions from '../AutocompleteSuggestions'
 import SearchInput from '../SearchInput'
-import TermClusters from '../TermClusters'
 
 type Props = {
   opened?: boolean
@@ -20,7 +21,9 @@ const TOKEN_RESET_DELAY = 100
 
 const SuggestionsPopup = ({ opened, onOpenChange }: Props) => {
   const { setCurrentToken } = useSearch()
+  const { inputValue, setInputValue } = useSearchInput()
 
+  // const [inputValue, setInputValue] = useState('')
   const [popupOpen, setPopupOpen] = useState(opened ?? false)
 
   const closingTimeoutRef = useRef<number | null>(null)
@@ -46,7 +49,7 @@ const SuggestionsPopup = ({ opened, onOpenChange }: Props) => {
   }
 
   const handleInputChange = (value: string) => {
-    // setInputValue(value)
+    setInputValue(value)
     handlePopupChange(true)
   }
 
@@ -67,9 +70,10 @@ const SuggestionsPopup = ({ opened, onOpenChange }: Props) => {
       <Popover.Target>
         <SearchInput
           css={S.inputWrapper}
+          deferredValue={inputValue}
           // value={inputValue}
           onClick={openPopup}
-          // onChange={handleInputChange}
+          onChange={handleInputChange}
         />
       </Popover.Target>
 

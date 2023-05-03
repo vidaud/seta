@@ -2,6 +2,7 @@ import { useState } from 'react'
 
 import SuggestionsPopup from '~/pages/SearchPageNew/components/SuggestionsPopup'
 import { SearchProvider } from '~/pages/SearchPageNew/components/SuggestionsPopup/contexts/search-context'
+import { SearchInputProvider } from '~/pages/SearchPageNew/components/SuggestionsPopup/contexts/search-input-context'
 import type {
   Token,
   TokenMatch
@@ -41,8 +42,6 @@ const SearchSuggestionInput = () => {
 
   return (
     <SearchProvider
-      inputValue={value}
-      setInputValue={setValue}
       tokens={tokens}
       setTokens={setTokens}
       currentToken={currentToken}
@@ -51,7 +50,9 @@ const SearchSuggestionInput = () => {
       onSelectedTermsAdd={handleTermsAdded}
       onSelectedTermsRemove={handleTermsRemoved}
     >
-      <SuggestionsPopup />
+      <SearchInputProvider inputValue={value} setInputValue={setValue}>
+        <SuggestionsPopup />
+      </SearchInputProvider>
     </SearchProvider>
   )
 }

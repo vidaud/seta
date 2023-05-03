@@ -1,8 +1,6 @@
-import { forwardRef } from 'react'
+import { forwardRef, useEffect, useRef, useState } from 'react'
 import { ActionIcon, Button, Flex } from '@mantine/core'
 import { IconCloudUp, IconSearch } from '@tabler/icons-react'
-
-import { useSearch } from '~/pages/SearchPageNew/components/SuggestionsPopup/contexts/search-context'
 
 import * as S from './styles'
 
@@ -10,37 +8,73 @@ import TokensInput from '../TokensInput'
 
 type Props = {
   className?: string
+  deferredValue?: string
+  onChange?: (value: string) => void
   // value?: string
   onClick?: () => void
   // onChange?: (value: string) => void
 }
 
-const SearchInput = forwardRef<HTMLDivElement, Props>(({ className, onClick }, ref) => {
-  // const [value, setValue] = useState('')
-  const { inputValue, setInputValue } = useSearch()
+const SearchInput = forwardRef<HTMLDivElement, Props>(
+  ({ className, onClick, deferredValue, onChange }, ref) => {
+    const [value, setValue] = useState(deferredValue ?? '')
+    // const [debouncedValue] = useDebouncedValue(value, 200)
+    // const { inputValue, setInputValue } = useSearch()
 
-  return (
-    <Flex ref={ref} className={className}>
-      <ActionIcon css={S.leftButton} color="blue" size="xl" variant="filled">
-        <IconCloudUp />
-      </ActionIcon>
+    const timeoutRef = useRef<number | null>(null)
+    const setByEffectRef = useRef(false)
 
-      <TokensInput
-        className="flex-1"
-        css={S.input}
-        size="md"
-        placeholder="Start typing a search term"
-        autoFocus
-        value={inputValue}
-        onClick={onClick}
-        onChange={setInputValue}
-      />
+    useEffect(() => {
+      setByEffectRef.current = true
+      setValue(deferredValue ?? '')
+    }, [deferredValue])
 
-      <Button css={S.rightButton} size="md" leftIcon={<IconSearch />}>
-        Search
-      </Button>
-    </Flex>
-  )
-})
+    useEffect(() => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current)
+      }
+
+      if (setByEffectRef.current) {
+        setByEffectRef.current = false
+
+        return
+      }
+
+      timeoutRef.current = window.setTimeout(() => {
+        onChange?.(value)
+        timeoutRef.current = null
+      }, 100)
+
+      return () => {
+        if (timeoutRef.current) {
+          clearTimeout(timeoutRef.current)
+        }
+      }
+    }, [onChange, value])
+
+    return (
+      <Flex ref={ref} className={className}>
+        <ActionIcon css={S.leftButton} color="blue" size="xl" variant="filled">
+          <IconCloudUp />
+        </ActionIcon>
+
+        <TokensInput
+          className="flex-1"
+          css={S.input}
+          size="md"
+          placeholder="Start typing a search term"
+          autoFocus
+          value={value}
+          onClick={onClick}
+          onChange={setValue}
+        />
+
+        <Button css={S.rightButton} size="md" leftIcon={<IconSearch />}>
+          Search
+        </Button>
+      </Flex>
+    )
+  }
+)
 
 export default SearchInput

@@ -13,6 +13,8 @@ const useTokens = (value: string, inputRef: RefObject<HTMLInputElement>) => {
   const updateRef = useRef<number | null>(null)
   const timeoutRef = useRef<number | null>(null)
 
+  const hasValue = useMemo(() => !!value, [value])
+
   const newTokens = useMemo((): Token[] => {
     if (!value) {
       return []
@@ -38,6 +40,19 @@ const useTokens = (value: string, inputRef: RefObject<HTMLInputElement>) => {
     return result
   }, [value])
 
+  const selectLeftToken = useCallback(
+    (position: number) => {
+      const found = tokens.find(({ index, token }) => {
+        const end = index + token.length
+
+        return position >= index && position <= end + 2
+      })
+
+      return found
+    },
+    [tokens]
+  )
+
   const updateCurrentToken = useCallback(() => {
     if (!inputRef.current) {
       return
@@ -45,16 +60,15 @@ const useTokens = (value: string, inputRef: RefObject<HTMLInputElement>) => {
 
     const position = inputRef.current.selectionStart ?? 0
 
-    let found: Token | null = null
+    let found = tokens.find(({ index, token }) => {
+      const start = index
+      const end = start + token.length
 
-    for (const token of tokens) {
-      const start = token.index
-      const end = start + token.token.length
+      return position >= start && position <= end
+    })
 
-      if (position >= start && position <= end) {
-        found = token
-        break
-      }
+    if (!found) {
+      found = selectLeftToken(position)
     }
 
     if (found) {
@@ -62,8 +76,10 @@ const useTokens = (value: string, inputRef: RefObject<HTMLInputElement>) => {
         ...found,
         word: found.token
       })
+    } else {
+      setCurrentToken(null)
     }
-  }, [inputRef, setCurrentToken, tokens])
+  }, [inputRef, tokens, selectLeftToken, setCurrentToken])
 
   const updateCurrentTokenDeferred = useCallback(() => {
     if (timeoutRef.current) {

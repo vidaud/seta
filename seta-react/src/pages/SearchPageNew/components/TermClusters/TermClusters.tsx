@@ -1,6 +1,7 @@
 import { Divider, Flex, ScrollArea } from '@mantine/core'
 
 import { useSearch } from '~/pages/SearchPageNew/components/SuggestionsPopup/contexts/search-context'
+import { useSearchInput } from '~/pages/SearchPageNew/components/SuggestionsPopup/contexts/search-input-context'
 import TermsCluster from '~/pages/SearchPageNew/components/TermClusters/components/TermsCluster/TermsCluster'
 
 import OntologyHeader from '../OntologyHeader'
@@ -75,20 +76,20 @@ type Props = {
 }
 
 const OntologyTerms = ({ className }: Props) => {
-  const { onSelectedTermsAdd, onSelectedTermsRemove, currentToken, setPosition, input } =
-    useSearch()
+  const { onSelectedTermsAdd, onSelectedTermsRemove, currentToken } = useSearch()
+  const { input, setPosition } = useSearchInput()
 
   const focusInput = () => {
     if (!currentToken) {
       return
     }
 
-    input?.blur()
+    // input?.blur()
 
     setTimeout(() => {
-      setPosition(currentToken.index + currentToken.token.length)
       input?.focus()
-    }, 0)
+      setPosition(currentToken.index + currentToken.token.length)
+    }, 200)
   }
 
   const handleSelectedTermsAdd = (terms: string[]) => {

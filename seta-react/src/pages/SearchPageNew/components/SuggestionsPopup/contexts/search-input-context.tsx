@@ -1,4 +1,4 @@
-import { createContext, useContext } from 'react'
+import { createContext, useContext, useRef } from 'react'
 
 import type { ChildrenProp } from '~/types/children-props'
 
@@ -7,7 +7,11 @@ type SearchInputProviderProps = {
   setInputValue: (value: string) => void
 }
 
-type SearchInputContextProps = SearchInputProviderProps
+type SearchInputContextProps = SearchInputProviderProps & {
+  input: HTMLInputElement | null
+  setInputRef: (ref: HTMLInputElement) => void
+  setPosition: (position: number) => void
+}
 
 const SearchInputContext = createContext<SearchInputContextProps | undefined>(undefined)
 
@@ -16,9 +20,24 @@ export const SearchInputProvider = ({
   inputValue,
   setInputValue
 }: SearchInputProviderProps & ChildrenProp) => {
+  const inputRef = useRef<HTMLInputElement | null>(null)
+
+  const setInputRef = (ref: HTMLInputElement) => {
+    inputRef.current = ref
+  }
+
+  const setPosition = (position: number) => {
+    if (inputRef.current) {
+      inputRef.current.setSelectionRange(position, position)
+    }
+  }
+
   const value: SearchInputContextProps = {
     inputValue,
-    setInputValue
+    setInputValue,
+    input: inputRef.current,
+    setInputRef,
+    setPosition
   }
 
   return <SearchInputContext.Provider value={value}>{children}</SearchInputContext.Provider>

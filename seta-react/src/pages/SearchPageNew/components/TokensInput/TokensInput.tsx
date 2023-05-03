@@ -11,7 +11,7 @@ import type { TextInputProps } from '@mantine/core'
 import { ActionIcon, Box, TextInput, Text, clsx } from '@mantine/core'
 import { IconX } from '@tabler/icons-react'
 
-import { useSearch } from '~/pages/SearchPageNew/components/SuggestionsPopup/contexts/search-context'
+import { useSearchInput } from '~/pages/SearchPageNew/components/SuggestionsPopup/contexts/search-input-context'
 
 import useTokens from './hooks/use-tokens'
 import * as S from './styles'
@@ -51,7 +51,7 @@ const TokensInput = forwardRef<HTMLInputElement, Props>(
     useImperativeHandle(ref, () => inputRef.current as HTMLInputElement)
 
     const { updateCurrentToken, renderTokens } = useTokens(String(value), inputRef)
-    const { setInputRef } = useSearch()
+    const { setInputRef } = useSearchInput()
 
     const mustSetPosition = nextPositionRef.current !== null
 

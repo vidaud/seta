@@ -1,6 +1,7 @@
 import { Box } from '@mantine/core'
 
 import ListMenu from '~/components/ListMenu'
+import { useSearchInput } from '~/pages/SearchPageNew/components/SuggestionsPopup/contexts/search-input-context'
 
 import * as S from './styles'
 
@@ -32,7 +33,8 @@ type Props = {
 }
 
 const AutocompleteSuggestions = ({ className }: Props) => {
-  const { onSuggestionSelected, currentToken, setPosition, input } = useSearch()
+  const { onSuggestionSelected, currentToken } = useSearch()
+  const { input, setPosition } = useSearchInput()
 
   const handleSuggestionSelected = (suggestion: string) => {
     onSuggestionSelected?.(suggestion)
@@ -41,11 +43,11 @@ const AutocompleteSuggestions = ({ className }: Props) => {
       return
     }
 
-    input?.blur()
+    // input?.blur()
 
     setTimeout(() => {
       setPosition(currentToken.index + suggestion.length + (suggestion.match(/\s/g) ? 2 : 0))
-      input?.focus()
+      // input?.focus()
     }, 0)
   }
 
