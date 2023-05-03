@@ -32,42 +32,51 @@ The reasons for this decision are:
 
 #### Taxonomy
 
-In the last years, there is so much information available and easily accessible. This accessibility is mainly thanks to the technology. However, this had lead people to experience difficulties in finding precise, relevant quality information.[^1]    
-This problem is also prevalent within areas where volumes of information are stored in unstructured ways in multiple repositories, databases and libraries, often with vague naming conventions that give little insight into the content and its relevance to the user. The development of taxonomy is an attempt to bring structure and deliver productivity through more effective and expeditious retrieval and use.           
-
-Taxonomy isn’t new. It was used as early as 300 BCE in ancient Greece to classify plants.  Taxonomies organize content into logical associations in much the same way that plant and animal species are managed by modern scientists.[^2]  
-
-Taxonomy provides[^3]: 
-
-- Applies structure to content components and the relationships between them.
-- Identifies and classifies information into a hierarchical structure so it can be analyzed.
-- It’s a system of content management that groups information based on terms stored as metadata.
-- It provides a unified view of the data in a system and introduces common terminologies and semantics across multiple systems.
-- Formalizes the hierarchical relationships among concepts and specifies the term to be used to refer to each.
-- Prescribes structure and terminology.
+In recent years, access to knowledge has improved and become more widespread, mostly due to technology. However, this had made it difficult for people to locate accurate, timely, and reliable information.      
+This issue is also frequent in sectors where large amounts of information are held in unstructured ways in many repositories, databases, and libraries, often with ambiguous naming conventions that provide little insight into the material and its value to the user.      
+The implementation of Taxonomy is an effort to provide organization and increase productivity through quicker, more efficient retrieval and use.        
+In order to make it simpler to identify related information, Taxonomy uses a regulated vocabulary to represent the formal structure of classes or types of things inside a knowledge domain. Taxonomy aids in the hierarchical organization of the assets and material. It can be much simpler to search for or explore an asset or content management by classifying the content and assets in a Taxonomy. [^1]        
 
 
-Is important to maintain, as much as possible, a consistent level of specificity within a category. The taxonomies can be of different types — *flat, hierarchical, network*, etc. Based on experience, a hierarchical structure is most suited. Among the hierarchical types, there are three kinds: 
+The term **'Taxonomy'** refers to the science of categorizing things. It is currently a common phrase for any system of hierarchical classification or categorization. Thus, a Taxonomy is a controlled vocabulary in which all terms have parent/child or broader/narrower relationships to other terms and belong to a single hierarchical structure. The structure is also referred to as a 'tree'. Non-preferred terms/synonyms may or may not be included in a Taxonomy. Taxonomy has recently gained popularity as a term for any type of controlled vocabulary, whether a term list, authority file, thesaurus, or any hybrid combination. [^2]
 
-  1.  Standard Hierarchy     
-    Standard hierarchy taxonomy consists of a single root, which is subdivided into categories as necessary to structure the information and is often represented as a tree. It is easy to understand a single hierarchy structure and develop a mental model to find information. 
+To facilitate uniform, precise, and rapid indexing and retrieval of the content of digital assets, taxonomies are utilised in the descriptive metadata fields. Non-text digital files typically require some type of descriptive tagging in order to be retrieved in subject searches, whereas text documents can be automatically indexed or auto-classified based on search queries matching words within the texts. Uncontrolled keyword tagging frequently produces retrieval results that are inconsistent, inadequate, overly general, and biased. Implementing taxonomies in the fields of descriptive metadata is the answer for indexing.[^2].    
 
-  2.  Polyhierarchy     
-    In a polyhierarchy a term in a taxonomy can be repeated in different categories. 
-    It is not recommended because sometimes it causes confusion. Polyhierarchy is against the first and second principles of naming taxonomy terms: "Terms should be unambiguous and mutually exclusive". 
+Consistent, precise, and quick indexing and retrieval of content are made possible by taxonomies. Vocabulary design must be connected with the metadata approach because taxonomies offer a variety of metadata fields.
 
-  3. Faceted       
-    A faceted classification system is multi-dimensional. It consists of multiple taxonomies or 'facets', whereby the top-level node of each represents a different type of taxonomy, attribute, or context. 
+##### Taxonomy provides: 
 
+- Relationships between the structure, content, and component parts.
+- Identifies and organises information into hierarchical categories for analysis.
+- It is a method of managing material that classifies data according to terms kept in metadata.
+- It introduces common terminologies and semantics across various systems and offers a unified view of the data in a system.
+- Establishes the terminology to be used for each notion and formalises the hierarchical relationships between them.
+- Specifies terminology and structure.
+- Improve data quality
+- Create an accessible metadata structure.
+- Control data assets through data governance.
+- Determine trends and patterns through guiding machine learning and data experiences.
 
-##### How to design a good taxonomy
+It is critical to keep a constant level of precision within a category while constructing a Taxonomy. Taxonomies can be of several kind, such as *flat, hierarchical, network*, and so on. Based on past experience, a hierarchical structure is best. There are three types of hierarchical structures: 
 
-When creating a taxonomy, consider:       
-1. Scope: Decide what your taxonomy needs to cover.    
-2. Granularity: Think about how detailed you need the taxonomy to be. Always base this on what's important to you.[^4]    
+  1.  Standard Hierarchy: A standard hierarchy Taxonomy has a single root that is subdivided into categories as needed to organise the information and is frequently represented as a tree. A single hierarchical structure is simple to grasp and establish a mental model for finding information.
 
+  2.  Polyhierarchy: A term in a Taxonomy can be repeated in different categories in a polyhierarchy hierachy.  It is not suggested because it can cause misunderstanding. Polyhierarchy violates the first and second criteria of Taxonomy word naming: "Terms should be unambiguous and mutually exclusive." 
+ 
+  3. Faceted: A faceted classification system has multiple dimensions. It comprises of various taxonomies, or "facets," where each one's top-level node denotes a distinct kind of Taxonomy, attribute, or context. 
 
-The following example describes part of a taxonomy:
+##### How to design a good Taxonomy
+
+When creating a Taxonomy, consider[^1]:       
+1. Decide what topics your Taxonomy must include.    
+2. Consider how specific the Taxonomy needs to be. Always base this on your personal priorities.    
+3. Provide names for each object in relation to other objects and follow a hierarchical style.
+4. have particular guidelines that are followed while classifying or categorising any object inside a domain. These guidelines must be comprehensive, consistent, and clear.
+5. Apply strict specification to ensure that any newly discovered object can only belong to one specific category or type of object.
+6. Inherit every property from the class above it and also have the option of adding new properties.
+7. Objects' membership attributes in relation to other objects may also be captured.
+
+The following example describes part of a Taxonomy:
 
 ![Screenshot](../img/taxonomy.png){width=600}
 
@@ -80,21 +89,23 @@ The following example describes part of a taxonomy:
   /natural sciences/biological sciences/zoology/entomology
 ``` -->
 
-In SeTA, the user can define the taxonomy that is going to be used. After the user selects the terms that represent the broadest category he can then allocate the remaining terms to these categories. The user can setup the new taxonomy through the API interface. 
+
+##### Taxonomy in SeTA
+In SeTA, the user can define the Taxonomy that is going to be used. After selecting the terms that represent the broadest category, the user can assign the remaining terms to the other categories. The new Taxonomy can be created by the user via the API.
 
 
 
-{++ example of SeTA taxonomy++}
+{++ example of SeTA Taxonomy++}
 
 
 
 
 #### Document cleaning pipeline
-The document harvesting process is the first part of the whole pipeline. 
+The document gathering process is the initial step in the pipeline's overall procedure. 
 
-Documents are retrieved through different endpoints like SPARQL, SOAP, FTP or HTTP protocol parsing, from a variety of web address (URLs). There is often more than one document per metadata record. 
+Documents are retrieved from a number of web addresses (URLs) via various endpoints such as SPARQL, SOAP, FTP, or HTTP protocol parsing. Per metadata record, there is frequently more than one document. 
 
-After metadata have been harvested and interpreted, the documents must be downloaded and processed. 
+The papers must be downloaded and processed after the metadata has been gathered and read. 
 
 The typical process to create a general corpus involves:
 
@@ -106,20 +117,20 @@ The typical process to create a general corpus involves:
 
 - Sentence separation based on dependency parsing (allowing the reconstruction even of sentences split over several lines).
 
-The output of this step is a document repository containing the completely cleaned unified plain text, divided into chunks of 300 words. 
+This stage produces a document repository containing the thoroughly cleaned unified plain text, separated into 300-word chunks. 
 
-This new document structure is stored within the ElasticSearch (ES) database which allows searching and reproduction for human readers. 
+This new document structure is saved in the ElasticSearch database, which allows users to search and reproduce it. 
 
 
 #### Neural networks training
 
-Neural networks can learn any function and only data availability defines how complex the function can be. Therefore, the data preparation, feature engineering and domain coverage become essential elements for obtaining meaningful and analysable results from neural network training.
-The EC public knowledge corpus offers a consistent language and thus the features that have been created from chunks instead of words like in general language.
+Neural networks may learn any function, and the only limitation is the availability of data. As a result, data preparation, feature engineering, and domain coverage become critical components for producing relevant and understandable results from neural network training.
+The EC public knowledge corpus provides a consistent language and so characteristics that have been generated from chunks rather than words, as in general language.
 
 
 #### Chunk compositionality
 
-**"Chunking"** is the process of grouping different bits of information together into more manageable or meaningful chunks[^5]. 
+**"Chunking"** is the process of combining several pieces of information into more comprehensible or significant portions.[^3]. 
 
 Three key ingredients are needed for successful chunking:
 
@@ -127,24 +138,23 @@ Three key ingredients are needed for successful chunking:
 - Using units of no more than seven items.
 - Finding the right level of detail.
 
-The implementation of these steps is performed by extracting titles, abstracts and identified sentences from the whole corpus, identifying, harmonising and replacing phrases and then storing.
+These procedures are put into practise by removing titles, abstracts, and identifiable sentences from the entire corpus, then identifying, harmonising, and replacing phrases before storing.
 
 
 #### Actual neural network training
 
-**spaCy** is a free, open-source library for advanced Natural Language Processing (NLP) in Python.[^6] It is designed specifically for production use and helps build applications that process and “understand” large volumes of text. It can be used to build information extraction or natural language understanding systems, or to pre-process text for deep learning.
+**spaCy** is a Python library for advanced Natural Language Processing (NLP) that is open-source and free.[^4] It helps create applications that process and "understand" massive volumes of text and is specifically created for usage in production. It can be used to create information extraction or systems for interpreting natural language, or it can be used to prepare text for deep learning.
 
-Based on **spaCy**, we use a powerful python library for language modelling called **textacy**[^7] for the neural network training. It can perform a variety of natural language processing (NLP) tasks, built on the high-performance **spaCy** library. With the fundamentals: *tokenization, part-of-speech tagging, dependency parsing, etc.* delegated to another library, **textacy** focuses primarily on the tasks that come before and follow after.
+We train neural networks using **textacy**, a potent Python language modelling package built on the basis of **spaCy**. It can carry out a variety of natural language processing (NLP) tasks thanks to the **spaCy** library's outstanding performance. The essentials, such as part-of-speech tagging, dependency parsing, and tokenization, are handled by another library, leaving **textacy** to concentrate mostly on the jobs that occur before and after.
 
 
+[^1]: https://data.nsw.gov.au/IDMF/data-structure-and-coordination/data-taxonomy
+[^2]: https://link.springer.com/article/10.1057/dam.2010.29
+[^3]: https://www.mindtools.com/a8u1mqw/chunking
+[^4]: https://spacy.io/usage/spacy-101 
+[^5]: https://pypi.org/project/textacy/
 
-[^1]: Dilnutt, Rod. (2004). The Role of Taxonomy in Knowledge Management. The International Journal of Knowledge, Culture, and Change Management: Annual Review. 3. 10.18848/1447-9524/CGP/v03/59083. https://www.researchgate.net/profile/Rod-Dilnutt/publication/324233050_The_Role_of_Taxonomy_in_Knowledge_Management/links/5e31376892851c7f7f08d1ed/The-Role-of-Taxonomy-in-Knowledge-Management.pdf?origin=publication_detail
-[^2]: https://www.expert.ai/blog/what_are_taxonomies_and-how_can_you_use_them/
-[^3]: https://innodata.com/understanding-the-role-of-taxonomies-ontologies-schemas-and-knowledge-graphs/
-[^4]: https://kontent.ai/learn/tutorials/manage-kontent-ai/taxonomies/taxonomies-why-and-how/
-[^5]: https://www.mindtools.com/a8u1mqw/chunking
-[^6]: https://spacy.io/usage/spacy-101 
-[^7]: https://pypi.org/project/textacy/
+
 
 
 
