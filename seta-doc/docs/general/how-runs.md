@@ -40,9 +40,9 @@ In order to make it simpler to identify related information, Taxonomy uses a reg
 
 The term **'Taxonomy'** refers to the science of categorizing things. It is currently a common phrase for any system of hierarchical classification or categorization. Thus, a Taxonomy is a controlled vocabulary in which all terms have parent/child or broader/narrower relationships to other terms and belong to a single hierarchical structure. The structure is also referred to as a 'tree'. Non-preferred terms/synonyms may or may not be included in a Taxonomy. Taxonomy has recently gained popularity as a term for any type of controlled vocabulary, whether a term list, authority file, thesaurus, or any hybrid combination. [^2]
 
-To facilitate uniform, precise, and rapid indexing and retrieval of the content of digital assets, taxonomies are utilised in the descriptive metadata fields. Non-text digital files typically require some type of descriptive tagging in order to be retrieved in subject searches, whereas text documents can be automatically indexed or auto-classified based on search queries matching words within the texts. Uncontrolled keyword tagging frequently produces retrieval results that are inconsistent, inadequate, overly general, and biased. Implementing taxonomies in the fields of descriptive metadata is the answer for indexing.[^2].    
+To facilitate uniform, precise, and rapid indexing and retrieval of the content of digital assets, Taxonomies are utilised in the descriptive metadata fields. Non-text digital files typically require some type of descriptive tagging in order to be retrieved in subject searches, whereas text documents can be automatically indexed or auto-classified based on search queries matching words within the texts. Uncontrolled keyword tagging frequently produces retrieval results that are inconsistent, inadequate, overly general, and biased. Implementing Taxonomies in the fields of descriptive metadata is the answer for indexing.[^2].    
 
-Consistent, precise, and quick indexing and retrieval of content are made possible by taxonomies. Vocabulary design must be connected with the metadata approach because taxonomies offer a variety of metadata fields.
+Consistent, precise, and quick indexing and retrieval of content are made possible by Taxonomies. Vocabulary design must be connected with the metadata approach because Taxonomies offer a variety of metadata fields.
 
 ##### Taxonomy provides: 
 
@@ -63,7 +63,7 @@ It is critical to keep a constant level of precision within a category while con
 
   2.  Polyhierarchy: A term in a Taxonomy can be repeated in different categories in a polyhierarchy hierachy.  It is not suggested because it can cause misunderstanding. Polyhierarchy violates the first and second criteria of Taxonomy word naming: "Terms should be unambiguous and mutually exclusive." 
  
-  3. Faceted: A faceted classification system has multiple dimensions. It comprises of various taxonomies, or "facets," where each one's top-level node denotes a distinct kind of Taxonomy, attribute, or context. 
+  3. Faceted: A faceted classification system has multiple dimensions. It comprises of various Taxonomies, or "facets," where each one's top-level node denotes a distinct kind of Taxonomy, attribute, or context. 
 
 ##### How to design a good Taxonomy
 
@@ -90,14 +90,79 @@ The following example describes part of a Taxonomy:
 ``` -->
 
 
+
 ##### Taxonomy in SeTA
 In SeTA, the user can define the Taxonomy that is going to be used. After selecting the terms that represent the broadest category, the user can assign the remaining terms to the other categories. The new Taxonomy can be created by the user via the API.
 
-
+With the setup of parameters as *code, label, long label, classifier, version, validated* it is possible to create as many Taxonomies are needed.
 
 {++ example of SeTA Taxonomy++}
 
-
+```json
+"aggregations": {
+    "taxonomy": [
+      [
+        {
+          "doc_count": 7,
+          "name": "euro_sci_voc",
+          "subcategory": [
+            {
+              "classifier": "cordis",
+              "code": "/23",
+              "doc_count": 6,
+              "label": "natural sciences",
+              "longLabel": "/natural sciences",
+              "name": "natural_sciences",
+              "subcategory": [
+                {
+                  "classifier": "cordis",
+                  "code": "/23/49",
+                  "doc_count": 4,
+                  "label": "biological sciences",
+                  "longLabel": "/natural sciences/biological sciences",
+                  "name": "biological_sciences",
+                  "subcategory": [
+                    {
+                      "classifier": "cordis",
+                      "code": "/23/49/335",
+                      "doc_count": 2,
+                      "label": "ecology",
+                      "longLabel": "/natural sciences/biological sciences/ecology",
+                      "name": "ecology",
+                      "subcategory": [
+                        {
+                          "classifier": "cordis",
+                          "code": "/23/49/335/1009",
+                          "doc_count": 2,
+                          "label": "ecosystems",
+                          "longLabel": "/natural sciences/biological sciences/ecology/ecosystems",
+                          "name": "ecosystems",
+                          "subcategory": []
+                        }
+                      ]
+                    },
+                    {
+                      "classifier": "cordis",
+                      "code": "/23/49/345",
+                      "doc_count": 2,
+                      "label": "zoology",
+                      "longLabel": "/natural sciences/biological sciences/zoology",
+                      "name": "zoology",
+                      "subcategory": [
+                        {
+                          "classifier": "cordis",
+                          "code": "/23/49/345/1039",
+                          "doc_count": 2,
+                          "label": "entomology",
+                          "longLabel": "/natural sciences/biological sciences/zoology/entomology",
+                          "name": "entomology",
+                          "subcategory": []
+                        }
+                      ]
+                    }
+                  ]
+                },
+```
 
 
 #### Document cleaning pipeline
@@ -124,7 +189,8 @@ This new document structure is saved in the ElasticSearch database, which allows
 
 #### Neural networks training
 
-Neural networks may learn any function, and the only limitation is the availability of data. As a result, data preparation, feature engineering, and domain coverage become critical components for producing relevant and understandable results from neural network training.
+Neural networks may learn any function, and the only limitation is the availability of data. As a result, data preparation, feature engineering, and domain coverage become critical components for producing relevant and understandable results from neural network training.     
+Weights and thresholds are continuously changed throughout training until training data with the same tags consistently produce results that are similar.     
 The EC public knowledge corpus provides a consistent language and so characteristics that have been generated from chunks rather than words, as in general language.
 
 
