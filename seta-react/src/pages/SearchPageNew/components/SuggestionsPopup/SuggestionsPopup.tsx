@@ -23,7 +23,6 @@ const SuggestionsPopup = ({ opened, onOpenChange }: Props) => {
   const { setCurrentToken } = useSearch()
   const { inputValue, setInputValue } = useSearchInput()
 
-  // const [inputValue, setInputValue] = useState('')
   const [popupOpen, setPopupOpen] = useState(opened ?? false)
 
   const closingTimeoutRef = useRef<number | null>(null)
@@ -53,10 +52,6 @@ const SuggestionsPopup = ({ opened, onOpenChange }: Props) => {
     handlePopupChange(true)
   }
 
-  const handleInputBlur = () => {
-    setInputValue(inputValue.replace(/\s+/g, ' ').trim())
-  }
-
   const openPopup = () => handlePopupChange(true)
   const closePopup = () => handlePopupChange(false)
 
@@ -69,7 +64,6 @@ const SuggestionsPopup = ({ opened, onOpenChange }: Props) => {
       arrowSize={12}
       shadow="sm"
       offset={-2}
-      // withinPortal
     >
       <Popover.Target>
         <SearchInput

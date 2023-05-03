@@ -10,10 +10,7 @@ const EXPRESSION_REGEX = /("[^"\\]*(\\.[^"\\]*)*"|\S+)(\s*)/g
 const useTokens = (value: string, inputRef: RefObject<HTMLInputElement>) => {
   const { currentToken, setCurrentToken, tokens, setTokens } = useSearch()
 
-  const updateRef = useRef<number | null>(null)
   const timeoutRef = useRef<number | null>(null)
-
-  const hasValue = useMemo(() => !!value, [value])
 
   const newTokens = useMemo((): Token[] => {
     if (!value) {
@@ -93,17 +90,6 @@ const useTokens = (value: string, inputRef: RefObject<HTMLInputElement>) => {
   }, [updateCurrentToken])
 
   useEffect(() => {
-    // if (updateRef.current) {
-    //   clearTimeout(updateRef.current)
-    // }
-
-    // updateRef.current = window.setTimeout(() => {
-    //   setTokens(newTokens)
-    //   updateRef.current = null
-
-    //   updateCurrentTokenDeferred()
-    // }, 0)
-
     setTokens(newTokens)
 
     updateCurrentTokenDeferred()

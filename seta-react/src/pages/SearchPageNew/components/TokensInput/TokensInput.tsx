@@ -1,7 +1,6 @@
 import type {
   ChangeEvent,
   FocusEventHandler,
-  FormEventHandler,
   KeyboardEventHandler,
   MouseEventHandler,
   UIEvent
@@ -26,7 +25,6 @@ const TokensInput = forwardRef<HTMLInputElement, Props>(
       className,
       value,
       onChange,
-      onInput,
       onKeyDown,
       onKeyUp,
       onMouseUp,
@@ -37,78 +35,22 @@ const TokensInput = forwardRef<HTMLInputElement, Props>(
     },
     ref
   ) => {
-    // const [innerValue, setInnerValue] = useState(value ?? '')
     const [focused, setFocused] = useState(false)
 
     const inputRef = useRef<HTMLInputElement>(null)
     const rendererRef = useRef<HTMLDivElement>(null)
-
-    const timeoutRef = useRef<number | null>(null)
-
-    // Save the cursor position without re-rendering
-    const nextPositionRef = useRef<number | null>(null)
 
     useImperativeHandle(ref, () => inputRef.current as HTMLInputElement)
 
     const { updateCurrentToken, renderTokens } = useTokens(String(value), inputRef)
     const { setInputRef } = useSearchInput()
 
-    const mustSetPosition = nextPositionRef.current !== null
-
-    // const updateCurrentTokenDeferred = () => {
-    //   if (timeoutRef.current) {
-    //     clearTimeout(timeoutRef.current)
-    //   }
-
-    //   timeoutRef.current = window.setTimeout(() => {
-    //     updateCurrentToken()
-    //     timeoutRef.current = null
-    //   }, 200)
-    // }
-
-    // Set the cursor position after the input value has been updated
-    // useEffect(() => {
-    //   if (mustSetPosition && inputRef.current) {
-    //     inputRef.current.setSelectionRange(nextPositionRef.current, nextPositionRef.current)
-    //     nextPositionRef.current = null
-    //   }
-    // }, [mustSetPosition])
-
-    // useEffect(() => {
-    //   // setInnerValue(value ?? '')
-
-    //   // Update the input value to correctly render updated tokens
-    //   if (inputRef.current) {
-    //     inputRef.current.value = String(value) ?? ''
-    //     updateCurrentToken()
-    //   }
-    // }, [value, updateCurrentToken])
-
     if (inputRef.current) {
       setInputRef(inputRef.current)
     }
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-      // updateCurrentToken()
-      // const position = e.target.selectionStart ?? 0
-
-      // Don't allow multiple consecutive spaces in the input
-      const val = e.target.value //.replace(/\s+/g, ' ')
-
-      // If the user is typing in the middle of the input and we removed spaces,
-      // keep the cursor in place
-      // nextPositionRef.current =
-      //   val.length !== e.target.value.length && position < val.length ? position : null
-
-      // setInnerValue(val)
-      onChange?.(val)
-    }
-
-    const handleInput: FormEventHandler<HTMLInputElement> = e => {
-      // updateCurrentToken()
-      // updateTokesDeferred()
-      // updateCurrentTokenDeferred()
-      onInput?.(e)
+      onChange?.(e.target.value)
     }
 
     const handleKeyDown: KeyboardEventHandler<HTMLInputElement> = e => {
@@ -171,12 +113,7 @@ const TokensInput = forwardRef<HTMLInputElement, Props>(
       onScroll?.(e)
     }
 
-    const handleSelect = () => {
-      // updateCurrentToken()
-    }
-
     const handleClear = () => {
-      // setInnerValue('')
       onChange?.('')
       updateCurrentToken()
 
@@ -196,16 +133,15 @@ const TokensInput = forwardRef<HTMLInputElement, Props>(
           css={S.input}
           size="md"
           rightSection={clearButton}
+          spellCheck={false}
           value={value}
           onChange={handleChange}
-          onInput={handleInput}
           onKeyDown={handleKeyDown}
           onKeyUp={handleKeyUp}
           onMouseUp={handleMouseUp}
           onFocus={handleFocus}
           onBlur={handleBlur}
           onScroll={handleScroll}
-          onSelect={handleSelect}
           {...props}
         />
         <Text ref={rendererRef} css={S.renderer} className={clsx('renderer', { focused })}>

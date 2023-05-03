@@ -52,10 +52,6 @@ const SearchInput = forwardRef<HTMLDivElement, Props>(
       }
     }, [internalValue])
 
-    const handleBlur = () => {
-      setInternalValue(internalValue.replace(/\s+/g, ' ').trim())
-    }
-
     return (
       <Flex ref={ref} className={className}>
         <ActionIcon css={S.leftButton} color="blue" size="xl" variant="filled">
