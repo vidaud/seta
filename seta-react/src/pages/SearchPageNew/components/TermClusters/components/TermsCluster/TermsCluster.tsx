@@ -1,6 +1,8 @@
 import type { MouseEvent } from 'react'
-import { useEffect, useState } from 'react'
+import { useRef, useEffect, useState } from 'react'
 import { Chip, Flex } from '@mantine/core'
+
+import { useSearch } from '~/pages/SearchPageNew/components/SuggestionsPopup/contexts/search-context'
 
 import * as S from './styles'
 
@@ -16,7 +18,27 @@ const TermsCluster = ({ className, terms, onSelectedTermsAdd, onSelectedTermsRem
   const [values, setValues] = useState<string[]>([])
   const [prevValues, setPrevValues] = useState<string[]>([])
 
+  const { tokens } = useSearch()
+
+  const fromEffectRef = useRef(false)
+
   useEffect(() => {
+    const found = tokens
+      .filter(({ rawValue }) => terms.includes(rawValue))
+      .map(({ rawValue }) => rawValue)
+
+    fromEffectRef.current = true
+    setPrevValues(found)
+    setValues(found)
+  }, [terms, tokens])
+
+  useEffect(() => {
+    if (fromEffectRef.current) {
+      fromEffectRef.current = false
+
+      return
+    }
+
     if (onSelectedTermsAdd) {
       const added = values.filter(value => !prevValues.includes(value))
 

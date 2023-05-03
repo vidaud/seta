@@ -28,6 +28,7 @@ const useTokens = (value: string, inputRef: RefObject<HTMLInputElement>) => {
 
       result.push({
         token,
+        rawValue: token.replace(/"/g, ''),
         index: start,
         isExpression: !!token.match(/\s/),
         spacesAfter
@@ -106,7 +107,7 @@ const useTokens = (value: string, inputRef: RefObject<HTMLInputElement>) => {
 
     let index = 0
 
-    const highlightedTokens = tokens.map(({ token, spacesAfter, isExpression }) => {
+    const highlightedTokens = tokens.map(({ token, spacesAfter, isExpression, rawValue }) => {
       const isCurrentToken = token === currentToken?.token && index === currentToken.index
 
       const cls = {
@@ -115,7 +116,7 @@ const useTokens = (value: string, inputRef: RefObject<HTMLInputElement>) => {
       }
 
       const quote = isExpression && <span className="quote">"</span>
-      const tokenValue = isExpression ? token.slice(1, -1) : token
+      const tokenValue = isExpression ? rawValue : token
 
       index += token.length + (spacesAfter ?? 0)
 
