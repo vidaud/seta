@@ -21,6 +21,8 @@ const SearchSuggestionInput = () => {
       const newValue = value.slice(0, index) + replaceWith + value.slice(index + token.length)
 
       setValue(newValue)
+    } else {
+      setValue(replaceWith)
     }
   }
 

@@ -53,6 +53,10 @@ const SuggestionsPopup = ({ opened, onOpenChange }: Props) => {
     handlePopupChange(true)
   }
 
+  const handleInputBlur = () => {
+    setInputValue(inputValue.replace(/\s+/g, ' ').trim())
+  }
+
   const openPopup = () => handlePopupChange(true)
   const closePopup = () => handlePopupChange(false)
 
@@ -70,10 +74,9 @@ const SuggestionsPopup = ({ opened, onOpenChange }: Props) => {
       <Popover.Target>
         <SearchInput
           css={S.inputWrapper}
-          deferredValue={inputValue}
-          // value={inputValue}
+          value={inputValue}
           onClick={openPopup}
-          onChange={handleInputChange}
+          onDeferredChange={handleInputChange}
         />
       </Popover.Target>
 

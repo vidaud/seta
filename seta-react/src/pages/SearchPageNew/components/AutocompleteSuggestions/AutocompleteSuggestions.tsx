@@ -47,7 +47,7 @@ const AutocompleteSuggestions = ({ className }: Props) => {
 
     setTimeout(() => {
       setPosition(currentToken.index + suggestion.length + (suggestion.match(/\s/g) ? 2 : 0))
-      // input?.focus()
+      input?.focus()
     }, 0)
   }
 

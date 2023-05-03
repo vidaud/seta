@@ -8,26 +8,26 @@ import TokensInput from '../TokensInput'
 
 type Props = {
   className?: string
-  deferredValue?: string
-  onChange?: (value: string) => void
-  // value?: string
+  value?: string
+  onDeferredChange?: (value: string) => void
   onClick?: () => void
-  // onChange?: (value: string) => void
+  onBlur?: () => void
 }
 
 const SearchInput = forwardRef<HTMLDivElement, Props>(
-  ({ className, onClick, deferredValue, onChange }, ref) => {
-    const [value, setValue] = useState(deferredValue ?? '')
-    // const [debouncedValue] = useDebouncedValue(value, 200)
-    // const { inputValue, setInputValue } = useSearch()
+  ({ className, value, onDeferredChange, onClick, onBlur }, ref) => {
+    const [internalValue, setInternalValue] = useState(value ?? '')
 
     const timeoutRef = useRef<number | null>(null)
     const setByEffectRef = useRef(false)
 
+    // Keep the handler in a ref to avoid re-rendering inside the effect
+    const onChangeRef = useRef(onDeferredChange)
+
     useEffect(() => {
       setByEffectRef.current = true
-      setValue(deferredValue ?? '')
-    }, [deferredValue])
+      setInternalValue(value ?? '')
+    }, [value])
 
     useEffect(() => {
       if (timeoutRef.current) {
@@ -41,7 +41,7 @@ const SearchInput = forwardRef<HTMLDivElement, Props>(
       }
 
       timeoutRef.current = window.setTimeout(() => {
-        onChange?.(value)
+        onChangeRef.current?.(internalValue)
         timeoutRef.current = null
       }, 100)
 
@@ -50,7 +50,11 @@ const SearchInput = forwardRef<HTMLDivElement, Props>(
           clearTimeout(timeoutRef.current)
         }
       }
-    }, [onChange, value])
+    }, [internalValue])
+
+    const handleBlur = () => {
+      setInternalValue(internalValue.replace(/\s+/g, ' ').trim())
+    }
 
     return (
       <Flex ref={ref} className={className}>
@@ -64,9 +68,9 @@ const SearchInput = forwardRef<HTMLDivElement, Props>(
           size="md"
           placeholder="Start typing a search term"
           autoFocus
-          value={value}
+          value={internalValue}
           onClick={onClick}
-          onChange={setValue}
+          onChange={setInternalValue}
         />
 
         <Button css={S.rightButton} size="md" leftIcon={<IconSearch />}>
