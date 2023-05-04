@@ -38,9 +38,16 @@ class RestService {
 
   public deleteCurrentUserAccount() {
     if (this.currentUser != null) {
-      //! not implemented yet
+      const csrf_token = getCookie('csrf_access_token')
 
-      authentificationService.setaLogout()
+      axios
+        .delete(this.baseUrl + '/me', {
+          withCredentials: true,
+          headers: { 'X-CSRF-TOKEN': csrf_token }
+        })
+        .then(() => {
+          authentificationService.setaLocalLogout()
+        })
     }
   }
 

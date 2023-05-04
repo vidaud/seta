@@ -6,6 +6,7 @@ from flask_cors import CORS
 from flask import current_app
 
 from seta_auth.infrastructure.helpers import validate_public_key
+from seta_auth.infrastructure.constants import UserStatusConstants
 
 from injector import inject
 from seta_auth.repository.interfaces import IUsersBroker, IRsaKeysBroker
@@ -76,7 +77,7 @@ class JWTUserToken(Resource):
         args = auth_data.parse_args()
             
         user = self.usersBroker.get_user_by_provider(provider_uid=args["username"].lower(), provider=args["provider"].lower())
-        if not user:
+        if not user or user.status != UserStatusConstants.Active:
             abort(HTTPStatus.UNAUTHORIZED, "Invalid user")            
             
         public_key = self.rsaBroker.get_rsa_key(user.user_id)
@@ -122,7 +123,7 @@ class JWTRefreshToken(Resource):
         
         user = self.usersBroker.get_user_by_id(identity["user_id"])
             
-        if user is None:
+        if user is None or user.status != UserStatusConstants.Active:
             abort(HTTPStatus.UNAUTHORIZED, "Invalid User")
             
         #other additional_claims are added via additional_claims_loader method: factory->add_claims_to_access_token

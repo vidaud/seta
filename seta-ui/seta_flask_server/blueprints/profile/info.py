@@ -1,11 +1,12 @@
-from flask import current_app as app
-from flask_jwt_extended import jwt_required, get_jwt_identity
+from flask import current_app as app, jsonify, session
+from flask_jwt_extended import jwt_required, get_jwt_identity, unset_jwt_cookies
+from seta_flask_server.infrastructure.helpers import unset_token_info_cookies
 from flask_restx import Namespace, Resource, abort
 
 from http import HTTPStatus
 from injector import inject
 
-from seta_flask_server.repository.interfaces import IUsersBroker
+from seta_flask_server.repository.interfaces import IUsersBroker, ISessionsBroker
 from .models.info_dto import(user_info_model, account_model, application_model, provider_model)
 
 account_info_ns = Namespace('Account Info', description='User Account')
@@ -19,11 +20,11 @@ class UserInfo(Resource):
     @inject
     def __init__(self, usersBroker: IUsersBroker, api=None, *args, **kwargs):
         self.usersBroker = usersBroker
-        
+                
         super().__init__(api, *args, **kwargs)
      
     @account_info_ns.doc(description='Retrieve info for this user.',        
-        responses={int(HTTPStatus.OK): "'Retrieved info.",
+        responses={int(HTTPStatus.OK): "Retrieved info.",
                    int(HTTPStatus.NOT_FOUND): "User not found",},
         
         security='CSRF')
@@ -42,7 +43,7 @@ class UserInfo(Resource):
             user = self.usersBroker.get_user_by_id(user_id=identity["user_id"], load_scopes=False)
             user.authenticated_provider = user.external_providers[0]
         
-        if user is None:
+        if user is None or user.is_not_active():
             app.logger.error(f"User {str(identity)} not found in the database!")
             abort(HTTPStatus.NOT_FOUND, "User not found in the database!")
 
@@ -53,12 +54,15 @@ class UserInfo(Resource):
                 "email": user.email,
                 "role": user.role
                 }
+    
+    
    
-@account_info_ns.route('/', endpoint="my_account", methods=['GET'])        
+@account_info_ns.route('/', endpoint="my_account", methods=['GET','DELETE'])        
 class SetaAccount(Resource):
     @inject
-    def __init__(self, usersBroker: IUsersBroker, api=None, *args, **kwargs):
+    def __init__(self, usersBroker: IUsersBroker, sessionsBroker: ISessionsBroker, api=None, *args, **kwargs):
         self.usersBroker = usersBroker
+        self.sessionsBroker= sessionsBroker
         
         super().__init__(api, *args, **kwargs)
        
@@ -82,7 +86,7 @@ class SetaAccount(Resource):
             user = self.usersBroker.get_user_by_id(user_id=identity["user_id"], load_scopes=False)
             user.authenticated_provider = user.external_providers[0]
         
-        if user is None:
+        if user is None or user.is_not_active():
             app.logger.error(f"User {str(identity)} not found in the database!")
             abort(HTTPStatus.NOT_FOUND, "User not found in the database!")
             
@@ -106,3 +110,34 @@ class SetaAccount(Resource):
             account_info["external_providers"].append(ep)
         
         return account_info
+    
+    @account_info_ns.doc(description='Set account as deleted for this user.',        
+        responses={int(HTTPStatus.OK): "Account deleted.",
+                   int(HTTPStatus.NOT_FOUND): "User not found",},
+        
+        security='CSRF')
+    @jwt_required()   
+    def delete(self):
+        """ Delete user account """
+        
+        identity = get_jwt_identity()
+        user_id=identity["user_id"]
+        
+        if not self.usersBroker.user_uid_exists(user_id):
+            abort(HTTPStatus.NOT_FOUND, "User id not found")
+            
+        self.usersBroker.delete(user_id)
+        
+        #destroy session token and cookies
+        session_id = session.get("session_id")
+        
+        if session_id:
+            self.sessionsBroker.session_logout(session_id)
+        
+        session.clear()        
+        
+        response = jsonify({"status": "success", "message": "Account deleted"})
+        unset_jwt_cookies(response)
+        unset_token_info_cookies(response=response)
+        
+        return response

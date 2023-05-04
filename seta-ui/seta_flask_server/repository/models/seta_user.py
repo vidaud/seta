@@ -145,6 +145,9 @@ class SetaUser:
                 return uc.claim_value
         
         return UserRoleConstants.User
+        
+    def is_not_active(self) -> bool:
+        return self.status.lower() != UserStatusConstants.Active.lower()
 
     def has_community_scope(self, id: str, scope: str) -> bool:
         if self._community_scopes is None:

@@ -6,6 +6,10 @@ from .db_user_permissions import UserPermissionsBroker
 
 from seta_flask_server.repository.models import SetaUser, ExternalProvider, UserClaim, SystemScope
 from seta_flask_server.infrastructure.scope_constants import SystemScopeConstants
+from seta_flask_server.infrastructure.constants import UserStatusConstants
+
+from datetime import datetime
+import pytz
 
 class UsersBroker(implements(IUsersBroker)):
     @inject
@@ -20,6 +24,9 @@ class UsersBroker(implements(IUsersBroker)):
         seta_user = self.get_user_by_email(auth_user.email)
         
         if seta_user is not None:
+            if seta_user.status != UserStatusConstants.Active:
+                return None
+            
             for p in seta_user.external_providers:
                 if p.provider_uid == auth_user.authenticated_provider.provider_uid and p.provider == auth_user.authenticated_provider.provider:
                     seta_user.authenticated_provider = p
@@ -90,6 +97,14 @@ class UsersBroker(implements(IUsersBroker)):
         filter = {"user_id": user_id, "email": {"$exists" : True}}
                 
         return self.collection.count_documents(filter, limit = 1) > 0
+    
+    def delete(self, user_id: str):
+        now_date = datetime.now(tz=pytz.utc)
+        
+        filter = {"user_id": user_id, "email": {"$exists" : True}}
+        set = {"$set": {"status": UserStatusConstants.Deleted, "modified_at": now_date}}
+        
+        self.collection.update_one(filter, set)
   
     
     #-------------------------------------------------------#

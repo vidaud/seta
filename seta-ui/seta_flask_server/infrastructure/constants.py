@@ -18,6 +18,7 @@ class UserStatusConstants:
     Active = "active"
     Disabled = "disabled"
     Blocked = "blocked"
+    Deleted = "deleted"
     
     List = [Active, Disabled, Blocked]    
     

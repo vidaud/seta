@@ -59,7 +59,7 @@ class CommunityList(Resource):
         #TODO: move scopes to JWT token and validate trough decorator
         #verify scope
         user = self.usersBroker.get_user_by_id(user_id)
-        if user is None:
+        if user is None or user.is_not_active():
             app.logger.debug(f"{user_id} not found")
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
         if not user.has_system_scope(scope=SystemScopeConstants.CreateCommunity):            
@@ -145,7 +145,7 @@ class Community(Resource):
         #TODO: move scopes to JWT token and validate trough decorator
         #verify scope
         user = self.usersBroker.get_user_by_id(user_id)
-        if user is None:
+        if user is None or user.is_not_active():
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
 
         if not self.communitiesBroker.community_id_exists(id):
@@ -185,7 +185,7 @@ class Community(Resource):
         
         #verify scope
         user = self.usersBroker.get_user_by_id(user_id)
-        if user is None:
+        if user is None or user.is_not_active():
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
         if not user.has_community_scope(id=id, scope=CommunityScopeConstants.Owner):
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")

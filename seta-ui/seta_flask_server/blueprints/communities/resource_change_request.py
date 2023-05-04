@@ -44,7 +44,7 @@ class ResourceChangeRequestList(Resource):
         
         #verify scope
         user = self.usersBroker.get_user_by_id(auth_id)        
-        if user is None:
+        if user is None or user.is_not_active():
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
         if not user.has_system_scope(SystemScopeConstants.ApproveResourceChangeRequest):
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
@@ -77,7 +77,7 @@ class ResourceCreateChangeRequest(Resource):
         auth_id = identity["user_id"]
         
         user = self.usersBroker.get_user_by_id(auth_id)
-        if user is None:
+        if user is None or user.is_not_active():
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
         if not user.has_resource_scope(id=resource_id, scope=ResourceScopeConstants.Edit):
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
@@ -136,7 +136,7 @@ class ResourceChangeRequest(Resource):
         #if not the initiator of the request, verify ApproveChangeRequest scope
         if request.requested_by != auth_id:            
             user = self.usersBroker.get_user_by_id(auth_id)
-            if user is None:
+            if user is None or user.is_not_active():
                 abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
             if not user.has_system_scope(scope=SystemScopeConstants.ApproveResourceChangeRequest):
                 abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
@@ -160,7 +160,7 @@ class ResourceChangeRequest(Resource):
         
         user = self.usersBroker.get_user_by_id(auth_id)
 
-        if user is None:
+        if user is None or user.is_not_active():
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
         if not user.has_system_scope(scope=SystemScopeConstants.ApproveResourceChangeRequest):
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
