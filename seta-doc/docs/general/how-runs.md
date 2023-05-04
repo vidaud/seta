@@ -76,7 +76,7 @@ When creating a Taxonomy, consider[^1]:
 6. Inherit every property from the class above it and also have the option of adding new properties.
 7. Objects' membership attributes in relation to other objects may also be captured.
 
-The following example describes part of a Taxonomy:
+The following example describes a simple Taxonomy:
 
 ![Screenshot](../img/taxonomy.png){width=600}
 
@@ -94,11 +94,13 @@ The following example describes part of a Taxonomy:
 ##### Taxonomy in SeTA
 In SeTA, we have define some Taxonomies that can be used, but the you can also define a new Taxonomy if is necessary.    
 
-After selecting the terms that represent the broadest category, you can assign the remaining terms to the other categories. To create a new Taxonomy, you can go to the API interface and set up the parameters  as *code, label, long label, classifier, version, validated* to upload the new Taxonomy.  It is possible to create as many Taxonomies as you need.
-
+After selecting the terms that represent the broadest category, you can assign the remaining terms to the other categories. To create a new Taxonomy, you can go to the API interface and set up the parameters  as *code, label, long label, classifier, version, validated* to upload the new Taxonomy.  It is possible to create as many Taxonomies as you need
 
 
 {++ example of SeTA Taxonomy++}
+
+
+The following example describes part of a Taxonomy used in SeTA:
 
 ```json
 "aggregations": {
