@@ -30,7 +30,8 @@ profile_api = Api(profile_bp_v1,
             version='1.0',
             description='User Profile API',
             doc=doc,
-            authorizations=authorizations
+            authorizations=authorizations,
+            default_swagger_filename="me/swagger_profile.json"
          )
 
 profile_api.add_namespace(account_info_ns, path="/me")

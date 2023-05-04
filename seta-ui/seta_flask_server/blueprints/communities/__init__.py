@@ -37,7 +37,8 @@ api = Api( communities_bp_v1,
          version='1.0',
          description='SeTA Communities API',
          doc=doc,
-         authorizations=authorizations
+         authorizations=authorizations,
+         default_swagger_filename="communities/swagger_communities.json"
          )
 
 api.add_namespace(communities_ns, path="/communities")
