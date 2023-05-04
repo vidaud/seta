@@ -244,7 +244,7 @@ Some of these functions are:
 - *replace_phone_numbers*   
 - etc...    -->
 
-
+<!--
 | Function      | Description                          |
 | :--------- | :---------------------------------- |
 | *normalize_hyphenated_words*| 	Reassembles words that were separated by a line break                 | 
@@ -258,7 +258,7 @@ Some of these functions are:
 | *replace_phone_numbers* 	|	Similar for telephone numbers +1 800 456-6553                         |
 | *replace_user_handles*	 	|	Similar for user handles like @pete                                   |
 | *replace_emojis* 			|	Replaces smileys etc. with _EMOJI_                                    |
-
+-->
 
 **textacy** features:
 
