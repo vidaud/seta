@@ -30,6 +30,7 @@ const TermsCluster = ({ className, terms, onSelectedTermsAdd, onSelectedTermsRem
     fromEffectRef.current = true
     setPrevValues(found)
     setValues(found)
+    setChecked(found.length === terms.length)
   }, [terms, tokens])
 
   useEffect(() => {

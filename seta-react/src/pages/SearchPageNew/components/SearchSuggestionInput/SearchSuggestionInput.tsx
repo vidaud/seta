@@ -34,10 +34,10 @@ const SearchSuggestionInput = () => {
   }
 
   const handleTermsRemoved = (terms: string[]) => {
-    const newValue = terms.reduce(
-      (acc, term) => acc.replace(term.match(/\s/g) ? ` "${term}"` : ` ${term}`, ''),
-      value
-    )
+    const newValue = tokens
+      .filter(token => !terms.includes(token.rawValue))
+      .map(token => token.token)
+      .join(' ')
 
     setValue(newValue)
   }
