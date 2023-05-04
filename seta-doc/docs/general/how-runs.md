@@ -232,9 +232,43 @@ These procedures are put into practise by removing titles, abstracts, and identi
 
 ### Actual neural network training
 
-**spaCy** is a Python library for advanced Natural Language Processing (NLP) that is open-source and free.[^5] It helps create applications that process and "understand" massive volumes of text and is specifically created for usage in production. It can be used to create information extraction or systems for interpreting natural language, or it can be used to prepare text for deep learning.
+**spaCy** is a Python library for advanced Natural Language Processing (NLP) that is open-source and free.[^5] It helps create applications that process and "understand" massive volumes of text and is specifically created for usage in production. It can be used to create information extraction or systems for interpreting natural language, or it can be used to prepare text for deep learning.     
 
-We train neural networks using **textacy**, a potent Python language modelling package built on the basis of **spaCy**[^6]. It can carry out a variety of natural language processing (NLP) tasks thanks to the **spaCy** library's outstanding performance. The essentials, such as part-of-speech tagging, dependency parsing, and tokenization, are handled by another library, leaving **textacy** to concentrate mostly on the jobs that occur before and after.
+
+We train neural networks using **textacy**, a potent Python language modelling package built on the basis of **spaCy**[^6]. It can carry out a variety of natural language processing (NLP) tasks thanks to the **spaCy** library's outstanding performance. The essentials, such as part-of-speech tagging, dependency parsing, and tokenization, are handled by another library, leaving **textacy** to concentrate mostly on the jobs that occur before and after. The pre-processing module of **textacy** has a good number of functions to normalise characters and to handle common patterns like URLs, email addresses, phone numbers, and so on.    
+
+Some of these functions are:      
+<!-- - *normalize_hyphenated_words*   
+- *normalize_quotation_marks*   
+- *replace_phone_numbers*   
+- *replace_phone_numbers*   
+- etc...    -->
+
+
+| Function      | Description                          |
+| :--------- | :---------------------------------- |
+| *normalize_hyphenated_words*| 	Reassembles words that were separated by a line break                 | 
+| *normalize_quotation_marks* |	Replaces all kind of fancy quotation marks with an ASCII equivalent   |
+| *normalize_unicode* 		|	Unifies different codes of accented characters in Unicode             |
+| *remove_accents* 			|	Replaces accented characters with ASCII, if possible, or drops them   |
+| *replace_urls*	 			|	Similar for URLs like https://xyz.com                                 |
+| *replace_emails* 			|	Replaces emails with _EMAIL_                                          |
+| *replace_hashtags*	 		|	Similar for tags like #sunshine                                       |
+| *replace_numbers* 			|	Similar for numbers like 1235                                         |
+| *replace_phone_numbers* 	|	Similar for telephone numbers +1 800 456-6553                         |
+| *replace_user_handles*	 	|	Similar for user handles like @pete                                   |
+| *replace_emojis* 			|	Replaces smileys etc. with _EMOJI_                                    |
+
+
+**textacy** features:
+
+- Connect directly and add custom extensions to the main functionality of spaCy for interacting including one or more documents.
+- Various similarity measures are used to compare strings and sequences.
+- Prior to using spaCy to analyse raw text, clean, normalise, and examine it.
+- Documents are tokenized and vectorized, and then topic models are trained, interpreted, and displayed.
+
+
+
 
 
 [^1]: https://data.nsw.gov.au/IDMF/data-structure-and-coordination/data-taxonomy
