@@ -69,12 +69,12 @@ It is critical to keep a constant level of precision within a category while con
 
 When creating a Taxonomy, consider[^1]:       
 1. Decide what topics your Taxonomy must include.    
-2. Consider how specific the Taxonomy needs to be. Always base this on your personal priorities.    
+2. Consider how specific the Taxonomy needs to be.    
 3. Provide names for each object in relation to other objects and follow a hierarchical style.
-4. have particular guidelines that are followed while classifying or categorising any object inside a domain. These guidelines must be comprehensive, consistent, and clear.
+4. Have particular guidelines that are followed while classifying or categorising any object inside a domain. These guidelines must be comprehensive, consistent, and clear.
 5. Apply strict specification to ensure that any newly discovered object can only belong to one specific category or type of object.
 6. Inherit every property from the class above it and also have the option of adding new properties.
-7. Objects' membership attributes in relation to other objects may also be captured.
+7. Objects membership attributes in relation to other objects may also be captured.
 
 The following example describes a simple Taxonomy:
 
