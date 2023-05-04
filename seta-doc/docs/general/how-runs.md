@@ -92,9 +92,11 @@ The following example describes part of a Taxonomy:
 
 
 ##### Taxonomy in SeTA
-In SeTA, the user can define the Taxonomy that is going to be used. After selecting the terms that represent the broadest category, the user can assign the remaining terms to the other categories. The new Taxonomy can be created by the user via the API.
+In SeTA, we have define some Taxonomies that can be used, but the you can also define a new Taxonomy if is necessary.    
 
-With the setup of parameters as *code, label, long label, classifier, version, validated* it is possible to create as many Taxonomies are needed.
+After selecting the terms that represent the broadest category, you can assign the remaining terms to the other categories. To create a new Taxonomy, you can go to the API interface and set up the parameters  as *code, label, long label, classifier, version, validated* to upload the new Taxonomy.  It is possible to create as many Taxonomies as you need.
+
+
 
 {++ example of SeTA Taxonomy++}
 
