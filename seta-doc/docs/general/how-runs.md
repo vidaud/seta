@@ -237,8 +237,8 @@ These procedures are put into practise by removing titles, abstracts, and identi
 
 We train neural networks using **textacy**, a potent Python language modelling package built on the basis of **spaCy**[^6]. It can carry out a variety of natural language processing (NLP) tasks thanks to the **spaCy** library's outstanding performance. The essentials, such as part-of-speech tagging, dependency parsing, and tokenization, are handled by another library, leaving **textacy** to concentrate mostly on the jobs that occur before and after. The pre-processing module of **textacy** has a good number of functions to normalise characters and to handle common patterns like URLs, email addresses, phone numbers, and so on.    
 
-Some of these functions are:      
-<!-- - *normalize_hyphenated_words*   
+<!--Some of these functions are:      
+ - *normalize_hyphenated_words*   
 - *normalize_quotation_marks*   
 - *replace_phone_numbers*   
 - *replace_phone_numbers*   
