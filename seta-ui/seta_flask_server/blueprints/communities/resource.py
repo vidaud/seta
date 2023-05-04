@@ -74,7 +74,7 @@ class CommunityResource(Resource):
         resource_dict = update_resource_parser.parse_args()
 
         try:            
-            model = ResourceModel(resource_id=id, title=resource_dict["title"], 
+            model = ResourceModel(resource_id=id, community_id=None, title=resource_dict["title"], 
                             abstract=resource_dict["abstract"], status=resource_dict["status"])
             
             self.resourcesBroker.update(model)

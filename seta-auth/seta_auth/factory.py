@@ -1,4 +1,4 @@
-from flask import (Flask, url_for)
+from flask import (Flask, request)
 from werkzeug.middleware.proxy_fix import ProxyFix
 from flask_jwt_extended import get_jwt_identity
 
@@ -41,6 +41,14 @@ def create_app(config_object):
         
         sessionsBroker = app_injector.injector.get(ISessionsBroker)        
         return sessionsBroker.session_token_is_blocked(jti)
+    
+    @app.after_request
+    def after_request(response):        
+        """ Logging after every request. """       
+        
+        if app.testing:
+            app.logger.debug(request.path + ": " + str(response.status_code) + ", json: " + str(response.data))
+            return response
         
     app_injector = FlaskInjector(
         app=app,

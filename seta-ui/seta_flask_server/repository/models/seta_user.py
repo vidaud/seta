@@ -15,9 +15,11 @@ class SetaUser:
     
     def __init__(self, user_id: str, email: str, user_type: str, status: str, created_at: datetime = None, modified_at: datetime = None) -> None:
         self.user_id = user_id
+        
         self.email = None
         if email:
             self.email = email.lower()
+            
         self.user_type = user_type
         self.status = status
         self.created_at = created_at

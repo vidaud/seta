@@ -5,8 +5,8 @@ import pytz
 from injector import inject
 from seta_flask_server.repository.interfaces import IDbConfig, IAppsBroker
 
-from seta_flask_server.repository.models import SetaApplication, SetaUser, RsaKey
-from seta_flask_server.infrastructure.constants import UserStatusConstants
+from seta_flask_server.repository.models import SetaApplication, SetaUser, RsaKey, ExternalProvider
+from seta_flask_server.infrastructure.constants import UserStatusConstants, ExternalProviderConstants
 
 from flask import current_app
 
@@ -36,8 +36,8 @@ class AppsBroker(implements(IAppsBroker)):
         return seta_apps
             
     
-    def get_by_parent_id_and_name(self, parent_id: str, name: str) -> SetaApplication:
-        filter = {"parent_user_id": parent_id, "app_name": name}
+    def get_by_name(self, name: str) -> SetaApplication:
+        filter = {"app_name": name.lower()}
         
         app = self.collection.find_one(filter)
         
@@ -53,8 +53,8 @@ class AppsBroker(implements(IAppsBroker)):
         
         return seta_app
     
-    def app_exists(self, parent_id: str, name: str) -> bool:
-        filter = {"parent_user_id": parent_id, "app_name": name}
+    def app_exists(self, name: str) -> bool:
+        filter = {"app_name": name.lower()}
                 
         return self.collection.count_documents(filter, limit = 1) > 0
     
@@ -78,7 +78,7 @@ class AppsBroker(implements(IAppsBroker)):
     def create(self, app: SetaApplication, copy_parent_scopes: bool = True, copy_parent_rsa: bool = False):
         
         #double check the name uniqueness
-        if self.app_exists(parent_id=app.parent_user_id, name=app.app_name):
+        if self.app_exists(name=app.app_name):
             return
         
         now = datetime.now(tz=pytz.utc)
@@ -87,6 +87,12 @@ class AppsBroker(implements(IAppsBroker)):
         seta_user = SetaUser(user_id=user_id, user_type="application", email=None, status=UserStatusConstants.Active, created_at=now)
         app.user_id = user_id   
         
+        external_provider = ExternalProvider(user_id=user_id, 
+                                            provider_uid=app.app_name.lower(), 
+                                            provider=ExternalProviderConstants.SETA.lower(), 
+                                            first_name=None, 
+                                            last_name=None,
+                                            domain=ExternalProviderConstants.SETA.lower())
         rsa_key = None
         resource_scopes = None
         
@@ -115,10 +121,14 @@ class AppsBroker(implements(IAppsBroker)):
             #insert app rescord
             self.collection.insert_one(app.to_json(), session=session)
             
+            #insert external provider
+            self.collection.insert_one(external_provider.to_json(), session=session)
+            
             #insert rsa_key
             if rsa_key is not None:
                 self.collection.insert_one(rsa_key.to_json(), session=session)
-                
+              
+            #insert parent resource scopes  
             if resource_scopes is not None and len(resource_scopes) > 0:
                 self.collection.insert_many(resource_scopes, session=session)        
         
@@ -128,9 +138,11 @@ class AppsBroker(implements(IAppsBroker)):
         if not new.app_name:
             new.app_name = old.app_name
             
-        if new.app_name != old.app_name:
+        new.app_name = new.app_name.lower()
+        
+        if new.app_name != old.app_name.lower():
             #double check the name uniqueness
-            if self.get_by_parent_id_and_name(user_id=new.parent_user_id, name=new.app_name):
+            if self.get_by_name(name=new.app_name):
                 return
               
         filter = {"parent_user_id": old.parent_user_id, "app_name": old.app_name}

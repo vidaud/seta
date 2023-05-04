@@ -13,6 +13,10 @@ class SetaApplication:
     #parent user object
     parent_user: SetaUser = None
     
+    def __post_init__(self):
+        if self.app_name:
+            self.app_name = self.app_name.lower()
+    
     @property
     def status(self):
         if self.user:
