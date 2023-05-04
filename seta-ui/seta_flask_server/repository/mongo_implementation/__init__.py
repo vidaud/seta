@@ -11,3 +11,4 @@ from .db_resource_contributors_broker import ResourceContributorsBroker
 from .db_resource_change_requests_broker import ResourceChangeRequestsBroker
 from .db_user_permissions import UserPermissionsBroker
 from .db_sessions_broker import SessionsBroker
+from .db_apps_broker import AppsBroker
