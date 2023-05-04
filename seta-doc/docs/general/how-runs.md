@@ -44,6 +44,7 @@ To facilitate uniform, precise, and rapid indexing and retrieval of the content 
 
 Consistent, precise, and quick indexing and retrieval of content are made possible by Taxonomies. Vocabulary design must be connected with the metadata approach because Taxonomies offer a variety of metadata fields.
 
+
 ##### Taxonomy provides: 
 
 - Relationships between the structure, content, and component parts.
@@ -57,13 +58,21 @@ Consistent, precise, and quick indexing and retrieval of content are made possib
 - Control data assets through data governance.
 - Determine trends and patterns through guiding machine learning and data experiences.
 
-It is critical to keep a constant level of precision within a category while constructing a Taxonomy. Taxonomies can be of several kind, such as *flat, hierarchical, network*, and so on. Based on past experience, a hierarchical structure is best. There are three types of hierarchical structures: 
+It is critical to keep a constant level of precision within a category while constructing a Taxonomy. 
+
+
+##### Hierarchical Taxonomies
+Taxonomies can be of several kind, such as *flat, hierarchical, network*, and so on. Based on past experience, a hierarchical structure is best. There are three types of hierarchical structures: 
 
   1.  Standard Hierarchy: A standard hierarchy Taxonomy has a single root that is subdivided into categories as needed to organise the information and is frequently represented as a tree. A single hierarchical structure is simple to grasp and establish a mental model for finding information.
 
   2.  Polyhierarchy: A term in a Taxonomy can be repeated in different categories in a polyhierarchy hierachy.  It is not suggested because it can cause misunderstanding. Polyhierarchy violates the first and second criteria of Taxonomy word naming: "Terms should be unambiguous and mutually exclusive." 
  
   3. Faceted: A faceted classification system has multiple dimensions. It comprises of various Taxonomies, or "facets," where each one's top-level node denotes a distinct kind of Taxonomy, attribute, or context. 
+
+  <!-- to ask what type of Taxonomy we are considering-->
+
+  For SeTA we are using Standard Hierarchy.
 
 ##### How to design a good Taxonomy
 
