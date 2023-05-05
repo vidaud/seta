@@ -60,19 +60,7 @@ Consistent, precise, and quick indexing and retrieval of content are made possib
 
 It is critical to keep a constant level of precision within a category while constructing a Taxonomy. 
 
-
-#### Hierarchical Taxonomies
-Taxonomies can be of several kind, such as *flat, hierarchical, network*, and so on. Based on past experience, a hierarchical structure is best. There are three types of hierarchical structures: 
-
-  1.  Standard Hierarchy: A standard hierarchy Taxonomy has a single root that is subdivided into categories as needed to organise the information and is frequently represented as a tree. A single hierarchical structure is simple to grasp and establish a mental model for finding information.
-
-  2.  Polyhierarchy: A term in a Taxonomy can be repeated in different categories in a polyhierarchy hierachy.  It is not suggested because it can cause misunderstanding. Polyhierarchy violates the first and second criteria of Taxonomy word naming: "Terms should be unambiguous and mutually exclusive." 
- 
-  3. Faceted: A faceted classification system has multiple dimensions. It comprises of various Taxonomies, or "facets," where each one's top-level node denotes a distinct kind of Taxonomy, attribute, or context. 
-
-  <!-- to ask what type of Taxonomy we are considering-->
-
-  For SeTA we are using Standard Hierarchy.
+Taxonomies can be of several kind, such as *flat, hierarchical, network*, and so on. For our case we use a hierarchical structure, with a single root that subdivided into categories as needed to organise the information and represented as a tree. A single hierarchical structure is simple to grasp and establish a mental model for finding information.
 
 #### How to design a good Taxonomy
 
@@ -227,38 +215,50 @@ Three key ingredients needed for successful chunking:
 - Using units of no more than seven items.
 - Finding the right level of detail.
 
-These procedures are put into practise by removing titles, abstracts, and identifiable sentences from the entire corpus, then identifying, harmonising, and replacing phrases before storing.
+In SeTA we create chunks of 300 words. With this we try to ensure our search results accurately and capture the essence of the user’s query.  For every chunk we create an embedding. 
 
+### Embedding
+Word embeddings are numerical vector representations of text that keep track of the semantic and contextual relationships between words in the corpus of texts.  The words in this form are closer to one another in the vector space because they have stronger semantic links. Embeddings can be utilised with other models and, in general, improve the productivity and usability of ML models.
+
+The sentence-transformers model **all-distilroberta-v1** is utilised for the embedding process as it helps on the clustering and the semantic search because it maps sentences and paragraphs to a dimensional dense vector space.
+
+
+
+
+
+300 parole every chunk  per ogni chunk si crea un embedding di tanti valori per poi usarlo con una ricerca semantica 
+
+per embendiding sentence transformer usiamo modelo sbert model all-distilroberta-v1" con questo modelo dado un chunk restutuisce un emebdding 
+
+libreria sentence transformer carica il modello e poi il modelo viene usato per creare il embedding
+
+semantic search di elastic search serve per fare la ricerca negli embenddings and vector search 
+
+cercare vector search and elastic search aut deploy
+
+embeddings e un vettori di valori 
+
+modelo all distillrobera  crea gli embeddings e aspazio vectorial
+mentre con ES quando se fa ricerca se calconano le distanze dei documenti che ci interessano 
+
+
+ricerca semantica riordinamiento in base allo spazio vettoriale
+
+elastic search calcola distanza vettoriale fra i embenddings 
+
+
+embendings sono create al momento del put corpus 
 
 ### Actual neural network training
 
 **spaCy** is a Python library for advanced Natural Language Processing (NLP) that is open-source and free.[^5] It helps create applications that process and "understand" massive volumes of text and is specifically created for usage in production. It can be used to create information extraction or systems for interpreting natural language, or it can be used to prepare text for deep learning.     
 
+**textacy viene usata per pre processing dati** 
+
 
 We train neural networks using **textacy**, a potent Python language modelling package built on the basis of **spaCy**[^6]. It can carry out a variety of natural language processing (NLP) tasks thanks to the **spaCy** library's outstanding performance. The essentials, such as part-of-speech tagging, dependency parsing, and tokenization, are handled by another library, leaving **textacy** to concentrate mostly on the jobs that occur before and after. The pre-processing module of **textacy** has a good number of functions to normalise characters and to handle common patterns like URLs, email addresses, phone numbers, and so on.    
 
-<!--Some of these functions are:      
- - *normalize_hyphenated_words*   
-- *normalize_quotation_marks*   
-- *replace_phone_numbers*   
-- *replace_phone_numbers*   
-- etc...    -->
 
-<!--
-| Function      | Description                          |
-| :--------- | :---------------------------------- |
-| *normalize_hyphenated_words*| 	Reassembles words that were separated by a line break                 | 
-| *normalize_quotation_marks* |	Replaces all kind of fancy quotation marks with an ASCII equivalent   |
-| *normalize_unicode* 		|	Unifies different codes of accented characters in Unicode             |
-| *remove_accents* 			|	Replaces accented characters with ASCII, if possible, or drops them   |
-| *replace_urls*	 			|	Similar for URLs like https://xyz.com                                 |
-| *replace_emails* 			|	Replaces emails with _EMAIL_                                          |
-| *replace_hashtags*	 		|	Similar for tags like #sunshine                                       |
-| *replace_numbers* 			|	Similar for numbers like 1235                                         |
-| *replace_phone_numbers* 	|	Similar for telephone numbers +1 800 456-6553                         |
-| *replace_user_handles*	 	|	Similar for user handles like @pete                                   |
-| *replace_emojis* 			|	Replaces smileys etc. with _EMOJI_                                    |
--->
 
 **textacy** features:
 
@@ -267,6 +267,8 @@ We train neural networks using **textacy**, a potent Python language modelling p
 - Prior to using spaCy to analyse raw text, clean, normalise, and examine it.
 - Documents are tokenized and vectorized, and then topic models are trained, interpreted, and displayed.
 
+
+libreria usata per adestratere modello gensim con word2vec usata solo per suggestions e similar terms le suggestions sono salvate su ES 
 
 
 
