@@ -96,75 +96,51 @@ To create a new Taxonomy, you need to set it up and upload it together when you 
 It is possible to create as many Taxonomies as you need.    
 
 
-{++ example of SeTA Taxonomy++}
-
-
-The following example describes part of a Taxonomy used in SeTA:
+The following is an example of a Taxonomy used in SeTA:
 
 ```json
-"aggregations": {
-    "taxonomy": [
-      [
-        {
-          "doc_count": 7,
-          "name": "euro_sci_voc",
-          "subcategory": [
-            {
-              "classifier": "cordis",
-              "code": "/23",
-              "doc_count": 6,
-              "label": "natural sciences",
-              "longLabel": "/natural sciences",
-              "name": "natural_sciences",
-              "subcategory": [
-                {
-                  "classifier": "cordis",
-                  "code": "/23/49",
-                  "doc_count": 4,
-                  "label": "biological sciences",
-                  "longLabel": "/natural sciences/biological sciences",
-                  "name": "biological_sciences",
-                  "subcategory": [
-                    {
-                      "classifier": "cordis",
-                      "code": "/23/49/335",
-                      "doc_count": 2,
-                      "label": "ecology",
-                      "longLabel": "/natural sciences/biological sciences/ecology",
-                      "name": "ecology",
-                      "subcategory": [
-                        {
-                          "classifier": "cordis",
-                          "code": "/23/49/335/1009",
-                          "doc_count": 2,
-                          "label": "ecosystems",
-                          "longLabel": "/natural sciences/biological sciences/ecology/ecosystems",
-                          "name": "ecosystems",
-                          "subcategory": []
-                        }
-                      ]
-                    },
-                    {
-                      "classifier": "cordis",
-                      "code": "/23/49/345",
-                      "doc_count": 2,
-                      "label": "zoology",
-                      "longLabel": "/natural sciences/biological sciences/zoology",
-                      "name": "zoology",
-                      "subcategory": [
-                        {
-                          "classifier": "cordis",
-                          "code": "/23/49/345/1039",
-                          "doc_count": 2,
-                          "label": "entomology",
-                          "longLabel": "/natural sciences/biological sciences/zoology/entomology",
-                          "name": "entomology",
-                          "subcategory": []
-                        }
-                      ]
-                    }
-                  ]
-                },
+"taxonomy": [
+    {
+      "code": "/25",
+      "label": "engineering and technology",
+      "longLabel": "/engineering and technology",
+      "validated": "true",
+      "classifier": "cordis",
+      "version": "1",
+      "name": "euro_sci_voc",
+      "name_in_path": "engineering_and_technology"
+    },
+    {
+      "code": "/25/59",
+      "label": "other engineering and technologies",
+      "longLabel": "/engineering and technology/other engineering and technologies",
+      "validated": "true",
+      "classifier": "cordis",
+      "version": "1",
+      "name": "euro_sci_voc",
+      "name_in_path": "other_engineering_and_technologies"
+    },
+    {
+      "code": "/25/59/377",
+      "label": "food technology",
+      "longLabel": "/engineering and technology/other engineering and technologies/food technology",
+      "validated": "true",
+      "classifier": "cordis",
+      "version": "1",
+      "name": "euro_sci_voc",
+      "name_in_path": "food_technology"
+    },
+    {
+      "code": "/27/81/30021/499/1287",
+      "label": "fruit growing",
+      "longLabel": "/agricultural sciences/agriculture, forestry, and fisheries/agriculture/horticulture/fruit growing",
+      "validated": "true",
+      "classifier": "cordis",
+      "version": "1",
+      "name": "euro_sci_voc",
+      "name_in_path": "fruit_growing"
+    }
+]
 ```
 
 
