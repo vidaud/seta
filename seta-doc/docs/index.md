@@ -48,9 +48,11 @@ Word2vec is a two-layer neural net that processes text by “vectorizing” word
 
 The purpose and usefulness of Word2vec is to group the vectors of similar words together in vectorspace. That is, it detects similarities mathematically. 
 
-Given enough data, usage and contexts, Word2vec can make highly accurate guesses about a word’s meaning based on past appearances. Those guesses can be used to establish a word’s association with other words (e.g. “man” is to “boy” what “woman” is to “girl”), or cluster documents and classify them by topic. Those clusters can form the basis of search, sentiment analysis and recommendations in such diverse fields as scientific research, legal discovery, e-commerce and customer relationship management.
-
+Given enough data, usage and contexts, Word2vec can make highly accurate guesses about a word’s meaning based on past appearances. 
 In SeTA, the **Word2Vec** algoritm is used to get the suggestions and similar terms when searching in the user interfaxce search bar.
+
+**Word2Vec** has been used in alongside **Gensim**. ("Generate Similar") is an open-source framework for unsupervised topic modelling and natural language processing written in Python. It is a tool for extracting semantic concepts from documents that is capable of handling large text volumes. As a result, it differs from other machine learning software packages that concentrate on memory processing. To boost processing speed, Gensim also provides efficient multicore implementations for certain algorithms. It includes more text processing features than other packages such as Scikit-learn, R, and others.
+
 
 
 ### sBERT

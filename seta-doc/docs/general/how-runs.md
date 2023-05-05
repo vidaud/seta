@@ -234,11 +234,25 @@ The sentence-transformers model **all-distilroberta-v1** is utilised for the emb
 Bidirectional Encoder Representations from Transformers, sometimes known as **BERT**, is an open source machine learning framework for natural language processing (NLP). **BERT** uses the text around it to generate context, which enables computers to understand the meaning of ambiguous words in text. A question and answer dataset can be used to fine-tune the **BERT** framework, which was pre-trained using text from Wikipedia.  **BERT** is built on Transformers[^5], a deep learning model in which every output element is connected to every input element and the weightings between them are dynamically determined based on their connection. (In NLP, this procedure is referred to as attention.)[^6]
 
 **sBERT** is a sentence-based model that gives additional training to the model, allowing semantic search for a huge number of sentences. **sBERT** employs a siamese architecture, which consists of two virtually identical **BERT** architectures with the same weights, and **sBERT** analyses two words as pairs during training. While the original study paper attempted numerous pooling approaches, they discovered that mean-pooling was the most effective. Pooling is a strategy for generalising features in a network, and it works in this case by averaging groupings of characteristics in the BERT. We now have two embeddings: one for sentence A and one for phrase B, thanks to the pooling.     
+
 When training the model, **SBERT** concatenates the two embeddings, which are then sent through a softmax classifier and trained with a softmax-loss function. When the model reaches inference — or begins predicting — the two embeddings are compared using a cosine similarity function, which generates a similarity score for the two sentences.
 [^7] 
 
 By training the models with new documents as they are published, we can ensure that the knowledge the models contain continues to represent EU documents accurately. 
 
+
+### Word2Vec
+
+The algorithm **Word2Vec** processes phrases. This algorithm takes input words and groups them together based on the similarity of their meanings. This similarity is calculated using complex mathematical formulas based on the context of the words. 
+
+Word2vec is a two-layer neural net that processes text by “vectorizing” words. Its input is a text corpus and its output is a set of vectors: feature vectors that represent words in that corpus. Word2vec creates vectors that are distributed numerical representations of word features, features such as the context of individual words. It does so without human intervention. While Word2vec is not a deep neural network, it turns text into a numerical form that deep neural networks can understand.[^4] Its output is a vocabulary in which each item has a vector attached to it, which can be fed into a deep-learning net or simply queried to detect relationships between words.
+
+The purpose and usefulness of Word2vec is to group the vectors of similar words together in vectorspace. That is, it detects similarities mathematically. 
+
+Given enough data, usage and contexts, Word2vec can make highly accurate guesses about a word’s meaning based on past appearances. 
+In SeTA, the **Word2Vec** algoritm is used to get the suggestions and similar terms when searching in the user interfaxce search bar.
+
+**Word2Vec** has been used in alongside **Gensim**. ("Generate Similar") is an open-source framework for unsupervised topic modelling and natural language processing written in Python. It is a tool for extracting semantic concepts from documents that is capable of handling large text volumes. As a result, it differs from other machine learning software packages that concentrate on memory processing. To boost processing speed, Gensim also provides efficient multicore implementations for certain algorithms. It includes more text processing features than other packages such as Scikit-learn, R, and others.
 
 ### Pre-processing data
 
@@ -246,19 +260,12 @@ By training the models with new documents as they are published, we can ensure t
 
 We train neural networks using **textacy**, a potent Python language modelling package built on the basis of **spaCy**[^9]. It can carry out a variety of natural language processing (NLP) tasks thanks to the **spaCy** library's outstanding performance. The essentials, such as part-of-speech tagging, dependency parsing, and tokenization, are handled by another library, leaving **textacy** to concentrate mostly on the jobs that occur before and after. The pre-processing module of **textacy** has a good number of functions to normalise characters and to handle common patterns like URLs, email addresses, phone numbers, and so on.    
 
-
-
 **textacy** features:
 
 - Connect directly and add custom extensions to the main functionality of spaCy for interacting including one or more documents.
 - Various similarity measures are used to compare strings and sequences.
 - Prior to using spaCy to analyse raw text, clean, normalise, and examine it.
 - Documents are tokenized and vectorized, and then topic models are trained, interpreted, and displayed.
-
-
-libreria usata per adestratere modello gensim con word2vec usata solo per suggestions e similar terms le suggestions sono salvate su ES 
-
-
 
 
 [^1]: https://data.nsw.gov.au/IDMF/data-structure-and-coordination/data-taxonomy
