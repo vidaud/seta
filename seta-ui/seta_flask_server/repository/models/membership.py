@@ -8,7 +8,11 @@ class MembershipModel:
     role: str = None
     join_date: datetime = None
     status: str = None
-    modified_at: datetime = None   
+    modified_at: datetime = None 
+    
+    def __post_init__(self):
+        if self.community_id:
+            self.community_id = self.community_id.lower()  
 
     def to_json(self) -> dict:
         return asdict(self)

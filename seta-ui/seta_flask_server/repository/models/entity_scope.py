@@ -5,6 +5,10 @@ class EntityScope:
     user_id: str
     id: str
     scope: str
+    
+    def __post_init__(self):
+        if self.id:
+            self.id = self.id.lower()  
 
     def to_json(self) -> dict:
         return asdict(self)

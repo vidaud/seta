@@ -5,7 +5,8 @@ INVITE_EXPIRE_DAYS: float = 3
 class ExternalProviderConstants:
     ECAS = "ECAS"
     GITHUB = "GitHub"
-    List = (ECAS, GITHUB)
+    SETA = "SETA"
+    List = (ECAS, GITHUB, SETA)
 
 class UserRoleConstants:
     Admin = "Administrator"
@@ -17,6 +18,7 @@ class UserStatusConstants:
     Active = "active"
     Disabled = "disabled"
     Blocked = "blocked"
+    Deleted = "deleted"
     
     List = [Active, Disabled, Blocked]    
     

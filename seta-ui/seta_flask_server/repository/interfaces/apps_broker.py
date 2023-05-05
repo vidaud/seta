@@ -13,24 +13,20 @@ class IAppsBroker(Interface):
         
         pass
     
-    def get_by_parent_id_and_name(self, parent_id: str, name: str) -> SetaApplication:
+    def get_by_name(self, name: str) -> SetaApplication:
         """
         Retrives an application
-        
-        :param parent_id:
-            The parent user id            
+                 
         :param name:
             The app name
         """
         
         pass
     
-    def app_exists(self, parent_id: str, name: str) -> bool:
+    def app_exists(self, name: str) -> bool:
         """
-        Check if an application exists for the parent user
-        
-        :param parent_id:
-            The parent user id            
+        Check if an application name exists
+              
         :param name:
             The app name
         """

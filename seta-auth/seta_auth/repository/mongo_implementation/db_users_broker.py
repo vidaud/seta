@@ -33,6 +33,18 @@ class UsersBroker(implements(IUsersBroker)):
         seta_user.system_scopes = permissionsBroker.get_all_user_system_scopes(seta_user.user_id)
             
         return seta_user
+    
+    def get_user_by_provider(self, provider_uid: str, provider: str) -> SetaUser:
+        filter = {"provider_uid": provider_uid, "provider": provider}
+        provider = self.collection.find_one(filter)
+                
+        if provider is None:
+            return None
+        
+        user = self.get_user_by_id(provider["user_id"])
+        user.authenticated_provider = ExternalProvider.from_db_json(provider)
+        
+        return user
 
     #-------------------------------------------------------#  
     

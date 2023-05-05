@@ -8,6 +8,12 @@ class ExternalProvider:
     first_name: str
     last_name : str
     domain: str
+    
+    def __post_init__(self):
+        if self.provider_uid:
+            self.provider_uid = self.provider_uid.lower()
+        if self.provider:            
+            self.provider = self.provider.lower()
 
     def to_json(self):
         return asdict(self)

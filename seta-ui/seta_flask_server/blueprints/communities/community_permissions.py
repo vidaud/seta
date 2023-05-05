@@ -42,7 +42,7 @@ class CommunityPermissionList(Resource):
         identity = get_jwt_identity()
         auth_id = identity["user_id"]
         user = self.usersBroker.get_user_by_id(auth_id)
-        if user is None:
+        if user is None or user.is_not_active():
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
         if not user.has_any_community_scope(id=community_id, scopes=[CommunityScopeConstants.Manager, CommunityScopeConstants.Owner]):
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
@@ -82,7 +82,7 @@ class CommunityUserPermissions(Resource):
         auth_id = identity["user_id"]
         user = self.usersBroker.get_user_by_id(auth_id)        
 
-        if user is None:            
+        if user is None or user.is_not_active():
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")        
 
         if not user.has_any_community_scope(id=community_id, scopes=[CommunityScopeConstants.Manager, CommunityScopeConstants.Owner]):
@@ -111,7 +111,7 @@ class CommunityUserPermissions(Resource):
         identity = get_jwt_identity()
         auth_id = identity["user_id"]   
         user = self.usersBroker.get_user_by_id(auth_id)
-        if user is None:
+        if user is None or user.is_not_active():
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
         if not user.has_any_community_scope(id=community_id, scopes=[CommunityScopeConstants.Manager, CommunityScopeConstants.Owner]):
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")    

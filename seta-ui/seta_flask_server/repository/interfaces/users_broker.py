@@ -19,3 +19,6 @@ class IUsersBroker(Interface):
     
     def user_uid_exists(self, user_id: str) -> bool:
         pass
+    
+    def delete(self, user_id: str):
+        pass

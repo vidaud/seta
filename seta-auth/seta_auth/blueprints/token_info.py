@@ -11,7 +11,7 @@ from werkzeug.exceptions import HTTPException
 from seta_auth.repository.interfaces import IUsersBroker, IResourcesBroker, ISessionsBroker
 from injector import inject
 
-from seta_auth.infrastructure.constants import ResourceScopeConstants, AuthorizedArea
+from seta_auth.infrastructure.constants import ResourceScopeConstants, AuthorizedArea, UserStatusConstants
 
 
 token_info = Blueprint("token_info", __name__)
@@ -67,13 +67,15 @@ class TokenInfo(Resource):
             jti = decoded_token.get("jti")
             if jti:
                 if self.sessionBroker.session_token_is_blocked(jti):
-                    abort(401, "Blocked token")
+                    abort(HTTPStatus.UNAUTHORIZED, "Blocked token")
                     
             if areas is not None and AuthorizedArea.Resources in areas:
                 #get user permissions for all resources
                 seta_id = decoded_token.get("seta_id")
                 if seta_id:
                     user = self.usersBroker.get_user_by_id(seta_id["user_id"])
+                    if user.status != UserStatusConstants.Active:
+                        abort(HTTPStatus.UNAUTHORIZED, "User inactive!")
                     
                     permissions = {"add": [], "delete": [], "view": []}  
                                 
@@ -97,7 +99,7 @@ class TokenInfo(Resource):
         except JWTExtendedException as e:
             message = str(e)
             app.logger.exception(message)
-            abort(401, message)
+            abort(HTTPStatus.UNAUTHORIZED, message)
         
         app.logger.debug(decoded_token)
         return jsonify(decoded_token)

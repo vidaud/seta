@@ -49,7 +49,7 @@ class ApplicationListResource(Resource):
         
         app_dict = new_app_parser.parse_args()
         
-        if self.appsBroker.app_exists(parent_id=user_id, name=app_dict["name"]):
+        if self.appsBroker.app_exists(name=app_dict["name"]):
             abort(HTTPStatus.CONFLICT, "Application name already exists")
             
         app = SetaApplication(app_name=app_dict["name"], app_description=app_dict.get("description"), parent_user_id=user_id)
@@ -83,9 +83,38 @@ class ApplicationResource(Resource):
         identity = get_jwt_identity()
         user_id = identity["user_id"]
         
-        app = self.appsBroker.get_by_parent_id_and_name(parent_id=user_id, name=name)
+        app = self.appsBroker.get_by_name(name=name)
         
         if app is None:
             abort(HTTPStatus.NOT_FOUND, "Application not found")
         
         return app
+    
+    @applications_ns.doc(description='Update an application',        
+        responses={int(HTTPStatus.OK): "Application updated.",
+                   int(HTTPStatus.NOT_FOUND): "Application not found."
+                  },
+        security='CSRF')
+    @applications_ns.expect(update_app_parser)
+    @jwt_required()
+    def put(self, name):
+        '''Updates an application'''
+        
+        identity = get_jwt_identity()
+        user_id = identity["user_id"]
+        
+        args = update_app_parser.parse_args()
+        
+        app = self.appsBroker.get_by_name(name=name)
+        
+        if app is None:
+            abort(HTTPStatus.NOT_FOUND, "Application not found")
+            
+        new_app = SetaApplication(app_name=args.get("new_name"), app_description=args.get("description"), parent_user_id=user_id)
+            
+        self.appsBroker.update(old=app, new=new_app)
+            
+        response = jsonify(status="success", message="Application updated")
+        response.status_code = HTTPStatus.OK
+        
+        return response

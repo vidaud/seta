@@ -60,7 +60,7 @@ class CommunityResource(Resource):
         
         #verify scope
         user = self.usersBroker.get_user_by_id(auth_id)
-        if user is None:
+        if user is None or user.is_not_active():
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
 
         resource = self.resourcesBroker.get_by_id(id)
@@ -74,7 +74,7 @@ class CommunityResource(Resource):
         resource_dict = update_resource_parser.parse_args()
 
         try:            
-            model = ResourceModel(resource_id=id, title=resource_dict["title"], 
+            model = ResourceModel(resource_id=id, community_id=None, title=resource_dict["title"], 
                             abstract=resource_dict["abstract"], status=resource_dict["status"])
             
             self.resourcesBroker.update(model)
@@ -102,7 +102,7 @@ class CommunityResource(Resource):
         
         #verify scope
         user = self.usersBroker.get_user_by_id(auth_id)
-        if user is None:
+        if user is None or user.is_not_active():
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
 
         app.logger.debug(user.to_json_complete())

@@ -50,3 +50,9 @@ def get_app(client: FlaskClient, access_token:str, name: str):
     url = f"{API_V1}/apps/{name}"
 
     return client.get(url, content_type='application/json', headers=auth_headers(access_token))
+
+def update_app(client: FlaskClient, access_token:str, name: str, new_name: str, description: str):
+    url = f"{API_V1}/apps/{name}"
+
+    data=f"new_name={new_name}&description={description}"
+    return client.put(url, data=data, content_type="application/x-www-form-urlencoded", headers=auth_headers(access_token))
