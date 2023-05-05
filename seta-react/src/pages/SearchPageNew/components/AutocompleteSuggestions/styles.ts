@@ -1,13 +1,14 @@
 import { css } from '@emotion/react'
+import styled from '@emotion/styled'
 
-export const root: ThemedCSS = theme => css`
-  /* padding: ${theme.spacing.sm}; */
+export const infoText: ThemedCSS = theme => css`
+  font-size: ${theme.fontSizes.sm};
+  color: ${theme.colors.gray[6]};
 `
 
-// export const header: ThemedCSS = theme => css`
-//   display: flex;
-//   flex-direction: column;
-//   justify-content: center;
-//   padding-bottom: ${theme.spacing.sm};
-//   border-bottom: 1px solid ${theme.colors.gray[4]};
-// `
+export const Container = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: ${({ theme }) => theme.spacing.xl};
+`

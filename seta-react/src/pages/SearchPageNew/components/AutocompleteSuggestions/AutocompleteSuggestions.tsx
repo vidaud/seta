@@ -1,32 +1,33 @@
 import { Box } from '@mantine/core'
 
-import ListMenu from '~/components/ListMenu'
 import { useSearchInput } from '~/pages/SearchPageNew/components/SuggestionsPopup/contexts/search-input-context'
 
-import * as S from './styles'
+import { useSuggestions } from '~/api/search/suggestions'
+
+import AutocompleteContent from './AutocompleteContent'
 
 import { useSearch } from '../SuggestionsPopup/contexts/search-context'
 
-const terms: string[] = [
-  'test',
-  'testing',
-  'tests',
-  'tested',
-  'test rigs',
-  'test programme',
-  'tested materials',
-  'test facility',
-  'test purposes',
-  'test surfaces',
-  'technology gmbh',
-  'text',
-  'temperature',
-  'temperat',
-  'tem',
-  'temperature level',
-  'temperature differences',
-  'tends'
-]
+// const TERMS: string[] = [
+//   'test',
+//   'testing',
+//   'tests',
+//   'tested',
+//   'test rigs',
+//   'test programme',
+//   'tested materials',
+//   'test facility',
+//   'test purposes',
+//   'test surfaces',
+//   'technology gmbh',
+//   'text',
+//   'temperature',
+//   'temperat',
+//   'tem',
+//   'temperature level',
+//   'temperature differences',
+//   'tends'
+// ]
 
 type Props = {
   className?: string
@@ -35,6 +36,10 @@ type Props = {
 const AutocompleteSuggestions = ({ className }: Props) => {
   const { onSuggestionSelected, currentToken } = useSearch()
   const { input, setPosition } = useSearchInput()
+
+  const suggestionsFor = currentToken?.rawValue
+
+  const { data, isLoading, error, refetch } = useSuggestions(suggestionsFor)
 
   const handleSuggestionSelected = (suggestion: string) => {
     onSuggestionSelected?.(suggestion)
@@ -52,11 +57,15 @@ const AutocompleteSuggestions = ({ className }: Props) => {
   }
 
   return (
-    <Box className={className} css={S.root}>
-      <ListMenu
-        items={terms}
-        currentWord={currentToken?.word}
+    <Box className={className}>
+      <AutocompleteContent
+        hasSearchTerm={!!suggestionsFor}
+        data={data}
+        isLoading={isLoading}
+        error={error}
+        currentWord={suggestionsFor}
         onSelect={handleSuggestionSelected}
+        onTryAgain={refetch}
       />
     </Box>
   )

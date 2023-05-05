@@ -11,27 +11,30 @@ type LabelValue = {
   value: string
 }
 
-type Props = {
+export type ListMenuProps = {
   className?: string
   items: string[] | LabelValue[]
   currentWord?: string
   onSelect?: (value: string) => void
 }
 
-const ListMenu = ({ className, items, currentWord, onSelect }: Props) => {
-  const viewport = useRef<HTMLDivElement>(null)
-
+const ListMenu = ({ className, items, currentWord, onSelect }: ListMenuProps) => {
   const formattedItems: LabelValue[] = useMemo(
-    () =>
-      isListOfStrings(items)
-        ? [...new Set(items.map(item => ({ label: item, value: item })))]
-        : items, // TODO: remove duplicates when items are not strings
+    () => (isListOfStrings(items) ? items.map(item => ({ label: item, value: item })) : items),
     [items]
   )
 
-  const [selectedValue, setSelectedValue] = useState<string | undefined>(formattedItems[0].value)
+  const [selectedValue, setSelectedValue] = useState<string | undefined>(formattedItems[0]?.value)
+
+  const viewport = useRef<HTMLDivElement>(null)
 
   const itemHeight = (viewport.current?.scrollHeight ?? 0) / formattedItems.length
+
+  useEffect(() => {
+    if (!formattedItems.find(({ value }) => value === selectedValue)) {
+      setSelectedValue(formattedItems[0]?.value)
+    }
+  }, [formattedItems, selectedValue])
 
   const moveSelection = useCallback(
     (direction: 'up' | 'down') => {

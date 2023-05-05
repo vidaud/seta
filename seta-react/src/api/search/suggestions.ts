@@ -7,11 +7,20 @@ export type SuggestionsResponse = {
   words: Suggestion[]
 }
 
-export const cacheKey = (terms: string) => ['suggestions', terms]
+export const cacheKey = (terms?: string) => ['suggestions', terms]
 
-const getSuggestions = async (terms: string) =>
-  (await api.get<SuggestionsResponse>(`/suggestions?chars=${terms}`)).data
+const getSuggestions = async (terms?: string): Promise<SuggestionsResponse> => {
+  if (!terms) {
+    return { words: [] }
+  }
 
-export const useSuggestions = (terms: string) => {
-  return useQuery(cacheKey(terms), () => getSuggestions(terms))
+  const results = (await api.get<SuggestionsResponse>(`/suggestions?chars=${terms}`)).data
+
+  // Remove duplicates
+  return {
+    words: results.words.filter((word, index, self) => self.findIndex(w => w === word) === index)
+  }
 }
+
+export const useSuggestions = (terms?: string) =>
+  useQuery(cacheKey(terms), () => getSuggestions(terms))

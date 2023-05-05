@@ -4,7 +4,7 @@ export const queryClientOptions: QueryClientConfig = {
   defaultOptions: {
     queries: {
       retry: false,
-      staleTime: 10 * 1000
+      staleTime: 60 * 1000 // 1 minute
     }
   }
 }
