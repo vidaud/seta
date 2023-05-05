@@ -6,7 +6,7 @@ Optional, but useful: install MongoDB Compass and connect to dockerized mongodb 
 
 If the seta database exists, then remove it with either MongoDB Compass or bash mongodb commands.
 
-EU Login Authentication
+##  EU Login Authentication
 
 Open browser and go to seta-ui login page: http://localhost/seta-ui/login.
 
@@ -56,7 +56,7 @@ role claim (claim_value can different):
 }
 
 
-Community API
+## Community API
 
 Open a new tab in the same browser for the community api swagger documentation: http://localhost/api/communities/v1/doc
 
@@ -68,7 +68,7 @@ Click on the Authorize button to open the Available authorizations dialog; set t
 
 
 
-Create community
+## Create community
 
 Expand Communities region and then Try out POST /communities:
 
@@ -134,7 +134,7 @@ Check the objects for the community scopes in the seta database - users collecti
 }
 
 
-Create resource
+## Create resource
 
 Expand Resources region and then Try out POST /resources/community/{community_id}:
 
@@ -173,7 +173,7 @@ Check the objects for the resource scopes in the seta database - users collectio
 }
 
 
-SeTA-API Corpus
+## SeTA-API Corpus
 
 Open a new tab in the same browser for the seta-api swagger documentation: http://localhost/seta-api/doc
 

@@ -27,7 +27,7 @@ Retrieve terms by initial letters. By default it returns 6 terms, with the param
 The corpus, is a collection of text organized into json files. The SeTA API provides with the following functions to manage the corpus.
 
 ### PUT /corpus
-Put a document into corpus index.
+Put a document into corpus index. The format is a JSON file.
 ![Screenshot](../img/put-corpus.png)
 ![Screenshot](../img/put-corpus-result.png)
 
@@ -38,7 +38,7 @@ Retrieve documents related to a term from EU corpus.
 
 
 ### POST /corpus
-Retrieve documents related to a term from EU corpus.
+Retrieve documents related to a term from EU corpus. The input is a JSON file with the options I want to retrieve. 
 ![Screenshot](../img/post-corpus.png)
 ![Screenshot](../img/post-corpus-result.png)
 

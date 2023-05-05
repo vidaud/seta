@@ -15,8 +15,6 @@ The following diagram describes the workflow of SeTA.
 
 As described previously, SeTA follows two distinct steps for the creation of the knowledge base: Document collection, cleaning and storage and Text analysis and modelling.
 
-
-
 ## Corpus preparation
 
 As mentioned, the corpus of the public policy-related European documents comes from the following sources: EUR-LEX, CORDIS, JRC PUBSY, EUROPARL.
@@ -89,17 +87,51 @@ The following example describes a simple Taxonomy:
 
 
 #### Taxonomy in SeTA
-In SeTA, we have define some Taxonomies that can be used, but it is also posible for users to define a new Taxonomy if is necessary.    
+In SeTA, we have define some Taxonomies that can be used, but it is also posible for users to define new Taxonomies if is necessary.    
 
-To create a new Taxonomy, you need to set it up and upload it together when you upload the document. In the API interface, through the function *PUT /corpus* it is possible to upload it.     
+To create a new Taxonomy, you can set it together with the document you are uploading. 
+
+
+In the API interface, through the function *PUT /corpus* it is possible to upload it.   
+
+
+In the Communities web interface it is also possible to create the taxonomies. This is when uploading a new document, we can find the option to create them. 
+
+<!-- set up a screen shot from the communites web app-->
+
+
 
 It is possible to create as many Taxonomies as you need.    
 
 
-The following is an example of a Taxonomy used in SeTA:
+The following is an example of a new Taxonomy set it together with the document:
 
 ```json
-"taxonomy": [
+{
+  "source": "cordis",
+  "mime_type": "URL",
+  "language": "en",
+  "id": "cordis:project:96956",
+  "id_alias": "CORDIS:project:96956",
+  "title": "ULTRAVEG: Development of a high power ultrasound system for the low-cost, fast, effective and quality drying of fruit and vegetables",
+  "abstract": "Dried food is a major element in modern food processing and a staple ingredient for an increasing variety of foodstuffs...",
+  "text": "Dried food offers many advantages for the mass production of commercially prepared goods, not least cheaper transportation costs, longer storage life and ease of use. ",
+  "date": "2019-08-01",
+  "link_related": [
+    "https://cordis.europa.eu/article/rcn/92388"
+  ],
+  "author": [
+    "HEBOLD MIXING & MORE GMBH",
+    "Gefriertrocknung Greven GmbH",
+    "VEREIN ZUR FORDERUNG DES TECHNOLOGIETRANSFERS AN DER HOCHSCHULE BREMERHAVEN EV",
+    "TECHNISCHE UNIVERSITAT BERLIN",
+    "FULLWELL MILL LIMITED",
+    "AKTIVE ARC SARL",
+    "GOKSER MAKINA SANAYI VE TICARET LIMITED SIRKETI",
+    "IRIS TECHNOLOGY SOLUTIONS, SOCIEDAD LIMITADA"
+  ],
+  "collection": "project;Project",
+  "taxonomy": [
     {
       "code": "/25",
       "label": "engineering and technology",
@@ -119,28 +151,9 @@ The following is an example of a Taxonomy used in SeTA:
       "version": "1",
       "name": "euro_sci_voc",
       "name_in_path": "other_engineering_and_technologies"
-    },
-    {
-      "code": "/25/59/377",
-      "label": "food technology",
-      "longLabel": "/engineering and technology/other engineering and technologies/food technology",
-      "validated": "true",
-      "classifier": "cordis",
-      "version": "1",
-      "name": "euro_sci_voc",
-      "name_in_path": "food_technology"
-    },
-    {
-      "code": "/27/81/30021/499/1287",
-      "label": "fruit growing",
-      "longLabel": "/agricultural sciences/agriculture, forestry, and fisheries/agriculture/horticulture/fruit growing",
-      "validated": "true",
-      "classifier": "cordis",
-      "version": "1",
-      "name": "euro_sci_voc",
-      "name_in_path": "fruit_growing"
     }
-]
+  ]
+}
 ```
 
 
@@ -173,8 +186,7 @@ Weights and thresholds are continuously changed throughout training until traini
 
 For SeTA we use chunk compositionality and word embedding for the training.    
 
-By using supervised learning, which involves providing the network with a huge collection of training data comprised of input chunks, we can train neural networks. The activations in each layer of the neural network change after each training iteration. Eventually, it will be able to anticipate the output label that should be assigned to a specific input, even if it has never seen that input before.
-
+By using supervised learning, which involves providing the network with a huge collection of training data comprised of input chunks, we can train neural networks. 
 
 ### Chunk compositionality
 
@@ -216,8 +228,6 @@ By training the models with new documents as they are published, we can ensure t
 The algorithm **Word2Vec** processes phrases. This algorithm takes input words and groups them together based on the similarity of their meanings. This similarity is calculated using complex mathematical formulas based on the context of the words. 
 
 Word2vec is a two-layer neural net that processes text by “vectorizing” words. Its input is a text corpus and its output is a set of vectors: feature vectors that represent words in that corpus. Word2vec creates vectors that are distributed numerical representations of word features, features such as the context of individual words. It does so without human intervention. While Word2vec is not a deep neural network, it turns text into a numerical form that deep neural networks can understand.[^4] Its output is a vocabulary in which each item has a vector attached to it, which can be fed into a deep-learning net or simply queried to detect relationships between words.
-
-The purpose and usefulness of Word2vec is to group the vectors of similar words together in vectorspace. That is, it detects similarities mathematically. 
 
 Given enough data, usage and contexts, Word2vec can make highly accurate guesses about a word’s meaning based on past appearances. 
 In SeTA, the **Word2Vec** algoritm is used to get the suggestions and similar terms when searching in the user interfaxce search bar.

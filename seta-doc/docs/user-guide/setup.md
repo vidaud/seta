@@ -45,7 +45,7 @@ The Docker containers must be running.
 
     If the seta database exists, then remove it with either MongoDB Compass or bash MongoDB commands.
 
-#### EU Login Authentication
+#### {to update} EU Login Authentication
 
 Open browser and go to seta-ui [login](http://localhost/seta-ui/login) page.
 
