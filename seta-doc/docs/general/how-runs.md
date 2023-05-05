@@ -65,7 +65,7 @@ Taxonomies can be of several kind, such as *flat, hierarchical, network*, and so
 #### How to design a good Taxonomy
 
 When creating a Taxonomy, consider[^1]:       
-1. Decide what topics your Taxonomy must include.    
+1. Decide what topics the Taxonomy must include.    
 2. Consider how specific the Taxonomy needs to be.    
 3. Provide names for each object in relation to other objects and follow a hierarchical style.     
 4. Have particular guidelines that are followed while classifying or categorising any object inside a domain. These guidelines must be comprehensive, consistent, and clear.      
@@ -89,17 +89,11 @@ The following example describes a simple Taxonomy:
 
 
 #### Taxonomy in SeTA
-In SeTA, we have define some Taxonomies that can be used, but you can also define a new Taxonomy if is necessary.    
+In SeTA, we have define some Taxonomies that can be used, but it is also posible for users to define a new Taxonomy if is necessary.    
 
-
-To create a new Taxonomy, you can use our API interface. After selecting the terms that represent the broadest category, and assigning the remaining terms to the other categories, you can start creating the new Taxonomy.    
-
-From the API interface you will just need to set up the parameters: **code, label, long label, classifier, version, validated**  and later upload the new Taxonomy.  
+To create a new Taxonomy, you need to set it up and upload it together when you upload the document. In the API interface, through the function *PUT /corpus* it is possible to upload it.     
 
 It is possible to create as many Taxonomies as you need.    
-
-The outcome is a JSON file that reveals the recursive nature of the tree.
-
 
 
 {++ example of SeTA Taxonomy++}
