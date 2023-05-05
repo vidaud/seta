@@ -3,9 +3,9 @@ import { createStyles, Table, ScrollArea, Text, TextInput, rem, Button } from '@
 import { IconSearch } from '@tabler/icons-react'
 
 import type { RowData, TableSortProps } from '../../types'
-import { Th, sortData } from '../../utlis'
+import { Th, sortData } from '../../utils'
 
-export default function CommunityList({ data }: TableSortProps) {
+const CommunityList = ({ data }: TableSortProps) => {
   const [search, setSearch] = useState('')
   const [sortedData, setSortedData] = useState(data)
   const [sortBy, setSortBy] = useState<keyof RowData | null>(null)
@@ -153,3 +153,5 @@ export default function CommunityList({ data }: TableSortProps) {
     </ScrollArea>
   )
 }
+
+export default CommunityList

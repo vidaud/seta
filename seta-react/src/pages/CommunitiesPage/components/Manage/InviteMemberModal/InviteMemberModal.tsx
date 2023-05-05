@@ -1,7 +1,7 @@
 import { Modal, useMantineTheme, Group, Button } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 
-export default function InviteMember() {
+const InviteMember = () => {
   const [opened, { open, close }] = useDisclosure(false)
   const theme = useMantineTheme()
 
@@ -28,3 +28,5 @@ export default function InviteMember() {
     </>
   )
 }
+
+export default InviteMember

@@ -2,6 +2,8 @@ import { useState } from 'react'
 import { createStyles, Table, ScrollArea, rem, Group, ActionIcon } from '@mantine/core'
 import { IconTrashX, IconCheck } from '@tabler/icons-react'
 
+import type { TableScrollProps } from '../../types'
+
 const useStyles = createStyles(theme => ({
   header: {
     position: 'sticky',
@@ -26,11 +28,7 @@ const useStyles = createStyles(theme => ({
   }
 }))
 
-interface TableScrollAreaProps {
-  data: { user: string; date: string }[]
-}
-
-export default function LastJoinRequests({ data }: TableScrollAreaProps) {
+const LastJoinRequests = ({ data }: TableScrollProps) => {
   const { classes, cx } = useStyles()
   const [scrolled, setScrolled] = useState(false)
 
@@ -66,3 +64,5 @@ export default function LastJoinRequests({ data }: TableScrollAreaProps) {
     </ScrollArea>
   )
 }
+
+export default LastJoinRequests

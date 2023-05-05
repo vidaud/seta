@@ -11,6 +11,9 @@ import {
 } from '@mantine/core'
 import { IconPencil, IconTrash } from '@tabler/icons-react'
 
+import type { TableScrollAreaProps } from '../../types'
+import { jobColors } from '../../types'
+
 const useStyles = createStyles(theme => ({
   header: {
     position: 'sticky',
@@ -35,18 +38,7 @@ const useStyles = createStyles(theme => ({
   }
 }))
 
-const jobColors: Record<string, string> = {
-  creator: 'blue',
-  manager: 'cyan',
-  viewer: 'pink',
-  contributor: 'yellow'
-}
-
-interface TableScrollAreaProps {
-  data: { user: string; date: string; role: string }[]
-}
-
-export default function ChangeRequests({ data }: TableScrollAreaProps) {
+const ChangeRequests = ({ data }: TableScrollAreaProps) => {
   const { classes, cx } = useStyles()
   const [scrolled, setScrolled] = useState(false)
   const theme = useMantineTheme()
@@ -92,3 +84,5 @@ export default function ChangeRequests({ data }: TableScrollAreaProps) {
     </ScrollArea>
   )
 }
+
+export default ChangeRequests

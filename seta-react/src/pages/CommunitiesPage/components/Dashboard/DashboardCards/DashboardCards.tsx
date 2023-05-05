@@ -1,12 +1,8 @@
 import { createStyles, Group, Paper, SimpleGrid, Text, rem } from '@mantine/core'
-import {
-  IconUserPlus,
-  IconArrowUpRight,
-  IconArrowDownRight,
-  IconNotification,
-  IconBrandOpenSource,
-  IconPlugConnected
-} from '@tabler/icons-react'
+import { IconArrowUpRight, IconArrowDownRight } from '@tabler/icons-react'
+
+import type { StatsGridProps } from '../../types'
+import { icons } from '../../types'
 
 const useStyles = createStyles(theme => ({
   root: {
@@ -35,23 +31,7 @@ const useStyles = createStyles(theme => ({
   }
 }))
 
-const icons = {
-  member: IconUserPlus,
-  resource: IconBrandOpenSource,
-  community: IconPlugConnected,
-  notification: IconNotification
-}
-
-interface StatsGridProps {
-  data: {
-    title: string
-    icon: string
-    value: string
-    diff: number
-  }[]
-}
-
-export default function DashboardCards({ data }: StatsGridProps) {
+const DashboardCards = ({ data }: StatsGridProps) => {
   const { classes } = useStyles()
   const stats = data.map(stat => {
     const Icon = icons[stat.icon]
@@ -95,3 +75,5 @@ export default function DashboardCards({ data }: StatsGridProps) {
     </div>
   )
 }
+
+export default DashboardCards

@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import { createStyles, Table, ScrollArea, rem, Badge } from '@mantine/core'
 
+import type { TableResourceProps } from '../../types'
+
 const useStyles = createStyles(theme => ({
   header: {
     position: 'sticky',
@@ -25,18 +27,7 @@ const useStyles = createStyles(theme => ({
   }
 }))
 
-interface TableScrollAreaProps {
-  data: {
-    title: string
-    description: string
-    membership: string
-    status: string
-    createdAt: string
-    createdBy: string
-  }[]
-}
-
-export default function RecentResources({ data }: TableScrollAreaProps) {
+const RecentResources = ({ data }: TableResourceProps) => {
   const { classes, cx } = useStyles()
   const [scrolled, setScrolled] = useState(false)
 
@@ -77,3 +68,5 @@ export default function RecentResources({ data }: TableScrollAreaProps) {
     </ScrollArea>
   )
 }
+
+export default RecentResources

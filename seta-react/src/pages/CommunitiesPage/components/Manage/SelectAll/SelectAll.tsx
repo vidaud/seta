@@ -3,7 +3,7 @@ import { Checkbox } from '@mantine/core'
 
 import type { TableSortProps } from '../../types'
 
-export default function SelectAll({ data }: TableSortProps) {
+const SelectAll = ({ data }: TableSortProps) => {
   const [selection, setSelection] = useState(['1'])
   const toggleAll = () =>
     setSelection(current => (current.length === data.length ? [] : data.map(item => item.id)))
@@ -17,3 +17,5 @@ export default function SelectAll({ data }: TableSortProps) {
     />
   )
 }
+
+export default SelectAll

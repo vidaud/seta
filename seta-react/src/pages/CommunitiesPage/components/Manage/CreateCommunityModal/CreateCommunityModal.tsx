@@ -3,7 +3,7 @@ import { useDisclosure } from '@mantine/hooks'
 
 import * as S from './styles'
 
-export default function CreateCommunity() {
+const CreateCommunity = () => {
   const [opened, { open, close }] = useDisclosure(false)
   const theme = useMantineTheme()
 
@@ -30,3 +30,5 @@ export default function CreateCommunity() {
     </>
   )
 }
+
+export default CreateCommunity

@@ -3,11 +3,11 @@ import { createStyles, Table, ScrollArea, Text, TextInput, rem } from '@mantine/
 import { IconSearch } from '@tabler/icons-react'
 
 import type { RowData, TableSortProps } from '../../types'
-import { Th, sortData } from '../../utlis'
+import { Th, sortData } from '../../utils'
 import InviteMember from '../InviteMemberModal/InviteMemberModal'
 import SelectAll from '../SelectAll/SelectAll'
 
-export default function MyCommunityList({ data }: TableSortProps) {
+const MyCommunityList = ({ data }: TableSortProps) => {
   const [search, setSearch] = useState('')
   const [sortedData, setSortedData] = useState(data)
   const [sortBy, setSortBy] = useState<keyof RowData | null>(null)
@@ -155,3 +155,5 @@ export default function MyCommunityList({ data }: TableSortProps) {
     </>
   )
 }
+
+export default MyCommunityList
