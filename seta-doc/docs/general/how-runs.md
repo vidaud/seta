@@ -199,8 +199,11 @@ This new document structure is saved in the ElasticSearch database, which allows
 ### Neural networks training
 
 Neural networks may learn any function, and the only limitation is the availability of data. As a result, data preparation, feature engineering, and domain coverage become critical components for producing relevant and understandable results from neural network training.     
-Weights and thresholds are continuously changed throughout training until training data with the same tags consistently produce results that are similar.     
-The EC public knowledge corpus provides a consistent language and so characteristics that have been generated from chunks rather than words, as in general language.
+Weights and thresholds are continuously changed throughout training until training data with the same tags consistently produce results that are similar. 
+
+For SeTA we use chunk compositionality and word embedding for the training.    
+
+By using supervised learning, which involves providing the network with a huge collection of training data comprised of input chunks, we can train neural networks. The activations in each layer of the neural network change after each training iteration. Eventually, it will be able to anticipate the output label that should be assigned to a specific input, even if it has never seen that input before.
 
 
 ### Chunk compositionality
@@ -223,40 +226,25 @@ Word embeddings are numerical vector representations of text that keep track of 
 The sentence-transformers model **all-distilroberta-v1** is utilised for the embedding process as it helps on the clustering and the semantic search because it maps sentences and paragraphs to a dimensional dense vector space.
 
 
+### Semantic search
+
+<!-- to ask  in which part is used sBERT-->
+**sBert** is a modification of the standard pretrained **BERT** network.
+
+Bidirectional Encoder Representations from Transformers, sometimes known as **BERT**, is an open source machine learning framework for natural language processing (NLP). **BERT** uses the text around it to generate context, which enables computers to understand the meaning of ambiguous words in text. A question and answer dataset can be used to fine-tune the **BERT** framework, which was pre-trained using text from Wikipedia.  **BERT** is built on Transformers[^5], a deep learning model in which every output element is connected to every input element and the weightings between them are dynamically determined based on their connection. (In NLP, this procedure is referred to as attention.)[^6]
+
+**sBERT** is a sentence-based model that gives additional training to the model, allowing semantic search for a huge number of sentences. **sBERT** employs a siamese architecture, which consists of two virtually identical **BERT** architectures with the same weights, and **sBERT** analyses two words as pairs during training. While the original study paper attempted numerous pooling approaches, they discovered that mean-pooling was the most effective. Pooling is a strategy for generalising features in a network, and it works in this case by averaging groupings of characteristics in the BERT. We now have two embeddings: one for sentence A and one for phrase B, thanks to the pooling.     
+When training the model, **SBERT** concatenates the two embeddings, which are then sent through a softmax classifier and trained with a softmax-loss function. When the model reaches inference — or begins predicting — the two embeddings are compared using a cosine similarity function, which generates a similarity score for the two sentences.
+[^7] 
+
+By training the models with new documents as they are published, we can ensure that the knowledge the models contain continues to represent EU documents accurately. 
 
 
+### Pre-processing data
 
-300 parole every chunk  per ogni chunk si crea un embedding di tanti valori per poi usarlo con una ricerca semantica 
+**spaCy** is a Python library for advanced Natural Language Processing (NLP) that is open-source and free.[^8] It helps create applications that process and "understand" massive volumes of text and is specifically created for usage in production. It can be used to create information extraction or systems for interpreting natural language, or it can be used to prepare text for deep learning.     
 
-per embendiding sentence transformer usiamo modelo sbert model all-distilroberta-v1" con questo modelo dado un chunk restutuisce un emebdding 
-
-libreria sentence transformer carica il modello e poi il modelo viene usato per creare il embedding
-
-semantic search di elastic search serve per fare la ricerca negli embenddings and vector search 
-
-cercare vector search and elastic search aut deploy
-
-embeddings e un vettori di valori 
-
-modelo all distillrobera  crea gli embeddings e aspazio vectorial
-mentre con ES quando se fa ricerca se calconano le distanze dei documenti che ci interessano 
-
-
-ricerca semantica riordinamiento in base allo spazio vettoriale
-
-elastic search calcola distanza vettoriale fra i embenddings 
-
-
-embendings sono create al momento del put corpus 
-
-### Actual neural network training
-
-**spaCy** is a Python library for advanced Natural Language Processing (NLP) that is open-source and free.[^5] It helps create applications that process and "understand" massive volumes of text and is specifically created for usage in production. It can be used to create information extraction or systems for interpreting natural language, or it can be used to prepare text for deep learning.     
-
-**textacy viene usata per pre processing dati** 
-
-
-We train neural networks using **textacy**, a potent Python language modelling package built on the basis of **spaCy**[^6]. It can carry out a variety of natural language processing (NLP) tasks thanks to the **spaCy** library's outstanding performance. The essentials, such as part-of-speech tagging, dependency parsing, and tokenization, are handled by another library, leaving **textacy** to concentrate mostly on the jobs that occur before and after. The pre-processing module of **textacy** has a good number of functions to normalise characters and to handle common patterns like URLs, email addresses, phone numbers, and so on.    
+We train neural networks using **textacy**, a potent Python language modelling package built on the basis of **spaCy**[^9]. It can carry out a variety of natural language processing (NLP) tasks thanks to the **spaCy** library's outstanding performance. The essentials, such as part-of-speech tagging, dependency parsing, and tokenization, are handled by another library, leaving **textacy** to concentrate mostly on the jobs that occur before and after. The pre-processing module of **textacy** has a good number of functions to normalise characters and to handle common patterns like URLs, email addresses, phone numbers, and so on.    
 
 
 
@@ -277,8 +265,11 @@ libreria usata per adestratere modello gensim con word2vec usata solo per sugges
 [^2]: https://link.springer.com/article/10.1057/dam.2010.29
 [^3]: https://www.mindtools.com/a8u1mqw/chunking
 [^4]: https://www.unidata.ucar.edu/blogs/developer/en/entry/chunking_data_why_it_matters
-[^5]: https://spacy.io/usage/spacy-101 
-[^6]: https://pypi.org/project/textacy/
+[^5]: https://huggingface.co/learn/nlp-course/chapter1/4
+[^6]: https://www.techtarget.com/searchenterpriseai/definition/BERT-language-model
+[^7]: https://towardsdatascience.com/an-intuitive-explanation-of-sentence-bert-1984d144a868 
+[^8]: https://spacy.io/usage/spacy-101 
+[^9]: https://pypi.org/project/textacy/
 
 
 

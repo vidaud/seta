@@ -14,15 +14,7 @@ Users can search EU documents based on keywords and then screen the results and 
 
 ## How can SeTA provide all of this information to users?
 
-First of all, data are harvested from the following sources:
-<!-- 
-``` mermaid
-stateDiagram
-    CORDIS <!-- SeTA
-    PUBSY  SeTA
-    EUROPARL  SeTA
-    EURLex  SeTA
-``` -->
+First of all, data is harvested from the following sources:
 
 ![Screenshot](./img/data_sources.png)
 
@@ -58,19 +50,22 @@ The purpose and usefulness of Word2vec is to group the vectors of similar words 
 
 Given enough data, usage and contexts, Word2vec can make highly accurate guesses about a word’s meaning based on past appearances. Those guesses can be used to establish a word’s association with other words (e.g. “man” is to “boy” what “woman” is to “girl”), or cluster documents and classify them by topic. Those clusters can form the basis of search, sentiment analysis and recommendations in such diverse fields as scientific research, legal discovery, e-commerce and customer relationship management.
 
+In SeTA, the **Word2Vec** algoritm is used to get the suggestions and similar terms when searching in the user interfaxce search bar.
 
 
 ### sBERT
+<!-- to ask  in which part is used sBERT-->
+**sBert** is a modification of the standard pretrained **BERT** network.
 
-**sBert** is a modification of the standard pretrained **BERT** network..
+Bidirectional Encoder Representations from Transformers, sometimes known as **BERT**, is an open source machine learning framework for natural language processing (NLP). **BERT** uses the text around it to generate context, which enables computers to understand the meaning of ambiguous words in text. A question and answer dataset can be used to fine-tune the **BERT** framework, which was pre-trained using text from Wikipedia.  **BERT** is built on Transformers[^5], a deep learning model in which every output element is connected to every input element and the weightings between them are dynamically determined based on their connection. (In NLP, this procedure is referred to as attention.)[^6]
 
-**BERT**, which stands for *Bidirectional Encoder Representations from Transformers*, is an open source machine learning framework for natural language processing (NLP) originating from Google [https://en.wikipedia.org/wiki/BERT_(language_model)]. Is designed to help computers understand the meaning of ambiguous language in text by using surrounding text to establish context. The BERT framework was pre-trained using text from Wikipedia and can be fine-tuned with question and answer datasets.  BERTis based on Transformers[^5], a deep learning model in which every output element is connected to every input element, and the weightings between them are dynamically calculated based upon their connection. (In NLP, this process is called attention.)[^6]
-
-**sBERT** is based on sentences and provides further training to the model, making semantic search for a large number of sentences feasible. SBERT uses a siamese architecture, where it contains two BERT architectures that are essentially identical and share the same weights, and SBERT processes two sentences as pairs during training. While the original research paper tried several pooling methods, they found mean-pooling was the best approach. Pooling is a technique for generalizing features in a network, and in this case, mean pooling works by averaging groups of features in the BERT. After the pooling is done, we now have two embeddings: one for sentence A and one for sentence B. When the model is training, SBERT concatenates the two embeddings which will then run through a softmax classifier and be trained using a softmax-loss function. At inference — or when the model actually begins predicting — the two embeddings are then compared using a cosine similarity function, which will output a similarity score for the two sentences.[^7] 
+**sBERT** is a sentence-based model that gives additional training to the model, allowing semantic search for a huge number of sentences. **sBERT** employs a siamese architecture, which consists of two virtually identical **BERT** architectures with the same weights, and **sBERT** analyses two words as pairs during training. While the original study paper attempted numerous pooling approaches, they discovered that mean-pooling was the most effective. Pooling is a strategy for generalising features in a network, and it works in this case by averaging groupings of characteristics in the BERT. We now have two embeddings: one for sentence A and one for phrase B, thanks to the pooling.     
+When training the model, **SBERT** concatenates the two embeddings, which are then sent through a softmax classifier and trained with a softmax-loss function. When the model reaches inference — or begins predicting — the two embeddings are compared using a cosine similarity function, which generates a similarity score for the two sentences.
+[^7] 
 
 By training the models with new documents as they are published, we can ensure that the knowledge the models contain continues to represent EU documents accurately. 
 
-This knowledge is used to enrich document metadata and by expanding the labels (the meanings or categories attached to words) based on existing ontologies.
+
 
 !!! info "Ontology"
     Ontology shows properties and relations between a set of concepts and categories within a  subject area or domain. It is a branch of linguistics called semantics, the study of meaning. With ontology, a machine can accurately interpret the meaning of the word “diamond” in relation to a baseball player, jeweler, or card suit. It can also help interpret the word “chicken” as either food or an animal or differentiate between “bank” as a place of business or land alongside a river or lake.[^8]
