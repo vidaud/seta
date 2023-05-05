@@ -9,9 +9,11 @@ import {
 import RequireAuth from './components/RequireAuth'
 
 import AppLayout from '../../layouts/AppLayout'
-import CommunitiesPage from '../../pages/CommunitiesPage'
+import CommunityLayout from '../../layouts/CommunityLayout/CommunityLayout'
+import DashboardsPage from '../../pages/CommunitiesPage/pages/DashboardPage'
+import CommunityListPage from '../../pages/CommunitiesPage/pages/Discovery/CommunityList/CommunityList'
+import MyCommunityListPage from '../../pages/CommunitiesPage/pages/Manage/MyCommunityList/MyCommunityList'
 import ContactPage from '../../pages/ContactPage'
-import DashboardPage from '../../pages/DashboardPage'
 import FaqsPage from '../../pages/FaqsPage'
 import HomePage from '../../pages/HomePage'
 import LoginPage from '../../pages/LoginPage'
@@ -21,6 +23,7 @@ import SearchPage from '../../pages/SearchPage'
 import SearchPageNew from '../../pages/SearchPageNew/SearchPageNew'
 
 const ROOT_PATH = '/'
+const COMMUNITY_PATH = '/communities'
 
 const routes = createRoutesFromElements(
   <Route path={ROOT_PATH} element={<AppLayout />}>
@@ -52,20 +55,43 @@ const routes = createRoutesFromElements(
         </RequireAuth>
       }
     />
-    <Route
+    {/* <Route
       path="dashboard"
       element={
         <RequireAuth>
-          <DashboardPage />
+          <CommunitiesPage />
         </RequireAuth>
       }
-    />
-
-    <Route path="communities" element={<CommunitiesPage />} />
+    /> */}
     <Route path="faqs" element={<FaqsPage />} />
     <Route path="contact" element={<ContactPage />} />
     <Route path="login" element={<LoginPage />} />
-
+    <Route path={COMMUNITY_PATH} element={<CommunityLayout />}>
+      <Route
+        path="dashboard"
+        element={
+          <RequireAuth>
+            <DashboardsPage />
+          </RequireAuth>
+        }
+      />
+      <Route
+        path="list"
+        element={
+          <RequireAuth>
+            <CommunityListPage />
+          </RequireAuth>
+        }
+      />
+      <Route
+        path="my-list"
+        element={
+          <RequireAuth>
+            <MyCommunityListPage />
+          </RequireAuth>
+        }
+      />
+    </Route>
     <Route path="*" element={<NotFoundPage />} />
   </Route>
 )

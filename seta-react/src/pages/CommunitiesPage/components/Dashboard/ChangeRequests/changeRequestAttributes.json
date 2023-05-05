@@ -1,0 +1,110 @@
+{
+  "title": "Table with sticky header",
+  "category": "tables",
+  "author": "rtivital",
+  "dependencies": ["/core/table/", "/core/scroll-area/"],
+  "props": {
+    "data": [
+      {
+        "user": "Athena Weissnat",
+        "role": "Manager",
+        "date": "04/05/2023"
+      },
+      {
+        "user": "Deangelo Runolfsson",
+        "role": "Viewer",
+        "date": "06/05/2023"
+      },
+      {
+        "user": "Danny Carter",
+        "role": "Creator",
+        "date": "03/05/2023"
+      },
+      {
+        "user": "Trace Tremblay PhD",
+        "role": "Manager",
+        "date": "03/02/2023"
+      },
+      {
+        "user": "Derek Dibbert",
+        "role": "Viewer",
+        "date": "01/03/2023"
+      },
+      {
+        "user": "Viola Bernhard",
+        "role": "Creator",
+        "date": "23/03/2023"
+      },
+      {
+        "user": "Austin Jacobi",
+        "role": "Viewer",
+        "date": "12/03/2023"
+      },
+      {
+        "user": "Hershel Mosciski",
+        "role": "Manager",
+        "date": "12/06/2023"
+      },
+      {
+        "user": "Mylene Ebert",
+        "role": "Creator",
+        "date": "17/06/2023"
+      },
+      {
+        "user": "Lou Trantow",
+        "role": "Viewer",
+        "date": "18/06/2023"
+      },
+      {
+        "user": "Dariana Weimann",
+        "role": "Manager",
+        "date": "27/03/2023"
+      },
+      {
+        "user": "Dr. Christy Herman",
+        "role": "Creator",
+        "date": "07/03/2023"
+      },
+      {
+        "user": "Katelin Schuster",
+        "role": "Viewer",
+        "date": "21/04/2023"
+      },
+      {
+        "user": "Melyna Macejkovic",
+        "role": "Manager",
+        "date": "11/03/2023"
+      },
+      {
+        "user": "Pinkie Rice",
+        "role": "Creator",
+        "date": "03/03/2023"
+      },
+      {
+        "user": "Brain Kreiger",
+        "role": "Contributor",
+        "date": "07/05/2023"
+      },
+      {
+        "user": "Myrtice McGlynn",
+        "role": "Manager",
+        "date": "23/01/2023"
+      },
+      {
+        "user": "Chester Carter PhD",
+        "role": "Creator",
+        "date": "06/02/2023"
+      },
+      {
+        "user": "Mrs. Ericka Bahringer",
+        "company": "Conn and Sons",
+        "role": "Manager",
+        "date": "13/04/2023"
+      }
+    ]
+  },
+  "canvas": {
+    "center": true,
+    "maxWidth": 920
+  }
+}
