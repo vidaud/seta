@@ -42,6 +42,12 @@ const SuggestionsPopup = ({ opened, onOpenChange }: Props) => {
     }
   }, [popupOpen, setCurrentToken])
 
+  useEffect(() => {
+    if (!inputValue.trim()) {
+      setPopupOpen(false)
+    }
+  }, [inputValue])
+
   const handlePopupChange = (value: boolean) => {
     setPopupOpen(value)
     onOpenChange?.(value)
@@ -54,6 +60,12 @@ const SuggestionsPopup = ({ opened, onOpenChange }: Props) => {
 
   const openPopup = () => handlePopupChange(true)
   const closePopup = () => handlePopupChange(false)
+
+  const handleInputClick = () => {
+    if (inputValue) {
+      openPopup()
+    }
+  }
 
   return (
     <Popover
@@ -69,7 +81,7 @@ const SuggestionsPopup = ({ opened, onOpenChange }: Props) => {
         <SearchInput
           css={S.inputWrapper}
           value={inputValue}
-          onClick={openPopup}
+          onClick={handleInputClick}
           onDeferredChange={handleInputChange}
         />
       </Popover.Target>
