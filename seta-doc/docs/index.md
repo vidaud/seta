@@ -105,13 +105,9 @@ We train neural networks using **textacy**, a potent Python language modelling p
 
 The processed data, is ingested and stored in **ElasticSearch**.     
 
-
 ### ElasticSearch
 ElasticSearch is a distributed, free and open search and analytics engine for all types of data, including textual, numerical, geospatial, structured and unstructured. ElasticSearch is built on Apache Lucene and was first released in 2010 by ElasticSearch N.V. (now known as Elastic).  Raw data flows into ElasticSearch from a variety of sources, including logs, system metrics, and web applications. Data ingestion is the process by which this raw data is parsed, normalized, and enriched before it is indexed in ElasticSearch. Once indexed in ElasticSearch, users can run complex queries against their data and use aggregations to retrieve complex summaries of their data.[^6] *(NB: clicking on a footnote takes you there and back again)*
 
-
-!!! info "Ontology"
-    Ontology shows properties and relations between a set of concepts and categories within a  subject area or domain. It is a branch of linguistics called semantics, the study of meaning. With ontology, a machine can accurately interpret the meaning of the word “diamond” in relation to a baseball player, jeweler, or card suit. It can also help interpret the word “chicken” as either food or an animal or differentiate between “bank” as a place of business or land alongside a river or lake.[^7]
 
 At this point the full text of all documents can be searched through a simple interface, and users are able to target their search either to the individual document collections or to search across all collections in a harmonised way.
 
@@ -122,5 +118,4 @@ At this point the full text of all documents can be searched through a simple in
 [^4]: https://spacy.io/usage/spacy-101 
 [^5]: https://pypi.org/project/textacy/
 [^6]:https://www.elastic.co/what-is/elasticsearch
-[^7]:https://www.expert.ai/blog/how_ontology_works_and_adds_value_to_nlu/
    
