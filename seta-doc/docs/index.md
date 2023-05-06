@@ -52,14 +52,12 @@ Documents are retrieved from a number of web addresses (URLs) via various endpoi
 
 The papers must be downloaded and processed after the metadata has been gathered and read. 
 
-The typical process to create a general corpus involves:
+The typical process to create a general corpus involves:      
 
-- Conversion from original formats (PDF, HTML, XML, MSWord, …) to plain text.
-- Conversion to Unicode, removal of text conversion artefacts, removal of non-alphanumeric characters, transposition of diacritics to ascii characters.
-
-- De-hyphenation.
-
-- Sentence separation based on dependency parsing (allowing the reconstruction even of sentences split over several lines).
+- Conversion from original formats (PDF, HTML, XML, MSWord, …) to plain text.        
+- Conversion to Unicode, removal of text conversion artefacts, removal of non-alphanumeric characters, transposition of diacritics to ascii characters.      
+- De-hyphenation.      
+- Sentence separation based on dependency parsing (allowing the reconstruction even of sentences split over several lines).      
 
 ### Neural networks training
 
