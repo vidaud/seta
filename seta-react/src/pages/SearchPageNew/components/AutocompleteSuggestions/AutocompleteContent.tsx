@@ -4,16 +4,13 @@ import type { ListMenuProps } from '~/components/ListMenu'
 import ListMenu from '~/components/ListMenu'
 
 import type { SuggestionsResponse } from '~/api/search/suggestions'
+import type { DataProps } from '~/types/data-props'
 
 import * as S from './styles'
 
 type Props = Omit<ListMenuProps, 'items'> & {
   hasSearchTerm: boolean
-  data: SuggestionsResponse | undefined
-  isLoading: boolean
-  error: unknown
-  onTryAgain?: () => void
-}
+} & DataProps<SuggestionsResponse>
 
 const AutocompleteContent = ({
   hasSearchTerm,

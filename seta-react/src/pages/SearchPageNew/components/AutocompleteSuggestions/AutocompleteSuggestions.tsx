@@ -8,27 +8,6 @@ import AutocompleteContent from './AutocompleteContent'
 
 import { useSearch } from '../SuggestionsPopup/contexts/search-context'
 
-// const TERMS: string[] = [
-//   'test',
-//   'testing',
-//   'tests',
-//   'tested',
-//   'test rigs',
-//   'test programme',
-//   'tested materials',
-//   'test facility',
-//   'test purposes',
-//   'test surfaces',
-//   'technology gmbh',
-//   'text',
-//   'temperature',
-//   'temperat',
-//   'tem',
-//   'temperature level',
-//   'temperature differences',
-//   'tends'
-// ]
-
 type Props = {
   className?: string
 }
@@ -37,9 +16,9 @@ const AutocompleteSuggestions = ({ className }: Props) => {
   const { onSuggestionSelected, currentToken } = useSearch()
   const { input, setPosition } = useSearchInput()
 
-  const suggestionsFor = currentToken?.rawValue
+  const searchTerm = currentToken?.rawValue
 
-  const { data, isLoading, error, refetch } = useSuggestions(suggestionsFor)
+  const { data, isLoading, error, refetch } = useSuggestions(searchTerm)
 
   const handleSuggestionSelected = (suggestion: string) => {
     onSuggestionSelected?.(suggestion)
@@ -59,11 +38,11 @@ const AutocompleteSuggestions = ({ className }: Props) => {
   return (
     <Box className={className}>
       <AutocompleteContent
-        hasSearchTerm={!!suggestionsFor}
+        hasSearchTerm={!!searchTerm}
         data={data}
         isLoading={isLoading}
         error={error}
-        currentWord={suggestionsFor}
+        currentWord={searchTerm}
         onSelect={handleSuggestionSelected}
         onTryAgain={refetch}
       />

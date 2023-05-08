@@ -3,6 +3,8 @@ import { useQuery } from '@tanstack/react-query'
 import api from '~/api'
 import type { Suggestion } from '~/models/suggestion'
 
+const SUGGESTIONS_API_PATH = '/suggestions'
+
 export type SuggestionsResponse = {
   words: Suggestion[]
 }
@@ -14,11 +16,11 @@ const getSuggestions = async (terms?: string): Promise<SuggestionsResponse> => {
     return { words: [] }
   }
 
-  const results = (await api.get<SuggestionsResponse>(`/suggestions?chars=${terms}`)).data
+  const { data } = await api.get<SuggestionsResponse>(`${SUGGESTIONS_API_PATH}?chars=${terms}`)
 
   // Remove duplicates
   return {
-    words: results.words.filter((word, index, self) => self.findIndex(w => w === word) === index)
+    words: [...new Set(data.words)]
   }
 }
 

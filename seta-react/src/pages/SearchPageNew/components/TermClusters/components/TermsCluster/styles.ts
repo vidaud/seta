@@ -33,10 +33,12 @@ export const Chip = styled(MantineChip)(({ theme, color }) => {
   return css`
     .seta-Chip-label {
       color: ${defaultColor};
+      transition: none;
 
       &[data-checked='true'] {
         color: ${checkedStyle.color};
         background-color: ${checkedStyle.background};
+        transition: background-color 100ms ease;
 
         .seta-Chip-iconWrapper {
           color: ${checkedStyle.color};

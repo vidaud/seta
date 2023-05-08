@@ -14,9 +14,10 @@ const viewOptions: SelectItem[] = [
 
 type Props = {
   className?: string
+  onSelectAllChange?: (value: boolean) => void
 }
 
-const OntologyHeader = ({ className }: Props) => {
+const OntologyHeader = ({ className, onSelectAllChange }: Props) => {
   const { currentToken } = useSearch()
 
   const [termSelected, setTermSelected] = useState(false)
@@ -35,6 +36,11 @@ const OntologyHeader = ({ className }: Props) => {
         color: 'gray',
         variant: 'subtle'
       }
+
+  const handleSelectAllChange = (value: boolean) => {
+    setTermSelected(value)
+    onSelectAllChange?.(value)
+  }
 
   const handleViewChange = (value: string) => {
     setCurrentView(value)
@@ -55,7 +61,7 @@ const OntologyHeader = ({ className }: Props) => {
           color="teal"
           size="md"
           checked={termSelected}
-          onChange={value => setTermSelected(value)}
+          onChange={handleSelectAllChange}
         >
           {currentToken.token}
         </Chip>

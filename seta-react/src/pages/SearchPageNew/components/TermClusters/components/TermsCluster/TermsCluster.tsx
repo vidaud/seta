@@ -6,14 +6,21 @@ import { useSearch } from '~/pages/SearchPageNew/components/SuggestionsPopup/con
 
 import * as S from './styles'
 
-type Props = {
+export type TermsClusterProps = {
   className?: string
   terms: string[]
+  allSelected?: boolean
   onSelectedTermsAdd?: (terms: string[]) => void
   onSelectedTermsRemove?: (terms: string[]) => void
 }
 
-const TermsCluster = ({ className, terms, onSelectedTermsAdd, onSelectedTermsRemove }: Props) => {
+const TermsCluster = ({
+  className,
+  terms,
+  allSelected,
+  onSelectedTermsAdd,
+  onSelectedTermsRemove
+}: TermsClusterProps) => {
   const [checked, setChecked] = useState(false)
   const [values, setValues] = useState<string[]>([])
   const [prevValues, setPrevValues] = useState<string[]>([])
@@ -22,6 +29,16 @@ const TermsCluster = ({ className, terms, onSelectedTermsAdd, onSelectedTermsRem
 
   const fromEffectRef = useRef(false)
 
+  useEffect(() => {
+    if (allSelected === undefined) {
+      return
+    }
+
+    setValues(allSelected ? [...terms] : [])
+    setChecked(allSelected)
+  }, [allSelected, terms])
+
+  // Update selected chips when input tokens change
   useEffect(() => {
     const found = tokens
       .filter(({ rawValue }) => terms.includes(rawValue))
@@ -34,6 +51,7 @@ const TermsCluster = ({ className, terms, onSelectedTermsAdd, onSelectedTermsRem
   }, [terms, tokens])
 
   useEffect(() => {
+    // Don't do anything if we're updating the chips because the input tokens changed
     if (fromEffectRef.current) {
       fromEffectRef.current = false
 
@@ -78,10 +96,8 @@ const TermsCluster = ({ className, terms, onSelectedTermsAdd, onSelectedTermsRem
     <Flex className={className} align="center" gap="md" css={S.root} onClick={handleRootClick}>
       <Chip.Group multiple value={values} onChange={handleChipsChange}>
         <Flex wrap="wrap" gap="xs">
-          {terms.map((term, index) => (
-            // TODO: deduplicate terms and use term as key
-            // eslint-disable-next-line react/no-array-index-key
-            <div key={index} data-chip>
+          {terms.map(term => (
+            <div key={term} data-chip>
               <S.Chip variant="outline" color="teal" size="md" value={term}>
                 {term}
               </S.Chip>
