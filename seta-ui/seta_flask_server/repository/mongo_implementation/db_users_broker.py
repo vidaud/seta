@@ -27,9 +27,11 @@ class UsersBroker(implements(IUsersBroker)):
             if seta_user.status != UserStatusConstants.Active:
                 return None
             
-            for p in seta_user.external_providers:
-                if p.provider_uid == auth_user.authenticated_provider.provider_uid and p.provider == auth_user.authenticated_provider.provider:
-                    seta_user.authenticated_provider = p
+            provider_uid = auth_user.authenticated_provider.provider_uid
+            provider = auth_user.authenticated_provider.provider
+            
+            seta_user.authenticated_provider = next(filter(lambda p: p.provider_uid == provider_uid and p.provider == provider, 
+                                                           seta_user.external_providers), None)
                     
             if seta_user.authenticated_provider is None:
                 seta_user.authenticated_provider = ExternalProvider(user_id=seta_user.user_id, 
@@ -52,7 +54,10 @@ class UsersBroker(implements(IUsersBroker)):
         if seta_user is None:
             return None
         
-        seta_user.authenticated_provider = self._get_external_provider(user_id, provider_uid, provider)
+        seta_user.authenticated_provider = next(filter(lambda p: p.provider_uid == provider_uid.lower() and p.provider == provider.lower(), 
+                                                           seta_user.external_providers), None)
+        
+        #seta_user.authenticated_provider = self._get_external_provider(user_id, provider_uid, provider)
                 
         if seta_user.authenticated_provider is None:
             return None

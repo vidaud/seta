@@ -83,7 +83,7 @@ class Config:
     def __init__(self) -> None:
         """Read environment variables"""
 
-        Config.SECRET_KEY = os.environ["API_SECRET_KEY"]
+        Config.SECRET_KEY = os.environ.get("API_SECRET_KEY")
         Config.JWT_SECRET_KEY = Config.SECRET_KEY
 
         #Read logging environment variables
