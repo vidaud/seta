@@ -4,25 +4,27 @@ import { Text, Select, Chip, ActionIcon, Flex, Tooltip } from '@mantine/core'
 import { IconWand } from '@tabler/icons-react'
 
 import { useSearch } from '~/pages/SearchPageNew/components/SuggestionsPopup/contexts/search-context'
+import { TermsView } from '~/pages/SearchPageNew/types/terms-view'
 
 import * as S from './styles'
 
 const viewOptions: SelectItem[] = [
-  { label: 'Related Term Clusters', value: 'clusters' },
-  { label: 'Related Terms', value: 'terms' }
+  { label: 'Related Term Clusters', value: TermsView.TermsClusters },
+  { label: 'Related Terms', value: TermsView.RelatedTerms }
 ]
 
 type Props = {
   className?: string
   onSelectAllChange?: (value: boolean) => void
+  currentView?: TermsView
+  onViewChange?: (value: TermsView) => void
 }
 
-const OntologyHeader = ({ className, onSelectAllChange }: Props) => {
+const OntologyHeader = ({ className, onSelectAllChange, currentView, onViewChange }: Props) => {
   const { currentToken } = useSearch()
 
   const [termSelected, setTermSelected] = useState(false)
   const [enriched, setEnriched] = useState(false)
-  const [currentView, setCurrentView] = useState(viewOptions[0].value)
 
   const termTooltip = termSelected ? 'Unselect all related terms' : 'Select all related terms'
   const termVariant: ChipProps['variant'] = termSelected ? 'filled' : 'outline'
@@ -43,7 +45,9 @@ const OntologyHeader = ({ className, onSelectAllChange }: Props) => {
   }
 
   const handleViewChange = (value: string) => {
-    setCurrentView(value)
+    const view: TermsView = TermsView[value]
+
+    onViewChange?.(view)
   }
 
   const toggleEnriched = () => {

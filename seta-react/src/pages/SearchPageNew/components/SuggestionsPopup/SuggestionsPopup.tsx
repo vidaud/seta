@@ -5,7 +5,8 @@ import { IconX } from '@tabler/icons-react'
 
 import { useSearch } from '~/pages/SearchPageNew/components/SuggestionsPopup/contexts/search-context'
 import { useSearchInput } from '~/pages/SearchPageNew/components/SuggestionsPopup/contexts/search-input-context'
-import TermClusters from '~/pages/SearchPageNew/components/TermClusters'
+import TermsSuggestions from '~/pages/SearchPageNew/components/TermsSuggestions/TermsSuggestions'
+import { TermsView } from '~/pages/SearchPageNew/types/terms-view'
 
 import * as S from './styles'
 
@@ -20,10 +21,11 @@ type Props = {
 const TOKEN_RESET_DELAY = 100
 
 const SuggestionsPopup = ({ opened, onOpenChange }: Props) => {
+  const [popupOpen, setPopupOpen] = useState(opened ?? false)
+  const [termsView, setTermsView] = useState(TermsView.RelatedTerms)
+
   const { setCurrentToken } = useSearch()
   const { inputValue, setInputValue } = useSearchInput()
-
-  const [popupOpen, setPopupOpen] = useState(opened ?? false)
 
   const closingTimeoutRef = useRef<number | null>(null)
 
@@ -89,7 +91,7 @@ const SuggestionsPopup = ({ opened, onOpenChange }: Props) => {
       <Popover.Dropdown css={S.popup} className="flex">
         <AutocompleteSuggestions css={S.popupLeft} />
         <Divider orientation="vertical" />
-        <TermClusters css={S.popupRight} />
+        <TermsSuggestions css={S.popupRight} currentView={termsView} onViewChange={setTermsView} />
 
         <ActionIcon variant="light" size="lg" radius="sm" css={S.closeButton} onClick={closePopup}>
           <IconX size={20} strokeWidth={3} />
