@@ -33,7 +33,8 @@ import HomePage from '../../pages/HomePage'
 import LoginPage from '../../pages/LoginPage'
 import NotFoundPage from '../../pages/NotFoundPage'
 import ProfilePage from '../../pages/ProfilePage'
-import SearchPage from '../../pages/SearchPage'
+import SearchPage from '../../pages/SearchPage/SearchPage'
+import SearchWithFilters from '../../pages/SearchWithFilters'
 import SearchPageNew from '../../pages/SearchPageNew'
 
 const ROOT_PATH = '/'
@@ -54,6 +55,8 @@ const routes = createRoutesFromElements(
       }
     />
 
+    <Route path="search-with-filters" element={<SearchWithFilters />} />
+    
     <Route
       path="search"
       element={
