@@ -1,6 +1,6 @@
 import type { MouseEvent } from 'react'
 import { useRef, useEffect, useState } from 'react'
-import { Chip, Flex } from '@mantine/core'
+import { Chip, Flex, clsx } from '@mantine/core'
 
 import { useSearch } from '~/pages/SearchPageNew/components/SuggestionsPopup/contexts/search-context'
 
@@ -9,6 +9,7 @@ import * as S from './styles'
 export type TermsClusterProps = {
   className?: string
   terms: string[]
+  clickable?: boolean
   allSelected?: boolean
   onSelectedTermsAdd?: (terms: string[]) => void
   onSelectedTermsRemove?: (terms: string[]) => void
@@ -17,6 +18,7 @@ export type TermsClusterProps = {
 const TermsCluster = ({
   className,
   terms,
+  clickable = false,
   allSelected,
   onSelectedTermsAdd,
   onSelectedTermsRemove
@@ -29,14 +31,19 @@ const TermsCluster = ({
 
   const fromEffectRef = useRef(false)
 
+  const cls = clsx(className, { clickable })
+
   useEffect(() => {
     if (allSelected === undefined) {
       return
     }
 
     setValues(allSelected ? [...terms] : [])
-    setChecked(allSelected)
-  }, [allSelected, terms])
+
+    if (clickable) {
+      setChecked(allSelected)
+    }
+  }, [allSelected, terms, clickable])
 
   // Update selected chips when input tokens change
   useEffect(() => {
@@ -45,10 +52,14 @@ const TermsCluster = ({
       .map(({ rawValue }) => rawValue)
 
     fromEffectRef.current = true
+
     setPrevValues(found)
     setValues(found)
-    setChecked(found.length === terms.length)
-  }, [terms, tokens])
+
+    if (clickable) {
+      setChecked(found.length === terms.length)
+    }
+  }, [terms, tokens, clickable])
 
   useEffect(() => {
     // Don't do anything if we're updating the chips because the input tokens changed
@@ -78,6 +89,10 @@ const TermsCluster = ({
   }, [onSelectedTermsAdd, onSelectedTermsRemove, prevValues, values])
 
   const handleRootClick = (e: MouseEvent<HTMLDivElement>) => {
+    if (!clickable) {
+      return
+    }
+
     // Don't do anything if the click was on a chip
     if (e.target instanceof HTMLElement && e.target.closest('[data-chip]')) {
       return
@@ -88,12 +103,15 @@ const TermsCluster = ({
   }
 
   const handleChipsChange = (value: string[]) => {
-    setChecked(value.length === terms.length)
+    if (clickable) {
+      setChecked(value.length === terms.length)
+    }
+
     setValues(value)
   }
 
   return (
-    <Flex className={className} align="center" gap="md" css={S.root} onClick={handleRootClick}>
+    <Flex className={cls} align="center" gap="md" css={S.root} onClick={handleRootClick}>
       <Chip.Group multiple value={values} onChange={handleChipsChange}>
         <Flex wrap="wrap" gap="xs">
           {terms.map(term => (

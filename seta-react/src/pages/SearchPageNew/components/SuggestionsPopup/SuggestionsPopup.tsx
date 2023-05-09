@@ -22,7 +22,7 @@ const TOKEN_RESET_DELAY = 100
 
 const SuggestionsPopup = ({ opened, onOpenChange }: Props) => {
   const [popupOpen, setPopupOpen] = useState(opened ?? false)
-  const [termsView, setTermsView] = useState(TermsView.RelatedTerms)
+  const [termsView, setTermsView] = useState(TermsView.TermsClusters)
 
   const { setCurrentToken } = useSearch()
   const { inputValue, setInputValue } = useSearchInput()

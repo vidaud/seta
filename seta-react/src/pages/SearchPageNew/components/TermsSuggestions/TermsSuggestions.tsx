@@ -1,7 +1,8 @@
 import { Flex, Divider } from '@mantine/core'
 
 import OntologyHeader from '~/pages/SearchPageNew/components/OntologyHeader'
-import TermClusters from '~/pages/SearchPageNew/components/TermClusters'
+import TermClusters from '~/pages/SearchPageNew/components/RelatedClusters'
+import RelatedTerms from '~/pages/SearchPageNew/components/RelatedTerms/RelatedTerms'
 import { TermsView } from '~/pages/SearchPageNew/types/terms-view'
 
 type Props = {
@@ -11,8 +12,7 @@ type Props = {
 }
 
 const TermsSuggestions = ({ className, currentView, onViewChange }: Props) => {
-  const termsView =
-    currentView === TermsView.TermsClusters ? <TermClusters /> : <div>Related Terms</div>
+  const termsView = currentView === TermsView.TermsClusters ? <TermClusters /> : <RelatedTerms />
 
   return (
     <Flex className={className} direction="column">

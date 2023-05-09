@@ -1,12 +1,13 @@
-import { Anchor, Loader, Text } from '@mantine/core'
-
 import type { ListMenuProps } from '~/components/ListMenu'
 import ListMenu from '~/components/ListMenu'
+import {
+  SuggestionsError,
+  SuggestionsLoading,
+  SuggestionsEmpty
+} from '~/pages/SearchPageNew/components/common'
 
 import type { SuggestionsResponse } from '~/api/search/suggestions'
 import type { DataProps } from '~/types/data-props'
-
-import * as S from './styles'
 
 type Props = Omit<ListMenuProps, 'items'> & {
   hasSearchTerm: boolean
@@ -21,38 +22,20 @@ const AutocompleteContent = ({
   ...props
 }: Props) => {
   if (error) {
-    return (
-      <S.Container>
-        <Text fz="sm" color="red.6">
-          There was an error fetching suggestions.
-          <br />
-          Please <Anchor onClick={onTryAgain}>try again</Anchor>.
-        </Text>
-      </S.Container>
-    )
+    return <SuggestionsError onTryAgain={onTryAgain} />
   }
 
   if (isLoading || !data) {
-    return (
-      <S.Container>
-        <Loader color="gray" />
-      </S.Container>
-    )
+    return <SuggestionsLoading />
   }
 
   const info = hasSearchTerm ? 'No suggestions' : 'Start typing to see suggestions'
 
-  if (!data.words.length) {
-    return (
-      <S.Container>
-        <Text fz="sm" color="gray.6">
-          {info}
-        </Text>
-      </S.Container>
-    )
-  }
-
   const suggestions = data.words
+
+  if (!suggestions.length) {
+    return <SuggestionsEmpty message={info} />
+  }
 
   return <ListMenu items={suggestions} {...props} />
 }

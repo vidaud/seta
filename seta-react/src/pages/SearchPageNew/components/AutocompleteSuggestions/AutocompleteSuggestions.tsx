@@ -14,7 +14,7 @@ type Props = {
 
 const AutocompleteSuggestions = ({ className }: Props) => {
   const { onSuggestionSelected, currentToken } = useSearch()
-  const { input, setPosition } = useSearchInput()
+  const { setPositionDelayed } = useSearchInput()
 
   const searchTerm = currentToken?.rawValue
 
@@ -27,12 +27,9 @@ const AutocompleteSuggestions = ({ className }: Props) => {
       return
     }
 
-    // input?.blur()
+    const position = currentToken.index + suggestion.length + (suggestion.match(/\s/g) ? 2 : 0)
 
-    setTimeout(() => {
-      setPosition(currentToken.index + suggestion.length + (suggestion.match(/\s/g) ? 2 : 0))
-      input?.focus()
-    }, 0)
+    setPositionDelayed(position, 0)
   }
 
   return (

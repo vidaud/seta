@@ -3,13 +3,11 @@ import { useSearchInput } from '~/pages/SearchPageNew/components/SuggestionsPopu
 
 import { useRelatedTerms } from '~/api/search/related-terms'
 
-import TermClustersContent from './TermClustersContent'
+import RelatedTermsContent from './RelatedTermsContent'
 
-const OntologyTerms = () => {
-  // const [allSelected, setAllSelected] = useState<boolean | undefined>(undefined)
-
+const RelatedTerms = () => {
   const { onSelectedTermsAdd, onSelectedTermsRemove, currentToken } = useSearch()
-  const { input, setPosition } = useSearchInput()
+  const { setPositionDelayed } = useSearchInput()
 
   const searchTerm = currentToken?.rawValue
 
@@ -20,12 +18,7 @@ const OntologyTerms = () => {
       return
     }
 
-    // input?.blur()
-
-    setTimeout(() => {
-      input?.focus()
-      setPosition(currentToken.index + currentToken.token.length)
-    }, 200)
+    setPositionDelayed(currentToken.index + currentToken.token.length, 200)
   }
 
   const handleSelectedTermsAdd = (terms: string[]) => {
@@ -39,7 +32,7 @@ const OntologyTerms = () => {
   }
 
   return (
-    <TermClustersContent
+    <RelatedTermsContent
       data={data}
       isLoading={isLoading}
       error={error}
@@ -51,4 +44,4 @@ const OntologyTerms = () => {
   )
 }
 
-export default OntologyTerms
+export default RelatedTerms

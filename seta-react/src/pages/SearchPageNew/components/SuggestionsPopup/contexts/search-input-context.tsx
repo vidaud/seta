@@ -11,6 +11,7 @@ type SearchInputContextProps = SearchInputProviderProps & {
   input: HTMLInputElement | null
   setInputRef: (ref: HTMLInputElement) => void
   setPosition: (position: number) => void
+  setPositionDelayed: (position: number, delay?: number) => void
 }
 
 const SearchInputContext = createContext<SearchInputContextProps | undefined>(undefined)
@@ -32,12 +33,20 @@ export const SearchInputProvider = ({
     }
   }
 
+  const setPositionDelayed = (position: number, delay = 200) => {
+    setTimeout(() => {
+      inputRef.current?.focus()
+      setPosition(position)
+    }, delay)
+  }
+
   const value: SearchInputContextProps = {
     inputValue,
     setInputValue,
     input: inputRef.current,
     setInputRef,
-    setPosition
+    setPosition,
+    setPositionDelayed
   }
 
   return <SearchInputContext.Provider value={value}>{children}</SearchInputContext.Provider>
