@@ -1,8 +1,9 @@
 import type { MouseEvent } from 'react'
-import { useRef, useEffect, useState } from 'react'
+import { useCallback, useRef, useEffect, useState } from 'react'
 import { Chip, Flex, clsx } from '@mantine/core'
 
 import { useSearch } from '~/pages/SearchPageNew/components/SuggestionsPopup/contexts/search-context'
+import { useTermsSelection } from '~/pages/SearchPageNew/contexts/terms-selection-context'
 
 import * as S from './styles'
 
@@ -10,7 +11,6 @@ export type TermsClusterProps = {
   className?: string
   terms: string[]
   clickable?: boolean
-  allSelected?: boolean
   onSelectedTermsAdd?: (terms: string[]) => void
   onSelectedTermsRemove?: (terms: string[]) => void
 }
@@ -19,7 +19,6 @@ const TermsCluster = ({
   className,
   terms,
   clickable = false,
-  allSelected,
   onSelectedTermsAdd,
   onSelectedTermsRemove
 }: TermsClusterProps) => {
@@ -28,25 +27,29 @@ const TermsCluster = ({
   const [prevValues, setPrevValues] = useState<string[]>([])
 
   const { tokens } = useSearch()
+  const { allSelected, setAllSelected } = useTermsSelection()
 
   const fromEffectRef = useRef(false)
+  const fromEffectSelectAllRef = useRef(false)
 
   const cls = clsx(className, { clickable })
 
-  useEffect(() => {
-    if (allSelected === undefined) {
-      return
-    }
+  const updateAllSelected = useCallback(() => {
+    const newValue = values.length === terms.length ? true : values.length === 0 ? false : undefined
 
-    setValues(allSelected ? [...terms] : [])
-
-    if (clickable) {
-      setChecked(allSelected)
+    if (newValue !== allSelected) {
+      setAllSelected(newValue)
     }
-  }, [allSelected, terms, clickable])
+  }, [allSelected, setAllSelected, terms, values])
 
   // Update selected chips when input tokens change
   useEffect(() => {
+    if (fromEffectSelectAllRef.current) {
+      fromEffectSelectAllRef.current = false
+
+      return
+    }
+
     const found = tokens
       .filter(({ rawValue }) => terms.includes(rawValue))
       .map(({ rawValue }) => rawValue)
@@ -86,7 +89,22 @@ const TermsCluster = ({
     }
 
     setPrevValues(values)
-  }, [onSelectedTermsAdd, onSelectedTermsRemove, prevValues, values])
+    // updateAllSelected()
+  }, [onSelectedTermsAdd, onSelectedTermsRemove, prevValues, values, updateAllSelected])
+
+  useEffect(() => {
+    if (allSelected === undefined) {
+      return
+    }
+
+    fromEffectSelectAllRef.current = true
+
+    setValues(allSelected ? [...terms] : [])
+
+    if (clickable) {
+      setChecked(allSelected)
+    }
+  }, [allSelected, terms, clickable])
 
   const handleRootClick = (e: MouseEvent<HTMLDivElement>) => {
     if (!clickable) {

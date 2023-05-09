@@ -4,6 +4,7 @@ import { Text, Select, Chip, ActionIcon, Flex, Tooltip } from '@mantine/core'
 import { IconWand } from '@tabler/icons-react'
 
 import { useSearch } from '~/pages/SearchPageNew/components/SuggestionsPopup/contexts/search-context'
+import { useTermsSelection } from '~/pages/SearchPageNew/contexts/terms-selection-context'
 import { TermsView } from '~/pages/SearchPageNew/types/terms-view'
 
 import * as S from './styles'
@@ -15,19 +16,19 @@ const viewOptions: SelectItem[] = [
 
 type Props = {
   className?: string
-  onSelectAllChange?: (value: boolean) => void
   currentView?: TermsView
   onViewChange?: (value: TermsView) => void
 }
 
-const OntologyHeader = ({ className, onSelectAllChange, currentView, onViewChange }: Props) => {
-  const { currentToken } = useSearch()
-
+const OntologyHeader = ({ className, currentView, onViewChange }: Props) => {
   const [termSelected, setTermSelected] = useState(false)
   const [enriched, setEnriched] = useState(false)
 
-  const termTooltip = termSelected ? 'Unselect all related terms' : 'Select all related terms'
-  const termVariant: ChipProps['variant'] = termSelected ? 'filled' : 'outline'
+  const { currentToken } = useSearch()
+  const { allSelected, setAllSelected } = useTermsSelection()
+
+  const termTooltip = allSelected ? 'Unselect all terms' : 'Select all terms'
+  const termVariant: ChipProps['variant'] = allSelected ? 'filled' : 'outline'
 
   const enrichedProps: Partial<ActionIconProps> = enriched
     ? {
@@ -40,8 +41,8 @@ const OntologyHeader = ({ className, onSelectAllChange, currentView, onViewChang
       }
 
   const handleSelectAllChange = (value: boolean) => {
-    setTermSelected(value)
-    onSelectAllChange?.(value)
+    // setTermSelected(value)
+    setAllSelected(value)
   }
 
   const handleViewChange = (value: string) => {
@@ -64,7 +65,7 @@ const OntologyHeader = ({ className, onSelectAllChange, currentView, onViewChang
           variant={termVariant}
           color="teal"
           size="md"
-          checked={termSelected}
+          checked={allSelected}
           onChange={handleSelectAllChange}
         >
           {currentToken.token}

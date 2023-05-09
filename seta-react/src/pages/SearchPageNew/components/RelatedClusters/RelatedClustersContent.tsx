@@ -35,7 +35,6 @@ const RelatedClustersContent = ({ data, isLoading, error, onTryAgain, ...props }
           // eslint-disable-next-line react/no-array-index-key
           key={index}
           terms={terms}
-          allSelected={index === 1}
           clickable
           {...props}
         />

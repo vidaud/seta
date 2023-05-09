@@ -37,7 +37,6 @@ const RelatedTerms = () => {
       isLoading={isLoading}
       error={error}
       onTryAgain={refetch}
-      // allSelected={allSelected}
       onSelectedTermsAdd={handleSelectedTermsAdd}
       onSelectedTermsRemove={handleSelectedTermsRemove}
     />

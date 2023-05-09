@@ -10,10 +10,15 @@ const RelatedClusters = () => {
 
   const { onSelectedTermsAdd, onSelectedTermsRemove, currentToken } = useSearch()
   const { setPositionDelayed } = useSearchInput()
+  // const { allSelected, setAllSelected } = useTermsSelection()
 
   const searchTerm = currentToken?.rawValue
 
   const { data, isLoading, error, refetch } = useRelatedClusters(searchTerm)
+
+  // useEffect(() => {
+  //   console.log(data?.nodes)
+  // }, [allSelected, data?.nodes])
 
   const focusInput = () => {
     if (!currentToken) {
