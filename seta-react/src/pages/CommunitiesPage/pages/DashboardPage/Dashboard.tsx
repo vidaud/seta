@@ -21,12 +21,12 @@ const CommunityDashboard = () => {
           </Paper>
         </Grid.Col>
         <Grid.Col xs={7}>
-          <Paper withBorder p="md" radius="md" key="Last Join Requests">
+          <Paper withBorder p="md" radius="md" key="Change Requests">
             <ChangeRequests data={changeRequestAttributes.props.data} />
           </Paper>
         </Grid.Col>
         <Grid.Col xs={12}>
-          <Paper withBorder p="md" radius="md" key="Last Join Requests">
+          <Paper withBorder p="md" radius="md" key="Recent Resources">
             <RecentResources data={resourcesAttributes.props.data} />
           </Paper>
         </Grid.Col>

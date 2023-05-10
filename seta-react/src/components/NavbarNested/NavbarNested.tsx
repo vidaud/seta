@@ -4,7 +4,7 @@ import { IconNotes, IconCalendarStats, IconGauge } from '@tabler/icons-react'
 import { LinksGroup } from '../NavbarLinksGroup/NavbarLinksGroup'
 
 const mockdata = [
-  { label: 'Dashboard', icon: IconGauge },
+  { label: 'Dashboard', icon: IconGauge, link: '/communities/dashboard' },
   {
     label: 'Discovery',
     icon: IconNotes,
@@ -60,7 +60,7 @@ const useStyles = createStyles(theme => ({
   }
 }))
 
-export default function NavbarNested() {
+const NavbarNested = () => {
   const { classes } = useStyles()
   const links = mockdata.map(item => <LinksGroup {...item} key={item.label} />)
 
@@ -72,3 +72,5 @@ export default function NavbarNested() {
     </Navbar>
   )
 }
+
+export default NavbarNested

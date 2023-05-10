@@ -10,6 +10,10 @@ import RequireAuth from './components/RequireAuth'
 
 import AppLayout from '../../layouts/AppLayout'
 import CommunityLayout from '../../layouts/CommunityLayout/CommunityLayout'
+import ManageCommunity from '../../pages/CommunitiesPage/components/Manage/ManageCommunity/ManageCommunity'
+import NewCommunity from '../../pages/CommunitiesPage/components/Manage/NewCommunity/NewCommunity'
+import UpdateCommunity from '../../pages/CommunitiesPage/components/Manage/UpdateCommunity/UpdateCommunity'
+import ViewCommunity from '../../pages/CommunitiesPage/components/Manage/ViewCommunity/ViewCommunity'
 import DashboardsPage from '../../pages/CommunitiesPage/pages/DashboardPage'
 import CommunityListPage from '../../pages/CommunitiesPage/pages/Discovery/CommunityList/CommunityList'
 import MyCommunityListPage from '../../pages/CommunitiesPage/pages/Manage/MyCommunityList/MyCommunityList'
@@ -88,6 +92,38 @@ const routes = createRoutesFromElements(
         element={
           <RequireAuth>
             <MyCommunityListPage />
+          </RequireAuth>
+        }
+      />
+      <Route
+        path="new"
+        element={
+          <RequireAuth>
+            <NewCommunity />
+          </RequireAuth>
+        }
+      />
+      <Route
+        path="communityname"
+        element={
+          <RequireAuth>
+            <UpdateCommunity />
+          </RequireAuth>
+        }
+      />
+      <Route
+        path="communitydetails"
+        element={
+          <RequireAuth>
+            <ViewCommunity />
+          </RequireAuth>
+        }
+      />
+      <Route
+        path="communitymanage"
+        element={
+          <RequireAuth>
+            <ManageCommunity />
           </RequireAuth>
         }
       />

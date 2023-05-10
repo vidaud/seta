@@ -1,4 +1,4 @@
-import { Popover, Button, TextInput, Group, Textarea, createStyles } from '@mantine/core'
+import { Text, Popover, Button, Group, createStyles } from '@mantine/core'
 
 const useStyles = createStyles({
   form: {
@@ -6,15 +6,15 @@ const useStyles = createStyles({
   }
 })
 
-const InviteMember = () => {
+const DeleteCommunity = () => {
   const { classes, cx } = useStyles()
 
   return (
     <Popover width={300} trapFocus position="bottom" withArrow shadow="md">
       <Popover.Target>
-        <Group position="right">
-          <Button variant="outline" size="xs" color="orange">
-            + Invite
+        <Group position="left">
+          <Button className="deleteCommunity" color="red">
+            Delete
           </Button>
         </Group>
       </Popover.Target>
@@ -23,18 +23,19 @@ const InviteMember = () => {
           background: theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.white
         })}
       >
-        <TextInput label="Emails" placeholder="john@doe.com" size="xs" mt="xs" />
-        <Textarea label="Message" placeholder="Message" size="xs" />
+        <Text>Are you sure you want to delete this community?</Text>
 
-        <Group className={cx(classes.form)}>
+        <Group className={cx(classes.form)} position="right">
           <Button variant="outline" size="xs" color="blue">
             Cancel
           </Button>
-          <Button size="xs">Send</Button>
+          <Button size="xs" color="red">
+            Delete
+          </Button>
         </Group>
       </Popover.Dropdown>
     </Popover>
   )
 }
 
-export default InviteMember
+export default DeleteCommunity

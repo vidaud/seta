@@ -9,7 +9,7 @@ import {
   createStyles,
   rem
 } from '@mantine/core'
-import { IconCalendarStats, IconChevronLeft, IconChevronRight } from '@tabler/icons-react'
+import { IconChevronLeft, IconChevronRight } from '@tabler/icons-react'
 
 const useStyles = createStyles(theme => ({
   control: {
@@ -57,7 +57,7 @@ interface LinksGroupProps {
   links?: { label: string; link: string }[]
 }
 
-export function LinksGroup({ icon: Icon, label, initiallyOpened, links }: LinksGroupProps) {
+export const LinksGroup = ({ icon: Icon, label, initiallyOpened, links }: LinksGroupProps) => {
   const { classes, theme } = useStyles()
   const hasLinks = Array.isArray(links)
   const [opened, setOpened] = useState(initiallyOpened || false)
@@ -68,7 +68,7 @@ export function LinksGroup({ icon: Icon, label, initiallyOpened, links }: LinksG
       className={classes.link}
       href={link.link}
       key={link.label}
-      onClick={event => event.preventDefault()}
+      // onClick={event => event.preventDefault()}
     >
       {link.label}
     </Text>
@@ -101,17 +101,7 @@ export function LinksGroup({ icon: Icon, label, initiallyOpened, links }: LinksG
   )
 }
 
-const mockdata = {
-  label: 'Releases',
-  icon: IconCalendarStats,
-  links: [
-    { label: 'Upcoming releases', link: '/' },
-    { label: 'Previous releases', link: '/' },
-    { label: 'Releases schedule', link: '/' }
-  ]
-}
-
-export default function NavbarLinksGroup() {
+const NavbarLinksGroup = () => {
   return (
     <Box
       sx={theme => ({
@@ -119,8 +109,8 @@ export default function NavbarLinksGroup() {
         padding: theme.spacing.md,
         backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.white
       })}
-    >
-      <LinksGroup {...mockdata} />
-    </Box>
+    />
   )
 }
+
+export default NavbarLinksGroup
