@@ -37,12 +37,11 @@ The typical process to create a general corpus involves:
 - De-hyphenation.      
 - Sentence separation based on dependency parsing (allowing the reconstruction even of sentences split over several lines).      
 
-**Taxonomies** are used in the descriptive metadata fields to enable consistent, accurate, and quick indexing and retrieval of the content of digital assets. Text documents can be automatically indexed or categorised based on search queries matching words inside the texts, however non-text digital files often need some form of descriptive tagging in order to be retrieved in subject searches.        
+**Taxonomies** are used in the descriptive metadata fields to enable consistent, accurate, and quick indexing and retrieval of the content of digital assets. Text documents can be automatically indexed or categorised based on search queries matching words inside the texts, however non-text digital files often need some form of descriptive tagging in order to be retrieved in subject searches. In SeTA, users can also set up new taxonomies if they need it.        
 
 In order to get results from Neural Network training that are pertinent and easy to interpret, the data in SeTA must first be prepared, features must be engineered, and domains must be covered.     
 When training data with the same tags regularly yield comparable results, weights and thresholds are adjusted continuously.  For this we use chunk compositionality and word embedding.
     
-
 **"Chunking"** is the process of combining several pieces of information into more comprehensible or significant portions. As a result, reading a portion of a compressed variable does not necessitate uncompressing the entire variable.  *In SeTA we create chunks of 300 words and for every chunk a word embedding is created.* [^1]
 
 Word embeddings are numerical vector representations of text that keep track of the semantic and contextual relationships between words in the corpus of texts.  The words in this form are closer to one another in the vector space because they have stronger semantic links. The sentence-transformers model **all-distilroberta-v1** is utilised for the embedding process as it helps on the clustering and the semantic search because it maps sentences and paragraphs to a dimensional dense vector space.
@@ -58,10 +57,14 @@ Once we have the processed data, this is ingested and stored in an **ElasticSear
 
 ElasticSearch is a distributed, free and open search and analytics engine for all types of data, including textual, numerical, geospatial, structured and unstructured. Through the Data ingestion process the raw data is parsed, normalized, and enriched before it is indexed in ElasticSearch. Once indexed, it is possible to run complex queries against their data and use aggregations to retrieve complex summaries of their data[^5].
 
-At this point the full text of all documents can be searched either through a Web Interface or the API. 
-Users are able to target their search either to the individual document collections or to search across all collections in a harmonised way.
+Once everything is set up, the data is ready to be interrogated either through the User Web Interface or the API.
+
+In the friendly user web interface, the users can target their search either to the individual document collections or to search across all collections in a harmonised way. In this interface, they can refine the results with some additional filters, elaborate document maps and have a concepts net. 
+
+API interface can be a good alternative for users that need to integrate the data with their own applications or just more flexibility in information-transfer processes.
 
 Along with the search, it is also possible to participate or create communities to interact with others users about specific resources. Communities are spaces for people with similar interests to discuss or share about extensive or narrow topics.
+
 
 
 

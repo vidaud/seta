@@ -34,10 +34,11 @@ Once you are logged in, you can see in the top menu the link to the Search and t
 
 The SeTA API provides the functions and procedures to access data from a developer point of view.
 
-
+In SeTA there are two API's: search API and Communities API 
 
 ### Prerequisites
 
+### API Communities
 The Docker containers must be running.
 
 !!! note "Optional, but useful:" 
@@ -45,7 +46,7 @@ The Docker containers must be running.
 
     If the seta database exists, then remove it with either MongoDB Compass or bash MongoDB commands.
 
-#### {to update} EU Login Authentication
+#### EU Login Authentication
 
 Open browser and go to seta-ui [login](http://localhost/seta-ui/login) page.
 

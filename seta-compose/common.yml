@@ -11,11 +11,7 @@ services:
     environment:
       - NO_PROXY=${NO_PROXY}
       - no_proxy=${NO_PROXY}
-      - HTTP_PROXY=${HTTP_PROXY}
-      - HTTPS_PROXY=${HTTPS_PROXY}
-      - http_proxy=${HTTP_PROXY}
-      - https_proxy=${HTTPS_PROXY}
-
+      
   es:
     restart: always
     build:
@@ -35,11 +31,7 @@ services:
       - xpack.security.http.ssl.enabled=false
       - xpack.security.transport.ssl.enabled=false
       - ingest.geoip.downloader.enabled=false
-      - HTTP_PROXY=${HTTP_PROXY}
-      - HTTPS_PROXY=${HTTPS_PROXY}
-      - http_proxy=${HTTP_PROXY}
-      - https_proxy=${HTTPS_PROXY}
-
+      
   api:
     restart: always
     build:
@@ -57,11 +49,7 @@ services:
       - DB_HOST
       - DB_PORT
       - DB_NAME
-      - HTTP_PROXY=${HTTP_PROXY}
-      - HTTPS_PROXY=${HTTPS_PROXY}
-      - http_proxy=${HTTP_PROXY}
-      - https_proxy=${HTTPS_PROXY}
-
+     
   nginx:
     restart: always
     build:
@@ -72,10 +60,7 @@ services:
     environment:
       - NO_PROXY=${NO_PROXY}
       - no_proxy=${NO_PROXY}
-      - HTTP_PROXY=${HTTP_PROXY}
-      - HTTPS_PROXY=${HTTPS_PROXY}
-      - http_proxy=${HTTP_PROXY}
-      - https_proxy=${HTTPS_PROXY}
+      
 
   ui:
     restart: always
@@ -96,10 +81,7 @@ services:
       - DB_HOST
       - DB_PORT
       - DB_NAME
-      - HTTP_PROXY=${HTTP_PROXY}
-      - HTTPS_PROXY=${HTTPS_PROXY}
-      - http_proxy=${HTTP_PROXY}
-      - https_proxy=${HTTPS_PROXY}
+      
 
   ui-react:
     restart: always
@@ -113,10 +95,7 @@ services:
     environment:
       - NO_PROXY=${NO_PROXY}
       - no_proxy=${NO_PROXY}
-      - HTTP_PROXY=${HTTP_PROXY}
-      - HTTPS_PROXY=${HTTPS_PROXY}
-      - http_proxy=${HTTP_PROXY}
-      - https_proxy=${HTTPS_PROXY}
+      
 
   doc:
     restart: always
@@ -129,10 +108,7 @@ services:
       - NO_PROXY=${NO_PROXY}
       - no_proxy=${NO_PROXY}
       - DOC_HOST=${DOC_HOST}
-      - HTTP_PROXY=${HTTP_PROXY}
-      - HTTPS_PROXY=${HTTPS_PROXY}
-      - http_proxy=${HTTP_PROXY}
-      - https_proxy=${HTTPS_PROXY}
+      
 
   data:
     build:
@@ -144,7 +120,4 @@ services:
       - NO_PROXY=${NO_PROXY}
       - no_proxy=${NO_PROXY}
       - ES_HOST
-      - HTTP_PROXY=${HTTP_PROXY}
-      - HTTPS_PROXY=${HTTPS_PROXY}
-      - http_proxy=${HTTP_PROXY}
-      - https_proxy=${HTTPS_PROXY}
+      
