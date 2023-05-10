@@ -19,17 +19,18 @@ Users can search EU documents based on keywords and then screen the results and 
 
 First of all, data is harvested from the following sources:
 
-![Screenshot](./img/data_sources.png)
+<!-- ![Screenshot](./img/data_sources.png) -->
 
-- EUR-Lex is the online database of all EU legal documents, providing the official and most comprehensive access to them.      
-- CORDIS contains the results from the projects funded by the EU's framework programs for research and innovation.      
-- Pubsy is the publications repository of the European Commission's Joint Research Centre.     
-- As a fourth main data source, SeTA covers the publications of the European Parliament.     
+- **EUR-Lex** is the online database of all EU legal documents, providing the official and most comprehensive access to them.      
+- **CORDIS** contains the results from the projects funded by the EU's framework programs for research and innovation.      
+- **Pubsy** is the publications repository of the European Commission's Joint Research Centre.     
+- **European Parliament** As a fourth main data source, SeTA contains the publications of the European Parliament.     
+
 
 These data consist of text documents and the metadata that describe them.      
 
 
-Furthermore, it is possible for users to create its own sources, and therefore the corpus. 
+Furthermore, users can create their own communities with customized sources, taxonomies and related documents. 
 
 ## Corpus preparation
 
