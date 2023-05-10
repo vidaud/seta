@@ -38,18 +38,15 @@ class RestService {
 
   public deleteCurrentUserAccount() {
     if (this.currentUser != null) {
-      const un = this.currentUser.username
       const csrf_token = getCookie('csrf_access_token')
 
-      const url = environment.baseUrl + '/me/user/delete'
-      const body = {
-        username: un
-      }
-
       axios
-        .post<any>(url, body, { withCredentials: true, headers: { 'X-CSRF-TOKEN': csrf_token } })
-        .then(r => {
-          authentificationService.setaLogout()
+        .delete(this.baseUrl + '/me', {
+          withCredentials: true,
+          headers: { 'X-CSRF-TOKEN': csrf_token }
+        })
+        .then(() => {
+          authentificationService.setaLocalLogout()
         })
     }
   }
@@ -59,7 +56,7 @@ class RestService {
 
     const csrf_token = getCookie('csrf_access_token')
 
-    const url = environment.baseUrl + '/me/generate-rsa-keys'
+    const url = environment.baseUrl + '/me/rsa-keys'
     const body = {
       username: un
     }
@@ -71,23 +68,18 @@ class RestService {
   }
 
   public deleteRsaKeys() {
-    const un = this.currentUser?.username
-
     const csrf_token = getCookie('csrf_access_token')
 
-    const url = environment.baseUrl + '/me/delete-rsa-keys'
-    const body = {
-      username: un
-    }
+    const url = environment.baseUrl + '/me/rsa-keys'
 
-    return axios.post<any>(url, body, {
+    return axios.delete<any>(url, {
       withCredentials: true,
       headers: { 'X-CSRF-TOKEN': csrf_token }
     })
   }
 
   public getPublicRsaKey() {
-    const url = environment.baseUrl + '/me/get-public-rsa-key'
+    const url = environment.baseUrl + '/me/rsa-keys'
 
     return axios.get<any>(url) as any
   }

@@ -54,6 +54,8 @@ class AuthentificationService {
     axios
       .post(AUTH_API + '/logout', { 'Cache-Control': 'no-cache', Pragma: 'no-cache' })
       .then(() => {
+        this.currentUserSubject.next(null)
+        storageService.clean()
         window.location.href = '/login'
       }) as any
   }

@@ -1,13 +1,12 @@
 from interface import implements
 
 from injector import inject
-from seta_flask_server.repository.interfaces.config import IDbConfig
 
 from datetime import datetime
 import pytz
 
 from seta_flask_server.repository.models import MembershipModel, MembershipRequestModel
-from seta_flask_server.repository.interfaces import IMembershipsBroker
+from seta_flask_server.repository.interfaces import IDbConfig, IMembershipsBroker
 
 from seta_flask_server.infrastructure.constants import RequestStatusConstants, CommunityRoleConstants, CommunityStatusConstants
 

@@ -16,7 +16,7 @@ class ResourceLimitsModel:
                    total_storage_mb=json_dict["total_storage_mb"],
                    file_size_mb=json_dict["file_size_mb"])
 
-@dataclass(kw_only=True)  
+@dataclass 
 class ResourceModel:
     resource_id: str = None,
     community_id: str = None,
@@ -28,6 +28,12 @@ class ResourceModel:
     creator_id: str = None,
     created_at: datetime = None,
     modified_at: datetime = None
+    
+    def __post_init__(self):
+        if self.resource_id:
+            self.resource_id = self.resource_id.lower()
+        if self.community_id:
+            self.community_id = self.community_id.lower()
 
     def to_json(self):
         return asdict(self)
