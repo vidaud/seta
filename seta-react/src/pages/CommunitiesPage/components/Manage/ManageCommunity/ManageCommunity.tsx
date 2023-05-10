@@ -61,17 +61,20 @@ const ManageCommunity = () => {
                 industries for previewing layouts and visual mockups.
               </Text>
               <Table className={classes.table}>
-                <tr>
-                  <td>Membership: Private</td>
-                  <td>Created at: 20 April 2023</td>
-                </tr>
-                <tr>
-                  <td>Data Type: Evidence</td>
-                  <td>Created by: Adriana</td>
-                </tr>
-                <tr>
-                  <td>Status: Active</td>
-                </tr>
+                <tbody>
+                  <tr>
+                    <td>Membership: Private</td>
+                    <td>Created at: 20 April 2023</td>
+                  </tr>
+                  <tr>
+                    <td>Data Type: Evidence</td>
+                    <td>Created by: Adriana</td>
+                  </tr>
+                  <tr>
+                    <td>Status: Active</td>
+                    <td />
+                  </tr>
+                </tbody>
               </Table>
               <Group spacing={30} position="right">
                 <Button

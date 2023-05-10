@@ -2,7 +2,9 @@ import { createStyles, Text, rem, UnstyledButton, Group, Center } from '@mantine
 import { keys } from '@mantine/utils'
 import { IconSelector, IconChevronDown, IconChevronUp } from '@tabler/icons-react'
 
-import type { RowData, ThProps } from './types'
+import type { Community } from '~/models/communities/communities'
+
+import type { ThProps } from './types'
 
 const useStyles = createStyles(theme => ({
   th: {
@@ -45,15 +47,15 @@ export function Th({ children, reversed, sorted, onSort }: ThProps) {
   )
 }
 
-export function filterData(data: RowData[], search: string) {
+export function filterData(data: Community[], search: string) {
   const query = search.toLowerCase().trim()
 
   return data.filter(item => keys(data[0]).some(key => item[key].toLowerCase().includes(query)))
 }
 
 export function sortData(
-  data: RowData[],
-  payload: { sortBy: keyof RowData | null; reversed: boolean; search: string }
+  data: Community[],
+  payload: { sortBy: keyof Community | null; reversed: boolean; search: string }
 ) {
   const { sortBy } = payload
 

@@ -104,7 +104,7 @@ const routes = createRoutesFromElements(
         }
       />
       <Route
-        path="communityname"
+        path="update/:id"
         element={
           <RequireAuth>
             <UpdateCommunity />
@@ -112,7 +112,7 @@ const routes = createRoutesFromElements(
         }
       />
       <Route
-        path="communitydetails"
+        path="details/:id"
         element={
           <RequireAuth>
             <ViewCommunity />
@@ -120,7 +120,7 @@ const routes = createRoutesFromElements(
         }
       />
       <Route
-        path="communitymanage"
+        path="manage/:id"
         element={
           <RequireAuth>
             <ManageCommunity />

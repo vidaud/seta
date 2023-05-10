@@ -1,16 +1,22 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { createStyles, Table, ScrollArea, Text, TextInput, rem, Button } from '@mantine/core'
 import { IconSearch } from '@tabler/icons-react'
 
-import type { RowData, TableSortProps } from '../../types'
+import type { Community } from '~/models/communities/communities'
+
+import { useCommunities } from '../../../../../api/communities/communities'
+import { CommunitiesEmpty, CommunitiesError } from '../../common'
+import CommunitiesLoading from '../../common/SuggestionsLoading'
 import { Th, sortData } from '../../utils'
 
-const CommunityList = ({ data }: TableSortProps) => {
+const CommunityList = () => {
   const [search, setSearch] = useState('')
-  const [sortedData, setSortedData] = useState(data)
-  const [sortBy, setSortBy] = useState<keyof RowData | null>(null)
+  const [sortBy, setSortBy] = useState<keyof Community | null>(null)
   const [reverseSortDirection, setReverseSortDirection] = useState(false)
   const [scrolled, setScrolled] = useState(false)
+
+  const { data, isLoading, error, refetch } = useCommunities()
+  const [sortedData, setSortedData] = useState(data)
 
   const useStyles = createStyles(theme => ({
     header: {
@@ -36,7 +42,28 @@ const CommunityList = ({ data }: TableSortProps) => {
     }
   }))
   const { classes, cx } = useStyles()
-  const setSorting = (field: keyof RowData) => {
+
+  useEffect(() => {
+    if (data) {
+      setSortedData(data)
+    }
+  }, [data, sortedData])
+
+  if (error) {
+    return <CommunitiesError onTryAgain={refetch} />
+  }
+
+  if (data) {
+    if (data.length === 0) {
+      return <CommunitiesEmpty />
+    }
+  }
+
+  if (isLoading || !data) {
+    return <CommunitiesLoading />
+  }
+
+  const setSorting = (field: keyof Community) => {
     const reversed = field === sortBy ? !reverseSortDirection : false
 
     setReverseSortDirection(reversed)
@@ -51,9 +78,9 @@ const CommunityList = ({ data }: TableSortProps) => {
     setSortedData(sortData(data, { sortBy, reversed: reverseSortDirection, search: value }))
   }
 
-  const rows = sortedData.map(row => (
-    <tr key={row.id}>
-      <td>{row.id}</td>
+  const rows = sortedData?.map(row => (
+    <tr key={row.community_id}>
+      <td>{row.community_id}</td>
       <td>{row.title}</td>
       <td>{row.description}</td>
       <td>{row.data_type}</td>
@@ -92,9 +119,9 @@ const CommunityList = ({ data }: TableSortProps) => {
         <thead>
           <tr>
             <Th
-              sorted={sortBy === 'id'}
+              sorted={sortBy === 'community_id'}
               reversed={reverseSortDirection}
-              onSort={() => setSorting('id')}
+              onSort={() => setSorting('community_id')}
             >
               ID
             </Th>
@@ -137,7 +164,7 @@ const CommunityList = ({ data }: TableSortProps) => {
           </tr>
         </thead>
         <tbody>
-          {rows.length > 0 ? (
+          {rows?.length > 0 ? (
             rows
           ) : (
             <tr>

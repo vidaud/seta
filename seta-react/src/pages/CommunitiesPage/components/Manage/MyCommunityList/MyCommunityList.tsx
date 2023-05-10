@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import {
   createStyles,
   Table,
@@ -19,7 +19,13 @@ import {
   IconSettings
 } from '@tabler/icons-react'
 
-import type { RowData, TableSortProps } from '../../types'
+import type { Community } from '~/models/communities/communities'
+import type { User } from '~/models/user.model'
+
+import { useCommunities } from '../../../../../api/communities/communities'
+import storageService from '../../../../../services/storage.service'
+import { CommunitiesEmpty, CommunitiesError } from '../../common'
+import CommunitiesLoading from '../../common/SuggestionsLoading'
 import { Th, sortData } from '../../utils'
 import DeleteCommunity from '../DeleteCommunityButton/DeleteCommunityButton'
 import InviteMember from '../InviteMemberModal/InviteMemberModal'
@@ -55,16 +61,45 @@ const useStyles = createStyles(theme => ({
   }
 }))
 
-const MyCommunityList = ({ data }: TableSortProps) => {
+const COMMUNITIES_API_PATH = 'http://localhost/communities'
+
+const MyCommunityList = () => {
   const { classes, cx } = useStyles()
   const [selection, setSelection] = useState(['1'])
   const [search, setSearch] = useState('')
-  const [sortedData, setSortedData] = useState(data)
-  const [sortBy, setSortBy] = useState<keyof RowData | null>(null)
+  const [sortBy, setSortBy] = useState<keyof Community | null>(null)
   const [reverseSortDirection, setReverseSortDirection] = useState(false)
   const [scrolled, setScrolled] = useState(false)
+  const { data, isLoading, error, refetch } = useCommunities()
+  const [sortedData, setSortedData] = useState(data)
 
-  const setSorting = (field: keyof RowData) => {
+  let currentUser: User | any = null
+
+  if (storageService.isLoggedIn()) {
+    currentUser = storageService.getUser().username
+  }
+
+  useEffect(() => {
+    if (data) {
+      setSortedData(data)
+    }
+  }, [data, sortedData])
+
+  if (error) {
+    return <CommunitiesError onTryAgain={refetch} />
+  }
+
+  if (data) {
+    if (data.length === 0) {
+      return <CommunitiesEmpty />
+    }
+  }
+
+  if (isLoading || !data) {
+    return <CommunitiesLoading />
+  }
+
+  const setSorting = (field: keyof Community) => {
     const reversed = field === sortBy ? !reverseSortDirection : false
 
     setReverseSortDirection(reversed)
@@ -79,77 +114,82 @@ const MyCommunityList = ({ data }: TableSortProps) => {
     setSortedData(sortData(data, { sortBy, reversed: reverseSortDirection, search: value }))
   }
 
-  const toggleRow = (id: string) =>
+  const toggleRow = (community_id: string) =>
     setSelection(current =>
-      current.includes(id) ? current.filter(item => item !== id) : [...current, id]
+      current.includes(community_id)
+        ? current.filter(item => item !== community_id)
+        : [...current, community_id]
     )
   const toggleAll = () =>
-    setSelection(current => (current.length === data.length ? [] : data.map(item => item.id)))
-
-  const rows = sortedData.map(item => {
-    const selected = selection.includes(item.id)
-
-    return (
-      <tr key={item.id} className={cx({ [classes.rowSelected]: selected })}>
-        <td>
-          <Checkbox
-            checked={selection.includes(item.id)}
-            onChange={() => toggleRow(item.id)}
-            transitionDuration={0}
-          />
-        </td>
-        <td>{item.id}</td>
-        <td>{item.title}</td>
-        <td>{item.description}</td>
-        <td>{item.data_type}</td>
-        <td>{item.membership}</td>
-        <td>{item.status}</td>
-        <td>
-          <Group spacing={0} position="right">
-            <InviteMember />
-            <Menu
-              transitionProps={{ transition: 'pop' }}
-              withArrow
-              position="bottom-end"
-              withinPortal
-            >
-              <Menu.Target>
-                <ActionIcon>
-                  <IconDots size="1rem" stroke={1.5} />
-                </ActionIcon>
-              </Menu.Target>
-              <Menu.Dropdown>
-                <Menu.Item
-                  icon={<IconPencil size="1rem" stroke={1.5} />}
-                  component="a"
-                  href="http://localhost/communities/communityname"
-                >
-                  Update
-                </Menu.Item>
-                <Menu.Item
-                  icon={<IconSettings size="1rem" stroke={1.5} />}
-                  component="a"
-                  href="http://localhost/communities/communitymanage"
-                >
-                  Manage
-                </Menu.Item>
-                <Menu.Item
-                  icon={<IconEye size="1rem" stroke={1.5} />}
-                  component="a"
-                  href="http://localhost/communities/communitydetails"
-                >
-                  View Details
-                </Menu.Item>
-                <Menu.Item icon={<IconTrash size="1rem" stroke={1.5} />} color="red">
-                  Delete Community
-                </Menu.Item>
-              </Menu.Dropdown>
-            </Menu>
-          </Group>
-        </td>
-      </tr>
+    setSelection(current =>
+      current.length === data.length ? [] : data.map(item => item.community_id)
     )
-  })
+  const rows = sortedData
+    ?.filter(item => item.creator.user_id === currentUser)
+    .map(item => {
+      const selected = selection.includes(item.community_id)
+
+      return (
+        <tr key={item.community_id} className={cx({ [classes.rowSelected]: selected })}>
+          <td>
+            <Checkbox
+              checked={selection.includes(item.community_id)}
+              onChange={() => toggleRow(item.community_id)}
+              transitionDuration={0}
+            />
+          </td>
+          <td>{item.community_id}</td>
+          <td>{item.title}</td>
+          <td>{item.description}</td>
+          <td>{item.data_type}</td>
+          <td>{item.membership}</td>
+          <td>{item.status}</td>
+          <td>
+            <Group spacing={0} position="right">
+              <InviteMember />
+              <Menu
+                transitionProps={{ transition: 'pop' }}
+                withArrow
+                position="bottom-end"
+                withinPortal
+              >
+                <Menu.Target>
+                  <ActionIcon>
+                    <IconDots size="1rem" stroke={1.5} />
+                  </ActionIcon>
+                </Menu.Target>
+                <Menu.Dropdown>
+                  <Menu.Item
+                    icon={<IconPencil size="1rem" stroke={1.5} />}
+                    component="a"
+                    href={`${COMMUNITIES_API_PATH}/update/${item.community_id}`}
+                  >
+                    Update
+                  </Menu.Item>
+                  <Menu.Item
+                    icon={<IconSettings size="1rem" stroke={1.5} />}
+                    component="a"
+                    href={`${COMMUNITIES_API_PATH}/manage/${item.community_id}`}
+                  >
+                    Manage
+                  </Menu.Item>
+                  <Menu.Item
+                    icon={<IconEye size="1rem" stroke={1.5} />}
+                    component="a"
+                    href={`${COMMUNITIES_API_PATH}/details/${item.community_id}`}
+                  >
+                    View Details
+                  </Menu.Item>
+                  <Menu.Item icon={<IconTrash size="1rem" stroke={1.5} />} color="red">
+                    Delete Community
+                  </Menu.Item>
+                </Menu.Dropdown>
+              </Menu>
+            </Group>
+          </td>
+        </tr>
+      )
+    })
 
   return (
     <ScrollArea h={600} onScrollPositionChange={({ y }) => setScrolled(y !== 0)}>
@@ -181,9 +221,9 @@ const MyCommunityList = ({ data }: TableSortProps) => {
               />
             </th>
             <Th
-              sorted={sortBy === 'id'}
+              sorted={sortBy === 'community_id'}
               reversed={reverseSortDirection}
-              onSort={() => setSorting('id')}
+              onSort={() => setSorting('community_id')}
             >
               ID
             </Th>
