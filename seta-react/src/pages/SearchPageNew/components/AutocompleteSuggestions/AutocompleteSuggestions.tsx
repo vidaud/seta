@@ -1,38 +1,24 @@
 import { Box } from '@mantine/core'
 
-import ListMenu from '~/components/ListMenu'
+import { useSearchInput } from '~/pages/SearchPageNew/components/SuggestionsPopup/contexts/search-input-context'
 
-import * as S from './styles'
+import { useSuggestions } from '~/api/search/suggestions'
+
+import AutocompleteContent from './AutocompleteContent'
 
 import { useSearch } from '../SuggestionsPopup/contexts/search-context'
-
-const terms: string[] = [
-  'test',
-  'testing',
-  'tests',
-  'tested',
-  'test rigs',
-  'test programme',
-  'tested materials',
-  'test facility',
-  'test purposes',
-  'test surfaces',
-  'technology gmbh',
-  'text',
-  'temperature',
-  'temperat',
-  'tem',
-  'temperature level',
-  'temperature differences',
-  'tends'
-]
 
 type Props = {
   className?: string
 }
 
 const AutocompleteSuggestions = ({ className }: Props) => {
-  const { onSuggestionSelected, currentToken, setPosition, input } = useSearch()
+  const { onSuggestionSelected, currentToken } = useSearch()
+  const { setPositionDelayed } = useSearchInput()
+
+  const searchTerm = currentToken?.rawValue
+
+  const { data, isLoading, error, refetch } = useSuggestions(searchTerm)
 
   const handleSuggestionSelected = (suggestion: string) => {
     onSuggestionSelected?.(suggestion)
@@ -41,20 +27,21 @@ const AutocompleteSuggestions = ({ className }: Props) => {
       return
     }
 
-    input?.blur()
+    const position = currentToken.index + suggestion.length + (suggestion.match(/\s/g) ? 2 : 0)
 
-    setTimeout(() => {
-      setPosition(currentToken.index + suggestion.length + (suggestion.match(/\s/g) ? 2 : 0))
-      input?.focus()
-    }, 0)
+    setPositionDelayed(position, 0)
   }
 
   return (
-    <Box className={className} css={S.root}>
-      <ListMenu
-        items={terms}
-        currentWord={currentToken?.word}
+    <Box className={className}>
+      <AutocompleteContent
+        hasSearchTerm={!!searchTerm}
+        data={data}
+        isLoading={isLoading}
+        error={error}
+        currentWord={searchTerm}
         onSelect={handleSuggestionSelected}
+        onTryAgain={refetch}
       />
     </Box>
   )

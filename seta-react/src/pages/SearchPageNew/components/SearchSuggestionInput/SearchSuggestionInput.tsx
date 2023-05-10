@@ -2,6 +2,7 @@ import { useState } from 'react'
 
 import SuggestionsPopup from '~/pages/SearchPageNew/components/SuggestionsPopup'
 import { SearchProvider } from '~/pages/SearchPageNew/components/SuggestionsPopup/contexts/search-context'
+import { SearchInputProvider } from '~/pages/SearchPageNew/components/SuggestionsPopup/contexts/search-input-context'
 import type {
   Token,
   TokenMatch
@@ -20,6 +21,8 @@ const SearchSuggestionInput = () => {
       const newValue = value.slice(0, index) + replaceWith + value.slice(index + token.length)
 
       setValue(newValue)
+    } else {
+      setValue(replaceWith)
     }
   }
 
@@ -31,18 +34,16 @@ const SearchSuggestionInput = () => {
   }
 
   const handleTermsRemoved = (terms: string[]) => {
-    const newValue = terms.reduce(
-      (acc, term) => acc.replace(term.match(/\s/g) ? ` "${term}"` : ` ${term}`, ''),
-      value
-    )
+    const newValue = tokens
+      .filter(token => !terms.includes(token.rawValue))
+      .map(token => token.token)
+      .join(' ')
 
     setValue(newValue)
   }
 
   return (
     <SearchProvider
-      inputValue={value}
-      setInputValue={setValue}
       tokens={tokens}
       setTokens={setTokens}
       currentToken={currentToken}
@@ -51,7 +52,9 @@ const SearchSuggestionInput = () => {
       onSelectedTermsAdd={handleTermsAdded}
       onSelectedTermsRemove={handleTermsRemoved}
     >
-      <SuggestionsPopup />
+      <SearchInputProvider inputValue={value} setInputValue={setValue}>
+        <SuggestionsPopup />
+      </SearchInputProvider>
     </SearchProvider>
   )
 }

@@ -10,7 +10,6 @@ const EXPRESSION_REGEX = /("[^"\\]*(\\.[^"\\]*)*"|\S+)(\s*)/g
 const useTokens = (value: string, inputRef: RefObject<HTMLInputElement>) => {
   const { currentToken, setCurrentToken, tokens, setTokens } = useSearch()
 
-  const updateRef = useRef<number | null>(null)
   const timeoutRef = useRef<number | null>(null)
 
   const newTokens = useMemo((): Token[] => {
@@ -29,6 +28,7 @@ const useTokens = (value: string, inputRef: RefObject<HTMLInputElement>) => {
 
       result.push({
         token,
+        rawValue: token.replace(/"/g, ''),
         index: start,
         isExpression: !!token.match(/\s/),
         spacesAfter
@@ -38,6 +38,19 @@ const useTokens = (value: string, inputRef: RefObject<HTMLInputElement>) => {
     return result
   }, [value])
 
+  const selectLeftToken = useCallback(
+    (position: number) => {
+      const found = tokens.find(({ index, token }) => {
+        const end = index + token.length
+
+        return position >= index && position <= end + 2
+      })
+
+      return found
+    },
+    [tokens]
+  )
+
   const updateCurrentToken = useCallback(() => {
     if (!inputRef.current) {
       return
@@ -45,16 +58,15 @@ const useTokens = (value: string, inputRef: RefObject<HTMLInputElement>) => {
 
     const position = inputRef.current.selectionStart ?? 0
 
-    let found: Token | null = null
+    let found = tokens.find(({ index, token }) => {
+      const start = index
+      const end = start + token.length
 
-    for (const token of tokens) {
-      const start = token.index
-      const end = start + token.token.length
+      return position >= start && position <= end
+    })
 
-      if (position >= start && position <= end) {
-        found = token
-        break
-      }
+    if (!found) {
+      found = selectLeftToken(position)
     }
 
     if (found) {
@@ -62,8 +74,10 @@ const useTokens = (value: string, inputRef: RefObject<HTMLInputElement>) => {
         ...found,
         word: found.token
       })
+    } else {
+      setCurrentToken(null)
     }
-  }, [inputRef, setCurrentToken, tokens])
+  }, [inputRef, tokens, selectLeftToken, setCurrentToken])
 
   const updateCurrentTokenDeferred = useCallback(() => {
     if (timeoutRef.current) {
@@ -77,17 +91,6 @@ const useTokens = (value: string, inputRef: RefObject<HTMLInputElement>) => {
   }, [updateCurrentToken])
 
   useEffect(() => {
-    // if (updateRef.current) {
-    //   clearTimeout(updateRef.current)
-    // }
-
-    // updateRef.current = window.setTimeout(() => {
-    //   setTokens(newTokens)
-    //   updateRef.current = null
-
-    //   updateCurrentTokenDeferred()
-    // }, 0)
-
     setTokens(newTokens)
 
     updateCurrentTokenDeferred()
@@ -104,7 +107,7 @@ const useTokens = (value: string, inputRef: RefObject<HTMLInputElement>) => {
 
     let index = 0
 
-    const highlightedTokens = tokens.map(({ token, spacesAfter, isExpression }) => {
+    const highlightedTokens = tokens.map(({ token, spacesAfter, isExpression, rawValue }) => {
       const isCurrentToken = token === currentToken?.token && index === currentToken.index
 
       const cls = {
@@ -113,7 +116,7 @@ const useTokens = (value: string, inputRef: RefObject<HTMLInputElement>) => {
       }
 
       const quote = isExpression && <span className="quote">"</span>
-      const tokenValue = isExpression ? token.slice(1, -1) : token
+      const tokenValue = isExpression ? rawValue : token
 
       index += token.length + (spacesAfter ?? 0)
 

@@ -4,12 +4,14 @@ import { Divider, ActionIcon, Popover } from '@mantine/core'
 import { IconX } from '@tabler/icons-react'
 
 import { useSearch } from '~/pages/SearchPageNew/components/SuggestionsPopup/contexts/search-context'
+import { useSearchInput } from '~/pages/SearchPageNew/components/SuggestionsPopup/contexts/search-input-context'
+import TermsSuggestions from '~/pages/SearchPageNew/components/TermsSuggestions/TermsSuggestions'
+import { TermsView } from '~/pages/SearchPageNew/types/terms-view'
 
 import * as S from './styles'
 
 import AutocompleteSuggestions from '../AutocompleteSuggestions'
 import SearchInput from '../SearchInput'
-import TermClusters from '../TermClusters'
 
 type Props = {
   opened?: boolean
@@ -19,9 +21,11 @@ type Props = {
 const TOKEN_RESET_DELAY = 100
 
 const SuggestionsPopup = ({ opened, onOpenChange }: Props) => {
-  const { setCurrentToken } = useSearch()
-
   const [popupOpen, setPopupOpen] = useState(opened ?? false)
+  const [termsView, setTermsView] = useState(TermsView.TermsClusters)
+
+  const { setCurrentToken } = useSearch()
+  const { inputValue, setInputValue } = useSearchInput()
 
   const closingTimeoutRef = useRef<number | null>(null)
 
@@ -40,18 +44,30 @@ const SuggestionsPopup = ({ opened, onOpenChange }: Props) => {
     }
   }, [popupOpen, setCurrentToken])
 
+  useEffect(() => {
+    if (!inputValue.trim()) {
+      setPopupOpen(false)
+    }
+  }, [inputValue])
+
   const handlePopupChange = (value: boolean) => {
     setPopupOpen(value)
     onOpenChange?.(value)
   }
 
   const handleInputChange = (value: string) => {
-    // setInputValue(value)
+    setInputValue(value)
     handlePopupChange(true)
   }
 
   const openPopup = () => handlePopupChange(true)
   const closePopup = () => handlePopupChange(false)
+
+  const handleInputClick = () => {
+    if (inputValue) {
+      openPopup()
+    }
+  }
 
   return (
     <Popover
@@ -62,21 +78,20 @@ const SuggestionsPopup = ({ opened, onOpenChange }: Props) => {
       arrowSize={12}
       shadow="sm"
       offset={-2}
-      // withinPortal
     >
       <Popover.Target>
         <SearchInput
           css={S.inputWrapper}
-          // value={inputValue}
-          onClick={openPopup}
-          // onChange={handleInputChange}
+          value={inputValue}
+          onClick={handleInputClick}
+          onDeferredChange={handleInputChange}
         />
       </Popover.Target>
 
       <Popover.Dropdown css={S.popup} className="flex">
         <AutocompleteSuggestions css={S.popupLeft} />
         <Divider orientation="vertical" />
-        <TermClusters css={S.popupRight} />
+        <TermsSuggestions css={S.popupRight} currentView={termsView} onViewChange={setTermsView} />
 
         <ActionIcon variant="light" size="lg" radius="sm" css={S.closeButton} onClick={closePopup}>
           <IconX size={20} strokeWidth={3} />

@@ -4,27 +4,31 @@ import { Text, Select, Chip, ActionIcon, Flex, Tooltip } from '@mantine/core'
 import { IconWand } from '@tabler/icons-react'
 
 import { useSearch } from '~/pages/SearchPageNew/components/SuggestionsPopup/contexts/search-context'
+import { useTermsSelection } from '~/pages/SearchPageNew/contexts/terms-selection-context'
+import { TermsView } from '~/pages/SearchPageNew/types/terms-view'
 
 import * as S from './styles'
 
 const viewOptions: SelectItem[] = [
-  { label: 'Related Term Clusters', value: 'clusters' },
-  { label: 'Related Terms', value: 'terms' }
+  { label: 'Related Term Clusters', value: TermsView.TermsClusters },
+  { label: 'Related Terms', value: TermsView.RelatedTerms }
 ]
 
 type Props = {
   className?: string
+  currentView?: TermsView
+  onViewChange?: (value: TermsView) => void
 }
 
-const OntologyHeader = ({ className }: Props) => {
-  const { currentToken } = useSearch()
-
+const OntologyHeader = ({ className, currentView, onViewChange }: Props) => {
   const [termSelected, setTermSelected] = useState(false)
   const [enriched, setEnriched] = useState(false)
-  const [currentView, setCurrentView] = useState(viewOptions[0].value)
 
-  const termTooltip = termSelected ? 'Unselect all related terms' : 'Select all related terms'
-  const termVariant: ChipProps['variant'] = termSelected ? 'filled' : 'outline'
+  const { currentToken } = useSearch()
+  const { allSelected, setAllSelected } = useTermsSelection()
+
+  const termTooltip = allSelected ? 'Unselect all terms' : 'Select all terms'
+  const termVariant: ChipProps['variant'] = allSelected ? 'filled' : 'outline'
 
   const enrichedProps: Partial<ActionIconProps> = enriched
     ? {
@@ -36,8 +40,15 @@ const OntologyHeader = ({ className }: Props) => {
         variant: 'subtle'
       }
 
+  const handleSelectAllChange = (value: boolean) => {
+    // setTermSelected(value)
+    setAllSelected(value)
+  }
+
   const handleViewChange = (value: string) => {
-    setCurrentView(value)
+    const view: TermsView = TermsView[value]
+
+    onViewChange?.(view)
   }
 
   const toggleEnriched = () => {
@@ -54,8 +65,8 @@ const OntologyHeader = ({ className }: Props) => {
           variant={termVariant}
           color="teal"
           size="md"
-          checked={termSelected}
-          onChange={value => setTermSelected(value)}
+          checked={allSelected}
+          onChange={handleSelectAllChange}
         >
           {currentToken.token}
         </Chip>
