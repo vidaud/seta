@@ -91,8 +91,14 @@ nav:
     - Deployment: setup/deployment.md 
     - Release: setup/release-notes.md
   - Seta-API: 
-    - Search: seta-api/seta_api_v1.md
-    - Communities: seta-api/seta_api_communities.md
+    - Search API: seta-api/search_api/seta_api_v1.md
+    - Communities API: 
+      - Communities: seta-api/communities_api/seta_api_communities.md
+      - Community Change Requests: seta-api/communities_api/community_change_requests.md
+      - Community Memberships: seta-api/communities_api/community_memberships.md
+      - Community Invites: seta-api/communities_api/community_invites.md
+      - Resources: seta-api/communities_api/resources.md
+      - Community User Permissions: seta-api/communities_api/communities_user_permissions.md
   - FAQS: faqs/faqs.md
   - License: license/license_v1.md
   
