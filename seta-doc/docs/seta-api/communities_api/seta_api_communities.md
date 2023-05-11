@@ -1,4 +1,4 @@
-# SETA-API
+# SETA-API Communities
 
 The SeTA API Communities exposes the data and functionality of the management in the communities. It has various methods that can be performed on them over HTTP, like GET, POST, PUT, and DELETE. 
 

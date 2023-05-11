@@ -5,7 +5,7 @@ In the SeTA Web App we have two types of communities: public communities and pri
 
 * **Public Community**:  Anyone with access to the web app can view all discussion forums and information in the online Community. Anyone can join the Community and contribute  to the Community.   
 
-* **Private Community**:  The information and conversations can only be accessed by users with log-ins(often sent via invitation to a specific group or pre-loaded into the Community platforms membership database). All users are forced to ask for authorization to join and then been able to see content and conversations. In this type of communities the administrators have the ability to deny access to users who don't fit membership credentials (i.e. *members customers participants in a specific industry*)
+* **Private Community**:  The information and conversations can only be accessed by users with log-ins(often sent via invitation to a specific group or pre-loaded into the Community platforms membership database). All users are forced to ask for authorization to join and then been able to see content and conversations. In this type of communities the administrators have the ability to deny access to users who don't fit membership credentials.
 
 
 ## Communities Web Interface
@@ -13,19 +13,19 @@ In the SeTA Web App we have two types of communities: public communities and pri
 The main screen of the Communities is the ^^Dashboard^^. Here you can see the information related to the communities:    
 
 
-- The Communities created by the user
-- The Resources created by the user
-- The members of the Communities 
-- The notifications
-- The latest request from users to the Communities
-- The newest members to the Communities
-- The last Resources created
+- The Communities created (*My Communities*)
+- The Resources created (*My Reosources*)
+- The members of the Communities (*Members*)
+- The notifications (*Notifications*)
+- The latest join request to the Communities (*Last Join Request*)
+- Changes Requests (*Change Request*)
+- The last Resources (*Last Resources*)
 
 ### Create a Community
-                        
+                     
 1. From the side menu click on ^^Manage^^ -> ^^My Communities^^.  
 2. Click on the top right botton ^^New Community^^.  
-3. Enter the Community id, name and description.  
+3. Enter the Community id, title and description.  
 4. Select the ^^Membership^^ option: *Private, Public*.  
 5. Select the ^^Data Type^^: *Evidence, Representative*.  
 6. Click Save. Once you create your Community you will be sent back to your communities list. 
@@ -34,13 +34,14 @@ The main screen of the Communities is the ^^Dashboard^^. Here you can see the in
 
 ### Change the name of a Community                
                         
-Only **Community managers and creators** can change the Community name.  
+Only **users with rights to edit** can change the Community name.  
 
 1. From the side menu click on ^^Manage^^ -> ^^My Communities^^.  
 2. From the communities list click on the Community you want to change.  
-2. On the top of the window click on button ^^Manage^^.  
+2. On the top of the community window click on button ^^Manage^^.  
 3. In the next window, in section ^^Details^^ click on button at the bottom of the section ^^Update^^.  
-4. You can change the details of your Community: *Community ID, Title, Description, Data Type, Membership*.
+4. You can change the details of your Community: *Community ID, Title, Description, Data Type, Membership*.     
+5. Click *Update*
 
  
 ### Difference between a manager and a creator in a Community
@@ -53,7 +54,7 @@ Only **Community managers and creators** can change the Community name.
 - Approve or deny membership requests and participant requests. 
 - Approve or deny documents in the Community. 
 - Remove documents and comments on documents. 
-- Remove and ban people from the Community. 
+- Remove and block people from the Community. 
 - Upload or remove a document. 
 
 
@@ -62,13 +63,15 @@ Only **Community managers and creators** can change the Community name.
 - Approve or deny membership requests and participant requests. 
 - Approve or deny documents in the Community. 
 - Remove documents and comments on documents. 
-- Remove and ban people from the Community. 
+- Remove and block people from the Community. 
 - Upload or remove a document.  
 
 !!! warning
     All communities must have a manager. 
 
-### {== Claim the manager role ==}
+### Claim the manager role
+
+<!-- ask if there could be more than one manager-->
 
 1. From the side menu click on ^^Manage^^ -> ^^My Communities^^.    
 2. From the communities list click on the Community you want to change.  
@@ -77,7 +80,9 @@ Only **Community managers and creators** can change the Community name.
 5. Click Confirm. 
 
 !!! danger "Note"
-    Only one manager spot can be claimed. {==Once the creator has left the Community, creator status can't be granted to a manager or moderator. If you can't claim the manager role in a Community it may be because there are managers or other people have recently been accepted to become a manager.==}
+    Only one manager spot can be claimed. 
+    
+<!--check if this is true:  Once the creator has left the Community, creator status can't be granted to a manager or moderator. If you can't claim the manager role in a Community it may be because there are managers or other people have recently been accepted to become a manager.-->
 
 
 ### Difference between a viewer and contributor in public communities
@@ -92,10 +97,6 @@ In public communities you can interact with a Community as a viewer or as a cont
     - No manager approval required. 
     - Can upload a document. 
     
-- **Participant**: a member or visitor who has posted or commented in the Community. 
-    - Manager approval required if manager has turned on participant approval. 
-    - Can upload a document. 
-
 
 ## {==Manage a Community==}
 
@@ -117,35 +118,32 @@ Creators and managers can remove documents from their Community {== and give fee
 3. Click Confirm. 
 
 
-{==If you add a note from the manager the author of the document will receive a notification that their document was removed. ==}
-
-{== If they click the notification they'll be able to see the rules their document violated and the note from the manager for 14 days. ==}
-
-
-### Remove or ban someone from a Community
+### Remove or block someone from a Community
                      
-**To remove or ban a member:**   
+**To remove or block a member:**   
 
-1. From the side menu click on ^^Dashboard^^. 
-2. Click on section ^^Members^^.  
-3. Find the member you want to remove or ban.  
-4. Click on the delete icon and select ^^Remove^^ member or ^^Ban^^ from Community. 
-5. If you are removing the member and youd also like to ban them click ^^Ban^^ [name].  
+1. From the side menu click on ^^Manage^^ -> ^^My Communities^^.     
+2. From the communities list click on the Community you want to change.  
+3. On the top of the window click on button ^^Manage^^.    
+3. On section *Members* click on the member you want to remove or block.  
+4. Click on the delete icon and select ^^Remove^^ member or ^^Block^^ from Community. 
+5. If you are removing the member and youd also like to block them click ^^Block^^ [name].  
 6. Click ^^Confirm^^.   
 
-**To remove a ban you've put on someone:**   
+**To remove a block you've put on someone:**   
 
-1. From the side menu click on ^^Dashboard^^.  
-2. Click on section ^^Members^^..  
-3. Click ^^Unban^^ next to the name of the person youd like to unban.  
-4. Click ^^Unban^^ to confirm. 
+1. From the side menu click on ^^Manage^^ -> ^^My Communities^^.     
+2. From the communities list click on the Community you want to change.    
+3. Click on section ^^Members^^..  
+4. Click ^^Unblock^^ next to the name of the person youd like to unblock.  
+5. Click ^^Unblock^^ to confirm. 
 
 !!! info
-    Removed members will have to request to join the Community again if they wish to rejoin. Banned members won't be able to find the Community in search or see any of its content and they can't be invited to the Community again by members.
+    Removed members will have to request to join the Community again if they wish to rejoin. Blocked members won't be able to find the Community in search or see any of its content and they can't be invited to the Community again by members.
 
 ### Delete a Community
            
-{== If you are a Community manager you can delete your Community by removing all members (in private communities) or banning all members (in public communities) and then leaving the Community as long as the Community creator has left the Community or you are the Community creator.==}  Deleting a Community is permanent and cannot be reversed. Alternatively you can pause a Community.   
+{== If you are a Community manager you can delete your Community by removing all members (in private communities) or blocking all members (in public communities) and then leaving the Community as long as the Community creator has left the Community or you are the Community creator.==}  Deleting a Community is permanent and cannot be reversed. Alternatively you can pause a Community.   
 
 **To delete a Community:**   
 
@@ -270,4 +268,4 @@ If your ability to upload a document or participate in a Community has been turn
 4. Select ^^Report document to Community creators^^ to report the document to a manager. 
 
 !!! warning
-    Creators may or may not choose to remove the document or ban the person who shared the document.
+    Creators may or may not choose to remove the document or block the person who shared the document.
