@@ -91,7 +91,7 @@ nav:
     - Deployment: setup/deployment.md 
     - Release: setup/release-notes.md
   - Seta-API: 
-    - Search API: seta-api/search_api/seta_api_v1.md
+    - Search API: seta-api/search_api/seta_search_api.md
     - Communities API: 
       - Communities: seta-api/communities_api/seta_api_communities.md
       - Community Change Requests: seta-api/communities_api/community_change_requests.md
