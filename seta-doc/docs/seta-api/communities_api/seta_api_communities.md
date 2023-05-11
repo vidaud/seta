@@ -23,35 +23,35 @@ The Communities section is the related to the creation, retrieve, update and del
 
 Create a new community and add this user as a member with elevated scopes.    
     
-![Screenshot](/docs/img/post_community.png){ width="900" }
-![Screenshot](/docs/img/post_community_result.png){ width="900" }
+<!-- <!-- ![Screenshot](/docs/img/post_community.png){ width="900" } -->
+<!-- ![Screenshot](/docs/img/post_community_result.png){ width="900" } -->
 
 #### GET /communities
 Retrieve community list for this user.    
 
-![Screenshot](/docs/img/get_communities.png){ width="900" }
+<!-- ![Screenshot](/docs/img/get_communities.png){ width="900" } -->
 
 
 #### DELETE /communities/{id}
 
 Delete community entries.     
 
-![Screenshot](/docs/img/delete_communities_id.png){ width="900" }
+<!-- ![Screenshot](/docs/img/delete_communities_id.png){ width="900" } -->
 
 
 
 #### GET /communities/{id}
 Retrieve community, if user is a member of it.    
 
-![Screenshot](/docs/img/get_communities_id.png){ width="900" }
+<!-- ![Screenshot](/docs/img/get_communities_id.png){ width="900" } -->
 
 
 #### PUT /communities/{id}
 Update community fields.
 
 
-![Screenshot](/docs/img/put_communities_id.png){ width="900" }
-![Screenshot](/docs/img/put_communities_id_result.png){ width="900" }
+<!-- ![Screenshot](/docs/img/put_communities_id.png){ width="900" } -->
+<!-- ![Screenshot](/docs/img/put_communities_id_result.png){ width="900" } -->
 
 
 
