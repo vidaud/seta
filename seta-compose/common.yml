@@ -11,7 +11,7 @@ services:
     environment:
       - NO_PROXY=${NO_PROXY}
       - no_proxy=${NO_PROXY}
-      
+
   es:
     restart: always
     build:
@@ -31,7 +31,7 @@ services:
       - xpack.security.http.ssl.enabled=false
       - xpack.security.transport.ssl.enabled=false
       - ingest.geoip.downloader.enabled=false
-      
+
   api:
     restart: always
     build:
@@ -49,7 +49,7 @@ services:
       - DB_HOST
       - DB_PORT
       - DB_NAME
-     
+
   nginx:
     restart: always
     build:
@@ -60,7 +60,6 @@ services:
     environment:
       - NO_PROXY=${NO_PROXY}
       - no_proxy=${NO_PROXY}
-      
 
   ui:
     restart: always
@@ -81,7 +80,6 @@ services:
       - DB_HOST
       - DB_PORT
       - DB_NAME
-      
 
   ui-react:
     restart: always
@@ -95,7 +93,6 @@ services:
     environment:
       - NO_PROXY=${NO_PROXY}
       - no_proxy=${NO_PROXY}
-      
 
   doc:
     restart: always
@@ -108,7 +105,6 @@ services:
       - NO_PROXY=${NO_PROXY}
       - no_proxy=${NO_PROXY}
       - DOC_HOST=${DOC_HOST}
-      
 
   data:
     build:
@@ -120,4 +116,3 @@ services:
       - NO_PROXY=${NO_PROXY}
       - no_proxy=${NO_PROXY}
       - ES_HOST
-      

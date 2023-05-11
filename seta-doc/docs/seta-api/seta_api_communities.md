@@ -1,6 +1,6 @@
 # SETA-API
 
-The SeTA API Communities exposes the data and functionality in a consistent JSON format. It has various methods that can be performed on them over HTTP, like GET, POST, PUT, and DELETE. Where POST is used to create resources, and PUT to update resources.
+The SeTA API Communities exposes the data and functionality of the management in the communities. It has various methods that can be performed on them over HTTP, like GET, POST, PUT, and DELETE. 
 
 The main categories are:    
 - Communities    
@@ -17,54 +17,104 @@ The main categories are:
  
 ## Communities
 
-The suggestions is the related terms list that is generated after setting a term. **In the preparation of the**
+The Communities section is the related to the creation, retrieve, update and delete the communities.
 
 ### POST /communities
 
-Retrieve terms by initial letters. By default it returns 6 terms, with the parameter *n_suggestions* is possible to set the number of suggestions to be shown.
+Create a new community and add this user as a member with elevated scopes.    
     
-![Screenshot](../img/get-suggestions.png)
-![Screenshot](../img/get-suggestions-result.png)
+![Screenshot](../img/post_community.png)
+![Screenshot](../img/post_community_result.png)
+
+### GET /communities
+Retrieve community list for this user.    
+
+![Screenshot](../img/get_communities.png)
+
+
+### DELETE /communities/{id}
+
+Delete community entries.     
+
+![Screenshot](../img/delete_communities_id.png)
 
 
 
-## seta-api-corpus
-The corpus, is a collection of text organized into json files. The SeTA API provides with the following functions to manage the corpus.
+### GET /communities/{id}
+Retrieve community, if user is a member of it.    
 
-### PUT /corpus
-Put a document into corpus index. The format is a JSON file.
-![Screenshot](../img/put-corpus.png)
-![Screenshot](../img/put-corpus-result.png)
-
-### GET /corpus
-Retrieve documents related to a term from EU corpus.
-![Screenshot](../img/get-corpus.png)
-![Screenshot](../img/get-corpus-result.png)
+![Screenshot](../img/get_communities_id.png)
 
 
-### POST /corpus
-Retrieve documents related to a term from EU corpus. The input is a JSON file with the options I want to retrieve. 
-![Screenshot](../img/post-corpus.png)
-![Screenshot](../img/post-corpus-result.png)
+### PUT /communities/{id}
+Update community fields.
 
-### GET /corpus/{id}
-Given the elasticsearch unique _id, the relative document from EU corpus is shown.
-![Screenshot](../img/get-corpus-id.png)
-![Screenshot](../img/get-corpus-id-result.png)
 
-### DELETE /corpus/{id}
+![Screenshot](../img/put_communities_id.png)
+![Screenshot](../img/put_communities_id_result.png)
 
-Given the elasticsearch unique _id, the relative document is deleted.
-![Screenshot](../img/delete-corpus-id.png)
-![Screenshot](../img/delete-corpus-id-result.png)
 
-## seta-api-similar
 
-### GET /similar     
-Given a term, return the 20 most similar terms (semantic similarity). For each term similarity and cardinality (number of occurrences in documents) are reported.
+## Community Change Requests
 
-![Screenshot](../img/get-similar.png)
-![Screenshot](../img/get-similar-results.png)
+SETA Community Change Requests.    
+
+### GET /communities/change-requests/pending
+Retrieve pending change requests for communitites.    
+
+
+![Screenshot](../img/get_communities_change_request_pending.png)
+
+
+
+
+### POST /communities/{community_id}/change-requests/
+Add new change request for a community field.    
+![Screenshot](../img/post_communities_community_id.png)
+![Screenshot](../img/post_communities_community_id_result.png)
+
+
+
+### GET /communities/{community_id}/change-requests/{request_id}
+
+Retrieve change request for the community.     
+
+
+![Screenshot](../img/get_communities_change_request_request_id.png)
+
+
+### PUT /communities/{community_id}/change-requests/{request_id}
+
+Approve/reject request    
+![Screenshot](../img/put_communities_id_change_request_id.png)
+
+
+## Community Memberships
+
+### POST  /communities/{community_id}/memberships    
+Add new member to an opened community.    
+
+![Screenshot](../img/post_communities_community_id_memberships.png)
+
+
+### GET /communities/{community_id}/memberships
+Retrieve membership list for this community.
+
+![Screenshot](../img/get_communities_id_memberships.png)
+
+
+### DELETE /communities/{community_id}/memberships/{user_id}
+
+Remove membership.
+
+![Screenshot](../img/delete_communities_id_memberships_usr_id.png)
+
+
+### GET /communities/{community_id}/memberships/{user_id}
+Retrieve user membership
+
+![Screenshot](../img/get_communities_id_memberships_usr_id.png)
+
 
 
 ## seta-api-ontology
