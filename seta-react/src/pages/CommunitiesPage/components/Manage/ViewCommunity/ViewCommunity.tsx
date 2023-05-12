@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import {
   Anchor,
   Breadcrumbs,
@@ -9,7 +10,10 @@ import {
   Title,
   createStyles
 } from '@mantine/core'
+import { useParams } from 'react-router-dom'
 
+import { useCommunityID } from '../../../../../api/communities/community'
+import CommunitiesLoading from '../../common/SuggestionsLoading'
 import CommunityResources from '../CommunityResources/CommunityResources'
 import Stats from '../Stats/Stats'
 
@@ -32,6 +36,19 @@ const useStyles = createStyles({
 })
 const ViewCommunity = () => {
   const { classes } = useStyles()
+  const { id } = useParams()
+
+  const { data, isLoading } = useCommunityID(id)
+
+  useEffect(() => {
+    if (data) {
+      console.log(data)
+    }
+  }, [data])
+
+  if (isLoading || !data) {
+    return <CommunitiesLoading />
+  }
 
   return (
     <>
@@ -41,12 +58,9 @@ const ViewCommunity = () => {
           <Grid.Col span={12}>
             <Paper shadow="xs" p="md">
               <Title order={5} className={classes.title}>
-                Title 1
+                {data.title}
               </Title>
-              <Text className={classes.text}>
-                Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing
-                industries for previewing layouts and visual mockups.
-              </Text>
+              <Text className={classes.text}>{data.description}</Text>
               <Group spacing={30} position="right">
                 <Button>Manage</Button>
               </Group>

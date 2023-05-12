@@ -4,6 +4,7 @@ import { IconSearch } from '@tabler/icons-react'
 
 import type { Community } from '~/models/communities/communities'
 
+import type { CommunitiesResponse } from '../../../../../api/communities/communities'
 import { useCommunities } from '../../../../../api/communities/communities'
 import { CommunitiesEmpty, CommunitiesError } from '../../common'
 import CommunitiesLoading from '../../common/SuggestionsLoading'
@@ -16,7 +17,7 @@ const CommunityList = () => {
   const [scrolled, setScrolled] = useState(false)
 
   const { data, isLoading, error, refetch } = useCommunities()
-  const [sortedData, setSortedData] = useState(data)
+  const [sortedData, setSortedData] = useState<CommunitiesResponse[]>([])
 
   const useStyles = createStyles(theme => ({
     header: {
@@ -47,7 +48,7 @@ const CommunityList = () => {
     if (data) {
       setSortedData(data)
     }
-  }, [data, sortedData])
+  }, [data])
 
   if (error) {
     return <CommunitiesError onTryAgain={refetch} />
@@ -78,27 +79,30 @@ const CommunityList = () => {
     setSortedData(sortData(data, { sortBy, reversed: reverseSortDirection, search: value }))
   }
 
-  const rows = sortedData?.map(row => (
-    <tr key={row.community_id}>
-      <td>{row.community_id}</td>
-      <td>{row.title}</td>
-      <td>{row.description}</td>
-      <td>{row.data_type}</td>
-      <td>{row.membership}</td>
-      <td>{row.status}</td>
-      <td>
-        {row.membership === 'Private' ? (
-          <Button variant="outline" size="xs">
-            + JOIN
-          </Button>
-        ) : (
-          <Button variant="filled" size="xs">
-            + JOINED
-          </Button>
-        )}
-      </td>
-    </tr>
-  ))
+  const rows =
+    sortedData && sortedData.length > 0
+      ? sortedData?.map(row => (
+          <tr key={row.community_id}>
+            <td>{row.community_id}</td>
+            <td>{row.title}</td>
+            <td>{row.description}</td>
+            <td>{row.data_type}</td>
+            <td>{row.membership}</td>
+            <td>{row.status}</td>
+            <td>
+              {row.membership === 'Private' ? (
+                <Button variant="outline" size="xs">
+                  + JOIN
+                </Button>
+              ) : (
+                <Button variant="filled" size="xs">
+                  + JOINED
+                </Button>
+              )}
+            </td>
+          </tr>
+        ))
+      : []
 
   return (
     <ScrollArea h={600} onScrollPositionChange={({ y }) => setScrolled(y !== 0)}>
@@ -164,7 +168,7 @@ const CommunityList = () => {
           </tr>
         </thead>
         <tbody>
-          {rows?.length > 0 ? (
+          {rows.length > 0 ? (
             rows
           ) : (
             <tr>

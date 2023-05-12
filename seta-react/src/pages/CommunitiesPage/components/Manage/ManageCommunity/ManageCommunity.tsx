@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import {
   Button,
   Group,
@@ -10,23 +11,16 @@ import {
   createStyles,
   Table
 } from '@mantine/core'
+import { useParams } from 'react-router-dom'
 
+import { useCommunityManagement } from '../../../../../api/communities/community'
+import CommunitiesLoading from '../../common/SuggestionsLoading'
 import changeRequestAttributes from '../../Dashboard/ChangeRequests/changeRequestAttributes.json'
 import ChangeRequests from '../../Dashboard/ChangeRequests/ChangeRequests'
 import joinAttributes from '../../Dashboard/LastJoinRequests/joinAttributes.json'
 import LastJoinRequests from '../../Dashboard/LastJoinRequests/LastJoinRequests'
 import RecentResources from '../../Dashboard/RecentResources/RecentResources'
 import resourcesAttributes from '../../Dashboard/RecentResources/resourcesAttributes.json'
-
-const items = [
-  { title: 'My Communities', href: 'http://localhost/communities/my-list' },
-  { title: 'View Community', href: 'http://localhost/communities/communityname' },
-  { title: 'Manage Community' }
-].map((item, index) => (
-  <Anchor href={item.href} key={index}>
-    {item.title}
-  </Anchor>
-))
 
 const useStyles = createStyles({
   title: {
@@ -41,6 +35,27 @@ const useStyles = createStyles({
 })
 const ManageCommunity = () => {
   const { classes } = useStyles()
+  const { id } = useParams()
+  const { data, isLoading } = useCommunityManagement(id)
+  const items = [
+    { title: 'My Communities', href: 'http://localhost/communities/my-list' },
+    { title: 'View Community', href: `http://localhost/communities/details/${id}` },
+    { title: 'Manage Community' }
+  ].map((item, index) => (
+    <Anchor href={item.href} key={index}>
+      {item.title}
+    </Anchor>
+  ))
+
+  useEffect(() => {
+    if (data) {
+      console.log(data)
+    }
+  }, [data])
+
+  if (isLoading || !data) {
+    return <CommunitiesLoading />
+  }
 
   return (
     <>
@@ -54,24 +69,21 @@ const ManageCommunity = () => {
           <Grid.Col span={12}>
             <Paper shadow="xs" p="md">
               <Title order={5} className={classes.title}>
-                Title 1
+                {data?.title}
               </Title>
-              <Text className={classes.text}>
-                Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing
-                industries for previewing layouts and visual mockups.
-              </Text>
+              <Text className={classes.text}>{data?.description}</Text>
               <Table className={classes.table}>
                 <tbody>
                   <tr>
-                    <td>Membership: Private</td>
-                    <td>Created at: 20 April 2023</td>
+                    <td>Membership: {data?.membership}</td>
+                    <td>Created at: {data?.created_at.toString()}</td>
                   </tr>
                   <tr>
-                    <td>Data Type: Evidence</td>
-                    <td>Created by: Adriana</td>
+                    <td>Data Type: {data?.data_type}</td>
+                    <td>Created by: {data?.creator.full_name}</td>
                   </tr>
                   <tr>
-                    <td>Status: Active</td>
+                    <td>Status: {data?.status}</td>
                     <td />
                   </tr>
                 </tbody>

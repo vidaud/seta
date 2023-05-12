@@ -1,65 +1,19 @@
 import { useEffect, useState } from 'react'
-import {
-  createStyles,
-  Table,
-  Checkbox,
-  ScrollArea,
-  rem,
-  TextInput,
-  Group,
-  ActionIcon,
-  Menu
-} from '@mantine/core'
-import {
-  IconDots,
-  IconPencil,
-  IconSearch,
-  IconTrash,
-  IconEye,
-  IconSettings
-} from '@tabler/icons-react'
+import { Table, Checkbox, ScrollArea, rem, TextInput, Group } from '@mantine/core'
+import { IconSearch } from '@tabler/icons-react'
 
 import type { Community } from '~/models/communities/communities'
 import type { User } from '~/models/user.model'
+
+import { useStyles } from './constants'
 
 import { useCommunities } from '../../../../../api/communities/communities'
 import storageService from '../../../../../services/storage.service'
 import { CommunitiesEmpty, CommunitiesError } from '../../common'
 import CommunitiesLoading from '../../common/SuggestionsLoading'
 import { Th, sortData } from '../../utils'
+import CommunityButtons from '../CommunityButtons/CommunityButtons'
 import DeleteCommunity from '../DeleteCommunityButton/DeleteCommunityButton'
-import InviteMember from '../InviteMemberModal/InviteMemberModal'
-
-const useStyles = createStyles(theme => ({
-  rowSelected: {
-    backgroundColor:
-      theme.colorScheme === 'dark'
-        ? theme.fn.rgba(theme.colors[theme.primaryColor][7], 0.2)
-        : theme.colors[theme.primaryColor][0]
-  },
-  header: {
-    position: 'sticky',
-    top: 0,
-    backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.white,
-    transition: 'box-shadow 150ms ease',
-    marginTop: '30px',
-
-    '&::after': {
-      content: '""',
-      position: 'absolute',
-      left: 0,
-      right: 0,
-      bottom: 0,
-      borderBottom: `${rem(1)} solid ${
-        theme.colorScheme === 'dark' ? theme.colors.dark[3] : theme.colors.gray[2]
-      }`
-    }
-  },
-
-  scrolled: {
-    boxShadow: theme.shadows.sm
-  }
-}))
 
 const COMMUNITIES_API_PATH = 'http://localhost/communities'
 
@@ -145,47 +99,7 @@ const MyCommunityList = () => {
           <td>{item.membership}</td>
           <td>{item.status}</td>
           <td>
-            <Group spacing={0} position="right">
-              <InviteMember />
-              <Menu
-                transitionProps={{ transition: 'pop' }}
-                withArrow
-                position="bottom-end"
-                withinPortal
-              >
-                <Menu.Target>
-                  <ActionIcon>
-                    <IconDots size="1rem" stroke={1.5} />
-                  </ActionIcon>
-                </Menu.Target>
-                <Menu.Dropdown>
-                  <Menu.Item
-                    icon={<IconPencil size="1rem" stroke={1.5} />}
-                    component="a"
-                    href={`${COMMUNITIES_API_PATH}/update/${item.community_id}`}
-                  >
-                    Update
-                  </Menu.Item>
-                  <Menu.Item
-                    icon={<IconSettings size="1rem" stroke={1.5} />}
-                    component="a"
-                    href={`${COMMUNITIES_API_PATH}/manage/${item.community_id}`}
-                  >
-                    Manage
-                  </Menu.Item>
-                  <Menu.Item
-                    icon={<IconEye size="1rem" stroke={1.5} />}
-                    component="a"
-                    href={`${COMMUNITIES_API_PATH}/details/${item.community_id}`}
-                  >
-                    View Details
-                  </Menu.Item>
-                  <Menu.Item icon={<IconTrash size="1rem" stroke={1.5} />} color="red">
-                    Delete Community
-                  </Menu.Item>
-                </Menu.Dropdown>
-              </Menu>
-            </Group>
+            <CommunityButtons item={item} />
           </td>
         </tr>
       )

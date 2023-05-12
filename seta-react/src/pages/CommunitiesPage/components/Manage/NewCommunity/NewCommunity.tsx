@@ -12,7 +12,9 @@ import {
   Breadcrumbs
 } from '@mantine/core'
 
-import { CommunityFormProvider, useCommunity } from '../community-context'
+import { createCommunity } from '../../../../../api/communities/community'
+import type { CommunityValues } from '../community-context'
+import { useCommunity, CommunityFormProvider } from '../community-context'
 
 const useStyles = createStyles({
   input: {
@@ -37,28 +39,28 @@ const NewCommunity = () => {
 
   const form = useCommunity({
     initialValues: {
-      communityId: '',
+      community_id: '',
       title: '',
       description: '',
-      dataType: 'Representative',
-      membership: 'Private'
+      data_type: '',
+      status: 'active'
     }
   })
+
+  const handleSubmit = (values: CommunityValues) => {
+    createCommunity(values)
+  }
 
   return (
     <>
       <Breadcrumbs>{items}</Breadcrumbs>
       <Paper withBorder shadow="md" p={30} mt={30} radius="md" mx="auto" maw={1000}>
         <CommunityFormProvider form={form}>
-          <form
-            onSubmit={form.onSubmit(() => {
-              'empty'
-            })}
-          >
+          <form onSubmit={form.onSubmit(handleSubmit)}>
             <Divider my="xs" label="Add New Community" labelPosition="center" />
             <TextInput
               label="ID"
-              {...form.getInputProps('communityId')}
+              {...form.getInputProps('community_id')}
               className={cx(classes.input, classes.sized)}
               withAsterisk
             />
@@ -77,31 +79,31 @@ const NewCommunity = () => {
               To be approved
             </Title>
             <Group spacing={100} display="flex">
-              <Radio.Group name="dataType" label="Data Type" {...form.getInputProps('dataType')}>
+              <Radio.Group name="data_type" label="Data Type" {...form.getInputProps('data_type')}>
                 <Group mt="xs">
                   <Radio value="representative" label="Representative" />
                   <Radio value="evidence" label="Evidence" />
                 </Group>
               </Radio.Group>
-              <Radio.Group
-                name="membership"
-                label="Membership"
-                {...form.getInputProps('membership')}
+            </Group>
+            <Group position="right">
+              <Button
+                variant="outline"
+                size="xs"
+                color="blue"
+                onClick={() => {
+                  form.reset()
+                  window.location.href = '/communities/my-list'
+                }}
               >
-                <Group mt="xs">
-                  <Radio value="private" label="Private" />
-                  <Radio value="public" label="Public" />
-                </Group>
-              </Radio.Group>
+                Cancel
+              </Button>
+              <Button type="submit" size="xs">
+                Save
+              </Button>
             </Group>
           </form>
         </CommunityFormProvider>
-        <Group position="right">
-          <Button variant="outline" size="xs" color="blue">
-            Cancel
-          </Button>
-          <Button size="xs">Save</Button>
-        </Group>
       </Paper>
     </>
   )

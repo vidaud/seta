@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect } from 'react'
 import {
   Paper,
   TextInput,
@@ -12,7 +12,11 @@ import {
   Anchor,
   Breadcrumbs
 } from '@mantine/core'
+import { useParams } from 'react-router-dom'
 
+import { updateCommunity, useCommunityID } from '../../../../../api/communities/community'
+import CommunitiesLoading from '../../common/SuggestionsLoading'
+import type { CommunityValues } from '../community-context'
 import { CommunityFormProvider, useCommunity } from '../community-context'
 
 const useStyles = createStyles({
@@ -35,33 +39,45 @@ const items = [
 
 const UpdateCommunity = () => {
   const { classes, cx } = useStyles()
-  const [dataType, setDataType] = useState('evidence')
-  const [membership, setMembership] = useState('private')
+  const { id } = useParams()
+
+  const { data, isLoading } = useCommunityID(id)
 
   const form = useCommunity({
     initialValues: {
-      communityId: 'Com1',
-      title: 'Seta',
-      description: 'This is a test community',
-      dataType: 'Representative',
-      membership: 'Private'
+      community_id: '',
+      title: '',
+      description: '',
+      data_type: '',
+      status: ''
     }
   })
+
+  useEffect(() => {
+    if (data) {
+      form.setValues(data)
+    }
+  }, [data])
+
+  if (isLoading || !data) {
+    return <CommunitiesLoading />
+  }
+
+  const handleSubmit = (values: CommunityValues) => {
+    console.log(values)
+    updateCommunity(values.community_id, values)
+  }
 
   return (
     <>
       <Breadcrumbs>{items}</Breadcrumbs>
       <Paper withBorder shadow="md" p={30} mt={30} radius="md" mx="auto" maw={1000}>
         <CommunityFormProvider form={form}>
-          <form
-            onSubmit={form.onSubmit(() => {
-              'empty'
-            })}
-          >
+          <form onSubmit={form.onSubmit(handleSubmit)}>
             <Divider my="xs" label="Update Community" labelPosition="center" />
             <TextInput
               label="ID"
-              {...form.getInputProps('communityId')}
+              {...form.getInputProps('community_id')}
               className={cx(classes.input, classes.sized)}
               withAsterisk
             />
@@ -80,39 +96,29 @@ const UpdateCommunity = () => {
               To be approved
             </Title>
             <Group spacing={100} display="flex">
-              <Radio.Group
-                name="dataType"
-                label="Data Type"
-                {...form.getInputProps('dataType')}
-                value={dataType}
-                onChange={setDataType}
-              >
+              <Radio.Group name="data_type" label="Data Type" {...form.getInputProps('data_type')}>
                 <Group mt="xs">
                   <Radio value="representative" label="Representative" />
                   <Radio value="evidence" label="Evidence" />
                 </Group>
               </Radio.Group>
-              <Radio.Group
-                name="membership"
-                label="Membership"
-                {...form.getInputProps('membership')}
-                value={membership}
-                onChange={setMembership}
-              >
+              <Radio.Group name="status" label="Status" {...form.getInputProps('status')}>
                 <Group mt="xs">
-                  <Radio value="private" label="Private" />
-                  <Radio value="public" label="Public" />
+                  <Radio value="active" label="Active" />
+                  <Radio value="blocked" label="Blocked" />
                 </Group>
               </Radio.Group>
             </Group>
+            <Group position="right">
+              <Button variant="outline" size="xs" color="blue">
+                Cancel
+              </Button>
+              <Button size="xs" type="submit">
+                Save
+              </Button>
+            </Group>
           </form>
         </CommunityFormProvider>
-        <Group position="right">
-          <Button variant="outline" size="xs" color="blue">
-            Cancel
-          </Button>
-          <Button size="xs">Save</Button>
-        </Group>
       </Paper>
     </>
   )
