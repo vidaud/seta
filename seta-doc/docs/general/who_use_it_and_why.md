@@ -17,4 +17,6 @@ SeTA provides a semantic system that brings entities, concepts, relations and pr
 
 - To upload the user’s own highly complex documents and unstructured content and promptly obtain related results in EU documents using the record & document classification. 
 
-- To find the passages based on their meaning, regardless of the choice of words. Thus, relevant contents of an EU document are found quickly and efficiently.
+- To find the passages based on their meaning, regardless of the choice of words. Thus, relevant contents of an EU document are found quickly and efficiently.   
+
+-  Use of Communities with easy interactions, secure, and intuitive.  Creating real connections with a user friendly experience.   
