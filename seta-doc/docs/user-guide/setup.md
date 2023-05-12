@@ -18,7 +18,7 @@ In the SeTA Web App, we can find:
 
 - Communities: A digital platform for people with a common interest to discuss or share and connect and communicate with one another.
 
-To access these features, you need either to login with an EU login[^1] account or with a GitHub authentication.
+To access these features, you need either to login with an EU login[^1] account or with a GitHub[^2] authentication.
 
 
  ![Screenshot](../img/login.jpg){ width="600" }
@@ -34,11 +34,23 @@ Once you are logged in, you can see in the top menu the link to the Search and t
 
 The SeTA API provides the functions and procedures to access data from a developer point of view.
 
-In SeTA there are two API's: search API and Communities API 
+In SeTA there are two API's:   
+- Search API    
+- Communities API 
 
-### Prerequisites
+### Search API
 
-### API Communities
+![Screenshot](../img/search_api.jpg){ width="600" }
+
+
+
+
+### Communities API 
+
+![Screenshot](../img/communities_api.png){ width="600" }
+
+#### Prerequisites
+
 The Docker containers must be running.
 
 !!! note "Optional, but useful:" 
@@ -238,3 +250,4 @@ At this point, API usage is set up.
 
 
 [^1]:https://webgate.ec.europa.eu/ern/userguide/Content/A.HOW%20TO%20JOIN/Register%20on%20EU-Login.htm
+[^2]:https://github.com/
