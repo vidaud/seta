@@ -62,7 +62,7 @@ Taxonomies can be of several kind, such as *flat, hierarchical, network*, and so
 
 #### How to design a good Taxonomy
 
-When creating a Taxonomy, consider[^1]:       
+When creating a Taxonomy, consider:       
 1. Decide what topics the Taxonomy must include.    
 2. Consider how specific the Taxonomy needs to be.    
 3. Provide names for each object in relation to other objects and follow a hierarchical style.     
