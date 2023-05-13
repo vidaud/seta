@@ -43,10 +43,16 @@ In SeTA there are two API's:
 
 #### Prerequisites
 
-To access to the Search API page, open a browser and go to seta-ui [login](/seta-ui/login) page. Connect with EU Login account (*you can also use GitHub authentication*). After that you can open a new tab or go to Search API [page](/seta-api/doc).
+
+#### EU Login Authentication
+
+Open a browser and go to seta-ui [login](/login) page. Connect with EU Login account or use a GitHub authentication. After that you can open a new tab in the same browser or go to Search API [Search API swagger documentation](/seta-api/doc).
+
 
 !!! info
     If you open a new tab or window from another browser, you need to open the browser developer tool and copy the value of the ^^csrf_access_token^^ cookie 
+
+You can start using Search API.
 
 ![Screenshot](../img/search_api.jpg){ width="800" }
 
@@ -68,7 +74,7 @@ The Docker containers must be running.
 
 #### EU Login Authentication
 
-Open browser and go to seta-ui [login](/seta-ui/login) page.
+Open browser and go to seta-ui [login](/login) page.
 
 Connect with EU Login account (*you can also use GitHub authentication, but EU Login will be used as an example here*)
 
@@ -118,9 +124,9 @@ Role claim (claim_value can different):
 !!! info
     **user_id** is a randomly generated short guid for each new account
 
-#### Community API
 
-Open a new tab in the same browser for the [community api swagger documentation](http://localhost/api/communities/v1/doc)
+
+Open a new tab in the same browser for the [Community API swagger documentation](/api/communities/v1/doc)
 
 Open the browser developer tool and copy the value of the ^^csrf_access_token^^ cookie
 
@@ -254,7 +260,7 @@ Seta-API will get at each request another authorization decoded token from seta-
 !!! note "Note:" 
     You can verify the authorization token at [authorization doc](http://localhost/authorization/v1/doc) passing the JWT access token as payload.
 
-At this point, API usage is set up. 
+At this point, Community API usage is set up. 
 
 
 [^1]:https://webgate.ec.europa.eu/ern/userguide/Content/A.HOW%20TO%20JOIN/Register%20on%20EU-Login.htm

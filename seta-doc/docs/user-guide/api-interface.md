@@ -8,7 +8,7 @@ If the seta database exists, then remove it with either MongoDB Compass or bash 
 
 ##  EU Login Authentication
 
-Open browser and go to seta-ui login page: http://localhost/seta-ui/login.
+Open browser and go to seta-ui login page: [login](/login).       
 
 Connect with EU Login account (you can also use GitHub authentication, but EU Login will be user as an example here)
 
