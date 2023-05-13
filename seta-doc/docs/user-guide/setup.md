@@ -21,7 +21,7 @@ In the SeTA Web App, we can find:
 To access these features, you need either to login with an EU login[^1] account or with a GitHub[^2] authentication.
 
 
- ![Screenshot](../img/login.jpg){ width="600" }
+ ![Screenshot](../img/login.jpg){ width="800" }
 
 
 Once you are logged in, you can see in the top menu the link to the Search and to the Communities:
@@ -40,14 +40,22 @@ In SeTA there are two API's:
 
 ### Search API
 
-![Screenshot](../img/search_api.jpg){ width="600" }
+
+#### Prerequisites
+
+To access to the Search API page, open a browser and go to seta-ui [login](/seta-ui/login) page. Connect with EU Login account (*you can also use GitHub authentication*). After that you can open a new tab or go to Search API [page](/seta-api/doc).
+
+!!! info
+    If you open a new tab or window from another browser, you need to open the browser developer tool and copy the value of the ^^csrf_access_token^^ cookie 
+
+![Screenshot](../img/search_api.jpg){ width="800" }
 
 
 
 
 ### Communities API 
 
-![Screenshot](../img/communities_api.png){ width="600" }
+![Screenshot](../img/communities_api.png){ width="800" }
 
 #### Prerequisites
 
@@ -60,7 +68,7 @@ The Docker containers must be running.
 
 #### EU Login Authentication
 
-Open browser and go to seta-ui [login](http://localhost/seta-ui/login) page.
+Open browser and go to seta-ui [login](/seta-ui/login) page.
 
 Connect with EU Login account (*you can also use GitHub authentication, but EU Login will be used as an example here*)
 
