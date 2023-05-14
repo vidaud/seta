@@ -1,5 +1,5 @@
 ## General
-The communities of the SeTA web app is a shared space where members engage with anoother to connect and learn about similar interests, opinions of different type of publications. 
+The communities of the SeTA web app is a shared space where members engage with another to connect and learn about similar interests, opinions of different type of publications. 
 
 In the SeTA Web App we have two types of communities: public communities and private communities.   
 
