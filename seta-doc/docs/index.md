@@ -5,7 +5,7 @@ a Community space.
 
 With the Search tool, SeTA uses advanced text mining techniques to help users screen and query large document collections that come from the European Union Bodies. These bodies publish a vast amount of information which is made available via different channels. The Search tool supports exploring this information by making sense of the textual content and finding links. Users can search EU documents based on keywords and then screen the results and apply filters, all very quickly and accurately.   
 
-In SeTA communities, users can create or participate in communities, shared spaces where members engage with each other to connect and learn about similar interests and opinions of different types of publications. 
+In SeTA communities, users have a place to interact with others users about specific resources. Communities are spaces for people with similar interests to discuss or share about extensive or narrow topics.
   
 
 For the Search tool, the data is harvested from the following sources:
@@ -31,7 +31,6 @@ Once everything is set up, the data is ready to be interrogated either through t
 
 The API interface can be a good alternative for users that need to integrate the data with their own applications or just need more flexibility in information-transfer processes.
 
-The communities are a place to interact with others users about specific resources. Communities are spaces for people with similar interests to discuss or share about extensive or narrow topics.
 
 
 [^1]:https://www.elastic.co/what-is/elasticsearch
