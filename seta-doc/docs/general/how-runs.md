@@ -235,7 +235,10 @@ Elasticsearch [^12] is a distributed, free and open search and analytics engine 
 
 
 ### Ontology
-Ontology[^13] shows properties and relations between a set of concepts and categories within a subject area or domain. It is a branch of linguistics called semantics, the study of meaning. With ontology, a machine can accurately interpret the meaning of the word “diamond” in relation to a baseball player, jeweller, or card suit. It can also help interpret the word “chicken” as either food or an animal or differentiate between “bank” as a place of business or land alongside a river or lake.    
+Ontology[^13] shows properties and relations between a set of concepts and categories within a subject area or domain. It is a branch of linguistics called semantics, the study of meaning. With ontology, a machine can accurately interpret the meaning of the word “diamond” in relation to a baseball player, jeweller, or card suit. It can also help interpret the word “chicken” as either food or an animal or differentiate between “bank” as a place of business or land alongside a river or lake.   
+
+
+
 In SeTA the concept of Ontology is used when searching a term to return a list of similar terms that describes the ontology of the specified term. These lists are ranked by the relation strength to the query term. The first node in each list is direct relation to query term. The following terms in each sub list have relation to the first node in a sub list.  The result should be interpreted as follows: the first item in each sub list is first level connection to the query term. The following terms in sub lists have second level relation to the main query term and direct connection to the head of sub list.    
 
 

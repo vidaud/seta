@@ -46,7 +46,7 @@ In SeTA there are two API's:
 
 #### EU Login Authentication
 
-Open a browser and go to seta-ui [login](/login) page. Connect with EU Login account or use a GitHub authentication. After that you can open a new tab in the same browser or go to Search API [Search API swagger documentation](/seta-api/doc).
+Open a browser and go to seta-ui [login](/login) page. Connect with EU Login account or use a GitHub authentication. After that you can open a new tab in the same browser or go to [Search API swagger documentation](/seta-api/doc).
 
 
 !!! info
@@ -61,7 +61,6 @@ You can start using Search API.
 
 ### Communities API 
 
-![Screenshot](../img/communities_api.png){ width="800" }
 
 #### Prerequisites
 
@@ -76,23 +75,39 @@ The Docker containers must be running.
 
 Open browser and go to seta-ui [login](/login) page.
 
-Connect with EU Login account (*you can also use GitHub authentication, but EU Login will be used as an example here*)
+Connect with EU Login account (*you can also use GitHub authentication, but EU Login will be used as an example here*).
 
-After successful authentication, check that you have the following entries in the new *seta database - users collection*:
+After successful authentication, check that you have the following entries in the new *seta database - users collection*:      
 
-Partial object for the new seta account:
-```
+
+
+
+
+**Partial object for the new seta account:**
+
+![Screenshot](../img/db_usr_collection.png){ width="700" }       
+<!--```
     {
         "user_id": "5Mq7bNYnhtaiS6BDLvcZ",
         "email": "email@domain",
         "user_type": "user",
         "status": "active",
     }
-```
+```-->
 
 
-Provider object:
-```
+
+
+
+
+
+
+
+**Provider object:**
+
+![Screenshot](../img/Provider_object.png){ width="700" } 
+
+<!--```
     {
         "user_id": "5Mq7bNYnhtaiS6BDLvcZ",
         "provider_uid": "ecas_id",
@@ -101,25 +116,39 @@ Provider object:
         "last_name": "Last name",
         "domain": "eu.europa.ec"
     }
-```
+``` -->
 
-Community create scope:
-```
+
+
+
+
+
+**Community create scope:**
+
+![Screenshot](../img/community_create_scope.png){ width="700" }    
+<!--```
     {
         "user_id": "5Mq7bNYnhtaiS6BDLvcZ",
         "system_scope": "/seta/community/create",
         "area": "community"
     }
-```
+```-->
 
-Role claim (claim_value can different):
-```
+
+
+
+
+
+**Role claim (claim_value can different):**      
+![Screenshot](../img/role_claim.png){ width="700" }
+
+<!--```
     {
         "user_id": "5Mq7bNYnhtaiS6BDLvcZ",
         "claim_type": "roles",
         "claim_value": "Administrator"
     }
-```
+```-->
 
 !!! info
     **user_id** is a randomly generated short guid for each new account
@@ -128,22 +157,36 @@ Role claim (claim_value can different):
 
 Open a new tab in the same browser for the [Community API swagger documentation](/api/communities/v1/doc)
 
-Open the browser developer tool and copy the value of the ^^csrf_access_token^^ cookie
+![Screenshot](../img/communities_api.png){ width="800" }
 
-!!! note "Note:"
+
+Open the *browser developer tool* and copy the value of the ^^csrf_access_token^^ cookie
+
+!!! note
     you can check the decoded access and refresh tokens at [https://jwt.io/](https://jwt.io/) website
 
 Click on the **Authorize** button to open the Available authorizations dialog; set the CSRF value and click on *Authorize* button; leave the **Bearer** field empty.
 
 
-![Screenshot](../img/authorize.png)
+!!! warning "Only if you want to use seta-api in another browser:"
+    * open the browser developer tool and copy the value of the **access_token_cookie**
+    * click on the **Authorize** button to open the Available authorizations dialog; in the apikey text input set **Bearer** value then click on the *Authorize* button.
+
+Seta-API will get at each request another authorization decoded token from seta-ui through the *token info* endpoint using the authenticated JWT.
+
+!!! info 
+    You can verify the authorization token at [authorization doc](/authorization/v1/doc) passing the JWT access token as payload.
+
+
+
+![Screenshot](../img/authorize.png){ width="500" }
 
 
 #### Create community
 
 Expand **Communities** region and then Try out **POST** /communities:
 
-![Screenshot](../img/create_community.png)
+![Screenshot](../img/create_community.png){ width="700" }
 
 
 The server response should be a 201 code with a JSON body:
@@ -153,9 +196,12 @@ The server response should be a 201 code with a JSON body:
 
 Check the following entries in the *seta database - communities* collection:
 
-community object
+##### Community object
 
-```
+
+
+![Screenshot](../img/community_object.png){ width="700" }
+<!--```
     {
         "community_id": "seta",
         "title": "Seta",
@@ -165,9 +211,18 @@ community object
         "status": "active",
         "creator_id": "5Mq7bNYnhtaiS6BDLvcZ"
     }
-```
+```-->
 
-membership object
+
+##### Membership object
+
+
+![Screenshot](../img/membership_object.png){ width="700" }
+
+
+
+
+<!--
 ```
     {
         "community_id": "seta",
@@ -177,7 +232,15 @@ membership object
         "status": "active"
     }
 ```
+-->
+
+
+
 Check the objects for the community scopes in the *seta database - users* collection:
+
+![Screenshot](../img/seta_usr_scope.png){ width="700" }
+
+<!--
 ```
     {
         "user_id": "5Mq7bNYnhtaiS6BDLvcZ",
@@ -205,17 +268,25 @@ Check the objects for the community scopes in the *seta database - users* collec
         "community_scope": "/seta/resource/create"
     }
 ```
+-->
+
+
+
 
 #### Create resource
 
 Expand **Resources** region and then Try out **POST** /resources/community/{community_id}:
 
-![Screenshot](../img/create-resource.png)
+![Screenshot](../img/create-resource.png){ width="700" }
 
 
 Check that the Resource entry in the *seta database - resources* collection:
-    
-```
+
+![Screenshot](../img/resource_community.png){ width="700" }      
+
+
+
+<!--```
     {
         "resource_id": "cordis",
         "community_id": "seta",
@@ -226,10 +297,15 @@ Check that the Resource entry in the *seta database - resources* collection:
         "status": "active",
         "creator_id": "5Mq7bNYnhtaiS6BDLvcZ"
     }
-```
+```-->
 
 Check that the objects for the resource scopes in the *seta database - users* collection
-```
+
+![Screenshot](../img/usrs_resources.png){ width="700" }
+
+
+
+<!--```
     {
         "user_id": "5Mq7bNYnhtaiS6BDLvcZ",
         "resource_id": "cordis",
@@ -246,19 +322,8 @@ Check that the objects for the resource scopes in the *seta database - users* co
         "resource_scope": "/seta/resource/data/delete"
     }
 ```
+-->
 
-#### SeTA-API Corpus
-
-Open a new tab in the same browser for the [seta-api swagger documentation](http://localhost/seta-api/doc)
-
-!!! tip "Only if you want to use seta-api in another browser:"
-    * open the browser developer tool and copy the value of the **_access_token_cookie** cookie
-    * click on the **Authorize** button to open the Available authorizations dialog; in the apikey text input set **Bearer** value then click on the *Authorize* button.
-
-Seta-API will get at each request another authorization decoded token from seta-ui through the [token info](http://localhost/authorization/v1/token_info) endpoint using the authenticated JWT.
-
-!!! note "Note:" 
-    You can verify the authorization token at [authorization doc](http://localhost/authorization/v1/doc) passing the JWT access token as payload.
 
 At this point, Community API usage is set up. 
 
