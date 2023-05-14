@@ -81,8 +81,6 @@ After successful authentication, check that you have the following entries in th
 
 
 
-
-
 **Partial object for the new seta account:**
 
 ![Screenshot](../img/db_usr_collection.png){ width="700" }       
@@ -94,13 +92,6 @@ After successful authentication, check that you have the following entries in th
         "status": "active",
     }
 ```-->
-
-
-
-
-
-
-
 
 
 **Provider object:**
@@ -121,8 +112,6 @@ After successful authentication, check that you have the following entries in th
 
 
 
-
-
 **Community create scope:**
 
 ![Screenshot](../img/community_create_scope.png){ width="700" }    
@@ -133,10 +122,6 @@ After successful authentication, check that you have the following entries in th
         "area": "community"
     }
 ```-->
-
-
-
-
 
 
 **Role claim (claim_value can different):**      
@@ -160,7 +145,7 @@ Open a new tab in the same browser for the [Community API swagger documentation]
 ![Screenshot](../img/communities_api.png){ width="800" }
 
 
-Open the *browser developer tool* and copy the value of the ^^csrf_access_token^^ cookie
+Open the *browser developer tool* and copy the value of the ^^**csrf_access_token**^^ cookie
 
 !!! note
     you can check the decoded access and refresh tokens at [https://jwt.io/](https://jwt.io/) website
@@ -170,7 +155,7 @@ Click on the **Authorize** button to open the Available authorizations dialog; s
 
 !!! warning "Only if you want to use seta-api in another browser:"
     * open the browser developer tool and copy the value of the **access_token_cookie**
-    * click on the **Authorize** button to open the Available authorizations dialog; in the apikey text input set **Bearer** value then click on the *Authorize* button.
+    * {==click on the **Authorize** button to open the Available authorizations dialog; in the apikey text input set **Bearer** value then click on the *Authorize* button.==}
 
 Seta-API will get at each request another authorization decoded token from seta-ui through the *token info* endpoint using the authenticated JWT.
 
@@ -325,7 +310,7 @@ Check that the objects for the resource scopes in the *seta database - users* co
 -->
 
 
-At this point, Community API usage is set up. 
+At this point, Community API usage is set up and start using the methods under **seta-api-corpus** region.
 
 
 [^1]:https://webgate.ec.europa.eu/ern/userguide/Content/A.HOW%20TO%20JOIN/Register%20on%20EU-Login.htm

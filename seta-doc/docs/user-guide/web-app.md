@@ -14,17 +14,17 @@ If we search by a term, when we start typing in the search bar, a dropdown box a
 
 
 <figure markdown>
-  ![Image title](../img/search_term.png)
+  ![Image title](../img/search_term.png){ width="800" }
   <figcaption>Search by term</figcaption>
 </figure>
 
 
 ### Search by phrase
-If we want to search by phrase it is necessary to enclose with double quotes *" "* the phrase, after that, as with the term search, the dropdown box will appear automatically with the two sections
+If we want to search by phrase it is necessary to enclose with double quotes *^^" "^^* the phrase, after that, as with the term search, the dropdown box will appear automatically with the two sections: *autocomplete* and *related terms*.
 
 
 <figure markdown>
-  ![Image title](../img/search_phrase.png)
+  ![Image title](../img/search_phrase.png){ width="800" }
   <figcaption>Search by phrase</figcaption>
 </figure>
 
@@ -40,7 +40,7 @@ In the lower section of the pop-up it is possible to paste the text you want to 
 If we don't want to search with this option, it is always possible to cancel the search with the *cancel* button at the bottom of the pop up, and the pop-up window will close.
 
 <figure markdown>
-  ![Image title](../img/upload.png)
+  ![Image title](../img/upload.png){ width="800" }
   <figcaption>Search by document or text</figcaption>
 </figure>
 
@@ -82,6 +82,6 @@ It is possible to see the visual representation of the topic. The Concept map wi
 Mapping is the process of relating the structure values or content of a document in one format to the values and fields in an alternate document format. In the Document Map tab you will see the maps between different related documents to your search.  
 
 <figure markdown>
-  ![Image title](../img/search_results_detail.png)
+  ![Image title](../img/search_results_detail.png){ width="800" }
   <figcaption>Detailed results</figcaption>
 </figure>
