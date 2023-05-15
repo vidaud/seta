@@ -1,23 +1,24 @@
 
 
-The following diagram describes the workflow of the preparation of the data in SeTA.
- 
-1. Everything starts by receiving as input from different sources the data that will fill the database.
-2. The data is processed (cleaned, algorithms)
-3. The processed data is used to create the AI Models
-4. The parsed and labelled data is ready to use for the searching. 
+The Search tool in SeTA follows a series of steps for the preparation of the knowledge data.
 
-
-
-![Screenshot](../img/machine_learning_icons.png)
-
-
-
+\       
+![Image title](../img/machine_learning_icons.png){ align=right width=400 }   
+1. Everything starts by receiving as input from different sources the data that will fill the database.      
+2. The data is processed (cleaned, algorithms)      
+3. The processed data is used to create the AI Models       
+4. The parsed and labelled data is ready to use for the searching.                              
+\                               
+\                                                      
+\                                                        
+\                                                         
+\                                                           
+\                                   
 SeTA follows two distinct steps for the creation of the knowledge base: Document collection, cleaning and storage and Text analysis and modelling.
 
 ## Corpus preparation
 
-As mentioned, the corpus of the public policy-related European documents comes from the following sources: EUR-LEX, CORDIS, JRC PUBSY, EUROPARL.
+The corpus of SeTA comes from the following European Union Bodies: EUR-LEX, CORDIS, JRC PUBSY, EUROPARL.
 
 All the texts collected are in English only (except for some older legal texts where multiple languages are interleaved on the same page). 
 
@@ -30,18 +31,15 @@ The reasons for this decision are:
 
 ### Taxonomy
 
-In recent years, access to knowledge has improved and become more widespread, mostly due to technology. However, this had made it difficult for people to locate accurate, timely, and reliable information.      
-This issue is also frequent in sectors where large amounts of information are held in unstructured ways in many repositories, databases, and libraries, often with ambiguous naming conventions that provide little insight into the material and its value to the user.      
-The implementation of Taxonomy is an effort to provide organization and increase productivity through quicker, more efficient retrieval and use.        
-In order to make it simpler to identify related information, Taxonomy uses a regulated vocabulary to represent the formal structure of classes or types of things inside a knowledge domain. Taxonomy aids in the hierarchical organization of the assets and material. It can be much simpler to search for or explore an asset or content management by classifying the content and assets in a Taxonomy. [^1]        
+The term **'Taxonomy'** refers to the science of categorizing things. Thus, a Taxonomy is a controlled vocabulary in which all terms have parent/child or broader/narrower relationships to other terms and belong to a single hierarchical structure. The structure is also referred to as a 'tree'. Non-preferred terms/synonyms may or may not be included in a Taxonomy. Taxonomy has recently gained popularity as a term for any type of controlled vocabulary, whether a term list, authority file, thesaurus, or any hybrid combination. [^1]
 
-
-The term **'Taxonomy'** refers to the science of categorizing things. Thus, a Taxonomy is a controlled vocabulary in which all terms have parent/child or broader/narrower relationships to other terms and belong to a single hierarchical structure. The structure is also referred to as a 'tree'. Non-preferred terms/synonyms may or may not be included in a Taxonomy. Taxonomy has recently gained popularity as a term for any type of controlled vocabulary, whether a term list, authority file, thesaurus, or any hybrid combination. [^2]
+Large amounts of information need to be well-organized in order to avoid the storage in unstructured ways in many repositories, databases, and libraries, often with ambiguous naming conventions that provide little insight into the material and its value to the user.      
+The implementation of Taxonomy in the preparation of the SeTA Corpus, is an effort to provide organization and increase productivity through quicker, more efficient retrieval and use.        
+In order to make it simpler to identify related information, Taxonomy uses a regulated vocabulary to represent the formal structure of classes or types of things inside a knowledge domain. Taxonomy aids in the hierarchical organization of the assets and material. It can be much simpler to search for or explore an asset or content management by classifying the content and assets in a Taxonomy. [^2]        
 
 To facilitate uniform, precise, and rapid indexing and retrieval of the content of digital assets, Taxonomies are utilised in the descriptive metadata fields. Non-text digital files typically require some type of descriptive tagging in order to be retrieved in subject searches, whereas text documents can be automatically indexed or auto-classified based on search queries matching words within the texts. Uncontrolled keyword tagging frequently produces retrieval results that are inconsistent, inadequate, overly general, and biased. Implementing Taxonomies in the fields of descriptive metadata is the answer for indexing.[^2].    
 
 Consistent, precise, and quick indexing and retrieval of content are made possible by Taxonomies. Vocabulary design must be connected with the metadata approach because Taxonomies offer a variety of metadata fields.
-
 
 **Taxonomy provides** 
 
@@ -56,9 +54,7 @@ Consistent, precise, and quick indexing and retrieval of content are made possib
 - Control data assets through data governance.
 - Determine trends and patterns through guiding machine learning and data experiences.
 
-It is critical to keep a constant level of precision within a category while constructing a Taxonomy. 
-
-Taxonomies can be of several kind, such as *flat, hierarchical, network*, and so on. For our case we use a hierarchical structure, with a single root that subdivided into categories as needed to organise the information and represented as a tree. A single hierarchical structure is simple to grasp and establish a mental model for finding information.
+Taxonomies can be of several kind, such as *flat, hierarchical, network*, and so on. In SeTA, is been choose a hierarchical structure, with a single root that is subdivided into categories as needed to organise the information and represented as a tree. 
 
 #### How to design a good Taxonomy
 
@@ -85,9 +81,10 @@ The following example describes a simple Taxonomy:
 ``` -->
 
 
-
 #### Taxonomy in SeTA
-In SeTA, we have defined some Taxonomies that can be used, but it is also possible for users to define new Taxonomies if is necessary.    
+In SeTA, currently we are working with EuroVoc.  EuroVoc is a multilingual thesaurus originally built for processing the documentary information of the EU institutions.      
+
+Moreover when working with Communities, users have the possibility to define new Taxonomies if is necessary.    
 
 To create a new Taxonomy, users can set it together with the document they are uploading:
 
@@ -151,6 +148,7 @@ The following is an example of how-to setup a new Taxonomy within a document whe
   ]
 }
 ```
+
 
 
 ### Document cleaning pipeline
@@ -246,8 +244,8 @@ In SeTA the concept of Ontology is used when searching a term to return a list o
 At this point, terms, text or full documents can be searched through a simple interface, and users are able to target their search either to the individual document collections or to search across all collections in a harmonised way.
 
 
-[^1]: https://data.nsw.gov.au/IDMF/data-structure-and-coordination/data-taxonomy
-[^2]: https://link.springer.com/article/10.1057/dam.2010.29
+[^1]: https://link.springer.com/article/10.1057/dam.2010.29
+[^2]: https://data.nsw.gov.au/IDMF/data-structure-and-coordination/data-taxonomy
 [^3]: https://www.mindtools.com/a8u1mqw/chunking
 [^4]: https://huggingface.co/sentence-transformers/all-distilroberta-v1
 [^5]: https://www.SBERT.net

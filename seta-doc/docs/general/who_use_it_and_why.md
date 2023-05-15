@@ -3,7 +3,7 @@
 
 SeTA provides a semantic system that brings entities, concepts, relations and predicates together to provide more context to language so it is possible to understand text data with more accuracy.
 
-
+SeTA also provides the use of Communities, either as a creator or as a participant. In this way, users can connect with people with similar interests to share information.
 
 
 
@@ -19,4 +19,4 @@ SeTA provides a semantic system that brings entities, concepts, relations and pr
 
 - To find the passages based on their meaning, regardless of the choice of words. Thus, relevant contents of an EU document are found quickly and efficiently.   
 
--  Use of Communities with easy interactions, secure, and intuitive.  Creating real connections with a user friendly experience.   
+-  Use of Communities with easy interactions, secure, and intuitive.  Creating real connections with a user-friendly experience.   
