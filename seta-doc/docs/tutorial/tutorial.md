@@ -12,7 +12,7 @@ This project is made up of two modules:
 **Seta-flask-server** is a Flask application, contains all the python sources and acts as a proxy / authentication layer towards the backend.
 
 
-All static resources that ensure from {++ng build seta-web -c=<environment>++} of the the frontend module are copied inside the flask-server **seta-ui** folder's module. 
+All static resources that ensure from {++ng build seta-web -c=<environment>++} of the frontend module are copied inside the flask-server **seta-ui** folder's module. 
 
 The end result is a ***seta-flask-server*** folder that contains a Flask application that can be deployed on any web container.  
 

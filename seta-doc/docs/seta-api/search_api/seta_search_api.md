@@ -12,11 +12,11 @@ The main categories are:
  
 ## seta-api-suggestions
 
-The suggestions is the related terms list that is generated after setting a term.
+The suggestions are the related terms list that is generated after setting a term.
 
 ### GET /suggestions
 
-Retrieve terms by initial letters. By default it returns 6 terms, with the parameter *n_suggestions* is possible to set the number of suggestions to be shown.
+Retrieve terms by initial letters. By default, it returns 6 terms, with the parameter *n_suggestions* is possible to set the number of suggestions to be shown.
     
 <!-- ![Screenshot](/docs/img/get-suggestions.png)  -->
 <!-- ![Screenshot](/docs/img/get-suggestions-result.png)  -->
@@ -43,13 +43,13 @@ Retrieve documents related to a term from EU corpus. The input is a JSON file wi
 <!-- ![Screenshot](/docs/img/post-corpus-result.png)  -->
 
 ### GET /corpus/{id}
-Given the elasticsearch unique _id, the relative document from EU corpus is shown.
+Given the Elasticsearch  unique _id, the relative document from EU corpus is shown.
 <!-- ![Screenshot](/docs/img/get-corpus-id.png)  -->
 <!-- ![Screenshot](/docs/img/get-corpus-id-result.png)  -->
 
 ### DELETE /corpus/{id}
 
-Given the elasticsearch unique _id, the relative document is deleted.
+Given the Elasticsearch  unique _id, the relative document is deleted.
 <!-- ![Screenshot](/docs/img/delete-corpus-id.png)  -->
 <!-- ![Screenshot](/docs/img/delete-corpus-id-result.png)  -->
 
@@ -75,7 +75,7 @@ Return a graph that describes the ontology of the specified term. A set of nodes
 
 ### GET /ontology-list
 
-Return a list of lists of similar terms that describes the ontology of the specified term. Lists are ranked by the relation strenght to a query term. The first node in each list is direct relation to query term. The following terms in each sublist have relation to the first node in a sublist.The result should be interpretd as follows: the first item in each sublist is first level connection to the query term. The following terms in sublists have second level relation to the main query term and direct connection to the head of sublist.
+Return a list of lists of similar terms that describes the ontology of the specified term. Lists are ranked by the relation strength to a query term. The first node in each list is direct relation to query term. The following terms in each subList have relation to the first node in a subList.  The result should be interpreted as follows: the first item in each subList is first level connection to the query term. The following terms in subLists have second level relation to the main query term and direct connection to the head of subList.
 
 <!-- ![Screenshot](/docs/img/get-ontology-list.png)  -->
 <!-- ![Screenshot](/docs/img/get-ontology-list-results.png)  -->

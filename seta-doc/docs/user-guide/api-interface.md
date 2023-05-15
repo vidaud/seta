@@ -2,15 +2,15 @@
 
 The Docker containers must be running.
 
-Optional, but useful: install MongoDB Compass and connect to dockerized mongodb on localhost:27017
+Optional, but useful: install MongoDB Compass and connect to dockerized MongoDB  on localhost:27017
 
-If the seta database exists, then remove it with either MongoDB Compass or bash mongodb commands.
+If the seta database exists, then remove it with either MongoDB Compass or bash MongoDB  commands.
 
 ##  EU Login Authentication
 
 Open browser and go to seta-ui login page: [login](/login).       
 
-Connect with EU Login account (you can also use GitHub authentication, but EU Login will be user as an example here)
+Connect with EU Login account (you can also use GitHub authentication, but EU Login will be used as an example here)
 
 After successful authentication, check that you have the following entries in the new seta database - users collection:
 
@@ -182,7 +182,7 @@ Open a new tab in the same browser for the seta-api swagger documentation: http:
 Only if you want to use seta-api in another browser:
 
 open the browser developer tool and copy the value of the '_access_token_cookie' cookie
-click on the Authorize button to open the Available authorizations dialog; in the apikey text input set 'Bearer ' value then click on the Authorize button.
+click on the Authorize button to open the Available authorizations dialog; in the apikey text input set 'Bearer ' value then clicks on the Authorize button.
 
 
 

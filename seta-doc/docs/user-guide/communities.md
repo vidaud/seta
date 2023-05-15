@@ -1,11 +1,11 @@
 ## General
-The communities of the SeTA web app is a shared space where members engage with another to connect and learn about similar interests, opinions of different type of publications. 
+The communities of the SeTA web app are a shared space where members engage with another to connect and learn about similar interests, opinions of different type of publications. 
 
-In the SeTA Web App we have two types of communities: public communities and private communities.   
+In the SeTA Web App, we have two types of communities: public communities and private communities.   
 
 * **Public Community**:  Anyone with access to the web app can view all discussion forums and information in the online Community. Anyone can join the Community and contribute  to the Community.   
 
-* **Private Community**:  The information and conversations can only be accessed by users with log-ins(often sent via invitation to a specific group or pre-loaded into the Community platforms membership database). All users are forced to ask for authorization to join and then been able to see content and conversations. In this type of communities the administrators have the ability to deny access to users who don't fit membership credentials.
+* **Private Community**:  The information and conversations can only be accessed by users with log-ins(often sent via invitation to a specific group or pre-loaded into the Community platforms membership database). All users are forced to ask for authorization to join and then been able to see content and conversations. In this type of communities, the administrators have the ability to deny access to users who don't fit membership credentials.
 
 
 ## Communities Web Interface
@@ -14,7 +14,7 @@ The main screen of the Communities is the ^^Dashboard^^. Here you can see the in
 
 
 - The Communities created (*My Communities*)
-- The Resources created (*My Reosources*)
+- The Resources created (*My Resources*)
 - The members of the Communities (*Members*)
 - The notifications (*Notifications*)
 - The latest join request to the Communities (*Last Join Request*)
@@ -24,7 +24,7 @@ The main screen of the Communities is the ^^Dashboard^^. Here you can see the in
 ### Create a Community
                      
 1. From the side menu click on ^^Manage^^ -> ^^My Communities^^.  
-2. Click on the top right botton ^^New Community^^.  
+2. Click on the top right bottom ^^New Community^^.  
 3. Enter the Community id, title and description.  
 4. Select the ^^Membership^^ option: *Private, Public*.  
 5. Select the ^^Data Type^^: *Evidence, Representative*.  
@@ -104,7 +104,7 @@ In public communities people can become members without manager approval and vie
 
 ### Manage the upload of documents for a Community
                
-In public communities viewers (people who aren't members) can upload a document. If creators allows, people can become members without manager approval. As a manager you can still review and approve people before they can upload a document.
+In public communities viewers (people who aren't members) can upload a document. If creators allow, people can become members without manager approval. As a manager you can still review and approve people before they can upload a document.
 
 
 ### Remove documents in a Community
@@ -127,23 +127,23 @@ Creators and managers can remove documents from their Community {== and give fee
 3. On the top of the window click on button ^^Manage^^.    
 3. On section *Members* click on the member you want to remove or block.  
 4. Click on the delete icon and select ^^Remove^^ member or ^^Block^^ from Community. 
-5. If you are removing the member and youd also like to block them click ^^Block^^ [name].  
+5. If you are removing the member and you also like to block them click ^^Block^^ [name].  
 6. Click ^^Confirm^^.   
 
-**To remove a block you've put on someone:**   
+**To remove a block, you've put on someone:**   
 
 1. From the side menu click on ^^Manage^^ -> ^^My Communities^^.     
 2. From the communities list click on the Community you want to change.    
 3. Click on section ^^Members^^..  
-4. Click ^^Unblock^^ next to the name of the person youd like to unblock.  
+4. Click ^^Unblock^^ next to the name of the person you like to unblock.  
 5. Click ^^Unblock^^ to confirm. 
 
 !!! info
-    Removed members will have to request to join the Community again if they wish to rejoin. Blocked members won't be able to find the Community in search or see any of its content and they can't be invited to the Community again by members.
+    Removed members will have to request to join the Community again if they wish to re-join. Blocked members won't be able to find the Community in search or see any of its content and they can't be invited to the Community again by members.
 
 ### Delete a Community
            
-{== If you are a Community manager you can delete your Community by removing all members (in private communities) or blocking all members (in public communities) and then leaving the Community as long as the Community creator has left the Community or you are the Community creator.==}  Deleting a Community is permanent and cannot be reversed. Alternatively you can pause a Community.   
+{== If you are a Community manager you can delete your Community by removing all members (in private communities) or blocking all members (in public communities) and then leaving the Community as long as the Community creator has left the Community or you are the Community creator.==}  Deleting a Community is permanent and cannot be reversed. Alternatively, you can pause a Community.   
 
 **To delete a Community:**   
 
@@ -157,10 +157,10 @@ Creators and managers can remove documents from their Community {== and give fee
 1. From the side menu click on ^^Discover^^ -> ^^Communities^^.  
 2. In the search bar enter the name of the Community you are looking for.   
 3. Select the Community then click + ^^Join^^.  
-4. On the pop up window write a message and click ^^Join^^
+4. On the pop-up window write a message and click ^^Join^^
 
 ### See the members of a Community
-Anyone can see who is a member of an public Community. In a private Community you have to be a member to see who the other members are. 
+Anyone can see who is a member of a public Community. In a private Community you have to be a member to see who the other members are. 
 
 1. From the side menu click on ^^Manage^^ -> ^^My Communities^^.    
 2. Click ^^Members^^ in section ^^Stats^^. 

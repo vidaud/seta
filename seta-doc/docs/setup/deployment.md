@@ -6,11 +6,11 @@
 
 * Good Internet speed. You will need to download at least 5GB (> 20GB for all data)
 
-The following setup and deployment is for ^^Production^^ environment.
+The following setup and deployment guidelines are  for ^^Production^^ environment.
 
 ## Prerequisites 
 
-- It is neccesary to install [Git](https://git-scm.com/downloads). 
+- It is necessary to install [Git](https://git-scm.com/downloads). 
 
 - Install [Docker compose V2](https://docs.docker.com/compose/install/).     *For reference to install in Linux, Mac or Windows*
 
@@ -23,7 +23,7 @@ From the Git interface use the git **clone** command to clone the project in the
     git clone https://github.com/vidaud/seta.git
 ```
 
-After clonning the project, we open a command line shell and move to the root directory of the project:
+After cloning the project, we open a command line shell and move to the root directory of the project:
 
 !!! warning
     Make sure that you are in the root directory of the project, use **pwd** or **cd** for windows
@@ -80,7 +80,7 @@ In the ***.env*** file change the necessary information, where is required, for 
 
 
     ##### Seta-UI variables  ####
-    # Set-up of the administrators emails, the system create local users.     
+    # Set-up of the administrators emails, the system creates local users.     
     There should be always at least one admin user defined always. It cannot be empty.         
         
     ROOT_USERS="ROOT_USERS="email@emailDomain"
@@ -92,9 +92,9 @@ In the ***.env*** file change the necessary information, where is required, for 
 
 ### Models
 
-Another important setup is the models file, they keep the necessary information to created the related suggestions, and the related terms of the words in the text provided. 
+Another important setup is the models file, they keep the necessary information to create the related suggestions, and the related terms of the words in the text provided. 
 
-Download the file  **json_suggestion.json** from From the following repository link:
+Download the file  **json_suggestion.json** from the following repository link:
 
 [https://jeodpp.jrc.ec.europa.eu/ftp/jrc-opendata/D4P-Cellar-dump/json_suggestion.json](https://jeodpp.jrc.ec.europa.eu/ftp/jrc-opendata/D4P-Cellar-dump/json_suggestion.json) 
 
@@ -109,13 +109,13 @@ If we have moved, we go back to folder **seta-compose** and from there we launch
      docker-compose build
 ```    
 
-This command creates a docker image based on the Dockerfile called by default **docker-compose.yml** as the configuration file and **.env** as the environment file.
+This command creates a docker image based on the Docker file called by default **docker-compose.yml** as the configuration file and **.env** as the environment file.
 
 ### Up
 it has to be where the containers are running
 After finishing the build, launch the command to start and run the services:
 
-First the service to initialise the ElasticSearch:
+First the service to initialise the Elasticsearch :
 
 ```
     docker-compose up seta-data     
@@ -138,7 +138,7 @@ Later we start the rest of the services, for now is just necessary to start the 
 
 
 
-This commands will setup all system and data.
+This command will setup all system and data.
 
 It will take a while depending on the Internet speed. Might take 30min to 2h.
 
