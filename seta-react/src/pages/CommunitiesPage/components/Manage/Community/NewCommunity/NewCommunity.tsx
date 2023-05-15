@@ -1,4 +1,3 @@
-import { useEffect } from 'react'
 import {
   Paper,
   TextInput,
@@ -12,12 +11,10 @@ import {
   Anchor,
   Breadcrumbs
 } from '@mantine/core'
-import { useParams } from 'react-router-dom'
 
-import { updateCommunity, useCommunityID } from '../../../../../api/communities/community'
-import CommunitiesLoading from '../../common/SuggestionsLoading'
-import type { CommunityValues } from '../community-context'
-import { CommunityFormProvider, useCommunity } from '../community-context'
+import { createCommunity } from '../../../../../../api/communities/community'
+import type { CommunityValues } from '../../community-context'
+import { useCommunity, CommunityFormProvider } from '../../community-context'
 
 const useStyles = createStyles({
   input: {
@@ -30,18 +27,15 @@ const useStyles = createStyles({
 
 const items = [
   { title: 'My Communities', href: 'http://localhost/communities/my-list' },
-  { title: 'Update Community' }
+  { title: 'New Community' }
 ].map((item, index) => (
   <Anchor href={item.href} key={index}>
     {item.title}
   </Anchor>
 ))
 
-const UpdateCommunity = () => {
+const NewCommunity = () => {
   const { classes, cx } = useStyles()
-  const { id } = useParams()
-
-  const { data, isLoading } = useCommunityID(id)
 
   const form = useCommunity({
     initialValues: {
@@ -49,23 +43,12 @@ const UpdateCommunity = () => {
       title: '',
       description: '',
       data_type: '',
-      status: ''
+      status: 'active'
     }
   })
 
-  useEffect(() => {
-    if (data) {
-      form.setValues(data)
-    }
-  }, [data])
-
-  if (isLoading || !data) {
-    return <CommunitiesLoading />
-  }
-
   const handleSubmit = (values: CommunityValues) => {
-    console.log(values)
-    updateCommunity(values.community_id, values)
+    createCommunity(values)
   }
 
   return (
@@ -74,7 +57,7 @@ const UpdateCommunity = () => {
       <Paper withBorder shadow="md" p={30} mt={30} radius="md" mx="auto" maw={1000}>
         <CommunityFormProvider form={form}>
           <form onSubmit={form.onSubmit(handleSubmit)}>
-            <Divider my="xs" label="Update Community" labelPosition="center" />
+            <Divider my="xs" label="Add New Community" labelPosition="center" />
             <TextInput
               label="ID"
               {...form.getInputProps('community_id')}
@@ -102,18 +85,20 @@ const UpdateCommunity = () => {
                   <Radio value="evidence" label="Evidence" />
                 </Group>
               </Radio.Group>
-              <Radio.Group name="status" label="Status" {...form.getInputProps('status')}>
-                <Group mt="xs">
-                  <Radio value="active" label="Active" />
-                  <Radio value="blocked" label="Blocked" />
-                </Group>
-              </Radio.Group>
             </Group>
             <Group position="right">
-              <Button variant="outline" size="xs" color="blue">
+              <Button
+                variant="outline"
+                size="xs"
+                color="blue"
+                onClick={() => {
+                  form.reset()
+                  window.location.href = '/communities/my-list'
+                }}
+              >
                 Cancel
               </Button>
-              <Button size="xs" type="submit">
+              <Button type="submit" size="xs">
                 Save
               </Button>
             </Group>
@@ -124,4 +109,4 @@ const UpdateCommunity = () => {
   )
 }
 
-export default UpdateCommunity
+export default NewCommunity

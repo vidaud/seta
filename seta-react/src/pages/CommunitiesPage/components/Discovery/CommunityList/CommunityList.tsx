@@ -1,6 +1,17 @@
 import { useEffect, useState } from 'react'
-import { createStyles, Table, ScrollArea, Text, TextInput, rem, Button } from '@mantine/core'
-import { IconSearch } from '@tabler/icons-react'
+import {
+  createStyles,
+  Table,
+  ScrollArea,
+  Text,
+  TextInput,
+  rem,
+  Button,
+  Group,
+  Menu,
+  ActionIcon
+} from '@mantine/core'
+import { IconDots, IconEye, IconSearch } from '@tabler/icons-react'
 
 import type { Community } from '~/models/communities/communities'
 
@@ -79,6 +90,8 @@ const CommunityList = () => {
     setSortedData(sortData(data, { sortBy, reversed: reverseSortDirection, search: value }))
   }
 
+  const COMMUNITIES_API_PATH = 'http://localhost/communities'
+
   const rows =
     sortedData && sortedData.length > 0
       ? sortedData?.map(row => (
@@ -90,15 +103,38 @@ const CommunityList = () => {
             <td>{row.membership}</td>
             <td>{row.status}</td>
             <td>
-              {row.membership === 'Private' ? (
-                <Button variant="outline" size="xs">
-                  + JOIN
-                </Button>
-              ) : (
-                <Button variant="filled" size="xs">
-                  + JOINED
-                </Button>
-              )}
+              <Group>
+                {row.membership === 'Private' ? (
+                  <Button variant="outline" size="xs">
+                    + JOIN
+                  </Button>
+                ) : (
+                  <Button variant="filled" size="xs">
+                    + JOINED
+                  </Button>
+                )}
+                <Menu
+                  transitionProps={{ transition: 'pop' }}
+                  withArrow
+                  position="bottom-end"
+                  withinPortal
+                >
+                  <Menu.Target>
+                    <ActionIcon>
+                      <IconDots size="1rem" stroke={1.5} />
+                    </ActionIcon>
+                  </Menu.Target>
+                  <Menu.Dropdown>
+                    <Menu.Item
+                      icon={<IconEye size="1rem" stroke={1.5} />}
+                      component="a"
+                      href={`${COMMUNITIES_API_PATH}/view/${row.community_id}`}
+                    >
+                      View Details
+                    </Menu.Item>
+                  </Menu.Dropdown>
+                </Menu>
+              </Group>
             </td>
           </tr>
         ))

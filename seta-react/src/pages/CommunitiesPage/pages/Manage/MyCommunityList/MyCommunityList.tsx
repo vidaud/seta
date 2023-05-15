@@ -1,5 +1,5 @@
-import CreateCommunity from '../../../components/Manage/CreateCommunityModal/CreateCommunityModal'
-import MyCommunityList from '../../../components/Manage/MyCommunityList/MyCommunityList'
+import CreateCommunity from '../../../components/Manage/Community/CreateCommunityModal/CreateCommunityModal'
+import MyCommunityList from '../../../components/Manage/Community/MyCommunityList/MyCommunityList'
 
 const MyCommunityListPage = () => {
   return (

@@ -2,6 +2,7 @@ import { useQuery } from '@tanstack/react-query'
 import { getCookie } from 'typescript-cookie'
 
 import community_api from './api'
+import type { ResourceResponse } from './resource'
 
 const COMMUNITIES_API_PATH = '/communities/'
 
@@ -11,6 +12,11 @@ export type CommunityResponse = {
   description: string
   data_type: string
   status: string
+}
+
+export type Community = {
+  communities: CommunityResponse
+  resources: ResourceResponse[]
 }
 
 export type CreateCommunityAPI = {
@@ -45,8 +51,18 @@ export type ManageCommunityAPI = {
 
 export const cacheKey = (id?: string) => ['communities', id]
 
-const getCommunity = async (id?: string): Promise<CommunityResponse> => {
-  const { data } = await community_api.get<CommunityResponse>(`${COMMUNITIES_API_PATH}${id}`)
+const getCommunity = async (id?: string): Promise<Community> => {
+  const communities = await community_api.get<CommunityResponse>(`${COMMUNITIES_API_PATH}${id}`)
+  const resources = await community_api.get<ResourceResponse[]>(
+    `${COMMUNITIES_API_PATH}${id}/resources`
+  )
+
+  const data = {
+    communities: communities.data,
+    resources: resources.data
+  }
+
+  console.log(data)
 
   return data
 }

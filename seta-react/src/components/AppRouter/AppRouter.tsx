@@ -10,10 +10,12 @@ import RequireAuth from './components/RequireAuth'
 
 import AppLayout from '../../layouts/AppLayout'
 import CommunityLayout from '../../layouts/CommunityLayout/CommunityLayout'
-import ManageCommunity from '../../pages/CommunitiesPage/components/Manage/ManageCommunity/ManageCommunity'
-import NewCommunity from '../../pages/CommunitiesPage/components/Manage/NewCommunity/NewCommunity'
-import UpdateCommunity from '../../pages/CommunitiesPage/components/Manage/UpdateCommunity/UpdateCommunity'
-import ViewCommunity from '../../pages/CommunitiesPage/components/Manage/ViewCommunity/ViewCommunity'
+import ViewCommunity from '../../pages/CommunitiesPage/components/Discovery/ViewCommunity/ViewCommunity'
+import ManageCommunity from '../../pages/CommunitiesPage/components/Manage/Community/ManageCommunity/ManageCommunity'
+import NewCommunity from '../../pages/CommunitiesPage/components/Manage/Community/NewCommunity/NewCommunity'
+import UpdateCommunity from '../../pages/CommunitiesPage/components/Manage/Community/UpdateCommunity/UpdateCommunity'
+import ViewMyCommunity from '../../pages/CommunitiesPage/components/Manage/Community/ViewMyCommunity/ViewMyCommunity'
+import NewResource from '../../pages/CommunitiesPage/components/Manage/Resource/NewResource/NewResource'
 import DashboardsPage from '../../pages/CommunitiesPage/pages/DashboardPage'
 import CommunityListPage from '../../pages/CommunitiesPage/pages/Discovery/CommunityList/CommunityList'
 import MyCommunityListPage from '../../pages/CommunitiesPage/pages/Manage/MyCommunityList/MyCommunityList'
@@ -88,6 +90,14 @@ const routes = createRoutesFromElements(
         }
       />
       <Route
+        path="view/:id"
+        element={
+          <RequireAuth>
+            <ViewCommunity />
+          </RequireAuth>
+        }
+      />
+      <Route
         path="my-list"
         element={
           <RequireAuth>
@@ -115,7 +125,15 @@ const routes = createRoutesFromElements(
         path="details/:id"
         element={
           <RequireAuth>
-            <ViewCommunity />
+            <ViewMyCommunity />
+          </RequireAuth>
+        }
+      />
+      <Route
+        path="details/:id/new"
+        element={
+          <RequireAuth>
+            <NewResource />
           </RequireAuth>
         }
       />

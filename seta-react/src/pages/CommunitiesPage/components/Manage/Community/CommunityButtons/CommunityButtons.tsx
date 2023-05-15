@@ -1,7 +1,7 @@
 import { Group, ActionIcon, Menu } from '@mantine/core'
 import { IconDots, IconPencil, IconTrash, IconEye, IconSettings } from '@tabler/icons-react'
 
-import { deleteCommunityByID } from '../../../../../api/communities/community'
+import { deleteCommunityByID } from '../../../../../../api/communities/community'
 import InviteMember from '../InviteMemberModal/InviteMemberModal'
 
 const COMMUNITIES_API_PATH = 'http://localhost/communities'

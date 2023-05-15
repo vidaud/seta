@@ -7,15 +7,13 @@ import type { User } from '~/models/user.model'
 
 import { useStyles } from './constants'
 
-import { useCommunities } from '../../../../../api/communities/communities'
-import storageService from '../../../../../services/storage.service'
-import { CommunitiesEmpty, CommunitiesError } from '../../common'
-import CommunitiesLoading from '../../common/SuggestionsLoading'
-import { Th, sortData } from '../../utils'
+import { useCommunities } from '../../../../../../api/communities/communities'
+import storageService from '../../../../../../services/storage.service'
+import { CommunitiesEmpty, CommunitiesError } from '../../../common'
+import CommunitiesLoading from '../../../common/SuggestionsLoading'
+import { Th, sortData } from '../../../utils'
 import CommunityButtons from '../CommunityButtons/CommunityButtons'
 import DeleteCommunity from '../DeleteCommunityButton/DeleteCommunityButton'
-
-const COMMUNITIES_API_PATH = 'http://localhost/communities'
 
 const MyCommunityList = () => {
   const { classes, cx } = useStyles()

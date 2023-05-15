@@ -13,14 +13,14 @@ import {
 } from '@mantine/core'
 import { useParams } from 'react-router-dom'
 
-import { useCommunityManagement } from '../../../../../api/communities/community'
-import CommunitiesLoading from '../../common/SuggestionsLoading'
-import changeRequestAttributes from '../../Dashboard/ChangeRequests/changeRequestAttributes.json'
-import ChangeRequests from '../../Dashboard/ChangeRequests/ChangeRequests'
-import joinAttributes from '../../Dashboard/LastJoinRequests/joinAttributes.json'
-import LastJoinRequests from '../../Dashboard/LastJoinRequests/LastJoinRequests'
-import RecentResources from '../../Dashboard/RecentResources/RecentResources'
-import resourcesAttributes from '../../Dashboard/RecentResources/resourcesAttributes.json'
+import { useCommunityManagement } from '../../../../../../api/communities/community'
+import CommunitiesLoading from '../../../common/SuggestionsLoading'
+import changeRequestAttributes from '../../../Dashboard/ChangeRequests/changeRequestAttributes.json'
+import ChangeRequests from '../../../Dashboard/ChangeRequests/ChangeRequests'
+import joinAttributes from '../../../Dashboard/LastJoinRequests/joinAttributes.json'
+import LastJoinRequests from '../../../Dashboard/LastJoinRequests/LastJoinRequests'
+import RecentResources from '../../../Dashboard/RecentResources/RecentResources'
+import resourcesAttributes from '../../../Dashboard/RecentResources/resourcesAttributes.json'
 
 const useStyles = createStyles({
   title: {

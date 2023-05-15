@@ -26,7 +26,7 @@ const useStyles = createStyles(theme => ({
   }
 }))
 
-const Stats = () => {
+const Stats = totalResources => {
   const { classes } = useStyles()
 
   return (
@@ -48,16 +48,10 @@ const Stats = () => {
         <Container size="xs" px="xs" className={classes.container}>
           <Text className={classes.text}>Resources</Text>
           <Group position="right">
-            <Button>13</Button>
+            <Button>{totalResources.resourceNumber}</Button>
           </Group>
         </Container>
       </Group>
-
-      <Card.Section className={classes.section}>
-        <Group spacing={30}>
-          <Button radius="xl">+ New Resource</Button>
-        </Group>
-      </Card.Section>
     </Card>
   )
 }

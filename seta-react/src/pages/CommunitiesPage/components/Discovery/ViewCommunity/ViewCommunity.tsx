@@ -14,17 +14,8 @@ import { useParams } from 'react-router-dom'
 
 import { useCommunityID } from '../../../../../api/communities/community'
 import CommunitiesLoading from '../../common/SuggestionsLoading'
-import CommunityResources from '../CommunityResources/CommunityResources'
+import CommunityResources from '../../Manage/Resource/CommunityResources/CommunityResources'
 import Stats from '../Stats/Stats'
-
-const items = [
-  { title: 'My Communities', href: 'http://localhost/communities/my-list' },
-  { title: 'Update Community' }
-].map((item, index) => (
-  <Anchor href={item.href} key={index}>
-    {item.title}
-  </Anchor>
-))
 
 const useStyles = createStyles({
   title: {
@@ -39,6 +30,15 @@ const ViewCommunity = () => {
   const { id } = useParams()
 
   const { data, isLoading } = useCommunityID(id)
+
+  const items = [
+    { title: 'My Communities', href: 'http://localhost/communities/my-list' },
+    { title: `${id}` }
+  ].map((item, index) => (
+    <Anchor href={item.href} key={index}>
+      {item.title}
+    </Anchor>
+  ))
 
   useEffect(() => {
     if (data) {
@@ -58,19 +58,19 @@ const ViewCommunity = () => {
           <Grid.Col span={12}>
             <Paper shadow="xs" p="md">
               <Title order={5} className={classes.title}>
-                {data.title}
+                {data.communities.title}
               </Title>
-              <Text className={classes.text}>{data.description}</Text>
+              <Text className={classes.text}>{data.communities.description}</Text>
               <Group spacing={30} position="right">
-                <Button>Manage</Button>
+                <Button size="xs">+ JOIN</Button>
               </Group>
             </Paper>
           </Grid.Col>
           <Grid.Col span={1}>
-            <Stats />
+            <Stats resourceNumber={data.resources.length} />
           </Grid.Col>
           <Grid.Col span={5}>
-            <CommunityResources />
+            <CommunityResources data={data.resources} />
           </Grid.Col>
         </Grid>
       </div>
