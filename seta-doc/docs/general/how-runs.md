@@ -82,15 +82,15 @@ The following example describes a simple Taxonomy:
 
 
 #### Taxonomy in SeTA
-In SeTA, currently we are working with EuroVoc.  EuroVoc is a multilingual thesaurus originally built for processing the documentary information of the EU institutions.      
+In SeTA, currently we are working with EuroVoc.  EuroVoc is a multilingual thesaurus originally built for processing the documentary information of the EU institutions.[^3]      
 
-Moreover when working with Communities, users have the possibility to define new Taxonomies if is necessary.    
+Moreover users have the possibility to define new Taxonomies if is necessary.    
 
 To create a new Taxonomy, users can set it together with the document they are uploading:
 
-- In the API, through the function *PUT /corpus* it is possible to upload the new taxonomy.   
+- In the SeTA API, through the function *PUT /corpus* it is possible to upload the new taxonomy(*see example below*) .   
 
-- In the Communities Web Interface, it is also possible to create new taxonomies. This is possible when uploading a new document, inside the new resource, in there the user  can find the option to create them. 
+- In the Communities Web Interface, it is also possible to create new taxonomies. When uploading a new document, inside the resource menu, the user finds the option to create a new taxonomy. 
 
 <!-- set up a screen shot from the communities  web app-->
 
@@ -176,7 +176,7 @@ By using supervised learning, which involves providing the network with a huge c
 
 ### Chunk compositionality
 
-**"Chunking"** is the process of combining several pieces of information into more comprehensible or significant portions.[^3]. 
+**"Chunking"** is the process of combining several pieces of information into more comprehensible or significant portions.[^4]. 
 
 By selecting chunk shapes and sizes wisely, significant performance benefits can be achieved. Chunking also provides efficient per-chunk compression and efficiently extending multidimensional data along multiple axes. As a result, reading a portion of a compressed variable does not necessitate uncompressing the entire variable. 
 
@@ -190,33 +190,33 @@ In SeTA we create chunks of 300 words. With this we try to ensure our search res
 ### Embedding
 Word embeddings are numerical vector representations of text that keep track of the semantic and contextual relationships between words in the corpus of texts.  The words in this form are closer to one another in the vector space because they have stronger semantic links. Embeddings can be utilised with other models and, in general, improve the productivity and usability of ML models.
 
-The sentence-transformers model **all-distilroberta-v1**[^4] is utilised for the embedding process as it helps on the clustering and the semantic search because it maps sentences and paragraphs to a dimensional dense vector space. 
+The sentence-transformers model **all-distilroberta-v1**[^5] is utilised for the embedding process as it helps on the clustering and the semantic search because it maps sentences and paragraphs to a dimensional dense vector space. 
 
 
 ### Semantic search
 
 <!-- to ask  in which part is used sBERT-->
-**sBert**[^5] is a modification of the standard pretrained **BERT**[^6] network.
+**sBert**[^6] is a modification of the standard pretrained **BERT**[^7] network.
 
-Bidirectional Encoder Representations from Transformers, sometimes known as **BERT**, is an open source machine learning framework for natural language processing (NLP). **BERT** uses the text around it to generate context, which enables computers to understand the meaning of ambiguous words in text.  **BERT** is built on Transformers[^7], a deep learning model in which every output element is connected to every input element and the weightings between them are dynamically determined based on their connection.     
+Bidirectional Encoder Representations from Transformers, sometimes known as **BERT**, is an open source machine learning framework for natural language processing (NLP). **BERT** uses the text around it to generate context, which enables computers to understand the meaning of ambiguous words in text.  **BERT** is built on Transformers[^8], a deep learning model in which every output element is connected to every input element and the weightings between them are dynamically determined based on their connection.     
 **sBERT** is a sentence-based model that gives additional training to the model, allowing semantic search for a huge number of sentences. **sBERT** employs a siamese architecture, which consists of two virtually identical **BERT** architectures with the same weights, and **sBERT** analyses two words as pairs during training.         
 
 When training the model, **SBERT** concatenates the two embeddings, which are then sent through a SoftMax  classifier and trained with a SoftMax -loss function. When the model reaches inference — or begins predicting — the two embeddings are compared using a cosine similarity function, which generates a similarity score for the two sentences.
  
 
 ### Word2Vec
-In SeTA, the **Word2Vec**[^8] algorithm  is used to get the suggestions and similar terms when searching in the user interface  search bar.        
+In SeTA, the **Word2Vec**[^9] algorithm  is used to get the suggestions and similar terms when searching in the user interface  search bar.        
 The algorithm **Word2Vec** processes phrases. This algorithm takes input words and groups them together based on the similarity of their meanings. This similarity is calculated using complex mathematical formulas based on the context of the words.        
 
 Word2vec is a two-layer neural net that processes text by “vectorizing” words. Its input is a text corpus and its output are a set of vectors: feature vectors that represent words in that corpus. Word2vec creates vectors that are distributed numerical representations of word features, features such as the context of individual words. It does so without human intervention. While Word2vec is not a deep neural network, it turns text into a numerical form that deep neural networks can understand. Its output is a vocabulary in which each item has a vector attached to it, which can be fed into a deep-learning net or simply queried to detect relationships between words.     
 
-**Word2Vec** has been used in alongside **Gensim**[^9]. **Gensim** ("Generate Similar") is an open-source framework for unsupervised topic modelling and natural language processing written in Python. It is a tool for extracting semantic concepts from documents that is capable of handling large text volumes. As a result, it differs from other machine learning software packages that concentrate on memory processing. To boost processing speed, Gensim also provides efficient multicore implementations for certain algorithms. It includes more text processing features than other packages such as Scikit-learn, R, and others.            
+**Word2Vec** has been used in alongside **Gensim**[^10]. **Gensim** ("Generate Similar") is an open-source framework for unsupervised topic modelling and natural language processing written in Python. It is a tool for extracting semantic concepts from documents that is capable of handling large text volumes. As a result, it differs from other machine learning software packages that concentrate on memory processing. To boost processing speed, Gensim also provides efficient multicore implementations for certain algorithms. It includes more text processing features than other packages such as Scikit-learn, R, and others.            
 
 ### Pre-processing data
 
-**spaCy**[^10] is a Python library for advanced Natural Language Processing (NLP) that is open-source and free. It helps create applications that process and "understand" massive volumes of text and is specifically created for usage in production. It can be used to create information extraction or systems for interpreting natural language, or it can be used to prepare text for deep learning.     
+**spaCy**[^11] is a Python library for advanced Natural Language Processing (NLP) that is open-source and free. It helps create applications that process and "understand" massive volumes of text and is specifically created for usage in production. It can be used to create information extraction or systems for interpreting natural language, or it can be used to prepare text for deep learning.     
 
-We train neural networks using **textacy**[^11], a potent Python language modelling package built on the basis of **spaCy**. It can carry out a variety of natural language processing (NLP) tasks thanks to the **spaCy** library's outstanding performance. The essentials, such as part-of-speech tagging, dependency parsing, and tokenization, are handled by another library, leaving **textacy** to concentrate mostly on the jobs that occur before and after. The pre-processing module of **textacy** has a good number of functions to normalise characters and to handle common patterns like URLs, email addresses, phone numbers, and so on.    
+We train neural networks using **textacy**[^12], a potent Python language modelling package built on the basis of **spaCy**. It can carry out a variety of natural language processing (NLP) tasks thanks to the **spaCy** library's outstanding performance. The essentials, such as part-of-speech tagging, dependency parsing, and tokenization, are handled by another library, leaving **textacy** to concentrate mostly on the jobs that occur before and after. The pre-processing module of **textacy** has a good number of functions to normalise characters and to handle common patterns like URLs, email addresses, phone numbers, and so on.    
 
 **textacy** features:
 
@@ -229,11 +229,11 @@ Once we have the processed data, then is ingested and stored in an **Elasticsear
 
 
 ### Elasticsearch 
-Elasticsearch [^12] is a distributed, free and open search and analytics engine for all types of data, including textual, numerical, geospatial, structured and unstructured. Elasticsearch  is built on Apache Lucene and was first released in 2010 by Elasticsearch  N.V. (now known as Elastic).  Raw data flows into Elasticsearch  from a variety of sources, including logs, system metrics, and web applications. Data ingestion is the process by which this raw data is parsed, normalized, and enriched before it is indexed in Elasticsearch . Once indexed in Elasticsearch , users can run complex queries against their data and use aggregations to retrieve complex summaries of their data. *(NB: clicking on a footnote takes you there and back again)*
+Elasticsearch [^13] is a distributed, free and open search and analytics engine for all types of data, including textual, numerical, geospatial, structured and unstructured. Elasticsearch  is built on Apache Lucene and was first released in 2010 by Elasticsearch  N.V. (now known as Elastic).  Raw data flows into Elasticsearch  from a variety of sources, including logs, system metrics, and web applications. Data ingestion is the process by which this raw data is parsed, normalized, and enriched before it is indexed in Elasticsearch . Once indexed in Elasticsearch , users can run complex queries against their data and use aggregations to retrieve complex summaries of their data. *(NB: clicking on a footnote takes you there and back again)*
 
 
 ### Ontology
-Ontology[^13] shows properties and relations between a set of concepts and categories within a subject area or domain. It is a branch of linguistics called semantics, the study of meaning. With ontology, a machine can accurately interpret the meaning of the word “diamond” in relation to a baseball player, jeweller, or card suit. It can also help interpret the word “chicken” as either food or an animal or differentiate between “bank” as a place of business or land alongside a river or lake.   
+Ontology[^14] shows properties and relations between a set of concepts and categories within a subject area or domain. It is a branch of linguistics called semantics, the study of meaning. With ontology, a machine can accurately interpret the meaning of the word “diamond” in relation to a baseball player, jeweller, or card suit. It can also help interpret the word “chicken” as either food or an animal or differentiate between “bank” as a place of business or land alongside a river or lake.   
 
 
 
@@ -241,22 +241,23 @@ In SeTA the concept of Ontology is used when searching a term to return a list o
 
 
 
-At this point, terms, text or full documents can be searched through a simple interface, and users are able to target their search either to the individual document collections or to search across all collections in a harmonised way.
+At this point, terms, text or full documents are ready to be searched through a Web Application interface or through an API, and users are able to target their search either to the individual document collections or to search across all collections in a harmonised way.
 
 
 [^1]: https://link.springer.com/article/10.1057/dam.2010.29
 [^2]: https://data.nsw.gov.au/IDMF/data-structure-and-coordination/data-taxonomy
-[^3]: https://www.mindtools.com/a8u1mqw/chunking
-[^4]: https://huggingface.co/sentence-transformers/all-distilroberta-v1
-[^5]: https://www.SBERT.net
-[^6]: https://arxiv.org/pdf/1810.04805.pdf
-[^7]: https://huggingface.co/docs/transformers/index
-[^8]: https://code.google.com/archive/p/word2vec/ 
-[^9]: https://radimrehurek.com/gensim/auto_examples/index.html#documentation
-[^10]: https://spacy.io/usage/spacy-101 
-[^11]: https://pypi.org/project/textacy/
-[^12]: https://www.elastic.co/elasticsearch/
-[^13]: https://plato.stanford.edu/entries/logic-ontology/#DiffConcOnto
+[^3]: https://eur-lex.europa.eu/browse/eurovoc.html
+[^4]: https://www.mindtools.com/a8u1mqw/chunking
+[^5]: https://huggingface.co/sentence-transformers/all-distilroberta-v1
+[^6]: https://www.SBERT.net
+[^7]: https://arxiv.org/pdf/1810.04805.pdf
+[^8]: https://huggingface.co/docs/transformers/index
+[^9]: https://code.google.com/archive/p/word2vec/ 
+[^10]: https://radimrehurek.com/gensim/auto_examples/index.html#documentation
+[^11]: https://spacy.io/usage/spacy-101 
+[^12]: https://pypi.org/project/textacy/
+[^13]: https://www.elastic.co/elasticsearch/
+[^14]: https://plato.stanford.edu/entries/logic-ontology/#DiffConcOnto
 
 
 

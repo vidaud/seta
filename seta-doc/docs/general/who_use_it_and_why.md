@@ -7,7 +7,7 @@ SeTA also provides the use of Communities, either as a creator or as a participa
 
 
 
-## SeTA can be used:
+## SeTA can be used
 
 
 

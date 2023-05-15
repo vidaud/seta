@@ -78,14 +78,18 @@ extra_css:
   - stylesheets/extra.css
  
 nav:
-  - What is SeTA: index.md
-  - Who should use it and why: general/who_use_it_and_why.md   
-  - Methodology: general/how-runs.md
+  - What is SeTA: 
+    - SeTA: index.md
+  - Who should use it and why: 
+    - Who should use it: general/who_use_it_and_why.md   
   - Using SeTA:
     - Setup: user-guide/setup.md
     - Web App:
-      - Search: user-guide/web-app.md
-      - Communities: user-guide/communities.md
+      - Search: 
+        - Methodology: general/how-runs.md
+        - Web App: user-guide/web-app.md
+      - Communities: 
+        - General: user-guide/communities.md
     - Seta-API: 
       - Search API: seta-api/search_api/seta_search_api.md
       - Communities API: 

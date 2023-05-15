@@ -7,7 +7,7 @@ SeTA has two user interfaces:
 
 
 ## Web App
-The Seta Web App is a user-friendly interact that allows the user to access the content in a Web browser. 
+The Seta Web App is a user-friendly interface that allows the user to access the content in a Web browser. 
  
  ![Screenshot](../img/main_screen.jpg){ width="600" }
 
@@ -18,10 +18,10 @@ In the SeTA Web App, we can find:
 
 - Communities: A digital platform for people with a common interest to discuss or share and connect and communicate with one another.
 
-To access these features, you need either to login with an EU login[^1] account or with a GitHub[^2] authentication.
+To access these features, first, you need either to login with an EU login[^1] account or with a GitHub[^2] authentication.
 
 
- ![Screenshot](../img/login.jpg){ width="800" }
+ ![Screenshot](../img/login.jpg){ width="600" }
 
 
 Once you are logged in, you can see in the top menu the link to the Search and to the Communities:
