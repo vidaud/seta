@@ -84,7 +84,7 @@ The following example describes a simple Taxonomy:
 #### Taxonomy in SeTA
 In SeTA, currently we are working with EuroVoc.  EuroVoc is a multilingual thesaurus originally built for processing the documentary information of the EU institutions.[^3]      
 
-Moreover users have the possibility to define new Taxonomies if is necessary.    
+Moreover, users have the possibility to define new Taxonomies if is necessary.    
 
 To create a new Taxonomy, users can set it together with the document they are uploading:
 

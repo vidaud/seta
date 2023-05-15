@@ -127,8 +127,12 @@ For SeTA we are using two types of containers:
 
 ### Docker desktop
 
-From the docker desktop we can see the containers. Please note that the displayed names are just labels, for the deployment we used the services names:  
-![Screenshot](../img/docker-desktop.png)
+From the docker desktop we can see the containers. Please note that the displayed names are just labels, for the deployment we use the services names as per file *common.yml*:  
+
+<figure markdown>
+![Image title](../img/docker-desktop.png){ width="900" }
+<figcaption>Docker desktop</figcaption>
+</figure>
 
 
 

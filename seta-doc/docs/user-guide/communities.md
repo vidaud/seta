@@ -1,4 +1,3 @@
-## General
 The communities of the SeTA software application are a shared space where members engage with another to connect and learn about similar interests, opinions of different type of publications. 
 
 In the SeTA web application, we have two types of communities: public communities and private communities.   
@@ -98,9 +97,9 @@ In public communities you can interact with a Community as a viewer or as a cont
     - Can upload a document. 
     
 
-## {==Manage a Community==}
+## Manage a Community
 
-In public communities people can become members without manager approval and viewers (people who aren't members)can upload a document. {== You can choose to approve members and viewers as participants before they publish a document. for the first time==}. Once someone is approved as a participant {==you can still require manager approval of their future documents==}. If you are a manager of a private Community you can choose to turn on membership approval for your Community. This means creators or managers will have to approve membership requests before someone can join the Community.
+In public communities people can become members without manager approval and viewers (people who aren't members) can upload a document. {== You can choose to approve members and viewers as participants before they publish a document. for the first time==}. Once someone is approved as a participant {==you can still require manager approval of their future documents==}. If you are a manager of a private Community you can choose to turn on membership approval for your Community. This means creators or managers will have to approve membership requests before someone can join the Community.
 
 ### Manage the upload of documents for a Community
                

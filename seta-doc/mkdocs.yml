@@ -86,19 +86,23 @@ nav:
     - Setup: user-guide/setup.md
     - Web App:
       - Search: 
-        - Methodology: general/how-runs.md
+        - Methodology: user-guide/methodology.md
         - Web App: user-guide/web-app.md
       - Communities: 
         - General: user-guide/communities.md
-    - Seta-API: 
-      - Search API: seta-api/search_api/seta_search_api.md
+    - APIs: 
+      - Seta API: 
+        - Seta API: apis/seta_api/seta_api.md
+        - seta api corpus: apis/seta_api/seta_api_corpus.md
+        - seta api ontology: apis/seta_api/seta_api_ontology.md
+        - seta api embeddings: apis/seta_api/seta_api_embeddings.md
       - Communities API: 
-        - Communities: seta-api/communities_api/seta_api_communities.md
-        - Community Change Requests: seta-api/communities_api/community_change_requests.md
-        - Community Memberships: seta-api/communities_api/community_memberships.md
-        - Community Invites: seta-api/communities_api/community_invites.md
-        - Resources: seta-api/communities_api/resources.md
-        - Community User Permissions: seta-api/communities_api/communities_user_permissions.md
+        - Communities: apis/communities_api/seta_api_communities.md
+        - Community Change Requests: apis/communities_api/community_change_requests.md
+        - Community Memberships: apis/communities_api/community_memberships.md
+        - Community Invites: apis/communities_api/community_invites.md
+        - Resources: apis/communities_api/resources.md
+        - Community User Permissions: apis/communities_api/communities_user_permissions.md
   - Install SeTA:
     - Docker: setup/docker-architecture.md
     - Deployment: setup/deployment.md 

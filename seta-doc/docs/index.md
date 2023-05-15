@@ -1,4 +1,3 @@
-# SeTA
 
 **SeTA** is a web application software that offers:      
 - A Search Tool     

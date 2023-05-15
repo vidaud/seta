@@ -9,7 +9,13 @@ SeTA has two user interfaces:
 ## Web App
 The Seta Web App is a user-friendly interface that allows the user to access the content in a Web browser. 
  
- ![Screenshot](../img/main_screen.jpg){ width="600" }
+ <!--   ![Image title](../img/main_screen.jpg){ width="600" }  -->
+
+<figure markdown>
+![Image title](../img/main_screen.jpg){ width="600" }
+<figcaption>Seta main page</figcaption>
+</figure>
+
 
 
 In the SeTA Web App, we can find:
@@ -21,13 +27,21 @@ In the SeTA Web App, we can find:
 To access these features, first, you need either to login with an EU login[^1] account or with a GitHub[^2] authentication.
 
 
- ![Screenshot](../img/login.jpg){ width="600" }
+<figure markdown>
+![Image title](../img/login.png){ width="600" }
+<figcaption>Login</figcaption>
+</figure>
+
 
 
 Once you are logged in, you can see in the top menu the link to the Search and to the Communities:
 
 
- ![Screenshot](../img/seta_menu.png){ width="800" }
+<figure markdown>
+![Image title](../img/seta_menu.png){ width="900" }
+<figcaption>Search</figcaption>
+</figure>
+
 
 
 ## API
@@ -35,10 +49,10 @@ Once you are logged in, you can see in the top menu the link to the Search and t
 The SeTA API provides the functions and procedures to access data from a developer point of view.
 
 In SeTA there are two API's:   
-- Search API    
+- Seta API    
 - Communities API 
 
-### Search API
+### Seta API
 
 
 #### Prerequisites
@@ -54,9 +68,11 @@ Open a browser and go to seta-ui [login](/login) page. Connect with EU Login acc
 
 You can start using Search API.
 
-![Screenshot](../img/search_api.jpg){ width="800" }
 
-
+<figure markdown>
+![Image title](../img/seta-api.png){ width="900" }
+<figcaption>Seta API</figcaption>
+</figure>
 
 
 ### Communities API 
@@ -77,13 +93,16 @@ Open browser and go to seta-ui [login](/login) page.
 
 Connect with EU Login account (*you can also use GitHub authentication, but EU Login will be used as an example here*).
 
-After successful authentication, check that you have the following entries in the new *seta database - users collection*:      
+After successful authentication, check that you have the following entries in the new **seta database - users collection**:      
+
+
+<figure markdown>
+![Image title](../img/db_usr_collection.png){ width="700" }
+<figcaption>Partial object for the new seta account</figcaption>
+</figure>
 
 
 
-**Partial object for the new seta account:**
-
-![Screenshot](../img/db_usr_collection.png){ width="700" }       
 <!--```
     {
         "user_id": "5Mq7bNYnhtaiS6BDLvcZ",
@@ -94,9 +113,11 @@ After successful authentication, check that you have the following entries in th
 ```-->
 
 
-**Provider object:**
 
-![Screenshot](../img/Provider_object.png){ width="700" } 
+<figure markdown>
+![Image title](../img/Provider_object.png){ width="700" }
+<figcaption>Provider object</figcaption>
+</figure>
 
 <!--```
     {
@@ -112,9 +133,14 @@ After successful authentication, check that you have the following entries in th
 
 
 
-**Community create scope:**
 
-![Screenshot](../img/community_create_scope.png){ width="700" }    
+
+<figure markdown>
+![Image title](../img/community_create_scope.png){ width="700" }
+<figcaption>Community create scope</figcaption>
+</figure>
+
+
 <!--```
     {
         "user_id": "5Mq7bNYnhtaiS6BDLvcZ",
@@ -124,8 +150,10 @@ After successful authentication, check that you have the following entries in th
 ```-->
 
 
-**Role claim (claim_value can different):**      
-![Screenshot](../img/role_claim.png){ width="700" }
+<figure markdown>
+![Image title](../img/role_claim.png){ width="700" }
+<figcaption>Role claim (claim_value can different)</figcaption>
+</figure>
 
 <!--```
     {
@@ -142,7 +170,10 @@ After successful authentication, check that you have the following entries in th
 
 Open a new tab in the same browser for the [Community API swagger documentation](/api/communities/v1/doc)
 
-![Screenshot](../img/communities_api.png){ width="800" }
+<figure markdown>
+![Image title](../img/communities_api.png){ width="800" }
+<figcaption>Communities API</figcaption>
+</figure>
 
 
 Open the *browser developer tool* and copy the value of the ^^**csrf_access_token**^^ cookie
@@ -162,30 +193,39 @@ Seta-API will get at each request another authorization decoded token from seta-
 !!! info 
     You can verify the authorization token at [authorization doc](/authorization/v1/doc) passing the JWT access token as payload.
 
+<figure markdown>
+![Image title](../img/authorize.png){ width="500" }
+<figcaption>Authorize</figcaption>
+</figure>
 
-
-![Screenshot](../img/authorize.png){ width="500" }
 
 
 #### Create community
 
 Expand **Communities** region and then Try out **POST** /communities:
 
-![Screenshot](../img/create_community.png){ width="700" }
+<figure markdown>
+![Image title](../img/create_community.png){ width="800" }
+<figcaption>Create Community</figcaption>
+</figure>
+
 
 
 The server response should be a 201 code with a JSON body:
 ```
     { "message": "New community added", "status": "success" }
 ```
-
-Check the following entries in the *seta database - communities* collection:
-
-##### Community object
-
+\     
+\     
+Check the following entries in the **seta database - communities** collection:
 
 
-![Screenshot](../img/community_object.png){ width="700" }
+
+<figure markdown>
+![Image title](../img/community_object.png){ width="700" }
+<figcaption>Community object</figcaption>
+</figure>
+
 <!--```
     {
         "community_id": "seta",
@@ -199,12 +239,10 @@ Check the following entries in the *seta database - communities* collection:
 ```-->
 
 
-##### Membership object
-
-
-![Screenshot](../img/membership_object.png){ width="700" }
-
-
+<figure markdown>
+![Image title](../img/membership_object.png){ width="700" }
+<figcaption>Membership object</figcaption>
+</figure>
 
 
 <!--
@@ -221,9 +259,14 @@ Check the following entries in the *seta database - communities* collection:
 
 
 
-Check the objects for the community scopes in the *seta database - users* collection:
+Check the objects for the community scopes in the **seta database - users** collection:
 
-![Screenshot](../img/seta_usr_scope.png){ width="700" }
+
+<figure markdown>
+![Image title](../img/seta_usr_scope.png){ width="700" }
+<figcaption>User scope</figcaption>
+</figure>
+
 
 <!--
 ```
@@ -262,14 +305,20 @@ Check the objects for the community scopes in the *seta database - users* collec
 
 Expand **Resources** region and then Try out **POST** /resources/community/{community_id}:
 
-![Screenshot](../img/create-resource.png){ width="700" }
+
+<figure markdown>
+![Image title](../img/create-resource.png){ width="700" }
+<figcaption>Create Resource</figcaption>
+</figure>
 
 
-Check that the Resource entry in the *seta database - resources* collection:
-
-![Screenshot](../img/resource_community.png){ width="700" }      
+Check that the Resource entry appears in the **seta database - resources** collection:
 
 
+<figure markdown>
+![Image title](../img/resource_community.png){ width="700" }
+<figcaption>Resource</figcaption>
+</figure>
 
 <!--```
     {
@@ -284,11 +333,13 @@ Check that the Resource entry in the *seta database - resources* collection:
     }
 ```-->
 
-Check that the objects for the resource scopes in the *seta database - users* collection
-
-![Screenshot](../img/usrs_resources.png){ width="700" }
+Check that the objects for the resource scopes in the **seta database - users** collection exists
 
 
+<figure markdown>
+![Image title](../img/usrs_resources.png){ width="700" }
+<figcaption>Users Resource</figcaption>
+</figure>
 
 <!--```
     {
@@ -310,7 +361,7 @@ Check that the objects for the resource scopes in the *seta database - users* co
 -->
 
 
-At this point, Community API usage is set up and start using the methods under **seta-api-corpus** region.
+At this point, Community API usage is set up and you can start using the methods under **seta-api-corpus** region.
 
 
 [^1]:https://webgate.ec.europa.eu/ern/userguide/Content/A.HOW%20TO%20JOIN/Register%20on%20EU-Login.htm
