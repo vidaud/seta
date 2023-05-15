@@ -15,7 +15,7 @@
 
 # API
 
-- For the API interface, depending on the type of request: *get, post, put, delete* the various results will be described in a JSON file format. 
+- For the API, depending on the type of request: *get, post, put, delete* the various results will be described in a JSON file format. 
 
 === "Result after a *get* execution"
         

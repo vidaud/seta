@@ -1,11 +1,11 @@
 ## General
-The communities of the SeTA web app are a shared space where members engage with another to connect and learn about similar interests, opinions of different type of publications. 
+The communities of the SeTA software application are a shared space where members engage with another to connect and learn about similar interests, opinions of different type of publications. 
 
-In the SeTA Web App, we have two types of communities: public communities and private communities.   
+In the SeTA web application, we have two types of communities: public communities and private communities.   
 
-* **Public Community**:  Anyone with access to the web app can view all discussion forums and information in the online Community. Anyone can join the Community and contribute  to the Community.   
+* **Public Community**:  Anyone with access to the web Application can view all discussion forums and information in the online Community. Anyone can join the Community and contribute to the Community.   
 
-* **Private Community**:  The information and conversations can only be accessed by users with log-ins(often sent via invitation to a specific group or pre-loaded into the Community platforms membership database). All users are forced to ask for authorization to join and then been able to see content and conversations. In this type of communities, the administrators have the ability to deny access to users who don't fit membership credentials.
+* **Private Community**:  The information and conversations can only be accessed by users with log-ins(often sent via invitation to a specific user). All users are forced to ask for authorization to join and then been able to see content and conversations. In this type of communities, the administrators have the ability to deny access to users who don't fit membership credentials.
 
 
 ## Communities Web Interface

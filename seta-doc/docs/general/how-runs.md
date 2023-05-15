@@ -91,7 +91,7 @@ In SeTA, we have defined some Taxonomies that can be used, but it is also possib
 
 To create a new Taxonomy, users can set it together with the document they are uploading:
 
-- In the API Interface, through the function *PUT /corpus* it is possible to upload the new taxonomy.   
+- In the API, through the function *PUT /corpus* it is possible to upload the new taxonomy.   
 
 - In the Communities Web Interface, it is also possible to create new taxonomies. This is possible when uploading a new document, inside the new resource, in there the user  can find the option to create them. 
 
