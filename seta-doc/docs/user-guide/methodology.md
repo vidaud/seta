@@ -1,7 +1,6 @@
 
 
-The Search tool in SeTA follows a series of steps for the preparation of the knowledge data.
-
+The Search tool in SeTA follows a series of steps for the preparation of the knowledge data. The first two steps concern document collection, cleaning and storage, and the second two steps concern text analysis and modelling.   
 \       
 ![Image title](../img/machine_learning_icons.png){ align=right width=400 }   
 1. Everything starts by receiving as input from different sources the data that will fill the database.      
@@ -14,11 +13,10 @@ The Search tool in SeTA follows a series of steps for the preparation of the kno
 \                                                         
 \                                                           
 \                                   
-SeTA follows two distinct steps for the creation of the knowledge base: Document collection, cleaning and storage and Text analysis and modelling.
 
 ## Corpus preparation
 
-The corpus of SeTA comes from the following European Union Bodies: EUR-LEX, CORDIS, JRC PUBSY, EUROPARL.
+The corpus offered with SeTA comes from the following European Union sources: EUR-LEX, CORDIS, JRC PUBSY, EUROPARL.
 
 All the texts collected are in English only (except for some older legal texts where multiple languages are interleaved on the same page). 
 
@@ -31,30 +29,13 @@ The reasons for this decision are:
 
 ### Taxonomy
 
-The term **'Taxonomy'** refers to the science of categorizing things. Thus, a Taxonomy is a controlled vocabulary in which all terms have parent/child or broader/narrower relationships to other terms and belong to a single hierarchical structure. The structure is also referred to as a 'tree'. Non-preferred terms/synonyms may or may not be included in a Taxonomy. Taxonomy has recently gained popularity as a term for any type of controlled vocabulary, whether a term list, authority file, thesaurus, or any hybrid combination. [^1]
+The term **'Taxonomy'** refers to the science of categorizing things. Thus, a taxonomy is a controlled vocabulary in which all terms have parent/child or broader/narrower relationships to other terms and belong to a single hierarchical structure. The structure is also referred to as a 'tree'. Non-preferred terms/synonyms may or may not be included in a taxonomy. Taxonomy has recently gained popularity as a term for any type of controlled vocabulary, whether a term list, authority file, thesaurus, or any hybrid combination. [^1]
 
 Large amounts of information need to be well-organized in order to avoid the storage in unstructured ways in many repositories, databases, and libraries, often with ambiguous naming conventions that provide little insight into the material and its value to the user.      
-The implementation of Taxonomy in the preparation of the SeTA Corpus, is an effort to provide organization and increase productivity through quicker, more efficient retrieval and use.        
-In order to make it simpler to identify related information, Taxonomy uses a regulated vocabulary to represent the formal structure of classes or types of things inside a knowledge domain. Taxonomy aids in the hierarchical organization of the assets and material. It can be much simpler to search for or explore an asset or content management by classifying the content and assets in a Taxonomy. [^2]        
+The implementation of taxonomy in the preparation of the SeTA Corpus, is an effort to provide organization and increase productivity through quicker, more efficient retrieval and use.        
+In order to make it simpler to identify related information, taxonomy uses a regulated vocabulary to represent the formal structure of classes or types of things inside a knowledge domain. The taxonomy aids in the hierarchical organization of the assets and material. It can be much simpler to search for or explore an asset and do content management by classifying the content and assets in a taxonomy. [^2]        
 
-To facilitate uniform, precise, and rapid indexing and retrieval of the content of digital assets, Taxonomies are utilised in the descriptive metadata fields. Non-text digital files typically require some type of descriptive tagging in order to be retrieved in subject searches, whereas text documents can be automatically indexed or auto-classified based on search queries matching words within the texts. Uncontrolled keyword tagging frequently produces retrieval results that are inconsistent, inadequate, overly general, and biased. Implementing Taxonomies in the fields of descriptive metadata is the answer for indexing.[^2].    
-
-Consistent, precise, and quick indexing and retrieval of content are made possible by Taxonomies. Vocabulary design must be connected with the metadata approach because Taxonomies offer a variety of metadata fields.
-
-**Taxonomy provides** 
-
-- Relationships between the structure, content, and component parts.
-- Identifies and organises information into hierarchical categories for analysis.
-- It is a method of managing material that classifies data according to terms kept in metadata.
-- It introduces common terminologies and semantics across various systems and offers a unified view of the data in a system.
-- Establishes the terminology to be used for each notion and formalises the hierarchical relationships between them.
-- Specifies terminology and structure.
-- Improve data quality
-- Create an accessible metadata structure.
-- Control data assets through data governance.
-- Determine trends and patterns through guiding machine learning and data experiences.
-
-Taxonomies can be of several kind, such as *flat, hierarchical, network*, and so on. In SeTA, is been choose a hierarchical structure, with a single root that is subdivided into categories as needed to organise the information and represented as a tree. 
+Taxonomies can be of several kind, such as *flat, hierarchical, network*, and so on. In SeTA, a hierarchical structure was chosen, with a single root that is subdivided into categories as needed to organise the information and represented as a tree. 
 
 #### How to design a good Taxonomy
 
@@ -82,11 +63,11 @@ The following example describes a simple Taxonomy:
 
 
 #### Taxonomy in SeTA
-In SeTA, currently we are working with EuroVoc.  EuroVoc is a multilingual thesaurus originally built for processing the documentary information of the EU institutions.[^3]      
+SeTA, currently works with EuroVoc.  EuroVoc is a multilingual thesaurus originally built for processing the documentary information of the EU institutions.[^3]      
 
-Moreover, users have the possibility to define new Taxonomies if is necessary.    
+However, users have the possibility to define new taxonomies if necessary.    
 
-To create a new Taxonomy, users can set it together with the document they are uploading:
+To create a new taxonomy, users can set it together with the document they are uploading:
 
 - In the SeTA API, through the function *PUT /corpus* it is possible to upload the new taxonomy(*see example below*) .   
 
@@ -95,9 +76,9 @@ To create a new Taxonomy, users can set it together with the document they are u
 <!-- set up a screen shot from the communities  web app-->
 
 <!-- taxonomies to search by path and by code  -->
-There can be more than one Taxonomy for every document.    
+There can be more than one taxonomy for every document.    
 
-The following is an example of how-to setup a new Taxonomy within a document when loading into the API:
+The following is an example of how to setup a new taxonomy within a document when loading into the API:
 
 ```json
 {
@@ -190,7 +171,7 @@ In SeTA we create chunks of 300 words. With this we try to ensure our search res
 ### Embedding
 Word embeddings are numerical vector representations of text that keep track of the semantic and contextual relationships between words in the corpus of texts.  The words in this form are closer to one another in the vector space because they have stronger semantic links. Embeddings can be utilised with other models and, in general, improve the productivity and usability of ML models.
 
-The sentence-transformers model **all-distilroberta-v1**[^5] is utilised for the embedding process as it helps on the clustering and the semantic search because it maps sentences and paragraphs to a dimensional dense vector space. 
+The sentence-transformers model **all-distilroberta-v1**[^5] is utilised for the embedding process as it helps in the clustering and the semantic search because it maps sentences and paragraphs to a dimensional dense vector space. 
 
 
 ### Semantic search
@@ -229,19 +210,19 @@ Once we have the processed data, then is ingested and stored in an **Elasticsear
 
 
 ### Elasticsearch 
-Elasticsearch [^13] is a distributed, free and open search and analytics engine for all types of data, including textual, numerical, geospatial, structured and unstructured. Elasticsearch  is built on Apache Lucene and was first released in 2010 by Elasticsearch  N.V. (now known as Elastic).  Raw data flows into Elasticsearch  from a variety of sources, including logs, system metrics, and web applications. Data ingestion is the process by which this raw data is parsed, normalized, and enriched before it is indexed in Elasticsearch . Once indexed in Elasticsearch , users can run complex queries against their data and use aggregations to retrieve complex summaries of their data. *(NB: clicking on a footnote takes you there and back again)*
+Elasticsearch [^13] is a distributed, free and open search and analytics engine for all types of data, including textual, numerical, geospatial, structured and unstructured. Elasticsearch  is built on Apache Lucene and was first released in 2010 by Elasticsearch  N.V. (now known as Elastic).  Raw data flows into Elasticsearch  from a variety of sources, including logs, system metrics, and web applications. Data ingestion is the process by which this raw data is parsed, normalized, and enriched before it is indexed in Elasticsearch . Once indexed in Elasticsearch , users can run complex queries against their data and use aggregations to retrieve complex summaries of their data.
 
 
 ### Ontology
-Ontology[^14] shows properties and relations between a set of concepts and categories within a subject area or domain. It is a branch of linguistics called semantics, the study of meaning. With ontology, a machine can accurately interpret the meaning of the word “diamond” in relation to a baseball player, jeweller, or card suit. It can also help interpret the word “chicken” as either food or an animal or differentiate between “bank” as a place of business or land alongside a river or lake.   
+An ontology[^14] shows properties and relations between a set of concepts and categories within a subject area or domain. It is a branch of linguistics called semantics, the study of meaning. With an ontology, a machine can accurately interpret the meaning of the word “diamond” in relation to a baseball player, jeweller, or card suit. It can also help interpret the word “chicken” as either food or an animal or differentiate between “bank” as a place of business or land alongside a river or lake.   
 
 
 
-In SeTA the concept of Ontology is used when searching a term to return a list of similar terms that describes the ontology of the specified term. These lists are ranked by the relation strength to the query term. The first node in each list is direct relation to query term. The following terms in each sub list have relation to the first node in a sub list.  The result should be interpreted as follows: the first item in each sub list is first level connection to the query term. The following terms in sub lists have second level relation to the main query term and direct connection to the head of sub list.    
+In SeTA the concept of ontology is used when searching a term to return a list of similar terms that describes the ontology of the specified term. These lists are ranked by the relation strength to the query term. The first node in each list is the direct relation to query term. The following terms in each sub list have relation to the first node in a sub list.  The result should be interpreted as follows: the first item in each sub list is first level connection to the query term.     
 
 
 
-At this point, terms, text or full documents are ready to be searched through a Web Application interface or through an API, and users are able to target their search either to the individual document collections or to search across all collections in a harmonised way.
+At this point, terms, text or full documents are ready to be searched through the Web Application interface or through an API, and users are able to target their search either to the individual document collections or to search across all collections in a harmonised way.
 
 
 [^1]: https://link.springer.com/article/10.1057/dam.2010.29

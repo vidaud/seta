@@ -1,5 +1,5 @@
 ![Image title](../img/who_use_it.png){ align=right width=600 }
-^^SeTA^^ is developed for anybody who wants to search in EU publications according to *meaning* as opposed to according to *literal* text. The user can search by presenting one or more keywords, but also by presenting an entire document.
+^^SeTA^^ is developed for anybody who wants to search in EU publications according to *meaning* as opposed to according to *literal* text. The user can search by presenting one or more keywords, but also by presenting text or even an entire document.       
 
 SeTA provides a semantic system that brings entities, concepts, relations and predicates together to provide more context to language so it is possible to understand text data with more accuracy.
 
