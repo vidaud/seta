@@ -7,11 +7,11 @@ The main categories are:
 - Community Change Requests     
 - Community Memberships      
 - Community Invites       
-- Invites
-- Resources
-- Resource Contributors
-- Resource Change Requests
-- Community User Permissions
+- Invites   
+- Resources     
+- Resource Contributors     
+- Resource Change Requests     
+- Community User Permissions     
         
 
  
@@ -19,37 +19,71 @@ The main categories are:
 
 The Communities section is the related to the creation, retrieve, update and delete the communities.
 
-#### POST /communities
+**POST /communities**   
 
 Create a new community and add this user as a member with elevated scopes.    
     
+<figure markdown>
+![Image title](/docs/img/post_community.png){ width="900" }
+<figcaption>POST /community</figcaption>
+</figure>
+
+
+<figure markdown>
+![Image title](/docs/img/post_community_result.png){ width="900" }
+<figcaption>POST /community (result)</figcaption>
+</figure>
+
+
 <!-- <!-- ![Screenshot](/docs/img/post_community.png){ width="900" } -->
 <!-- ![Screenshot](/docs/img/post_community_result.png){ width="900" } -->
 
-#### GET /communities
+**GET /communities**     
 Retrieve community list for this user.    
 
+<figure markdown>
+![Image title](/docs/img/get_communities.png){ width="900" }
+<figcaption>GET /communities</figcaption>
+</figure>
 <!-- ![Screenshot](/docs/img/get_communities.png){ width="900" } -->
 
 
-#### DELETE /communities/{id}
+**DELETE /communities/{id}**      
 
 Delete community entries.     
 
+<figure markdown>
+![Image title](/docs/img/delete_communities_id.png){ width="900" }
+<figcaption>DELETE /communities{id}</figcaption>
+</figure>
 <!-- ![Screenshot](/docs/img/delete_communities_id.png){ width="900" } -->
 
 
 
-#### GET /communities/{id}
+**GET /communities/{id}**      
 Retrieve community, if user is a member of it.    
+
+<figure markdown>
+![Image title](/docs/img/get_communities_id.png){ width="900" }
+<figcaption>GET /communities{id}</figcaption>
+</figure>
+
+
 
 <!-- ![Screenshot](/docs/img/get_communities_id.png){ width="900" } -->
 
 
-#### PUT /communities/{id}
+**PUT /communities/{id}**     
 Update community fields.
 
-
+<figure markdown>
+![Image title](/docs/img/put_communities_id.png){ width="900" }
+<figcaption>PUT /communities{id}</figcaption>
+</figure>
+<figure markdown>
+![Image title](/docs/img/put_communities_id_result.png){ width="900" }
+<figcaption>PUT /communities{id} (result)</figcaption>
+</figure>
 <!-- ![Screenshot](/docs/img/put_communities_id.png){ width="900" } -->
 <!-- ![Screenshot](/docs/img/put_communities_id_result.png){ width="900" } -->
 

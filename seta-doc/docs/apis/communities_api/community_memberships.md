@@ -1,5 +1,14 @@
-#### POST  /communities/{community_id}/memberships    
+# Community Memberships
+
+**POST  /communities/{community_id}/memberships**    
 Add new member to an opened community.    
+
+
+<figure markdown>
+![Image title](/docs/img/post_communities_community_id_memberships.png){ width="900" }
+<figcaption>POST /communities{community_id} memberships</figcaption>
+</figure>
+
 
 <!-- ![Screenshot](/docs/img/post_communities_community_id_memberships.png){ width="900" } -->
 

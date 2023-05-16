@@ -12,7 +12,7 @@ The following setup and deployment guidelines are  for ^^Production^^ environmen
 
 - It is necessary to install [Git](https://git-scm.com/downloads). 
 
-- Install [Docker compose V2](https://docs.docker.com/compose/install/).     *For reference to install in Linux, Mac or Windows*
+- Install Docker compose V2.  [*Click for reference to install in Linux, Mac or Windows*](https://docs.docker.com/compose/install/)
 
 ## Installation of the project
 
@@ -149,7 +149,9 @@ After successfully start all the containers you are ready to open your browser a
 
 * **User Web App:** [[location] /](/)
 
-* **API:** [[location] /seta-api/doc](/seta-api/doc)
+* **SETA API:** [[location] /seta-api/doc](/seta-api/doc)
+
+* **SETA API Communities:** [[location] /api/communities/v1/doc](/api/communities/v1/doc)
 
 * **Documentation:** [[location] /docs](/docs)
 
