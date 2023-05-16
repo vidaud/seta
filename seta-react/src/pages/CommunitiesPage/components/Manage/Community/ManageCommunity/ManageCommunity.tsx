@@ -13,15 +13,14 @@ import {
 } from '@mantine/core'
 import { useParams } from 'react-router-dom'
 
-import { useCommunityManagement } from '../../../../../../api/communities/community'
+import { useCommunityID } from '../../../../../../api/communities/community'
 import { environment } from '../../../../../../environments/environment'
 import CommunitiesLoading from '../../../common/SuggestionsLoading'
 import changeRequestAttributes from '../../../Dashboard/ChangeRequests/changeRequestAttributes.json'
 import ChangeRequests from '../../../Dashboard/ChangeRequests/ChangeRequests'
 import joinAttributes from '../../../Dashboard/LastJoinRequests/joinAttributes.json'
 import LastJoinRequests from '../../../Dashboard/LastJoinRequests/LastJoinRequests'
-import RecentResources from '../../../Dashboard/RecentResources/RecentResources'
-import resourcesAttributes from '../../../Dashboard/RecentResources/resourcesAttributes.json'
+import CommunityResources from '../../Resource/CommunityResources/CommunityResources'
 import InviteMember from '../InviteMemberModal/InviteMemberModal'
 
 const useStyles = createStyles({
@@ -44,7 +43,7 @@ const useStyles = createStyles({
 const ManageCommunity = () => {
   const { classes } = useStyles()
   const { id } = useParams()
-  const { data, isLoading } = useCommunityManagement(id)
+  const { data, isLoading } = useCommunityID(id)
   const items = [
     { title: 'My Communities', href: `${environment.COMMUNITIES_API_PATH}/my-list` },
     { title: 'View Community', href: `${environment.COMMUNITIES_API_PATH}/details/${id}` },
@@ -70,7 +69,7 @@ const ManageCommunity = () => {
       <Breadcrumbs>{items}</Breadcrumbs>
       <div className={classes.page}>
         <Group position="right">
-          <InviteMember id={data?.community_id} />
+          <InviteMember id={data?.communities.community_id} />
           <Button
             color="blue"
             component="a"
@@ -83,21 +82,21 @@ const ManageCommunity = () => {
           <Grid.Col span={12}>
             <Paper shadow="xs" p="md">
               <Title order={5} className={classes.title}>
-                {data?.title}
+                {data?.communities.title}
               </Title>
-              <Text className={classes.text}>{data?.description}</Text>
+              <Text className={classes.text}>{data?.communities.description}</Text>
               <Table className={classes.table}>
                 <tbody>
                   <tr>
-                    <td>Membership: {data?.membership}</td>
-                    <td>Created at: {data?.created_at.toString()}</td>
+                    <td>Membership: {data?.communities.membership}</td>
+                    <td>Created at: {data?.communities.created_at.toString()}</td>
                   </tr>
                   <tr>
-                    <td>Data Type: {data?.data_type}</td>
-                    <td>Created by: {data?.creator.full_name}</td>
+                    <td>Data Type: {data?.communities.data_type}</td>
+                    <td>Created by: {data?.communities.creator?.full_name}</td>
                   </tr>
                   <tr>
-                    <td>Status: {data?.status}</td>
+                    <td>Status: {data?.communities.status}</td>
                     <td />
                   </tr>
                 </tbody>
@@ -125,7 +124,7 @@ const ManageCommunity = () => {
           </Grid.Col>
           <Grid.Col span={12}>
             <Paper withBorder p="md" radius="md" key="Recent Resources">
-              <RecentResources data={resourcesAttributes.props.data} />
+              <CommunityResources data={data.resources} />
             </Paper>
           </Grid.Col>
         </Grid>
