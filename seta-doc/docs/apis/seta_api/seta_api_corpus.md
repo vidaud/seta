@@ -1,4 +1,4 @@
-# seta api corpus
+##  seta api corpus
 
 
 The corpus, is a collection of text organized into json files. The SeTA API provides with the following functions to manage the corpus.
@@ -6,6 +6,7 @@ The corpus, is a collection of text organized into json files. The SeTA API prov
 **PUT /corpus**       
 Put a document into corpus index. The format is a JSON file.
 
+<!--
 <figure markdown>
 ![Image title](/docs/img/put-corpus.png){ width="900" }
 <figcaption>PUT /corpus</figcaption>
@@ -14,12 +15,11 @@ Put a document into corpus index. The format is a JSON file.
 ![Image title](/docs/img/put-corpus-result.png){ width="900" }
 <figcaption>PUT /corpus (result)</figcaption>
 </figure>
-<!-- ![Screenshot](/docs/img/put-corpus.png)  -->
-<!-- ![Screenshot](/docs/img/put-corpus-result.png)  -->
+ -->
 
 **GET /corpus**       
 Retrieve documents related to a term from EU corpus.
-
+<!--
 <figure markdown>
 ![Image title](/docs/img/get-corpus.png){ width="900" }
 <figcaption>GET /corpus</figcaption>
@@ -29,13 +29,12 @@ Retrieve documents related to a term from EU corpus.
 ![Image title](/docs/img/get-corpus-result.png){ width="900" }
 <figcaption>GET /corpus (result)</figcaption>
 </figure>
-<!-- ![Screenshot](/docs/img/get-corpus.png)  -->
-<!-- ![Screenshot](/docs/img/get-corpus-result.png)  -->
+ -->
 
 
 **POST /corpus**     
 Retrieve documents related to a term from EU corpus. The input is a JSON file with the options I want to retrieve.
-
+<!--
 <figure markdown>
 ![Image title](/docs/img/post-corpus.png){ width="900" }
 <figcaption>POST /corpus</figcaption>
@@ -45,12 +44,11 @@ Retrieve documents related to a term from EU corpus. The input is a JSON file wi
 ![Image title](/docs/img/post-corpus-result.png){ width="900" }
 <figcaption>POST /corpus (result)</figcaption>
 </figure>
-<!-- ![Screenshot](/docs/img/post-corpus.png)  -->
-<!-- ![Screenshot](/docs/img/post-corpus-result.png)  -->
+   -->
 
 **GET /corpus/{id}**      
 Given the Elasticsearch  unique _id, the relative document from EU corpus is shown.
-
+<!--
 <figure markdown>
 ![Image title](/docs/img/get-corpus-id.png){ width="900" }
 <figcaption>GET /corpus{id}</figcaption>
@@ -60,15 +58,12 @@ Given the Elasticsearch  unique _id, the relative document from EU corpus is sho
 ![Image title](/docs/img/get-corpus-id-result.png){ width="900" }
 <figcaption>GET /corpus{id} (result)</figcaption>
 </figure>
-
-
-<!-- ![Screenshot](/docs/img/get-corpus-id.png)  -->
-<!-- ![Screenshot](/docs/img/get-corpus-id-result.png)  -->
+   -->
 
 **DELETE /corpus/{id}**     
 
 Given the Elasticsearch  unique _id, the relative document is deleted.
-
+<!--
 <figure markdown>
 ![Image title](/docs/img/delete-corpus-id.png){ width="900" }
 <figcaption>DELETE /corpus{id}</figcaption>
@@ -78,7 +73,5 @@ Given the Elasticsearch  unique _id, the relative document is deleted.
 ![Image title](/docs/img/delete-corpus-id-result.png){ width="900" }
 <figcaption>DELETE /corpus{id} (result)</figcaption>
 </figure>
-
-<!-- ![Screenshot](/docs/img/delete-corpus-id.png)  -->
-<!-- ![Screenshot](/docs/img/delete-corpus-id-result.png)  -->
+-->
 

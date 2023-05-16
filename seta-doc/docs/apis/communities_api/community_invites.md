@@ -1,5 +1,5 @@
 
-# Community Invitations
+# Community Invites
 
 #### POST  /communities/{community_id}/invites    
 Create new invites.    

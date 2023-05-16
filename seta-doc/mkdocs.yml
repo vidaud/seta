@@ -91,19 +91,8 @@ nav:
       - Communities: 
         - General: user-guide/communities.md
     - APIs: 
-      - Seta API: 
-        - Seta API: apis/seta_api/seta_api.md
-        - seta api corpus: apis/seta_api/seta_api_corpus.md
-        - seta api similar: apis/seta_api/seta_api_similar.md
-        - seta api ontology: apis/seta_api/seta_api_ontology.md
-        - seta api embeddings: apis/seta_api/seta_api_embeddings.md
-      - Communities API: 
-        - Communities: apis/communities_api/seta_api_communities.md
-        - Community Change Requests: apis/communities_api/community_change_requests.md
-        - Community Memberships: apis/communities_api/community_memberships.md
-        - Community Invites: apis/communities_api/community_invites.md
-        - Resources: apis/communities_api/resources.md
-        - Community User Permissions: apis/communities_api/communities_user_permissions.md
+      - SeTA API: apis/seta_api/seta_api.md
+      - Communities API: apis/communities_api/seta_api_communities.md
   - Install SeTA:
     - Docker: setup/docker-architecture.md
     - Deployment: setup/deployment.md 

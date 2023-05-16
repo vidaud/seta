@@ -120,9 +120,9 @@ Creators and managers can remove documents from their Community.
 1. From the side menu click on ^^Manage^^ -> ^^My Communities^^.     
 2. From the communities list click on the Community you want to change.  
 3. On the top of the window click on button ^^Manage^^.    
-3. On section *Members* click on the member you want to remove.  
-4. Click on the delete icon and select ^^Remove^^ member from Community. 
-5. Click ^^Confirm^^.   
+4. On section *Members* click on the member you want to remove.  
+5. Click on the delete icon and select ^^Remove^^ member from Community. 
+6. Click ^^Confirm^^.   
 
 !!! info
     Removed members will have to request to join the Community again if they wish to re-join.

@@ -45,11 +45,11 @@ Once you are logged in, you can see in the top menu the link to the Search and t
 
 
 
-## API
+## APIs
 
-The SeTA API provides the functions and procedures to access data from a developer point of view.
+The SeTA APIs provides the functions and procedures to access data from a developer point of view.
 
-In SeTA there are two API's:   
+In SeTA there are two APIs:   
 - Seta API    
 - Communities API 
 

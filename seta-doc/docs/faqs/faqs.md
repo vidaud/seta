@@ -45,182 +45,84 @@
 
 ## Communities 
 
-??? abstract "What is the difference between an admin and a moderator in a community?" 
+??? abstract "How can I remove documents in a Community?" 
               
-    **As a community admin, he will have the following tasks:**
+    Creators and managers can remove documents from their Community.
 
-    - Make another member an admin or moderator. 
-    - Remove an admin or moderator. 
-    - Manage community settings (ex: change the community name cover photo or privacy settings). 
+    1. From the side menu click on ^^Manage^^ -> ^^My Resources^^.    
+    2. From the resources list click on the delete icon.    
+    3. Click Confirm.     
+
+
+??? abstract "What is the difference between a manager and a creator in a Community?"
+              
+    **As a Community creator he will have the following tasks:**
+
+    - Make another member a manager or contributor. 
+    - Remove a manager or contributor. 
+    - Manage Community settings (ex: change the Community name or privacy settings). 
     - Approve or deny membership requests and participant requests. 
-    - Approve or deny posts in the community. 
-    - Remove posts and comments on posts. 
-    - Remove and ban people from the community. 
-    - Pin or unpin a post. 
+    - Approve or deny documents in the Community. 
+    - Remove documents and comments on documents. 
+    - Remove and block people from the Community. 
+    - Upload or remove a document. 
 
 
-    **As a community moderator, he will have the following tasks: **
+    **As a Community manager he will have the following tasks:**
 
     - Approve or deny membership requests and participant requests. 
-    - Approve or deny posts in the community. 
-    - Remove posts and comments on posts. 
-    - Remove and ban people from the community. 
-    - Pin or unpin a post.
+    - Approve or deny documents in the Community. 
+    - Remove documents and comments on documents. 
+    - Remove people from the Community. 
+    - Upload or remove a document.  
 
 
-??? abstract "What happens when a community doesnt have any admins?" 
-             
-    All communities must have an admin. 
-
-    **To claim the admin role:**  
-
-    1. From the ^^Header^^ menu click ^^Communities^^.  
-    2. Click ^^More^^ below your communitys cover photo then click ^^Members^^.  
-    3. Click ^^Become Admin^^ below ^^Admins & Moderators^^.  
-    4. Click Confirm. 
-
-    Only one admin spot can be claimed. Once the creator has left the community creator status can't be granted to an admin or moderator. If you can't claim the admin role in a community it may be because there are moderators or other people have recently been accepted to become an admin.
-
-
-??? abstract "What is the difference between a member visitor and participant in open communities?" 
-                        
-    In open communities you can interact with a community as a member or as a visitor. Once a member or visitor posts or comments in the community they become a participant. 
-
-    -  **Member**:  someone who has joined the community. 
-        - No admin approval required. 
-        - Can post and comment. 
-        
-    - **Visitor**: someone who isn't a member of the community. 
-        - No admin approval required. 
-        - Can post and comment. 
-        
-    - **Participant**: a member or visitor who has posted or commented in the community. 
-        - Admin approval required if admin has turned on participant approval. 
-        - Can post and comment.
 
 
 ## Manage a community 
 
-??? abstract "How do I manage topics in a community I admin?" 
+
+??? abstract " How do I remove someone from a community?" 
+                     
+    **To remove a member:**   
+
+    1. From the side menu click on ^^Manage^^ -> ^^My Communities^^.     
+    2. From the communities list click on the Community you want to change.  
+    3. On the top of the window click on button ^^Manage^^.    
+    3. On section *Members* click on the member you want to remove.  
+    4. Click on the delete icon and select ^^Remove^^ member from Community. 
+    5. Click ^^Confirm^^.   
+
+        Removed members will have to request to join the community again if they wish to rejoin. 
+
+
+??? abstract "How can I change the name of a Community?"
                         
-    Topics are hashtags added to community posts to help people discover content they might be interested in. Community admins can pin a topic if they want people to find it easily or hide a topic if they dont want it to be prominent.    
+    Only **users with rights to edit** can change the Community name.  
 
-    **To pin a topic:**   
+    1. From the side menu click on ^^Manage^^ -> ^^My Communities^^.  
+    2. From the communities list click on the Community you want to change.  
+    2. On the top of the community window click on button ^^Manage^^.  
+    3. In the next window, in section ^^Details^^ click on button at the bottom of the section ^^Update^^.  
+    4. You can change the details of your Community: *Community ID, Title, Description, Data Type, Membership*.     
+    5. Click *Update*
 
-    1. From the ^^Header^^ menu click ^^Communities^^.  
-    2. Select ^^Topics^^ at the top of the community.  
-    3. Next to the topic you want to pin click more and select ^^Pin topic^^.   
-
-    **To hide a topic:**   
-
-    1. From the ^^Header^^ menu click ^^Communities^^.  
-    2. Select ^^Topics^^ at the top of the community.  
-    3. Next to the topic you want to hide click more and select ^^Hide topic.^^
-
-??? abstract "How do I invite new members to the community?" 
-                     
- {--    In SeTA web app there are two options:   --}
-
- {--    **Invite with email:**  
-        Admins can invite new members to a community by email.  The email will include a link to the community where the person can confirm that they want to join. In open communities they'll be automatically approved. In private communities they'll have to be approved by a community admin. Only the person who received the email can join the community with that link.  
-        
-    1. From the ^^Header^^ menu click ^^Communities^^.  
-    2. Click + Invite below the cover photo.  
-    3. Select Invite with email.  
-    4. Add email addresses. 
-    5. Click Send invite.   --}
-
-    **Invite with link:**  
-        Admins and members can use a link to invite others to a community. Once someone receives the invite to join the community they'll then have to request to join and be approved by a community admin. The link will expire after either 48 hours or 20 people click on it whichever comes first. After the link expires you can create a new link. Keep in mind that people who receive the link from you might understand youre a member of this community.   
-        
-    1. From the ^^Header^^ menu click ^^Communities^^.  
-    2. Click + Invite below the cover photo.  
-    3. Select Invite with link.  
-    4. Click the link to copy it then share it. 
-
-    Once someone is invited to join a community they'll be able to preview the community before deciding if theyd like to join the community unless they were invited to the community by email. If someone is previewing the community they won't be included in the total member count. If you invite people to a community an admin may need to approve the request before they can join. Admins and members can only invite a limited number of people to join each day.
-
-
-??? abstract " How do I remove or ban someone from a community?" 
-                     
-    **To remove or ban a member:**   
-
-    1. From the ^^Header^^ menu click ^^Communities^^.  
-    2. Click ^^Members^^ below the cover photo.  
-    3. Find the member you want to remove or ban.  
-    4. Click next to their name and select ^^Remove^^ member or ^^Ban^^ from community. 
-    5. If youre removing the member and youd also like to ban them click ^^Ban^^ [name].  
-    6. Click ^^Confirm^^.   
-
-    **To remove a ban you've put on someone:**   
-
-    1. From the ^^Header^^ menu click ^^Communities^^.  
-    2. Click ^^Members^^ below the cover photo.  
-    3. Click ^^Unban^^ next to the name of the person youd like to unban.  
-    4. Click ^^Unban^^ to confirm. 
-
-    Removed members will have to request to join the community again if they wish to rejoin. Banned members won't be able to find the community in search or see any of its content and they can't be invited to the community again by members.
 
 ## Join a Community 
 
-??? abstract "What access I will have once I join a community?"
-    You will be able to:
-
-    - Discuss topics of the community interest. 
-    - Learn together. 
-    - Collaborate on personal projects or course goals. 
-    - Share advice and related news. 
-    - Face-to-face meetings. 
-    - Social media groups. 
-    - Discussions. 
-    - Webinars. 
-    - Group activities.
-
 ??? abstract "How do I find new communities I might be interested in?"                
-    1. From the ^^Header^^ menu click ^^Communities.^^  
-    2. From your Feed click ^^Communities^^ in the left menu.  
-    3. Click ^^Discover^^ to see ^^Suggested for You^^ ^^Categories^^ or ^^More Suggestions.^^
+    1. From the side menu click on ^^Discover^^ -> ^^Communities^^.  
+    2. In the search bar enter the name of the Community you are looking for.  
 
-??? abstract "How can I see the members of a community?" 
-                        
-    Anyone can see who is a member of an open community. In a private community you have to be a member to see who the other members are. 
 
-    **See the members of a community:**  
-    1. From the ^^Header^^ menu click ^^Communities^^.   
-    2. Click ^^Members^^ (for private communities) or ^^People^^ (for open communities) at the top of the community. 
-
-    The member list will update automatically as people join and leave the community.
 
 ??? abstract "Why can't I post comment or participate in a community?" 
                         
-    If your ability to post comment or participate in a community has been turned off it may be because a community admin has temporarily turned off your ability to post comment or participate in their community. They might have temporarily suspended you temporarily limited how frequently you can post or comment or slowed down comments on a post.
-
-??? abstract " How do I leave a community?" 
-
-    1. From the ^^Header^^ menu click ^^Communities^^.  
-    2. Click Joined in the top right then select ^^Leave Community^^.  
-    3. Click ^^Leave Community^^ to confirm. 
-
-    **When you leave a community:** 
-
-    - Members won't be notified if you leave. 
-    - Youre removed from the member list and the community will be removed from your list of communities.
-
+    If your ability to post comment or participate in a community has been turned off it may be because a community admin has take you out of the the community.    
 
 ??? abstract " How do I see a list of my communities?" 
                      
-    1. From the ^^Header^^ menu click ^^Communities^^.  
-    2. In the left menu is ^^Communities You Manage^^ and ^^Communities you've Joined.^^
-
-??? abstract " How do I report something I see in a community?" 
-                       
-    **To report something you see in a community:**  
-
-    1. From the ^^Header^^ menu click ^^Communities^^.  
-    2. Go to the post you want to report.  
-    3. Click in the top right of the post.  
-    4. Select ^^Report post to community admins^^ to report the post to an admin. 
-
-    Admins may or may not choose to remove the post or ban the person who shared the post.
+    1. From the side menu click on ^^Manage^^ -> ^^My Communities^^.  
+    2. You will see a list of the Communities in the page.
 
  
