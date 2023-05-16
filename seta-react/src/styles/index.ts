@@ -1,3 +1,3 @@
-export * from './emotionCache'
+export * from './emotion-cache'
 export * from './global'
 export * from './theme'

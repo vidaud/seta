@@ -3,3 +3,7 @@ export type ChildrenProp = {
 }
 
 export type PropsWithChildren<P> = P & ChildrenProp
+
+export type ClassNameProp = {
+  className?: string
+}
