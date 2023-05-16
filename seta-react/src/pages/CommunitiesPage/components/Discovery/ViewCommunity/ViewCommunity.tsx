@@ -31,14 +31,13 @@ const ViewCommunity = () => {
 
   const { data, isLoading } = useCommunityID(id)
 
-  const items = [
-    { title: 'My Communities', href: 'http://localhost/communities/my-list' },
-    { title: `${id}` }
-  ].map((item, index) => (
-    <Anchor href={item.href} key={index}>
-      {item.title}
-    </Anchor>
-  ))
+  const items = [{ title: 'My Communities', href: '/communities/my-list' }, { title: `${id}` }].map(
+    (item, index) => (
+      <Anchor href={item.href} key={index}>
+        {item.title}
+      </Anchor>
+    )
+  )
 
   useEffect(() => {
     if (data) {

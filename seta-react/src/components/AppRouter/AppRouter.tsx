@@ -16,6 +16,8 @@ import NewCommunity from '../../pages/CommunitiesPage/components/Manage/Communit
 import UpdateCommunity from '../../pages/CommunitiesPage/components/Manage/Community/UpdateCommunity/UpdateCommunity'
 import ViewMyCommunity from '../../pages/CommunitiesPage/components/Manage/Community/ViewMyCommunity/ViewMyCommunity'
 import NewResource from '../../pages/CommunitiesPage/components/Manage/Resource/NewResource/NewResource'
+import UpdateResource from '../../pages/CommunitiesPage/components/Manage/Resource/UpdateResource/UpdateResource'
+import ViewMyResource from '../../pages/CommunitiesPage/components/Manage/Resource/ViewResource/ViewResource'
 import DashboardsPage from '../../pages/CommunitiesPage/pages/DashboardPage'
 import CommunityListPage from '../../pages/CommunitiesPage/pages/Discovery/CommunityList/CommunityList'
 import MyCommunityListPage from '../../pages/CommunitiesPage/pages/Manage/MyCommunityList/MyCommunityList'
@@ -142,6 +144,22 @@ const routes = createRoutesFromElements(
         element={
           <RequireAuth>
             <ManageCommunity />
+          </RequireAuth>
+        }
+      />
+      <Route
+        path="details/:id/:resourceId"
+        element={
+          <RequireAuth>
+            <ViewMyResource />
+          </RequireAuth>
+        }
+      />
+      <Route
+        path="update/:id/:resourceId"
+        element={
+          <RequireAuth>
+            <UpdateResource />
           </RequireAuth>
         }
       />

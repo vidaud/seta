@@ -2,9 +2,9 @@ import { useQuery } from '@tanstack/react-query'
 import { getCookie } from 'typescript-cookie'
 
 import community_api from './api'
-import type { ResourceResponse } from './resource'
+import type { CreateInvitationAPI, CreateResourceAPI, ResourceResponse } from './resource'
 
-const COMMUNITIES_API_PATH = '/communities/'
+import { environment } from '../../environments/environment'
 
 export type CommunityResponse = {
   community_id: string
@@ -52,9 +52,11 @@ export type ManageCommunityAPI = {
 export const cacheKey = (id?: string) => ['communities', id]
 
 const getCommunity = async (id?: string): Promise<Community> => {
-  const communities = await community_api.get<CommunityResponse>(`${COMMUNITIES_API_PATH}${id}`)
+  const communities = await community_api.get<CommunityResponse>(
+    `${environment.COMMUNITIES_API_PATH}/${id}`
+  )
   const resources = await community_api.get<ResourceResponse[]>(
-    `${COMMUNITIES_API_PATH}${id}/resources`
+    `${environment.COMMUNITIES_API_PATH}/${id}/resources`
   )
 
   const data = {
@@ -70,7 +72,9 @@ const getCommunity = async (id?: string): Promise<Community> => {
 export const useCommunityID = (id?: string) => useQuery(cacheKey(id), () => getCommunity(id))
 
 const getCommunityManage = async (id?: string): Promise<ManageCommunityAPI> => {
-  const { data } = await community_api.get<ManageCommunityAPI>(`${COMMUNITIES_API_PATH}${id}`)
+  const { data } = await community_api.get<ManageCommunityAPI>(
+    `${environment.COMMUNITIES_API_PATH}/${id}`
+  )
 
   return data
 }
@@ -82,7 +86,7 @@ const csrf_token = getCookie('csrf_access_token')
 
 export const createCommunity = async (values?: CreateCommunityAPI) => {
   await community_api
-    .post<CreateCommunityAPI[]>(`${COMMUNITIES_API_PATH}`, values, {
+    .post<CreateCommunityAPI[]>(`${environment.COMMUNITIES_API_PATH}`, values, {
       headers: {
         accept: 'application/json',
         'X-CSRF-TOKEN': csrf_token,
@@ -91,7 +95,7 @@ export const createCommunity = async (values?: CreateCommunityAPI) => {
     })
     .then(response => {
       if (response.status === 201) {
-        window.location.href = '/communities/my-list'
+        window.location.href = `${environment.COMMUNITIES_API_PATH}/my-list`
       }
     })
     .catch(error => {
@@ -101,7 +105,7 @@ export const createCommunity = async (values?: CreateCommunityAPI) => {
 
 export const updateCommunity = async (id?: string, values?: UpdateCommunityAPI) => {
   await community_api
-    .put(`${COMMUNITIES_API_PATH}${id}`, values, {
+    .put(`${environment.COMMUNITIES_API_PATH}/${id}`, values, {
       headers: {
         accept: 'application/json',
         'X-CSRF-TOKEN': csrf_token,
@@ -110,7 +114,7 @@ export const updateCommunity = async (id?: string, values?: UpdateCommunityAPI) 
     })
     .then(response => {
       if (response.status === 200) {
-        window.location.href = '/communities/my-list'
+        window.location.href = `${environment.COMMUNITIES_API_PATH}/my-list`
       }
     })
     .catch(error => {
@@ -120,7 +124,7 @@ export const updateCommunity = async (id?: string, values?: UpdateCommunityAPI) 
 
 export const deleteCommunityByID = async (id?: string) => {
   await community_api
-    .delete(`${COMMUNITIES_API_PATH}${id}`, {
+    .delete(`${environment.COMMUNITIES_API_PATH}/${id}`, {
       headers: {
         accept: 'application/json',
         'X-CSRF-TOKEN': csrf_token,
@@ -129,7 +133,7 @@ export const deleteCommunityByID = async (id?: string) => {
     })
     .then(response => {
       if (response.status === 200) {
-        window.location.href = '/communities/my-list'
+        window.location.href = `${environment.COMMUNITIES_API_PATH}/my-list'`
       }
     })
     .catch(error => {
@@ -137,5 +141,43 @@ export const deleteCommunityByID = async (id?: string) => {
     })
 }
 
+export const createResource = async (id?: string, values?: CreateResourceAPI) => {
+  await community_api
+    .post<CreateResourceAPI[]>(`${environment.COMMUNITIES_API_PATH}/${id}/resources`, values, {
+      headers: {
+        accept: 'application/json',
+        'X-CSRF-TOKEN': csrf_token,
+        'Content-Type': 'application/x-www-form-urlencoded'
+      }
+    })
+    .then(response => {
+      if (response.status === 201) {
+        window.location.href = `${environment.COMMUNITIES_API_PATH}/details/${id}`
+      }
+    })
+    .catch(error => {
+      console.log(error)
+    })
+}
+
+export const createCommunityInvite = async (id?: string, values?: CreateInvitationAPI) => {
+  console.log(id)
+  await community_api
+    .post<CreateInvitationAPI[]>(`${environment.COMMUNITIES_API_PATH}/${id}/invites`, values, {
+      headers: {
+        accept: 'application/json',
+        'X-CSRF-TOKEN': csrf_token,
+        'Content-Type': 'application/x-www-form-urlencoded'
+      }
+    })
+    .then(response => {
+      if (response.status === 200) {
+        console.log(response)
+      }
+    })
+    .catch(error => {
+      console.log(error)
+    })
+}
 // export const useNewCommunity = (properties?: CommunityAPI) =>
 //   useQuery(cacheKey(), () => createCommunity(properties))

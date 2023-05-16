@@ -3,7 +3,7 @@ import { getCookie } from 'typescript-cookie'
 
 import community_api from './api'
 
-const COMMUNITIES_API_PATH = '/communities/'
+const RESOURCE_API_PATH = '/resources/'
 
 export type ResourceResponse = {
   community_id: string
@@ -28,23 +28,37 @@ export type CreateResourceAPI = {
   abstract: string
 }
 
-export const cacheKey = (id?: string) => ['communities', id]
+export type UpdateResourceAPI = {
+  community_id: string
+  resource_id: string
+  title: string
+  abstract: string
+}
 
-export const getResources = async (id?: string): Promise<ResourceResponse[]> => {
-  const { data } = await community_api.get<ResourceResponse[]>(
-    `${COMMUNITIES_API_PATH}${id}/resources`
-  )
+export type CreateInvitationAPI = {
+  email: string[]
+  message: string
+}
+
+export const cacheKey = (id?: string) => ['resources', id]
+
+export const getResource = async (id?: string): Promise<ResourceResponse> => {
+  const { data } = await community_api.get<ResourceResponse>(`${RESOURCE_API_PATH}${id}`)
 
   return data
 }
 
-export const useResourceID = (id?: string) => useQuery(cacheKey(id), () => getResources(id))
+export const useResourceID = (id?: string) => useQuery(cacheKey(id), () => getResource(id))
 
 const csrf_token = getCookie('csrf_access_token')
 
-export const createResource = async (id?: string, values?: CreateResourceAPI) => {
+export const updateResource = async (
+  id?: string,
+  resource_id?: string,
+  values?: UpdateResourceAPI
+) => {
   await community_api
-    .post<CreateResourceAPI[]>(`${COMMUNITIES_API_PATH}${id}/resources`, values, {
+    .put(`${RESOURCE_API_PATH}${resource_id}`, values, {
       headers: {
         accept: 'application/json',
         'X-CSRF-TOKEN': csrf_token,
@@ -52,7 +66,26 @@ export const createResource = async (id?: string, values?: CreateResourceAPI) =>
       }
     })
     .then(response => {
-      if (response.status === 201) {
+      if (response.status === 200) {
+        window.location.href = `/communities/details/${id}`
+      }
+    })
+    .catch(error => {
+      console.log(error)
+    })
+}
+
+export const deleteResourceByID = async (id?: string, resource_id?: string) => {
+  await community_api
+    .delete(`${RESOURCE_API_PATH}${resource_id}`, {
+      headers: {
+        accept: 'application/json',
+        'X-CSRF-TOKEN': csrf_token,
+        'Content-Type': 'application/x-www-form-urlencoded'
+      }
+    })
+    .then(response => {
+      if (response.status === 200) {
         window.location.href = `/communities/details/${id}`
       }
     })

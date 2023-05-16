@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query'
 
 import community_api from './api'
 
-const COMMUNITIES_API_PATH = '/communities/'
+import { environment } from '../../environments/environment'
 
 export type CommunitiesResponse = {
   community_id: string
@@ -22,7 +22,9 @@ export type CommunitiesResponse = {
 export const cacheKey = () => ['communities']
 
 const getCommunities = async (): Promise<CommunitiesResponse[]> => {
-  const { data } = await community_api.get<CommunitiesResponse[]>(`${COMMUNITIES_API_PATH}`)
+  const { data } = await community_api.get<CommunitiesResponse[]>(
+    `${environment.COMMUNITIES_API_PATH}`
+  )
 
   return data
 }

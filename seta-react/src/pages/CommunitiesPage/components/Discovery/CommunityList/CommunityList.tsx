@@ -17,6 +17,7 @@ import type { Community } from '~/models/communities/communities'
 
 import type { CommunitiesResponse } from '../../../../../api/communities/communities'
 import { useCommunities } from '../../../../../api/communities/communities'
+import { environment } from '../../../../../environments/environment'
 import { CommunitiesEmpty, CommunitiesError } from '../../common'
 import CommunitiesLoading from '../../common/SuggestionsLoading'
 import { Th, sortData } from '../../utils'
@@ -90,8 +91,6 @@ const CommunityList = () => {
     setSortedData(sortData(data, { sortBy, reversed: reverseSortDirection, search: value }))
   }
 
-  const COMMUNITIES_API_PATH = 'http://localhost/communities'
-
   const rows =
     sortedData && sortedData.length > 0
       ? sortedData?.map(row => (
@@ -128,7 +127,7 @@ const CommunityList = () => {
                     <Menu.Item
                       icon={<IconEye size="1rem" stroke={1.5} />}
                       component="a"
-                      href={`${COMMUNITIES_API_PATH}/view/${row.community_id}`}
+                      href={`${environment.COMMUNITIES_API_PATH}/view/${row.community_id}`}
                     >
                       View Details
                     </Menu.Item>

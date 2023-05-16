@@ -11,7 +11,7 @@ import {
 } from '@mantine/core'
 import { useParams } from 'react-router-dom'
 
-import { createResource } from '../../../../../../api/communities/resource'
+import { createResource } from '../../../../../../api/communities/community'
 import type { ResourceValues } from '../../resource-context'
 import { ResourceFormProvider, useResource } from '../../resource-context'
 
@@ -29,7 +29,7 @@ const NewResource = () => {
   const { id } = useParams()
 
   const items = [
-    { title: 'My Communities', href: 'http://localhost/communities/my-list' },
+    { title: 'My Communities', href: '/communities/my-list' },
     { title: `${id}` },
     { title: 'New Resource' }
   ].map((item, index) => (

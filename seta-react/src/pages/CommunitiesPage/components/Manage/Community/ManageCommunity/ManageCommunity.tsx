@@ -14,6 +14,7 @@ import {
 import { useParams } from 'react-router-dom'
 
 import { useCommunityManagement } from '../../../../../../api/communities/community'
+import { environment } from '../../../../../../environments/environment'
 import CommunitiesLoading from '../../../common/SuggestionsLoading'
 import changeRequestAttributes from '../../../Dashboard/ChangeRequests/changeRequestAttributes.json'
 import ChangeRequests from '../../../Dashboard/ChangeRequests/ChangeRequests'
@@ -21,8 +22,14 @@ import joinAttributes from '../../../Dashboard/LastJoinRequests/joinAttributes.j
 import LastJoinRequests from '../../../Dashboard/LastJoinRequests/LastJoinRequests'
 import RecentResources from '../../../Dashboard/RecentResources/RecentResources'
 import resourcesAttributes from '../../../Dashboard/RecentResources/resourcesAttributes.json'
+import InviteMember from '../InviteMemberModal/InviteMemberModal'
 
 const useStyles = createStyles({
+  page: {
+    minHeight: '31rem',
+    height: 'auto',
+    padding: '2rem'
+  },
   title: {
     textAlign: 'left'
   },
@@ -33,13 +40,14 @@ const useStyles = createStyles({
     marginTop: '20px'
   }
 })
+
 const ManageCommunity = () => {
   const { classes } = useStyles()
   const { id } = useParams()
   const { data, isLoading } = useCommunityManagement(id)
   const items = [
-    { title: 'My Communities', href: 'http://localhost/communities/my-list' },
-    { title: 'View Community', href: `http://localhost/communities/details/${id}` },
+    { title: 'My Communities', href: `${environment.COMMUNITIES_API_PATH}/my-list` },
+    { title: 'View Community', href: `${environment.COMMUNITIES_API_PATH}/details/${id}` },
     { title: 'Manage Community' }
   ].map((item, index) => (
     <Anchor href={item.href} key={index}>
@@ -60,10 +68,16 @@ const ManageCommunity = () => {
   return (
     <>
       <Breadcrumbs>{items}</Breadcrumbs>
-      <div className="page">
+      <div className={classes.page}>
         <Group position="right">
-          <Button color="orange">+ Invite</Button>
-          <Button color="blue">New Resource</Button>
+          <InviteMember id={data?.community_id} />
+          <Button
+            color="blue"
+            component="a"
+            href={`${environment.COMMUNITIES_API_PATH}/details/${id}/new`}
+          >
+            New Resource
+          </Button>
         </Group>
         <Grid grow>
           <Grid.Col span={12}>
@@ -92,7 +106,7 @@ const ManageCommunity = () => {
                 <Button
                   color="green"
                   component="a"
-                  href="http://localhost/communities/communityname"
+                  href={`${environment.COMMUNITIES_API_PATH}/update/${id}`}
                 >
                   Update
                 </Button>

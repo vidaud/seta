@@ -13,6 +13,7 @@ import {
 import { useParams } from 'react-router-dom'
 
 import { useCommunityID } from '../../../../../../api/communities/community'
+import { environment } from '../../../../../../environments/environment'
 import CommunitiesLoading from '../../../common/SuggestionsLoading'
 import CommunityResources from '../../Resource/CommunityResources/CommunityResources'
 import Stats from '../Stats/Stats'
@@ -32,7 +33,7 @@ const ViewMyCommunity = () => {
   const { data, isLoading } = useCommunityID(id)
 
   const items = [
-    { title: 'My Communities', href: 'http://localhost/communities/my-list' },
+    { title: 'My Communities', href: `${environment.COMMUNITIES_API_PATH}/my-list` },
     { title: `${id}` }
   ].map((item, index) => (
     <Anchor href={item.href} key={index}>
@@ -62,7 +63,12 @@ const ViewMyCommunity = () => {
               </Title>
               <Text className={classes.text}>{data.communities.description}</Text>
               <Group spacing={30} position="right">
-                <Button>Manage</Button>
+                <Button
+                  component="a"
+                  href={`${environment.COMMUNITIES_API_PATH}/manage/${data.communities.community_id}`}
+                >
+                  Manage
+                </Button>
               </Group>
             </Paper>
           </Grid.Col>

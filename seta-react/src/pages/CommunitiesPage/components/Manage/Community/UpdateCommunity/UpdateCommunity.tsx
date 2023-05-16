@@ -29,7 +29,7 @@ const useStyles = createStyles({
 })
 
 const items = [
-  { title: 'My Communities', href: 'http://localhost/communities/my-list' },
+  { title: 'My Communities', href: '/communities/my-list' },
   { title: 'Update Community' }
 ].map((item, index) => (
   <Anchor href={item.href} key={index}>
@@ -110,7 +110,14 @@ const UpdateCommunity = () => {
               </Radio.Group>
             </Group>
             <Group position="right">
-              <Button variant="outline" size="xs" color="blue">
+              <Button
+                variant="outline"
+                size="xs"
+                color="blue"
+                onClick={() => {
+                  window.location.href = '/communities/my-list'
+                }}
+              >
                 Cancel
               </Button>
               <Button size="xs" type="submit">

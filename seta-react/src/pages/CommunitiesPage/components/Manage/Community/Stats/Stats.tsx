@@ -6,9 +6,9 @@ const useStyles = createStyles(theme => ({
     backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.white
   },
   imageSection: {
-    background: 'gray',
+    background: '#D9D9D9',
     padding: theme.spacing.md,
-    color: 'white'
+    color: '#000000'
   },
   section: {
     padding: theme.spacing.md
@@ -57,7 +57,7 @@ const Stats = totalResources => {
 
       <Card.Section className={classes.section}>
         <Group spacing={30}>
-          <Button radius="xl" component="a" href={`http://localhost/communities/details/${id}/new`}>
+          <Button radius="xl" component="a" href={`/communities/details/${id}/new`}>
             + New Resource
           </Button>
         </Group>

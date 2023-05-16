@@ -8,5 +8,6 @@ export const environment = {
   api_target_path: `/seta-api/api/v1/`,
   community_api_target_path: `/seta-ui/api/v1/`,
   token_key: 'csrf_access_token',
-  refreshtoken_key: 'csrf_refresh_token'
+  refreshtoken_key: 'csrf_refresh_token',
+  COMMUNITIES_API_PATH: '/communities'
 }

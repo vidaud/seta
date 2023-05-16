@@ -6,13 +6,18 @@ const useStyles = createStyles(theme => ({
     backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.white
   },
   imageSection: {
-    background: 'gray',
+    background: '#D9D9D9',
     padding: theme.spacing.md,
-    color: 'white'
+    color: '#000000'
   },
   rowSection: {
     padding: theme.spacing.xl,
-    border: '0.0625rem solid #dee2e6'
+    border: '0.0625rem solid #dee2e6',
+    '&:hover': {
+      background: '#007BFF',
+      color: 'white',
+      cursor: 'pointer'
+    }
   },
   textSection: {
     paddingLeft: theme.spacing.sm,
@@ -30,14 +35,15 @@ const CommunityResources = resources => {
     }
   }, [resources])
 
-  const getResource = () => {
+  const getResource = item => {
     console.log('Test')
+    window.location.href = `/communities/details/${item.community_id}/${item.resource_id}`
   }
 
   const rows = resources.data.map(item => {
     return (
       <tr key={item.community_id} className={classes.rowSection}>
-        <Grid onClick={getResource}>
+        <Grid onClick={() => getResource(item)}>
           <Grid.Col span={8}>
             <Text className={classes.textSection}>Title: {item.title}</Text>
             <Text className={classes.textSection}>Abstract: {item.abstract}</Text>

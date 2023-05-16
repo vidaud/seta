@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import {
   Paper,
   TextInput,
@@ -11,10 +12,12 @@ import {
   Anchor,
   Breadcrumbs
 } from '@mantine/core'
+import { useParams } from 'react-router-dom'
 
-import { createCommunity } from '../../../../../../api/communities/community'
-import type { CommunityValues } from '../../community-context'
-import { useCommunity, CommunityFormProvider } from '../../community-context'
+import { updateResource, useResourceID } from '../../../../../../api/communities/resource'
+import CommunitiesLoading from '../../../common/SuggestionsLoading'
+import type { ResourceValues } from '../../resource-context'
+import { ResourceFormProvider, useResource } from '../../resource-context'
 
 const useStyles = createStyles({
   input: {
@@ -27,40 +30,54 @@ const useStyles = createStyles({
 
 const items = [
   { title: 'My Communities', href: '/communities/my-list' },
-  { title: 'New Community' }
+  { title: 'Update Community' }
 ].map((item, index) => (
   <Anchor href={item.href} key={index}>
     {item.title}
   </Anchor>
 ))
 
-const NewCommunity = () => {
+const UpdateResource = () => {
   const { classes, cx } = useStyles()
+  const { id } = useParams()
+  const { resourceId } = useParams()
 
-  const form = useCommunity({
+  const { data, isLoading } = useResourceID(resourceId)
+
+  const form = useResource({
     initialValues: {
       community_id: '',
+      resource_id: '',
       title: '',
-      description: '',
-      data_type: '',
-      status: 'active'
+      abstract: ''
     }
   })
 
-  const handleSubmit = (values: CommunityValues) => {
-    createCommunity(values)
+  useEffect(() => {
+    if (data) {
+      form.setValues(data)
+    }
+  }, [data])
+
+  if (isLoading || !data) {
+    return <CommunitiesLoading />
+  }
+
+  const handleSubmit = (values: ResourceValues) => {
+    console.log(values)
+    updateResource(id, values.resource_id, values)
   }
 
   return (
     <>
       <Breadcrumbs>{items}</Breadcrumbs>
       <Paper withBorder shadow="md" p={30} mt={30} radius="md" mx="auto" maw={1000}>
-        <CommunityFormProvider form={form}>
+        <ResourceFormProvider form={form}>
           <form onSubmit={form.onSubmit(handleSubmit)}>
-            <Divider my="xs" label="Add New Community" labelPosition="center" />
+            <Divider my="xs" label="Update Resource" labelPosition="center" />
             <TextInput
               label="ID"
-              {...form.getInputProps('community_id')}
+              {...form.getInputProps('resource_id')}
               className={cx(classes.input, classes.sized)}
               withAsterisk
             />
@@ -71,18 +88,18 @@ const NewCommunity = () => {
               withAsterisk
             />
             <Textarea
-              label="Description"
-              {...form.getInputProps('description')}
+              label="Abstract"
+              {...form.getInputProps('abstract')}
               className={cx(classes.input)}
             />
             <Title order={5} className={cx(classes.input)}>
               To be approved
             </Title>
             <Group spacing={100} display="flex">
-              <Radio.Group name="data_type" label="Data Type" {...form.getInputProps('data_type')}>
+              <Radio.Group name="status" label="Status" {...form.getInputProps('status')}>
                 <Group mt="xs">
-                  <Radio value="representative" label="Representative" />
-                  <Radio value="evidence" label="Evidence" />
+                  <Radio value="active" label="Active" />
+                  <Radio value="blocked" label="Blocked" />
                 </Group>
               </Radio.Group>
             </Group>
@@ -92,21 +109,20 @@ const NewCommunity = () => {
                 size="xs"
                 color="blue"
                 onClick={() => {
-                  form.reset()
-                  window.location.href = '/communities/my-list'
+                  window.location.href = `/communities/details/${id}/${resourceId}`
                 }}
               >
                 Cancel
               </Button>
-              <Button type="submit" size="xs">
+              <Button size="xs" type="submit">
                 Save
               </Button>
             </Group>
           </form>
-        </CommunityFormProvider>
+        </ResourceFormProvider>
       </Paper>
     </>
   )
 }
 
-export default NewCommunity
+export default UpdateResource

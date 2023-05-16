@@ -5,9 +5,9 @@ const useStyles = createStyles(theme => ({
     backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.white
   },
   imageSection: {
-    background: 'gray',
+    background: '#D9D9D9',
     padding: theme.spacing.md,
-    color: 'white'
+    color: '#000000'
   },
   section: {
     padding: theme.spacing.md
