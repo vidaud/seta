@@ -94,6 +94,7 @@ nav:
       - Seta API: 
         - Seta API: apis/seta_api/seta_api.md
         - seta api corpus: apis/seta_api/seta_api_corpus.md
+        - seta api similar: apis/seta_api/seta_api_similar.md
         - seta api ontology: apis/seta_api/seta_api_ontology.md
         - seta api embeddings: apis/seta_api/seta_api_embeddings.md
       - Communities API: 

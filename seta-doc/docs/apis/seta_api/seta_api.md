@@ -14,7 +14,7 @@ The main categories are:
 
 The suggestions are the related terms list that is generated after setting a term.
 
-### GET /suggestions
+**GET /suggestions**     
 
 Retrieve terms by initial letters. By default, it returns 6 terms, with the parameter *n_suggestions* is possible to set the number of suggestions to be shown.      
 

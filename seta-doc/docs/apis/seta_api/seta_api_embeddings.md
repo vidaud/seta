@@ -1,6 +1,6 @@
-## seta-api-embeddings
+# seta-api-embeddings
 
-### POST /compute-embeddings
+**POST /compute-embeddings**     
 Given a file or a plain text, related embeddings are provided. Embeddings are built using Doc2vec. Tika is used to extract text from the provided file. If both file and text are provided, function will return text embeddings.
 <!-- ![Screenshot](/docs/img/post-compute-embeddings.png)  -->
 <!-- ![Screenshot](/docs/img/post-compute-embeddings-results.png)  -->

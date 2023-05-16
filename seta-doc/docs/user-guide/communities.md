@@ -62,15 +62,15 @@ Only **users with rights to edit** can change the Community name.
 - Approve or deny membership requests and participant requests. 
 - Approve or deny documents in the Community. 
 - Remove documents and comments on documents. 
-- Remove and block people from the Community. 
+- Remove people from the Community. 
 - Upload or remove a document.  
 
 !!! warning
     All communities must have a manager. 
 
-### Claim the manager role
+<!--### Claim the manager role
 
-<!-- ask if there could be more than one manager-->
+<!-- ask if there could be more than one manager
 
 1. From the side menu click on ^^Manage^^ -> ^^My Communities^^.    
 2. From the communities list click on the Community you want to change.  
@@ -79,7 +79,7 @@ Only **users with rights to edit** can change the Community name.
 5. Click Confirm. 
 
 !!! danger "Note"
-    Only one manager spot can be claimed. 
+    Only one manager spot can be claimed. -->
     
 <!--check if this is true:  Once the creator has left the Community, creator status can't be granted to a manager or moderator. If you can't claim the manager role in a Community it may be because there are managers or other people have recently been accepted to become a manager.-->
 
@@ -89,26 +89,21 @@ Only **users with rights to edit** can change the Community name.
 In public communities you can interact with a Community as a viewer or as a contributor.   
 
 -  **Contributor**:  someone who has joined the Community. 
-    - No manager approval required. 
     - Can upload a document. 
     
 - **Viewer**: someone who isn't a member of the Community. 
     - No manager approval required. 
-    - Can upload a document. 
+    - Can view tghe resources and documents related. 
     
-
-## Manage a Community
-
-In public communities people can become members without manager approval and viewers (people who aren't members) can upload a document. {== You can choose to approve members and viewers as participants before they publish a document. for the first time==}. Once someone is approved as a participant {==you can still require manager approval of their future documents==}. If you are a manager of a private Community you can choose to turn on membership approval for your Community. This means creators or managers will have to approve membership requests before someone can join the Community.
 
 ### Manage the upload of documents for a Community
                
-In public communities viewers (people who aren't members) can upload a document. If creators allow, people can become members without manager approval. As a manager you can still review and approve people before they can upload a document.
+As a manager you can review and approve people before they can upload a document.
 
 
 ### Remove documents in a Community
                
-Creators and managers can remove documents from their Community {== and give feedback about why the document was removed. ==}
+Creators and managers can remove documents from their Community.
 
 **To remove a document from your Community:**  
 
@@ -117,32 +112,23 @@ Creators and managers can remove documents from their Community {== and give fee
 3. Click Confirm. 
 
 
-### Remove or block someone from a Community
+### Remove someone from a Community
                      
-**To remove or block a member:**   
+**To remove a member:**   
 
 1. From the side menu click on ^^Manage^^ -> ^^My Communities^^.     
 2. From the communities list click on the Community you want to change.  
 3. On the top of the window click on button ^^Manage^^.    
-3. On section *Members* click on the member you want to remove or block.  
-4. Click on the delete icon and select ^^Remove^^ member or ^^Block^^ from Community. 
-5. If you are removing the member and you also like to block them click ^^Block^^ [name].  
-6. Click ^^Confirm^^.   
-
-**To remove a block, you've put on someone:**   
-
-1. From the side menu click on ^^Manage^^ -> ^^My Communities^^.     
-2. From the communities list click on the Community you want to change.    
-3. Click on section ^^Members^^..  
-4. Click ^^Unblock^^ next to the name of the person you like to unblock.  
-5. Click ^^Unblock^^ to confirm. 
+3. On section *Members* click on the member you want to remove.  
+4. Click on the delete icon and select ^^Remove^^ member from Community. 
+5. Click ^^Confirm^^.   
 
 !!! info
-    Removed members will have to request to join the Community again if they wish to re-join. Blocked members won't be able to find the Community in search or see any of its content and they can't be invited to the Community again by members.
+    Removed members will have to request to join the Community again if they wish to re-join.
 
 ### Delete a Community
            
-{== If you are a Community manager you can delete your Community by removing all members (in private communities) or blocking all members (in public communities) and then leaving the Community as long as the Community creator has left the Community or you are the Community creator.==}  Deleting a Community is permanent and cannot be reversed. Alternatively, you can pause a Community.   
+<!--{== If you are a Community manager you can delete your Community by removing all members (in private communities) or blocking all members (in public communities) and then leaving the Community as long as the Community creator has left the Community or you are the Community creator.==}  Deleting a Community is permanent and cannot be reversed. Alternatively, you can pause a Community.   -->
 
 **To delete a Community:**   
 
@@ -226,7 +212,7 @@ You can delete a document inside a Community Resource or from the menu My Resour
 3. On the *Resources* section, click on the ^^Resource^^ you want to delete the document.    
 4. On the Resources page, from the Documents list select the document and click on the delete button. 
 
-### Trouble to upload a document or participate in a Community
+<!-- ### Trouble to upload a document or participate in a Community
 
 If your ability to upload a document or participate in a Community has been turned off it may be because a Community manager has temporarily turned off your ability to upload a document or participate in their Community. They might have temporarily suspended you or temporarily limited how frequently you can upload a document.
 
@@ -240,7 +226,7 @@ If your ability to upload a document or participate in a Community has been turn
     - Members won't be notified if you leave. 
     - You are removed from the member list and the Community will be removed from your list of communities.
 
-
+-->
 ### See a list of My Communities
 
 1. From the side menu click on ^^Manage^^ -> ^^My Communities^^.   
@@ -253,13 +239,13 @@ If your ability to upload a document or participate in a Community has been turn
 
 
 ### See a list of Resources
-{== *are public Resources from other communities?*==}
+<!--{== *are public Resources from other communities?*==}-->
 
 1. From the side menu click on ^^Discover^^ -> ^^Resources^^.   
 2. You can either enter in the search bar the name of the Resource you are looking for, or select it from the Resource list.
 
 
-### {== How to report something in a Community ==}
+<!--### {== How to report something in a Community ==}
                        
 1. From the side menu click on ^^Manage^^ -> ^^My Communities^^.   
 2. Go to the document you want to report.  
@@ -267,4 +253,4 @@ If your ability to upload a document or participate in a Community has been turn
 4. Select ^^Report document to Community creators^^ to report the document to a manager. 
 
 !!! warning
-    Creators may or may not choose to remove the document or block the person who shared the document.
+    Creators may or may not choose to remove the document or block the person who shared the document.-->

@@ -50,7 +50,10 @@ When creating a Taxonomy, consider:
 
 The following example describes a simple Taxonomy:
 
-![Screenshot](../img/taxonomy.png){width=600}
+<figure markdown>
+![Image title](../img/taxonomy.png){ width="600" }
+<figcaption>Taxonomy</figcaption>
+</figure>
 
 <!--```
   /natural sciences
