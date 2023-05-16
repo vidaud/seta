@@ -1,4 +1,5 @@
 
+# Web-app
 Within the search page the options to search are:
 
 * By term

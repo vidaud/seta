@@ -1,5 +1,5 @@
 
-
+# Methodology 
 The Search tool in SeTA follows a series of steps for the preparation of the knowledge data. The first two steps concern document collection, cleaning and storage, and the second two steps concern text analysis and modelling.   
 \       
 ![Image title](../img/machine_learning_icons.png){ align=right width=400 }   

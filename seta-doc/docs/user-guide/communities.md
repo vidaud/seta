@@ -1,3 +1,4 @@
+# Communities
 The communities of the SeTA software application are a shared space where members engage with another to connect and learn about similar interests, opinions of different type of publications. 
 
 In the SeTA web application, we have two types of communities: public communities and private communities.   

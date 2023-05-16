@@ -1,4 +1,5 @@
 
+# Setup
 SeTA has two user interfaces:
 
 - Web App: Allows the user to interact through the Web page with the content in a Web browser, which acts as a client.
