@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Popover, Button, Group, Textarea, createStyles, Input } from '@mantine/core'
 
-import { createCommunityInvite } from '../../../../../../api/communities/community'
+import { createCommunityInvite } from '../../../../../../api/communities/invite'
 import { InvitationFormProvider, useInvitation } from '../../invite-context'
 import type { InvitationValues } from '../../invite-context'
 

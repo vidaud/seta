@@ -27,9 +27,13 @@ const useStyles = createStyles(theme => ({
   }
 }))
 
-const Stats = totalResources => {
+const Stats = ({ resourceNumber, inviteNumber, onChange }) => {
   const { classes } = useStyles()
   const { id } = useParams()
+
+  const toggleInvites = () => {
+    onChange(wasOpened => !wasOpened)
+  }
 
   return (
     <Card withBorder radius="md" className={classes.card}>
@@ -50,7 +54,16 @@ const Stats = totalResources => {
         <Container size="xs" px="xs" className={classes.container}>
           <Text className={classes.text}>Resources</Text>
           <Group position="right">
-            <Button>{totalResources.resourceNumber}</Button>
+            <Button>{resourceNumber}</Button>
+          </Group>
+        </Container>
+      </Group>
+
+      <Group position="apart" mt="md">
+        <Container size="xs" px="xs" className={classes.container}>
+          <Text className={classes.text}>Pending Invites</Text>
+          <Group position="right">
+            <Button onClick={toggleInvites}>{inviteNumber}</Button>
           </Group>
         </Container>
       </Group>

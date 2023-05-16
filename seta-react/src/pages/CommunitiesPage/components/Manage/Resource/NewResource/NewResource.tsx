@@ -11,7 +11,7 @@ import {
 } from '@mantine/core'
 import { useParams } from 'react-router-dom'
 
-import { createResource } from '../../../../../../api/communities/community'
+import { createResource } from '../../../../../../api/communities/resource'
 import type { ResourceValues } from '../../resource-context'
 import { ResourceFormProvider, useResource } from '../../resource-context'
 

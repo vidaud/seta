@@ -118,7 +118,7 @@ const ManageCommunity = () => {
               <LastJoinRequests data={joinAttributes.props.data} />
             </Paper>
           </Grid.Col>
-          <Grid.Col span={7}>
+          <Grid.Col span={5}>
             <Paper withBorder p="md" radius="md" key="Change Requests">
               <ChangeRequests data={changeRequestAttributes.props.data} />
             </Paper>

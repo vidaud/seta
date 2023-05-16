@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import {
   Anchor,
   Breadcrumbs,
@@ -15,6 +15,7 @@ import { useParams } from 'react-router-dom'
 import { useCommunityID } from '../../../../../../api/communities/community'
 import { environment } from '../../../../../../environments/environment'
 import CommunitiesLoading from '../../../common/SuggestionsLoading'
+import CommunityInvites from '../../Invites/CommunityInvites/CommunityInvites'
 import CommunityResources from '../../Resource/CommunityResources/CommunityResources'
 import Stats from '../Stats/Stats'
 
@@ -29,6 +30,7 @@ const useStyles = createStyles({
 const ViewMyCommunity = () => {
   const { classes } = useStyles()
   const { id } = useParams()
+  const [showInvites, setShowInvites] = useState(false)
 
   const { data, isLoading } = useCommunityID(id)
 
@@ -49,6 +51,12 @@ const ViewMyCommunity = () => {
 
   if (isLoading || !data) {
     return <CommunitiesLoading />
+  }
+
+  const toggleListVisibility = show => {
+    if (show) {
+      setShowInvites(show)
+    }
   }
 
   return (
@@ -73,11 +81,22 @@ const ViewMyCommunity = () => {
             </Paper>
           </Grid.Col>
           <Grid.Col span={1}>
-            <Stats resourceNumber={data.resources.length} />
+            <Stats
+              resourceNumber={data.resources.length}
+              inviteNumber={data.invites.length}
+              onChange={toggleListVisibility}
+            />
           </Grid.Col>
           <Grid.Col span={5}>
             <CommunityResources data={data.resources} />
           </Grid.Col>
+          {showInvites ? (
+            <Grid.Col span={12}>
+              <CommunityInvites data={data.invites} />
+            </Grid.Col>
+          ) : (
+            ''
+          )}
         </Grid>
       </div>
     </>

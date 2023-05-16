@@ -3,6 +3,8 @@ import { getCookie } from 'typescript-cookie'
 
 import community_api from './api'
 
+import { environment } from '../../environments/environment'
+
 const RESOURCE_API_PATH = '/resources/'
 
 export type ResourceResponse = {
@@ -51,6 +53,25 @@ export const getResource = async (id?: string): Promise<ResourceResponse> => {
 export const useResourceID = (id?: string) => useQuery(cacheKey(id), () => getResource(id))
 
 const csrf_token = getCookie('csrf_access_token')
+
+export const createResource = async (id?: string, values?: CreateResourceAPI) => {
+  await community_api
+    .post<CreateResourceAPI[]>(`${environment.COMMUNITIES_API_PATH}/${id}/resources`, values, {
+      headers: {
+        accept: 'application/json',
+        'X-CSRF-TOKEN': csrf_token,
+        'Content-Type': 'application/x-www-form-urlencoded'
+      }
+    })
+    .then(response => {
+      if (response.status === 201) {
+        window.location.href = `${environment.COMMUNITIES_API_PATH}/details/${id}`
+      }
+    })
+    .catch(error => {
+      console.log(error)
+    })
+}
 
 export const updateResource = async (
   id?: string,

@@ -2,7 +2,8 @@ import { useQuery } from '@tanstack/react-query'
 import { getCookie } from 'typescript-cookie'
 
 import community_api from './api'
-import type { CreateInvitationAPI, CreateResourceAPI, ResourceResponse } from './resource'
+import type { InviteResponse } from './invite'
+import type { ResourceResponse } from './resource'
 
 import { environment } from '../../environments/environment'
 
@@ -17,6 +18,7 @@ export type CommunityResponse = {
 export type Community = {
   communities: CommunityResponse
   resources: ResourceResponse[]
+  invites: InviteResponse[]
 }
 
 export type CreateCommunityAPI = {
@@ -59,9 +61,14 @@ const getCommunity = async (id?: string): Promise<Community> => {
     `${environment.COMMUNITIES_API_PATH}/${id}/resources`
   )
 
+  const invites = await community_api.get<InviteResponse[]>(
+    `${environment.COMMUNITIES_API_PATH}/${id}/invites`
+  )
+
   const data = {
     communities: communities.data,
-    resources: resources.data
+    resources: resources.data,
+    invites: invites.data
   }
 
   console.log(data)
@@ -141,43 +148,5 @@ export const deleteCommunityByID = async (id?: string) => {
     })
 }
 
-export const createResource = async (id?: string, values?: CreateResourceAPI) => {
-  await community_api
-    .post<CreateResourceAPI[]>(`${environment.COMMUNITIES_API_PATH}/${id}/resources`, values, {
-      headers: {
-        accept: 'application/json',
-        'X-CSRF-TOKEN': csrf_token,
-        'Content-Type': 'application/x-www-form-urlencoded'
-      }
-    })
-    .then(response => {
-      if (response.status === 201) {
-        window.location.href = `${environment.COMMUNITIES_API_PATH}/details/${id}`
-      }
-    })
-    .catch(error => {
-      console.log(error)
-    })
-}
-
-export const createCommunityInvite = async (id?: string, values?: CreateInvitationAPI) => {
-  console.log(id)
-  await community_api
-    .post<CreateInvitationAPI[]>(`${environment.COMMUNITIES_API_PATH}/${id}/invites`, values, {
-      headers: {
-        accept: 'application/json',
-        'X-CSRF-TOKEN': csrf_token,
-        'Content-Type': 'application/x-www-form-urlencoded'
-      }
-    })
-    .then(response => {
-      if (response.status === 200) {
-        console.log(response)
-      }
-    })
-    .catch(error => {
-      console.log(error)
-    })
-}
 // export const useNewCommunity = (properties?: CommunityAPI) =>
 //   useQuery(cacheKey(), () => createCommunity(properties))
