@@ -107,6 +107,14 @@ class CommunitiesBroker(implements(ICommunitiesBroker)):
         
         return [CommunityModel.from_db_json(c) for c in communities]
     
+    def get_all(self) -> list[CommunityModel]:
+        '''Retrieve all communities'''
+        
+        filter = {"membership":{"$exists" : True}}
+        communities = self.collection.find(filter)
+        
+        return [CommunityModel.from_db_json(c) for c in communities]
+    
     #------------------------#
     """ Private methods """
     

@@ -101,7 +101,7 @@ class ResourcesBroker(implements(IResourcesBroker)):
     def get_all_by_community_id(self, community_id:str) -> list[ResourceModel]:
         '''Retrieve all resources belonging to the community id'''
 
-        filter = {"community_id": community_id, "community_id": {"$exists" : True}}
+        filter = {"community_id": community_id}
         resources = self.collection.find(filter)
 
         return [ResourceModel.from_db_json(c) for c in resources]
@@ -111,6 +111,12 @@ class ResourcesBroker(implements(IResourcesBroker)):
               
         exists_count = self.collection.count_documents(self._filter_resource_by_id(id))
         return exists_count > 0
+    
+    def get_all(self) -> list[ResourceModel]:
+        filter = {"community_id": {"$exists" : True}}
+        resources = self.collection.find(filter)
+
+        return [ResourceModel.from_db_json(c) for c in resources]
 
     #------------------------#
     """ Private methods """

@@ -24,7 +24,10 @@ class IResourcesBroker(Interface):
         pass
 
     def resource_id_exists(self, id: str) -> bool:
-        pass       
+        pass   
+    
+    def get_all(self) -> list[ResourceModel]:
+        pass
     
 
 class IResourceContributorsBroker(Interface):
