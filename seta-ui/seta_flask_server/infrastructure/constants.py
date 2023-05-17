@@ -66,15 +66,9 @@ class InviteStatusConstants:
     List=[Pending, Accepted, Rejected, Expired]
     EditList=[Accepted, Rejected]
 
-class ResourceAccessContants:
-    Public = "public"
-    Community = "community"
-    List = [Public, Community]
-
-class ResourceRequestFieldConstants:
-    Access = "access"
+class ResourceRequestFieldConstants:    
     Limits = "limits"
-    List = [Access, Limits]
+    List = [Limits]
 
 class ResourceStatusConstants:
     Active = "active"

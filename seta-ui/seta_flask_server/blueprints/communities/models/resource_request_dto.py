@@ -3,25 +3,13 @@ from flask_restx.reqparse import RequestParser
 
 from seta_flask_server.infrastructure.constants import (RequestStatusConstants, ResourceRequestFieldConstants)
 
-from .models_dto import (request_status_list)
-
-def request_field(value):
-    '''Validation method for field name in list'''    
-    value = value.lower()
-    
-    if value not in ResourceRequestFieldConstants.List:
-        raise ValueError(
-            "Field name has to be one of '" + str(ResourceRequestFieldConstants.List) + "'."
-        )
-        
-    return value
-
 new_change_request_parser = RequestParser(bundle_errors=True)
 new_change_request_parser.add_argument("field_name", 
-                                  type=request_field,
                                   location="form",
                                   required=True,
                                   nullable=False,
+                                  case_sensitive=False,
+                                  choices=ResourceRequestFieldConstants.List,
                                   help=f"Requested field, one of {ResourceRequestFieldConstants.List}")
 new_change_request_parser.add_argument("new_value", 
                                   location="form",
@@ -36,10 +24,11 @@ new_change_request_parser.add_argument("old_value",
 
 update_change_request_parser = RequestParser(bundle_errors=True)
 update_change_request_parser.add_argument("status",
-                                  type=request_status_list,
                                   location="form",
                                   required=True,
                                   nullable=False,
+                                  case_sensitive=False,
+                                  choices=RequestStatusConstants.List,
                                   help=f"Status, one of {RequestStatusConstants.EditList}")
 
 

@@ -9,8 +9,7 @@ import pytz
 from seta_flask_server.repository.interfaces.resources_broker import IResourcesBroker
 from seta_flask_server.repository.models import ResourceModel, ResourceLimitsModel, EntityScope
 
-from seta_flask_server.infrastructure.constants import (ResourceAccessContants, ResourceStatusConstants, CommunityStatusConstants)
-from seta_flask_server.infrastructure.scope_constants import ResourceScopeConstants
+from seta_flask_server.infrastructure.constants import (ResourceStatusConstants, CommunityStatusConstants)
 
 class ResourcesBroker(implements(IResourcesBroker)):
     @inject
@@ -25,7 +24,6 @@ class ResourcesBroker(implements(IResourcesBroker)):
             now = datetime.now(tz=pytz.utc)
 
             with self.db.client.start_session(causal_consistency=True) as session:
-                model.access = ResourceAccessContants.Community
                 model.status = ResourceStatusConstants.Active
                 #keep default limits
                 model.limits = ResourceLimitsModel()
@@ -79,7 +77,7 @@ class ResourcesBroker(implements(IResourcesBroker)):
         ids = user_collection.find(rsf, {"resource_id": True})
         resource_ids = [i["resource_id"] for i in ids]
 
-        filter = {"resource_id": {"$in": resource_ids}, "access":{"$exists" : True}}
+        filter = {"resource_id": {"$in": resource_ids}, "community_id":{"$exists" : True}}
         resources = self.collection.find(filter)
 
         return [ResourceModel.from_db_json(c) for c in resources]
@@ -95,25 +93,15 @@ class ResourcesBroker(implements(IResourcesBroker)):
         community_ids = [i["community_id"] for i in memberships]
                 
         #get active resources
-        filter = {"community_id": {"$in": community_ids}, "status": ResourceStatusConstants.Active, "access":{"$exists" : 1}}        
+        filter = {"community_id": {"$in": community_ids}, "status": ResourceStatusConstants.Active, "community_id":{"$exists" : 1}}        
         resources = self.collection.find(filter)
         
-        result = [ResourceModel.from_db_json(c) for c in resources]
-        
-        #get public resources
-        filter = {"access": ResourceAccessContants.Public, "access":{"$exists" : 1}}
-        public_resources = self.collection.find(filter)
-                
-        for pr in public_resources:
-            if not any(r.resource_id == pr["resource_id"] for r in result):                
-                result.append(ResourceModel.from_db_json(pr))
-
-        return result
+        return [ResourceModel.from_db_json(c) for c in resources]
 
     def get_all_by_community_id(self, community_id:str) -> list[ResourceModel]:
         '''Retrieve all resources belonging to the community id'''
 
-        filter = {"community_id": community_id, "access": {"$exists" : True}}
+        filter = {"community_id": community_id}
         resources = self.collection.find(filter)
 
         return [ResourceModel.from_db_json(c) for c in resources]
@@ -123,12 +111,18 @@ class ResourcesBroker(implements(IResourcesBroker)):
               
         exists_count = self.collection.count_documents(self._filter_resource_by_id(id))
         return exists_count > 0
+    
+    def get_all(self) -> list[ResourceModel]:
+        filter = {"community_id": {"$exists" : True}}
+        resources = self.collection.find(filter)
+
+        return [ResourceModel.from_db_json(c) for c in resources]
 
     #------------------------#
     """ Private methods """
     
     def _filter_resource_by_id(self, id: str):
         '''Get filter dict for a resource'''
-        return {"resource_id": id, "access": {"$exists" : True}}
+        return {"resource_id": id, "community_id": {"$exists" : True}}
     
     #------------------------#

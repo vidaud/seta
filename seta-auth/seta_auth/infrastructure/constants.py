@@ -12,11 +12,7 @@ class CommunityStatusConstants:
 
 class ResourceStatusConstants:
     Active = "active"
-    Blocked = "blocked"
-    
-class ResourceAccessContants:
-    Public = "public"
-    Community = "community"  
+    Blocked = "blocked" 
     
 class AuthorizedArea:
     Resources = "resources"    

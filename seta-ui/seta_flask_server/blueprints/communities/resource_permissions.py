@@ -34,7 +34,7 @@ class ResourcePermissionList(Resource):
     @permissions_ns.marshal_list_with(user_scope_model, mask="*")
     @auth_validator()    
     def get(self, resource_id):
-        '''Retrieve all community user permissions'''
+        '''Retrieve all resource permissions'''
         
         resource = self.resourcesBroker.get_by_id(resource_id)
         if not resource:

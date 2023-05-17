@@ -2,19 +2,20 @@ from flask_restx import Model, fields
 from flask_restx.reqparse import RequestParser
 
 from seta_flask_server.infrastructure.constants import CommunityStatusConstants, RequestStatusConstants
-from .models_dto import status_list, request_status_list
 
 update_membership_parser = RequestParser(bundle_errors=True)
 update_membership_parser.add_argument("role", 
                                   location="form",
                                   required=True,
                                   nullable=False,
+                                  case_sensitive=False,
                                   help="Membership role")
 update_membership_parser.add_argument("status",
-                                  type=status_list,
                                   location="form",
                                   required=True,
                                   nullable=False,
+                                  case_sensitive=False,
+                                  choices=CommunityStatusConstants.List,
                                   help=f"Status, one of {CommunityStatusConstants.List}")
 
 
@@ -37,10 +38,11 @@ new_request_parser.add_argument("message",
 
 update_request_parser = RequestParser(bundle_errors=True)
 update_request_parser.add_argument("status",
-                                  type=request_status_list,
                                   location="form",
                                   required=True,
                                   nullable=False,
+                                  case_sensitive=False,
+                                  choices=RequestStatusConstants.List,
                                   help=f"Status, one of {RequestStatusConstants.EditList}")
 
 request_model = Model("MembershipRequest",

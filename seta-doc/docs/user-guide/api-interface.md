@@ -147,7 +147,6 @@ Check the resource entry in the seta database - resources collection:
 "community_id": "seta",
 "title": "Cordis",
 "abstract": "Cordis resource",
-"access": "community",
 "limits": {"total_files_no": 50,"total_storage_mb": 1024,"file_size_mb": 50},
 "status": "active",
 "creator_id": "5Mq7bNYnhtaiS6BDLvcZ"

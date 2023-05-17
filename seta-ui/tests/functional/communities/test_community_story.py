@@ -6,7 +6,7 @@ from seta_flask_server.infrastructure.scope_constants import CommunityScopeConst
 
 from tests.infrastructure.helpers.authentication import (login_user)
 from tests.infrastructure.helpers.community import (create_community, get_community, update_community, delete_community)
-from tests.infrastructure.helpers.resource import (create_resource, get_resource, update_resource, delete_resource)
+from tests.infrastructure.helpers.resource import (create_resource, get_resource, update_resource, delete_resource, get_accessible_resources)
 from tests.infrastructure.helpers.community_membership import (create_membership_request, get_membership_requests, update_membership_request, delete_membership)
 from tests.infrastructure.helpers.community_permission import (replace_user_permissions, get_user_permissions)
    
@@ -367,6 +367,17 @@ def test_update_membership_request(client: FlaskClient, authentication_url:str, 
     access_token = response_json["access_token"]
 
     response = update_membership_request(client=client, access_token=access_token, community_id=community_id, user_id=request_id, status="approved")
+    assert response.status_code == HTTPStatus.OK
+    
+@pytest.mark.parametrize("user_id", [("seta_community_manager")])
+def test_get_accessible_resources(client: FlaskClient, authentication_url:str, user_id: str):
+    response = login_user(auth_url=authentication_url, user_id=user_id)    
+    assert response.status_code == HTTPStatus.OK
+    response_json = response.json()
+    assert "access_token" in response_json
+    access_token = response_json["access_token"]
+    
+    response = get_accessible_resources(client=client, access_token=access_token)   
     assert response.status_code == HTTPStatus.OK
 
 '''==========================================================='''
