@@ -112,7 +112,6 @@ If we have moved, we go back to folder **seta-compose** and from there we launch
 This command creates a docker image based on the Docker file called by default **docker-compose.yml** as the configuration file and **.env** as the environment file.
 
 ### Up
-it has to be where the containers are running
 After finishing the build, launch the command to start and run the services:
 
 First the service to initialise the Elasticsearch :

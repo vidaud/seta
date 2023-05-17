@@ -1,6 +1,9 @@
 # SeTA *Semantic Text Analyser*
 
-SeTA is a new tool that applies advanced text analysis techniques to large document collections, helping policy analysts to understand the concepts expressed in thousands of documents and to see in a visual manner the relationships between these concepts and their development over time. 
+**SeTA** (“Semantic Text Analyser”) is a tool that offers a search functionality in large document collections. Upon providing a keyword, a set of keywords, or a piece of text, the tool will indicate a list of documents, and locations therein, where the keyword(s) occur. The search is enhanced beyond merely finding the keywords literally, first by the use of a taxonomy (that structures pre-defined keywords) and second by semantic interpretation of the keywords (that uses the meaning of the words in addition to their literal form). The search results can, as next step, be easily screened and filtered by the user with the help of the tool.       
+
+SeTA is accessed via a web user interface, and also allows the use of APIs for automated access.        
+SeTA furthermore offers community spaces for groups of users to collaborate on joint tasks and document collections.      
 
 **Documentation:** For more information click  [here 📖](http://localhost/docs)
 
@@ -41,12 +44,14 @@ Flask configurations files are:
 
 * Good Internet speed. You will need to download at least 5GB (> 20GB for all data)
 
+The following setup and deployment guidelines are  for ^^Production^^ environment.
+
 
 ### Prerequisites 
 
-- It is neccesary to install [Git](https://git-scm.com/downloads).  
+- It is necessary to install [Git](https://git-scm.com/downloads). 
 
-- Install [Docker compose V2](https://docs.docker.com/compose/install/).*For reference to install in Linux, Maco or Windows*
+- Install Docker compose V2.  [*Click for reference to install in Linux, Mac or Windows*](https://docs.docker.com/compose/install/)
 
 
 
@@ -54,15 +59,14 @@ Flask configurations files are:
 
 **Git clone**
 
-Use the git **clone** command to clone the project in the select directory, using an SSH link.
+From the Git interface use the git **clone** command to clone the project in the select directory, using an SSH link.
 ```
     git clone https://github.com/vidaud/seta.git
 ```
 
-After clonning the project, move to the directory of the project:
+After cloning the project, we open a command line shell and move to the root directory of the project:
 
-!!! warning
-    make sure that you are in the root directory of the project, use **pwd** or **cd** for windows
+>Make sure that you are in the root directory of the project, use **pwd** or **cd** for windows
 
 ```
     cd [project folder]
