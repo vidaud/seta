@@ -156,51 +156,43 @@ Add new member to an opened community.
 **GET /communities/{community_id}/memberships**    
 Retrieve membership list for this community.
 
-<!-- ![Screenshot](/docs/img/get_communities_id_memberships.png){ width="900" } -->
 
 
 **DELETE /communities/{community_id}/memberships/{user_id}**     
 
 Remove membership.
 
-<!-- ![Screenshot](/docs/img/delete_communities_id_memberships_usr_id.png){ width="900" } -->
 
 
 **GET /communities/{community_id}/memberships/{user_id}**    
 Retrieve user membership
 
-<!-- ![Screenshot](/docs/img/get_communities_id_memberships_usr_id.png){ width="900" } -->
 
 
 **PUT /communities/{community_id}/memberships/{user_id}**     
 Update membership fields.
 
-<!-- ![Screenshot](/docs/img/put_communities_id_memberships_usr_id.png){ width="900" } -->
 
 
 **POST  /communities/{community_id}/requests**    
 Add new request for the community for the authorized user.    
 
-<!-- ![Screenshot](/docs/img/post_communities_community_id_requests.png){ width="900" } -->
 
 
 **GET /communities/{community_id}/requests**      
 Retrieve request list for this community.
 
-<!-- ![Screenshot](/docs/img/get_communities_id_requests.png){ width="900" } -->
 
 
 
 **GET /communities/{community_id}/requests/{user_id}**      
 Retrieve user request for the community.
 
-<!-- ![Screenshot](/docs/img/get_communities_id_requests_usr_id.png){ width="900" } -->
 
 
 **PUT /communities/{community_id}/requests/{user_id}**      
 Approve/reject request.
 
-<!-- ![Screenshot](/docs/img/put_communities_id_requests_usr_id.png){ width="900" }  -->
 
 <figure markdown>
 ![Image title](/docs/img/seta_api_communities_memberships.png){ width="900" }
@@ -212,13 +204,11 @@ Approve/reject request.
 **POST  /communities/{community_id}/invites**    
 Create new invites.    
 
-<!-- ![Screenshot](/docs/img/post_communities_community_id_invites.png){ width="900" } -->
 
 **GET /communities/{community_id}/invites**       
 
 Retrieve pending invites for this community.
 
-<!-- ![Screenshot](/docs/img/get_communities_id_invites.png){ width="900" } -->
 
 
 
@@ -226,12 +216,10 @@ Retrieve pending invites for this community.
 
 **GET /invites/{invite_id}**      
 Retrieve invite.    
-<!-- ![Screenshot](/docs/img/get_invites_id.png){ width="900" } -->
 
 **PUT /invites/{invite_id}**       
 
 Update an invite. Accept/reject invite.     
-<!-- ![Screenshot](/docs/img/put_invites_id.png){ width="900" } -->
 
 <figure markdown>
 ![Image title](/docs/img/seta_api_communities_invites.png){ width="900" }
@@ -244,45 +232,34 @@ Update an invite. Accept/reject invite.
 **POST  /resources/community/{community_id}**    
 Create new resource por given community.    
 
-<!-- ![Screenshot](/docs/img/post_resources_community_id.png){ width="900" } -->
 
-<!-- ![Screenshot](/docs/img/post_resources_community_id_result.png){ width="900" } -->
 
 **GET  /resources/community/{community_id}**    
 Retrieve resources for a given community.  
 
-<!-- ![Screenshot](/docs/img/get_resources_community_id.png){ width="900" } -->
-<!-- ![Screenshot](/docs/img/get_resources_community_id_results.png){ width="900" } -->
 
 
 **DELETE  /resources/{id}**    
 Delete all resource entries.  
 
-<!-- ![Screenshot](/docs/img/delete_resources_id.png){ width="900" } -->
 
 **GET /resources/{id}**   
 Retrieve resource.
-<!-- ![Screenshot](/docs/img/get_invites_id.png){ width="900" } -->
 
 **PUT /resources/{id}**      
 
 Update resource fields.
 
-<!-- ![Screenshot](/docs/img/put_resources_id.png){ width="900" } -->
-<!-- ![Screenshot](/docs/img/put_resources_id_results.png){ width="900" } -->
 
 ## Resource Contributors
 
 **POST  /resources/{resource_id}/contributors**    
 Create new contributor por given resource.    
 
-<!-- ![Screenshot](/docs/img/post_resources_id_contributors.png){ width="900" } -->
 
-<!-- ![Screenshot](/docs/img/post_resources_id_contributors_result.png){ width="900" } -->
 
 **GET /resources/{resource_id}/contributors**      
 Retrieve contributors of a given resource.
-<!-- ![Screenshot](/docs/img/get_resources_id_contributors.png){ width="900" } -->
 
 
 ## Resource Change Requests
@@ -291,25 +268,21 @@ Retrieve contributors of a given resource.
 
 Retrieve pending change requests for resources.
 
-<!-- ![Screenshot](/docs/img/get_resources_change_requests_pending.png){ width="900" } -->
 
 **POST  /resources/{resource_id}/change-requests**    
 Add new change request for a resource field.   
 
-<!-- ![Screenshot](/docs/img/post_resources_id_change-requests.png){ width="900" } -->
 
 
 **GET  /resources/{resource_id}/change-requests/{request-id}**    
 Retrieve change request for the resource. 
 
-<!-- ![Screenshot](/docs/img/get_resources_id_change_requests_id.png){ width="900" } -->
 
 
 
 **PUT  /resources/{resource_id}/change-requests/{request-id}**    
 Approve/reject request
 
-<!-- ![Screenshot](/docs/img/put_resources_id_change_requests_id.png){ width="900" } -->
 
 <figure markdown>
 ![Image title](/docs/img/seta_api_communities_resources.png){ width="900" }
@@ -321,16 +294,13 @@ Approve/reject request
 **GET  /permissions/community/{community_id}**    
 Retrieve user-scope list for given community. 
 
-<!-- ![Screenshot](/docs/img/get_permissions_community_id.png){ width="900" } -->
 
 **POST  /permissions/community/{community_id}/user/{user-id}**    
 Replace all user permissions for the community. 
 
-<!-- ![Screenshot](/docs/img/get_permissions_community_id.png){ width="900" } -->
 
 **GET  /permissions/community/{community_id}/user/{user-id}**    
 Retrieve user-scopes for given community. 
-<!-- ![Screenshot](/docs/img/get_permissions_community_id_user_id.png){ width="900" } -->
 
 
 <figure markdown>

@@ -9,7 +9,6 @@ In order to make this kind of analysis possible, the document collection to be s
 - **PUBSY**, the publications repository of the European Commission's Joint Research Centre;      
 - and all publications of the **European Parliament**.      
 
-<!-- ![Screenshot](./img/data_sources.png) -->
 
 These four collections are online available for immediate search. SeTA can also work on additional document collections, but they first have to be ingested and pre-processed by the user.        
 SeTA is accessed via a web user interface, and also allows the use of APIs for automated access.        
