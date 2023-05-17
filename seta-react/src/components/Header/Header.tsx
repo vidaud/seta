@@ -69,6 +69,13 @@ const Header = () => {
       template: navLinkTemplate
     },
     {
+      label: 'Search New [WIP]',
+      className: 'seta-item',
+      url: '/search-new',
+      visible: authenticated,
+      template: navLinkTemplate
+    },
+    {
       label: 'Communities',
       className: 'seta-item',
       url: '/communities',

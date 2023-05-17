@@ -116,3 +116,20 @@ services:
       - NO_PROXY=${NO_PROXY}
       - no_proxy=${NO_PROXY}
       - ES_HOST
+
+  auth:
+    restart: always
+    build:
+      context: ../seta-auth
+      args:
+        - HTTP_PROXY=${HTTP_PROXY}
+        - HTTPS_PROXY=${HTTPS_PROXY}
+    expose:
+      - "8082"
+    environment:
+      - NO_PROXY=${NO_PROXY}
+      - no_proxy=${NO_PROXY}
+      - API_SECRET_KEY
+      - DB_HOST
+      - DB_PORT
+      - DB_NAME

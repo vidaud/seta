@@ -29,7 +29,7 @@ class CommunityInvite(Resource):
         
     @invite_ns.doc(description='Retrieve invite.',
     responses={int(HTTPStatus.OK): "'Retrieved invite.",
-               int(HTTPStatus.NO_CONTENT): "Invite not found.",
+               int(HTTPStatus.NOT_FOUND): "Invite not found.",
                int(HTTPStatus.FORBIDDEN): "Insufficient rights"
                },
     security='CSRF')
@@ -44,7 +44,7 @@ class CommunityInvite(Resource):
         request = self.invitesBroker.get_by_invite_id(invite_id)
         
         if request is None:
-            return '', HTTPStatus.NO_CONTENT
+            abort(HTTPStatus.NOT_FOUND)
         
         #if not the initiator of the request or the invitee, do not allow
         if request.initiated_by != auth_id and request.invited_user != auth_id:            
@@ -56,7 +56,7 @@ class CommunityInvite(Resource):
     responses={
                 int(HTTPStatus.OK): "Invite updated.", 
                 int(HTTPStatus.FORBIDDEN): "Insufficient rights",
-                int(HTTPStatus.NO_CONTENT): "Invite not found."
+                int(HTTPStatus.NOT_FOUND): "Invite not found."
                 },
     security='CSRF')
     @invite_ns.expect(update_invite_parser)
@@ -71,7 +71,7 @@ class CommunityInvite(Resource):
         
         #only pending invites can be updated
         if invite is None or invite.status != InviteStatusConstants.Pending:
-            return '', HTTPStatus.NO_CONTENT
+            abort(HTTPStatus.NOT_FOUND)
         
         #if not the initiator, do not allow
         if invite.invited_user != auth_id:            

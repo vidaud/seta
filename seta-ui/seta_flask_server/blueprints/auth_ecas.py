@@ -9,6 +9,7 @@ from seta_flask_server.repository.models import SetaUser
 from urllib.parse import urljoin
 
 from injector import inject
+from http import HTTPStatus
 
 
 auth_ecas = Blueprint("auth_ecas", __name__)
@@ -50,29 +51,36 @@ def login_callback_ecas(userBroker: IUsersBroker, sessionBroker: ISessionsBroker
         app.logger.debug("cas_client.verify_ticket_end")
     except:
         app.logger.exception("Failed to verify ticket.")
-        abort(401, "Failed to verify ticket.")
+        abort(HTTPStatus.UNAUTHORIZED, "Failed to verify ticket.")
     
     app.logger.debug('CAS verify ticket response: user: %s, attributes: %s, pgtiou: %s', user, attributes, pgtiou)
     
     if not user:
-        abort(401, "Failed to verify ticket.")
-    else:  # Login successful, redirect according to `next` query parameter. 
-        admins = app.config["ROOT_USERS"]
-        email = str(attributes["email"]).lower()
-        attributes["is_admin"] = email in admins
+        abort(HTTPStatus.UNAUTHORIZED, "Failed to verify ticket.")
+    
+    # Login successful, redirect according to `next` query parameter. 
+    admins = app.config["ROOT_USERS"]
+    email = str(attributes["email"]).lower()
+    attributes["is_admin"] = email in admins
+    
+    seta_user = SetaUser.from_ecas_json(attributes)
+    
+    #TODO: verify 'next' domain before redirect, replace with home_route if anything suspicious
+    if not next:                        
+        next = app.home_route
         
-        seta_user = SetaUser.from_ecas_json(attributes)
-        
-        #TODO: verify 'next' domain before redirect, replace with home_route if anything suspicious
-        if not next:                        
-            next = app.home_route
-            
-        next = urljoin(next, "?action=login")
-        
-        auth_user = userBroker.authenticate_user(seta_user)
-        response = create_login_response(seta_user=auth_user, sessionBroker=sessionBroker, next=next)
-        
-        return response
+    next = urljoin(next, "?action=login")
+    
+    auth_user = userBroker.authenticate_user(seta_user)
+    
+    if auth_user is None:
+        #! user is not active
+        return redirect(app.home_route)
+        abort(HTTPStatus.UNAUTHORIZED, "The user couldn't be authenticated")
+    
+    response = create_login_response(seta_user=auth_user, sessionBroker=sessionBroker, next=next)
+    
+    return response
 
 @auth_ecas.route("/logout/ecas")
 def logout_ecas():

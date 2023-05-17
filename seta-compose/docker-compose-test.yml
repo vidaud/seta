@@ -52,6 +52,7 @@ services:
     ports:
       - "8080:8080"
     depends_on:
+      - "seta-auth-test"
       - "seta-api-test"
       - "seta-ui-test"
     networks:
@@ -85,6 +86,18 @@ services:
     environment:
       - APP_ENV=test
 
+  seta-auth-test:
+    container_name: auth-test
+    extends:
+      file: common.yml
+      service: auth
+    restart: "no"
+    build:
+      dockerfile: Dockerfile-test
+    networks:
+      - seta-network-test
+    depends_on:
+      - "seta-mongo-test"
 
 networks:
   seta-network-test:

@@ -71,7 +71,8 @@ def db(db_host, db_port):
 
 @pytest.fixture(scope='module')
 def app(es_host, db_host, db_port, web_root):
-    config = TestConfig() 
+    config = TestConfig()
+    config.JWT_TOKEN_INFO_URL = f"http://{web_root}/authorization/v1/token_info"
     
     if es_host:
         config.ES_HOST = es_host
@@ -83,7 +84,6 @@ def app(es_host, db_host, db_port, web_root):
         config.DB_PORT = int(db_port)
                 
     app = create_app(config)
-    app.config["JWT_TOKEN_INFO_URL"] = f"http://{web_root}/authorization/v1/token_info"
     app.config["JWT_TOKEN_AUTH_URL"] = f"http://{web_root}/authentication/v1/user/token"
     
     with app.app_context(): 

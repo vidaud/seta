@@ -13,7 +13,7 @@ from tests.infrastructure.helpers.community_permission import (replace_user_perm
 '''==================== CREATE Community ======================================='''
 
 @pytest.mark.parametrize("user_id", ["seta_admin"])
-def test_create_community(client: FlaskClient, user_id: str):
+def test_create_community(client: FlaskClient, authentication_url:str, user_id: str):
     """
     Scenario: 'user1' registers new data community
 
@@ -22,10 +22,11 @@ def test_create_community(client: FlaskClient, user_id: str):
     Then: new data community 'blue' registration is confirmed
     """
     
-    response = login_user(client=client, user_id=user_id)    
+    response = login_user(auth_url=authentication_url, user_id=user_id)    
     assert response.status_code == HTTPStatus.OK
-    assert "access_token" in response.json
-    access_token = response.json["access_token"]
+    response_json = response.json()
+    assert "access_token" in response_json
+    access_token = response_json["access_token"]
 
     response = create_community(client=client, access_token=access_token, 
                     id="blue", title="Blue Community", description="Blue Community for test", data_type="representative")
@@ -34,7 +35,7 @@ def test_create_community(client: FlaskClient, user_id: str):
     assert response.status_code == HTTPStatus.OK
 
 @pytest.mark.parametrize("user_id", ["seta_admin"])
-def test_fail_create_community(client: FlaskClient, user_id: str):
+def test_fail_create_community(client: FlaskClient, authentication_url:str, user_id: str):
     """
     Scenario: 'user1' registers new data community with existing community ID
 
@@ -43,10 +44,11 @@ def test_fail_create_community(client: FlaskClient, user_id: str):
     Then: data community 'blue' registration is rejected
     """
     
-    response = login_user(client=client, user_id=user_id)
+    response = login_user(auth_url=authentication_url, user_id=user_id)
     assert response.status_code == HTTPStatus.OK
-    assert "access_token" in response.json
-    access_token = response.json["access_token"]
+    response_json = response.json()
+    assert "access_token" in response_json
+    access_token = response_json["access_token"]
 
     response = create_community(client=client, access_token=access_token, 
                     id="blue", title="Blue Community", description="Blue Community for test", data_type="representative")
@@ -58,7 +60,7 @@ def test_fail_create_community(client: FlaskClient, user_id: str):
 '''==================== EDIT Community ======================================='''
 
 @pytest.mark.parametrize("user_id, community_id", [("seta_admin", "blue")])
-def test_update_community(client: FlaskClient, user_id: str, community_id: str):
+def test_update_community(client: FlaskClient, authentication_url:str, user_id: str, community_id: str):
     """
     Scenario: 'user1' edits the description of data community 'blue'
 
@@ -69,10 +71,11 @@ def test_update_community(client: FlaskClient, user_id: str, community_id: str):
 
     new_description = "Community Update Test"
     
-    response = login_user(client=client, user_id=user_id)    
+    response = login_user(auth_url=authentication_url, user_id=user_id)    
     assert response.status_code == HTTPStatus.OK
-    assert "access_token" in response.json
-    access_token = response.json["access_token"]
+    response_json = response.json()
+    assert "access_token" in response_json
+    access_token = response_json["access_token"]
 
     response = get_community(client=client, access_token=access_token, id=community_id)
     assert response.status_code == HTTPStatus.OK
@@ -90,7 +93,7 @@ def test_update_community(client: FlaskClient, user_id: str, community_id: str):
     assert response.json["description"] == new_description
 
 @pytest.mark.parametrize("user_id, community_id", [("seta_community_manager", "blue")])
-def test_fail_update_community(client: FlaskClient, user_id: str, community_id: str):
+def test_fail_update_community(client: FlaskClient, authentication_url:str, user_id: str, community_id: str):
     """
     Scenario: 'user2' edits the description of data community 'blue'
 
@@ -101,10 +104,11 @@ def test_fail_update_community(client: FlaskClient, user_id: str, community_id: 
 
     new_description = "Community Update Test"
     
-    response = login_user(client=client, user_id=user_id)    
+    response = login_user(auth_url=authentication_url, user_id=user_id)    
     assert response.status_code == HTTPStatus.OK
-    assert "access_token" in response.json
-    access_token = response.json["access_token"]
+    response_json = response.json()
+    assert "access_token" in response_json
+    access_token = response_json["access_token"]
 
     response = get_community(client=client, access_token=access_token, id=community_id)
     assert response.status_code == HTTPStatus.OK
@@ -117,7 +121,7 @@ def test_fail_update_community(client: FlaskClient, user_id: str, community_id: 
     assert response.status_code == HTTPStatus.FORBIDDEN
 
 @pytest.mark.parametrize("user_id, community_id", [("seta_admin", "red")])
-def test_fail_non_existing_community(client: FlaskClient, user_id: str, community_id: str):
+def test_fail_non_existing_community(client: FlaskClient, authentication_url:str, user_id: str, community_id: str):
     """
     Scenario: 'user1' edits the description of nonexisting data community 'red'
 
@@ -126,15 +130,17 @@ def test_fail_non_existing_community(client: FlaskClient, user_id: str, communit
     Then: the descprition of data community 'red' is rejected because data community 'red' does not exist.
     """
     
-    response = login_user(client=client, user_id=user_id)    
+    response = login_user(auth_url=authentication_url, user_id=user_id)    
     assert response.status_code == HTTPStatus.OK
-    assert "access_token" in response.json
-    access_token = response.json["access_token"]
+    response_json = response.json()
+    assert "access_token" in response_json
+    access_token = response_json["access_token"]
 
     response = update_community(client=client, access_token=access_token, 
                     id=community_id, title="title", description="description", 
                     data_type="representative", status="active")
-    assert response.status_code == HTTPStatus.NO_CONTENT    
+    assert response.status_code == HTTPStatus.NOT_FOUND    
+    
          
 
 '''===========================================================''' 
@@ -142,7 +148,7 @@ def test_fail_non_existing_community(client: FlaskClient, user_id: str, communit
 
 '''==================== CREATE Resource ======================================='''
 @pytest.mark.parametrize("user_id, community_id", [("seta_admin", "blue")])
-def test_create_resource(client: FlaskClient, user_id: str, community_id: str):
+def test_create_resource(client: FlaskClient, authentication_url:str, user_id: str, community_id: str):
     """
     Scenario: 'user1' is registering new data source 'ocean' in data community 'blue'
 
@@ -154,10 +160,11 @@ def test_create_resource(client: FlaskClient, user_id: str, community_id: str):
     """
 
     
-    response = login_user(client=client, user_id=user_id)    
+    response = login_user(auth_url=authentication_url, user_id=user_id)    
     assert response.status_code == HTTPStatus.OK
-    assert "access_token" in response.json
-    access_token = response.json["access_token"]
+    response_json = response.json()
+    assert "access_token" in response_json
+    access_token = response_json["access_token"]
 
     response = create_resource(client=client, access_token=access_token, community_id=community_id,
                     resource_id="ocean", title="Ocean", abstract="Ocean resource for test")
@@ -165,7 +172,7 @@ def test_create_resource(client: FlaskClient, user_id: str, community_id: str):
 
 
 @pytest.mark.parametrize("user_id, community_id", [("seta_admin", "blue")])
-def test_fail_create_resource(client: FlaskClient, user_id: str, community_id: str):
+def test_fail_create_resource(client: FlaskClient, authentication_url:str, user_id: str, community_id: str):
     """
     Scenario: 'user1' is re-registering new data source 'ocean' in data community 'blue'
     Given: 'user1' is authenticated users in SeTA
@@ -177,17 +184,18 @@ def test_fail_create_resource(client: FlaskClient, user_id: str, community_id: s
     """
 
     
-    response = login_user(client=client, user_id=user_id)    
+    response = login_user(auth_url=authentication_url, user_id=user_id)    
     assert response.status_code == HTTPStatus.OK
-    assert "access_token" in response.json
-    access_token = response.json["access_token"]
+    response_json = response.json()
+    assert "access_token" in response_json
+    access_token = response_json["access_token"]
 
     response = create_resource(client=client, access_token=access_token, community_id=community_id,
                     resource_id="ocean", title="Ocean", abstract="Ocean resource for test")
     assert response.status_code == HTTPStatus.CONFLICT   
 
 @pytest.mark.parametrize("user_id, community_id", [("seta_admin", "yellow")])
-def test_fail_create_resource_non_existent_community(client: FlaskClient, user_id: str, community_id: str):
+def test_fail_create_resource_non_existent_community(client: FlaskClient, authentication_url:str, user_id: str, community_id: str):
     """
     Scenario: 'user1' is re-registering new data source 'ocean' in data community 'blue'
     Given: 'user1' is authenticated users in SeTA
@@ -199,17 +207,18 @@ def test_fail_create_resource_non_existent_community(client: FlaskClient, user_i
     """
 
     
-    response = login_user(client=client, user_id=user_id)    
+    response = login_user(auth_url=authentication_url, user_id=user_id)    
     assert response.status_code == HTTPStatus.OK
-    assert "access_token" in response.json
-    access_token = response.json["access_token"]
+    response_json = response.json()
+    assert "access_token" in response_json
+    access_token = response_json["access_token"]
 
     response = create_resource(client=client, access_token=access_token, community_id=community_id,
                     resource_id="ocean", title="Ocean", abstract="Ocean resource for test")
-    assert response.status_code == HTTPStatus.NO_CONTENT        
+    assert response.status_code == HTTPStatus.NOT_FOUND        
 
 @pytest.mark.parametrize("user_id, community_id", [("seta_community_manager", "blue")])
-def test_fail_create_resource_forbidden(client: FlaskClient, user_id: str, community_id: str):
+def test_fail_create_resource_forbidden(client: FlaskClient, authentication_url:str, user_id: str, community_id: str):
     """
     Scenario: 'user2' is registering new data source 'sea' in data community 'blue'
     Given: 'user2' is authenticated users in SeTA
@@ -220,10 +229,11 @@ def test_fail_create_resource_forbidden(client: FlaskClient, user_id: str, commu
     """
 
     
-    response = login_user(client=client, user_id=user_id)    
+    response = login_user(auth_url=authentication_url, user_id=user_id)    
     assert response.status_code == HTTPStatus.OK
-    assert "access_token" in response.json
-    access_token = response.json["access_token"]
+    response_json = response.json()
+    assert "access_token" in response_json
+    access_token = response_json["access_token"]
 
     response = create_resource(client=client, access_token=access_token, community_id=community_id,
                     resource_id="sea", title="Sea", abstract="Sea resource for test")
@@ -233,7 +243,7 @@ def test_fail_create_resource_forbidden(client: FlaskClient, user_id: str, commu
 
 '''==================== EDIT Resource ======================================='''
 @pytest.mark.parametrize("user_id, resource_id", [("seta_admin", "ocean")])
-def test_update_resource(client: FlaskClient, user_id: str, resource_id: str):
+def test_update_resource(client: FlaskClient, authentication_url:str, user_id: str, resource_id: str):
     """
     Scenario: 'user1' edits the description of resource 'ocean'
 
@@ -244,10 +254,11 @@ def test_update_resource(client: FlaskClient, user_id: str, resource_id: str):
 
     new_description = "Resource Update Test"
     
-    response = login_user(client=client, user_id=user_id)    
+    response = login_user(auth_url=authentication_url, user_id=user_id)    
     assert response.status_code == HTTPStatus.OK
-    assert "access_token" in response.json
-    access_token = response.json["access_token"]
+    response_json = response.json()
+    assert "access_token" in response_json
+    access_token = response_json["access_token"]
 
     response = get_resource(client=client, access_token=access_token, resource_id=resource_id)
     assert response.status_code == HTTPStatus.OK
@@ -264,7 +275,7 @@ def test_update_resource(client: FlaskClient, user_id: str, resource_id: str):
     assert response.json["abstract"] == new_description
 
 @pytest.mark.parametrize("user_id, resource_id", [("seta_community_manager", "ocean")])
-def test_fail_update_resource(client: FlaskClient, user_id: str, resource_id: str):
+def test_fail_update_resource(client: FlaskClient, authentication_url:str, user_id: str, resource_id: str):
     """
     Scenario: 'user2' edits the description of resource 'ocean'
 
@@ -275,10 +286,11 @@ def test_fail_update_resource(client: FlaskClient, user_id: str, resource_id: st
 
     new_description = "Resource Update Test"
     
-    response = login_user(client=client, user_id=user_id)    
+    response = login_user(auth_url=authentication_url, user_id=user_id)    
     assert response.status_code == HTTPStatus.OK
-    assert "access_token" in response.json
-    access_token = response.json["access_token"]
+    response_json = response.json()
+    assert "access_token" in response_json
+    access_token = response_json["access_token"]
 
     response = get_resource(client=client, access_token=access_token, resource_id=resource_id)
     assert response.status_code == HTTPStatus.OK
@@ -293,7 +305,7 @@ def test_fail_update_resource(client: FlaskClient, user_id: str, resource_id: st
 '''==================== Join Requests ======================================='''
 
 @pytest.mark.parametrize("user_id, community_id", [("seta_community_manager", "blue")])
-def test_create_join_request(client: FlaskClient, user_id: str, community_id: str):
+def test_create_join_request(client: FlaskClient, authentication_url:str, user_id: str, community_id: str):
     """
     Scenario: 'user2' sends request to join 'blue' community
 
@@ -304,10 +316,11 @@ def test_create_join_request(client: FlaskClient, user_id: str, community_id: st
     """
 
     
-    response = login_user(client=client, user_id=user_id)    
+    response = login_user(auth_url=authentication_url, user_id=user_id)    
     assert response.status_code == HTTPStatus.OK
-    assert "access_token" in response.json
-    access_token = response.json["access_token"]
+    response_json = response.json()
+    assert "access_token" in response_json
+    access_token = response_json["access_token"]
 
     response = create_membership_request(client=client, access_token=access_token, community_id=community_id,
                     message="I want to become a member of your community!")
@@ -315,7 +328,7 @@ def test_create_join_request(client: FlaskClient, user_id: str, community_id: st
 
 @pytest.mark.parametrize("user_id, community_id, expect", [("seta_admin", "blue", HTTPStatus.OK), 
         ("seta_community_manager", "blue", HTTPStatus.FORBIDDEN)])
-def test_get_community_join_requests(client: FlaskClient, user_id: str, community_id: str, expect: int):
+def test_get_community_join_requests(client: FlaskClient, authentication_url:str, user_id: str, community_id: str, expect: int):
     """
     Scenario: 'user1' gets the join requests list for community 'blue'
 
@@ -326,10 +339,11 @@ def test_get_community_join_requests(client: FlaskClient, user_id: str, communit
     """
 
     
-    response = login_user(client=client, user_id=user_id)    
+    response = login_user(auth_url=authentication_url, user_id=user_id)    
     assert response.status_code == HTTPStatus.OK
-    assert "access_token" in response.json
-    access_token = response.json["access_token"]
+    response_json = response.json()
+    assert "access_token" in response_json
+    access_token = response_json["access_token"]
 
     response = get_membership_requests(client=client, access_token=access_token, community_id=community_id)
     assert response.status_code == expect
@@ -339,17 +353,18 @@ def test_get_community_join_requests(client: FlaskClient, user_id: str, communit
         pytest.param("seta_admin", "blue", "seta_community_manager"),
         pytest.param("seta_admin", "blue", "seta_community_manager", marks=pytest.mark.xfail),
         ])
-def test_update_membership_request(client: FlaskClient, user_id: str, community_id: str, request_id: str):
+def test_update_membership_request(client: FlaskClient, authentication_url:str, user_id: str, community_id: str, request_id: str):
     """
     user2: confirm 'user2' request to join community 'blue' - result FAILED
     user1: confirm 'user2' request to join community 'blue' - result SUCCESS
     user1: confirm 'user2' request to join community 'blue' - result FAILED
     """
     
-    response = login_user(client=client, user_id=user_id)    
+    response = login_user(auth_url=authentication_url, user_id=user_id)    
     assert response.status_code == HTTPStatus.OK
-    assert "access_token" in response.json
-    access_token = response.json["access_token"]
+    response_json = response.json()
+    assert "access_token" in response_json
+    access_token = response_json["access_token"]
 
     response = update_membership_request(client=client, access_token=access_token, community_id=community_id, user_id=request_id, status="approved")
     assert response.status_code == HTTPStatus.OK
@@ -358,15 +373,16 @@ def test_update_membership_request(client: FlaskClient, user_id: str, community_
 
 '''==================== Grant user rights ======================================='''
 @pytest.mark.parametrize("user_id, community_id, manager_id", [("seta_admin", "blue", "seta_community_manager")])
-def test_add_community_manager(client: FlaskClient, user_id: str, community_id: str, manager_id: str):
+def test_add_community_manager(client: FlaskClient, authentication_url:str, user_id: str, community_id: str, manager_id: str):
     """
     user1: grant 'edit/manager' rigths to 'user2' for community 'blue' - result SUCCESS
     """
 
-    response = login_user(client=client, user_id=user_id)    
+    response = login_user(auth_url=authentication_url, user_id=user_id)    
     assert response.status_code == HTTPStatus.OK
-    assert "access_token" in response.json
-    access_token = response.json["access_token"]
+    response_json = response.json()
+    assert "access_token" in response_json
+    access_token = response_json["access_token"]
 
     scopes = [CommunityScopeConstants.Manager, CommunityScopeConstants.CreateResource, 
             CommunityScopeConstants.SendInvite, CommunityScopeConstants.ApproveMembershipRequest]
@@ -374,7 +390,7 @@ def test_add_community_manager(client: FlaskClient, user_id: str, community_id: 
     assert response.status_code == HTTPStatus.OK
 
 @pytest.mark.parametrize("user_id, community_id", [("seta_community_manager", "blue")])
-def test_get_community_join_requests_again(client: FlaskClient, user_id: str, community_id: str):
+def test_get_community_join_requests_again(client: FlaskClient, authentication_url:str, user_id: str, community_id: str):
     """
     Scenario: 'user2' gets the join requests list for community 'blue'
 
@@ -384,20 +400,21 @@ def test_get_community_join_requests_again(client: FlaskClient, user_id: str, co
     Then: gets the list
     """
         
-    test_get_community_join_requests(client=client, user_id=user_id, community_id=community_id, expect=HTTPStatus.OK)
+    test_get_community_join_requests(client=client, authentication_url=authentication_url, user_id=user_id, community_id=community_id, expect=HTTPStatus.OK)
 
 @pytest.mark.parametrize("user_id, community_id", [("seta_community_manager", "blue"),
         pytest.param("seta_community_manager", "blue", marks=pytest.mark.xfail)])
-def test_create_resource_again(client: FlaskClient, user_id: str, community_id: str):
+def test_create_resource_again(client: FlaskClient, authentication_url:str, user_id: str, community_id: str):
     """
         user2: Register new data source 'sea' in 'blue' community - result  SUCCESS
         user2: Register new data source 'sea' in 'blue' community - result  FAILED
     """
 
-    response = login_user(client=client, user_id=user_id)    
+    response = login_user(auth_url=authentication_url, user_id=user_id)    
     assert response.status_code == HTTPStatus.OK
-    assert "access_token" in response.json
-    access_token = response.json["access_token"]
+    response_json = response.json()
+    assert "access_token" in response_json
+    access_token = response_json["access_token"]
 
     response = create_resource(client=client, access_token=access_token, community_id=community_id,
                     resource_id="sea", title="Sea", abstract="Sea resource for test")
@@ -409,28 +426,30 @@ def test_create_resource_again(client: FlaskClient, user_id: str, community_id: 
 '''==================== Remove owner membership ======================================='''
 
 @pytest.mark.parametrize("user_id, community_id, member_id, expected", [("seta_admin", "blue", "seta_admin", HTTPStatus.CONFLICT)])
-def test_delete_membership(client: FlaskClient, user_id: str, community_id: str, member_id: str, expected: int):
+def test_delete_membership(client: FlaskClient, authentication_url:str, user_id: str, community_id: str, member_id: str, expected: int):
     """user1: remove 'user1' membership of 'blue' community  - result  FAILED"""
 
 
-    response = login_user(client=client, user_id=user_id)    
+    response = login_user(auth_url=authentication_url, user_id=user_id)    
     assert response.status_code == HTTPStatus.OK
-    assert "access_token" in response.json
-    access_token = response.json["access_token"]
+    response_json = response.json()
+    assert "access_token" in response_json
+    access_token = response_json["access_token"]
 
     response = delete_membership(client=client, access_token=access_token, community_id=community_id, user_id=member_id)
     assert response.status_code == expected
 
 @pytest.mark.parametrize("user_id, community_id, owner_id", [("seta_admin", "blue", "seta_community_manager")])
-def test_add_community_owner(client: FlaskClient, user_id: str, community_id: str, owner_id: str):
+def test_add_community_owner(client: FlaskClient, authentication_url:str, user_id: str, community_id: str, owner_id: str):
     """
     user1: grant 'ownership' of community 'blue' to 'user2' - result  SUCCESS
     """
 
-    response = login_user(client=client, user_id=user_id)    
+    response = login_user(auth_url=authentication_url, user_id=user_id)    
     assert response.status_code == HTTPStatus.OK
-    assert "access_token" in response.json
-    access_token = response.json["access_token"]
+    response_json = response.json()
+    assert "access_token" in response_json
+    access_token = response_json["access_token"]
 
     response = get_user_permissions(client=client, access_token=access_token, community_id=community_id, user_id=owner_id)
     assert response.status_code == HTTPStatus.OK
@@ -444,32 +463,33 @@ def test_add_community_owner(client: FlaskClient, user_id: str, community_id: st
     assert response.status_code == HTTPStatus.OK  
 
 @pytest.mark.parametrize("user_id, community_id, member_id", [("seta_admin", "blue", "seta_admin")])
-def test_delete_membership_again(client: FlaskClient, user_id: str, community_id: str, member_id: str):
+def test_delete_membership_again(client: FlaskClient, authentication_url:str, user_id: str, community_id: str, member_id: str):
     """
     user1: remove membership of 'blue' community  - result  SUCCESS
     """
 
-    test_delete_membership(client=client, user_id=user_id, community_id=community_id, member_id=member_id, expected=HTTPStatus.OK)    
+    test_delete_membership(client=client, authentication_url=authentication_url, user_id=user_id, community_id=community_id, member_id=member_id, expected=HTTPStatus.OK)    
 
 @pytest.mark.parametrize("user_id, community_id", [("seta_admin", "blue")])
-def test_get_community_join_requests_no_membership(client: FlaskClient, user_id: str, community_id: str):
+def test_get_community_join_requests_no_membership(client: FlaskClient, authentication_url: str, user_id: str, community_id: str):
     """
         user1: get list of requests to join community 'blue' -  result FAILED
     """
 
-    test_get_community_join_requests(client=client, user_id=user_id, community_id=community_id, expect=HTTPStatus.FORBIDDEN)
+    test_get_community_join_requests(client=client, authentication_url=authentication_url, user_id=user_id, community_id=community_id, expect=HTTPStatus.FORBIDDEN)
 
 @pytest.mark.parametrize("user_id, community_id", [("seta_admin", "blue")])
-def test_fail_create_resource_forbidden_no_membership(client: FlaskClient, user_id: str, community_id: str):
+def test_fail_create_resource_forbidden_no_membership(client: FlaskClient, authentication_url:str, user_id: str, community_id: str):
     """
     user1: Register new data source 'lake' in 'blue' community - result  FAILED
     """
 
     
-    response = login_user(client=client, user_id=user_id)    
+    response = login_user(auth_url=authentication_url, user_id=user_id)    
     assert response.status_code == HTTPStatus.OK
-    assert "access_token" in response.json
-    access_token = response.json["access_token"]
+    response_json = response.json()
+    assert "access_token" in response_json
+    access_token = response_json["access_token"]
 
     response = create_resource(client=client, access_token=access_token, community_id=community_id,
                     resource_id="lake", title="Lake", abstract="Lake resource for test")
@@ -482,43 +502,45 @@ def test_fail_create_resource_forbidden_no_membership(client: FlaskClient, user_
 
 @pytest.mark.parametrize("user_id, community_id, expected", [("seta_admin", "blue", HTTPStatus.FORBIDDEN),
         ("seta_community_manager", "blue", HTTPStatus.CONFLICT)])
-def test_delete_community(client: FlaskClient, user_id: str, community_id: str, expected: int):
+def test_delete_community(client: FlaskClient, authentication_url:str, user_id: str, community_id: str, expected: int):
     """
         user1: Delete community 'blue' -  result  FAILED
         user2: Delete community 'blue' -  result  FAILED
     """
 
 
-    response = login_user(client=client, user_id=user_id)    
+    response = login_user(auth_url=authentication_url, user_id=user_id)    
     assert response.status_code == HTTPStatus.OK
-    assert "access_token" in response.json
-    access_token = response.json["access_token"]
+    response_json = response.json()
+    assert "access_token" in response_json
+    access_token = response_json["access_token"]
 
     response = delete_community(client=client, access_token=access_token, id=community_id)
     assert response.status_code == expected
 
 @pytest.mark.parametrize("user_id, resource_id, expected", [("seta_community_manager", "ocean", HTTPStatus.OK),
         ("seta_community_manager", "sea", HTTPStatus.OK)])
-def test_delete_resource(client: FlaskClient, user_id: str, resource_id: str, expected: int):
+def test_delete_resource(client: FlaskClient, authentication_url:str, user_id: str, resource_id: str, expected: int):
     """
         user2: Delete resource 'ocean' in community 'blue' -  result  SUCCESS
         user2: Delete resource 'sea' in community 'blue' -  result  SUCCESS 
     """
 
 
-    response = login_user(client=client, user_id=user_id)    
+    response = login_user(auth_url=authentication_url, user_id=user_id)    
     assert response.status_code == HTTPStatus.OK
-    assert "access_token" in response.json
-    access_token = response.json["access_token"]
+    response_json = response.json()
+    assert "access_token" in response_json
+    access_token = response_json["access_token"]
 
     response = delete_resource(client=client, access_token=access_token, resource_id=resource_id)
     assert response.status_code == expected   
 
 @pytest.mark.parametrize("user_id, community_id", [("seta_community_manager", "blue")])
-def test_delete_community_again(client: FlaskClient, user_id: str, community_id: str):
+def test_delete_community_again(client: FlaskClient, authentication_url:str, user_id: str, community_id: str):
     """
         user2: Delete community 'blue' -  result  SUCCESS
     """     
-    test_delete_community(client=client, user_id=user_id, community_id=community_id, expected=HTTPStatus.OK)
+    test_delete_community(client=client, authentication_url=authentication_url, user_id=user_id, community_id=community_id, expected=HTTPStatus.OK)
 
 '''==========================================================='''

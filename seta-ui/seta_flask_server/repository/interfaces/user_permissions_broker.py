@@ -21,10 +21,10 @@ class IUserPermissionsBroker(Interface):
     def replace_all_user_system_scopes(self, user_id: str, scopes: list[SystemScope]) -> None:
         pass
 
-    def replace_all_user_community_scopes(self, user_id: str, community_id: str, scopes: list[EntityScope]) -> None:
+    def replace_all_user_community_scopes(self, user_id: str, community_id: str, scopes: list[str]) -> None:
         pass
 
-    def replace_all_user_resource_scopes(self, user_id: str, resource_id: str, scopes: list[EntityScope]) -> None:
+    def replace_all_user_resource_scopes(self, user_id: str, resource_id: str, scopes: list[str]) -> None:
         pass
 
     def get_all_resource_scopes(self, resource_id: str) -> list[EntityScope]:

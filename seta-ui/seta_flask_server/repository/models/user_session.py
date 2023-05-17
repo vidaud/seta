@@ -1,4 +1,4 @@
-import datetime
+from datetime import datetime
 from dataclasses import dataclass, asdict
 
 @dataclass(kw_only=True)
@@ -36,7 +36,7 @@ class UserSession:
     
     def to_json(self):
         to_return = asdict(self)
-        to_return.pop("session_tokens")
+        to_return.pop("session_tokens", None)
         
         return to_return
         

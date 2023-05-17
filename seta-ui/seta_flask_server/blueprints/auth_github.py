@@ -12,6 +12,8 @@ from seta_flask_server.repository.models import SetaUser
 from injector import inject
 from flask_github import GitHubError
 
+from http import HTTPStatus
+
 auth_github = Blueprint("auth_github", __name__)
 
 @auth_github.route('/login/github', methods=["GET"])
@@ -36,7 +38,7 @@ def login_callback_github(access_token, userBroker: IUsersBroker, sessionBroker:
     """Callback after Github successful authentication"""
     
     if access_token is None:
-        abort(401, "Failed Github authorization.")
+        abort(HTTPStatus.UNAUTHORIZED, "Failed Github authorization.")
         
     usr = {"github_access_token": access_token}
     g.user = usr
@@ -65,6 +67,11 @@ def login_callback_github(access_token, userBroker: IUsersBroker, sessionBroker:
     next = urljoin(next, "?action=login")        
     
     auth_user = userBroker.authenticate_user(seta_user)
+    
+    if auth_user is None:
+        #! user is not active
+        abort(HTTPStatus.UNAUTHORIZED, "The user couldn't be authenticated")
+    
     response = create_login_response(seta_user=auth_user, sessionBroker=sessionBroker, next=next)
         
     return response

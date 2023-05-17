@@ -44,3 +44,9 @@ services:
       - "8000"
     volumes:
       - ../seta-doc:/home/seta
+
+  seta-auth:
+    build:
+       dockerfile: Dockerfile-dev
+    volumes:
+      - ../seta-auth:/home/seta

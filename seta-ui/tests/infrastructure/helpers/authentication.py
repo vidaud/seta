@@ -4,6 +4,7 @@ from Crypto.Signature import pkcs1_15
 import random
 import string
 from typing import Tuple
+import requests
 
 from flask import json
 from flask.testing import FlaskClient
@@ -27,21 +28,21 @@ def generate_signature(private_key: str) -> Tuple[str, str]:
 
     return random_string, str(signature.hex())
 
-def login_user(client: FlaskClient, user_id: str):
+def login_user(auth_url:str, user_id: str, provider: str = "ECAS"):
 
     private_key = get_private_key(user_id)
     message, signature = generate_signature(private_key)
 
 
     payload = {
-        "user_id": user_id,
+        "username": user_id.lower(),
+        "provider": provider.lower(),
         "rsa_original_message": message,
         "rsa_message_signature": signature
         }
 
-    url = "/authentication/v1/user/token"
     data = json.dumps(payload)    
-    return client.post(url, data=data, content_type='application/json')
+    return requests.post(auth_url, data=data, headers={'Content-Type': 'application/json'})
 
 def logout_user(client: FlaskClient, access_token: str):
     return client.post(

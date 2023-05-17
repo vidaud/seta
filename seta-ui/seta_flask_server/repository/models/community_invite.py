@@ -1,4 +1,4 @@
-import datetime
+from datetime import datetime
 from dataclasses import dataclass, asdict
 
 @dataclass(kw_only=True)        
@@ -12,6 +12,10 @@ class CommunityInviteModel:
     initiated_by: str = None    
     initiated_date: datetime = None
     modified_at: datetime = None
+    
+    def __post_init__(self):
+        if self.community_id:
+            self.community_id = self.community_id.lower()        
     
     def to_json(self):
         return asdict(self)

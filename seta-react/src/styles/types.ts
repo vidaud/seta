@@ -1,10 +1,10 @@
 declare module '@mantine/core' {
-  interface MantineThemeOverride {
+  type MantineThemeOverride = {
     other: MantineThemeOther
   }
 
   // Custom theme properties
-  interface MantineThemeOther {
+  type MantineThemeOther = {
     jrcBlue: string
   }
 }

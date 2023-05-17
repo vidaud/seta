@@ -35,7 +35,7 @@
         {
             "user_id": "seta_admin",
             "provider_uid": "seta_admin",
-            "provider": "ECAS",
+            "provider": "ecas",
             "first_name": "Seta",
             "last_name": "Admin",
             "domain": "eu.europa.ec"

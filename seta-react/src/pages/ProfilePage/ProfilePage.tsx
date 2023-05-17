@@ -17,7 +17,7 @@ function ProfilePage(props) {
 
   if (storageService.isLoggedIn()) {
     currentUser = storageService.getUser()
-    RestService.getPublicRsaKey(currentUser.username).then(r => {
+    RestService.getPublicRsaKey().then(r => {
       setpublicKey(r.data.value)
     })
   }
@@ -62,26 +62,26 @@ function ProfilePage(props) {
                   <i className="pi pi-user" />
                 </span>
                 <span className="p-float-label">
-                  <InputText id="email" type="text" value={currentUser.email} disabled />
+                  <InputText id="email" type="text" value={currentUser.email} readOnly />
                   <label htmlFor="email">Email</label>
                 </span>
               </div>
             </div>
             <div className="field col-12 md:col-6">
               <span className="p-float-label">
-                <InputText id="username" type="text" value={currentUser.username} disabled />
-                <label htmlFor="username">Username</label>
+                <InputText id="username" type="text" value={currentUser.username} readOnly />
+                <label htmlFor="username">User Identifier</label>
               </span>
             </div>
             <div className="field col-12 md:col-6">
               <span className="p-float-label">
-                <InputText id="firstName" type="text" value={currentUser.firstName} disabled />
+                <InputText id="firstName" type="text" value={currentUser.firstName} readOnly />
                 <label htmlFor="FirstName">First Name</label>
               </span>
             </div>
             <div className="field col-12 md:col-6">
               <span className="p-float-label">
-                <InputText id="lastName" type="text" value={currentUser.lastName} disabled />
+                <InputText id="lastName" type="text" value={currentUser.lastName} readOnly />
                 <label htmlFor="lastName">Last Name</label>
               </span>
             </div>
@@ -94,7 +94,7 @@ function ProfilePage(props) {
                     rows={22}
                     cols={50}
                     autoResize
-                    disabled
+                    readOnly
                   />
                   <label htmlFor="publicKey">Public Key</label>
                 </span>

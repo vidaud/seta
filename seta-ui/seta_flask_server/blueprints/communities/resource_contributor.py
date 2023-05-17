@@ -31,7 +31,7 @@ class ResourceContributorList(Resource):
 
     @resource_contributors_ns.doc(description='Retrieve contributors for this respurce.',
         responses={int(HTTPStatus.OK): "'Retrieved contributors.",
-                   int(HTTPStatus.NO_CONTENT): "Resource not found"},
+                   int(HTTPStatus.NOT_FOUND): "Resource not found"},
         security='CSRF')
     @resource_contributors_ns.marshal_list_with(contributor_model, mask="*")
     @auth_validator()    
@@ -39,13 +39,13 @@ class ResourceContributorList(Resource):
         '''Retrieve contributors'''
 
         if not self.resourcesBroker.resource_id_exists(resource_id):
-            return '', HTTPStatus.NO_CONTENT
+            abort(HTTPStatus.NOT_FOUND)
 
         return [c.to_json() for c in self.contributorsBroker.get_all_by_resource_id(resource_id)]
 
     @resource_contributors_ns.doc(description='Create new contributor.',        
         responses={int(HTTPStatus.CREATED): "Added contributor.", 
-                   int(HTTPStatus.NO_CONTENT): "Resource not found",
+                   int(HTTPStatus.NOT_FOUND): "Resource not found",
                    int(HTTPStatus.FORBIDDEN): "Insufficient rights, scope 'resource/data/add' required"},
         security='CSRF')
     @resource_contributors_ns.expect(new_contributor_parser)
@@ -57,13 +57,13 @@ class ResourceContributorList(Resource):
         auth_id = identity["user_id"]
 
         user = self.usersBroker.get_user_by_id(auth_id)
-        if user is None:
+        if user is None or user.is_not_active():
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
         if not user.has_resource_scope(id=resource_id, scope=ResourceScopeConstants.DataAdd):
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
 
         if not self.resourcesBroker.resource_id_exists(resource_id):
-            return '', HTTPStatus.NO_CONTENT
+            abort(HTTPStatus.NOT_FOUND)
 
         contributor_dict = new_contributor_parser.parse_args()
         
