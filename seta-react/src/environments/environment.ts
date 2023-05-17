@@ -6,6 +6,8 @@ export const environment = {
   baseFlaskBackendUrl: 'http://localhost:8080',
   loginTokenExpiryInterval: 60, // In minutes
   api_target_path: `/seta-api/api/v1/`,
+  community_api_target_path: `/seta-ui/api/v1/`,
   token_key: 'csrf_access_token',
-  refreshtoken_key: 'csrf_refresh_token'
+  refreshtoken_key: 'csrf_refresh_token',
+  COMMUNITIES_API_PATH: '/communities'
 }
