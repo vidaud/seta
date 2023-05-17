@@ -40,7 +40,7 @@ Users can also have access to other users communities if they want.  They will b
 Communities can be private or public.  The private communities are available to users only after receiving an invitation. The public communities are visible from the dashboard of the Community page.      
 
 
-## API
+## APIs
 
 SeTA APIs are REST APIs created with Swagger UI[^2]. This provides a visual representation of the API and its documentation and allows users to try out the API calls in the browser.          
 There are two SeTA APIs:      

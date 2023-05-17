@@ -8,13 +8,13 @@ SeTA has two user interfaces:
 
 
 ## Web App
-The Seta Web App is a user-friendly interface that allows the user to access the content in a Web browser. 
+The SeTA Web App is a user-friendly interface that allows the user to access the content in a Web browser. 
  
  <!--   ![Image title](../img/main_screen.jpg){ width="600" }  -->
 
 <figure markdown>
 ![Image title](../img/main_screen.jpg){ width="600" }
-<figcaption>Seta main page</figcaption>
+<figcaption>SeTA main page</figcaption>
 </figure>
 
 
@@ -50,10 +50,10 @@ Once you are logged in, you can see in the top menu the link to the Search and t
 The SeTA APIs provides the functions and procedures to access data from a developer point of view.
 
 In SeTA there are two APIs:   
-- Seta API    
+- SeTA API    
 - Communities API 
 
-### Seta API
+### SeTA API
 
 
 #### Prerequisites
@@ -72,7 +72,7 @@ You can start using Search API.
 
 <figure markdown>
 ![Image title](../img/seta-api.png){ width="900" }
-<figcaption>Seta API</figcaption>
+<figcaption>SeTA API</figcaption>
 </figure>
 
 
@@ -189,7 +189,7 @@ Click on the **Authorize** button to open the Available authorizations dialog; s
     * open the browser developer tool and copy the value of the **access_token_cookie**
     * {==click on the **Authorize** button to open the Available authorizations dialog; in the apikey text input set **Bearer** value then click on the *Authorize* button.==}
 
-Seta-API will get at each request another authorization decoded token from seta-ui through the *token info* endpoint using the authenticated JWT.
+SeTA-API will get at each request another authorization decoded token from seta-ui through the *token info* endpoint using the authenticated JWT.
 
 !!! info 
     You can verify the authorization token at [authorization doc](/authorization/v1/doc) passing the JWT access token as payload.
@@ -230,8 +230,8 @@ Check the following entries in the **seta database - communities** collection:
 <!--```
     {
         "community_id": "seta",
-        "title": "Seta",
-        "description": "Seta community",
+        "title": "SeTA",
+        "description": "SeTA community",
         "membership": "closed",
         "data_type": "evidence",
         "status": "active",

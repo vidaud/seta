@@ -1,4 +1,4 @@
-# SETA-API
+# SeTA API
 
 The SeTA API exposes the data and functionality in a consistent JSON format. It has various methods that can be performed on them over HTTP, like GET, POST, PUT, and DELETE. Where POST is used to create resources, and PUT to update resources.
 
