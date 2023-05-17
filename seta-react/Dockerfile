@@ -10,28 +10,28 @@ ENV http_proxy=$HTTP_PROXY
 ENV HTTPS_PROXY=$HTTPS_PROXY
 ENV HTTP_PROXY=$HTTP_PROXY
 
-RUN apt update -y && apt install -y --no-install-recommends  nodejs npm && mkdir /home/seta
+RUN apt update -y && apt install -y --no-install-recommends  nodejs npm
 RUN apt install -y  --no-install-recommends curl
-
-ARG ROOT=/home/seta
-WORKDIR $ROOT
 
 RUN npm update -g
 RUN npm install -g n
 RUN n lts
-RUN npm install -g primereact
-RUN npm install -g primeicons
-RUN npm install -g axios
+
 RUN npm install -g serve
 RUN npm install -g npm
 
-#RUN ng update -g
+ARG ROOT=/home/seta
 
+WORKDIR $ROOT
 
-COPY ./package.json $ROOT/package.json
+COPY ./package.json .
 RUN npm install
 
-COPY . .
+COPY ./tsconfig.json .
+COPY ./vite.config.js .
+COPY ./index.html .
+COPY ./src ./src
+COPY ./public ./public
 
 RUN npm run build
 

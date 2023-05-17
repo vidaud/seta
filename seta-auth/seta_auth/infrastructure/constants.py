@@ -21,3 +21,9 @@ class ResourceAccessContants:
 class AuthorizedArea:
     Resources = "resources"    
     List=[Resources]
+    
+class UserStatusConstants:
+    Active = "active"
+    Disabled = "disabled"
+    Blocked = "blocked"
+    Deleted = "deleted"    

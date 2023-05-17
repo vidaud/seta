@@ -143,11 +143,11 @@ def register_blueprints(app):
     from .blueprints.auth import local_auth
     from .blueprints.auth_ecas import auth_ecas
     from .blueprints.auth_github import auth_github
-    from .blueprints.user_profile import profile
+    from .blueprints.profile import profile_bp_v1
     
     API_ROOT="/seta-ui/api"
                     
-    app.register_blueprint(profile, url_prefix=f"{API_ROOT}/v1/me")   
+    app.register_blueprint(profile_bp_v1, url_prefix=f"{API_ROOT}/v1")   
     
     app.register_blueprint(local_auth, url_prefix=f"{API_ROOT}/v1")
     app.register_blueprint(auth_ecas, url_prefix=f"{API_ROOT}/v1")

@@ -1,4 +1,4 @@
-from six.moves.urllib import parse as urllib_parse
+from urllib.parse import urljoin
 import urllib3
 from cas import CASClientV3, logger
 
@@ -10,7 +10,7 @@ class SetaCasClient(CASClientV3):
         }        
         if self.proxy_callback:
             params.update({'pgtUrl': self.proxy_callback})
-        base_url = urllib_parse.urljoin(self.server_url, self.url_suffix)
+        base_url = urljoin(self.server_url, self.url_suffix)
         
         page = None  
         try:

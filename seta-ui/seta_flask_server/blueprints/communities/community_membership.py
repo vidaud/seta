@@ -48,7 +48,7 @@ class MembershipList(Resource):
         auth_id = identity["user_id"]        
      
         user = self.usersBroker.get_user_by_id(auth_id)
-        if user is None:
+        if user is None or user.is_not_active():
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
         
         if not self.membershipsBroker.get_membership(community_id=community_id, user_id=auth_id):
@@ -129,7 +129,7 @@ class Membership(Resource):
         auth_id = identity["user_id"]
 
         user = self.usersBroker.get_user_by_id(auth_id)
-        if user is None:
+        if user is None or user.is_not_active():
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
         if auth_id != user_id and not user.has_any_community_scope(id=community_id, scopes=[CommunityScopeConstants.Manager, CommunityScopeConstants.Owner]):
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
@@ -158,7 +158,7 @@ class Membership(Resource):
                 
         #verify scope
         user = self.usersBroker.get_user_by_id(auth_id)
-        if user is None:
+        if user is None or user.is_not_active():
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
         if not user.has_any_community_scope(id=community_id, scopes=[CommunityScopeConstants.Manager, CommunityScopeConstants.Owner]):
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
@@ -202,7 +202,7 @@ class Membership(Resource):
         
         #verify scope
         user = self.usersBroker.get_user_by_id(auth_id)
-        if user is None:
+        if user is None or user.is_not_active():
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
         if not user.has_any_community_scope(id=community_id, scopes=[CommunityScopeConstants.Manager, CommunityScopeConstants.Owner]):
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
@@ -261,7 +261,7 @@ class RequestList(Resource):
         auth_id = identity["user_id"]
 
         user = self.usersBroker.get_user_by_id(auth_id)
-        if user is None:
+        if user is None or user.is_not_active():
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
 
         scopes=[CommunityScopeConstants.Owner, CommunityScopeConstants.Manager, CommunityScopeConstants.ApproveMembershipRequest]
@@ -354,7 +354,7 @@ class Request(Resource):
         identity = get_jwt_identity()
         auth_id = identity["user_id"]
         user = self.usersBroker.get_user_by_id(auth_id)
-        if user is None:
+        if user is None or user.is_not_active():
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
 
         scopes = [CommunityScopeConstants.ApproveMembershipRequest, CommunityScopeConstants.Manager, CommunityScopeConstants.Owner]
@@ -381,7 +381,7 @@ class Request(Resource):
         
         #verify scope
         user = self.usersBroker.get_user_by_id(auth_id)
-        if user is None:
+        if user is None or user.is_not_active():
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
 
         scopes = [CommunityScopeConstants.ApproveMembershipRequest, CommunityScopeConstants.Manager, CommunityScopeConstants.Owner]

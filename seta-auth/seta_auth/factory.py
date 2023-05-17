@@ -1,6 +1,5 @@
-from flask import (Flask, url_for)
+from flask import (Flask, request)
 from werkzeug.middleware.proxy_fix import ProxyFix
-from flask_jwt_extended import get_jwt_identity
 
 from .infrastructure.extensions import (jwt, logs)
 
@@ -21,10 +20,10 @@ def create_app(config_object):
         
     #use flask.json in all modules instead of python built-in json
     app.json_provider_class = MongodbJSONProvider
-        
-    
+            
     register_extensions(app)
-    register_blueprints(app)
+    with app.app_context():
+        register_blueprints(app)
       
     @jwt.additional_claims_loader   
     def add_claims_to_access_token(identity):        

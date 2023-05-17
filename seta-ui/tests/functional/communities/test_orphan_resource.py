@@ -2,6 +2,7 @@ import pytest
 from flask.testing import FlaskClient
 from http import HTTPStatus
 import requests
+import time
 
 from tests.infrastructure.helpers.authentication import login_user
 from tests.infrastructure.helpers.community import create_community
@@ -21,6 +22,10 @@ def add_document(url: str):
 def test_orphan(client: FlaskClient, authentication_url: str, seta_api_corpus: str, user_id: str, community_id: str, resource_id: str):
     response = add_document(url=seta_api_corpus)
     assert response.status_code == HTTPStatus.OK
+    assert "document_id" in response.json()
+    
+    #wait for commit in ES
+    time.sleep(2)    
 
     response = login_user(auth_url=authentication_url, user_id=user_id)    
     assert response.status_code == HTTPStatus.OK

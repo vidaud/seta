@@ -9,3 +9,4 @@ from .community_change_request_broker import ICommunityChangeRequestsBroker
 from .community_invites_broker import ICommunityInvitesBroker
 from .user_permissions_broker import IUserPermissionsBroker
 from .sessions_broker import ISessionsBroker
+from .apps_broker import IAppsBroker

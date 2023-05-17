@@ -1,3 +1,4 @@
 .env
 .env.dev
-.env.test
+test-build.sh
+test-up.sh

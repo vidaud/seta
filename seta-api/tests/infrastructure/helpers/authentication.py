@@ -27,19 +27,18 @@ def generate_signature(private_key: str) -> Tuple[str, str]:
 
     return random_string, str(signature.hex())
 
-def login_user(auth_url:str, user_id: str):
+def login_user(auth_url:str, user_id: str, provider: str = "ECAS"):
 
     private_key = get_private_key(user_id)
     message, signature = generate_signature(private_key)
 
 
     payload = {
-        "user_id": user_id,
+        "username": user_id.lower(),
+        "provider": provider.lower(),
         "rsa_original_message": message,
         "rsa_message_signature": signature
         }
-    
-    #print(str(payload))
 
     data = json.dumps(payload)    
     return requests.post(auth_url, data=data, headers={'Content-Type': 'application/json'})
