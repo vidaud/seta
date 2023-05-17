@@ -1,6 +1,6 @@
 # seta-compose ⚙️
 
-# Minimum requirements
+## Minimum requirements
   
 * at least 10 GB available free RAM.
 

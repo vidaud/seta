@@ -1,10 +1,10 @@
 # seta-api 📃
 
-The **seta-api**  folder contains the image with the python client that helps to communicates with the docker client in order to elaborate the queries to the ElasticSearch engine that comes from the web app. 
+The **seta-api**  folder contains the image with the python client that helps to communicates with the docker client in order to elaborate the queries to the Elasticsearch engine that comes from the web app. 
 
-It has all the necessary configuration to make the data flows into the Elasticsearch engine from the different sources. In this image are included the functions by which this raw data is parsed, normalized, and enriched before it is indexed in ElasticSearch. 
+It has all the necessary configuration to make the data flows into the Elasticsearch engine from the different sources. In this image are included the functions by which this raw data is parsed, normalized, and enriched before it is indexed in Elasticsearch. 
 
-The process of index in ElasticSearch, it is also included in this image, together with the process of manage complex queries against the data and use aggregations to retrieve complex summaries of the data. 
+The process of index in Elasticsearch, it is also included in this image, together with the process of manage complex queries against the data and use aggregations to retrieve complex summaries of the data. 
 
 
 
