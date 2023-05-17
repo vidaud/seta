@@ -5,24 +5,7 @@ SeTA uses Docker, an open platform for developing, shipping, and running applica
 
 ## Docker architecture
 
-Docker uses a client-server architecture. The *Docker client* talks to the *Docker daemon*, which does the heavy lifting of building, running, and distributing the Docker containers. The Docker client and daemon can run on the same system, or connect a Docker client to a remote Docker daemon. The Docker client and daemon communicate using a REST API, over UNIX sockets or a network interface. Another Docker client is *Docker Compose*, that allows to work with applications consisting of a set of containers.
-
-
-- **The Docker daemon**:  The Docker daemon (dockerd) listens for Docker API requests and manages Docker objects such as images, containers, networks, and volumes.      
-
-
-- **The Docker client**:  The Docker client (docker) is the primary way that many Docker users interact with Docker. 
-
-
-- **Docker objects**:  When using Docker, this creates and uses images, containers, networks, volumes, plugins, and other objects.      
-
-    a) ^^Images^^:  An image is a read-only template with instructions for creating a Docker container. Often, an image is based on another image, with some additional customization.     
-
-    b) ^^Containers^^:  A container is a runnable instance of an image. It is possible to create, start, stop, move, or delete a container using the Docker API or CLI. A container can also connect to one or more networks, attach storage to it, or even create a new image based on its current state.     
-
-    c) ^^Docker registries^^:  A Docker registry stores Docker images. Docker Hub is a public registry that anyone can use, and Docker is configured to look for images on Docker Hub by default. Also, it is possible to create a private registry.   
-
-When using the docker pull or docker run commands, the required images are pulled from the configured registry. When using the docker push command, the image is pushed to the configured registry.
+Docker uses a client-server architecture. The *Docker client* talks to the *Docker daemon*, which does the heavy lifting of building, running, and distributing the Docker containers. The Docker client and daemon can run on the same system, or connect a Docker client to a remote Docker daemon. The Docker client and daemon communicate using a REST API, over UNIX sockets or a network interface. Another Docker client is *Docker Compose*, that allows to work with applications consisting of a set of containers.  The Docker daemon (dockerd) listens for Docker API requests and manages Docker objects such as images, containers, networks, and volumes.      
 
 ## Docker Desktop
 

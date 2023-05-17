@@ -38,7 +38,7 @@ The process of index in ElasticSearch, it is also included in this image, togeth
 
 ## Build
 
-The image is build it together with all the images through the execution of the docker-compose:
+The image is build it together with all the images through the execution of the docker compose:
 
 ```
     docker compose -f docker-compose.yml -f docker-compose-dev.yml --env-file .env.dev build

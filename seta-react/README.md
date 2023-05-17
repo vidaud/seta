@@ -50,7 +50,7 @@ Within the Dockerfile is stablished the configuration for the execution of the a
 
 
 ## Build
-The image is build it together with all the images through the execution of the docker-compose:
+The image is build it together with all the images through the execution of the docker compose:
 ```
     docker compose -f docker-compose.yml -f docker-compose-dev.yml --env-file .env.dev build
 ```

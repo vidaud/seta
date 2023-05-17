@@ -106,7 +106,7 @@ and copy into folder **./seta-data/models/**
 If we have moved, we go back to folder **seta-compose** and from there we launch the build command: 
 
 ```
-     docker-compose build
+     docker compose build
 ```    
 
 This command creates a docker image based on the Docker file called by default **docker-compose.yml** as the configuration file and **.env** as the environment file.
@@ -117,7 +117,7 @@ After finishing the build, launch the command to start and run the services:
 First the service to initialise the Elasticsearch :
 
 ```
-    docker-compose up seta-data     
+    docker compose up seta-data     
 
 ```    
 
@@ -129,7 +129,7 @@ In order to be sure that the start of service seta-data finishes correctly there
 Later we start the rest of the services, for now is just necessary to start the seta-nginx as the other services are attached to start together with this service:     
 
 ```
-    docker-compose up seta-nginx -d
+    docker compose up seta-nginx -d
 ```
 
 !!! info
@@ -166,5 +166,5 @@ After successfully start all the containers you are ready to open your browser a
 #### Stop services started in detach mode
 
 ```
-    docker-compose down
+    docker compose down
 ```
