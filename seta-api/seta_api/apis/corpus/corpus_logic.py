@@ -4,12 +4,15 @@ from seta_api.infrastructure.ApiLogicError import ApiLogicError
 
 from .corpus_build import build_corpus_request, compose_request_for_msearch
 from .corpus_response import handle_corpus_response
-
+from .taxonomy import Taxonomy
 
 def doc_by_id(doc_id, es, index):
+    tax = Taxonomy()
     try:
         q = es.get(index=index, id=doc_id)
         doc = q['_source']
+        tax.create_tree_from_elasticsearch_format(is_field_in_doc(doc, "taxonomy"), is_field_in_doc(doc, "taxonomy_path"))
+        doc['taxonomy'] = tax.tree
         return doc
     except:
         raise ApiLogicError('ID not found.')
@@ -40,8 +43,7 @@ def insert_doc(args, es, index):
     new_doc["mime_type"] = is_field_in_doc(args, "mime_type")
     new_doc["in_force"] = is_field_in_doc(args, "in_force")
     new_doc["language"] = is_field_in_doc(args, "language")
-    new_doc["taxonomy"] = is_field_in_doc(args, "taxonomy")
-    new_doc["taxonomy_path"] = is_field_in_doc(args, "taxonomy_path")
+    new_doc["taxonomy"], new_doc["taxonomy_path"] = Taxonomy.from_tree_to_elasticsearch_format(is_field_in_doc(args, "taxonomy"))
     new_doc["other"] = is_field_in_doc(args, "other")
     new_doc["keywords"] = is_field_in_doc(args, "keywords")
 
@@ -66,7 +68,7 @@ def insert_doc(args, es, index):
     return doc_id
 
 
-def corpus(term, n_docs, from_doc, sources, collection, reference, in_force, sort, taxonomy, semantic_sort_id,
+def corpus(term, n_docs, from_doc, sources, collection, reference, in_force, sort, taxonomy_path, semantic_sort_id,
            emb_vector, semantic_sort_id_list, emb_vector_list, author, date_range, aggs, search_type, other,
            current_app):
     if search_type is None or search_type not in current_app.config["SEARCH_TYPES"]:
@@ -76,7 +78,7 @@ def corpus(term, n_docs, from_doc, sources, collection, reference, in_force, sor
     if from_doc is None:
         from_doc = current_app.config["DEFAULT_FROM_DOC_NUMBER"]
 
-    body = build_corpus_request(term, n_docs, from_doc, sources, collection, reference, in_force, sort, taxonomy,
+    body = build_corpus_request(term, n_docs, from_doc, sources, collection, reference, in_force, sort, taxonomy_path,
                                 semantic_sort_id, emb_vector, semantic_sort_id_list, emb_vector_list, author,
                                 date_range, aggs, search_type, other, current_app)
     # import json

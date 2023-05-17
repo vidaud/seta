@@ -4,7 +4,7 @@ from flask import current_app as app, jsonify, request
 from http import HTTPStatus
 
 from seta_api.apis.corpus.corpus_logic import insert_doc
-from seta_api.apis.corpus.variables import keywords, metadata, other
+from seta_api.apis.corpus.variables import keywords, other, taxonomy
 
 test_ns = Namespace('Private test api', description='Test ES')
 
@@ -53,13 +53,7 @@ corpus_put_data = test_ns.model(
         "mime_type": fields.String(),
         "in_force": fields.String(),
         "language": fields.String(),
-        "eurovoc_concept": fields.List(fields.Nested(test_ns.model('metadata', metadata))),
-        "eurovoc_domain": fields.List(fields.Nested(test_ns.model('metadata', metadata))),
-        "eurovoc_mth": fields.List(fields.Nested(test_ns.model('metadata', metadata))),
-        "ec_priority": fields.List(fields.Nested(test_ns.model('metadata', metadata))),
-        "sdg_domain": fields.List(fields.Nested(test_ns.model('metadata', metadata))),
-        "sdg_subdomain": fields.List(fields.Nested(test_ns.model('metadata', metadata))),
-        "euro_sci_voc": fields.List(fields.Nested(test_ns.model('metadata', metadata))),
+        "taxonomy": fields.List(fields.Nested(test_ns.model("taxonomy_sub", taxonomy))),
         "keywords": fields.List(fields.Nested(test_ns.model('keywords', keywords))),
         "other": fields.List(other)
     })
