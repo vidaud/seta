@@ -16,7 +16,30 @@ from .models.resource_dto import (update_resource_parser, resource_model, resour
 
 resources_ns = Namespace('Resources', description='SETA Resources')
 resources_ns.models[resource_limits_model.name] = resource_limits_model
-resources_ns.models[resource_model.name] = resource_model        
+resources_ns.models[resource_model.name] = resource_model 
+
+@resources_ns.route('/', endpoint="resource_list", methods=['GET'])
+class UserResources(Resource):
+    '''Get a list of accessible resources for this authorized user'''
+    
+    @inject
+    def __init__(self, usersBroker: IUsersBroker, resourcesBroker: IResourcesBroker, api=None, *args, **kwargs):
+        self.usersBroker = usersBroker
+        self.resourcesBroker = resourcesBroker
+        
+        super().__init__(api, *args, **kwargs)
+        
+    @resources_ns.doc(description='Retrieve list of accessible resources for this authorized user',        
+        responses={int(HTTPStatus.OK): "Retrieved resources."  },
+        security='CSRF')
+    @resources_ns.marshal_list_with(resource_model, mask="*")
+    @auth_validator()
+    def get(self):
+        '''Retrieve list of accessible resources'''      
+        identity = get_jwt_identity()
+        user_id = identity["user_id"]     
+                  
+        return self.resourcesBroker.get_all_queryable_by_user_id(user_id)
 
 @resources_ns.route('/<string:id>', methods=['GET', 'PUT', 'DELETE'])
 @resources_ns.param("id", "Resource identifier")
@@ -36,6 +59,7 @@ class CommunityResource(Resource):
                   },
         security='CSRF')
     @resources_ns.marshal_with(resource_model, mask="*")
+    @auth_validator()
     def get(self, id):
         '''Retrieve resource'''                
         resource = self.resourcesBroker.get_by_id(id)

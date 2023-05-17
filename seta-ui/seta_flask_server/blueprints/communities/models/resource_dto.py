@@ -1,19 +1,7 @@
 from flask_restx import Model, fields
 from flask_restx.reqparse import RequestParser
 
-from seta_flask_server.infrastructure.constants import (ResourceStatusConstants, ResourceAccessContants)
-
-def status_list(value):
-    '''Validation method for status value in list'''    
-    value = value.lower()
-    
-    if value not in ResourceStatusConstants.List:
-        raise ValueError(
-            "Status has to be one of '" + str(ResourceStatusConstants.List) + "'."
-        )
-        
-    return value
-
+from seta_flask_server.infrastructure.constants import (ResourceStatusConstants)
 
 new_resource_parser = RequestParser(bundle_errors=True)
 new_resource_parser.add_argument("resource_id",
@@ -35,10 +23,11 @@ new_resource_parser.add_argument("abstract",
 update_resource_parser = new_resource_parser.copy()
 update_resource_parser.remove_argument("resource_id")
 update_resource_parser.add_argument("status",
-                                  type=status_list,
                                   location="form",
                                   required=True,
                                   nullable=False,
+                                  case_sensitive=False,
+                                  choices=ResourceStatusConstants.List,
                                   help=f"Status, one of {ResourceStatusConstants.List}")
 
 resource_limits_model = Model("ResourceLimits", 
@@ -54,7 +43,6 @@ resource_model = Model("Resource",
             "community_id": fields.String(description="Community identifier"),
             "title": fields.String(description="Resource title"),
             "abstract": fields.String(description="Resource relevant description"),
-            "access": fields.String(description="The resource access on search", enum=ResourceAccessContants.List),
             "limits": fields.Nested(model=resource_limits_model, description="The resource upload limits"),
             "status": fields.String(description="The resource status", enum=ResourceStatusConstants.List),
             "creator_id": fields.String(description="Creator user identifier"),

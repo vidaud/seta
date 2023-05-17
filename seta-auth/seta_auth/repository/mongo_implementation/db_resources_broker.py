@@ -2,7 +2,7 @@ from interface import implements
 
 from injector import inject
 from seta_auth.repository.interfaces import IDbConfig, IResourcesBroker
-from seta_auth.infrastructure.constants import (CommunityStatusConstants, ResourceStatusConstants, ResourceAccessContants)
+from seta_auth.infrastructure.constants import (CommunityStatusConstants, ResourceStatusConstants)
 
 class ResourcesBroker(implements(IResourcesBroker)):
     @inject
@@ -21,7 +21,7 @@ class ResourcesBroker(implements(IResourcesBroker)):
         community_ids = [i["community_id"] for i in memberships]
                 
         #get active resources
-        filter = {"community_id": {"$in": community_ids}, "status": ResourceStatusConstants.Active, "access":{"$exists" : 1}}        
+        filter = {"community_id": {"$in": community_ids}, "status": ResourceStatusConstants.Active}        
         resources = self.collection.find(filter)
         
         #return resource ids
