@@ -18,6 +18,8 @@ import ViewMyCommunity from '../../pages/CommunitiesPage/components/Manage/Commu
 import NewResource from '../../pages/CommunitiesPage/components/Manage/Resource/NewResource/NewResource'
 import UpdateResource from '../../pages/CommunitiesPage/components/Manage/Resource/UpdateResource/UpdateResource'
 import ViewMyResource from '../../pages/CommunitiesPage/components/Manage/Resource/ViewResource/ViewResource'
+import CommunityUsersPermissions from '../../pages/CommunitiesPage/components/UserPermissions/Community/CommunityUserPermissions'
+import ResourceUsersPermissions from '../../pages/CommunitiesPage/components/UserPermissions/Resource/ResourceUserPermissions'
 import DashboardsPage from '../../pages/CommunitiesPage/pages/DashboardPage'
 import CommunityListPage from '../../pages/CommunitiesPage/pages/Discovery/CommunityList/CommunityList'
 import MyCommunityListPage from '../../pages/CommunitiesPage/pages/Manage/MyCommunityList/MyCommunityList'
@@ -160,6 +162,22 @@ const routes = createRoutesFromElements(
         element={
           <RequireAuth>
             <UpdateResource />
+          </RequireAuth>
+        }
+      />
+      <Route
+        path="permissions/community/:id/"
+        element={
+          <RequireAuth>
+            <CommunityUsersPermissions />
+          </RequireAuth>
+        }
+      />
+      <Route
+        path="permissions/resource/:resourceId/"
+        element={
+          <RequireAuth>
+            <ResourceUsersPermissions />
           </RequireAuth>
         }
       />

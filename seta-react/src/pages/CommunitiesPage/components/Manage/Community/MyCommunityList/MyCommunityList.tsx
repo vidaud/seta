@@ -34,7 +34,7 @@ const MyCommunityList = () => {
     if (data) {
       setSortedData(data)
     }
-  }, [data, sortedData])
+  }, [data])
 
   if (error) {
     return <CommunitiesError onTryAgain={refetch} />
