@@ -213,7 +213,7 @@ Once we have the processed data, then is ingested and stored in an **Elasticsear
 
 
 ### Elasticsearch 
-Elasticsearch [^13] is a distributed, free and open search and analytics engine for all types of data, including textual, numerical, geospatial, structured and unstructured. Elasticsearch  is built on Apache Lucene and was first released in 2010 by Elasticsearch  N.V. (now known as Elastic).  Raw data flows into Elasticsearch  from a variety of sources, including logs, system metrics, and web applications. Data ingestion is the process by which this raw data is parsed, normalized, and enriched before it is indexed in Elasticsearch . Once indexed in Elasticsearch , users can run complex queries against their data and use aggregations to retrieve complex summaries of their data.
+Elasticsearch[^13] is a distributed, free and open search and analytics engine for all types of data, including textual, numerical, geospatial, structured and unstructured. Elasticsearch is built on Apache Lucene and was first released in 2010 by Elasticsearch N.V. (now known as Elastic).  Raw data flows into Elasticsearch from a variety of sources, including logs, system metrics, and web applications. Data ingestion is the process by which this raw data is parsed, normalized, and enriched before it is indexed in Elasticsearch. Once indexed in Elasticsearch, users can run complex queries against their data and use aggregations to retrieve complex summaries of their data.
 
 
 ### Ontology

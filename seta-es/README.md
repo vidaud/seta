@@ -18,8 +18,17 @@ The ElasticSearch engine simplifies data ingest, visualization, and reporting.
 The image is build it together with all the images through the execution of the docker compose:
 
 ```
-    docker compose -f docker-compose.yml -f docker-compose-dev.yml --env-file .env.dev build
+    docker compose build
 ```
+
+## UP
+To start this service, is requires only to start the seta-nginx service as the rest of the services are attached to start together with this service:     
+
+```
+    docker compose up seta-nginx -d
+```
+
+
 
 
 ## Contributing
@@ -31,9 +40,17 @@ Please make sure to update tests as appropriate.
 
 
 ## License
+Copyright (c) 2023 European Union      
+Licensed under the EUPL, Version 1.2 or – as soon they will be approved by the European Commission – subsequent versions of the EUPL (the "Licence");     
+
+You may not use this work except in compliance with the Licence.      
 
 
-[![MIT][mit-badge]][mit-url]
+You may obtain a copy of the Licence at:      
 
-[mit-badge]: https://img.shields.io/badge/license-mit-blue
-[mit-url]: https://choosealicense.com/licenses/mit/
+
+https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12       
+ 
+Unless required by applicable law or agreed to in writing, software distributed under the Licence is distributed on an "AS IS" basis, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.             
+ 
+See the Licence for the specific language governing permissions and limitations under the Licence.

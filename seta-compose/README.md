@@ -1,21 +1,5 @@
 # seta-compose ⚙️
 
-* [.env](../seta-compose/.env)
-* [.env.dev](../seta-compose/.env.dev)
-* [.env.example](../seta-compose/.env.example)
-* [.gitignore](../seta-compose/.gitignore)
-* [common.yml](../seta-compose/common.yml)
-* [dev-build.bat](../seta-compose/dev-build.bat)
-* [dev-build.sh](../seta-compose/dev-build.sh)
-* [dev-up.bat](../seta-compose/dev-up.bat)
-* [dev-up.sh](../seta-compose/dev-up.sh)
-* [docker-compose-dev.yml](../seta-compose/docker-compose-dev.yml)
-* [docker-compose-test.yml](../seta-compose/docker-compose-test.yml)
-* [docker-compose.yml](../seta-compose/docker-compose.yml)
-
-
-
-
 # Minimum requirements
   
 * at least 10 GB available free RAM.
@@ -180,44 +164,8 @@ Create an ***.env.test*** file containing the variables as described in **.env.e
 ```
 
 
-## Starting commands
+To create scripts with short commands like this:
 
-
-Here below more commands that will help you to build and start the services in the different environments.
-
-
-### To (re-)build all images (production, test and development environment)
-
-```
-    docker compose -f docker-compose.yml -f docker-compose-dev.yml -f docker compose-test.yml --env-file .env.dev .env.test build
-```
-
-### To (re-)build only seta-ui image (production, test and development environment)
-
-```
-    docker compose -f docker-compose.yml -f docker-compose-dev.yml -f docker compose-test.yml --env-file .env.dev .env.test seta-ui
-```
-
-### Start all services for your environment locally
-
-```
-    docker compose -f docker-compose.yml -f docker-compose-dev.yml -f docker compose-test.yml --env-file .env.dev .env.test up
-```
-
-### Start all services for your environment locally in detached mode
-
-```
-    docker compose -f docker-compose.yml -f docker-compose-dev.yml --f docker compose-test.yml --env-file .env.dev .env.test up -d
-```
-
-### Rebuild and restart seta-ui services while other services are runing
-
-```
-    docker compose -f docker-compose.yml -f docker-compose-dev.yml -f docker compose-test.yml --env-file .env.dev .env.test up --force-recreate --build --no-deps seta-ui
-```
-
-
-For the scripts with short commands: 
 ```
     docker compose -f docker-compose.yml -f docker-compose-dev.yml --env-file .env.dev
 ```
@@ -227,14 +175,15 @@ For the scripts with short commands:
  
  Here below an example:
 
- **build.bat**
+ **build.bat**:
  
  
  ```
     docker compose -f docker-compose.yml -f docker-compose-dev.yml --env-file .env.dev build %*
  ```
 
- **up.bat**
+
+ **up.bat**:
  ```
 
     docker compose -f docker-compose.yml -f docker-compose-dev.yml --env-file .env.dev up %*
@@ -242,7 +191,7 @@ For the scripts with short commands:
  ```
  
  
- Here below the example of how to execute this bat files in {++Windows++} and {++Linux++}.
+ Here below the example of how to execute this bat files in **Windows** and **Linux**.
 
 ### **Windows**
 
@@ -294,10 +243,19 @@ Pull requests are welcome. For major changes, please open an issue first to disc
 Please make sure to update tests as appropriate.
 
 ## License
+Copyright (c) 2023 European Union      
+Licensed under the EUPL, Version 1.2 or – as soon they will be approved by the European Commission – subsequent versions of the EUPL (the "Licence");     
 
-[![MIT][mit-badge]][mit-url]
+You may not use this work except in compliance with the Licence.      
 
-[mit-badge]: https://img.shields.io/badge/license-mit-blue
-[mit-url]: https://choosealicense.com/licenses/mit/
+
+You may obtain a copy of the Licence at:      
+
+
+https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12       
+ 
+Unless required by applicable law or agreed to in writing, software distributed under the Licence is distributed on an "AS IS" basis, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.             
+ 
+See the Licence for the specific language governing permissions and limitations under the Licence.
 
 
