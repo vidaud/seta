@@ -31,12 +31,12 @@ export const getInvite = async (id?: string): Promise<InviteResponse> => {
   return data
 }
 
-export const useInviteID = (id?: string) => useQuery(cacheKey(id), () => getInvite(id))
+export const useInviteID = (id?: string) =>
+  useQuery({ queryKey: cacheKey(id), queryFn: () => getInvite(id) })
 
 const csrf_token = getCookie('csrf_access_token')
 
 export const createCommunityInvite = async (id?: string, values?: CreateInvitationAPI) => {
-  console.log(id)
   await community_api
     .post<CreateInvitationAPI[]>(`${environment.COMMUNITIES_API_PATH}/${id}/invites`, values, {
       headers: {
@@ -47,10 +47,7 @@ export const createCommunityInvite = async (id?: string, values?: CreateInvitati
     })
     .then(response => {
       if (response.status === 200) {
-        console.log(response)
+        // console.log(response)
       }
-    })
-    .catch(error => {
-      console.log(error)
     })
 }

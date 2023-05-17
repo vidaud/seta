@@ -29,14 +29,15 @@ const useStyles = createStyles(theme => ({
 const CommunityInvites = invites => {
   const { classes, cx } = useStyles()
   const [scrolled, setScrolled] = useState(false)
+  const [items, setItems] = useState(invites)
 
   useEffect(() => {
     if (invites) {
-      console.log(invites)
+      setItems(invites)
     }
-  }, [invites])
+  }, [invites, items])
 
-  const rows = invites.data.map(row => (
+  const rows = items?.data?.map(row => (
     <tr key={row.invite_id}>
       <td>{row.community_id}</td>
       <td>{row.invited_user}</td>

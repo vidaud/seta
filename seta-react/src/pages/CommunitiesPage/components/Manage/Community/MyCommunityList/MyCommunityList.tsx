@@ -3,7 +3,6 @@ import { Table, Checkbox, ScrollArea, rem, TextInput, Group } from '@mantine/cor
 import { IconSearch } from '@tabler/icons-react'
 
 import type { Community } from '~/models/communities/communities'
-import type { User } from '~/models/user.model'
 
 import { useStyles } from './constants'
 
@@ -25,7 +24,7 @@ const MyCommunityList = () => {
   const { data, isLoading, error, refetch } = useCommunities()
   const [sortedData, setSortedData] = useState(data)
 
-  let currentUser: User | any = null
+  let currentUser: string | undefined = undefined
 
   if (storageService.isLoggedIn()) {
     currentUser = storageService.getUser().username

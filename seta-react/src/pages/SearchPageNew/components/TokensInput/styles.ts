@@ -25,6 +25,7 @@ export const renderer: ThemedCSS = theme => css`
   white-space: pre;
   overflow: hidden;
   color: transparent;
+  background-color: white;
 
   span > span {
     display: inline-block;
@@ -87,4 +88,14 @@ export const renderer: ThemedCSS = theme => css`
       }
     }
   }
+`
+
+export const bg = css`
+  position: absolute;
+  z-index: -2;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: white;
 `

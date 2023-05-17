@@ -1,12 +1,11 @@
 import { Box } from '@mantine/core'
 
-import { useSearchInput } from '~/pages/SearchPageNew/components/SuggestionsPopup/contexts/search-input-context'
+import { useSearch } from '~/pages/SearchPageNew/contexts/search-context'
+import { useSearchInput } from '~/pages/SearchPageNew/contexts/search-input-context'
 
 import { useSuggestions } from '~/api/search/suggestions'
 
 import AutocompleteContent from './AutocompleteContent'
-
-import { useSearch } from '../SuggestionsPopup/contexts/search-context'
 
 type Props = {
   className?: string

@@ -27,7 +27,7 @@ const useStyles = createStyles(theme => ({
   }
 }))
 
-export function Th({ children, reversed, sorted, onSort }: ThProps) {
+export const Th = ({ children, reversed, sorted, onSort }: ThProps) => {
   const { classes } = useStyles()
   const Icon = sorted ? (reversed ? IconChevronUp : IconChevronDown) : IconSelector
 
@@ -47,20 +47,18 @@ export function Th({ children, reversed, sorted, onSort }: ThProps) {
   )
 }
 
-export function filterData(data: Community[], search: string) {
+export const filterData = (data: Community[], search: string) => {
   const query = search.toLowerCase().trim()
 
   return data.filter(item =>
-    keys(data[0]).some(key => {
-      item[key].toString().toLowerCase().includes(query)
-    })
+    keys(data[0]).some(key => item[key].toString().toLowerCase().includes(query))
   )
 }
 
-export function sortData(
+export const sortData = (
   data: Community[],
   payload: { sortBy: keyof Community | null; reversed: boolean; search: string }
-) {
+) => {
   const { sortBy } = payload
 
   if (!sortBy) {

@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import {
   Anchor,
   Breadcrumbs,
@@ -37,28 +37,29 @@ const ViewMyResource = () => {
   const { resourceId } = useParams()
 
   const { data, isLoading } = useResourceID(resourceId)
+  const [rows, setRows] = useState(data)
 
   const items = [
     { title: 'My Communities', href: `${environment.COMMUNITIES_API_PATH}/my-list` },
     { title: `${resourceId}` }
-  ].map((item, index) => (
-    <Anchor href={item.href} key={index}>
+  ].map(item => (
+    <Anchor href={item.href} key={item.title}>
       {item.title}
     </Anchor>
   ))
 
   useEffect(() => {
     if (data) {
-      console.log(data)
+      setRows(data)
     }
-  }, [data])
+  }, [data, rows])
 
   if (isLoading || !data) {
     return <CommunitiesLoading />
   }
 
   const deleteResource = () => {
-    deleteResourceByID(data.community_id, data.resource_id)
+    deleteResourceByID(rows?.community_id, rows?.resource_id)
   }
 
   return (
@@ -69,26 +70,28 @@ const ViewMyResource = () => {
           <Grid.Col span={12}>
             <Paper shadow="xs" p="md">
               <Title order={5} className={classes.title}>
-                {data.title}
+                {rows?.title}
               </Title>
-              <Text className={classes.text}>Community: {data.community_id}</Text>
-              <Text className={classes.text}>Abstract: {data.abstract}</Text>
+              <Text className={classes.text}>Community: {rows?.community_id}</Text>
+              <Text className={classes.text}>Abstract: {rows?.abstract}</Text>
               <table className={classes.table}>
                 <tbody>
                   <tr>
                     <td className={classes.td}>
-                      <Text className={classes.text}>Membership: {data.access}</Text>
+                      <Text className={classes.text}>Membership: {rows?.access}</Text>
                     </td>
                     <td className={classes.td}>
-                      <Text className={classes.text}>Status: {data.status}</Text>
+                      <Text className={classes.text}>Status: {rows?.status}</Text>
                     </td>
                   </tr>
                   <tr>
                     <td className={classes.td}>
-                      <Text className={classes.text}>Created by: {data.creator_id}</Text>
+                      <Text className={classes.text}>Created by: {rows?.creator_id}</Text>
                     </td>
                     <td className={classes.td}>
-                      <Text className={classes.text}>Created at: {data.created_at.toString()}</Text>
+                      <Text className={classes.text}>
+                        Created at: {rows?.created_at.toString()}
+                      </Text>
                     </td>
                   </tr>
                 </tbody>
@@ -99,7 +102,7 @@ const ViewMyResource = () => {
                 </Button>
                 <Button
                   component="a"
-                  href={`${environment.COMMUNITIES_API_PATH}/update/${data.community_id}/${data.resource_id}`}
+                  href={`${environment.COMMUNITIES_API_PATH}/update/${rows?.community_id}/${rows?.resource_id}`}
                 >
                   Update
                 </Button>

@@ -1,4 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
+import type { AxiosRequestConfig } from 'axios'
 
 import api from '~/api'
 import type { RelatedTerm } from '~/models/related-term'
@@ -9,15 +10,22 @@ export type RelatedClustersResponse = {
   nodes: RelatedTerm[][]
 }
 
-export const cacheKey = (words?: string) => ['related-clusters', words]
+export const queryKey = {
+  root: 'related-clusters',
+  words: (words?: string) => [queryKey.root, words]
+}
 
-const getRelatedClusters = async (words?: string): Promise<RelatedClustersResponse> => {
+const getRelatedClusters = async (
+  words?: string,
+  config?: AxiosRequestConfig
+): Promise<RelatedClustersResponse> => {
   if (!words) {
     return { nodes: [] }
   }
 
   const { data } = await api.get<RelatedClustersResponse>(
-    `${RELATED_CLUSTERS_API_PATH}?term=${words}`
+    `${RELATED_CLUSTERS_API_PATH}?term=${words}`,
+    config
   )
 
   // Remove duplicates
@@ -26,5 +34,9 @@ const getRelatedClusters = async (words?: string): Promise<RelatedClustersRespon
   }
 }
 
+// Passing the `signal` makes the request cancelable
 export const useRelatedClusters = (words?: string) =>
-  useQuery(cacheKey(words), () => getRelatedClusters(words))
+  useQuery({
+    queryKey: queryKey.words(words),
+    queryFn: ({ signal }) => getRelatedClusters(words, { signal })
+  })

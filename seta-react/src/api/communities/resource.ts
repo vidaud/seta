@@ -50,7 +50,8 @@ export const getResource = async (id?: string): Promise<ResourceResponse> => {
   return data
 }
 
-export const useResourceID = (id?: string) => useQuery(cacheKey(id), () => getResource(id))
+export const useResourceID = (id?: string) =>
+  useQuery({ queryKey: cacheKey(id), queryFn: () => getResource(id) })
 
 const csrf_token = getCookie('csrf_access_token')
 
@@ -67,9 +68,6 @@ export const createResource = async (id?: string, values?: CreateResourceAPI) =>
       if (response.status === 201) {
         window.location.href = `${environment.COMMUNITIES_API_PATH}/details/${id}`
       }
-    })
-    .catch(error => {
-      console.log(error)
     })
 }
 
@@ -91,9 +89,6 @@ export const updateResource = async (
         window.location.href = `/communities/details/${id}`
       }
     })
-    .catch(error => {
-      console.log(error)
-    })
 }
 
 export const deleteResourceByID = async (id?: string, resource_id?: string) => {
@@ -109,8 +104,5 @@ export const deleteResourceByID = async (id?: string, resource_id?: string) => {
       if (response.status === 200) {
         window.location.href = `/communities/details/${id}`
       }
-    })
-    .catch(error => {
-      console.log(error)
     })
 }

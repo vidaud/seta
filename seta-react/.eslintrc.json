@@ -2,6 +2,7 @@
   "plugins": [
     "@typescript-eslint",
     "react-hooks",
+    "@tanstack/query",
     "unused-imports",
     "tailwindcss",
     "prettier"
@@ -9,6 +10,7 @@
   "extends": [
     "plugin:@typescript-eslint/recommended",
     "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@tanstack/eslint-plugin-query/recommended",
     "plugin:tailwindcss/recommended",
     "react-app",
     "prettier"

@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { Card, Grid, Table, Text, createStyles } from '@mantine/core'
 
 const useStyles = createStyles(theme => ({
@@ -28,19 +28,19 @@ const useStyles = createStyles(theme => ({
 
 const CommunityResources = resources => {
   const { classes } = useStyles()
+  const [items, setItems] = useState(resources)
 
   useEffect(() => {
     if (resources) {
-      console.log(resources)
+      setItems(resources)
     }
-  }, [resources])
+  }, [resources, items])
 
   const getResource = item => {
-    console.log('Test')
     window.location.href = `/communities/details/${item.community_id}/${item.resource_id}`
   }
 
-  const rows = resources.data.map(item => {
+  const rows = items?.data?.map(item => {
     return (
       <tr key={item.community_id} className={classes.rowSection}>
         <Grid onClick={() => getResource(item)}>

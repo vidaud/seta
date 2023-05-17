@@ -22,9 +22,23 @@ export const input = css`
   }
 `
 
-export const rightButton = css`
+export const searchButtonWrapper = css`
+  &[data-disabled='true'] {
+    cursor: not-allowed;
+  }
+`
+
+export const searchButton: ThemedCSS = theme => css`
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
   z-index: 1;
   height: ${INPUT_HEIGHT};
+
+  transition: background-color 0.2s ease, color 0.2s ease, opacity 0.2s ease;
+
+  &:disabled {
+    opacity: 0.7;
+    background-color: ${theme.fn.primaryColor()};
+    color: ${theme.colors.blue[1]};
+  }
 `

@@ -32,8 +32,8 @@ const NewResource = () => {
     { title: 'My Communities', href: '/communities/my-list' },
     { title: `${id}` },
     { title: 'New Resource' }
-  ].map((item, index) => (
-    <Anchor href={item.href} key={index}>
+  ].map(item => (
+    <Anchor href={item.href} key={item.title}>
       {item.title}
     </Anchor>
   ))
@@ -88,7 +88,7 @@ const NewResource = () => {
                 color="blue"
                 onClick={() => {
                   form.reset()
-                  window.location.href = '/communities/details/' + `${id}`
+                  window.location.href = `/communities/details/${id}`
                 }}
               >
                 Cancel

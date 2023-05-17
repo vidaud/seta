@@ -28,7 +28,7 @@ import LoginPage from '../../pages/LoginPage'
 import NotFoundPage from '../../pages/NotFoundPage'
 import ProfilePage from '../../pages/ProfilePage'
 import SearchPage from '../../pages/SearchPage'
-import SearchPageNew from '../../pages/SearchPageNew/SearchPageNew'
+import SearchPageNew from '../../pages/SearchPageNew'
 
 const ROOT_PATH = '/'
 const COMMUNITY_PATH = '/communities'

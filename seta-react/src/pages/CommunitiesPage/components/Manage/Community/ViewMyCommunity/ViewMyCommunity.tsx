@@ -33,21 +33,22 @@ const ViewMyCommunity = () => {
   const [showInvites, setShowInvites] = useState(false)
 
   const { data, isLoading } = useCommunityID(id)
+  const [row, setRow] = useState(data)
 
   const items = [
     { title: 'My Communities', href: `${environment.COMMUNITIES_API_PATH}/my-list` },
     { title: `${id}` }
-  ].map((item, index) => (
-    <Anchor href={item.href} key={index}>
+  ].map(item => (
+    <Anchor href={item.href} key={item.title}>
       {item.title}
     </Anchor>
   ))
 
   useEffect(() => {
     if (data) {
-      console.log(data)
+      setRow(data)
     }
-  }, [data])
+  }, [data, row])
 
   if (isLoading || !data) {
     return <CommunitiesLoading />
@@ -67,13 +68,13 @@ const ViewMyCommunity = () => {
           <Grid.Col span={12}>
             <Paper shadow="xs" p="md">
               <Title order={5} className={classes.title}>
-                {data.communities.title}
+                {row?.communities.title}
               </Title>
-              <Text className={classes.text}>{data.communities.description}</Text>
+              <Text className={classes.text}>{row?.communities.description}</Text>
               <Group spacing={30} position="right">
                 <Button
                   component="a"
-                  href={`${environment.COMMUNITIES_API_PATH}/manage/${data.communities.community_id}`}
+                  href={`${environment.COMMUNITIES_API_PATH}/manage/${row?.communities.community_id}`}
                 >
                   Manage
                 </Button>
@@ -82,17 +83,17 @@ const ViewMyCommunity = () => {
           </Grid.Col>
           <Grid.Col span={1}>
             <Stats
-              resourceNumber={data.resources.length}
-              inviteNumber={data.invites.length}
+              resourceNumber={row?.resources.length}
+              inviteNumber={row?.invites.length}
               onChange={toggleListVisibility}
             />
           </Grid.Col>
           <Grid.Col span={5}>
-            <CommunityResources data={data.resources} />
+            <CommunityResources data={row?.resources} />
           </Grid.Col>
           {showInvites ? (
             <Grid.Col span={12}>
-              <CommunityInvites data={data.invites} />
+              <CommunityInvites data={row?.invites} />
             </Grid.Col>
           ) : (
             ''

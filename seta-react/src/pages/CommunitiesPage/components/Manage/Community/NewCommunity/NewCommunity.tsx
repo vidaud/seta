@@ -28,8 +28,8 @@ const useStyles = createStyles({
 const items = [
   { title: 'My Communities', href: '/communities/my-list' },
   { title: 'New Community' }
-].map((item, index) => (
-  <Anchor href={item.href} key={index}>
+].map(item => (
+  <Anchor href={item.href} key={item.title}>
     {item.title}
   </Anchor>
 ))

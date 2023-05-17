@@ -5,13 +5,14 @@ import type {
   MouseEventHandler,
   UIEvent
 } from 'react'
-import { useImperativeHandle, forwardRef, useRef, useState } from 'react'
+import { useEffect, useImperativeHandle, forwardRef, useRef, useState } from 'react'
 import type { TextInputProps } from '@mantine/core'
 import { ActionIcon, Box, TextInput, Text, clsx } from '@mantine/core'
 import { IconX } from '@tabler/icons-react'
 
-import { useSearchInput } from '~/pages/SearchPageNew/components/SuggestionsPopup/contexts/search-input-context'
+import { useSearchInput } from '~/pages/SearchPageNew/contexts/search-input-context'
 
+import TokensInfo from './components/TokensInfo'
 import useTokens from './hooks/use-tokens'
 import * as S from './styles'
 
@@ -42,12 +43,14 @@ const TokensInput = forwardRef<HTMLInputElement, Props>(
 
     useImperativeHandle(ref, () => inputRef.current as HTMLInputElement)
 
-    const { updateCurrentToken, renderTokens } = useTokens(String(value), inputRef)
+    const { updateCurrentToken, renderTokens, tokens } = useTokens(String(value), inputRef)
     const { setInputRef } = useSearchInput()
 
-    if (inputRef.current) {
-      setInputRef(inputRef.current)
-    }
+    useEffect(() => {
+      if (inputRef.current) {
+        setInputRef(inputRef.current)
+      }
+    }, [setInputRef])
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
       onChange?.(e.target.value)
@@ -76,7 +79,7 @@ const TokensInput = forwardRef<HTMLInputElement, Props>(
     }
 
     const handleKeyUp: KeyboardEventHandler<HTMLInputElement> = e => {
-      const keys = ['ArrowLeft', 'ArrowRight', 'Meta']
+      const keys = ['ArrowLeft', 'ArrowRight', 'Meta', 'Home', 'End']
 
       if (keys.includes(e.key)) {
         updateCurrentToken()
@@ -147,6 +150,10 @@ const TokensInput = forwardRef<HTMLInputElement, Props>(
         <Text ref={rendererRef} css={S.renderer} className={clsx('renderer', { focused })}>
           {renderTokens()}
         </Text>
+
+        <div css={S.bg} />
+
+        <TokensInfo tokens={tokens} />
       </Box>
     )
   }

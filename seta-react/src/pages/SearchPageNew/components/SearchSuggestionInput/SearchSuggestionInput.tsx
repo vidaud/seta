@@ -1,14 +1,33 @@
 import { useState } from 'react'
 
 import SuggestionsPopup from '~/pages/SearchPageNew/components/SuggestionsPopup'
-import { SearchProvider } from '~/pages/SearchPageNew/components/SuggestionsPopup/contexts/search-context'
-import { SearchInputProvider } from '~/pages/SearchPageNew/components/SuggestionsPopup/contexts/search-input-context'
-import type {
-  Token,
-  TokenMatch
-} from '~/pages/SearchPageNew/components/SuggestionsPopup/types/token'
+import { SearchProvider } from '~/pages/SearchPageNew/contexts/search-context'
+import { SearchInputProvider } from '~/pages/SearchPageNew/contexts/search-input-context'
+import type { Token, TokenMatch } from '~/pages/SearchPageNew/types/token'
 
-const SearchSuggestionInput = () => {
+const getCursorPosition = (input: HTMLInputElement | null | undefined) => {
+  if (!input) {
+    return 0
+  }
+
+  return input.selectionStart ?? 0
+}
+
+const setCursorPosition = (input: HTMLInputElement | null | undefined, position: number) => {
+  if (!input) {
+    return
+  }
+
+  setTimeout(() => {
+    input.setSelectionRange(position, position)
+  }, 100)
+}
+
+type Props = {
+  onSearch: (value: string) => void
+}
+
+const SearchSuggestionInput = ({ onSearch }: Props) => {
   const [value, setValue] = useState('')
   const [tokens, setTokens] = useState<Token[]>([])
   const [currentToken, setCurrentToken] = useState<TokenMatch | null>(null)
@@ -26,20 +45,30 @@ const SearchSuggestionInput = () => {
     }
   }
 
-  const handleTermsAdded = (terms: string[]) => {
+  const handleTermsAdded = (terms: string[], input?: HTMLInputElement | null) => {
     const newTerms = terms.map(term => (term.match(/\s/g) ? `"${term}"` : term))
     const newValue = `${value} ${newTerms.join(' ')}`
 
+    const pos = getCursorPosition(input)
+
     setValue(newValue)
+    setCursorPosition(input, pos)
   }
 
-  const handleTermsRemoved = (terms: string[]) => {
+  const handleTermsRemoved = (terms: string[], input?: HTMLInputElement | null) => {
     const newValue = tokens
       .filter(token => !terms.includes(token.rawValue))
       .map(token => token.token)
       .join(' ')
 
+    const pos = getCursorPosition(input)
+
     setValue(newValue)
+    setCursorPosition(input, pos)
+  }
+
+  const handleSearch = () => {
+    onSearch(value)
   }
 
   return (
@@ -51,6 +80,7 @@ const SearchSuggestionInput = () => {
       onSuggestionSelected={handleSuggestionSelected}
       onSelectedTermsAdd={handleTermsAdded}
       onSelectedTermsRemove={handleTermsRemoved}
+      onSearch={handleSearch}
     >
       <SearchInputProvider inputValue={value} setInputValue={setValue}>
         <SuggestionsPopup />

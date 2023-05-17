@@ -31,8 +31,8 @@ const useStyles = createStyles({
 const items = [
   { title: 'My Communities', href: '/communities/my-list' },
   { title: 'Update Community' }
-].map((item, index) => (
-  <Anchor href={item.href} key={index}>
+].map(item => (
+  <Anchor href={item.href} key={item.title}>
     {item.title}
   </Anchor>
 ))
@@ -64,7 +64,6 @@ const UpdateResource = () => {
   }
 
   const handleSubmit = (values: ResourceValues) => {
-    console.log(values)
     updateResource(id, values.resource_id, values)
   }
 

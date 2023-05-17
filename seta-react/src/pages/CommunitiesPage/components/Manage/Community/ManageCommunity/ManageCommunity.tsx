@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import {
   Button,
   Group,
@@ -44,21 +44,23 @@ const ManageCommunity = () => {
   const { classes } = useStyles()
   const { id } = useParams()
   const { data, isLoading } = useCommunityID(id)
+  const [row, setRow] = useState(data)
+
   const items = [
     { title: 'My Communities', href: `${environment.COMMUNITIES_API_PATH}/my-list` },
     { title: 'View Community', href: `${environment.COMMUNITIES_API_PATH}/details/${id}` },
     { title: 'Manage Community' }
-  ].map((item, index) => (
-    <Anchor href={item.href} key={index}>
+  ].map(item => (
+    <Anchor href={item.href} key={item.title}>
       {item.title}
     </Anchor>
   ))
 
   useEffect(() => {
     if (data) {
-      console.log(data)
+      setRow(data)
     }
-  }, [data])
+  }, [data, row])
 
   if (isLoading || !data) {
     return <CommunitiesLoading />
@@ -69,7 +71,7 @@ const ManageCommunity = () => {
       <Breadcrumbs>{items}</Breadcrumbs>
       <div className={classes.page}>
         <Group position="right">
-          <InviteMember id={data?.communities.community_id} />
+          <InviteMember id={row?.communities.community_id} />
           <Button
             color="blue"
             component="a"
@@ -82,21 +84,21 @@ const ManageCommunity = () => {
           <Grid.Col span={12}>
             <Paper shadow="xs" p="md">
               <Title order={5} className={classes.title}>
-                {data?.communities.title}
+                {row?.communities.title}
               </Title>
-              <Text className={classes.text}>{data?.communities.description}</Text>
+              <Text className={classes.text}>{row?.communities.description}</Text>
               <Table className={classes.table}>
                 <tbody>
                   <tr>
-                    <td>Membership: {data?.communities.membership}</td>
-                    <td>Created at: {data?.communities.created_at.toString()}</td>
+                    <td>Membership: {row?.communities.membership}</td>
+                    <td>Created at: {row?.communities.created_at.toString()}</td>
                   </tr>
                   <tr>
-                    <td>Data Type: {data?.communities.data_type}</td>
-                    <td>Created by: {data?.communities.creator?.full_name}</td>
+                    <td>Data Type: {row?.communities.data_type}</td>
+                    <td>Created by: {row?.communities.creator?.full_name}</td>
                   </tr>
                   <tr>
-                    <td>Status: {data?.communities.status}</td>
+                    <td>Status: {row?.communities.status}</td>
                     <td />
                   </tr>
                 </tbody>
@@ -124,7 +126,7 @@ const ManageCommunity = () => {
           </Grid.Col>
           <Grid.Col span={12}>
             <Paper withBorder p="md" radius="md" key="Recent Resources">
-              <CommunityResources data={data.resources} />
+              <CommunityResources data={row?.resources} />
             </Paper>
           </Grid.Col>
         </Grid>

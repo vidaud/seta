@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import {
   Anchor,
   Breadcrumbs,
@@ -30,10 +30,11 @@ const ViewCommunity = () => {
   const { id } = useParams()
 
   const { data, isLoading } = useCommunityID(id)
+  const [row, setRow] = useState(data)
 
   const items = [{ title: 'My Communities', href: '/communities/my-list' }, { title: `${id}` }].map(
-    (item, index) => (
-      <Anchor href={item.href} key={index}>
+    item => (
+      <Anchor href={item.href} key={item.title}>
         {item.title}
       </Anchor>
     )
@@ -41,9 +42,9 @@ const ViewCommunity = () => {
 
   useEffect(() => {
     if (data) {
-      console.log(data)
+      setRow(data)
     }
-  }, [data])
+  }, [data, row])
 
   if (isLoading || !data) {
     return <CommunitiesLoading />
@@ -57,19 +58,19 @@ const ViewCommunity = () => {
           <Grid.Col span={12}>
             <Paper shadow="xs" p="md">
               <Title order={5} className={classes.title}>
-                {data.communities.title}
+                {row?.communities.title}
               </Title>
-              <Text className={classes.text}>{data.communities.description}</Text>
+              <Text className={classes.text}>{row?.communities.description}</Text>
               <Group spacing={30} position="right">
                 <Button size="xs">+ JOIN</Button>
               </Group>
             </Paper>
           </Grid.Col>
           <Grid.Col span={1}>
-            <Stats resourceNumber={data.resources.length} />
+            <Stats resourceNumber={row?.resources.length} />
           </Grid.Col>
           <Grid.Col span={5}>
-            <CommunityResources data={data.resources} />
+            <CommunityResources data={row?.resources} />
           </Grid.Col>
         </Grid>
       </div>

@@ -29,4 +29,5 @@ const getCommunities = async (): Promise<CommunitiesResponse[]> => {
   return data
 }
 
-export const useCommunities = () => useQuery(cacheKey(), () => getCommunities())
+export const useCommunities = () =>
+  useQuery({ queryKey: cacheKey(), queryFn: () => getCommunities() })

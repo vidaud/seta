@@ -2,8 +2,8 @@ import type { RefObject } from 'react'
 import { useRef, useMemo, useEffect, useCallback } from 'react'
 import { clsx } from '@mantine/core'
 
-import { useSearch } from '~/pages/SearchPageNew/components/SuggestionsPopup/contexts/search-context'
-import type { Token } from '~/pages/SearchPageNew/components/SuggestionsPopup/types/token'
+import { useSearch } from '~/pages/SearchPageNew/contexts/search-context'
+import type { Token } from '~/pages/SearchPageNew/types/token'
 
 const EXPRESSION_REGEX = /("[^"\\]*(\\.[^"\\]*)*"|\S+)(\s*)/g
 
@@ -130,7 +130,7 @@ const useTokens = (value: string, inputRef: RefObject<HTMLInputElement>) => {
             <span className="marker" />
           </span>
 
-          {spacesAfter && String(' ').repeat(spacesAfter)}
+          {spacesAfter && ' '.repeat(spacesAfter)}
         </span>
       )
     })
@@ -138,7 +138,7 @@ const useTokens = (value: string, inputRef: RefObject<HTMLInputElement>) => {
     return highlightedTokens
   }, [inputRef, tokens, currentToken?.token, currentToken?.index])
 
-  return { updateCurrentToken, renderTokens }
+  return { updateCurrentToken, updateCurrentTokenDeferred, renderTokens, tokens }
 }
 
 export default useTokens

@@ -9,7 +9,10 @@ export type SuggestionsResponse = {
   words: Suggestion[]
 }
 
-export const cacheKey = (terms?: string) => ['suggestions', terms]
+export const queryKey = {
+  root: 'suggestions',
+  terms: (terms?: string) => [queryKey.root, terms]
+}
 
 const getSuggestions = async (terms?: string): Promise<SuggestionsResponse> => {
   if (!terms) {
@@ -25,4 +28,4 @@ const getSuggestions = async (terms?: string): Promise<SuggestionsResponse> => {
 }
 
 export const useSuggestions = (terms?: string) =>
-  useQuery(cacheKey(terms), () => getSuggestions(terms))
+  useQuery({ queryKey: queryKey.terms(terms), queryFn: () => getSuggestions(terms) })

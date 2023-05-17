@@ -78,12 +78,11 @@ const getCommunity = async (id?: string): Promise<Community> => {
     invites: invites.data
   }
 
-  console.log(data)
-
   return data
 }
 
-export const useCommunityID = (id?: string) => useQuery(cacheKey(id), () => getCommunity(id))
+export const useCommunityID = (id?: string) =>
+  useQuery({ queryKey: cacheKey(id), queryFn: () => getCommunity(id) })
 
 const getCommunityManage = async (id?: string): Promise<ManageCommunityAPI> => {
   const { data } = await community_api.get<ManageCommunityAPI>(
@@ -94,7 +93,7 @@ const getCommunityManage = async (id?: string): Promise<ManageCommunityAPI> => {
 }
 
 export const useCommunityManagement = (id?: string) =>
-  useQuery(cacheKey(id), () => getCommunityManage(id))
+  useQuery({ queryKey: cacheKey(id), queryFn: () => getCommunityManage(id) })
 
 const csrf_token = getCookie('csrf_access_token')
 
@@ -112,9 +111,6 @@ export const createCommunity = async (values?: CreateCommunityAPI) => {
         window.location.href = `${environment.COMMUNITIES_API_PATH}/my-list`
       }
     })
-    .catch(error => {
-      console.log(error)
-    })
 }
 
 export const updateCommunity = async (id?: string, values?: UpdateCommunityAPI) => {
@@ -130,9 +126,6 @@ export const updateCommunity = async (id?: string, values?: UpdateCommunityAPI) 
       if (response.status === 200) {
         window.location.href = `${environment.COMMUNITIES_API_PATH}/my-list`
       }
-    })
-    .catch(error => {
-      console.log(error)
     })
 }
 
@@ -150,10 +143,6 @@ export const deleteCommunityByID = async (id?: string) => {
         window.location.href = `${environment.COMMUNITIES_API_PATH}/my-list'`
       }
     })
-    .catch(error => {
-      console.log(error)
-    })
 }
-
 // export const useNewCommunity = (properties?: CommunityAPI) =>
 //   useQuery(cacheKey(), () => createCommunity(properties))

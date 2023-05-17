@@ -1,5 +1,5 @@
-import { forwardRef, useEffect, useRef, useState } from 'react'
-import { ActionIcon, Button, Flex } from '@mantine/core'
+import { forwardRef } from 'react'
+import { ActionIcon, Button, Flex, Tooltip } from '@mantine/core'
 import { IconCloudUp, IconSearch } from '@tabler/icons-react'
 
 import * as S from './styles'
@@ -11,46 +11,12 @@ type Props = {
   value?: string
   onDeferredChange?: (value: string) => void
   onClick?: () => void
-  onBlur?: () => void
+  onSearch?: () => void
 }
 
 const SearchInput = forwardRef<HTMLDivElement, Props>(
-  ({ className, value, onDeferredChange, onClick, onBlur }, ref) => {
-    const [internalValue, setInternalValue] = useState(value ?? '')
-
-    const timeoutRef = useRef<number | null>(null)
-    const setByEffectRef = useRef(false)
-
-    // Keep the handler in a ref to avoid re-rendering inside the effect
-    const onChangeRef = useRef(onDeferredChange)
-
-    useEffect(() => {
-      setByEffectRef.current = true
-      setInternalValue(value ?? '')
-    }, [value])
-
-    useEffect(() => {
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current)
-      }
-
-      if (setByEffectRef.current) {
-        setByEffectRef.current = false
-
-        return
-      }
-
-      timeoutRef.current = window.setTimeout(() => {
-        onChangeRef.current?.(internalValue)
-        timeoutRef.current = null
-      }, 100)
-
-      return () => {
-        if (timeoutRef.current) {
-          clearTimeout(timeoutRef.current)
-        }
-      }
-    }, [internalValue])
+  ({ className, value, onDeferredChange, onClick, onSearch }, ref) => {
+    const allowSearch = (value?.trim().length ?? 0) > 1
 
     return (
       <Flex ref={ref} className={className}>
@@ -64,14 +30,24 @@ const SearchInput = forwardRef<HTMLDivElement, Props>(
           size="md"
           placeholder="Start typing a search term"
           autoFocus
-          value={internalValue}
+          value={value}
           onClick={onClick}
-          onChange={setInternalValue}
+          onChange={onDeferredChange}
         />
 
-        <Button css={S.rightButton} size="md" leftIcon={<IconSearch />}>
-          Search
-        </Button>
+        <Tooltip label="Type at least two characters to enable searching" disabled={allowSearch}>
+          <div css={S.searchButtonWrapper} data-disabled={!allowSearch}>
+            <Button
+              css={S.searchButton}
+              size="md"
+              leftIcon={<IconSearch />}
+              onClick={onSearch}
+              disabled={!allowSearch}
+            >
+              Search
+            </Button>
+          </div>
+        </Tooltip>
       </Flex>
     )
   }

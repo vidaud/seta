@@ -54,7 +54,6 @@ const ListMenu = ({ className, items, currentWord, onSelect }: ListMenuProps) =>
 
   const onSelectHandler = useCallback(
     (value: string) => {
-      // setSelectedValue(value)
       onSelect?.(value)
     },
     [onSelect]
