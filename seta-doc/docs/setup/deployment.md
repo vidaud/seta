@@ -144,7 +144,7 @@ It will take a while depending on the Internet speed. Might take 30min to 2h.
 At some point there will be a message **SeTA-API is up and running**
 
 
-After successfully start all the containers you are ready to open your browser and go to one of the following links:
+After successfully start all the containers, you are ready to open your browser and go to one of the following links:
 
 * **User Web App:** [[location] /](/)
 

@@ -5,8 +5,6 @@
 SeTA is accessed via a web user interface, and also allows the use of APIs for automated access.        
 SeTA furthermore offers community spaces for groups of users to collaborate on joint tasks and document collections.      
 
-**Documentation:** For more information click  [here 📖](http://localhost/docs)
-
 
 ## General Overview 
 
@@ -23,7 +21,7 @@ The middleware module contains all the java sources and acts as a proxy / integr
 The flask-server module contains all the python sources and acts as a proxy / authentication layer towards the backend.  
 
 
-All static resources that ensue from `ng build seta-web -c=<environment>` of the the frontend module are copied inside the flask-server **seta-ui** folder's module.  
+All static resources that come from `ng build seta-web -c=<environment>` of the frontend module are copied inside the flask-server **seta-ui** folder's module.  
 The end result is a ***seta-flask-server*** folder that contains a Flask application that can be deployed on any web container.  
 Flask configurations files are:
  - seta-flask-server/config.py
@@ -169,13 +167,18 @@ After finishing the build, launch the command to start and run the services:
 
 
 
-After successfully start all the containers you are ready to open your browser and start typing:
+After successfully start all the containers, you are ready to open your browser and go to one of the following links:
 
-* **User Web App:** [location] /
+* **User Web App:** [[location] /](/)
 
-* **API:** [location] /seta-api/doc
+* **SETA API:** [[location] /seta-api/doc](/seta-api/doc)
 
-* **Documentation:** [location] /docs
+* **SETA API Communities:** [[location] /api/communities/v1/doc](/api/communities/v1/doc)
+
+* **Documentation:** [[location] /docs](/docs)
+
+
+
 
 ## Stopping commands
 
