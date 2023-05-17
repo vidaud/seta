@@ -17,10 +17,10 @@ theme:
   language: en
   icon:
     admonition:
-        note: octicons/tag-16
+        note: octicons/note-16
         abstract: octicons/checklist-16
         info: octicons/info-16
-        tip: octicons/squirrel-16
+        tip: octicons/flame-16
         success: octicons/check-16
         question: octicons/question-16
         warning: octicons/alert-16
@@ -36,7 +36,7 @@ theme:
 plugins:
   - search
   - render_swagger
-  - mike
+  - markdownextradata
     
 markdown_extensions:
     - toc :
@@ -65,35 +65,40 @@ markdown_extensions:
         alternate_style: true
     - footnotes
     - md_in_html
+    - tables
     
 extra:
-  version:
-    provider: mike
+  seta_url: !ENV DOCS_HOST
+  customer:
+    name: Your name here
+    web: !ENV [DOCS_HOST, 'https:localhost\']
+    salt: salt.example.com
   
 extra_css:
   - stylesheets/extra.css
  
 nav:
   - What is SeTA: 
-      - What it does: index.md
-      - Methodology: general/how-runs.md
-      - Why you would use it: general/why-use-it.md
-      - Who should/can use it: general/who-use-it.md
-      - What are the inputs: general/what-inputs.md
-      - What are the outputs: general/what-outputs.md      
+    - SeTA: index.md
+  - Who should use it and why: 
+    - Who should use it: general/who_use_it_and_why.md   
   - Using SeTA:
-    - Set-up: user-guide/user-guide.md
-    - Web Interface:
-      - Search: user-guide/web-interface.md
-      - Communities: user-guide/communities.md
-    - API Interface:
-      - Seta-api: seta-api/seta_api_v1.md
-    - FAQS: faqs/faqs.md
-  - Deployment SeTA:
-    - Minimum Requirements: deployment/min-requirements.md
-    - Deployment: deployment/deployment.md 
-    - Advanced Tutorial: deployment/advanced-tutorial.md
-    - Release: release-notes/release-notes.md
-    - License: license/license_v1.md
+    - Setup: user-guide/setup.md
+    - Web App:
+      - Search: 
+        - Methodology: user-guide/methodology.md
+        - Web App: user-guide/web-app.md
+      - Communities: 
+        - General: user-guide/communities.md
+    - APIs: 
+      - SeTA API: apis/seta_api/seta_api.md
+      - Communities API: apis/communities_api/seta_api_communities.md
+  - Install SeTA:
+    - Docker: setup/docker-architecture.md
+    - Deployment: setup/deployment.md 
+    - Release: setup/release-notes.md
+  - FAQS: faqs/faqs.md
+  - License: license/license_v1.md
+  
 
 

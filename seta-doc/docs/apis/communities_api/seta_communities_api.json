@@ -1,0 +1,1956 @@
+{
+    "swagger": "2.0",
+    "basePath": "/api/communities/v1",
+    "paths": {
+        "/communities/": {
+            "post": {
+                "responses": {
+                    "201": {
+                        "description": "Added new community."
+                    },
+                    "403": {
+                        "description": "Insufficient rights, scope 'community/create' required"
+                    },
+                    "409": {
+                        "description": "Community already exists."
+                    }
+                },
+                "summary": "Create a community",
+                "description": "Create a new community and add this user as a member with elevated scopes.",
+                "operationId": "post_community_list",
+                "parameters": [
+                    {
+                        "name": "community_id",
+                        "in": "formData",
+                        "type": "string",
+                        "required": true,
+                        "description": "Unique community identifier"
+                    },
+                    {
+                        "name": "title",
+                        "in": "formData",
+                        "type": "string",
+                        "required": true,
+                        "description": "Short title"
+                    },
+                    {
+                        "name": "description",
+                        "in": "formData",
+                        "type": "string",
+                        "required": true,
+                        "description": "Relevand information about this community"
+                    },
+                    {
+                        "name": "data_type",
+                        "in": "formData",
+                        "type": "string",
+                        "required": true,
+                        "description": "Data type, one of ['evidence', 'representative']"
+                    }
+                ],
+                "security": [
+                    {
+                        "CSRF": []
+                    }
+                ],
+                "consumes": [
+                    "application/x-www-form-urlencoded",
+                    "multipart/form-data"
+                ],
+                "tags": [
+                    "Communities"
+                ]
+            },
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "'Retrieved community list.",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Community"
+                            }
+                        }
+                    }
+                },
+                "summary": "Retrive user communities",
+                "description": "Retrieve community list for this user.",
+                "operationId": "get_community_list",
+                "security": [
+                    {
+                        "CSRF": []
+                    }
+                ],
+                "tags": [
+                    "Communities"
+                ]
+            }
+        },
+        "/communities/change-requests/pending": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "'Retrieved pending change requests.",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/CommunityChangeRequest"
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Insufficient rights, scope 'community/change_request/approve' required"
+                    }
+                },
+                "summary": "Retrieve pending change requests",
+                "description": "Retrieve pending change requests for communitites.",
+                "operationId": "get_community_change_request_list",
+                "security": [
+                    {
+                        "CSRF": []
+                    }
+                ],
+                "tags": [
+                    "Community Change Requests"
+                ]
+            }
+        },
+        "/communities/{community_id}/change-requests": {
+            "parameters": [
+                {
+                    "in": "path",
+                    "description": "Community identifier",
+                    "name": "community_id",
+                    "required": true,
+                    "type": "string"
+                }
+            ],
+            "post": {
+                "responses": {
+                    "201": {
+                        "description": "Added new change request."
+                    },
+                    "409": {
+                        "description": "Community has already a pending change request for this field"
+                    },
+                    "403": {
+                        "description": "Insufficient rights, scope 'community/manager' required"
+                    }
+                },
+                "summary": "Create a community change request",
+                "description": "Add new change request for a community field.",
+                "operationId": "post_community_create_change_request",
+                "parameters": [
+                    {
+                        "name": "field_name",
+                        "in": "formData",
+                        "type": "string",
+                        "required": true,
+                        "description": "Requested field, one of ['membership']"
+                    },
+                    {
+                        "name": "new_value",
+                        "in": "formData",
+                        "type": "string",
+                        "required": true,
+                        "description": "New value for field"
+                    },
+                    {
+                        "name": "old_value",
+                        "in": "formData",
+                        "type": "string",
+                        "required": true,
+                        "description": "Current value at request"
+                    }
+                ],
+                "security": [
+                    {
+                        "CSRF": []
+                    }
+                ],
+                "consumes": [
+                    "application/x-www-form-urlencoded",
+                    "multipart/form-data"
+                ],
+                "tags": [
+                    "Community Change Requests"
+                ]
+            }
+        },
+        "/communities/{community_id}/change-requests/{request_id}": {
+            "parameters": [
+                {
+                    "in": "path",
+                    "description": "Change request identifier",
+                    "name": "request_id",
+                    "required": true,
+                    "type": "string"
+                },
+                {
+                    "in": "path",
+                    "description": "Community identifier",
+                    "name": "community_id",
+                    "required": true,
+                    "type": "string"
+                }
+            ],
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "'Retrieved change request.",
+                        "schema": {
+                            "$ref": "#/definitions/CommunityChangeRequest"
+                        }
+                    },
+                    "204": {
+                        "description": "Request not found."
+                    },
+                    "403": {
+                        "description": "Insufficient rights, scope 'community/change_request/approve' required"
+                    }
+                },
+                "summary": "Retrieve user request",
+                "description": "Retrieve change request for the community.",
+                "operationId": "get_community_change_request",
+                "security": [
+                    {
+                        "CSRF": []
+                    }
+                ],
+                "tags": [
+                    "Community Change Requests"
+                ]
+            },
+            "put": {
+                "responses": {
+                    "200": {
+                        "description": "Request updated."
+                    },
+                    "403": {
+                        "description": "Insufficient rights, scope 'community/membership/approve' required"
+                    },
+                    "204": {
+                        "description": "Request not found."
+                    }
+                },
+                "summary": "Update a request",
+                "description": "Approve/reject request",
+                "operationId": "put_community_change_request",
+                "parameters": [
+                    {
+                        "name": "status",
+                        "in": "formData",
+                        "type": "string",
+                        "required": true,
+                        "description": "Status, one of ['approved', 'rejected']"
+                    }
+                ],
+                "security": [
+                    {
+                        "CSRF": []
+                    }
+                ],
+                "consumes": [
+                    "application/x-www-form-urlencoded",
+                    "multipart/form-data"
+                ],
+                "tags": [
+                    "Community Change Requests"
+                ]
+            }
+        },
+        "/communities/{community_id}/invites": {
+            "parameters": [
+                {
+                    "in": "path",
+                    "description": "Community identifier",
+                    "name": "community_id",
+                    "required": true,
+                    "type": "string"
+                }
+            ],
+            "post": {
+                "responses": {
+                    "201": {
+                        "description": "Added invites."
+                    },
+                    "204": {
+                        "description": "Community not found"
+                    },
+                    "403": {
+                        "description": "Insufficient rights, scope 'community/invite' required"
+                    }
+                },
+                "summary": "Create invites",
+                "description": "Create new invites.",
+                "operationId": "post_community_create_change_request",
+                "parameters": [
+                    {
+                        "name": "email",
+                        "in": "formData",
+                        "type": "array",
+                        "required": true,
+                        "description": "List of registered emails \"email='a@a.a'&email='b@b.b'\"",
+                        "items": {
+                            "type": "string"
+                        },
+                        "collectionFormat": "multi"
+                    },
+                    {
+                        "name": "message",
+                        "in": "formData",
+                        "type": "string",
+                        "required": true,
+                        "description": "Invite message"
+                    }
+                ],
+                "security": [
+                    {
+                        "CSRF": []
+                    }
+                ],
+                "consumes": [
+                    "application/x-www-form-urlencoded",
+                    "multipart/form-data"
+                ],
+                "tags": [
+                    "Community Invites"
+                ]
+            },
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "'Retrieved pending invites.",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Invite"
+                            }
+                        }
+                    },
+                    "204": {
+                        "description": "Community not found"
+                    },
+                    "403": {
+                        "description": "Insufficient rights, scope 'community/invite' required"
+                    }
+                },
+                "summary": "Retrieve pending invites",
+                "description": "Retrieve pending invites for this community.",
+                "operationId": "get_community_create_change_request",
+                "security": [
+                    {
+                        "CSRF": []
+                    }
+                ],
+                "tags": [
+                    "Community Invites"
+                ]
+            }
+        },
+        "/communities/{community_id}/memberships": {
+            "parameters": [
+                {
+                    "in": "path",
+                    "description": "Community id",
+                    "name": "community_id",
+                    "required": true,
+                    "type": "string"
+                }
+            ],
+            "post": {
+                "responses": {
+                    "201": {
+                        "description": "Added new member."
+                    },
+                    "403": {
+                        "description": "Community is not opened"
+                    },
+                    "204": {
+                        "description": "Community not found"
+                    },
+                    "409": {
+                        "description": "Member already exists."
+                    }
+                },
+                "summary": "Create a member for an opened community",
+                "description": "Add new member to an opened community.",
+                "operationId": "post_membership_list",
+                "security": [
+                    {
+                        "CSRF": []
+                    }
+                ],
+                "tags": [
+                    "Community Memberships"
+                ]
+            },
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "'Retrieved membership list.",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Membership"
+                            }
+                        }
+                    },
+                    "204": {
+                        "description": "Community not found"
+                    }
+                },
+                "summary": "Retrieve community memberships",
+                "description": "Retrieve membership list for this community.",
+                "operationId": "get_membership_list",
+                "security": [
+                    {
+                        "CSRF": []
+                    }
+                ],
+                "tags": [
+                    "Community Memberships"
+                ]
+            }
+        },
+        "/communities/{community_id}/memberships/{user_id}": {
+            "parameters": [
+                {
+                    "in": "path",
+                    "description": "User identifier",
+                    "name": "user_id",
+                    "required": true,
+                    "type": "string"
+                },
+                {
+                    "in": "path",
+                    "description": "Community identifier",
+                    "name": "community_id",
+                    "required": true,
+                    "type": "string"
+                }
+            ],
+            "delete": {
+                "responses": {
+                    "200": {
+                        "description": "Membership removed."
+                    },
+                    "403": {
+                        "description": "Insufficient rights, scope 'community/edit' required"
+                    },
+                    "204": {
+                        "description": "Membership not found."
+                    },
+                    "409": {
+                        "description": "Cannot remove the only owner."
+                    }
+                },
+                "summary": "Remove a membership",
+                "description": "Remove membership",
+                "operationId": "delete_membership",
+                "security": [
+                    {
+                        "CSRF": []
+                    }
+                ],
+                "tags": [
+                    "Community Memberships"
+                ]
+            },
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "Retrieved membership.",
+                        "schema": {
+                            "$ref": "#/definitions/Membership"
+                        }
+                    },
+                    "204": {
+                        "description": "Membership not found."
+                    }
+                },
+                "summary": "Retrieve membership",
+                "description": "Retrieve user membership",
+                "operationId": "get_membership",
+                "security": [
+                    {
+                        "CSRF": []
+                    }
+                ],
+                "tags": [
+                    "Community Memberships"
+                ]
+            },
+            "put": {
+                "responses": {
+                    "200": {
+                        "description": "Membership updated."
+                    },
+                    "403": {
+                        "description": "Insufficient rights, scope 'community/manager' required"
+                    },
+                    "204": {
+                        "description": "Membership not found."
+                    }
+                },
+                "summary": "Update a community membership",
+                "description": "Update membership fields",
+                "operationId": "put_membership",
+                "parameters": [
+                    {
+                        "name": "role",
+                        "in": "formData",
+                        "type": "string",
+                        "required": true,
+                        "description": "Membership role"
+                    },
+                    {
+                        "name": "status",
+                        "in": "formData",
+                        "type": "string",
+                        "required": true,
+                        "description": "Status, one of ['active', 'blocked']"
+                    }
+                ],
+                "security": [
+                    {
+                        "CSRF": []
+                    }
+                ],
+                "consumes": [
+                    "application/x-www-form-urlencoded",
+                    "multipart/form-data"
+                ],
+                "tags": [
+                    "Community Memberships"
+                ]
+            }
+        },
+        "/communities/{community_id}/requests": {
+            "parameters": [
+                {
+                    "in": "path",
+                    "description": "Community identifier",
+                    "name": "community_id",
+                    "required": true,
+                    "type": "string"
+                }
+            ],
+            "post": {
+                "responses": {
+                    "201": {
+                        "description": "Added new request."
+                    },
+                    "204": {
+                        "description": "Community not found"
+                    },
+                    "409": {
+                        "description": "Member or request already exists."
+                    }
+                },
+                "summary": "Create a community membership request",
+                "description": "Add new request for the community for the authorized user.",
+                "operationId": "post_request_list",
+                "parameters": [
+                    {
+                        "name": "message",
+                        "in": "formData",
+                        "type": "string",
+                        "required": true,
+                        "description": "Request message"
+                    }
+                ],
+                "security": [
+                    {
+                        "CSRF": []
+                    }
+                ],
+                "consumes": [
+                    "application/x-www-form-urlencoded",
+                    "multipart/form-data"
+                ],
+                "tags": [
+                    "Community Memberships"
+                ]
+            },
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "'Retrieved request list.",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/MembershipRequest"
+                            }
+                        }
+                    },
+                    "204": {
+                        "description": "Community not found"
+                    }
+                },
+                "summary": "Retrieve community requests",
+                "description": "Retrieve request list for this community.",
+                "operationId": "get_request_list",
+                "security": [
+                    {
+                        "CSRF": []
+                    }
+                ],
+                "tags": [
+                    "Community Memberships"
+                ]
+            }
+        },
+        "/communities/{community_id}/requests/{user_id}": {
+            "parameters": [
+                {
+                    "in": "path",
+                    "description": "User identifier",
+                    "name": "user_id",
+                    "required": true,
+                    "type": "string"
+                },
+                {
+                    "in": "path",
+                    "description": "Community identifier",
+                    "name": "community_id",
+                    "required": true,
+                    "type": "string"
+                }
+            ],
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "'Retrieved user request.",
+                        "schema": {
+                            "$ref": "#/definitions/MembershipRequest"
+                        }
+                    },
+                    "204": {
+                        "description": "Request not found."
+                    }
+                },
+                "summary": "Retrieve user request",
+                "description": "Retrieve user request for the community.",
+                "operationId": "get_request",
+                "security": [
+                    {
+                        "CSRF": []
+                    }
+                ],
+                "tags": [
+                    "Community Memberships"
+                ]
+            },
+            "put": {
+                "responses": {
+                    "200": {
+                        "description": "Request updated."
+                    },
+                    "403": {
+                        "description": "Insufficient rights, scope 'community/membership/approve' required"
+                    },
+                    "204": {
+                        "description": "Request not found."
+                    },
+                    "409": {
+                        "description": "Request status already set"
+                    }
+                },
+                "summary": "Update a request",
+                "description": "Approve/reject request",
+                "operationId": "put_request",
+                "parameters": [
+                    {
+                        "name": "status",
+                        "in": "formData",
+                        "type": "string",
+                        "required": true,
+                        "description": "Status, one of ['approved', 'rejected']"
+                    }
+                ],
+                "security": [
+                    {
+                        "CSRF": []
+                    }
+                ],
+                "consumes": [
+                    "application/x-www-form-urlencoded",
+                    "multipart/form-data"
+                ],
+                "tags": [
+                    "Community Memberships"
+                ]
+            }
+        },
+        "/communities/{id}": {
+            "parameters": [
+                {
+                    "in": "path",
+                    "description": "Community id",
+                    "name": "id",
+                    "required": true,
+                    "type": "string"
+                }
+            ],
+            "delete": {
+                "responses": {
+                    "200": {
+                        "description": "Community deleted."
+                    },
+                    "403": {
+                        "description": "Insufficient rights, scope 'community/manager' required"
+                    },
+                    "409": {
+                        "description": "There are resources linked to this community"
+                    }
+                },
+                "summary": "Delete community",
+                "description": "Delete  community entries",
+                "operationId": "delete_community",
+                "security": [
+                    {
+                        "CSRF": []
+                    }
+                ],
+                "tags": [
+                    "Communities"
+                ]
+            },
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "Retrieved community.",
+                        "schema": {
+                            "$ref": "#/definitions/Community"
+                        }
+                    },
+                    "204": {
+                        "description": "Community id not found."
+                    }
+                },
+                "summary": "Retrieve community",
+                "description": "Retrieve community, if user is a member of it",
+                "operationId": "get_community",
+                "security": [
+                    {
+                        "CSRF": []
+                    }
+                ],
+                "tags": [
+                    "Communities"
+                ]
+            },
+            "put": {
+                "responses": {
+                    "200": {
+                        "description": "Community updated."
+                    },
+                    "204": {
+                        "description": "Community id not found"
+                    },
+                    "403": {
+                        "description": "Insufficient rights, scope 'community/edit' required"
+                    }
+                },
+                "summary": "Update a community",
+                "description": "Update community fields",
+                "operationId": "put_community",
+                "parameters": [
+                    {
+                        "name": "title",
+                        "in": "formData",
+                        "type": "string",
+                        "required": true,
+                        "description": "Short title"
+                    },
+                    {
+                        "name": "description",
+                        "in": "formData",
+                        "type": "string",
+                        "required": true,
+                        "description": "Relevand information about this community"
+                    },
+                    {
+                        "name": "data_type",
+                        "in": "formData",
+                        "type": "string",
+                        "required": true,
+                        "description": "Data type, one of ['evidence', 'representative']"
+                    },
+                    {
+                        "name": "status",
+                        "in": "formData",
+                        "type": "string",
+                        "required": true,
+                        "description": "Status, one of ['active', 'blocked']"
+                    }
+                ],
+                "security": [
+                    {
+                        "CSRF": []
+                    }
+                ],
+                "consumes": [
+                    "application/x-www-form-urlencoded",
+                    "multipart/form-data"
+                ],
+                "tags": [
+                    "Communities"
+                ]
+            }
+        },
+        "/invites/{invite_id}": {
+            "parameters": [
+                {
+                    "in": "path",
+                    "description": "Invite identifier",
+                    "name": "invite_id",
+                    "required": true,
+                    "type": "string"
+                }
+            ],
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "'Retrieved invite.",
+                        "schema": {
+                            "$ref": "#/definitions/Invite"
+                        }
+                    },
+                    "204": {
+                        "description": "Invite not found."
+                    },
+                    "403": {
+                        "description": "Insufficient rights"
+                    }
+                },
+                "summary": "Retrieve invite",
+                "description": "Retrieve invite.",
+                "operationId": "get_community_invite",
+                "security": [
+                    {
+                        "CSRF": []
+                    }
+                ],
+                "tags": [
+                    "Invites"
+                ]
+            },
+            "put": {
+                "responses": {
+                    "200": {
+                        "description": "Invite updated."
+                    },
+                    "403": {
+                        "description": "Insufficient rights"
+                    },
+                    "204": {
+                        "description": "Invite not found."
+                    }
+                },
+                "summary": "Update an invite",
+                "description": "Accept/reject invite",
+                "operationId": "put_community_invite",
+                "parameters": [
+                    {
+                        "name": "status",
+                        "in": "formData",
+                        "type": "string",
+                        "required": true,
+                        "description": "Status, one of ['accepted', 'rejected']"
+                    }
+                ],
+                "security": [
+                    {
+                        "CSRF": []
+                    }
+                ],
+                "consumes": [
+                    "application/x-www-form-urlencoded",
+                    "multipart/form-data"
+                ],
+                "tags": [
+                    "Invites"
+                ]
+            }
+        },
+        "/permissions/community/{community_id}": {
+            "parameters": [
+                {
+                    "in": "path",
+                    "description": "Community id",
+                    "name": "community_id",
+                    "required": true,
+                    "type": "string"
+                }
+            ],
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "'Retrieved permissions list.",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/User%20Scope"
+                            }
+                        }
+                    },
+                    "204": {
+                        "description": "Community not found"
+                    }
+                },
+                "summary": "Retrieve all community user permissions",
+                "description": "Retrieve user-scope list for this community.",
+                "operationId": "get_community_permission_list",
+                "security": [
+                    {
+                        "CSRF": []
+                    }
+                ],
+                "tags": [
+                    "Community User Permissions"
+                ]
+            }
+        },
+        "/permissions/community/{community_id}/user/{user_id}": {
+            "parameters": [
+                {
+                    "in": "path",
+                    "description": "User id",
+                    "name": "user_id",
+                    "required": true,
+                    "type": "string"
+                },
+                {
+                    "in": "path",
+                    "description": "Community id",
+                    "name": "community_id",
+                    "required": true,
+                    "type": "string"
+                }
+            ],
+            "post": {
+                "responses": {
+                    "200": {
+                        "description": "User permissions updated."
+                    },
+                    "403": {
+                        "description": "Insufficient rights, scope 'community/edit' required"
+                    },
+                    "204": {
+                        "description": "Community not found."
+                    }
+                },
+                "summary": "Add/Replace user permissions",
+                "description": "Replace all user permissions for the community",
+                "operationId": "post_community_user_permissions",
+                "parameters": [
+                    {
+                        "name": "scope",
+                        "in": "formData",
+                        "type": "array",
+                        "required": true,
+                        "description": "Scopes list, one of ['/seta/community/owner', '/seta/community/manager', '/seta/community/invite', '/seta/community/membership/approve', '/seta/resource/create']",
+                        "items": {
+                            "type": "string"
+                        },
+                        "collectionFormat": "multi"
+                    }
+                ],
+                "security": [
+                    {
+                        "CSRF": []
+                    }
+                ],
+                "consumes": [
+                    "application/x-www-form-urlencoded",
+                    "multipart/form-data"
+                ],
+                "tags": [
+                    "Community User Permissions"
+                ]
+            },
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "'Retrieved permissions list.",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/User%20Scope"
+                            }
+                        }
+                    },
+                    "204": {
+                        "description": "Community not found"
+                    }
+                },
+                "summary": "Retrieve user permissions for community",
+                "description": "Retrieve user scopes for a community.",
+                "operationId": "get_community_user_permissions",
+                "security": [
+                    {
+                        "CSRF": []
+                    }
+                ],
+                "tags": [
+                    "Community User Permissions"
+                ]
+            }
+        },
+        "/resources/change-requests/pending": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "'Retrieved pending change requests.",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/ResourceChangeRequest"
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Insufficient rights, scope 'resource/change_request/approve' required"
+                    }
+                },
+                "summary": "Retrieve pending change requests",
+                "description": "Retrieve pending change requests for resources.",
+                "operationId": "get_resource_change_request_list",
+                "security": [
+                    {
+                        "CSRF": []
+                    }
+                ],
+                "tags": [
+                    "Resource Change Requests"
+                ]
+            }
+        },
+        "/resources/community/{community_id}": {
+            "parameters": [
+                {
+                    "in": "path",
+                    "description": "Community identifier",
+                    "name": "community_id",
+                    "required": true,
+                    "type": "string"
+                }
+            ],
+            "post": {
+                "responses": {
+                    "201": {
+                        "description": "Added resource."
+                    },
+                    "204": {
+                        "description": "Community not found"
+                    },
+                    "403": {
+                        "description": "Insufficient rights, scope 'resource/create' required"
+                    }
+                },
+                "summary": "Create resource",
+                "description": "Create new resource.",
+                "operationId": "post_community_resource_list",
+                "parameters": [
+                    {
+                        "name": "resource_id",
+                        "in": "formData",
+                        "type": "string",
+                        "required": true,
+                        "description": "Unique resource identifier"
+                    },
+                    {
+                        "name": "title",
+                        "in": "formData",
+                        "type": "string",
+                        "required": true,
+                        "description": "Short title"
+                    },
+                    {
+                        "name": "abstract",
+                        "in": "formData",
+                        "type": "string",
+                        "required": true,
+                        "description": "Relevand information about this resource"
+                    }
+                ],
+                "security": [
+                    {
+                        "CSRF": []
+                    }
+                ],
+                "consumes": [
+                    "application/x-www-form-urlencoded",
+                    "multipart/form-data"
+                ],
+                "tags": [
+                    "Resources"
+                ]
+            },
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "'Retrieved resources.",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Resource"
+                            }
+                        }
+                    },
+                    "204": {
+                        "description": "Community not found"
+                    }
+                },
+                "summary": "Retrieve resources",
+                "description": "Retrieve resources for this community.",
+                "operationId": "get_community_resource_list",
+                "security": [
+                    {
+                        "CSRF": []
+                    }
+                ],
+                "tags": [
+                    "Resources"
+                ]
+            }
+        },
+        "/resources/{id}": {
+            "parameters": [
+                {
+                    "in": "path",
+                    "description": "Resource identifier",
+                    "name": "id",
+                    "required": true,
+                    "type": "string"
+                }
+            ],
+            "delete": {
+                "responses": {
+                    "200": {
+                        "description": "Resource deleted."
+                    },
+                    "204": {
+                        "description": "Resource id not found."
+                    },
+                    "403": {
+                        "description": "Insufficient rights, scope 'resource/edit' required"
+                    }
+                },
+                "summary": "Delete resource",
+                "description": "Delete all resource entries",
+                "operationId": "delete_community_resource",
+                "security": [
+                    {
+                        "CSRF": []
+                    }
+                ],
+                "tags": [
+                    "Resources"
+                ]
+            },
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "Retrieved resource.",
+                        "schema": {
+                            "$ref": "#/definitions/Resource"
+                        }
+                    },
+                    "204": {
+                        "description": "Resource id not found."
+                    }
+                },
+                "summary": "Retrieve resource",
+                "description": "Retrieve resource",
+                "operationId": "get_community_resource",
+                "security": [
+                    {
+                        "CSRF": []
+                    }
+                ],
+                "tags": [
+                    "Resources"
+                ]
+            },
+            "put": {
+                "responses": {
+                    "200": {
+                        "description": "Resource updated."
+                    },
+                    "204": {
+                        "description": "Resource id not found."
+                    },
+                    "403": {
+                        "description": "Insufficient rights, scope 'resource/edit' required"
+                    }
+                },
+                "summary": "Update a resource",
+                "description": "Update resource fields",
+                "operationId": "put_community_resource",
+                "parameters": [
+                    {
+                        "name": "title",
+                        "in": "formData",
+                        "type": "string",
+                        "required": true,
+                        "description": "Short title"
+                    },
+                    {
+                        "name": "abstract",
+                        "in": "formData",
+                        "type": "string",
+                        "required": true,
+                        "description": "Relevand information about this resource"
+                    },
+                    {
+                        "name": "status",
+                        "in": "formData",
+                        "type": "string",
+                        "required": true,
+                        "description": "Status, one of ['active', 'blocked']"
+                    }
+                ],
+                "security": [
+                    {
+                        "CSRF": []
+                    }
+                ],
+                "consumes": [
+                    "application/x-www-form-urlencoded",
+                    "multipart/form-data"
+                ],
+                "tags": [
+                    "Resources"
+                ]
+            }
+        },
+        "/resources/{resource_id}/change-requests": {
+            "parameters": [
+                {
+                    "in": "path",
+                    "description": "Resource identifier",
+                    "name": "resource_id",
+                    "required": true,
+                    "type": "string"
+                }
+            ],
+            "post": {
+                "responses": {
+                    "201": {
+                        "description": "Added new change request."
+                    },
+                    "409": {
+                        "description": "Resource has already a pending change request for this field"
+                    },
+                    "403": {
+                        "description": "Insufficient rights, scope 'resource/edit' required"
+                    }
+                },
+                "summary": "Create a resource change request",
+                "description": "Add new change request for a resource field.",
+                "operationId": "post_resource_create_change_request",
+                "parameters": [
+                    {
+                        "name": "field_name",
+                        "in": "formData",
+                        "type": "string",
+                        "required": true,
+                        "description": "Requested field, one of ['access', 'limits']"
+                    },
+                    {
+                        "name": "new_value",
+                        "in": "formData",
+                        "type": "string",
+                        "required": true,
+                        "description": "New value for field"
+                    },
+                    {
+                        "name": "old_value",
+                        "in": "formData",
+                        "type": "string",
+                        "required": true,
+                        "description": "Current value at request"
+                    }
+                ],
+                "security": [
+                    {
+                        "CSRF": []
+                    }
+                ],
+                "consumes": [
+                    "application/x-www-form-urlencoded",
+                    "multipart/form-data"
+                ],
+                "tags": [
+                    "Resource Change Requests"
+                ]
+            }
+        },
+        "/resources/{resource_id}/change-requests/{request_id}": {
+            "parameters": [
+                {
+                    "in": "path",
+                    "description": "Change request identifier",
+                    "name": "request_id",
+                    "required": true,
+                    "type": "string"
+                },
+                {
+                    "in": "path",
+                    "description": "Resource identifier",
+                    "name": "resource_id",
+                    "required": true,
+                    "type": "string"
+                }
+            ],
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "'Retrieved change request.",
+                        "schema": {
+                            "$ref": "#/definitions/ResourceChangeRequest"
+                        }
+                    },
+                    "204": {
+                        "description": "Request not found."
+                    },
+                    "403": {
+                        "description": "Insufficient rights, scope 'community/change_request/approve' required"
+                    }
+                },
+                "summary": "Retrieve resource request",
+                "description": "Retrieve change request for the community.",
+                "operationId": "get_resource_change_request",
+                "security": [
+                    {
+                        "CSRF": []
+                    }
+                ],
+                "tags": [
+                    "Resource Change Requests"
+                ]
+            },
+            "put": {
+                "responses": {
+                    "200": {
+                        "description": "Request updated."
+                    },
+                    "403": {
+                        "description": "Insufficient rights, scope 'community/membership/approve' required"
+                    },
+                    "204": {
+                        "description": "Request not found."
+                    }
+                },
+                "summary": "Update a change request",
+                "description": "Approve/reject request",
+                "operationId": "put_resource_change_request",
+                "parameters": [
+                    {
+                        "name": "status",
+                        "in": "formData",
+                        "type": "string",
+                        "required": true,
+                        "description": "Status, one of ['approved', 'rejected']"
+                    }
+                ],
+                "security": [
+                    {
+                        "CSRF": []
+                    }
+                ],
+                "consumes": [
+                    "application/x-www-form-urlencoded",
+                    "multipart/form-data"
+                ],
+                "tags": [
+                    "Resource Change Requests"
+                ]
+            }
+        },
+        "/resources/{resource_id}/contributors": {
+            "parameters": [
+                {
+                    "in": "path",
+                    "description": "Resource identifier",
+                    "name": "resource_id",
+                    "required": true,
+                    "type": "string"
+                }
+            ],
+            "post": {
+                "responses": {
+                    "201": {
+                        "description": "Added contributor."
+                    },
+                    "204": {
+                        "description": "Resource not found"
+                    },
+                    "403": {
+                        "description": "Insufficient rights, scope 'resource/data/add' required"
+                    }
+                },
+                "summary": "Create resource contribution",
+                "description": "Create new contributor.",
+                "operationId": "post_resource_contributor_list",
+                "parameters": [
+                    {
+                        "name": "file_name",
+                        "in": "formData",
+                        "type": "string",
+                        "required": true,
+                        "description": "Uploaded file name"
+                    },
+                    {
+                        "name": "file_size_mb",
+                        "in": "formData",
+                        "type": "number",
+                        "required": true,
+                        "description": "File size in MB"
+                    },
+                    {
+                        "name": "metadata",
+                        "in": "formData",
+                        "type": "string",
+                        "required": true,
+                        "description": "File metadata as json"
+                    }
+                ],
+                "security": [
+                    {
+                        "CSRF": []
+                    }
+                ],
+                "consumes": [
+                    "application/x-www-form-urlencoded",
+                    "multipart/form-data"
+                ],
+                "tags": [
+                    "Resource Contributors"
+                ]
+            },
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "'Retrieved contributors.",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Resource%20Contributor"
+                            }
+                        }
+                    },
+                    "204": {
+                        "description": "Resource not found"
+                    }
+                },
+                "summary": "Retrieve contributors",
+                "description": "Retrieve contributors for this respurce.",
+                "operationId": "get_resource_contributor_list",
+                "security": [
+                    {
+                        "CSRF": []
+                    }
+                ],
+                "tags": [
+                    "Resource Contributors"
+                ]
+            }
+        }
+    },
+    "info": {
+        "title": "SeTA Communities API",
+        "version": "1.0",
+        "description": "SeTA Communities API"
+    },
+    "produces": [
+        "application/json"
+    ],
+    "consumes": [
+        "application/json"
+    ],
+    "securityDefinitions": {
+        "Bearer": {
+            "type": "apiKey",
+            "in": "header",
+            "name": "Authorization",
+            "description": "Type in the *'Value'* input box below: **'Bearer &lt;JWT&gt;'**, where JWT is the token"
+        },
+        "CSRF": {
+            "type": "apiKey",
+            "in": "header",
+            "name": "X-CSRF-TOKEN",
+            "description": "Type in the *'Value'* input box below: **'&lt;CSRF&gt;'**, where CSRF is the CSRF token"
+        }
+    },
+    "tags": [
+        {
+            "name": "Communities",
+            "description": "SETA Communities"
+        },
+        {
+            "name": "Community Change Requests",
+            "description": "SETA Community Change Requests"
+        },
+        {
+            "name": "Community Memberships",
+            "description": "SETA Community Memberships"
+        },
+        {
+            "name": "Community Invites",
+            "description": "SETA Community Invites"
+        },
+        {
+            "name": "Invites",
+            "description": "SETA Community Invites"
+        },
+        {
+            "name": "Resources",
+            "description": "SETA Resources"
+        },
+        {
+            "name": "Resource Contributors",
+            "description": "SETA Resource Contributors"
+        },
+        {
+            "name": "Resource Change Requests",
+            "description": "SETA Resource Change Requests"
+        },
+        {
+            "name": "Community User Permissions",
+            "description": "SETA Community User Permissions"
+        }
+    ],
+    "definitions": {
+        "Community": {
+            "properties": {
+                "community_id": {
+                    "type": "string",
+                    "description": "Community identifier"
+                },
+                "title": {
+                    "type": "string",
+                    "description": "Community title"
+                },
+                "description": {
+                    "type": "string",
+                    "description": "Community relevant description"
+                },
+                "membership": {
+                    "type": "string",
+                    "description": "The membership status",
+                    "example": "opened",
+                    "enum": [
+                        "opened",
+                        "closed"
+                    ]
+                },
+                "data_type": {
+                    "type": "string",
+                    "description": "The community data type",
+                    "example": "evidence",
+                    "enum": [
+                        "evidence",
+                        "representative"
+                    ]
+                },
+                "status": {
+                    "type": "string",
+                    "description": "The community status",
+                    "example": "active",
+                    "enum": [
+                        "active",
+                        "blocked"
+                    ]
+                },
+                "creator": {
+                    "$ref": "#/definitions/User Info"
+                },
+                "created_at": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "Creation date"
+                }
+            },
+            "type": "object"
+        },
+        "User Info": {
+            "properties": {
+                "user_id": {
+                    "type": "string",
+                    "description": "Internal SETA user identifier"
+                },
+                "full_name": {
+                    "type": "string",
+                    "description": "User full name"
+                },
+                "email": {
+                    "type": "string",
+                    "description": "User email address"
+                }
+            },
+            "type": "object"
+        },
+        "CommunityChangeRequest": {
+            "properties": {
+                "request_id": {
+                    "type": "string",
+                    "description": "Request identifier"
+                },
+                "community_id": {
+                    "type": "string",
+                    "description": "Community identifier"
+                },
+                "field_name": {
+                    "type": "string",
+                    "description": "Requested field",
+                    "example": "membership",
+                    "enum": [
+                        "membership"
+                    ]
+                },
+                "new_value": {
+                    "type": "string",
+                    "description": "New value for field"
+                },
+                "old_value": {
+                    "type": "string",
+                    "description": "Current value at request"
+                },
+                "requested_by": {
+                    "type": "string",
+                    "description": "User identifier that intiated the request"
+                },
+                "status": {
+                    "type": "string",
+                    "description": "Request status",
+                    "example": "pending",
+                    "enum": [
+                        "pending",
+                        "approved",
+                        "rejected"
+                    ]
+                },
+                "initiated_date": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "Request intiated date"
+                },
+                "reviewed_by": {
+                    "type": "string",
+                    "description": "User identifier that reviewed the request"
+                },
+                "review_date": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "Reviewed date"
+                }
+            },
+            "type": "object"
+        },
+        "Membership": {
+            "properties": {
+                "community_id": {
+                    "type": "string",
+                    "description": "Community identifier"
+                },
+                "user_id": {
+                    "type": "string",
+                    "description": "User identifier"
+                },
+                "role": {
+                    "type": "string",
+                    "description": "Membership role desription"
+                },
+                "join_date": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "Community join date"
+                },
+                "status": {
+                    "type": "string",
+                    "description": "The membership status",
+                    "example": "active",
+                    "enum": [
+                        "active",
+                        "blocked"
+                    ]
+                }
+            },
+            "type": "object"
+        },
+        "MembershipRequest": {
+            "properties": {
+                "community_id": {
+                    "type": "string",
+                    "description": "Community identifier"
+                },
+                "requested_by": {
+                    "type": "string",
+                    "description": "User identifier"
+                },
+                "message": {
+                    "type": "string",
+                    "description": "Request message"
+                },
+                "initiated_date": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "Community join date"
+                },
+                "status": {
+                    "type": "string",
+                    "description": "The request status",
+                    "example": "pending",
+                    "enum": [
+                        "pending",
+                        "approved",
+                        "rejected"
+                    ]
+                },
+                "reviewed_by": {
+                    "type": "string",
+                    "description": "Review user identifier"
+                },
+                "review_date": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "Reviewed on"
+                }
+            },
+            "type": "object"
+        },
+        "Invite": {
+            "properties": {
+                "invite_id": {
+                    "type": "string",
+                    "description": "Invite unique identifier"
+                },
+                "community_id": {
+                    "type": "string",
+                    "description": "Community identifier"
+                },
+                "invited_user": {
+                    "type": "string",
+                    "description": "Invited user identifier"
+                },
+                "message": {
+                    "type": "string",
+                    "description": "Sent invite message"
+                },
+                "status": {
+                    "type": "string",
+                    "description": "The invite status",
+                    "example": "pending",
+                    "enum": [
+                        "pending",
+                        "accepted",
+                        "rejected",
+                        "expired"
+                    ]
+                },
+                "expire_date": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "Community join date"
+                },
+                "initiated_by": {
+                    "type": "string",
+                    "description": "Sender user identifier"
+                },
+                "initiated_date": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "Send date"
+                }
+            },
+            "type": "object"
+        },
+        "Resource": {
+            "properties": {
+                "resource_id": {
+                    "type": "string",
+                    "description": "Resource identifier"
+                },
+                "community_id": {
+                    "type": "string",
+                    "description": "Community identifier"
+                },
+                "title": {
+                    "type": "string",
+                    "description": "Resource title"
+                },
+                "abstract": {
+                    "type": "string",
+                    "description": "Resource relevant description"
+                },
+                "access": {
+                    "type": "string",
+                    "description": "The resource access on search",
+                    "example": "public",
+                    "enum": [
+                        "public",
+                        "community"
+                    ]
+                },
+                "limits": {
+                    "description": "The resource upload limits",
+                    "allOf": [
+                        {
+                            "$ref": "#/definitions/ResourceLimits"
+                        }
+                    ]
+                },
+                "status": {
+                    "type": "string",
+                    "description": "The resource status",
+                    "example": "active",
+                    "enum": [
+                        "active",
+                        "blocked"
+                    ]
+                },
+                "creator_id": {
+                    "type": "string",
+                    "description": "Creator user identifier"
+                },
+                "created_at": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "Creation date"
+                }
+            },
+            "type": "object"
+        },
+        "ResourceLimits": {
+            "properties": {
+                "total_files_no": {
+                    "type": "integer",
+                    "description": "Total number of files to upload for the resource"
+                },
+                "total_storage_mb": {
+                    "type": "number",
+                    "description": "Total storage in megabytes"
+                },
+                "file_size_mb": {
+                    "type": "number",
+                    "description": "File size limit in megabytes"
+                }
+            },
+            "type": "object"
+        },
+        "Resource Contributor": {
+            "properties": {
+                "resource_id": {
+                    "type": "string",
+                    "description": "Resource identifier"
+                },
+                "user_id": {
+                    "type": "string",
+                    "description": "Contributor identifier"
+                },
+                "file_name": {
+                    "type": "string",
+                    "description": "Uploaded file name"
+                },
+                "file_size_mb": {
+                    "type": "number",
+                    "description": "File size in MB"
+                },
+                "metadata": {
+                    "type": "json",
+                    "format": "json",
+                    "description": "File metadata"
+                },
+                "uploaded_at": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "File upload date"
+                }
+            },
+            "type": "object"
+        },
+        "ResourceChangeRequest": {
+            "properties": {
+                "request_id": {
+                    "type": "string",
+                    "description": "Request identifier"
+                },
+                "resource_id": {
+                    "type": "string",
+                    "description": "Resource identifier"
+                },
+                "field_name": {
+                    "type": "string",
+                    "description": "Requested field",
+                    "example": "access",
+                    "enum": [
+                        "access",
+                        "limits"
+                    ]
+                },
+                "new_value": {
+                    "type": "string",
+                    "description": "New value for field"
+                },
+                "old_value": {
+                    "type": "string",
+                    "description": "Current value at request"
+                },
+                "requested_by": {
+                    "type": "string",
+                    "description": "User identifier that intiated the request"
+                },
+                "status": {
+                    "type": "string",
+                    "description": "Request status",
+                    "example": "pending",
+                    "enum": [
+                        "pending",
+                        "approved",
+                        "rejected"
+                    ]
+                },
+                "initiated_date": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "Request intiated date"
+                },
+                "reviewed_by": {
+                    "type": "string",
+                    "description": "User identifier that reviewed the request"
+                },
+                "review_date": {
+                    "type": "string",
+                    "format": "date-time",
+                    "description": "Reviewed date"
+                }
+            },
+            "type": "object"
+        },
+        "User Scope": {
+            "properties": {
+                "user_id": {
+                    "type": "string",
+                    "description": "User identifier"
+                },
+                "scope": {
+                    "type": "string",
+                    "description": "Scope"
+                }
+            },
+            "type": "object"
+        }
+    },
+    "responses": {
+        "ParseError": {
+            "description": "When a mask can't be parsed"
+        },
+        "MaskError": {
+            "description": "When any error occurs on mask"
+        }
+    }
+}

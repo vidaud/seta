@@ -9,3 +9,6 @@ mkdocs-render-swagger-plugin==0.0.4
 
 # mike
 mike==1.1.2
+
+# markdownextradata
+mkdocs-markdownextradata-plugin==0.2.5

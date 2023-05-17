@@ -1,62 +1,57 @@
-# SeTA *Semantic Text Analyser*
+# SeTA 
+**SeTA** (“Semantic Text Analyser”) is a tool that offers a search functionality in large document collections. Upon providing a keyword, a set of keywords, or a piece of text, the tool will indicate a list of documents, and locations therein, where the keyword(s) occur. The search is enhanced beyond merely finding the keywords literally, first by the use of a taxonomy (that structures pre-defined keywords) and second by semantic interpretation of the keywords (that uses the meaning of the words in addition to their literal form). The search results can, as next step, be easily screened and filtered by the user with the help of the tool.       
+\     
+SeTA helps to explore the information in a document collection by making sense of the textual content and finding links.
+In order to make this kind of analysis possible, the document collection to be searched / explored needs to be pre-processed by advanced text mining techniques. This has been done for four large document collections published by EU bodies:  
+\       
+- **EUR-Lex**, the official online database of all EU legal documents;      
+- **CORDIS**, which contains the results of the projects funded by the EU's framework programs for research and innovation;       
+- **PUBSY**, the publications repository of the European Commission's Joint Research Centre;      
+- and all publications of the **European Parliament**.      
 
 
-<iframe width='560' height='315' src='https://www.youtube.com/embed/jd6iXKr2UZg' title='YouTube video player' allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share' allowFullScreen> </iframe>
+These four collections are online available for immediate search. SeTA can also work on additional document collections, but they first have to be ingested and pre-processed by the user.        
+SeTA is accessed via a web user interface, and also allows the use of APIs for automated access.        
+SeTA furthermore offers community spaces for groups of users to collaborate on joint tasks and document collections.      
 
+## Processing 
 
-The European Union Bodies publish a vast amount of information which is made available by the different pubblications.
-Making sense of this textual content and finding links between documents is difficult if not impossible just by having humans read it. 
+In order to have a consistent collection of information in terms of content as well as subject and concept distribution, the gathered data must be prepared, cleaned, and used for training of the search function.              
 
-The **semantic text analyzer** or **SeTA** is a software tool that accomplishes these tasks.
+To enable reliable, timely, and consistent indexing and retrieval of the content of digital assets, **Taxonomies** are used in the descriptive metadata fields.          
 
-SeTA uses advanced text mining techniques to help users to screen and query large document collections.
+As part of the data preparation, SeTA relies on the support of chunk compositionality to create the word embedding used as input data.      
+    
+Word embeddings are numerical vector representations of text that keep track of the semantic and contextual relationships between words in the corpus of texts.   
 
-Users can search EU documents based on keywords and then screen the results and apply filters all very quickly and accurately.
+Once we have the processed data, then is ingested and stored in an **Elasticsearch **[^1] database.  Thanks to the Elasticsearch analytics engine, it is possible to run complex queries against their data and use aggregations to retrieve complex summaries of their data.
 
-## How can SeTA provide all of this information to users?
-
-First of all, data are harvested from the following sources:
-<!-- 
-``` mermaid
-stateDiagram
-    CORDIS <!-- SeTA
-    PUBSY  SeTA
-    EUROPARL  SeTA
-    EURLex  SeTA
-``` -->
-
-![Screenshot](./img/data_sources.png)
-
-
-These data consist of text documents and the metadata that describe them. 
-
-SeTA then ingests the documents and cleans all of their text content.
-
-When this is done, the documents and metadata are ready to be stored in **Elastic Search**, a special database that SeTA uses. 
-
-### AI Models
-
-The next step is to train AI models by using full text documents and their phrases from elastic search. This training helps the models to learn relations between the meanings of the words in the text provided. 
-
-For instance, an algorithm called **Word2Vec** processes phrases. This algorithm takes input words and groups them together based on the similarity of their meanings. This similarity is calculated using complex mathematical formulas based on the context of the words. 
-
-A similar algorithm, **sBERT** is based on sentences and provides further training to the model. By training the models with new documents as they are published, we can ensure that the knowledge they contain represents EU documents accurately. 
-
-This knowledge is used to enrich document metadata by providing content driven labels and by expanding the labels based on existing ontologies.
-
-At this point the full text of all documents can be searched through a simple interface, and users are able to target their search either to the individual document collections or to search across all collections in a harmonised way.
+Once everything is set up, the data is ready to be interrogated either through the User Web Interface or the API.
 
 
 
+## Community space
 
-### API
+A SeTA communityies offers a shared place, where users can have the possibility of to interact with others users about specific areas of interest. The users can create different Communities according to their specific matter of interest, and share, and debate with other users with similar interests.        
+In the communities, users can create different resources, upload documents related to these resources and create their own custom Taxonomies when uploading the documents.        
 
-A specific APi have been built to access this knowledge and can be used to receive suggestions of similar terms and related documents.
+Users can also have access to other users communities if they want.  They will be able to see the available communities and ask to join them.   
 
-In the end, this API also feed the user interface providing users with the information they are looking for. 
-
-
-![Screenshot](./img/API_design.png)
+Communities can be private or public.  The private communities are available to users only after receiving an invitation. The public communities are visible from the dashboard of the Community page.      
 
 
-   
+## APIs
+
+SeTA APIs are REST APIs created with Swagger UI[^2]. This provides a visual representation of the API and its documentation and allows users to try out the API calls in the browser.          
+There are two SeTA APIs:      
+- SeTA API for the Search tool      
+- SeTA Communities API for the Communities space        
+
+The APIs can be a good alternative for users that need to integrate the data with their own applications or just need more flexibility in information-transfer processes.     
+
+
+
+
+[^1]:https://www.elastic.co/what-is/elasticsearch
+[^2]:https://swagger.io/docs/specification/about/
+

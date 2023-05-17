@@ -1,46 +1,26 @@
 # seta-ui 🏁
 
-* [seta_flask_server/](../seta-ui/seta_flask_server)
-  * [blueprints/](../seta-ui/seta_flask_server/blueprints)
-  * [infrastructure/](../seta-ui/seta_flask_server/infrastructure)
-  * [repository/](../seta-ui/seta_flask_server/repository)
-  * [bundle.js](../seta-ui/seta_flask_server/bundle.js)
-  * [config.py](../seta-ui/seta_flask_server/config.py)
-  * [dependency.py](../seta-ui/seta_flask_server/dependency.py)
-  * [factory.py](../seta-ui/seta_flask_server/factory.py)
-  * [index.html](../seta-ui/seta_flask_server/index.html)
-  * [__init__.py](../seta-ui/seta_flask_server/__init__.py)
-* [tests/](../seta-ui/tests)
-  * [functional/](../seta-ui/tests/functional)
-  * [infrastructure/](../seta-ui/tests/infrastructure)
-  * [conftest.py](../seta-ui/tests/conftest.py)
-  * [__init__.py](../seta-ui/tests/__init__.py)
-* [.dockerignore](../seta-ui/.dockerignore)
-* [.gitignore](../seta-ui/.gitignore)
-* [app.py](../seta-ui/app.py)
-* [app_dev.py](../seta-ui/app_dev.py)
-* [app_test.py](../seta-ui/app_test.py)
-* [changelog.txt](../seta-ui/changelog.txt)
-* [Dockerfile](../seta-ui/Dockerfile)
-* [Dockerfile-dev-flask](../seta-ui/Dockerfile-dev-flask)
-* [Dockerfile-test](../seta-ui/Dockerfile-test)
-* [gunicorn_conf.py](../seta-ui/gunicorn_conf.py)
-* [requirements.txt](../seta-ui/requirements.txt)
 
-
-
-
-The **seta ui**  folder contains the configuration that enables the access to the web app. \
-In the files **seta-flask-server** it is possible to replicate the application across different servers with minimal reconfiguration. \
+The **seta-ui**  folder contains the configuration that enables the access to the web app.        
+In the files **seta-flask-server** it is possible to replicate the application across different servers with minimal reconfiguration.     
 In this folder it is included the code to support the seta-api to validate the authentication token.
 
 
 ## Build
-The image is build it together with all the images through the execution of the docker-compose:
+
+The image is build it together with all the images through the execution of the docker compose:
 
 ```
-    docker compose -f docker-compose.yml -f docker-compose-dev.yml --env-file .env.dev build
+    docker compose build
 ```
+
+## UP
+To start this service, is requires only to start the seta-nginx service as the rest of the services are attached to start together with this service:     
+
+```
+    docker compose up seta-nginx -d
+```
+
 
 ## Contributing
 
@@ -49,8 +29,17 @@ Pull requests are welcome. For major changes, please open an issue first to disc
 Please make sure to update tests as appropriate.
 
 ## License
+Copyright (c) 2023 European Union      
+Licensed under the EUPL, Version 1.2 or – as soon they will be approved by the European Commission – subsequent versions of the EUPL (the "Licence");     
 
-[![MIT][mit-badge]][mit-url]
+You may not use this work except in compliance with the Licence.      
 
-[mit-badge]: https://img.shields.io/badge/license-mit-blue
-[mit-url]: https://choosealicense.com/licenses/mit/
+
+You may obtain a copy of the Licence at:      
+
+
+https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12       
+ 
+Unless required by applicable law or agreed to in writing, software distributed under the Licence is distributed on an "AS IS" basis, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.             
+ 
+See the Licence for the specific language governing permissions and limitations under the Licence.

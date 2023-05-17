@@ -1,49 +1,28 @@
 # seta-api 📃
 
-* [results/](../seta-api/results)
-* [seta_api/](../seta-api/seta_api)
-  * [apis/](../seta-api/seta_api/apis)
-  * [index-refactoring/](../seta-api/seta_api/index-refactoring)
-  * [infrastructure/](../seta-api/seta_api/infrastructure)
-  * [private/](../seta-api/seta_api/private)
-  * [static/](../seta-api/seta_api/static)
-  * [config.py](../seta-api/seta_api/config.py)
-  * [factory.py](../seta-api/seta_api/factory.py)
-  * [__init__.py](../seta-api/seta_api/__init__.py)
-* [tests/](../seta-api/tests)
-  * [functional/](../seta-api/tests/functional)
-  * [infrastructure/](../seta-api/tests/infrastructure)
-  * [conftest.py](../seta-api/tests/conftest.py)
-  * [__init__.py](../seta-api/tests/__init__.py)
-* [.dockerignore](../seta-api/.dockerignore)
-* [.gitignore](../seta-api/.gitignore)
-* [app.py](../seta-api/app.py)
-* [app_dev.py](../seta-api/app_dev.py)
-* [app_test.py](../seta-api/app_test.py)
-* [Dockerfile](../seta-api/Dockerfile)
-* [Dockerfile-dev-flask](../seta-api/Dockerfile-dev-flask)
-* [Dockerfile-test](../seta-api/Dockerfile-test)
-* [gunicorn_conf.py](../seta-api/gunicorn_conf.py)
-* [requirements.txt](../seta-api/requirements.txt)
+The **seta-api**  folder contains the image with the python client that helps to communicates with the docker client in order to elaborate the queries to the Elasticsearch engine that comes from the web app. 
 
-
-
-The **seta API**  folder contains the image with the python client that serves to communicates with the docker client in order to elaborate the queries to the Elasticsearch engine that come from the web app. 
-
-All the data that flows into the elastic search engine from the different sources. In this image is included the functions by which this raw data is parsed, normalized, and enriched before it is indexed in Elasticsearch. 
+It has all the necessary configuration to make the data flows into the Elasticsearch engine from the different sources. In this image are included the functions by which this raw data is parsed, normalized, and enriched before it is indexed in Elasticsearch. 
 
 The process of index in Elasticsearch, it is also included in this image, together with the process of manage complex queries against the data and use aggregations to retrieve complex summaries of the data. 
 
 
 
+
 ## Build
 
-The image is build it together with all the images through the execution of the docker-compose:
+The image is build it together with all the images through the execution of the docker compose:
 
 ```
-    docker compose -f docker-compose.yml -f docker-compose-dev.yml --env-file .env.dev build
+    docker compose build
 ```
 
+## UP
+To start this service, is requires only to start the seta-nginx service as the rest of the services are attached to start together with this service:     
+
+```
+    docker compose up seta-nginx -d
+```
 
 ## Contributing
 
@@ -52,8 +31,17 @@ Pull requests are welcome. For major changes, please open an issue first to disc
 Please make sure to update tests as appropriate.
 
 ## License
+Copyright (c) 2023 European Union      
+Licensed under the EUPL, Version 1.2 or – as soon they will be approved by the European Commission – subsequent versions of the EUPL (the "Licence");     
 
-[![MIT][mit-badge]][mit-url]
+You may not use this work except in compliance with the Licence.      
 
-[mit-badge]: https://img.shields.io/badge/license-mit-blue
-[mit-url]: https://choosealicense.com/licenses/mit/
+
+You may obtain a copy of the Licence at:      
+
+
+https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12       
+ 
+Unless required by applicable law or agreed to in writing, software distributed under the Licence is distributed on an "AS IS" basis, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.             
+ 
+See the Licence for the specific language governing permissions and limitations under the Licence.
