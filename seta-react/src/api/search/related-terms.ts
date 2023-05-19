@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query'
 import type { AxiosRequestConfig } from 'axios'
 
 import api from '~/api'
-import type { SimilarTerm } from '~/models/similar-term'
+import type { SimilarTerm } from '~/types/search/similar-term'
 
 const RELATED_TERMS_API_PATH = '/similar'
 

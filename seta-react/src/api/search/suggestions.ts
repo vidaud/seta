@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 
 import api from '~/api'
-import type { Suggestion } from '~/models/suggestion'
+import type { Suggestion } from '~/types/search/suggestion'
 
 const SUGGESTIONS_API_PATH = '/suggestions'
 

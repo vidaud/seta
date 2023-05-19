@@ -3,6 +3,7 @@ import { useState } from 'react'
 import SuggestionsPopup from '~/pages/SearchPageNew/components/SuggestionsPopup'
 import { SearchProvider } from '~/pages/SearchPageNew/contexts/search-context'
 import { SearchInputProvider } from '~/pages/SearchPageNew/contexts/search-input-context'
+import type { SearchValue } from '~/pages/SearchPageNew/types/search'
 import type { Token, TokenMatch } from '~/pages/SearchPageNew/types/token'
 
 const getCursorPosition = (input: HTMLInputElement | null | undefined) => {
@@ -24,7 +25,7 @@ const setCursorPosition = (input: HTMLInputElement | null | undefined, position:
 }
 
 type Props = {
-  onSearch: (value: string) => void
+  onSearch: (value: SearchValue) => void
 }
 
 const SearchSuggestionInput = ({ onSearch }: Props) => {
@@ -68,7 +69,7 @@ const SearchSuggestionInput = ({ onSearch }: Props) => {
   }
 
   const handleSearch = () => {
-    onSearch(value)
+    onSearch({ value, tokens })
   }
 
   return (

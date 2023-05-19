@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query'
 import type { AxiosRequestConfig } from 'axios'
 
 import api from '~/api'
-import type { RelatedTerm } from '~/models/related-term'
+import type { RelatedTerm } from '~/types/search/related-term'
 
 const RELATED_CLUSTERS_API_PATH = '/ontology-list'
 
