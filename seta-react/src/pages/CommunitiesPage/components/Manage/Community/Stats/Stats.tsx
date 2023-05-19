@@ -27,13 +27,9 @@ const useStyles = createStyles(theme => ({
   }
 }))
 
-const Stats = ({ resourceNumber, inviteNumber, onChange }) => {
+const Stats = ({ resourceNumber, inviteNumber, memberNumber }) => {
   const { classes } = useStyles()
   const { id } = useParams()
-
-  const toggleInvites = () => {
-    onChange(wasOpened => !wasOpened)
-  }
 
   return (
     <Card withBorder radius="md" className={classes.card}>
@@ -45,7 +41,13 @@ const Stats = ({ resourceNumber, inviteNumber, onChange }) => {
         <Container size="xs" px="xs" className={classes.container}>
           <Text className={classes.text}>Members</Text>
           <Group position="right">
-            <Button>21</Button>
+            <Button
+              onClick={() => {
+                window.location.href = `/communities/${id}/members`
+              }}
+            >
+              {memberNumber?.length}
+            </Button>
           </Group>
         </Container>
       </Group>
@@ -54,7 +56,7 @@ const Stats = ({ resourceNumber, inviteNumber, onChange }) => {
         <Container size="xs" px="xs" className={classes.container}>
           <Text className={classes.text}>Resources</Text>
           <Group position="right">
-            <Button>{resourceNumber}</Button>
+            <Button>{resourceNumber?.length}</Button>
           </Group>
         </Container>
       </Group>
@@ -63,7 +65,13 @@ const Stats = ({ resourceNumber, inviteNumber, onChange }) => {
         <Container size="xs" px="xs" className={classes.container}>
           <Text className={classes.text}>Pending Invites</Text>
           <Group position="right">
-            <Button onClick={toggleInvites}>{inviteNumber}</Button>
+            <Button
+              onClick={() => {
+                window.location.href = `/communities/${id}/invite`
+              }}
+            >
+              {inviteNumber?.length}
+            </Button>
           </Group>
         </Container>
       </Group>

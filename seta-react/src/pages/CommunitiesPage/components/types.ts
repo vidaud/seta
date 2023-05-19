@@ -26,7 +26,7 @@ export interface ThProps {
 }
 
 export const jobColors: Record<string, string> = {
-  creator: 'blue',
+  communityOwner: 'blue',
   manager: 'cyan',
   viewer: 'pink',
   contributor: 'yellow'

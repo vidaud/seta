@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react'
-import { createStyles, Table, ScrollArea, rem, Title } from '@mantine/core'
+import { createStyles, Table, ScrollArea, rem, Title, Badge, useMantineTheme } from '@mantine/core'
 import { useParams } from 'react-router-dom'
 
-import { useInviteID } from '../../../../../../api/communities/invite'
+import { useMembershipID } from '../../../../../../api/communities/membership'
 import CommunitiesLoading from '../../../common/SuggestionsLoading'
+import { jobColors } from '../../../types'
 
 const useStyles = createStyles(theme => ({
   header: {
@@ -32,12 +33,13 @@ const useStyles = createStyles(theme => ({
   }
 }))
 
-const CommunityInvites = () => {
+const CommunityMembers = () => {
   const { classes, cx } = useStyles()
   const [scrolled, setScrolled] = useState(false)
   const { id } = useParams()
-  const { data, isLoading } = useInviteID(id)
+  const { data, isLoading } = useMembershipID(id)
   const [items, setItems] = useState(data)
+  const theme = useMantineTheme()
 
   useEffect(() => {
     if (data) {
@@ -50,31 +52,36 @@ const CommunityInvites = () => {
   }
 
   const rows = items?.map(row => (
-    <tr key={row.invite_id}>
+    <tr key={row.user_id}>
+      <td>{row.user_id}</td>
+      <td>
+        <Badge
+          color={jobColors[row.role.toLowerCase()]}
+          variant={theme.colorScheme === 'dark' ? 'light' : 'outline'}
+        >
+          {row.role}
+        </Badge>
+      </td>
       <td>{row.community_id}</td>
-      <td>{row.invited_user}</td>
-      <td>{row.message}</td>
+      <td>{row.join_date.toString()}</td>
       <td>{row.status}</td>
-      <td>{row.initiated_date.toString()}</td>
-      <td>{row.initiated_by}</td>
     </tr>
   ))
 
   return (
     <div className="page">
       <Title className={cx(classes.title)} order={3}>
-        List of Invites
+        List of Members
       </Title>
       <ScrollArea h={220} onScrollPositionChange={({ y }) => setScrolled(y !== 0)}>
         <Table miw={500}>
           <thead className={cx(classes.header, { [classes.scrolled]: scrolled })}>
             <tr>
+              <th>User</th>
+              <th>Role</th>
               <th>Community</th>
-              <th>Invited User</th>
-              <th>Message</th>
+              <th>Join Date</th>
               <th>Status</th>
-              <th>Initiated Date</th>
-              <th>Initiated By</th>
             </tr>
           </thead>
           <tbody>{rows}</tbody>
@@ -84,4 +91,4 @@ const CommunityInvites = () => {
   )
 }
 
-export default CommunityInvites
+export default CommunityMembers

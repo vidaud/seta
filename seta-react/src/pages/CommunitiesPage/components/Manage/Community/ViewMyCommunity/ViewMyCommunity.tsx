@@ -15,7 +15,6 @@ import { useParams } from 'react-router-dom'
 import { useCommunityID } from '../../../../../../api/communities/manage/my-community'
 import { environment } from '../../../../../../environments/environment'
 import CommunitiesLoading from '../../../common/SuggestionsLoading'
-import CommunityInvites from '../../Invites/CommunityInvites/CommunityInvites'
 import CommunityResources from '../../Resource/CommunityResources/CommunityResources'
 import Stats from '../Stats/Stats'
 
@@ -30,7 +29,6 @@ const useStyles = createStyles({
 const ViewMyCommunity = () => {
   const { classes } = useStyles()
   const { id } = useParams()
-  const [showInvites, setShowInvites] = useState(false)
 
   const { data, isLoading } = useCommunityID(id)
   const [row, setRow] = useState(data)
@@ -52,12 +50,6 @@ const ViewMyCommunity = () => {
 
   if (isLoading || !data) {
     return <CommunitiesLoading />
-  }
-
-  const toggleListVisibility = show => {
-    if (show) {
-      setShowInvites(show)
-    }
   }
 
   return (
@@ -83,21 +75,14 @@ const ViewMyCommunity = () => {
           </Grid.Col>
           <Grid.Col span={1}>
             <Stats
-              resourceNumber={row?.resources.length}
-              inviteNumber={row?.invites.length}
-              onChange={toggleListVisibility}
+              resourceNumber={row?.resources}
+              inviteNumber={row?.invites}
+              memberNumber={row?.members}
             />
           </Grid.Col>
           <Grid.Col span={5}>
             <CommunityResources data={row?.resources} />
           </Grid.Col>
-          {showInvites ? (
-            <Grid.Col span={12}>
-              <CommunityInvites data={row?.invites} />
-            </Grid.Col>
-          ) : (
-            ''
-          )}
         </Grid>
       </div>
     </>
