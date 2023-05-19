@@ -3,7 +3,7 @@ from seta_api.apis.corpus.taxonomy import Taxonomy
 
 class TestTaxonomy:
     def test_from_tree_to_elasticsearch_format(self):
-        assert Taxonomy.from_tree_to_elasticsearch_format(None) == (None, None)
+        assert Taxonomy.from_tree_to_elasticsearch_format(None) == ([], [])
         tree = [{"classifier": "cordis", "code": "00", "label": "euro_sci_voc", "longLabel": "euro_sci_voc",
                  "validated": "true", "version": "1", "name_in_path": "euro_sci_voc",
                  "subcategories": [
@@ -675,16 +675,15 @@ class TestTaxonomy:
         taxonomy_path = ["euro_sci_voc:social_sciences:educational_sciences:didactics",
                          "euro_sci_voc:social_sciences:educational_sciences:pedagogy"]
         tax = Taxonomy()
-        assert tax.create_tree_from_elasticsearch_format(None, None) is None
-        assert tax.create_tree_from_elasticsearch_format(taxonomies, None) is None
-        assert tax.create_tree_from_elasticsearch_format(None, taxonomy_path) is None
+        assert tax.create_tree_from_elasticsearch_format(None, None) == []
+        assert tax.create_tree_from_elasticsearch_format(taxonomies, None) == []
+        assert tax.create_tree_from_elasticsearch_format(None, taxonomy_path) == []
 
         tax.create_tree_from_elasticsearch_format(taxonomies, taxonomy_path)
         returned_tree = tax.tree
         assert returned_tree == tree
 
-#TODO change and test error when taxonomy is not found(also to be implemented)
-    def test_create_tree_from_elasticsearch_format_real_case(self):
+    def test_create_tree_from_elasticsearch_with_error(self):
         taxonomies = [
             {"code": "00",
              "label": "euro_sci_voc",
@@ -694,71 +693,10 @@ class TestTaxonomy:
              "version": "1",
              "name": "euro_sci_voc",
              "name_in_path": "euro_sci_voc"
-             },
-            {"code": "/25", "validated": "true", "longLabel": "/engineering and technology", "classifier": "cordis",
-             "name": "euro_sci_voc", "name_in_path": "engineering_and_technology",
-             "label": "engineering and technology", "version": "1"},
-            {"code": "/25/59", "validated": "true",
-             "longLabel": "/engineering and technology/other engineering and technologies",
-             "classifier": "cordis", "name": "euro_sci_voc",
-             "name_in_path": "other_engineering_and_technologies",
-             "label": "other engineering and technologies",
-             "version": "1"},
-            {"code": "/25/59/377", "validated": "true",
-             "longLabel": "/engineering and technology/other engineering and technologies/food technology",
-             "classifier": "cordis", "name": "euro_sci_voc", "name_in_path": "food_technology",
-             "label": "food technology", "version": "1"}, {"code": "/27/81/30021/499/1287", "validated": "true",
-                                                           "longLabel": "/agricultural sciences/agriculture, forestry, and fisheries/agriculture/horticulture/fruit growing",
-                                                           "classifier": "cordis", "name": "euro_sci_voc",
-                                                           "name_in_path": "fruit_growing", "label": "fruit growing",
-                                                           "version": "1"},
-            {"code": "/27", "validated": "true", "longLabel": "/agricultural sciences", "classifier": "cordis",
-             "name": "euro_sci_voc", "name_in_path": "agricultural_sciences", "label": "agricultural sciences",
-             "version": "1"}, {"code": "/27/81", "validated": "true",
-                               "longLabel": "/agricultural sciences/agriculture, forestry, and fisheries",
-                               "classifier": "cordis", "name": "euro_sci_voc",
-                               "name_in_path": "agriculture_forestry_and_fisheries",
-                               "label": "agriculture, forestry, and fisheries", "version": "1"},
-            {"code": "/27/81/30021", "validated": "true",
-             "longLabel": "/agricultural sciences/agriculture, forestry, and fisheries/agriculture",
-             "classifier": "cordis", "name": "euro_sci_voc", "name_in_path": "agriculture", "label": "agriculture",
-             "version": "1"}, {"code": "/27/81/30021/499", "validated": "true",
-                               "longLabel": "/agricultural sciences/agriculture, forestry, and fisheries/agriculture/horticulture",
-                               "classifier": "cordis", "name": "euro_sci_voc", "name_in_path": "horticulture",
-                               "label": "horticulture", "version": "1"},
-            {"code": "/27/81/30021/499/69103681", "validated": "true",
-             "longLabel": "/agricultural sciences/agriculture, forestry, and fisheries/agriculture/horticulture/vegetable growing",
-             "classifier": "cordis", "name": "euro_sci_voc", "name_in_path": "vegetable_growing",
-             "label": "vegetable growing", "version": "1"},
-            {"code": "/29", "validated": "true", "longLabel": "/social sciences", "classifier": "cordis",
-             "name": "euro_sci_voc", "name_in_path": "social_sciences", "label": "social sciences", "version": "1"},
-            {"code": "/29/91", "validated": "true", "longLabel": "/social sciences/economics and business",
-             "classifier": "cordis", "name": "euro_sci_voc", "name_in_path": "economics_and_business",
-             "label": "economics and business", "version": "1"}, {"code": "/29/91/523", "validated": "true",
-                                                                  "longLabel": "/social sciences/economics and business/business and management",
-                                                                  "classifier": "cordis", "name": "euro_sci_voc",
-                                                                  "name_in_path": "business_and_management",
-                                                                  "label": "business and management", "version": "1"},
-            {"code": "/29/91/523/1313", "validated": "true",
-             "longLabel": "/social sciences/economics and business/business and management/employment",
-             "classifier": "cordis", "name": "euro_sci_voc", "name_in_path": "employment", "label": "employment",
-             "version": "1"},
-            {"code": "/23", "validated": "true", "longLabel": "/natural sciences", "classifier": "cordis",
-             "name": "euro_sci_voc", "name_in_path": "natural_sciences", "label": "natural sciences", "version": "1"},
-            {"code": "/23/43", "validated": "true", "longLabel": "/natural sciences/physical sciences",
-             "classifier": "cordis", "name": "euro_sci_voc", "name_in_path": "physical_sciences",
-             "label": "physical sciences", "version": "1"},
-            {"code": "/23/43/273", "validated": "true", "longLabel": "/natural sciences/physical sciences/acoustics",
-             "classifier": "cordis", "name": "euro_sci_voc", "name_in_path": "acoustics", "label": "acoustics",
-             "version": "1"}, {"code": "/23/43/273/813", "validated": "true",
-                               "longLabel": "/natural sciences/physical sciences/acoustics/ultrasound",
-                               "classifier": "cordis", "name": "euro_sci_voc", "name_in_path": "ultrasound",
-                               "label": "ultrasound", "version": "1"}]
-        taxonomy_paths = ["euro_sci_voc:natural_sciences:physical_sciences:acoustics:ultrasound",
-                         "euro_sci_voc:social_sciences:economics_and_business:business_and_management:employment",
-                         "euro_sci_voc:agricultural_sciences:agriculture_forestry_and_fisheries:agriculture:horticulture:vegetable_growing",
-                         "euro_sci_voc:agricultural_sciences:agriculture_forestry_and_fisheries:agriculture:horticulture:fruit_growing",
-                         "euro_sci_voc:engineering_and_technology:other_engineering_and_technologies:food_technology"]
+             }]
+        taxonomy_paths = ["euro_sci_voc:natural_sciences:physical_sciences:acoustics:ultrasound"]
 
         tax = Taxonomy()
         tax.create_tree_from_elasticsearch_format(taxonomies, taxonomy_paths)
+        returned_tree = tax.tree
+        assert returned_tree == []

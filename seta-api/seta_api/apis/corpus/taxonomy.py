@@ -85,8 +85,6 @@ def find_and_create_taxonomy(taxonomy_name, tax_to_be_found, taxonomies):
                          "longLabel": t["longLabel"], "validated": t["validated"], "version": t["version"],
                          "name_in_path": t["name_in_path"], "subcategories": []}
             return tax_found
-        #TODO raise exeption isntead of return None
-    #raise Exception("Taxonomy ", tax_to_be_found, " not found.")
     return None
 
 class Taxonomy:
@@ -103,9 +101,6 @@ class Taxonomy:
 
     def __add_single_category(self, parent, tax, doc_count, es, index, taxonomy):
         if tax not in [p["name_in_path"] for p in parent]:
-            # if tax == taxonomy:
-            #     parent.append({"name": tax, "name_in_path": tax, "doc_count": doc_count, "subcategories": []})
-            # else:
             t = fill_taxonomy_fields(tax, es, index, taxonomy)
             parent.append({"doc_count": doc_count, "code": t["code"], "classifier": t["classifier"],
                            "label": t["label"], "longLabel": t["longLabel"], "validated": t["validated"],
@@ -141,17 +136,18 @@ class Taxonomy:
             self.__add_tree_from_aggregation_response(self.tree, item, es=es, index=index)
 
     def create_tree_from_elasticsearch_format(self, taxonomies, taxonomy_paths):
-        print("taxonomies: ", taxonomies)
-        print("taxonomy_paths: ", taxonomy_paths)
         if taxonomies is None or taxonomy_paths is None:
-            return None
-        for path in taxonomy_paths:
-            self.__add_tree_from_es_format(self.tree, path, taxonomies)
+            return []
+        try:
+            for path in taxonomy_paths:
+                self.__add_tree_from_es_format(self.tree, path, taxonomies)
+        except:
+            self.tree = []
 
     @staticmethod
     def from_tree_to_elasticsearch_format(json_tree):
         if json_tree is None:
-            return None, None
+            return [], []
         taxonomies = []
         tax_paths = []
         tax_tree_string = ""

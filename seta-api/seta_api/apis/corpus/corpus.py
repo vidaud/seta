@@ -51,9 +51,7 @@ class Corpus(Resource):
     @corpus_api.response(404, 'Not Found Error')
     def delete(self, id):
         try:
-            print("id ", id)
             doc = doc_by_id(id, es=app.es, index=app.config['INDEX_PUBLIC'])
-            print("doc found", doc)
             resource_id = doc.get("source", None)
             
             if not validate_delete_permission(resource_id):
