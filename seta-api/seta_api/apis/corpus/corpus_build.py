@@ -36,11 +36,11 @@ def embeddings_query(semantic_sort_id, emb_vector, semantic_sort_id_list, emb_ve
     return query_to_use
 
 
-def build_corpus_request(term, n_docs, from_doc, sources, collection, reference, in_force, sort, taxonomy,
+def build_corpus_request(term, n_docs, from_doc, sources, collection, reference, in_force, sort, taxonomy_path,
                          semantic_sort_id, emb_vector, semantic_sort_id_list, emb_vector_list, author, date_range,
                          aggs, search_type, other, current_app):
     query = build_search_query(term, sources, collection, reference, in_force, author, date_range, search_type,
-                               other, taxonomy)
+                               other, taxonomy_path)
     query_to_use = check_embeddings_query(current_app, emb_vector, emb_vector_list, query, semantic_sort_id,
                                           semantic_sort_id_list)
 
@@ -49,11 +49,10 @@ def build_corpus_request(term, n_docs, from_doc, sources, collection, reference,
         "from": from_doc,
         "track_total_hits": True,
         "query": query_to_use,
-        "_source": ["id",             "id_alias",        "document_id",    "source",
-                    "title",          "abstract",        "chunk_text",     "chunk_number", "collection",
-                    "reference",      "author",          "date",           "link_origin",  "link_alias",
-                    "link_related",   "link_reference",  "mime_type",      "in_force",
-                    "language",  "taxonomy", "keywords",     "other"]
+        "_source": ["id", "id_alias", "document_id", "source", "title", "abstract", "chunk_text", "chunk_number",
+                    "collection", "reference", "author", "date", "link_origin", "link_alias", "link_related",
+                    "link_reference", "mime_type", "in_force", "language", "taxonomy", "taxonomy_path",
+                    "keywords", "other"]
     }
 
     if search_type == "CHUNK_SEARCH":
@@ -104,6 +103,9 @@ def fill_body_for_aggregations(aggs, body):
             case agg if agg.startswith("taxonomy:"):
                 agg_body = {"terms": {"field": "taxonomy_path", "size": aggregation_size}}
                 body = add_aggs(agg_body, "taxonomy", body)
+            case "taxonomies":
+                agg_body = {"terms": {"field": "taxonomy_path", "size": aggregation_size}}
+                body = add_aggs(agg_body, agg, body)
             case "source":
                 agg_body = {"terms": {"field": agg + '.keyword', "size": aggregation_size}}
                 body = add_aggs(agg_body, agg, body)

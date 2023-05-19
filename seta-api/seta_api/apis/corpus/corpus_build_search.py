@@ -2,48 +2,30 @@ from flask import json
 import re
 
 
-def build_taxonomy_nested_query(taxonomy):
-    if taxonomy:
-        nested_query = {"nested": {"path": "taxonomy", "query": {"bool": {"should": []}}}}
-        for field in taxonomy:
-            bool_block = {"bool": {"must": []}}
-            for attribute, value in field.items():
-                must_block = {"match": {"taxonomy." + attribute: value}}
-                bool_block["bool"]["must"].append(must_block)
-            nested_query["nested"]["query"]["bool"]["should"].append(bool_block)
-        return nested_query
-    return None
-
-
 def build_search_query(search_term, sources, collection, reference, in_force, author, date_range, search_type, other,
-                       taxonomy):
+                       taxonomy_path):
     query = build_search_query_json(search_term)
 
     metadata_param_blocks = build_metadata_param_blocks(collection, reference, in_force, author, date_range,
-                                                        sources, search_type, other)
-    taxonomy_nested_query = build_taxonomy_nested_query(taxonomy)
+                                                        sources, search_type, other, taxonomy_path)
 
-    query = add_metadata_block_to_query(metadata_param_blocks, query, taxonomy_nested_query)
-
+    query = add_metadata_block_to_query(metadata_param_blocks, query)
     return query
 
 
-def add_metadata_block_to_query(metadata_param_blocks, query, taxonomy_nested_query):
+def add_metadata_block_to_query(metadata_param_blocks, query):
     if len(metadata_param_blocks) > 0:
         if not query:
             query = {"bool": {"must": []}}
         for block in metadata_param_blocks:
             query['bool']['must'].append(block)
-    if taxonomy_nested_query:
-        if not query:
-            query = {"bool": {"must": []}}
-        query['bool']['must'].append(taxonomy_nested_query)
     if not query:
         query = {"match_all": {}}
     return query
 
 
-def build_metadata_param_blocks(collection, reference, in_force, author, date_range, sources, search_type, other):
+def build_metadata_param_blocks(collection, reference, in_force, author, date_range, sources, search_type, other,
+                                taxonomy_path):
     full_block = []
     if sources:
         or_block = {"bool": {"should": []}}
@@ -80,9 +62,17 @@ def build_metadata_param_blocks(collection, reference, in_force, author, date_ra
         block = {"match": {"chunk_number": 1}}
         full_block.append(block)
     if other:
+        or_block = {"bool": {"should": []}}
         for oth in other:
             block = {"match": {"other": oth}}
-            full_block.append(block)
+            or_block['bool']['should'].append(block)
+        full_block.append(or_block)
+    if taxonomy_path:
+        or_block = {"bool": {"should": []}}
+        for param in taxonomy_path:
+            block = {"match": {"taxonomy_path": param}}
+            or_block['bool']['should'].append(block)
+        full_block.append(or_block)
     return full_block
 
 

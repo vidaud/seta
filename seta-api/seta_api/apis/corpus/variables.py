@@ -16,20 +16,9 @@ corpus_parser.add_argument("semantic_sort_id_list", action="split")
 corpus_parser.add_argument("author", action="split")
 corpus_parser.add_argument("date_range", action="split")
 corpus_parser.add_argument("aggs", action="split")
-corpus_parser.add_argument("other", action="split")  
+corpus_parser.add_argument("other", action="split")
 
 other = fields.Wildcard(fields.String())
-
-metadata = {}
-metadata["name"] = fields.String()
-metadata["code"] = fields.String()
-metadata["label"] = fields.String()
-metadata["longLabel"] = fields.String()
-metadata["validated"] = fields.String()
-metadata["classifier"] = fields.String()
-metadata["version"] = fields.String()
-metadata["name_in_path"] = fields.String()
-
 
 keywords = {}
 keywords["keyword"] = fields.String()
@@ -82,31 +71,39 @@ source["collections"] = None
 
 source_collection_reference_agg = {"sources": None}
 
-subcategory = {}
-subcategory["classifier"] = fields.String
-subcategory["code"] = fields.String
-subcategory["doc_count"] = fields.Integer
-subcategory["label"] = fields.String
-subcategory["longLabel"] = fields.String
-subcategory["name_in_path"] = fields.String
-subcategory["subcategories"] = None
+taxonomy_search = {}
+taxonomy_search["path"] = fields.List(fields.String())
 
 taxonomy = {}
-taxonomy["doc_count"] = fields.Integer
-taxonomy["name"] = fields.String
+taxonomy["classifier"] = fields.String
+taxonomy["code"] = fields.String
+taxonomy["label"] = fields.String
+taxonomy["longLabel"] = fields.String
 taxonomy["name_in_path"] = fields.String
-taxonomy["subcategories"] = None
+taxonomy["validated"] = fields.String
+taxonomy["version"] = fields.String
+taxonomy["subcategories"] = fields.List(fields.Raw())
 
+taxonomy_agg = {}
+taxonomy_agg["doc_count"] = fields.Integer
+taxonomy_agg["classifier"] = fields.String
+taxonomy_agg["code"] = fields.String
+taxonomy_agg["label"] = fields.String
+taxonomy_agg["longLabel"] = fields.String
+taxonomy_agg["name_in_path"] = fields.String
+taxonomy_agg["validated"] = fields.String
+taxonomy_agg["version"] = fields.String
+taxonomy_agg["subcategories"] = fields.List(fields.Raw())
 
 post_get_response = {}
 post_get_response["documents"] = None
 post_get_response["aggregations"] = None
 
-corpus_put_response ={}
-corpus_put_response["document_id"] = fields.String
+corpus_put_response = {}
+corpus_put_response["document_id"] = fields.String()
 
 corpus_put_params = {}
-corpus_put_params["id"] = fields.String
+corpus_put_params["id"] = fields.String()
 corpus_put_params["id_alias"] = fields.String()
 corpus_put_params["source"] = fields.String()
 corpus_put_params["title"] = fields.String()
@@ -123,9 +120,8 @@ corpus_put_params["link_reference"] = fields.List(fields.String())
 corpus_put_params["mime_type"] = fields.String()
 corpus_put_params["in_force"] = fields.String()
 corpus_put_params["language"] = fields.String()
-corpus_put_params["taxonomy"] = None#fields.List(fields.Nested(corpus_api.model("metadata", metadata)))
-corpus_put_params["taxonomy_path"] = fields.List(fields.String())
-corpus_put_params["keywords"] = None#fields.List(fields.Nested(corpus_api.model("keywords", keywords)))
+corpus_put_params["taxonomy"] = None
+corpus_put_params["keywords"] = None
 corpus_put_params["other"] = fields.List(other)
 
 corpus_post_params = {}
@@ -136,17 +132,17 @@ corpus_post_params["from_doc"] = fields.Integer(description="Defines the number 
 corpus_post_params["search_type"] = fields.String(description="search type to be used, possible values are "
                                                               "DOCUMENT_SEARCH, CHUNK_SEARCH, ALL_CHUNKS_SEARCH, "
                                                               "default is CHUNK_SEARCH")
-corpus_post_params["source"] = fields.List(fields.String(), description="By default contains all the corpus: "
-                                                                        "eurlex,cordis,pubsy. It is possible to choose "
-                                                                        "from which corpus retrieve documents.")
+corpus_post_params["source"] = fields.List(fields.String(),
+                                           description="By default contains all the corpus: eurlex,cordis,pubsy. It is possible to choose from which corpus retrieve documents.")
 corpus_post_params["reference"] = fields.List(fields.String(), description="eurlex metadata reference")
 corpus_post_params["collection"] = fields.List(fields.String(), description="eurlex metadata collection")
-corpus_post_params["taxonomy"] = None#fields.List(fields.Nested(corpus_api.model("metadata", metadata)), description="taxonomy generic field")
+corpus_post_params["taxonomy_path"] = fields.List(fields.String(), description="list of taxonomy path, delimiter ':'")
 corpus_post_params["in_force"] = fields.String(description="eurlex metadata into_force")
 corpus_post_params["sort"] = fields.List(fields.String(), description="sort results field:order")
 corpus_post_params["semantic_sort_id"] = fields.String(description="sort results by semantic distance among documents")
 corpus_post_params["sbert_embedding"] = fields.List(fields.Float, description="embeddings vector")
-corpus_post_params["semantic_sort_id_list"] = fields.List(fields.String(), description="sort results by semantic distance among documents")
+corpus_post_params["semantic_sort_id_list"] = fields.List(fields.String(),
+                                                          description="sort results by semantic distance among documents")
 corpus_post_params["sbert_embedding_list"] = fields.List(fields.List(fields.Float,
                                                                      description="list of embeddings vector"))
 corpus_post_params["author"] = fields.String(description="author")
@@ -154,8 +150,9 @@ corpus_post_params["date_range"] = fields.List(fields.String, description="examp
                                                                           "gt:yyyy-mm-dd,lt:yyyy-mm-dd")
 corpus_post_params["aggs"] = fields.List(fields.String, description="field to be aggregated, allowed fields are:"
                                                                     '"source", "date_year", "source_collection_reference", '
-                                                                    '"taxonomy:taxonomyname"')
-corpus_post_params["other"] = fields.List(other, descritpion='"other":[{"other.crc":"de1cbd1eecdd19cb0d527f3a3433c6958e4b8b1b02ce69c960e02a611f27b036"}]')
+                                                                    '"taxonomy:taxonomyname", "taxonomies"')
+corpus_post_params["other"] = fields.List(other,
+                                          descritpion='"other":[{"other.crc":"de1cbd1eecdd19cb0d527f3a3433c6958e4b8b1b02ce69c960e02a611f27b036"}]')
 
 corpus_delete_id_response = {}
 corpus_delete_id_response["deleted_document_id"] = fields.String
@@ -183,8 +180,92 @@ corpus_get_id_response["other"] = fields.List(other)
 corpus_get_id_response["reference"] = fields.String()
 corpus_get_id_response["score"] = fields.Float
 corpus_get_id_response["taxonomy"] = None
-corpus_get_id_response["taxonomy_path"] = fields.String()
 corpus_get_id_response["title"] = fields.String()
 corpus_get_id_response["source"] = fields.String()
 corpus_get_id_response["abstract"] = fields.String()
 corpus_get_id_response["sbert_embedding"] = fields.List(fields.Float)
+
+
+
+
+
+class Variable:
+    def __init__(self, namespace):
+        self.namespace = namespace
+        taxonomy_model = self.namespace.model("taxonomy", taxonomy)
+
+        taxonomy["subcategories"] = fields.List(fields.Nested(taxonomy_model))
+        self.taxonomy_model_tree = self.namespace.model("taxonomy_tree", taxonomy)
+
+        taxonomy_agg_model = self.namespace.model("taxonomy_agg", taxonomy_agg)
+        taxonomy_agg["subcategories"] = fields.List(fields.Nested(taxonomy_agg_model))
+        self.taxonomy_agg_model_tree = self.namespace.model("taxonomy_agg_tree", taxonomy_agg)
+
+        self.keywords_model = self.namespace.model("keywords", keywords)
+
+        document["keywords"] = fields.List(fields.Nested(self.keywords_model))
+        document["taxonomy"] = fields.List(fields.Nested(self.taxonomy_model_tree))
+        post_get_response["documents"] = fields.List(fields.Nested(self.namespace.model("document", document)))
+
+        collection["references"] = fields.List(fields.Nested(self.namespace.model("reference", reference)))
+        source["collections"] = fields.List(fields.Nested(self.namespace.model("collection", collection)))
+        source_collection_reference_agg["sources"] = fields.List(fields.Nested(self.namespace.model("source", source)))
+
+        aggregation = {"date_year": fields.List(fields.Nested(self.namespace.model("date_year_agg", date_year_agg))),
+                       "source": fields.List(fields.Nested(self.namespace.model("source_agg", source_agg))),
+                       "source_collection_reference": fields.List(
+                           fields.Nested(
+                               self.namespace.model("source_collection_reference_agg",
+                                                    source_collection_reference_agg))),
+                       "taxonomy": fields.List(fields.Nested(self.taxonomy_agg_model_tree))
+                       }
+        post_get_response["aggregations"] = fields.List(fields.Nested(self.namespace.model("aggregation", aggregation)))
+        self.post_get_response = post_get_response
+
+    def get_corpus_get_id_response(self):
+        corpus_get_id_response["keywords"] = fields.List(fields.Nested(self.keywords_model))
+        corpus_get_id_response["taxonomy"] = fields.List(fields.Nested(self.taxonomy_model_tree))
+        return self.namespace.model("corpus_get_id_response", corpus_get_id_response)
+
+    def get_delete_id_request_model(self):
+        return self.namespace.model("corpus_delete_id_response", corpus_delete_id_response)
+
+    def get_post_request_model(self):
+        return self.namespace.model("corpus_post_params", corpus_post_params)
+
+    def get_post_response_model(self):
+        return self.namespace.model('post_response_model', self.post_get_response)
+
+    def get_get_response_model(self):
+        return self.namespace.model('get_response_model', self.post_get_response)
+
+    def get_put_response_model(self):
+        return self.namespace.model("corpus_put_response", corpus_put_response)
+
+    def get_put_request_model(self):
+        corpus_put_params["taxonomy"] = fields.List(fields.Nested(self.taxonomy_model_tree))
+        corpus_put_params["keywords"] = fields.List(fields.Nested(self.keywords_model))
+        return self.namespace.model("corpus_put_request", corpus_put_params)
+
+    # def __define_post_get_response(self):
+        # document["keywords"] = fields.List(fields.Nested(self.keywords_model))
+        # document["taxonomy"] = fields.List(fields.Nested(self.taxonomy_model_tree))
+        # post_get_response["documents"] = fields.List(fields.Nested(self.namespace.model("document", document)))
+        #
+        # collection["references"] = fields.List(fields.Nested(self.namespace.model("reference", reference)))
+        # source["collections"] = fields.List(fields.Nested(self.namespace.model("collection", collection)))
+        # source_collection_reference_agg["sources"] = fields.List(fields.Nested(self.namespace.model("source", source)))
+        #
+        # aggregation = {"date_year": fields.List(fields.Nested(self.namespace.model("date_year_agg", date_year_agg))),
+        #                "source": fields.List(fields.Nested(self.namespace.model("source_agg", source_agg))),
+        #                "source_collection_reference": fields.List(
+        #                    fields.Nested(
+        #                        self.namespace.model("source_collection_reference_agg",
+        #                                             source_collection_reference_agg))),
+        #                "taxonomy": fields.List(fields.Nested(self.taxonomy_agg_model_tree))
+        #                }
+        # post_get_response["aggregations"] = fields.List(fields.Nested(self.namespace.model("aggregation", aggregation)))
+        # return post_get_response
+
+
+
