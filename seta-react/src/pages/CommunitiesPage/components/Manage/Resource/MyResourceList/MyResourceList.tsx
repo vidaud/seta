@@ -7,8 +7,8 @@ import type { Resource } from '~/models/communities/resources'
 import { useStyles } from './constants'
 
 import { useMyResources } from '../../../../../../api/resources/manage/my-resources'
-import { CommunitiesEmpty, CommunitiesError } from '../../../common'
-import CommunitiesLoading from '../../../common/SuggestionsLoading'
+import { ComponentEmpty, ComponentError } from '../../../common'
+import ComponentLoading from '../../../common/ComponentLoading'
 import { Th, sortResourceData } from '../../../resource-utils'
 import ResourceButtons from '../ResourceButtons/ResourceButtons'
 
@@ -29,17 +29,17 @@ const MyResourceList = () => {
   }, [data])
 
   if (error) {
-    return <CommunitiesError onTryAgain={refetch} />
+    return <ComponentError onTryAgain={refetch} />
   }
 
   if (data) {
     if (data.length === 0) {
-      return <CommunitiesEmpty />
+      return <ComponentEmpty />
     }
   }
 
   if (isLoading || !data) {
-    return <CommunitiesLoading />
+    return <ComponentLoading />
   }
 
   const setSorting = (field: keyof Resource) => {

@@ -3,7 +3,7 @@ import { createStyles, Table, ScrollArea, rem, Title, Badge, useMantineTheme } f
 import { useParams } from 'react-router-dom'
 
 import { useMembershipID } from '../../../../../../api/communities/membership'
-import CommunitiesLoading from '../../../common/SuggestionsLoading'
+import ComponentLoading from '../../../common/ComponentLoading'
 import { jobColors } from '../../../types'
 
 const useStyles = createStyles(theme => ({
@@ -48,7 +48,7 @@ const CommunityMembers = () => {
   }, [data, items])
 
   if (isLoading || !data) {
-    return <CommunitiesLoading />
+    return <ComponentLoading />
   }
 
   const rows = items?.map(row => (

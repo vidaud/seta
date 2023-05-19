@@ -18,8 +18,8 @@ import type { Community } from '~/models/communities/communities'
 import { useAllCommunities } from '../../../../../api/communities/discover/discover-communities'
 import type { CommunitiesResponse } from '../../../../../api/communities/manage/my-communities'
 import { environment } from '../../../../../environments/environment'
-import { CommunitiesEmpty, CommunitiesError } from '../../common'
-import CommunitiesLoading from '../../common/SuggestionsLoading'
+import { ComponentEmpty, ComponentError } from '../../common'
+import ComponentLoading from '../../common/ComponentLoading'
 import { Th, sortCommunityData } from '../../community-utils'
 
 const CommunityList = () => {
@@ -63,17 +63,17 @@ const CommunityList = () => {
   }, [data])
 
   if (error) {
-    return <CommunitiesError onTryAgain={refetch} />
+    return <ComponentError onTryAgain={refetch} />
   }
 
   if (data) {
     if (data.length === 0) {
-      return <CommunitiesEmpty />
+      return <ComponentEmpty />
     }
   }
 
   if (isLoading || !data) {
-    return <CommunitiesLoading />
+    return <ComponentLoading />
   }
 
   const setSorting = (field: keyof Community) => {

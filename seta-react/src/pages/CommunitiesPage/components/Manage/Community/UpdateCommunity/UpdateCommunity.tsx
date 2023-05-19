@@ -18,7 +18,7 @@ import {
   updateCommunity,
   useCommunityID
 } from '../../../../../../api/communities/manage/my-community'
-import CommunitiesLoading from '../../../common/SuggestionsLoading'
+import ComponentLoading from '../../../common/ComponentLoading'
 import type { CommunityValues } from '../../community-context'
 import { CommunityFormProvider, useCommunity } from '../../community-context'
 
@@ -63,7 +63,7 @@ const UpdateCommunity = () => {
   }, [data])
 
   if (isLoading || !data) {
-    return <CommunitiesLoading />
+    return <ComponentLoading />
   }
 
   const handleSubmit = (values: CommunityValues) => {

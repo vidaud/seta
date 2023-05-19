@@ -17,7 +17,7 @@ import {
   useResourceID
 } from '../../../../../../api/resources/manage/my-resource'
 import { environment } from '../../../../../../environments/environment'
-import CommunitiesLoading from '../../../common/SuggestionsLoading'
+import ComponentLoading from '../../../common/ComponentLoading'
 
 const useStyles = createStyles({
   title: {
@@ -58,7 +58,7 @@ const ViewMyResource = () => {
   }, [data, rows])
 
   if (isLoading || !data) {
-    return <CommunitiesLoading />
+    return <ComponentLoading />
   }
 
   const deleteResource = () => {

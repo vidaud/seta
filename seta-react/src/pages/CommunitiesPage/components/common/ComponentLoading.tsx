@@ -2,7 +2,7 @@ import { Loader } from '@mantine/core'
 
 import * as S from './styles'
 
-const CommunitiesLoading = () => {
+const ComponentLoading = () => {
   return (
     <S.Container>
       <Loader color="gray" />
@@ -10,4 +10,4 @@ const CommunitiesLoading = () => {
   )
 }
 
-export default CommunitiesLoading
+export default ComponentLoading

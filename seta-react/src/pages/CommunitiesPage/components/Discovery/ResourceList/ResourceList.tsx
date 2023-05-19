@@ -17,8 +17,8 @@ import type { Resource } from '~/models/communities/resources'
 
 import { useAllResources } from '../../../../../api/resources/discover/discover-resources'
 import { environment } from '../../../../../environments/environment'
-import { CommunitiesEmpty, CommunitiesError } from '../../common'
-import CommunitiesLoading from '../../common/SuggestionsLoading'
+import { ComponentEmpty, ComponentError } from '../../common'
+import ComponentLoading from '../../common/ComponentLoading'
 import { Th } from '../../community-utils'
 import { sortResourceData } from '../../resource-utils'
 
@@ -63,17 +63,17 @@ const ResourceList = () => {
   }, [data])
 
   if (error) {
-    return <CommunitiesError onTryAgain={refetch} />
+    return <ComponentError onTryAgain={refetch} />
   }
 
   if (data) {
     if (data.length === 0) {
-      return <CommunitiesEmpty />
+      return <ComponentEmpty />
     }
   }
 
   if (isLoading || !data) {
-    return <CommunitiesLoading />
+    return <ComponentLoading />
   }
 
   const setSorting = (field: keyof Resource) => {

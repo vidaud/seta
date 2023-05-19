@@ -3,7 +3,7 @@ import { createStyles, Table, ScrollArea, rem, Title } from '@mantine/core'
 import { useParams } from 'react-router-dom'
 
 import { useInviteID } from '../../../../../../api/communities/invite'
-import CommunitiesLoading from '../../../common/SuggestionsLoading'
+import ComponentLoading from '../../../common/ComponentLoading'
 
 const useStyles = createStyles(theme => ({
   header: {
@@ -46,7 +46,7 @@ const CommunityInvites = () => {
   }, [data, items])
 
   if (isLoading || !data) {
-    return <CommunitiesLoading />
+    return <ComponentLoading />
   }
 
   const rows = items?.map(row => (

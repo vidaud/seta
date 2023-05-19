@@ -6,7 +6,7 @@ type Props = {
   message?: string
 }
 
-const CommunitiesEmpty = ({ message }: Props) => {
+const ComponentEmpty = ({ message }: Props) => {
   return (
     <S.Container>
       <Text fz="sm" color="gray.6">
@@ -16,4 +16,4 @@ const CommunitiesEmpty = ({ message }: Props) => {
   )
 }
 
-export default CommunitiesEmpty
+export default ComponentEmpty

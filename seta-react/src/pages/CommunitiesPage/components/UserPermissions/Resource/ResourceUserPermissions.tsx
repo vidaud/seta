@@ -3,7 +3,7 @@ import { Table, Group, Text, ScrollArea } from '@mantine/core'
 import { useParams } from 'react-router-dom'
 
 import { useResourcePermissionsID } from '../../../../../api/communities/user-permissions'
-import CommunitiesLoading from '../../common/SuggestionsLoading'
+import ComponentLoading from '../../common/ComponentLoading'
 
 const ResourceUsersPermissions = () => {
   const { resourceId } = useParams()
@@ -18,7 +18,7 @@ const ResourceUsersPermissions = () => {
   }, [data, items])
 
   if (isLoading || !data) {
-    return <CommunitiesLoading />
+    return <ComponentLoading />
   }
 
   const rows = items?.map(item => (

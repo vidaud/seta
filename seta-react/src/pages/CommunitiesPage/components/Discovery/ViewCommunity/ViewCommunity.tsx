@@ -13,7 +13,7 @@ import {
 import { useParams } from 'react-router-dom'
 
 import { useCommunityID } from '../../../../../api/communities/manage/my-community'
-import CommunitiesLoading from '../../common/SuggestionsLoading'
+import ComponentLoading from '../../common/ComponentLoading'
 import CommunityResources from '../../Manage/Resource/CommunityResources/CommunityResources'
 import Stats from '../Stats/Stats'
 
@@ -47,7 +47,7 @@ const ViewCommunity = () => {
   }, [data, row])
 
   if (isLoading || !data) {
-    return <CommunitiesLoading />
+    return <ComponentLoading />
   }
 
   return (

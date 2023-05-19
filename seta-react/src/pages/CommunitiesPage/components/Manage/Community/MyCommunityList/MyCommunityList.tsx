@@ -7,8 +7,8 @@ import type { Community } from '~/models/communities/communities'
 import { useStyles } from './constants'
 
 import { useCommunities } from '../../../../../../api/communities/manage/my-communities'
-import { CommunitiesEmpty, CommunitiesError } from '../../../common'
-import CommunitiesLoading from '../../../common/SuggestionsLoading'
+import { ComponentEmpty, ComponentError } from '../../../common'
+import ComponentLoading from '../../../common/ComponentLoading'
 import { Th, sortCommunityData } from '../../../community-utils'
 import CommunityButtons from '../CommunityButtons/CommunityButtons'
 import DeleteCommunity from '../DeleteCommunityButton/DeleteCommunityButton'
@@ -30,17 +30,17 @@ const MyCommunityList = () => {
   }, [data])
 
   if (error) {
-    return <CommunitiesError onTryAgain={refetch} />
+    return <ComponentError onTryAgain={refetch} />
   }
 
   if (data) {
     if (data.length === 0) {
-      return <CommunitiesEmpty />
+      return <ComponentEmpty />
     }
   }
 
   if (isLoading || !data) {
-    return <CommunitiesLoading />
+    return <ComponentLoading />
   }
 
   const setSorting = (field: keyof Community) => {
