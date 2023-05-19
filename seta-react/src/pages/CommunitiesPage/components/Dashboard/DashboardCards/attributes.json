@@ -1,0 +1,25 @@
+{
+    "title": "Stats grid",
+    "category": "stats",
+    "author": "rtivital",
+    "responsive": true,
+    "dimmed": true,
+    "dependencies": [
+      "/core/group/",
+      "/core/paper/",
+      "/core/simple-grid/",
+      "/core/text/",
+      "@tabler/icons-react"
+    ],
+    "props": {
+      "data": [
+        { "title": "Communities", "icon": "community", "value": "12", "diff": 34 },
+        { "title": "Resources", "icon": "resource", "value": "36", "diff": -13 },
+        { "title": "Members", "icon": "member", "value": "54", "diff": 18 },
+        { "title": "Notifications", "icon": "notification", "value": "112", "diff": -30 }
+      ]
+    },
+    "canvas": {
+      "center": false
+    }
+  }

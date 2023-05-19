@@ -9,6 +9,12 @@ const componentOverrides: MantineThemeOverride['components'] = {
         }
       }
     }
+  },
+
+  Tooltip: {
+    defaultProps: {
+      openDelay: 200
+    }
   }
 }
 

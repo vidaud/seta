@@ -1,20 +1,128 @@
-# FAQS
+## Search in SeTA 
 
-## How can I find the search menu?
+??? abstract "How can I refine the results of my search?" 
+        
+    1. From the ^^Search^^ page.  
+    2. Launch a search, a new section with the results will appear below the search box.  
+    3. In the left side of the new section there is a side bar with two tabs: ^^Refine Search^^ and ^^Post Search^^. 
 
-In order to see the search option, it is necessary to logged into the application **EU Login**.  
+    In tab ^^Refine Search^^ you can see the list of filters available to apply to the search query: 
 
-1. From the **Header** menu, click **Login**.  
+    - Type of visualization 
+    - Quick Filters 
+    - Repositories 
+    - Document References 
+    - Publication Years 
+    - References etc.
 
-2. Enter your **EU credentials**.  
+??? abstract "How can I use Post Search?" 
+        
+    1. From the ^^Search^^ page.  
+    2. Launch a search, a new section with the results will appear below the search box.  
+    3. In the left side of the new section there is a side bar with two tabs: ^^Refine Search^^ and ^^Post Search^^.  
+    4. Click on tab Post Search and the table of filters will be replaced by the histogram which can be used to apply filters.  
+    5. Click on a specific part of the histogram and the list of documents will be updated and you will see only the related documents to the specific part of the histogram clicked.
 
-3. The app redirects to the landing page where the search bar appears in the top menu to interact with.  
 
-4. In the middle of the page you will find an input text box. From there, you are invited to interact in two possible ways: by start typing in the box, by uploading a document/text. Once you start typing, you will see a dropdown window appear.  ![Screenshot](../img/searchBar.jpg)
+??? abstract "How can I see the metadata information of the results file from the result list?" 
+                        
+    1. From the ^^Search^^ page.  
+    2. Launch a search, a new section with the results will appear below the search box.  
+    3. Each item of the result list has an expand icon on the left corner. Click on it and the item will be expanded.  
+    4. After the click it will be possible to see the ^^Metadata of the selected document^^ and the  ^^Context and Diagram of Concepts^^.  
+    5. Under the ^^Context section^^ you can also expand the full text by  just clicking in the ^^plus^^ icon.
 
-## How can I search by text or by uploading a document?
 
-1. From the **Search** page.  
+??? abstract "How can I use the Diagram of Concepts?" 
+      
+    1. From the ^^Search^^ page.  
+    2. Launch a search, a new section with the results will appear below the search box.  
+    3. Each item of the result list has an expand icon on the left corner. Click on it and the item will be expanded. 
 
-2. Click in the **'cloud'** button near to the search box. An upload modal will be displayed. You can add a document by: *drag and drop, clicking on browse*. In both cases, after drag and dropping or uploading the document, automatically the search query is set up and the user will be redirected to the results page. Otherwise, to start searching by text, you can simply copy and paste the text in the text area and click Search.  ![Screenshot](../img/upload.jpg)
+    After the click it will be possible to see the ^^Diagram of Concepts^^ of the expanded item.   
+    
+    The ^^Diagram of Concept^^ list can be drag and dropped on the search bar and set this way the search query.
+
+## Communities 
+
+??? abstract "How can I remove documents in a Community?" 
+              
+    Creators and managers can remove documents from their Community.
+
+    1. From the side menu click on ^^Manage^^ -> ^^My Resources^^.    
+    2. From the resources list click on the delete icon.    
+    3. Click Confirm.     
+
+
+??? abstract "What is the difference between a manager and a creator in a Community?"
+              
+    **As a Community creator he will have the following tasks:**
+
+    - Make another member a manager or contributor. 
+    - Remove a manager or contributor. 
+    - Manage Community settings (ex: change the Community name or privacy settings). 
+    - Approve or deny membership requests and participant requests. 
+    - Approve or deny documents in the Community. 
+    - Remove documents and comments on documents. 
+    - Remove and block people from the Community. 
+    - Upload or remove a document. 
+
+
+    **As a Community manager he will have the following tasks:**
+
+    - Approve or deny membership requests and participant requests. 
+    - Approve or deny documents in the Community. 
+    - Remove documents and comments on documents. 
+    - Remove people from the Community. 
+    - Upload or remove a document.  
+
+
+
+
+## Manage a community 
+
+
+??? abstract " How do I remove someone from a community?" 
+                     
+    **To remove a member:**   
+
+    1. From the side menu click on ^^Manage^^ -> ^^My Communities^^.     
+    2. From the communities list click on the Community you want to change.  
+    3. On the top of the window click on button ^^Manage^^.    
+    3. On section *Members* click on the member you want to remove.  
+    4. Click on the delete icon and select ^^Remove^^ member from Community. 
+    5. Click ^^Confirm^^.   
+
+        Removed members will have to request to join the community again if they wish to rejoin. 
+
+
+??? abstract "How can I change the name of a Community?"
+                        
+    Only **users with rights to edit** can change the Community name.  
+
+    1. From the side menu click on ^^Manage^^ -> ^^My Communities^^.  
+    2. From the communities list click on the Community you want to change.  
+    2. On the top of the community window click on button ^^Manage^^.  
+    3. In the next window, in section ^^Details^^ click on button at the bottom of the section ^^Update^^.  
+    4. You can change the details of your Community: *Community ID, Title, Description, Data Type, Membership*.     
+    5. Click *Update*
+
+
+## Join a Community 
+
+??? abstract "How do I find new communities I might be interested in?"                
+    1. From the side menu click on ^^Discover^^ -> ^^Communities^^.  
+    2. In the search bar enter the name of the Community you are looking for.  
+
+
+
+??? abstract "Why can't I post comment or participate in a community?" 
+                        
+    If your ability to post comment or participate in a community has been turned off it may be because a community admin has take you out of the the community.    
+
+??? abstract " How do I see a list of my communities?" 
+                     
+    1. From the side menu click on ^^Manage^^ -> ^^My Communities^^.  
+    2. You will see a list of the Communities in the page.
+
  

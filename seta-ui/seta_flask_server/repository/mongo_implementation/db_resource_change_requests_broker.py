@@ -43,7 +43,7 @@ class ResourceChangeRequestsBroker(implements(IResourceChangeRequestsBroker)):
             self.collection.update_one(filter, uq, session=session)
             
             if model.status == RequestStatusConstants.Approved:
-                cf={"resource_id": model.resource_id, "access": {"$exists" : True}}
+                cf={"resource_id": model.resource_id, "community_id": {"$exists" : True}}
                 modified_at = datetime.now(tz=pytz.utc)
                 
                 new_value = model.new_value

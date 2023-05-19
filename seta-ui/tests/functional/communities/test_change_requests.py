@@ -10,7 +10,7 @@ from tests.infrastructure.helpers.community_change_request import (create_commun
 from tests.infrastructure.helpers.resource_change_request import (create_resource_change_request, get_resource_pending_change_requests, update_resource_change_request)
 
 from seta_flask_server.repository.models import ResourceLimitsModel
-from seta_flask_server.infrastructure.constants import (ResourceAccessContants, RequestStatusConstants, ResourceRequestFieldConstants,
+from seta_flask_server.infrastructure.constants import (RequestStatusConstants, ResourceRequestFieldConstants,
                                                         CommunityMembershipConstants, CommunityRequestFieldConstants)
 
 
@@ -140,17 +140,12 @@ def test_create_resource_change_request(client: FlaskClient, authentication_url:
     assert "access_token" in response_json
     access_token = response_json["access_token"]
 
-    response = create_resource_change_request(client=client, access_token=access_token, resource_id=resource_id,
-                field_name=ResourceRequestFieldConstants.Access, new_value=ResourceAccessContants.Public, old_value=ResourceAccessContants.Community)    
-    assert response.status_code == expected
-
     limits = ResourceLimitsModel()
     old_limits = json.dumps(limits.to_json())
     
     limits.file_size_mb += 10
     new_limits = json.dumps(limits.to_json())
-
-
+    
     response = create_resource_change_request(client=client, access_token=access_token, resource_id=resource_id,
                 field_name=ResourceRequestFieldConstants.Limits, new_value=new_limits, old_value=old_limits)    
     assert response.status_code == expected
@@ -158,7 +153,7 @@ def test_create_resource_change_request(client: FlaskClient, authentication_url:
 @pytest.mark.parametrize("user_id", [("seta_admin")])
 def test_resource_update_change_requests(client: FlaskClient, authentication_url:str, user_id: str):  
     """
-        'user1' approves the 'access' and rejects 'limits' pending change requests
+        'user1' rejects 'limits' pending change requests
     """
 
     response = login_user(auth_url=authentication_url, user_id=user_id)    
@@ -171,24 +166,15 @@ def test_resource_update_change_requests(client: FlaskClient, authentication_url
     assert response.status_code == HTTPStatus.OK
     assert len(response.json) > 0
 
-    cr_access = next(filter(lambda r: r["field_name"] == ResourceRequestFieldConstants.Access, response.json))
-    assert cr_access is not None
-
     cr_limits = next(filter(lambda r: r["field_name"] == ResourceRequestFieldConstants.Limits, response.json))
     assert cr_limits is not None
-
-    response = update_resource_change_request(client=client, access_token=access_token, 
-                resource_id=cr_access["resource_id"], request_id=cr_access["request_id"], status=RequestStatusConstants.Approved)
-    assert response.status_code == HTTPStatus.OK
     
     response = update_resource_change_request(client=client, access_token=access_token, 
                 resource_id=cr_limits["resource_id"], request_id=cr_limits["request_id"], status=RequestStatusConstants.Approved)
     assert response.status_code == HTTPStatus.OK
 
-    response = get_resource(client=client, access_token=access_token, resource_id=cr_access["resource_id"])
+    response = get_resource(client=client, access_token=access_token, resource_id=cr_limits["resource_id"])
     assert response.status_code == HTTPStatus.OK
-    assert ResourceRequestFieldConstants.Access in response.json
-    assert response.json[ResourceRequestFieldConstants.Access] == ResourceAccessContants.Public
     
     new_limits = json.loads(cr_limits["new_value"])
     assert response.json[ResourceRequestFieldConstants.Limits]["file_size_mb"] == new_limits["file_size_mb"]

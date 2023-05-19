@@ -11,6 +11,7 @@ from .resource import resources_ns
 from .resource_change_request import resource_change_request_ns
 from .community_permissions import permissions_ns as community_permissions_ns
 from .resource_permissions import permissions_ns as resource_permissions_ns
+from .discovery import discovery_ns
 
 authorizations = {
     'Bearer': {
@@ -54,3 +55,5 @@ api.add_namespace(resource_change_request_ns, path="/resources")
 
 api.add_namespace(community_permissions_ns, path="/permissions")
 api.add_namespace(resource_permissions_ns, path="/permissions")
+
+api.add_namespace(discovery_ns, path="/discover")

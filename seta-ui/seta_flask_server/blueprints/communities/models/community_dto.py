@@ -5,19 +5,7 @@ from seta_flask_server.infrastructure.constants import (CommunityStatusConstants
                                       CommunityMembershipConstants, CommunityRequestFieldConstants,
                                       RequestStatusConstants)
 
-from .models_dto import (status_list, request_status_list, user_info_model)
-
-def data_type_list(value):
-    '''Validation method for data_type value in list'''    
-    value = value.lower()
-    
-    if value not in CommunityDataTypeConstants.List:
-        raise ValueError(
-            "Data type has to be one of '" + str(CommunityDataTypeConstants.List) + "'."
-        )
-        
-    return value
-
+from .models_dto import (user_info_model)
 
 new_community_parser = RequestParser(bundle_errors=True)
 new_community_parser.add_argument("community_id",
@@ -37,19 +25,21 @@ new_community_parser.add_argument("description",
                                   help="Relevand information about this community")
 #new_community_parser.add_argument('membership')
 new_community_parser.add_argument("data_type",
-                                  type=data_type_list,
                                   location="form",
                                   required=True,
                                   nullable=False,
+                                  case_sensitive=False,
+                                  choices=CommunityDataTypeConstants.List,
                                   help=f"Data type, one of {CommunityDataTypeConstants.List}")
 
 update_community_parser = new_community_parser.copy()
 update_community_parser.remove_argument("community_id")
 update_community_parser.add_argument("status",
-                                  type=status_list,
                                   location="form",
                                   required=True,
                                   nullable=False,
+                                  case_sensitive=False,
+                                  choices=CommunityStatusConstants.List,
                                   help=f"Status, one of {CommunityStatusConstants.List}")
 
 
@@ -65,24 +55,13 @@ community_model = Model("Community",
             "created_at": fields.DateTime(description="Creation date", attribute="created_at")
         })
 
-
-def request_field(value):
-    '''Validation method for filed name in list'''    
-    value = value.lower()
-    
-    if value not in CommunityRequestFieldConstants.List:
-        raise ValueError(
-            "Field name has to be one of '" + str(CommunityRequestFieldConstants.List) + "'."
-        )
-        
-    return value
-
 new_change_request_parser = RequestParser(bundle_errors=True)
 new_change_request_parser.add_argument("field_name", 
-                                  type=request_field,
                                   location="form",
                                   required=True,
                                   nullable=False,
+                                  case_sensitive=False,
+                                  choices=CommunityRequestFieldConstants.List,
                                   help=f"Requested field, one of {CommunityRequestFieldConstants.List}")
 new_change_request_parser.add_argument("new_value", 
                                   location="form",
@@ -97,10 +76,11 @@ new_change_request_parser.add_argument("old_value",
 
 update_change_request_parser = RequestParser(bundle_errors=True)
 update_change_request_parser.add_argument("status",
-                                  type=request_status_list,
                                   location="form",
                                   required=True,
                                   nullable=False,
+                                  case_sensitive=False,
+                                  choices=RequestStatusConstants.List,
                                   help=f"Status, one of {RequestStatusConstants.EditList}")
 
 

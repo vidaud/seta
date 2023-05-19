@@ -19,3 +19,6 @@ class ICommunitiesBroker(Interface):
     
     def get_all_by_user_id(self, user_id:str) -> list[CommunityModel]:
         pass
+    
+    def get_all(self) -> list[CommunityModel]:
+        pass

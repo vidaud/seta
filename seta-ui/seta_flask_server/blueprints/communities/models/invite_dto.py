@@ -3,18 +3,6 @@ from flask_restx.reqparse import RequestParser
 
 from seta_flask_server.infrastructure.constants import InviteStatusConstants
 
-
-def invite_status_list(value):
-    '''Validation method for status value in list'''    
-    value = value.lower()
-    
-    if value not in InviteStatusConstants.EditList:
-        raise ValueError(
-            "Status has to be one of '" + str(InviteStatusConstants.EditList) + "'."
-        )
-        
-    return value
-
 new_invite_parser = RequestParser(bundle_errors=True)
 new_invite_parser.add_argument("email", 
                                   location="form",
@@ -30,10 +18,11 @@ new_invite_parser.add_argument("message",
 
 update_invite_parser = RequestParser(bundle_errors=True)
 update_invite_parser.add_argument("status",
-                                  type=invite_status_list,
                                   location="form",
                                   required=True,
                                   nullable=False,
+                                  case_sensitive=False,
+                                  choices=InviteStatusConstants.List,
                                   help=f"Status, one of {InviteStatusConstants.EditList}")
 
 invite_model = Model("Invite",

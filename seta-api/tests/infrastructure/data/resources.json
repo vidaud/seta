@@ -5,7 +5,6 @@
             "community_id": "seta",
             "title": "Cordis",
             "abstract": "Cordis resource",
-            "access": "community",
             "limits": {
               "total_files_no": 50,
               "total_storage_mb": 1024,

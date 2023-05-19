@@ -8,6 +8,11 @@ def get_resource(client: FlaskClient, access_token:str, resource_id: str):
 
     return client.get(url, content_type='application/json', headers=auth_headers(access_token))
 
+def get_accessible_resources(client: FlaskClient, access_token:str):
+    url = f"{API_V1}/resources/"
+
+    return client.get(url, content_type='application/json', headers=auth_headers(access_token))
+
 def create_resource(client: FlaskClient, access_token:str, community_id: str, resource_id: str, title: str, abstract: str):
     url = f"{API_V1}/communities/{community_id}/resources"
 
