@@ -3,10 +3,10 @@ export type Taxonomy = {
   code: string
   label: string
   longLabel: string
-  name: string
   name_in_path: string
   validated: 'true' | 'false'
   version: string
+  subcategories: Taxonomy[]
 }
 
 export type Document = {
