@@ -24,181 +24,199 @@
   "collection": "project;Project",
   "taxonomy": [
     {
-      "code": "/25",
-      "label": "engineering and technology",
-      "longLabel": "/engineering and technology",
-      "validated": "true",
       "classifier": "cordis",
-      "version": "1",
-      "name": "euro_sci_voc",
-      "name_in_path": "engineering_and_technology"
-    },
-    {
-      "code": "/25/59",
-      "label": "other engineering and technologies",
-      "longLabel": "/engineering and technology/other engineering and technologies",
+      "code": "00",
+      "label": "euro_sci_voc",
+      "longLabel": "euro_sci_voc",
+      "name_in_path": "euro_sci_voc",
       "validated": "true",
-      "classifier": "cordis",
       "version": "1",
-      "name": "euro_sci_voc",
-      "name_in_path": "other_engineering_and_technologies"
-    },
-    {
-      "code": "/25/59/377",
-      "label": "food technology",
-      "longLabel": "/engineering and technology/other engineering and technologies/food technology",
-      "validated": "true",
-      "classifier": "cordis",
-      "version": "1",
-      "name": "euro_sci_voc",
-      "name_in_path": "food_technology"
-    },
-    {
-      "code": "/27/81/30021/499/1287",
-      "label": "fruit growing",
-      "longLabel": "/agricultural sciences/agriculture, forestry, and fisheries/agriculture/horticulture/fruit growing",
-      "validated": "true",
-      "classifier": "cordis",
-      "version": "1",
-      "name": "euro_sci_voc",
-      "name_in_path": "fruit_growing"
-    },
-    {
-      "code": "/27",
-      "label": "agricultural sciences",
-      "longLabel": "/agricultural sciences",
-      "validated": "true",
-      "classifier": "cordis",
-      "version": "1",
-      "name": "euro_sci_voc",
-      "name_in_path": "agricultural_sciences"
-    },
-    {
-      "code": "/27/81",
-      "label": "agriculture, forestry, and fisheries",
-      "longLabel": "/agricultural sciences/agriculture, forestry, and fisheries",
-      "validated": "true",
-      "classifier": "cordis",
-      "version": "1",
-      "name": "euro_sci_voc",
-      "name_in_path": "agriculture_forestry_and_fisheries"
-    },
-    {
-      "code": "/27/81/30021",
-      "label": "agriculture",
-      "longLabel": "/agricultural sciences/agriculture, forestry, and fisheries/agriculture",
-      "validated": "true",
-      "classifier": "cordis",
-      "version": "1",
-      "name": "euro_sci_voc",
-      "name_in_path": "agriculture"
-    },
-    {
-      "code": "/27/81/30021/499",
-      "label": "horticulture",
-      "longLabel": "/agricultural sciences/agriculture, forestry, and fisheries/agriculture/horticulture",
-      "validated": "true",
-      "classifier": "cordis",
-      "version": "1",
-      "name": "euro_sci_voc",
-      "name_in_path": "horticulture"
-    },
-    {
-      "code": "/27/81/30021/499/69103681",
-      "label": "vegetable growing",
-      "longLabel": "/agricultural sciences/agriculture, forestry, and fisheries/agriculture/horticulture/vegetable growing",
-      "validated": "true",
-      "classifier": "cordis",
-      "version": "1",
-      "name": "euro_sci_voc",
-      "name_in_path": "vegetable_growing"
-    },
-    {
-      "code": "/29",
-      "label": "social sciences",
-      "longLabel": "/social sciences",
-      "validated": "true",
-      "classifier": "cordis",
-      "version": "1",
-      "name": "euro_sci_voc",
-      "name_in_path": "social sciences"
-    },
-    {
-      "code": "/29/91",
-      "label": "economics and business",
-      "longLabel": "/social sciences/economics and business",
-      "validated": "true",
-      "classifier": "cordis",
-      "version": "1",
-      "name": "euro_sci_voc",
-      "name_in_path": "economics_and_business"
-    },
-    {
-      "code": "/29/91/523",
-      "label": "business and management",
-      "longLabel": "/social sciences/economics and business/business and management",
-      "validated": "true",
-      "classifier": "cordis",
-      "version": "1",
-      "name": "euro_sci_voc",
-      "name_in_path": "business_and_management"
-    },
-    {
-      "code": "/29/91/523/1313",
-      "label": "employment",
-      "longLabel": "/social sciences/economics and business/business and management/employment",
-      "validated": "true",
-      "classifier": "cordis",
-      "version": "1",
-      "name": "euro_sci_voc",
-      "name_in_path": "employment"
-    },
-    {
-      "code": "/23",
-      "label": "natural sciences",
-      "longLabel": "/natural sciences",
-      "validated": "true",
-      "classifier": "cordis",
-      "version": "1",
-      "name": "euro_sci_voc",
-      "name_in_path": "natural_sciences"
-    },
-    {
-      "code": "/23/43",
-      "label": "physical sciences",
-      "longLabel": "/natural sciences/physical sciences",
-      "validated": "true",
-      "classifier": "cordis",
-      "version": "1",
-      "name": "euro_sci_voc",
-      "name_in_path": "physical_sciences"
-    },
-    {
-      "code": "/23/43/273",
-      "label": "acoustics",
-      "longLabel": "/natural sciences/physical sciences/acoustics",
-      "validated": "true",
-      "classifier": "cordis",
-      "version": "1",
-      "name": "euro_sci_voc",
-      "name_in_path": "acoustics"
-    },
-    {
-      "code": "/23/43/273/813",
-      "label": "ultrasound",
-      "longLabel": "/natural sciences/physical sciences/acoustics/ultrasound",
-      "validated": "true",
-      "classifier": "cordis",
-      "version": "1",
-      "name": "euro_sci_voc",
-      "name_in_path": "ultrasound"
+      "subcategories": [
+        {
+          "classifier": "cordis",
+          "code": "/27",
+          "label": "agricultural sciences",
+          "longLabel": "/agricultural sciences",
+          "name_in_path": "agricultural_sciences",
+          "subcategories": [
+            {
+              "classifier": "cordis",
+              "code": "/27/81",
+              "label": "agriculture, forestry, and fisheries",
+              "longLabel": "/agricultural sciences/agriculture, forestry, and fisheries",
+              "name_in_path": "agriculture_forestry_and_fisheries",
+              "subcategories": [
+                {
+                  "classifier": "cordis",
+                  "code": "/27/81/30021",
+                  "label": "agriculture",
+                  "longLabel": "/agricultural sciences/agriculture, forestry, and fisheries/agriculture",
+                  "name_in_path": "agriculture",
+                  "subcategories": [
+                    {
+                      "classifier": "cordis",
+                      "code": "/27/81/30021/499",
+                      "label": "horticulture",
+                      "longLabel": "/agricultural sciences/agriculture, forestry, and fisheries/agriculture/horticulture",
+                      "name_in_path": "horticulture",
+                      "subcategories": [
+                        {
+                          "classifier": "cordis",
+                          "code": "/27/81/30021/499/1287",
+                          "label": "fruit growing",
+                          "longLabel": "/agricultural sciences/agriculture, forestry, and fisheries/agriculture/horticulture/fruit growing",
+                          "name_in_path": "fruit_growing",
+                          "subcategories": [],
+                          "validated": "true",
+                          "version": "1"
+                        },
+                        {
+                          "classifier": "cordis",
+                          "code": "/27/81/30021/499/69103681",
+                          "label": "vegetable growing",
+                          "longLabel": "/agricultural sciences/agriculture, forestry, and fisheries/agriculture/horticulture/vegetable growing",
+                          "name_in_path": "vegetable_growing",
+                          "subcategories": [],
+                          "validated": "true",
+                          "version": "1"
+                        }
+                      ],
+                      "validated": "true",
+                      "version": "1"
+                    }
+                  ],
+                  "validated": "true",
+                  "version": "1"
+                }
+              ],
+              "validated": "true",
+              "version": "1"
+            }
+          ],
+          "validated": "true",
+          "version": "1"
+        },
+        {
+          "classifier": "cordis",
+          "code": "/25",
+          "label": "engineering and technology",
+          "longLabel": "/engineering and technology",
+          "name_in_path": "engineering_and_technology",
+          "subcategories": [
+            {
+              "classifier": "cordis",
+              "code": "/25/59",
+              "label": "other engineering and technologies",
+              "longLabel": "/engineering and technology/other engineering and technologies",
+              "name_in_path": "other_engineering_and_technologies",
+              "subcategories": [
+                {
+                  "classifier": "cordis",
+                  "code": "/25/59/377",
+                  "label": "food technology",
+                  "longLabel": "/engineering and technology/other engineering and technologies/food technology",
+                  "name_in_path": "food_technology",
+                  "subcategories": [],
+                  "validated": "true",
+                  "version": "1"
+                }
+              ],
+              "validated": "true",
+              "version": "1"
+            }
+          ],
+          "validated": "true",
+          "version": "1"
+        },
+        {
+          "classifier": "cordis",
+          "code": "/23",
+          "label": "natural sciences",
+          "longLabel": "/natural sciences",
+          "name_in_path": "natural_sciences",
+          "subcategories": [
+            {
+              "classifier": "cordis",
+              "code": "/23/43",
+              "label": "physical sciences",
+              "longLabel": "/natural sciences/physical sciences",
+              "name_in_path": "physical_sciences",
+              "subcategories": [
+                {
+                  "classifier": "cordis",
+                  "code": "/23/43/273",
+                  "label": "acoustics",
+                  "longLabel": "/natural sciences/physical sciences/acoustics",
+                  "name_in_path": "acoustics",
+                  "subcategories": [
+                    {
+                      "classifier": "cordis",
+                      "code": "/23/43/273/813",
+                      "label": "ultrasound",
+                      "longLabel": "/natural sciences/physical sciences/acoustics/ultrasound",
+                      "name_in_path": "ultrasound",
+                      "subcategories": [],
+                      "validated": "true",
+                      "version": "1"
+                    }
+                  ],
+                  "validated": "true",
+                  "version": "1"
+                }
+              ],
+              "validated": "true",
+              "version": "1"
+            }
+          ],
+          "validated": "true",
+          "version": "1"
+        },
+        {
+          "classifier": "cordis",
+          "code": "/29",
+          "label": "social sciences",
+          "longLabel": "/social sciences",
+          "name_in_path": "social_sciences",
+          "subcategories": [
+            {
+              "classifier": "cordis",
+              "code": "/29/91",
+              "label": "economics and business",
+              "longLabel": "/social sciences/economics and business",
+              "name_in_path": "economics_and_business",
+              "subcategories": [
+                {
+                  "classifier": "cordis",
+                  "code": "/29/91/523",
+                  "label": "business and management",
+                  "longLabel": "/social sciences/economics and business/business and management",
+                  "name_in_path": "business_and_management",
+                  "subcategories": [
+                    {
+                      "classifier": "cordis",
+                      "code": "/29/91/523/1313",
+                      "label": "employment",
+                      "longLabel": "/social sciences/economics and business/business and management/employment",
+                      "name_in_path": "employment",
+                      "subcategories": [],
+                      "validated": "true",
+                      "version": "1"
+                    }
+                  ],
+                  "validated": "true",
+                  "version": "1"
+                }
+              ],
+              "validated": "true",
+              "version": "1"
+            }
+          ],
+          "validated": "true",
+          "version": "1"
+        }
+      ]
     }
   ],
-  "taxonomy_path": ["euro_sci_voc:natural_sciences:physical_sciences:acoustics:ultrasound",
-                    "euro_sci_voc:social_sciences:economics_and_business:business_and_management:employment",
-                    "euro_sci_voc:agricultural_sciences:agriculture_forestry_and_fisheries:agriculture:horticulture:vegetable_growing",
-                    "euro_sci_voc:agricultural_sciences:agriculture_forestry_and_fisheries:agriculture:horticulture:fruit_growing",
-                    "euro_sci_voc:engineering_and_technology:other_engineering_and_technologies:food_technology"],
   "link_origin": "https://cordis.europa.eu/project/rcn/96956",
   "other": {
     "crc": "7d00d817122f4f22ec8beed3a05fcd297a610938883625d6d136ea0e374871e6",

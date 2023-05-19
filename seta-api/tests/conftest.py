@@ -42,7 +42,7 @@ def es(es_host):
         
     es = SetaES(host=host, index=config.INDEX_PUBLIC)
     es.cleanup()
-    es.init_es()
+    # es.init_es()
     
     yield es
     

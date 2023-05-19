@@ -56,7 +56,7 @@ def test_corpus_doc(client: FlaskClient, user_id: str):
 
     response = add_document(client=client, access_token=access_token, data=data)
     assert response.status_code == HTTPStatus.OK
-    assert "document_id" in response.json  
+    assert "document_id" in response.json
     doc_id = response.json["document_id"]
 
     response = get_document(client=client, access_token=access_token, document_id=doc_id)
@@ -75,9 +75,74 @@ def test_corpus_doc(client: FlaskClient, user_id: str):
     assert response.status_code == HTTPStatus.NOT_FOUND
 
 
-@pytest.mark.parametrize("user_id, aggs", [("seta_admin", "taxonomy:euro_sci_voc")])
+@pytest.mark.parametrize("user_id, aggs", [("seta_admin", "taxonomies")])
 def test_corpus_taxonomy_aggregation(client: FlaskClient, user_id: str, aggs: str):
-    """Run simple search for GET & POST corpus methods"""
+    """Run search with aggregation on taxonomy field for GET corpus methods"""
+
+    response = login_user(auth_url=client.application.config["JWT_TOKEN_AUTH_URL"], user_id=user_id)
+    assert response.status_code == HTTPStatus.OK
+    response_json = response.json()
+    assert "access_token" in response_json
+    access_token = response_json["access_token"]
+
+    data1 = {"source": "cordis",
+            "id": "cordis:article:1",
+            "title": "test_corpus_taxonomy_aggregation",
+            "taxonomy": [{"classifier": "cordis", "code": "00", "label": "euro_sci_voc", "longLabel": "euro_sci_voc",
+                 "validated": "true", "version": "1", "name_in_path": "euro_sci_voc", "subcategories": [
+                {"classifier": "cordis", "code": "/29", "label": "social sciences", "longLabel": "/social sciences",
+                 "validated": "true", "name_in_path": "social_sciences", "version": "1", "subcategories": [
+                    {"classifier": "cordis", "code": "/29/105", "label": "educational sciences",
+                     "longLabel": "/social sciences/educational sciences", "validated": "true",
+                     "name_in_path": "educational_sciences", "version": "1", "subcategories": [
+                        {"classifier": "cordis", "code": "/29/105/573", "label": "didactics",
+                         "longLabel": "/social sciences/educational sciences/didactics", "validated": "true",
+                         "name_in_path": "didactics",
+                         "version": "1", "subcategories": []},
+                        {"classifier": "cordis", "code": "/29/105/571", "label": "pedagogy",
+                         "longLabel": "/social sciences/educational sciences/pedagogy", "validated": "true",
+                         "name_in_path": "pedagogy", "version": "1", "subcategories": []}]}]}]}]
+            }
+
+    data2 = {"source": "cordis",
+            "id": "cordis:article:1",
+            "title": "test_corpus_taxonomy_aggregation",
+            "taxonomy": [{"classifier": "xxx", "code": "00", "label": "taxonomy1", "longLabel": "taxonomy1",
+                 "validated": "true", "version": "1", "name_in_path": "taxonomy1", "subcategories": [
+                {"classifier": "cordis", "code": "/29", "label": "social sciences", "longLabel": "/social sciences",
+                 "validated": "true", "name_in_path": "social_sciences", "version": "1", "subcategories": [
+                    {"classifier": "cordis", "code": "/29/105", "label": "educational sciences",
+                     "longLabel": "/social sciences/educational sciences", "validated": "true",
+                     "name_in_path": "educational_sciences", "version": "1", "subcategories": [
+                        {"classifier": "cordis", "code": "/29/105/573", "label": "didactics",
+                         "longLabel": "/social sciences/educational sciences/didactics", "validated": "true",
+                         "name_in_path": "didactics",
+                         "version": "1", "subcategories": []},
+                        {"classifier": "cordis", "code": "/29/105/571", "label": "pedagogy",
+                         "longLabel": "/social sciences/educational sciences/pedagogy", "validated": "true",
+                         "name_in_path": "pedagogy", "version": "1", "subcategories": []}]}]}]}]
+            }
+
+    response = add_document(client=client, access_token=access_token, data=data1)
+    assert response.status_code == HTTPStatus.OK
+    response = add_document(client=client, access_token=access_token, data=data2)
+    assert response.status_code == HTTPStatus.OK
+
+    response = get_with_aggregation(client=client, access_token=access_token, aggs=aggs)
+    assert response.status_code == HTTPStatus.OK
+    assert "aggregations" in response.json
+    assert "taxonomies" in response.json["aggregations"]
+    assert len(response.json["aggregations"]["taxonomies"]) == 2
+    assert "name_in_path" in response.json["aggregations"]["taxonomies"][0]
+    assert response.json["aggregations"]["taxonomies"][0]["name_in_path"] == "euro_sci_voc"
+    assert response.json["aggregations"]["taxonomies"][1]["name_in_path"] == "taxonomy1"
+    assert response.json["aggregations"]["taxonomies"] == [{'classifier': 'cordis', 'code': '00', 'doc_count': 1, 'label': 'euro_sci_voc', 'longLabel': 'euro_sci_voc', 'name_in_path': 'euro_sci_voc', 'subcategories': [{'classifier': 'cordis', 'code': '/29', 'doc_count': 1, 'label': 'social sciences', 'longLabel': '/social sciences', 'name_in_path': 'social_sciences', 'subcategories': [{'classifier': 'cordis', 'code': '/29/105', 'doc_count': 1, 'label': 'educational sciences', 'longLabel': '/social sciences/educational sciences', 'name_in_path': 'educational_sciences', 'subcategories': [{'classifier': 'cordis', 'code': '/29/105/573', 'doc_count': 1, 'label': 'didactics', 'longLabel': '/social sciences/educational sciences/didactics', 'name_in_path': 'didactics', 'subcategories': [], 'validated': 'true', 'version': '1'}, {'classifier': 'cordis', 'code': '/29/105/571', 'doc_count': 1, 'label': 'pedagogy', 'longLabel': '/social sciences/educational sciences/pedagogy', 'name_in_path': 'pedagogy', 'subcategories': [], 'validated': 'true', 'version': '1'}], 'validated': 'true', 'version': '1'}], 'validated': 'true', 'version': '1'}], 'validated': 'true', 'version': '1'}, {'classifier': 'xxx', 'code': '00', 'doc_count': 1, 'label': 'taxonomy1', 'longLabel': 'taxonomy1', 'name_in_path': 'taxonomy1', 'subcategories': [{'classifier': 'cordis', 'code': '/29', 'doc_count': 1, 'label': 'social sciences', 'longLabel': '/social sciences', 'name_in_path': 'social_sciences', 'subcategories': [{'classifier': 'cordis', 'code': '/29/105', 'doc_count': 1, 'label': 'educational sciences', 'longLabel': '/social sciences/educational sciences', 'name_in_path': 'educational_sciences', 'subcategories': [{'classifier': 'cordis', 'code': '/29/105/573', 'doc_count': 1, 'label': 'didactics', 'longLabel': '/social sciences/educational sciences/didactics', 'name_in_path': 'didactics', 'subcategories': [], 'validated': 'true', 'version': '1'}, {'classifier': 'cordis', 'code': '/29/105/571', 'doc_count': 1, 'label': 'pedagogy', 'longLabel': '/social sciences/educational sciences/pedagogy', 'name_in_path': 'pedagogy', 'subcategories': [], 'validated': 'true', 'version': '1'}], 'validated': 'true', 'version': '1'}], 'validated': 'true', 'version': '1'}], 'validated': 'true', 'version': '1'}]
+
+
+
+@pytest.mark.parametrize("user_id, aggs", [("seta_admin", "taxonomy:euro")])
+def test_corpus_taxonomy_aggregation_with_one_taxonomy(client: FlaskClient, user_id: str, aggs: str):
+    """Run search with aggregation on taxonomy field for GET corpus methods"""
 
     response = login_user(auth_url=client.application.config["JWT_TOKEN_AUTH_URL"], user_id=user_id)
     assert response.status_code == HTTPStatus.OK
@@ -88,52 +153,23 @@ def test_corpus_taxonomy_aggregation(client: FlaskClient, user_id: str, aggs: st
     data = {"source": "cordis",
             "id": "cordis:article:1",
             "title": "test_corpus_taxonomy_aggregation",
-            "taxonomy": [
-                {
-                    "code": "/29",
-                    "label": "social sciences",
-                    "longLabel": "/social sciences",
-                    "validated": "true",
-                    "classifier": "cordis",
-                    "version": "1",
-                    "name": "euro_sci_voc",
-                    "name_in_path": "social_sciences"
-                },
-                {
-                    "code": "/29/105",
-                    "label": "educational sciences",
-                    "longLabel": "/social sciences/educational sciences",
-                    "validated": "true",
-                    "classifier": "cordis",
-                    "version": "1",
-                    "name": "euro_sci_voc",
-                    "name_in_path": "educational_sciences"
-                },
-                {
-                    "code": "/29/105/573",
-                    "label": "didactics",
-                    "longLabel": "/social sciences/educational sciences/didactics",
-                    "validated": "true",
-                    "classifier": "cordis",
-                    "version": "1",
-                    "name": "euro_sci_voc",
-                    "name_in_path": "didactics"
-                },
-                {
-                    "code": "/29/105/571",
-                    "label": "pedagogy",
-                    "longLabel": "/social sciences/educational sciences/pedagogy",
-                    "validated": "true",
-                    "classifier": "cordis",
-                    "version": "1",
-                    "name": "euro_sci_voc",
-                    "name_in_path": "pedagogy"
-                }
-            ],
-            "taxonomy_path": ["euro_sci_voc:social_sciences:educational_sciences:didactics",
-                              "euro_sci_voc:social_sciences:educational_sciences:pedagogy"]
+            "taxonomy": [{"classifier": "cordis", "code": "00", "label": "euro", "longLabel": "euro",
+                 "validated": "true", "version": "1", "name_in_path": "euro", "subcategories": [
+                {"classifier": "cordis", "code": "/29", "label": "social sciences", "longLabel": "/social sciences",
+                 "validated": "true", "name_in_path": "social_sciences", "version": "1", "subcategories": [
+                    {"classifier": "cordis", "code": "/29/105", "label": "educational sciences",
+                     "longLabel": "/social sciences/educational sciences", "validated": "true",
+                     "name_in_path": "educational_sciences", "version": "1", "subcategories": [
+                        {"classifier": "cordis", "code": "/29/105/573", "label": "didactics",
+                         "longLabel": "/social sciences/educational sciences/didactics", "validated": "true",
+                         "name_in_path": "didactics",
+                         "version": "1", "subcategories": []},
+                        {"classifier": "cordis", "code": "/29/105/571", "label": "pedagogy",
+                         "longLabel": "/social sciences/educational sciences/pedagogy", "validated": "true",
+                         "name_in_path": "pedagogy", "version": "1", "subcategories": []}]}]}]}]
             }
 
+    # add the same document twice
     response = add_document(client=client, access_token=access_token, data=data)
     assert response.status_code == HTTPStatus.OK
     response = add_document(client=client, access_token=access_token, data=data)
@@ -144,13 +180,28 @@ def test_corpus_taxonomy_aggregation(client: FlaskClient, user_id: str, aggs: st
     assert "aggregations" in response.json
     assert "taxonomy" in response.json["aggregations"]
     assert len(response.json["aggregations"]["taxonomy"]) > 0
-    assert "name" in response.json["aggregations"]["taxonomy"][0]
-    assert response.json["aggregations"]["taxonomy"][0]["name"] == "euro_sci_voc"
+    assert "name_in_path" in response.json["aggregations"]["taxonomy"][0]
+    assert response.json["aggregations"]["taxonomy"][0]["name_in_path"] == "euro"
+    assert response.json["aggregations"]["taxonomy"] == [
+        {"classifier": "cordis", "code": "00", "doc_count": 2, "label": "euro", "longLabel": "euro",
+         "name_in_path": "euro", "validated": "true", "version": "1", "subcategories": [
+            {"classifier": "cordis", "code": "/29", "doc_count": 2, "label": "social sciences",
+             "longLabel": "/social sciences", "name_in_path": "social_sciences", "validated": "true", "version": "1",
+             "subcategories": [
+                 {"classifier": "cordis", "code": "/29/105", "doc_count": 2, "label": "educational sciences",
+                  "longLabel": "/social sciences/educational sciences", "name_in_path": "educational_sciences",
+                  "validated": "true", "version": "1", "subcategories": [
+                     {"classifier": "cordis", "code": "/29/105/573", "doc_count": 2, "label": "didactics",
+                      "longLabel": "/social sciences/educational sciences/didactics", "name_in_path": "didactics",
+                      "validated": "true", "version": "1", "subcategories": []},
+                     {"classifier": "cordis", "code": "/29/105/571", "doc_count": 2, "label": "pedagogy",
+                      "longLabel": "/social sciences/educational sciences/pedagogy", "name_in_path": "pedagogy",
+                      "validated": "true", "version": "1", "subcategories": []}]}]}]}]
 
 
 @pytest.mark.parametrize("user_id", ["seta_admin"])
 def test_corpus_taxonomy_search(client: FlaskClient, user_id: str):
-    """Run simple search for GET & POST corpus methods"""
+    """Run taxonomy search for POST corpus methods"""
 
     response = login_user(auth_url=client.application.config["JWT_TOKEN_AUTH_URL"], user_id=user_id)
     assert response.status_code == HTTPStatus.OK
@@ -159,80 +210,35 @@ def test_corpus_taxonomy_search(client: FlaskClient, user_id: str):
     access_token = response_json["access_token"]
 
     data1 = {"source": "cordis",
-            "id": "cordis:article:1",
-            "title": "test_corpus_taxonomy_search",
-            "taxonomy": [
-                {
-                    "code": "/29",
-                    "label": "social sciences",
-                    "longLabel": "/social sciences",
-                    "validated": "true",
-                    "classifier": "cordis",
-                    "version": "1",
-                    "name": "euro_sci_voc",
-                    "name_in_path": "social_sciences"
-                },
-                {
-                    "code": "/29/105",
-                    "label": "educational sciences",
-                    "longLabel": "/social sciences/educational sciences",
-                    "validated": "true",
-                    "classifier": "cordis",
-                    "version": "1",
-                    "name": "euro_sci_voc",
-                    "name_in_path": "educational_sciences"
-                },
-                {
-                    "code": "/29/105/571",
-                    "label": "pedagogy",
-                    "longLabel": "/social sciences/educational sciences/pedagogy",
-                    "validated": "true",
-                    "classifier": "cordis",
-                    "version": "1",
-                    "name": "euro_sci_voc",
-                    "name_in_path": "pedagogy"
-                }
-            ],
-            "taxonomy_path": ["euro_sci_voc:social_sciences:educational_sciences:pedagogy"]
-            }
+             "id": "cordis:article:1",
+             "title": "test_corpus_taxonomy_search",
+             "taxonomy": [{"classifier": "cordis", "code": "00", "label": "euro_sci_voc", "longLabel": "euro_sci_voc",
+                 "validated": "true", "version": "1", "name_in_path": "euro_sci_voc", "subcategories": [
+                {"classifier": "cordis", "code": "/29", "label": "social sciences", "longLabel": "/social sciences",
+                 "validated": "true", "name_in_path": "social_sciences", "version": "1", "subcategories": [
+                    {"classifier": "cordis", "code": "/29/105", "label": "educational sciences",
+                     "longLabel": "/social sciences/educational sciences", "validated": "true",
+                     "name_in_path": "educational_sciences", "version": "1", "subcategories": [
+                        {"classifier": "cordis", "code": "/29/105/571", "label": "pedagogy",
+                         "longLabel": "/social sciences/educational sciences/pedagogy", "validated": "true",
+                         "name_in_path": "pedagogy", "version": "1", "subcategories": []}]}]}]}]
+             }
 
     data2 = {"source": "cordis",
-            "id": "cordis:article:2",
-            "title": "test_corpus_taxonomy_search",
-            "taxonomy": [
-                {
-                    "code": "/29",
-                    "label": "social sciences",
-                    "longLabel": "/social sciences",
-                    "validated": "true",
-                    "classifier": "cordis",
-                    "version": "1",
-                    "name": "euro_sci_voc",
-                    "name_in_path": "social_sciences"
-                },
-                {
-                    "code": "/29/105",
-                    "label": "educational sciences",
-                    "longLabel": "/social sciences/educational sciences",
-                    "validated": "true",
-                    "classifier": "cordis",
-                    "version": "1",
-                    "name": "euro_sci_voc",
-                    "name_in_path": "educational_sciences"
-                },
-                {
-                    "code": "/29/105/573",
-                    "label": "didactics",
-                    "longLabel": "/social sciences/educational sciences/didactics",
-                    "validated": "true",
-                    "classifier": "cordis",
-                    "version": "1",
-                    "name": "euro_sci_voc",
-                    "name_in_path": "didactics"
-                }
-            ],
-            "taxonomy_path": ["euro_sci_voc:social_sciences:educational_sciences:didactics"]
-            }
+             "id": "cordis:article:2",
+             "title": "test_corpus_taxonomy_search",
+             "taxonomy": [{"classifier": "cordis", "code": "00", "label": "euro_sci_voc", "longLabel": "euro_sci_voc",
+                 "validated": "true", "version": "1", "name_in_path": "euro_sci_voc", "subcategories": [
+                {"classifier": "cordis", "code": "/29", "label": "social sciences", "longLabel": "/social sciences",
+                 "validated": "true", "name_in_path": "social_sciences", "version": "1", "subcategories": [
+                    {"classifier": "cordis", "code": "/29/105", "label": "educational sciences",
+                     "longLabel": "/social sciences/educational sciences", "validated": "true",
+                     "name_in_path": "educational_sciences", "version": "1", "subcategories": [
+                        {"classifier": "cordis", "code": "/29/105/573", "label": "didactics",
+                         "longLabel": "/social sciences/educational sciences/didactics", "validated": "true",
+                         "name_in_path": "didactics",
+                         "version": "1", "subcategories": []}]}]}]}]
+             }
 
     response = add_document(client=client, access_token=access_token, data=data1)
     assert response.status_code == HTTPStatus.OK
@@ -243,16 +249,33 @@ def test_corpus_taxonomy_search(client: FlaskClient, user_id: str):
     assert "document_id" in response.json
     doc_id_2 = response.json["document_id"]
 
-    json_p = {"term": "test_corpus_taxonomy_search", "taxonomy": [{"name": "euro_sci_voc", "label": "pedagogy"}]}
+    json_p = {"term": "test_corpus_taxonomy_search", "taxonomy_path": [
+        "euro_sci_voc:social_sciences:educational_sciences:pedagogy"]}
     response = post_by_json(client=client, access_token=access_token, json_param=json_p)
     assert response.status_code == HTTPStatus.OK
     assert "documents" in response.json
     assert len(response.json["documents"]) == 1
     assert doc_id_1 in response.json["documents"][0]["_id"]
 
-    json_p = {"term": "test_corpus_taxonomy_search", "taxonomy": [{"name": "euro_sci_voc", "label": "didactics"}]}
+    json_p = {"term": "test_corpus_taxonomy_search", "taxonomy_path": [
+        "euro_sci_voc:social_sciences:educational_sciences:didactics"]}
     response = post_by_json(client=client, access_token=access_token, json_param=json_p)
     assert response.status_code == HTTPStatus.OK
     assert "documents" in response.json
     assert len(response.json["documents"]) == 1
     assert doc_id_2 in response.json["documents"][0]["_id"]
+
+    json_p = {"term": "test_corpus_taxonomy_search", "taxonomy_path": [
+        "euro_sci_voc:social_sciences:educational_sciences"]}
+    response = post_by_json(client=client, access_token=access_token, json_param=json_p)
+    assert response.status_code == HTTPStatus.OK
+    assert "documents" in response.json
+    assert len(response.json["documents"]) == 2
+
+    json_p = {"term": "test_corpus_taxonomy_search", "taxonomy_path": [
+        "euro_sci_voc:social_sciences:educational_sciences:didactics",
+        "euro_sci_voc:social_sciences:educational_sciences:pedagogy"]}
+    response = post_by_json(client=client, access_token=access_token, json_param=json_p)
+    assert response.status_code == HTTPStatus.OK
+    assert "documents" in response.json
+    assert len(response.json["documents"]) == 2

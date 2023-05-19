@@ -9,6 +9,7 @@ from seta_api.apis.corpus import taxonomy
 
 def handle_corpus_response(aggs, res, search_type, semantic_sort_id, term, current_app):
     documents = {"total_docs": None, "documents": []}
+    tax = taxonomy.Taxonomy()
     for response in res["responses"]:
         if "error" in response:
             raise ApiLogicError('Malformed query.')
@@ -21,6 +22,8 @@ def handle_corpus_response(aggs, res, search_type, semantic_sort_id, term, curre
             if document['_id'] == semantic_sort_id:
                 # for semantic sort the semantic_sort_id document is shown on top page and must be removed from the list
                 continue
+            tax.create_tree_from_elasticsearch_format(is_field_in_doc(document['_source'], "taxonomy"),
+                                                      is_field_in_doc(document['_source'], "taxonomy_path"))
             documents["documents"].append({"_id": document['_id'],
                                            "id": is_field_in_doc(document['_source'], "id"),
                                            "id_alias": is_field_in_doc(document['_source'], "id_alias"),
@@ -38,7 +41,7 @@ def handle_corpus_response(aggs, res, search_type, semantic_sort_id, term, curre
                                            "collection": is_field_in_doc(document['_source'], "collection"),
                                            "reference": is_field_in_doc(document['_source'], "reference"),
                                            "author": is_field_in_doc(document['_source'], "author"),
-                                           "taxonomy": is_field_in_doc(document['_source'], "taxonomy"),
+                                           "taxonomy": tax.tree,
                                            "keywords": is_field_in_doc(document['_source'], "keywords"),
                                            "other": is_field_in_doc(document['_source'], "other"),
                                            "concordance": concordance_field})
@@ -87,12 +90,17 @@ def compose_source_collection_reference_response_tree(response_buckets):
     return tree
 
 
-def compose_taxonomy_response_tree(response_buckets, aggs, current_app):
+def compose_response_tree_given_a_taxonomy(response_buckets, aggs, current_app):
     taxonomy_arg = aggs.split(":")[1]
-    tax = taxonomy.Taxonomy(es=current_app.es, index=current_app.config["INDEX"], taxonomy=taxonomy_arg)
-    for item in response_buckets:
-        if item["key"].startswith(taxonomy_arg):
-            tax.add_tree(tax.tree, item, key="key", separator=":")
+    tax = taxonomy.Taxonomy()
+    tax.create_tree_from_aggregation_given_a_taxonomy(es=current_app.es, index=current_app.config["INDEX"],
+                                                      response=response_buckets, taxonomy=taxonomy_arg)
+    return tax.tree
+
+
+def compose_taxonomies_response_tree(response_buckets, current_app):
+    tax = taxonomy.Taxonomy()
+    tax.create_tree_from_aggregation(es=current_app.es, index=current_app.config["INDEX"], response=response_buckets)
     return tax.tree
 
 
@@ -101,19 +109,22 @@ def handle_aggs_response(aggs, response, documents, current_app):
         return documents
     documents["aggregations"] = {}
     for agg in aggs:
-        if agg == "date_year":
-            years = response["aggregations"]["years"]["buckets"]
-            documents["aggregations"][agg] = []
-            for year in years:
-                y = {"year": year["key_as_string"], "doc_count": year["doc_count"]}
-                documents["aggregations"][agg].append(y)
-        elif agg == "source_collection_reference":
-            documents["aggregations"][agg] = compose_source_collection_reference_response_tree(response["aggregations"][agg]["buckets"])
-        elif agg.startswith("taxonomy:"):
-            documents["aggregations"]["taxonomy"] = compose_taxonomy_response_tree(response["aggregations"]["taxonomy"]["buckets"], agg, current_app)
-        else:
-            documents["aggregations"][agg] = response["aggregations"][agg]["buckets"]
-    return documents
+        match agg:
+            case "date_year":
+                years = response["aggregations"]["years"]["buckets"]
+                documents["aggregations"][agg] = []
+                for year in years:
+                    y = {"year": year["key_as_string"], "doc_count": year["doc_count"]}
+                    documents["aggregations"][agg].append(y)
+            case "source_collection_reference":
+                documents["aggregations"][agg] = compose_source_collection_reference_response_tree(response["aggregations"][agg]["buckets"])
+            case agg if agg.startswith("taxonomy:"):
+                documents["aggregations"]["taxonomy"] = compose_response_tree_given_a_taxonomy(response["aggregations"]["taxonomy"]["buckets"], agg, current_app)
+            case "taxonomies":
+                documents["aggregations"][agg] = compose_taxonomies_response_tree(response["aggregations"]["taxonomies"]["buckets"], current_app)
+            case _:
+                documents["aggregations"][agg] = response["aggregations"][agg]["buckets"]
+        return documents
 
 
 def compute_concordance(abstract, term, text):
