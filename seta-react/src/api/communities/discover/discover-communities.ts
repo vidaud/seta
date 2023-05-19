@@ -1,8 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 
-import community_api from './api'
-
-import { environment } from '../../environments/environment'
+import { environment } from '../../../environments/environment'
+import community_api from '../api'
 
 export type CommunitiesResponse = {
   community_id: string
@@ -19,15 +18,15 @@ export type CommunitiesResponse = {
   created_at: Date
 }
 
-export const cacheKey = () => ['communities']
+export const cacheKey = () => ['discover']
 
-const getCommunities = async (): Promise<CommunitiesResponse[]> => {
+const getAllCommunities = async (): Promise<CommunitiesResponse[]> => {
   const { data } = await community_api.get<CommunitiesResponse[]>(
-    `${environment.COMMUNITIES_API_PATH}`
+    `/discover${environment.COMMUNITIES_API_PATH}`
   )
 
   return data
 }
 
-export const useCommunities = () =>
-  useQuery({ queryKey: cacheKey(), queryFn: () => getCommunities() })
+export const useAllCommunities = () =>
+  useQuery({ queryKey: cacheKey(), queryFn: () => getAllCommunities() })

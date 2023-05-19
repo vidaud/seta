@@ -12,7 +12,7 @@ import {
 } from '@mantine/core'
 import { useParams } from 'react-router-dom'
 
-import { useCommunityID } from '../../../../../api/communities/community'
+import { useCommunityID } from '../../../../../api/communities/manage/my-community'
 import CommunitiesLoading from '../../common/SuggestionsLoading'
 import CommunityResources from '../../Manage/Resource/CommunityResources/CommunityResources'
 import Stats from '../Stats/Stats'

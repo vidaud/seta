@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 
-import community_api from './api'
+import community_api from '../api'
 
 const PERMISSIONS_API_PATH = '/permissions'
 

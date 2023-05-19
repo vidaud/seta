@@ -14,7 +14,10 @@ import {
 } from '@mantine/core'
 import { useParams } from 'react-router-dom'
 
-import { updateCommunity, useCommunityID } from '../../../../../../api/communities/community'
+import {
+  updateCommunity,
+  useCommunityID
+} from '../../../../../../api/communities/manage/my-community'
 import CommunitiesLoading from '../../../common/SuggestionsLoading'
 import type { CommunityValues } from '../../community-context'
 import { CommunityFormProvider, useCommunity } from '../../community-context'

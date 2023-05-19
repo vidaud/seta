@@ -22,7 +22,9 @@ import CommunityUsersPermissions from '../../pages/CommunitiesPage/components/Us
 import ResourceUsersPermissions from '../../pages/CommunitiesPage/components/UserPermissions/Resource/ResourceUserPermissions'
 import DashboardsPage from '../../pages/CommunitiesPage/pages/DashboardPage'
 import CommunityListPage from '../../pages/CommunitiesPage/pages/Discovery/CommunityList/CommunityList'
+import ResourceListPage from '../../pages/CommunitiesPage/pages/Discovery/ResourceList/ResourceList'
 import MyCommunityListPage from '../../pages/CommunitiesPage/pages/Manage/MyCommunityList/MyCommunityList'
+import MyResourceListPage from '../../pages/CommunitiesPage/pages/Manage/MyResourceList/MyResourceList'
 import ContactPage from '../../pages/ContactPage'
 import FaqsPage from '../../pages/FaqsPage'
 import HomePage from '../../pages/HomePage'
@@ -34,6 +36,7 @@ import SearchPageNew from '../../pages/SearchPageNew'
 
 const ROOT_PATH = '/'
 const COMMUNITY_PATH = '/communities'
+const DISCOVER_PATH = '/discover'
 
 const routes = createRoutesFromElements(
   <Route path={ROOT_PATH} element={<AppLayout />}>
@@ -86,14 +89,6 @@ const routes = createRoutesFromElements(
         }
       />
       <Route
-        path="list"
-        element={
-          <RequireAuth>
-            <CommunityListPage />
-          </RequireAuth>
-        }
-      />
-      <Route
         path="view/:id"
         element={
           <RequireAuth>
@@ -142,6 +137,14 @@ const routes = createRoutesFromElements(
         }
       />
       <Route
+        path="my-resources"
+        element={
+          <RequireAuth>
+            <MyResourceListPage />
+          </RequireAuth>
+        }
+      />
+      <Route
         path="manage/:id"
         element={
           <RequireAuth>
@@ -178,6 +181,24 @@ const routes = createRoutesFromElements(
         element={
           <RequireAuth>
             <ResourceUsersPermissions />
+          </RequireAuth>
+        }
+      />
+    </Route>
+    <Route path={DISCOVER_PATH} element={<CommunityLayout />}>
+      <Route
+        path="communities"
+        element={
+          <RequireAuth>
+            <CommunityListPage />
+          </RequireAuth>
+        }
+      />
+      <Route
+        path="resources"
+        element={
+          <RequireAuth>
+            <ResourceListPage />
           </RequireAuth>
         }
       />

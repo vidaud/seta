@@ -12,7 +12,10 @@ import {
 } from '@mantine/core'
 import { useParams } from 'react-router-dom'
 
-import { deleteResourceByID, useResourceID } from '../../../../../../api/communities/resource'
+import {
+  deleteResourceByID,
+  useResourceID
+} from '../../../../../../api/resources/manage/my-resource'
 import { environment } from '../../../../../../environments/environment'
 import CommunitiesLoading from '../../../common/SuggestionsLoading'
 
@@ -59,7 +62,7 @@ const ViewMyResource = () => {
   }
 
   const deleteResource = () => {
-    deleteResourceByID(rows?.community_id, rows?.resource_id)
+    deleteResourceByID(rows?.resource_id, rows?.community_id)
   }
 
   return (
@@ -77,9 +80,6 @@ const ViewMyResource = () => {
               <table className={classes.table}>
                 <tbody>
                   <tr>
-                    <td className={classes.td}>
-                      <Text className={classes.text}>Membership: {rows?.access}</Text>
-                    </td>
                     <td className={classes.td}>
                       <Text className={classes.text}>Status: {rows?.status}</Text>
                     </td>

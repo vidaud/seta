@@ -10,8 +10,8 @@ const mockdata = [
     icon: IconNotes,
     initiallyOpened: true,
     links: [
-      { label: 'Communities', link: '/communities/list' },
-      { label: 'Resources', link: '/' }
+      { label: 'Communities', link: '/discover/communities' },
+      { label: 'Resources', link: '/discover/resources' }
     ]
   },
   {
@@ -19,7 +19,7 @@ const mockdata = [
     icon: IconCalendarStats,
     links: [
       { label: 'My Communities', link: '/communities/my-list' },
-      { label: 'My Resources', link: '/' }
+      { label: 'My Resources', link: '/communities/my-resources' }
     ]
   }
 ]

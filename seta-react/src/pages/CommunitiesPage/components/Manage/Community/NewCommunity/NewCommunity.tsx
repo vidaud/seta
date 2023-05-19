@@ -12,7 +12,7 @@ import {
   Breadcrumbs
 } from '@mantine/core'
 
-import { createCommunity } from '../../../../../../api/communities/community'
+import { createCommunity } from '../../../../../../api/communities/manage/my-community'
 import type { CommunityValues } from '../../community-context'
 import { useCommunity, CommunityFormProvider } from '../../community-context'
 
