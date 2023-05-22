@@ -92,7 +92,7 @@ def suggestion_update_job():
 
 
 def gen_data(crc):
-    print("suggestion indexing started", flush=True)
+    print("suggestions indexing started", flush=True)
 
     with open(config.MODELS_PATH + config.WORD2VEC_JSON_EXPORT) as json_file:
         data = json.load(json_file)
@@ -110,11 +110,11 @@ def gen_data(crc):
 def delete_all_suggestion(crc):
     if crc:
         print("suggestion delete started", flush=True)
-        query = {"query": {"bool": {"must": [{"match": {"crc.keyword": crc}}]}}}
+        query = {"bool": {"must": [{"match": {"crc.keyword": crc}}]}}
         es = Elasticsearch("http://" + config.ES_HOST, verify_certs=False, request_timeout=300)
-        res = es.delete_by_query(index=config.INDEX_SUGGESTION, body=query, wait_for_completion=False)
+        res = es.delete_by_query(index=config.INDEX_SUGGESTION, query=query, wait_for_completion=False)
         print(res, flush=True)
-        print("suggestion delete finished", flush=True)
+        print("suggestion deleted", flush=True)
 
 
 def seta_es_init_map():
@@ -136,6 +136,7 @@ def verify_data_mapping(host, index, es_session, data_format, headers, mapping_f
     crc_value, crc_id = get_crc_from_es(es, index, "crc_data_mapping")
 
     if crc != crc_value:
+        print("New mapping found!", flush=True)
         print("mapping update started", flush=True)
         crc_mapping = {"crc_data_mapping": crc}
 
