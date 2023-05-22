@@ -15,13 +15,13 @@ const compareRanges = (range1: RangeValue, range2?: RangeValue | null): boolean 
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const statusReducer = (status: FilterStatusInfo, action: any): FilterStatusInfo => {
+  if (action.type === 'replace') {
+    return action.value
+  }
+
   const info = status.copy()
 
   switch (action.type) {
-    case 'replace': {
-      return action.value
-    }
-
     case 'chunk_changed': {
       if (action.value !== status.appliedFilter?.chunkValue) {
         info.chunkModified = 1

@@ -34,8 +34,8 @@ import LoginPage from '../../pages/LoginPage'
 import NotFoundPage from '../../pages/NotFoundPage'
 import ProfilePage from '../../pages/ProfilePage'
 import SearchPage from '../../pages/SearchPage/SearchPage'
-import SearchWithFilters from '../../pages/SearchWithFilters'
 import SearchPageNew from '../../pages/SearchPageNew'
+import SearchWithFilters from '../../pages/SearchWithFilters'
 
 const ROOT_PATH = '/'
 const COMMUNITY_PATH = '/communities'
@@ -54,9 +54,7 @@ const routes = createRoutesFromElements(
         </RequireAuth>
       }
     />
-
     <Route path="search-with-filters" element={<SearchWithFilters />} />
-    
     <Route
       path="search"
       element={
