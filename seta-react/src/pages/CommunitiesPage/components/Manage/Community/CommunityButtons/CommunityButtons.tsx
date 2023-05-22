@@ -1,7 +1,7 @@
 import { Group, ActionIcon, Menu } from '@mantine/core'
 import { IconDots, IconPencil, IconTrash, IconEye, IconSettings } from '@tabler/icons-react'
 
-import { deleteCommunityByID } from '../../../../../../api/communities/community'
+import { deleteCommunityByID } from '../../../../../../api/communities/manage/my-community'
 import { environment } from '../../../../../../environments/environment'
 import InviteMember from '../InviteMemberModal/InviteMemberModal'
 

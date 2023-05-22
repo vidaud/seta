@@ -1,26 +1,25 @@
 import { useEffect, useState } from 'react'
-import { Table, Checkbox, ScrollArea, rem, TextInput, Group } from '@mantine/core'
+import { Table, Checkbox, ScrollArea, rem, TextInput } from '@mantine/core'
 import { IconSearch } from '@tabler/icons-react'
 
-import type { Community } from '~/models/communities/communities'
+import type { Resource } from '~/models/communities/resources'
 
 import { useStyles } from './constants'
 
-import { useCommunities } from '../../../../../../api/communities/manage/my-communities'
+import { useMyResources } from '../../../../../../api/resources/manage/my-resources'
 import { ComponentEmpty, ComponentError } from '../../../common'
 import ComponentLoading from '../../../common/ComponentLoading'
-import { Th, sortCommunityData } from '../../../community-utils'
-import CommunityButtons from '../CommunityButtons/CommunityButtons'
-import DeleteCommunity from '../DeleteCommunityButton/DeleteCommunityButton'
+import { Th, sortResourceData } from '../../../resource-utils'
+import ResourceButtons from '../ResourceButtons/ResourceButtons'
 
-const MyCommunityList = () => {
+const MyResourceList = () => {
   const { classes, cx } = useStyles()
   const [selection, setSelection] = useState(['1'])
   const [search, setSearch] = useState('')
-  const [sortBy, setSortBy] = useState<keyof Community | null>(null)
+  const [sortBy, setSortBy] = useState<keyof Resource | null>(null)
   const [reverseSortDirection, setReverseSortDirection] = useState(false)
   const [scrolled, setScrolled] = useState(false)
-  const { data, isLoading, error, refetch } = useCommunities()
+  const { data, isLoading, error, refetch } = useMyResources()
   const [sortedData, setSortedData] = useState(data)
 
   useEffect(() => {
@@ -43,53 +42,52 @@ const MyCommunityList = () => {
     return <ComponentLoading />
   }
 
-  const setSorting = (field: keyof Community) => {
+  const setSorting = (field: keyof Resource) => {
     const reversed = field === sortBy ? !reverseSortDirection : false
 
     setReverseSortDirection(reversed)
     setSortBy(field)
-    setSortedData(sortCommunityData(data, { sortBy: field, reversed, search }))
+    setSortedData(sortResourceData(data, { sortBy: field, reversed, search }))
   }
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = event.currentTarget
 
     setSearch(value)
-    setSortedData(
-      sortCommunityData(data, { sortBy, reversed: reverseSortDirection, search: value })
-    )
+    setSortedData(sortResourceData(data, { sortBy, reversed: reverseSortDirection, search: value }))
   }
 
-  const toggleRow = (community_id: string) =>
+  const toggleRow = (resource_id: string) =>
     setSelection(current =>
-      current.includes(community_id)
-        ? current.filter(item => item !== community_id)
-        : [...current, community_id]
+      current.includes(resource_id)
+        ? current.filter(item => item !== resource_id)
+        : [...current, resource_id]
     )
   const toggleAll = () =>
     setSelection(current =>
-      current.length === data.length ? [] : data.map(item => item.community_id)
+      current.length === data.length ? [] : data.map(item => item.resource_id)
     )
   const rows = sortedData?.map(item => {
-    const selected = selection.includes(item.community_id)
+    const selected = selection.includes(item.resource_id)
 
     return (
-      <tr key={item.community_id} className={cx({ [classes.rowSelected]: selected })}>
+      <tr key={item.resource_id} className={cx({ [classes.rowSelected]: selected })}>
         <td>
           <Checkbox
-            checked={selection.includes(item.community_id)}
-            onChange={() => toggleRow(item.community_id)}
+            checked={selection.includes(item.resource_id)}
+            onChange={() => toggleRow(item.resource_id)}
             transitionDuration={0}
           />
         </td>
+        <td>{item.resource_id}</td>
         <td>{item.community_id}</td>
         <td>{item.title}</td>
-        <td>{item.description}</td>
-        <td>{item.data_type}</td>
-        <td>{item.membership}</td>
+        <td>{item.abstract}</td>
+        <td>{item.created_at.toString()}</td>
+        <td>{item.creator_id}</td>
         <td>{item.status}</td>
         <td>
-          <CommunityButtons item={item} />
+          <ResourceButtons item={item} />
         </td>
       </tr>
     )
@@ -104,9 +102,6 @@ const MyCommunityList = () => {
         value={search}
         onChange={handleSearchChange}
       />
-      <Group display={selection.length > 1 ? 'block' : 'none'}>
-        <DeleteCommunity />
-      </Group>
       <Table
         horizontalSpacing="md"
         verticalSpacing="xs"
@@ -125,11 +120,18 @@ const MyCommunityList = () => {
               />
             </th>
             <Th
+              sorted={sortBy === 'resource_id'}
+              reversed={reverseSortDirection}
+              onSort={() => setSorting('resource_id')}
+            >
+              Resource
+            </Th>
+            <Th
               sorted={sortBy === 'community_id'}
               reversed={reverseSortDirection}
               onSort={() => setSorting('community_id')}
             >
-              ID
+              Community
             </Th>
             <Th
               sorted={sortBy === 'title'}
@@ -139,23 +141,23 @@ const MyCommunityList = () => {
               Title
             </Th>
             <Th
-              sorted={sortBy === 'description'}
+              sorted={sortBy === 'abstract'}
               reversed={reverseSortDirection}
-              onSort={() => setSorting('description')}
+              onSort={() => setSorting('abstract')}
             >
               Description
             </Th>
             <Th
-              sorted={sortBy === 'data_type'}
+              sorted={sortBy === 'created_at'}
               reversed={reverseSortDirection}
-              onSort={() => setSorting('data_type')}
+              onSort={() => setSorting('created_at')}
             >
               Data Type
             </Th>
             <Th
-              sorted={sortBy === 'membership'}
+              sorted={sortBy === 'creator_id'}
               reversed={reverseSortDirection}
-              onSort={() => setSorting('membership')}
+              onSort={() => setSorting('creator_id')}
             >
               Membership
             </Th>
@@ -175,4 +177,4 @@ const MyCommunityList = () => {
   )
 }
 
-export default MyCommunityList
+export default MyResourceList

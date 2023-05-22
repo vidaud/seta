@@ -13,9 +13,9 @@ import {
 } from '@mantine/core'
 import { useParams } from 'react-router-dom'
 
-import { useCommunityID } from '../../../../../../api/communities/community'
+import { useCommunityID } from '../../../../../../api/communities/manage/my-community'
 import { environment } from '../../../../../../environments/environment'
-import CommunitiesLoading from '../../../common/SuggestionsLoading'
+import ComponentLoading from '../../../common/ComponentLoading'
 import changeRequestAttributes from '../../../Dashboard/ChangeRequests/changeRequestAttributes.json'
 import ChangeRequests from '../../../Dashboard/ChangeRequests/ChangeRequests'
 import joinAttributes from '../../../Dashboard/LastJoinRequests/joinAttributes.json'
@@ -63,7 +63,7 @@ const ManageCommunity = () => {
   }, [data, row])
 
   if (isLoading || !data) {
-    return <CommunitiesLoading />
+    return <ComponentLoading />
   }
 
   return (
@@ -125,9 +125,7 @@ const ManageCommunity = () => {
             </Paper>
           </Grid.Col>
           <Grid.Col span={12}>
-            <Paper withBorder p="md" radius="md" key="Recent Resources">
-              <CommunityResources data={row?.resources} />
-            </Paper>
+            <CommunityResources data={row?.resources} />
           </Grid.Col>
         </Grid>
       </div>

@@ -47,7 +47,7 @@ export const Th = ({ children, reversed, sorted, onSort }: ThProps) => {
   )
 }
 
-export const filterData = (data: Community[], search: string) => {
+export const filterCommunityData = (data: Community[], search: string) => {
   const query = search.toLowerCase().trim()
 
   return data.filter(item =>
@@ -55,17 +55,17 @@ export const filterData = (data: Community[], search: string) => {
   )
 }
 
-export const sortData = (
+export const sortCommunityData = (
   data: Community[],
   payload: { sortBy: keyof Community | null; reversed: boolean; search: string }
 ) => {
   const { sortBy } = payload
 
   if (!sortBy) {
-    return filterData(data, payload.search)
+    return filterCommunityData(data, payload.search)
   }
 
-  return filterData(
+  return filterCommunityData(
     [...data].sort((a, b) => {
       if (payload.reversed) {
         return b[sortBy.toString()].localeCompare(a[sortBy.toString()])

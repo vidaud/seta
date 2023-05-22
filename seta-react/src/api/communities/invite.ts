@@ -23,9 +23,9 @@ export type CreateInvitationAPI = {
 
 export const cacheKey = (id?: string) => ['resources', id]
 
-export const getInvite = async (id?: string): Promise<InviteResponse> => {
-  const { data } = await community_api.get<InviteResponse>(
-    `${environment.COMMUNITIES_API_PATH}/${id}`
+export const getInvite = async (id?: string): Promise<InviteResponse[]> => {
+  const { data } = await community_api.get<InviteResponse[]>(
+    `${environment.COMMUNITIES_API_PATH}/${id}/invites`
   )
 
   return data

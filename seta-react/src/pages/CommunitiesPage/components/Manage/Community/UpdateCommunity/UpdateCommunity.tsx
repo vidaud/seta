@@ -14,8 +14,11 @@ import {
 } from '@mantine/core'
 import { useParams } from 'react-router-dom'
 
-import { updateCommunity, useCommunityID } from '../../../../../../api/communities/community'
-import CommunitiesLoading from '../../../common/SuggestionsLoading'
+import {
+  updateCommunity,
+  useCommunityID
+} from '../../../../../../api/communities/manage/my-community'
+import ComponentLoading from '../../../common/ComponentLoading'
 import type { CommunityValues } from '../../community-context'
 import { CommunityFormProvider, useCommunity } from '../../community-context'
 
@@ -60,7 +63,7 @@ const UpdateCommunity = () => {
   }, [data])
 
   if (isLoading || !data) {
-    return <CommunitiesLoading />
+    return <ComponentLoading />
   }
 
   const handleSubmit = (values: CommunityValues) => {

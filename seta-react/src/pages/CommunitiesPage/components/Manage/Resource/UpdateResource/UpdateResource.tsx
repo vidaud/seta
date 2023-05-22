@@ -14,8 +14,8 @@ import {
 } from '@mantine/core'
 import { useParams } from 'react-router-dom'
 
-import { updateResource, useResourceID } from '../../../../../../api/communities/resource'
-import CommunitiesLoading from '../../../common/SuggestionsLoading'
+import { updateResource, useResourceID } from '../../../../../../api/resources/manage/my-resource'
+import ComponentLoading from '../../../common/ComponentLoading'
 import type { ResourceValues } from '../../resource-context'
 import { ResourceFormProvider, useResource } from '../../resource-context'
 
@@ -60,7 +60,7 @@ const UpdateResource = () => {
   }, [data])
 
   if (isLoading || !data) {
-    return <CommunitiesLoading />
+    return <ComponentLoading />
   }
 
   const handleSubmit = (values: ResourceValues) => {

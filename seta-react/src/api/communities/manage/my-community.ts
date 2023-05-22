@@ -1,11 +1,11 @@
 import { useQuery } from '@tanstack/react-query'
 import { getCookie } from 'typescript-cookie'
 
-import community_api from './api'
-import type { InviteResponse } from './invite'
-import type { ResourceResponse } from './resource'
-
-import { environment } from '../../environments/environment'
+import { environment } from '../../../environments/environment'
+import type { ResourceResponse } from '../../resources/manage/my-resource'
+import community_api from '../api'
+import type { InviteResponse } from '../invite'
+import type { MembershipResponse } from '../membership'
 
 export type CommunityResponse = {
   community_id: string
@@ -26,6 +26,7 @@ export type Community = {
   communities: CommunityResponse
   resources: ResourceResponse[]
   invites: InviteResponse[]
+  members: MembershipResponse[]
 }
 
 export type CreateCommunityAPI = {
@@ -72,10 +73,15 @@ const getCommunity = async (id?: string): Promise<Community> => {
     `${environment.COMMUNITIES_API_PATH}/${id}/invites`
   )
 
+  const members = await community_api.get<MembershipResponse[]>(
+    `${environment.COMMUNITIES_API_PATH}/${id}/memberships`
+  )
+
   const data = {
     communities: communities.data,
     resources: resources.data,
-    invites: invites.data
+    invites: invites.data,
+    members: members.data
   }
 
   return data
@@ -108,6 +114,7 @@ export const createCommunity = async (values?: CreateCommunityAPI) => {
     })
     .then(response => {
       if (response.status === 201) {
+        console.log(environment.COMMUNITIES_API_PATH)
         window.location.href = `${environment.COMMUNITIES_API_PATH}/my-list`
       }
     })
