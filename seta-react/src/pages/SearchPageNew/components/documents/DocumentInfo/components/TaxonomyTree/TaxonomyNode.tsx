@@ -1,24 +1,23 @@
 import { clsx } from '@mantine/core'
 
 import type { ClassNameProp } from '~/types/children-props'
+import type { Taxonomy } from '~/types/search/documents'
 
 import * as S from './styles'
 
-import type { TaxonomyTreeNode } from '../../utils/taxonomy-tree'
-
 type Props = ClassNameProp & {
-  node: TaxonomyTreeNode
+  taxonomy: Taxonomy
 }
 
-const TaxonomyNode = ({ className, node }: Props) => {
-  const { children, label } = node
+const TaxonomyNode = ({ className, taxonomy }: Props) => {
+  const { subcategories, label } = taxonomy
 
-  const nodeClass = clsx(className, { leaf: !children.length })
+  const nodeClass = clsx(className, { leaf: !subcategories.length })
 
-  const childrenContainer = !!children.length && (
+  const childrenContainer = !!subcategories.length && (
     <div>
-      {node.children.map(child => (
-        <TaxonomyNode key={child.code} node={child} />
+      {subcategories.map(child => (
+        <TaxonomyNode key={child.code} taxonomy={child} />
       ))}
     </div>
   )

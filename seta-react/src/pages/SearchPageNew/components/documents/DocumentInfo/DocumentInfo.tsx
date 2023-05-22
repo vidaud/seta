@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import { Anchor, Flex, Progress, Text, Tooltip, clsx } from '@mantine/core'
+import { Anchor, Flex, Progress, Text, clsx } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 import { FaChevronDown } from 'react-icons/fa'
 
@@ -29,34 +29,31 @@ const DocumentInfo = ({ document, queryTerms }: Props) => {
   const [titleHl, abstractHl] = useHighlight(queryTerms, title, abstract)
 
   const chevronClass = clsx({ open: detailsOpen })
+  const openClass = clsx({ open: detailsOpen })
 
   const hasDetails = !!taxonomy?.length || !!chunk_text
 
   const toggleIcon = hasDetails && (
-    <div css={S.chevron} className={chevronClass} onClick={toggle}>
+    <div css={S.chevron} className={chevronClass}>
       <FaChevronDown />
     </div>
   )
 
   return (
-    <div>
-      <div css={S.header}>
-        <Tooltip label={`Score: ${score}`}>
-          <Progress size="xl" value={score} color="teal" />
-        </Tooltip>
+    <div css={S.root} className={openClass}>
+      <div css={S.header} data-details={hasDetails} onClick={toggle}>
+        <Progress size="xl" value={score} color="teal" />
 
-        <Tooltip label={`"${title}"`} position="top-start">
-          <div css={S.title} data-details={hasDetails} onClick={toggle}>
-            <Text fz="xl" fw={600} truncate="end">
-              {titleHl}
-            </Text>
-          </div>
-        </Tooltip>
+        <div css={S.title}>
+          <Text fz="xl" fw={600} truncate={detailsOpen ? undefined : 'end'}>
+            {titleHl}
+          </Text>
+        </div>
 
         {toggleIcon}
       </div>
 
-      <Flex direction="column" gap="xs" css={S.info}>
+      <Flex direction="column" gap="xs" data-info css={S.info}>
         <div>{abstractHl}</div>
 
         <div css={S.path}>{path}</div>

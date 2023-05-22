@@ -14,14 +14,16 @@ type Props = ClassNameProp & {
 }
 
 const DocumentDetails = ({ className, open, taxonomy, chunkText, queryTerms }: Props) => {
-  if (!taxonomy && !chunkText) {
+  const hasTaxonomy = !!taxonomy?.length
+
+  if (!hasTaxonomy && !chunkText) {
     return null
   }
 
   return (
     <Collapse className={className} in={open}>
       <Flex gap="md">
-        {taxonomy && <TaxonomyTree taxonomy={taxonomy} />}
+        {hasTaxonomy && <TaxonomyTree taxonomy={taxonomy} />}
         {chunkText && <ChunkPreview text={chunkText} queryTerms={queryTerms} />}
       </Flex>
     </Collapse>
