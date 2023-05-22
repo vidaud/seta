@@ -1,10 +1,11 @@
 import type { AxiosRequestConfig, AxiosResponse } from 'axios'
 
-// We're using console.log() to log the request and response in the browser console.
-// eslint-disable-next-line no-console
-const log = console.log
-
 const dontLog = !import.meta.env.DEV || import.meta.env.VITE_API_DISABLE_LOGGER === 'true'
+
+// We're using console.log() to log the request and response in the browser console.
+// During build, the console.log() statements will be removed by esbuild.
+// eslint-disable-next-line no-console
+const log = (console.log && console.log.bind(console)) || undefined
 
 type Method = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH'
 
@@ -43,7 +44,7 @@ export const logRequest = (config: AxiosRequestConfig) => {
   const { url, method } = config
   const methodValue = method?.toUpperCase() ?? 'GET'
 
-  log(`%c${methodValue} %c${url}`, color('gray3'), color('gray2'))
+  log?.(`%c${methodValue} %c${url}`, color('gray3'), color('gray2'))
 }
 
 export const logResponse = (response: AxiosResponse) => {
@@ -60,7 +61,7 @@ export const logResponse = (response: AxiosResponse) => {
   const roundedSeconds = Math.round(duration / 10) / 100
   const durationFormatted = duration >= 1000 ? `${roundedSeconds}s` : `${duration}ms`
 
-  log(
+  log?.(
     `%c${methodValue} %c${url} %c${status} ${statusText} %c${durationFormatted}  `,
     color(methodValue),
     color('gray'),
