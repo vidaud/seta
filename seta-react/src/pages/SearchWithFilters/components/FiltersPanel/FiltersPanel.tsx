@@ -1,12 +1,18 @@
 import { useState } from 'react'
-import { Container, Flex, Accordion, ScrollArea, rem } from '@mantine/core'
+import { Container, Flex, Accordion, ScrollArea, Indicator, rem, Text } from '@mantine/core'
+import { useLogger } from '@mantine/hooks'
 
 import useFilter from './useFilter'
 
 import { buildFiltersContract } from '../../custom/map-query'
 import type { AdvancedFilterProps } from '../../types/contracts'
 import type { RangeValue, SelectionKeys } from '../../types/filters'
-import { ViewFilterInfo, TextChunkValues, FilterStatus } from '../../types/filters'
+import {
+  ViewFilterInfo,
+  TextChunkValues,
+  FilterStatus,
+  FilterStatusInfo
+} from '../../types/filters'
 import ApplyFilters from '../ApplyFilters'
 import DataSourceFilter from '../DataSourceFilter'
 import TaxonomyFilter from '../TaxonomyFilter'
@@ -34,7 +40,7 @@ const FiltersPanel = ({ queryContract, onApplyFilter }: AdvancedFilterProps) => 
   const buildFilterInfo = (): ViewFilterInfo => {
     const fi = new ViewFilterInfo()
 
-    fi.chunkValue = TextChunkFilter[chunkText]
+    fi.chunkValue = TextChunkValues[chunkText]
     fi.rangeValueEnabled = enableDateFilter
     fi.rangeValue = enableDateFilter ? rangeValue : undefined
 
@@ -65,10 +71,13 @@ const FiltersPanel = ({ queryContract, onApplyFilter }: AdvancedFilterProps) => 
       taxonomySelectedKeys
     )
 
-    const newStatus = status.copy()
+    const newStatus = new FilterStatusInfo()
 
     newStatus.status = FilterStatus.PROCESSING
+    newStatus.prevStatus = FilterStatus.APPLIED
+
     newStatus.appliedFilter = buildFilterInfo()
+
     dispatchStatus({ type: 'replace', value: newStatus })
 
     onApplyFilter(contract)
@@ -107,10 +116,16 @@ const FiltersPanel = ({ queryContract, onApplyFilter }: AdvancedFilterProps) => 
     setEnableDateFilter(value)
   }
 
+  useLogger('filters panel', [status])
+
   return (
     <Flex direction="column" align="center" gap="md">
       <ApplyFilters status={status} onApplyFilters={handleApplyFilters} />
-      <TextChunkFilter value={chunkText} onChange={handleTextChunkChange} />
+      <TextChunkFilter
+        value={chunkText}
+        onChange={handleTextChunkChange}
+        modified={(status.chunkModified ?? 0) > 0}
+      />
       <Container w={rem(350)} mb={rem(10)}>
         <YearsRangeFilter
           enableDateFilter={enableDateFilter}
@@ -119,6 +134,7 @@ const FiltersPanel = ({ queryContract, onApplyFilter }: AdvancedFilterProps) => 
           rangeBoundaries={rangeBoundaries}
           onValueChange={setRangeValue}
           onValueChangeEnd={handleRangeChange}
+          modified={(status.rangeModified ?? 0) > 0}
         />
       </Container>
 
@@ -130,7 +146,11 @@ const FiltersPanel = ({ queryContract, onApplyFilter }: AdvancedFilterProps) => 
         variant="separated"
       >
         <Accordion.Item value="sources-tree">
-          <Accordion.Control>Data sources</Accordion.Control>
+          <Accordion.Control>
+            <Indicator inline pr={10} color="orange" disabled={!status.sourceModified}>
+              <Text span>Data sources</Text>
+            </Indicator>
+          </Accordion.Control>
           <Accordion.Panel>
             <ScrollArea.Autosize mx="auto" mah={rem(220)}>
               <DataSourceFilter
@@ -142,7 +162,11 @@ const FiltersPanel = ({ queryContract, onApplyFilter }: AdvancedFilterProps) => 
           </Accordion.Panel>
         </Accordion.Item>
         <Accordion.Item value="taxonomy-tree">
-          <Accordion.Control>Taxonomies</Accordion.Control>
+          <Accordion.Control>
+            <Indicator inline pr={10} color="orange" disabled={!status.taxonomyModified}>
+              <Text span>Taxonomies</Text>
+            </Indicator>
+          </Accordion.Control>
           <Accordion.Panel>
             <ScrollArea.Autosize mx="auto" mah={rem(220)}>
               <TaxonomyFilter

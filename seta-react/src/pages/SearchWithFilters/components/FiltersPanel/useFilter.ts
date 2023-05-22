@@ -44,10 +44,7 @@ const useFilter = (queryContract?: QueryAggregationContract | null) => {
     setResourceNodes(resources)
     setTaxonomyNodes(taxonimies)
 
-    filterStatusInfo.prevStatus = FilterStatus.APPLIED
-    filterStatusInfo.status = FilterStatus.APPLIED
-
-    dispatchStatus({ type: 'replace', value: filterStatusInfo })
+    dispatchStatus({ type: 'set-status', value: FilterStatus.APPLIED })
   }
 
   return {
