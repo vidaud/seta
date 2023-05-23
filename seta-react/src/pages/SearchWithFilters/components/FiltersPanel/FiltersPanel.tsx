@@ -44,7 +44,7 @@ const FiltersPanel = ({ queryContract, onApplyFilter }: AdvancedFilterProps) => 
       otherItems
     )
 
-    dispatchStatus({ type: 'set-status', value: FilterStatus.PROCESSING })
+    dispatchStatus({ type: 'set_status', value: FilterStatus.PROCESSING })
 
     onApplyFilter(contract)
   }

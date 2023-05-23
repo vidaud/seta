@@ -73,6 +73,10 @@ export const statusReducer = (status: FilterStatusInfo, action: any): FilterStat
 
       return info
     }
+
+    default: {
+      throw Error('Unknown action: ' + action.type)
+    }
   }
 
   if (info.modified() === 0) {
