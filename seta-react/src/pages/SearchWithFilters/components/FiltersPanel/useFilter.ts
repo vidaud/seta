@@ -1,6 +1,6 @@
-/* eslint-disable max-statements */
 import { useState, useReducer } from 'react'
 
+import { itemsReducer } from './items-reducer'
 import { statusReducer } from './status-reducer'
 
 import { parseQueryContract } from '../../custom/map-filters'
@@ -29,13 +29,15 @@ const useFilter = (queryContract?: QueryAggregationContract | null) => {
   const filterStatusInfo = new FilterStatusInfo()
 
   filterStatusInfo.prevStatus = FilterStatus.UNKNOWN
+
   filterStatusInfo.appliedFilter = new ViewFilterInfo()
 
   filterStatusInfo.appliedFilter.chunkValue = TextChunkValues[chunkText]
-  filterStatusInfo.appliedFilter.rangeValueEnabled = false
 
   const [status, dispatchStatus] = useReducer(statusReducer, filterStatusInfo)
+  const [otherItems, dispatchOtherItems] = useReducer(itemsReducer, undefined)
 
+  //!Yes, it compares the pointers, not the content
   if (queryContract !== prevContract) {
     setPrevContract(queryContract)
 
@@ -45,6 +47,7 @@ const useFilter = (queryContract?: QueryAggregationContract | null) => {
     setTaxonomyNodes(taxonimies)
 
     dispatchStatus({ type: 'set-status', value: FilterStatus.APPLIED })
+    dispatchOtherItems({ type: 'set-applied' })
   }
 
   return {
@@ -58,7 +61,9 @@ const useFilter = (queryContract?: QueryAggregationContract | null) => {
     resourceNodes,
     taxonomyNodes,
     status,
-    dispatchStatus
+    dispatchStatus,
+    otherItems,
+    dispatchOtherItems
   }
 }
 

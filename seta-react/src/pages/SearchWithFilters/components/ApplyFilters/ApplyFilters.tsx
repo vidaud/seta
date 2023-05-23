@@ -45,6 +45,7 @@ const ApplyFilters = ({ status, onApplyFilters }: Props) => {
         size="lg"
         variant="outline"
         onClick={onApplyFilters}
+        disabled={processing}
       >
         Apply Filters
       </Button>
