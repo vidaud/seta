@@ -120,18 +120,22 @@ def delete_all_suggestion(crc):
 def seta_es_init_map():
     es_session = requests.Session()
     mapping_file = config.MODELS_PATH + config.ES_INIT_DATA_CONFIG_FILE
+    mapping_crc_file = config.MODELS_PATH + config.CRC_ES_INIT_DATA_CONFIG_FILE
     for index in config.INDEX:
-        check_index_exists_or_create_it(config.ES_HOST, mapping_file, es_session, index)
+        check_index_exists_or_create_it(config.ES_HOST, mapping_file, mapping_crc_file, es_session, index)
     # suggestion index
     mapping_file_suggestion = config.MODELS_PATH + config.ES_SUGGESTION_INIT_DATA_CONFIG_FILE
-    check_index_exists_or_create_it(config.ES_HOST, mapping_file_suggestion, es_session, config.INDEX_SUGGESTION)
+    mapping_crc_file_suggestion = config.MODELS_PATH + config.CRC_ES_SUGGESTION_INIT_DATA_CONFIG_FILE
+    check_index_exists_or_create_it(config.ES_HOST, mapping_file_suggestion, mapping_crc_file_suggestion, es_session,
+                                    config.INDEX_SUGGESTION)
 
 
-def verify_data_mapping(host, index, es_session, data_format, headers, mapping_file):
+def verify_data_mapping(host, index, es_session, data_format, headers, mapping_crc_file):
     # every time data mapping is changed index is deleted and recreate
     es = Elasticsearch("http://" + host, verify_certs=False, request_timeout=300, max_retries=10,
                        retry_on_timeout=True)
-    crc = getsha256(mapping_file)
+
+    crc = open(mapping_crc_file, 'r').read()
 
     crc_value, crc_id = get_crc_from_es(es, index, "crc_data_mapping")
 
@@ -153,7 +157,7 @@ def create_index(es_session, host, index, data_format, headers):
     print(resp.content, flush=True)
 
 
-def check_index_exists_or_create_it(host, mapping_file, es_session, index):
+def check_index_exists_or_create_it(host, mapping_file, mapping_crc_file, es_session, index):
     headers = {"Content-Type": "application/json"}
     f = open(mapping_file, 'r')
     data_format = f.read()
@@ -161,7 +165,7 @@ def check_index_exists_or_create_it(host, mapping_file, es_session, index):
     resp = es_session.get("http://" + host + "/" + index + "?pretty")
     if resp.ok:
         print("ElasticSearch index mapping exists: ", index, flush=True)
-        verify_data_mapping(host, index, es_session, data_format, headers, mapping_file)
+        verify_data_mapping(host, index, es_session, data_format, headers, mapping_crc_file)
     else:
         create_index(es_session, host, index, data_format, headers)
 

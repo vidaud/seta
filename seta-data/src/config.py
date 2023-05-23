@@ -5,7 +5,9 @@ class Config:
     
     ES_HOST = None
     ES_INIT_DATA_CONFIG_FILE = "data-mapping.json"
+    CRC_ES_INIT_DATA_CONFIG_FILE = "data-mapping.crc"
     ES_SUGGESTION_INIT_DATA_CONFIG_FILE = "suggestion-data-mapping.json"
+    CRC_ES_SUGGESTION_INIT_DATA_CONFIG_FILE = "suggestion-data-mapping.crc"
 
     INDEX = ["seta-public-000001", "seta-private-000001"]
     INDEX_SUGGESTION = "seta-suggestion-000001"
