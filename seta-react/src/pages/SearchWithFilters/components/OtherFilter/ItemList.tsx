@@ -1,4 +1,4 @@
-import { Grid, Text, Box, Tooltip, ActionIcon, Center } from '@mantine/core'
+import { Grid, Text, Box, Tooltip, ActionIcon, Center, Divider } from '@mantine/core'
 import { IconTrash } from '@tabler/icons-react'
 
 import type { OtherItem } from '../../types/other-filter'
@@ -22,7 +22,11 @@ const ItemList = ({ data, onDeleteItem }: Props) => {
     return (
       <Grid key={item.id} gutter="xs" align="center">
         <Grid.Col span={5}>
-          <Text span>{item.name}</Text>
+          <Center>
+            <Text span fw={500}>
+              {item.name}
+            </Text>
+          </Center>
         </Grid.Col>
         <Grid.Col span={1}>
           <Center>
@@ -32,20 +36,32 @@ const ItemList = ({ data, onDeleteItem }: Props) => {
           </Center>
         </Grid.Col>
         <Grid.Col span={5}>
-          <Text span>{item.value}</Text>
+          <Center>
+            <Text span fw={500}>
+              {item.value}
+            </Text>
+          </Center>
         </Grid.Col>
         <Grid.Col span={1}>
           <Tooltip label="Delete item" withinPortal>
-            <ActionIcon onClick={handleClick}>
-              <IconTrash />
+            <ActionIcon onClick={handleClick} color="red">
+              <IconTrash size="1rem" stroke={1.5} />
             </ActionIcon>
           </Tooltip>
+        </Grid.Col>
+        <Grid.Col span={12} pt={0}>
+          <Divider variant="dotted" />
         </Grid.Col>
       </Grid>
     )
   })
 
-  return <Box>{listItems}</Box>
+  return (
+    <Box>
+      {visibleItems !== undefined && visibleItems.length > 0 && <Divider mt={10} mb={5} />}
+      {listItems}
+    </Box>
+  )
 }
 
 export default ItemList

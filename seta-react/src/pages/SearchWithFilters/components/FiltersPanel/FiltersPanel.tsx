@@ -7,12 +7,7 @@ import useFilter from './useFilter'
 import { buildFiltersContract } from '../../custom/map-query'
 import type { AdvancedFilterProps } from '../../types/contracts'
 import type { RangeValue, SelectionKeys } from '../../types/filters'
-import {
-  ViewFilterInfo,
-  TextChunkValues,
-  FilterStatus,
-  FilterStatusInfo
-} from '../../types/filters'
+import { TextChunkValues, FilterStatus } from '../../types/filters'
 import ApplyFilters from '../ApplyFilters'
 import DataSourceFilter from '../DataSourceFilter'
 import OtherFilter from '../OtherFilter/OtherFilter'
@@ -38,50 +33,18 @@ const FiltersPanel = ({ queryContract, onApplyFilter }: AdvancedFilterProps) => 
     dispatchStatus,
     otherItems,
     dispatchOtherItems
-  } = useFilter(queryContract)
-
-  const buildFilterInfo = (): ViewFilterInfo => {
-    const fi = new ViewFilterInfo()
-
-    fi.chunkValue = TextChunkValues[chunkText]
-    fi.rangeValueEnabled = enableDateFilter
-    fi.rangeValue = enableDateFilter ? rangeValue : undefined
-
-    if (resourceSelectedKeys) {
-      fi.sourceValues = []
-
-      for (const rKey in resourceSelectedKeys) {
-        if (!resourceSelectedKeys[rKey].checked) {
-          continue
-        }
-
-        fi.sourceValues.push({
-          key: rKey,
-          label: rKey,
-          longLabel: rKey
-        })
-      }
-    }
-
-    return fi
-  }
+  } = useFilter(queryContract, resourceSelectedKeys, taxonomySelectedKeys)
 
   const handleApplyFilters = () => {
     const contract = buildFiltersContract(
       chunkText,
       enableDateFilter ? rangeValue : undefined,
       resourceSelectedKeys,
-      taxonomySelectedKeys
+      taxonomySelectedKeys,
+      otherItems
     )
 
-    const newStatus = new FilterStatusInfo()
-
-    newStatus.status = FilterStatus.PROCESSING
-    newStatus.prevStatus = FilterStatus.APPLIED
-
-    newStatus.appliedFilter = buildFilterInfo()
-
-    dispatchStatus({ type: 'replace', value: newStatus })
+    dispatchStatus({ type: 'set-status', value: FilterStatus.PROCESSING })
 
     onApplyFilter(contract)
   }

@@ -52,8 +52,8 @@ const OtherFilter = ({ data, onItemChange }: Props) => {
 
   return (
     <Container fluid>
-      <ItemList data={data} onDeleteItem={handleDeleteItem} />
       <AddItem onAddItem={handleAddItem} />
+      <ItemList data={data} onDeleteItem={handleDeleteItem} />
     </Container>
   )
 }

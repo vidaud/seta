@@ -45,7 +45,8 @@ export type AdvancedFiltersContract = {
   source?: string[]
   collection?: string[]
   reference?: string[]
-  taxonomy_paths?: string[]
+  taxonomy_path?: string[]
+  other?: { name: string; value: string }[]
 }
 
 export type AdvancedFilterProps = {

@@ -60,7 +60,13 @@ const AddItem = ({ onAddItem }: Props) => {
   return (
     <Grid gutter="xs" align="center">
       <Grid.Col span={5}>
-        <TextInput value={name} onChange={handleNameChange} placeholder="name" error={nameError} />
+        <TextInput
+          value={name}
+          onChange={handleNameChange}
+          placeholder="name"
+          error={nameError}
+          aria-label="name"
+        />
       </Grid.Col>
       <Grid.Col span={1}>
         <Center>
@@ -75,12 +81,13 @@ const AddItem = ({ onAddItem }: Props) => {
           onChange={handleValueChange}
           placeholder="value"
           error={valueError}
+          aria-label="value"
         />
       </Grid.Col>
       <Grid.Col span={1}>
         <Tooltip label="Add item" withinPortal>
-          <ActionIcon onClick={handleClick}>
-            <IconCirclePlus />
+          <ActionIcon onClick={handleClick} color="blue">
+            <IconCirclePlus size="1.5rem" stroke={2} />
           </ActionIcon>
         </Tooltip>
       </Grid.Col>

@@ -1,6 +1,9 @@
+/* eslint-disable max-params */
 import type { AdvancedFiltersContract } from '../types/contracts'
 import type { RangeValue, SelectionKeys } from '../types/filters'
 import { TextChunkValues } from '../types/filters'
+import type { OtherItem } from '../types/other-filter'
+import { OtherItemStatus } from '../types/other-filter'
 
 const mapSearchTypeToQuery = (searchType: TextChunkValues): string => {
   return TextChunkValues[searchType]
@@ -56,7 +59,8 @@ export const buildFiltersContract = (
   searchType: TextChunkValues,
   yearsRange?: RangeValue,
   selectedResources?: SelectionKeys | null,
-  selectedTaxonomies?: SelectionKeys | null
+  selectedTaxonomies?: SelectionKeys | null,
+  otherItems?: OtherItem[]
 ): AdvancedFiltersContract => {
   const contract: AdvancedFiltersContract = {
     search_type: mapSearchTypeToQuery(searchType)
@@ -67,11 +71,11 @@ export const buildFiltersContract = (
   }
 
   if (selectedTaxonomies) {
-    contract.taxonomy_paths = []
+    contract.taxonomy_path = []
 
     for (const tKey in selectedTaxonomies) {
       if (selectedTaxonomies[tKey].checked) {
-        contract.taxonomy_paths.push(tKey)
+        contract.taxonomy_path.push(tKey)
       }
     }
   }
@@ -90,6 +94,14 @@ export const buildFiltersContract = (
     if (rIds.length > 0) {
       contract.reference = [...new Set(rIds)]
     }
+  }
+
+  if (otherItems) {
+    contract.other = otherItems
+      .filter(i => i.status !== OtherItemStatus.DELETED)
+      .map(i => {
+        return { name: i.name, value: i.value }
+      })
   }
 
   return contract
