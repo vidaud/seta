@@ -5,11 +5,7 @@ import { IconCalendar, IconTrash } from '@tabler/icons-react'
 
 import AddMetadataFields from './AddMetadataField'
 
-import {
-  eu_languages,
-  metadata_fields,
-  mime_type_field
-} from '../../Contribution/MetadataStep/constants'
+import { eu_languages, metadata_fields, mime_type_field } from '../constants'
 import { Context } from '../context/Context'
 
 const useStyles = createStyles(theme => ({
