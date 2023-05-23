@@ -44,7 +44,7 @@ msgpack==1.0.3
 # ln msgpack
 lxml==4.8.0
 pathlib==1.0.1
-requests==2.27.1
+requests==2.31.0
 
 # ln tqdm==4.35.0
 # ln virtualenv==16.7.4
