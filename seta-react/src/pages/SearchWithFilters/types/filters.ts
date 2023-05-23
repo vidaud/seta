@@ -1,3 +1,5 @@
+import type { OtherItem } from './other-filter'
+
 export enum TextChunkValues {
   CHUNK_SEARCH = 'CHUNK_SEARCH',
   DOCUMENT_SEARCH = 'DOCUMENT_SEARCH',
@@ -30,10 +32,11 @@ export type NodeInfo = {
 
 export class ViewFilterInfo {
   chunkValue?: string
-  rangeValueEnabled: boolean
+  rangeValueEnabled = false
   rangeValue?: RangeValue
   sourceValues?: NodeInfo[] | null
   taxonomyValues?: NodeInfo[] | null
+  otherItems?: OtherItem[]
 
   public copy(): ViewFilterInfo {
     const cpy = new ViewFilterInfo()
@@ -41,8 +44,17 @@ export class ViewFilterInfo {
     cpy.chunkValue = this.chunkValue
     cpy.rangeValueEnabled = this.rangeValueEnabled
     cpy.rangeValue = this.rangeValue
+
     cpy.sourceValues = this.sourceValues?.map(s => {
       return { ...s }
+    })
+
+    cpy.taxonomyValues = this.taxonomyValues?.map(t => {
+      return { ...t }
+    })
+
+    cpy.otherItems = this.otherItems?.map(i => {
+      return { ...i }
     })
 
     return cpy
@@ -54,6 +66,7 @@ export class FilterStatusInfo {
   rangeModified?: number
   sourceModified?: number
   taxonomyModified?: number
+  otherModified?: number
 
   appliedFilter?: ViewFilterInfo
 
@@ -65,7 +78,8 @@ export class FilterStatusInfo {
       (this.chunkModified ?? 0) +
       (this.rangeModified ?? 0) +
       (this.sourceModified ?? 0) +
-      (this.taxonomyModified ?? 0)
+      (this.taxonomyModified ?? 0) +
+      (this.otherModified ?? 0)
     )
   }
 
@@ -76,6 +90,7 @@ export class FilterStatusInfo {
     cpy.rangeModified = this.rangeModified
     cpy.sourceModified = this.sourceModified
     cpy.taxonomyModified = this.taxonomyModified
+    cpy.otherModified = this.otherModified
 
     cpy.appliedFilter = this.appliedFilter?.copy()
 

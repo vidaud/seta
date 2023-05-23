@@ -1,20 +1,16 @@
 import { useState } from 'react'
 import { Container, Flex, Accordion, ScrollArea, Indicator, rem, Text } from '@mantine/core'
-import { useLogger } from '@mantine/hooks'
 
+import { itemsReducer } from './items-reducer'
 import useFilter from './useFilter'
 
 import { buildFiltersContract } from '../../custom/map-query'
 import type { AdvancedFilterProps } from '../../types/contracts'
 import type { RangeValue, SelectionKeys } from '../../types/filters'
-import {
-  ViewFilterInfo,
-  TextChunkValues,
-  FilterStatus,
-  FilterStatusInfo
-} from '../../types/filters'
+import { TextChunkValues, FilterStatus } from '../../types/filters'
 import ApplyFilters from '../ApplyFilters'
 import DataSourceFilter from '../DataSourceFilter'
+import OtherFilter from '../OtherFilter/OtherFilter'
 import TaxonomyFilter from '../TaxonomyFilter'
 import TextChunkFilter from '../TextChunkFilter'
 import YearsRangeFilter from '../YearsRangeFilter'
@@ -34,51 +30,21 @@ const FiltersPanel = ({ queryContract, onApplyFilter }: AdvancedFilterProps) => 
     resourceNodes,
     taxonomyNodes,
     status,
-    dispatchStatus
-  } = useFilter(queryContract)
-
-  const buildFilterInfo = (): ViewFilterInfo => {
-    const fi = new ViewFilterInfo()
-
-    fi.chunkValue = TextChunkValues[chunkText]
-    fi.rangeValueEnabled = enableDateFilter
-    fi.rangeValue = enableDateFilter ? rangeValue : undefined
-
-    if (resourceSelectedKeys) {
-      fi.sourceValues = []
-
-      for (const rKey in resourceSelectedKeys) {
-        if (!resourceSelectedKeys[rKey].checked) {
-          continue
-        }
-
-        fi.sourceValues.push({
-          key: rKey,
-          label: rKey,
-          longLabel: rKey
-        })
-      }
-    }
-
-    return fi
-  }
+    dispatchStatus,
+    otherItems,
+    dispatchOtherItems
+  } = useFilter(queryContract, resourceSelectedKeys, taxonomySelectedKeys)
 
   const handleApplyFilters = () => {
     const contract = buildFiltersContract(
       chunkText,
       enableDateFilter ? rangeValue : undefined,
       resourceSelectedKeys,
-      taxonomySelectedKeys
+      taxonomySelectedKeys,
+      otherItems
     )
 
-    const newStatus = new FilterStatusInfo()
-
-    newStatus.status = FilterStatus.PROCESSING
-    newStatus.prevStatus = FilterStatus.APPLIED
-
-    newStatus.appliedFilter = buildFilterInfo()
-
-    dispatchStatus({ type: 'replace', value: newStatus })
+    dispatchStatus({ type: 'set_status', value: FilterStatus.PROCESSING })
 
     onApplyFilter(contract)
   }
@@ -116,7 +82,17 @@ const FiltersPanel = ({ queryContract, onApplyFilter }: AdvancedFilterProps) => 
     setEnableDateFilter(value)
   }
 
-  useLogger('filters panel', [status])
+  const handleItemChange = (type, item) => {
+    dispatchOtherItems({ type: type, value: item })
+
+    //get items for the next render
+    const nextItems = itemsReducer(otherItems, { type: type, value: item })
+
+    dispatchStatus({
+      type: 'other_changed',
+      value: nextItems
+    })
+  }
 
   return (
     <Flex direction="column" align="center" gap="md">
@@ -152,7 +128,7 @@ const FiltersPanel = ({ queryContract, onApplyFilter }: AdvancedFilterProps) => 
             </Indicator>
           </Accordion.Control>
           <Accordion.Panel>
-            <ScrollArea.Autosize mx="auto" mah={rem(220)}>
+            <ScrollArea.Autosize mx="auto" mah={rem(300)}>
               <DataSourceFilter
                 data={resourceNodes}
                 selectedKeys={resourceSelectedKeys}
@@ -168,13 +144,23 @@ const FiltersPanel = ({ queryContract, onApplyFilter }: AdvancedFilterProps) => 
             </Indicator>
           </Accordion.Control>
           <Accordion.Panel>
-            <ScrollArea.Autosize mx="auto" mah={rem(220)}>
+            <ScrollArea.Autosize mx="auto" mah={rem(300)}>
               <TaxonomyFilter
                 data={taxonomyNodes}
                 selectedKeys={taxonomySelectedKeys}
                 onSelectionChange={handleTaxonomySelectionChange}
               />
             </ScrollArea.Autosize>
+          </Accordion.Panel>
+        </Accordion.Item>
+        <Accordion.Item value="other">
+          <Accordion.Control>
+            <Indicator inline pr={10} color="orange" disabled={!status.otherModified}>
+              <Text span>Other</Text>
+            </Indicator>
+          </Accordion.Control>
+          <Accordion.Panel>
+            <OtherFilter data={otherItems} onItemChange={handleItemChange} />
           </Accordion.Panel>
         </Accordion.Item>
       </Accordion>
