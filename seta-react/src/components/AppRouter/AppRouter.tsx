@@ -15,6 +15,7 @@ import ManageCommunity from '../../pages/CommunitiesPage/components/Manage/Commu
 import NewCommunity from '../../pages/CommunitiesPage/components/Manage/Community/NewCommunity/NewCommunity'
 import UpdateCommunity from '../../pages/CommunitiesPage/components/Manage/Community/UpdateCommunity/UpdateCommunity'
 import ViewMyCommunity from '../../pages/CommunitiesPage/components/Manage/Community/ViewMyCommunity/ViewMyCommunity'
+import CreateContribution from '../../pages/CommunitiesPage/components/Manage/Contribution/NewContribution/NewContribution'
 import CommunityInvites from '../../pages/CommunitiesPage/components/Manage/Invites/CommunityInvites/CommunityInvites'
 import CommunityMembers from '../../pages/CommunitiesPage/components/Manage/Members/CommunityMembers/CommunityMembers'
 import NewResource from '../../pages/CommunitiesPage/components/Manage/Resource/NewResource/NewResource'
@@ -176,6 +177,14 @@ const routes = createRoutesFromElements(
         element={
           <RequireAuth>
             <ViewMyResource />
+          </RequireAuth>
+        }
+      />
+      <Route
+        path="details/:id/:resourceId/contribution/new"
+        element={
+          <RequireAuth>
+            <CreateContribution />
           </RequireAuth>
         }
       />

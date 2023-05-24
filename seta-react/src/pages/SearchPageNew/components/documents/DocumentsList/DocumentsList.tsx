@@ -1,5 +1,6 @@
 import { useState } from 'react'
 
+import type { DocumentsOptions, DocumentsResponse } from '~/api/search/documents'
 import { useDocuments } from '~/api/search/documents'
 import usePaginator from '~/hooks/use-paginator'
 
@@ -10,14 +11,18 @@ const PER_PAGE = 10
 type Props = {
   query: string
   terms: string[]
+  searchOptions?: DocumentsOptions
+  onDocumentsLoaded?: (documents: DocumentsResponse) => void
 }
 
-const DocumentsList = ({ query, terms }: Props) => {
+const DocumentsList = ({ query, terms, searchOptions, onDocumentsLoaded }: Props) => {
   const [page, setPage] = useState(1)
 
   const { data, isLoading, error, refetch } = useDocuments(query, {
     page,
-    perPage: PER_PAGE
+    perPage: PER_PAGE,
+    searchOptions,
+    onSuccess: onDocumentsLoaded
   })
 
   const { total_docs, documents } = data ?? {}

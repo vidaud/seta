@@ -224,7 +224,7 @@
      * Ensure manageable complexity in functions and prevent callback hell.
      * Consider extracting some of the logic into a separate function.
      */
-     "complexity": ["warn", { "max": 10 }],
+     "complexity": ["warn", { "max": 15 }],
      "max-params": ["warn", 4],
      "max-statements": ["warn", 40],
      "max-statements-per-line": ["warn", { "max": 1 }],
