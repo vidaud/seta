@@ -1,11 +1,13 @@
 import { Group, ActionIcon, Menu } from '@mantine/core'
 import { IconDots, IconPencil, IconTrash, IconEye, IconSettings } from '@tabler/icons-react'
+import { useNavigate } from 'react-router-dom'
 
 import { deleteCommunityByID } from '../../../../../../api/communities/manage/my-community'
-import { environment } from '../../../../../../environments/environment'
 import InviteMember from '../InviteMemberModal/InviteMemberModal'
 
 const CommunityButtons = item => {
+  const navigate = useNavigate()
+
   const deleteCommunity = () => {
     deleteCommunityByID(item.item.community_id)
   }
@@ -23,21 +25,27 @@ const CommunityButtons = item => {
           <Menu.Item
             icon={<IconPencil size="1rem" stroke={1.5} />}
             component="a"
-            href={`${environment.COMMUNITIES_API_PATH}/update/${item.item.community_id}`}
+            onClick={() => {
+              navigate(`/manage/my-communities/update/${item.item.community_id}`)
+            }}
           >
             Update
           </Menu.Item>
           <Menu.Item
             icon={<IconSettings size="1rem" stroke={1.5} />}
             component="a"
-            href={`${environment.COMMUNITIES_API_PATH}/manage/${item.item.community_id}`}
+            onClick={() => {
+              navigate(`/manage/my-communities/manage/${item.item.community_id}`)
+            }}
           >
             Manage
           </Menu.Item>
           <Menu.Item
             icon={<IconEye size="1rem" stroke={1.5} />}
             component="a"
-            href={`${environment.COMMUNITIES_API_PATH}/details/${item.item.community_id}`}
+            onClick={() => {
+              navigate(`/manage/my-communities/details/${item.item.community_id}`)
+            }}
           >
             View Details
           </Menu.Item>

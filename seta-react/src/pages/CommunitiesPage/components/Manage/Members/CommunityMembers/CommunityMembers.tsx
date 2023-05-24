@@ -69,7 +69,7 @@ const CommunityMembers = () => {
   ))
 
   return (
-    <div className="page">
+    <>
       <Title className={cx(classes.title)} order={3}>
         List of Members
       </Title>
@@ -87,7 +87,7 @@ const CommunityMembers = () => {
           <tbody>{rows}</tbody>
         </Table>
       </ScrollArea>
-    </div>
+    </>
   )
 }
 

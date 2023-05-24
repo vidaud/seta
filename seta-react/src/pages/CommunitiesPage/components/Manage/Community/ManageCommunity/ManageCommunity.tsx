@@ -1,20 +1,8 @@
 import { useEffect, useState } from 'react'
-import {
-  Button,
-  Group,
-  Paper,
-  Text,
-  Grid,
-  Anchor,
-  Breadcrumbs,
-  Title,
-  createStyles,
-  Table
-} from '@mantine/core'
-import { useParams } from 'react-router-dom'
+import { Button, Group, Paper, Text, Grid, Title, createStyles, Table } from '@mantine/core'
+import { useNavigate, useParams } from 'react-router-dom'
 
 import { useCommunityID } from '../../../../../../api/communities/manage/my-community'
-import { environment } from '../../../../../../environments/environment'
 import ComponentLoading from '../../../common/ComponentLoading'
 import changeRequestAttributes from '../../../Dashboard/ChangeRequests/changeRequestAttributes.json'
 import ChangeRequests from '../../../Dashboard/ChangeRequests/ChangeRequests'
@@ -45,16 +33,7 @@ const ManageCommunity = () => {
   const { id } = useParams()
   const { data, isLoading } = useCommunityID(id)
   const [row, setRow] = useState(data)
-
-  const items = [
-    { title: 'My Communities', href: `${environment.COMMUNITIES_API_PATH}/my-list` },
-    { title: 'View Community', href: `${environment.COMMUNITIES_API_PATH}/details/${id}` },
-    { title: 'Manage Community' }
-  ].map(item => (
-    <Anchor href={item.href} key={item.title}>
-      {item.title}
-    </Anchor>
-  ))
+  const navigate = useNavigate()
 
   useEffect(() => {
     if (data) {
@@ -68,14 +47,15 @@ const ManageCommunity = () => {
 
   return (
     <>
-      <Breadcrumbs>{items}</Breadcrumbs>
       <div className={classes.page}>
         <Group position="right">
           <InviteMember id={row?.communities.community_id} />
           <Button
             color="blue"
             component="a"
-            href={`${environment.COMMUNITIES_API_PATH}/details/${id}/new`}
+            onClick={() => {
+              navigate(`/manage/my-communities/details/${id}/new`)
+            }}
           >
             New Resource
           </Button>
@@ -107,7 +87,9 @@ const ManageCommunity = () => {
                 <Button
                   color="green"
                   component="a"
-                  href={`${environment.COMMUNITIES_API_PATH}/update/${id}`}
+                  onClick={() => {
+                    navigate(`/manage/my-communities/update/${id}`)
+                  }}
                 >
                   Update
                 </Button>

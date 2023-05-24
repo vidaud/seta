@@ -114,8 +114,7 @@ export const createCommunity = async (values?: CreateCommunityAPI) => {
     })
     .then(response => {
       if (response.status === 201) {
-        console.log(environment.COMMUNITIES_API_PATH)
-        window.location.href = `${environment.COMMUNITIES_API_PATH}/my-list`
+        window.location.href = `/manage/my-communities`
       }
     })
 }
@@ -131,7 +130,7 @@ export const updateCommunity = async (id?: string, values?: UpdateCommunityAPI) 
     })
     .then(response => {
       if (response.status === 200) {
-        window.location.href = `${environment.COMMUNITIES_API_PATH}/my-list`
+        window.location.href = `/manage/my-communities`
       }
     })
 }
@@ -147,7 +146,7 @@ export const deleteCommunityByID = async (id?: string) => {
     })
     .then(response => {
       if (response.status === 200) {
-        window.location.href = `${environment.COMMUNITIES_API_PATH}/my-list'`
+        window.location.href = `/manage/my-communities`
       }
     })
 }

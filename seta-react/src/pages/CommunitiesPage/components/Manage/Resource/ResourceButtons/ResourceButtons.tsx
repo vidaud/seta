@@ -1,10 +1,12 @@
 import { Group, ActionIcon, Menu } from '@mantine/core'
 import { IconDots, IconPencil, IconTrash, IconEye } from '@tabler/icons-react'
+import { useNavigate } from 'react-router-dom'
 
 import { deleteResourceByID } from '../../../../../../api/resources/manage/my-resource'
-import { environment } from '../../../../../../environments/environment'
 
 const ResourceButtons = item => {
+  const navigate = useNavigate()
+
   const deleteResource = () => {
     deleteResourceByID(item.item.resource_id, item.item.community_id)
   }
@@ -21,14 +23,22 @@ const ResourceButtons = item => {
           <Menu.Item
             icon={<IconPencil size="1rem" stroke={1.5} />}
             component="a"
-            href={`${environment.COMMUNITIES_API_PATH}/update/${item.item.community_id}/${item.item.resource_id}`}
+            onClick={() => {
+              navigate(
+                `/manage/my-resources/update/${item.item.community_id}/${item.item.resource_id}`
+              )
+            }}
           >
             Update
           </Menu.Item>
           <Menu.Item
             icon={<IconEye size="1rem" stroke={1.5} />}
             component="a"
-            href={`${environment.COMMUNITIES_API_PATH}/details/${item.item.community_id}/${item.item.resource_id}`}
+            onClick={() => {
+              navigate(
+                `/manage/my-resources/details/${item.item.community_id}/${item.item.resource_id}`
+              )
+            }}
           >
             View Details
           </Menu.Item>

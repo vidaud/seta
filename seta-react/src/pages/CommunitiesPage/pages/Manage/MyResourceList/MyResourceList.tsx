@@ -1,11 +1,7 @@
 import MyResourceList from '../../../components/Manage/Resource/MyResourceList/MyResourceList'
 
 const MyResourceListPage = () => {
-  return (
-    <div className="page">
-      <MyResourceList />
-    </div>
-  )
+  return <MyResourceList />
 }
 
 export default MyResourceListPage

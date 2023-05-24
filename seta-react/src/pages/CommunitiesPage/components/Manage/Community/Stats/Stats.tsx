@@ -1,5 +1,5 @@
 import { Card, Text, Group, createStyles, Button, rem, Container } from '@mantine/core'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 
 const useStyles = createStyles(theme => ({
   card: {
@@ -30,6 +30,7 @@ const useStyles = createStyles(theme => ({
 const Stats = ({ resourceNumber, inviteNumber, memberNumber }) => {
   const { classes } = useStyles()
   const { id } = useParams()
+  const navigate = useNavigate()
 
   return (
     <Card withBorder radius="md" className={classes.card}>
@@ -43,7 +44,7 @@ const Stats = ({ resourceNumber, inviteNumber, memberNumber }) => {
           <Group position="right">
             <Button
               onClick={() => {
-                window.location.href = `/communities/${id}/members`
+                navigate(`/manage/my-communities/${id}/members`)
               }}
             >
               {memberNumber?.length}
@@ -67,7 +68,7 @@ const Stats = ({ resourceNumber, inviteNumber, memberNumber }) => {
           <Group position="right">
             <Button
               onClick={() => {
-                window.location.href = `/communities/${id}/invite`
+                navigate(`/manage/my-communities/${id}/invite`)
               }}
             >
               {inviteNumber?.length}
@@ -78,7 +79,13 @@ const Stats = ({ resourceNumber, inviteNumber, memberNumber }) => {
 
       <Card.Section className={classes.section}>
         <Group spacing={30}>
-          <Button radius="xl" component="a" href={`/communities/details/${id}/new`}>
+          <Button
+            radius="xl"
+            component="a"
+            onClick={() => {
+              navigate(`/manage/my-communities/details/${id}/new`)
+            }}
+          >
             + New Resource
           </Button>
         </Group>

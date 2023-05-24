@@ -39,7 +39,8 @@ import SearchPageNew from '../../pages/SearchPageNew'
 import SearchWithFilters from '../../pages/SearchWithFilters'
 
 const ROOT_PATH = '/'
-const COMMUNITY_PATH = '/communities'
+const COMMUNITY_PATH = '/communities/'
+const MANAGE_PATH = '/manage/'
 const DISCOVER_PATH = '/discover'
 
 const routes = createRoutesFromElements(
@@ -83,17 +84,19 @@ const routes = createRoutesFromElements(
     <Route path="faqs" element={<FaqsPage />} />
     <Route path="contact" element={<ContactPage />} />
     <Route path="login" element={<LoginPage />} />
-    <Route path={COMMUNITY_PATH} element={<CommunityLayout />}>
+    <Route path="dashboard" element={<CommunityLayout />}>
       <Route
-        path="dashboard"
+        path=""
         element={
           <RequireAuth>
             <DashboardsPage />
           </RequireAuth>
         }
       />
+    </Route>
+    <Route path={MANAGE_PATH} element={<CommunityLayout />}>
       <Route
-        path="view/:id"
+        path="my-communities/view/:id"
         element={
           <RequireAuth>
             <ViewCommunity />
@@ -101,7 +104,7 @@ const routes = createRoutesFromElements(
         }
       />
       <Route
-        path="my-list"
+        path="my-communities"
         element={
           <RequireAuth>
             <MyCommunityListPage />
@@ -109,7 +112,7 @@ const routes = createRoutesFromElements(
         }
       />
       <Route
-        path="new"
+        path="my-communities/new"
         element={
           <RequireAuth>
             <NewCommunity />
@@ -117,7 +120,7 @@ const routes = createRoutesFromElements(
         }
       />
       <Route
-        path="update/:id"
+        path="my-communities/update/:id"
         element={
           <RequireAuth>
             <UpdateCommunity />
@@ -125,7 +128,7 @@ const routes = createRoutesFromElements(
         }
       />
       <Route
-        path=":id/members"
+        path="my-communities/:id/members"
         element={
           <RequireAuth>
             <CommunityMembers />
@@ -133,7 +136,7 @@ const routes = createRoutesFromElements(
         }
       />
       <Route
-        path=":id/invites"
+        path="my-communities/:id/invites"
         element={
           <RequireAuth>
             <CommunityInvites />
@@ -141,7 +144,7 @@ const routes = createRoutesFromElements(
         }
       />
       <Route
-        path="details/:id"
+        path="my-communities/details/:id"
         element={
           <RequireAuth>
             <ViewMyCommunity />
@@ -149,7 +152,7 @@ const routes = createRoutesFromElements(
         }
       />
       <Route
-        path="details/:id/new"
+        path="my-communities/details/:id/new"
         element={
           <RequireAuth>
             <NewResource />
@@ -165,7 +168,7 @@ const routes = createRoutesFromElements(
         }
       />
       <Route
-        path="manage/:id"
+        path="my-communities/manage/:id"
         element={
           <RequireAuth>
             <ManageCommunity />
@@ -173,7 +176,7 @@ const routes = createRoutesFromElements(
         }
       />
       <Route
-        path="details/:id/:resourceId"
+        path="my-resources/details/:id/:resourceId"
         element={
           <RequireAuth>
             <ViewMyResource />
@@ -181,7 +184,7 @@ const routes = createRoutesFromElements(
         }
       />
       <Route
-        path="details/:id/:resourceId/contribution/new"
+        path="my-resources/details/:id/:resourceId/contribution/new"
         element={
           <RequireAuth>
             <CreateContribution />
@@ -189,7 +192,7 @@ const routes = createRoutesFromElements(
         }
       />
       <Route
-        path="update/:id/:resourceId"
+        path="my-resources/update/:id/:resourceId"
         element={
           <RequireAuth>
             <UpdateResource />

@@ -8,11 +8,9 @@ import {
   createStyles,
   Title,
   Button,
-  Textarea,
-  Anchor,
-  Breadcrumbs
+  Textarea
 } from '@mantine/core'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 
 import { updateResource, useResourceID } from '../../../../../../api/resources/manage/my-resource'
 import ComponentLoading from '../../../common/ComponentLoading'
@@ -28,19 +26,11 @@ const useStyles = createStyles({
   }
 })
 
-const items = [
-  { title: 'My Communities', href: '/communities/my-list' },
-  { title: 'Update Community' }
-].map(item => (
-  <Anchor href={item.href} key={item.title}>
-    {item.title}
-  </Anchor>
-))
-
 const UpdateResource = () => {
   const { classes, cx } = useStyles()
   const { id } = useParams()
   const { resourceId } = useParams()
+  const navigate = useNavigate()
 
   const { data, isLoading } = useResourceID(resourceId)
 
@@ -69,7 +59,6 @@ const UpdateResource = () => {
 
   return (
     <>
-      <Breadcrumbs>{items}</Breadcrumbs>
       <Paper withBorder shadow="md" p={30} mt={30} radius="md" mx="auto" maw={1000}>
         <ResourceFormProvider form={form}>
           <form onSubmit={form.onSubmit(handleSubmit)}>
@@ -108,7 +97,7 @@ const UpdateResource = () => {
                 size="xs"
                 color="blue"
                 onClick={() => {
-                  window.location.href = `/communities/details/${id}/${resourceId}`
+                  navigate(-1)
                 }}
               >
                 Cancel

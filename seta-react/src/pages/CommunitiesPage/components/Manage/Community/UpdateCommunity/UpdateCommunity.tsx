@@ -8,11 +8,9 @@ import {
   createStyles,
   Title,
   Button,
-  Textarea,
-  Anchor,
-  Breadcrumbs
+  Textarea
 } from '@mantine/core'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 
 import {
   updateCommunity,
@@ -31,18 +29,10 @@ const useStyles = createStyles({
   }
 })
 
-const items = [
-  { title: 'My Communities', href: '/communities/my-list' },
-  { title: 'Update Community' }
-].map(item => (
-  <Anchor href={item.href} key={item.title}>
-    {item.title}
-  </Anchor>
-))
-
 const UpdateCommunity = () => {
   const { classes, cx } = useStyles()
   const { id } = useParams()
+  const navigate = useNavigate()
 
   const { data, isLoading } = useCommunityID(id)
 
@@ -72,7 +62,6 @@ const UpdateCommunity = () => {
 
   return (
     <>
-      <Breadcrumbs>{items}</Breadcrumbs>
       <Paper withBorder shadow="md" p={30} mt={30} radius="md" mx="auto" maw={1000}>
         <CommunityFormProvider form={form}>
           <form onSubmit={form.onSubmit(handleSubmit)}>
@@ -117,7 +106,7 @@ const UpdateCommunity = () => {
                 size="xs"
                 color="blue"
                 onClick={() => {
-                  window.location.href = '/communities/my-list'
+                  navigate(-1)
                 }}
               >
                 Cancel
