@@ -64,8 +64,9 @@ def build_metadata_param_blocks(collection, reference, in_force, author, date_ra
     if other:
         or_block = {"bool": {"should": []}}
         for oth in other:
-            block = {"match": {"other": oth}}
-            or_block['bool']['should'].append(block)
+            for k in oth.keys():
+                block = {"match": {"other." + k: oth[k]}}
+                or_block['bool']['should'].append(block)
         full_block.append(or_block)
     if taxonomy_path:
         or_block = {"bool": {"should": []}}
