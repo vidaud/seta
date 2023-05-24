@@ -18,20 +18,16 @@ export type SourceInfo = ReferenceInfo & {
   collections?: CollectionInfo[]
 }
 
-export type TaxonomyCategory = {
-  code: string
-  doc_count: number
-  label: string
+export type Taxonomy = {
+  doc_count?: number
+  classifier?: string
+  code?: string
+  label?: string
   longLabel?: string
   name_in_path: string
-  subcategories?: TaxonomyCategory[]
-}
-
-export type Taxonomy = {
-  doc_count: number
-  name: string
-  name_in_path: string
-  subcategories?: TaxonomyCategory[]
+  validated?: string
+  version?: string
+  subcategories?: Taxonomy[]
 }
 
 export type QueryAggregationContract = {
