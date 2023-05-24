@@ -1,4 +1,4 @@
-from flask_restx import Namespace, Resource, reqparse, abort
+from flask_restx import Namespace, Resource, reqparse, abort, fields
 from flask import current_app as app, jsonify
 
 from seta_api.infrastructure.auth_validator import auth_validator
@@ -41,7 +41,8 @@ class Ontology(Resource):
 
 ontology_list_parser = reqparse.RequestParser()
 ontology_list_parser.add_argument('terms', required=True, action="split")
-
+ontology_list_resp = {"nodes": fields.List(fields.List(fields.String))}
+ontology_list_response_model = ontology_api.model("ontology_list_response_model", ontology_list_resp)
 
 @ontology_api.route("ontology-list")
 @ontology_api.doc(
@@ -55,6 +56,7 @@ ontology_list_parser.add_argument('terms', required=True, action="split")
     params={'terms': 'The list of terms from which build the ontology tree.'},
     responses={200: 'Success', 404: 'Not Found Error'},
     security='apikey')
+@ontology_api.response(200, 'Success', ontology_list_response_model)
 class OntologyList(Resource):
     @auth_validator()
     @ontology_api.expect(ontology_list_parser)

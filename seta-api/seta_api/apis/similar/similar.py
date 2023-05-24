@@ -1,4 +1,4 @@
-from flask_restx import Namespace, Resource, reqparse, abort
+from flask_restx import Namespace, Resource, reqparse, abort, fields
 from flask import current_app as app, jsonify
 
 from seta_api.infrastructure.auth_validator import auth_validator
@@ -12,6 +12,11 @@ similar_parser = reqparse.RequestParser()
 similar_parser.add_argument('terms', required=True, action="split")
 similar_parser.add_argument('n_term', type=int)
 
+word = {"similarity": fields.String, "similar_word": fields.String, "cardinality": fields.String}
+word_model = similar_api.model("word", word)
+similar_response = {"words": fields.List(fields.Nested(word_model))}
+similar_response_model = similar_api.model("similar_response_model", similar_response)
+
 
 @similar_api.doc(description='Given a term or a list of terms, return the 20 most similar terms (semantic similarity). '
                              'For each term similarity and cardinality (number of occurrences in documents) are reported.'
@@ -21,6 +26,7 @@ similar_parser.add_argument('n_term', type=int)
                  responses={200: 'Success', 404: 'Not Found Error'},
                  security='apikey')
 @similar_api.route("similar")
+@similar_api.response(200, 'Success', similar_response_model)
 class SimilarWords(Resource):
     @auth_validator()
     @similar_api.expect(similar_parser)
