@@ -63,7 +63,6 @@ def suggestion_update_job():
         index_suggestion = config.INDEX_SUGGESTION
         es = Elasticsearch("http://" + config.ES_HOST, verify_certs=False, request_timeout=300, max_retries=10,
                            retry_on_timeout=True)
-        print(es)
 
         current_w2v_crc, crc_id = get_crc_from_es(es, index_suggestion, "crc_model")
         if crc != current_w2v_crc:
@@ -85,6 +84,8 @@ def suggestion_update_job():
             except Exception as e:
                 print("errors on suggestion update. New crc: ", crc, flush=True)
                 print(str(e), flush=True)
+        else:
+            print("Suggestion index already up to date.", flush=True)
 
     except Exception as ex:
         print("errors on suggestion update: ")
@@ -141,15 +142,18 @@ def verify_data_mapping(host, index, es_session, data_format, headers, mapping_c
 
     if crc != crc_value:
         print("New mapping found!", flush=True)
-        print("mapping update started", flush=True)
-        crc_mapping = {"crc_data_mapping": crc}
+        if config.DELETE_INDEX_ON_CRC_CHECK:
+            print("mapping update started", flush=True)
+            crc_mapping = {"crc_data_mapping": crc}
 
-        print("delete and recreate index: ", index, flush=True)
-        delete_index(host, es_session, index)
-        create_index(es_session, host, index, data_format, headers)
+            print("delete and recreate index: ", index, flush=True)
+            delete_index(host, es_session, index)
+            create_index(es_session, host, index, data_format, headers)
 
-        print("adding crc mapping document", flush=True)
-        es.index(index=index, document=crc_mapping)
+            print("adding crc mapping document", flush=True)
+            es.index(index=index, document=crc_mapping)
+        else:
+            print("Index has to be updated with new mapping, DELETE_INDEX_ON_CRC_CHECK is disabled.", flush=True)
 
 
 def create_index(es_session, host, index, data_format, headers):
@@ -164,7 +168,7 @@ def check_index_exists_or_create_it(host, mapping_file, mapping_crc_file, es_ses
     f.close()
     resp = es_session.get("http://" + host + "/" + index + "?pretty")
     if resp.ok:
-        print("ElasticSearch index mapping exists: ", index, flush=True)
+        print("ElasticSearch index exists: ", index, flush=True)
         verify_data_mapping(host, index, es_session, data_format, headers, mapping_crc_file)
     else:
         create_index(es_session, host, index, data_format, headers)
