@@ -96,6 +96,8 @@ const useFilter = (
 
   //!Yes, it compares the pointers, not the content
   if (queryContract !== prevContract) {
+    console.log('useFilter', queryContract)
+
     setPrevContract(queryContract)
 
     if (!rangeVal) {

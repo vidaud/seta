@@ -7,6 +7,7 @@ import { AggregationType } from '~/types/search/aggregations'
 import type { Aggregations } from '~/types/search/aggregations'
 import type { Document } from '~/types/search/documents'
 import { getOffset } from '~/utils/pagination-utils'
+import type { OtherType } from '~/pages/SearchWithFilters/types/other-filter'
 
 const DOCUMENTS_API_PATH = '/corpus'
 
@@ -27,7 +28,7 @@ export type DocumentsPayload = {
   date_range?: string[]
   aggs?: AggregationType[]
   taxonomy_path?: string[]
-  other?: { name: string; value: string }[]
+  other?: OtherType[]
 }
 
 export type DocumentsResponse = {

@@ -10,3 +10,5 @@ export type OtherItem = {
   value: string
   status: OtherItemStatus
 }
+
+export type OtherType = { [name: string]: string }
