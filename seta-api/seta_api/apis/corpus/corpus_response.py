@@ -124,7 +124,7 @@ def handle_aggs_response(aggs, response, documents, current_app):
                 documents["aggregations"][agg] = compose_taxonomies_response_tree(response["aggregations"]["taxonomies"]["buckets"], current_app)
             case _:
                 documents["aggregations"][agg] = response["aggregations"][agg]["buckets"]
-        return documents
+    return documents
 
 
 def compute_concordance(abstract, term, text):
