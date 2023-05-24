@@ -63,7 +63,6 @@ def suggestion_update_job():
         index_suggestion = config.INDEX_SUGGESTION
         es = Elasticsearch("http://" + config.ES_HOST, verify_certs=False, request_timeout=300, max_retries=10,
                            retry_on_timeout=True)
-        print(es)
 
         current_w2v_crc, crc_id = get_crc_from_es(es, index_suggestion, "crc_model")
         if crc != current_w2v_crc:
@@ -85,6 +84,8 @@ def suggestion_update_job():
             except Exception as e:
                 print("errors on suggestion update. New crc: ", crc, flush=True)
                 print(str(e), flush=True)
+        else:
+            print("Suggestion index already up to date.", flush=True)
 
     except Exception as ex:
         print("errors on suggestion update: ")
@@ -92,7 +93,7 @@ def suggestion_update_job():
 
 
 def gen_data(crc):
-    print("suggestion indexing started", flush=True)
+    print("suggestions indexing started", flush=True)
 
     with open(config.MODELS_PATH + config.WORD2VEC_JSON_EXPORT) as json_file:
         data = json.load(json_file)
@@ -110,41 +111,49 @@ def gen_data(crc):
 def delete_all_suggestion(crc):
     if crc:
         print("suggestion delete started", flush=True)
-        query = {"query": {"bool": {"must": [{"match": {"crc.keyword": crc}}]}}}
+        query = {"bool": {"must": [{"match": {"crc.keyword": crc}}]}}
         es = Elasticsearch("http://" + config.ES_HOST, verify_certs=False, request_timeout=300)
-        res = es.delete_by_query(index=config.INDEX_SUGGESTION, body=query, wait_for_completion=False)
+        res = es.delete_by_query(index=config.INDEX_SUGGESTION, query=query, wait_for_completion=False)
         print(res, flush=True)
-        print("suggestion delete finished", flush=True)
+        print("suggestion deleted", flush=True)
 
 
 def seta_es_init_map():
     es_session = requests.Session()
     mapping_file = config.MODELS_PATH + config.ES_INIT_DATA_CONFIG_FILE
+    mapping_crc_file = config.MODELS_PATH + config.CRC_ES_INIT_DATA_CONFIG_FILE
     for index in config.INDEX:
-        check_index_exists_or_create_it(config.ES_HOST, mapping_file, es_session, index)
+        check_index_exists_or_create_it(config.ES_HOST, mapping_file, mapping_crc_file, es_session, index)
     # suggestion index
     mapping_file_suggestion = config.MODELS_PATH + config.ES_SUGGESTION_INIT_DATA_CONFIG_FILE
-    check_index_exists_or_create_it(config.ES_HOST, mapping_file_suggestion, es_session, config.INDEX_SUGGESTION)
+    mapping_crc_file_suggestion = config.MODELS_PATH + config.CRC_ES_SUGGESTION_INIT_DATA_CONFIG_FILE
+    check_index_exists_or_create_it(config.ES_HOST, mapping_file_suggestion, mapping_crc_file_suggestion, es_session,
+                                    config.INDEX_SUGGESTION)
 
 
-def verify_data_mapping(host, index, es_session, data_format, headers, mapping_file):
+def verify_data_mapping(host, index, es_session, data_format, headers, mapping_crc_file):
     # every time data mapping is changed index is deleted and recreate
     es = Elasticsearch("http://" + host, verify_certs=False, request_timeout=300, max_retries=10,
                        retry_on_timeout=True)
-    crc = getsha256(mapping_file)
+
+    crc = open(mapping_crc_file, 'r').read()
 
     crc_value, crc_id = get_crc_from_es(es, index, "crc_data_mapping")
 
     if crc != crc_value:
-        print("mapping update started", flush=True)
-        crc_mapping = {"crc_data_mapping": crc}
+        print("New mapping found!", flush=True)
+        if config.DELETE_INDEX_ON_CRC_CHECK:
+            print("mapping update started", flush=True)
+            crc_mapping = {"crc_data_mapping": crc}
 
-        print("delete and recreate index: ", index, flush=True)
-        delete_index(host, es_session, index)
-        create_index(es_session, host, index, data_format, headers)
+            print("delete and recreate index: ", index, flush=True)
+            delete_index(host, es_session, index)
+            create_index(es_session, host, index, data_format, headers)
 
-        print("adding crc mapping document", flush=True)
-        es.index(index=index, document=crc_mapping)
+            print("adding crc mapping document", flush=True)
+            es.index(index=index, document=crc_mapping)
+        else:
+            print("Index has to be updated with new mapping, DELETE_INDEX_ON_CRC_CHECK is disabled.", flush=True)
 
 
 def create_index(es_session, host, index, data_format, headers):
@@ -152,15 +161,15 @@ def create_index(es_session, host, index, data_format, headers):
     print(resp.content, flush=True)
 
 
-def check_index_exists_or_create_it(host, mapping_file, es_session, index):
+def check_index_exists_or_create_it(host, mapping_file, mapping_crc_file, es_session, index):
     headers = {"Content-Type": "application/json"}
     f = open(mapping_file, 'r')
     data_format = f.read()
     f.close()
     resp = es_session.get("http://" + host + "/" + index + "?pretty")
     if resp.ok:
-        print("ElasticSearch index mapping exists: ", index, flush=True)
-        verify_data_mapping(host, index, es_session, data_format, headers, mapping_file)
+        print("ElasticSearch index exists: ", index, flush=True)
+        verify_data_mapping(host, index, es_session, data_format, headers, mapping_crc_file)
     else:
         create_index(es_session, host, index, data_format, headers)
 
