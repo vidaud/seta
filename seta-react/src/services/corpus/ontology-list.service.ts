@@ -6,7 +6,7 @@ export class OntologyListService {
     const api = '/seta-api/api/v1/'
 
     return axios
-      .get(`${api}${endpoint}`, { params: { term: characters } })
+      .get(`${api}${endpoint}`, { params: { terms: characters } })
       .then((response: any) => {
         return response.data.nodes
       })

@@ -1,5 +1,5 @@
 import type { ChangeEvent } from 'react'
-import { RangeSlider, Slider, Switch, Box, Indicator } from '@mantine/core'
+import { RangeSlider, Slider, Switch, Box, Indicator, Divider } from '@mantine/core'
 
 type Props = {
   value?: [number, number]
@@ -20,44 +20,45 @@ const YearsRangeFilter = ({
   onValueChangeEnd,
   modified
 }: Props) => {
-  const _value = value ?? [1976, new Date().getFullYear()]
+  const _min = rangeBoundaries?.min
+  const _max = rangeBoundaries?.max
 
-  const _min = rangeBoundaries?.min ?? _value[0]
-  const _max = rangeBoundaries?.max ?? _value[1]
+  const marks: { value: number; label?: string }[] | undefined = []
 
-  const marks =
-    _min === _max
-      ? [{ value: _min, label: _min }]
-      : [
-          { value: _min, label: _min },
-          { value: _max, label: _max }
-        ]
+  if (!!_min) {
+    marks.push({ value: _min, label: _min + '' })
+  }
 
-  const step = _min === _max ? 0 : 1
+  if (!!_max && _min !== _max) {
+    marks.push({ value: _max, label: _max + '' })
+  }
 
-  const slider =
-    _min === _max ? (
-      <Slider
-        disabled={!enableDateFilter}
-        marks={marks}
-        value={_min}
-        min={_min}
-        max={_min + 1}
-        step={step}
-      />
-    ) : (
-      <RangeSlider
-        disabled={!enableDateFilter}
-        step={step}
-        value={value}
-        min={_min}
-        max={_max}
-        minRange={step}
-        marks={marks}
-        onChange={onValueChange}
-        onChangeEnd={onValueChangeEnd}
-      />
-    )
+  const step = (_min ?? 0) === (_max ?? 0) ? 0 : 1
+
+  const slider = !value ? (
+    <Divider size="lg" />
+  ) : (_min ?? 0) === (_max ?? 0) ? (
+    <Slider
+      disabled={!enableDateFilter}
+      marks={marks}
+      value={_min}
+      min={_min}
+      max={_min}
+      step={step}
+    />
+  ) : (
+    <RangeSlider
+      disabled={!enableDateFilter}
+      step={step}
+      value={value}
+      min={_min}
+      max={_max}
+      minRange={step}
+      marks={marks}
+      onChange={onValueChange}
+      onChangeEnd={onValueChangeEnd}
+    />
+  )
 
   const handleCheckboxChange = (event: ChangeEvent<HTMLInputElement>): void => {
     onEnableDateChanged?.(event.currentTarget.checked)
@@ -68,6 +69,7 @@ const YearsRangeFilter = ({
       <Indicator inline pr={10} color="orange" disabled={!modified}>
         <Switch
           checked={enableDateFilter}
+          disabled={!value}
           onChange={handleCheckboxChange}
           label="Filter by date range"
           onLabel="YES"

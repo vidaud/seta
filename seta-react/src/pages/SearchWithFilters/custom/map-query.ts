@@ -10,7 +10,12 @@ const mapSearchTypeToQuery = (searchType: TextChunkValues): string => {
 }
 
 const mapYearsRangeToQuery = (value: RangeValue): string[] => {
-  return [`gte:${value[0].toString()}`, `lte:${value[1].toString()}`]
+  //keep lower interval
+  const gte = value[0]
+  //!transform upper interval to 'lower than' (selected year + 1)
+  const lt = value[1] + 1
+
+  return [`gte:${gte}`, `lt:${lt}`]
 }
 
 const mapSelectedDataSources = (
