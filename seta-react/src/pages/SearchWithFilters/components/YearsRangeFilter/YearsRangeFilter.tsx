@@ -1,5 +1,5 @@
 import type { ChangeEvent } from 'react'
-import { RangeSlider, Slider, Switch, Box } from '@mantine/core'
+import { RangeSlider, Slider, Switch, Box, Indicator } from '@mantine/core'
 
 type Props = {
   value?: [number, number]
@@ -8,6 +8,7 @@ type Props = {
   onEnableDateChanged?(value: boolean): void
   onValueChange?(value: [number, number]): void
   onValueChangeEnd?(value: [number, number]): void
+  modified?: boolean
 }
 
 const YearsRangeFilter = ({
@@ -16,7 +17,8 @@ const YearsRangeFilter = ({
   enableDateFilter,
   onEnableDateChanged,
   onValueChange,
-  onValueChangeEnd
+  onValueChangeEnd,
+  modified
 }: Props) => {
   const _value = value ?? [1976, new Date().getFullYear()]
 
@@ -63,15 +65,17 @@ const YearsRangeFilter = ({
 
   return (
     <Box>
-      <Switch
-        checked={enableDateFilter}
-        onChange={handleCheckboxChange}
-        label="Filter by date range"
-        onLabel="YES"
-        offLabel="NO"
-        size="md"
-        mb={10}
-      />
+      <Indicator inline pr={10} color="orange" disabled={!modified}>
+        <Switch
+          checked={enableDateFilter}
+          onChange={handleCheckboxChange}
+          label="Filter by date range"
+          onLabel="YES"
+          offLabel="NO"
+          size="md"
+          mb={10}
+        />
+      </Indicator>
 
       {slider}
     </Box>

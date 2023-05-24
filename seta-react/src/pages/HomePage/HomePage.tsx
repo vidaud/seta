@@ -41,7 +41,6 @@ const HomePage = () => {
 
   useEffect(() => {
     carouselService.getImages().then(data => {
-      console.log(data)
       setImages(data.slice(0, 3))
     })
   }, [])

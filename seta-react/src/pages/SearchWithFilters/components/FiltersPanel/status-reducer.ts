@@ -1,9 +1,9 @@
 /* eslint-disable complexity */
-/* eslint-disable max-statements */
 
-import keysDiff from '../../custom/array_diffs'
+import keysDiff from '../../custom/array-diffs'
 import { FilterStatus } from '../../types/filters'
 import type { FilterStatusInfo, RangeValue } from '../../types/filters'
+import { OtherItemStatus } from '../../types/other-filter'
 
 const compareRanges = (range1: RangeValue, range2?: RangeValue | null): boolean => {
   if (range2 === undefined || range2 === null) {
@@ -15,42 +15,27 @@ const compareRanges = (range1: RangeValue, range2?: RangeValue | null): boolean 
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const statusReducer = (status: FilterStatusInfo, action: any): FilterStatusInfo => {
+  if (action.type === 'replace') {
+    return action.value
+  }
+
   const info = status.copy()
 
   switch (action.type) {
-    case 'replace': {
-      return action.value
-    }
-
     case 'chunk_changed': {
-      if (action.value !== status.appliedFilter?.chunkValue) {
-        info.chunkModified = 1
-        info.status = FilterStatus.MODIFIED
-      } else {
-        info.chunkModified = 0
-      }
+      info.chunkModified = action.value === status.appliedFilter?.chunkValue ? 0 : 1
 
       break
     }
 
     case 'enable_range': {
-      if (status.appliedFilter?.rangeValueEnabled !== action.value) {
-        info.rangeModified = 1
-        info.status = FilterStatus.MODIFIED
-      } else {
-        info.rangeModified = 0
-      }
+      info.rangeModified = status.appliedFilter?.rangeValueEnabled === action.value ? 0 : 1
 
       break
     }
 
     case 'range_changed': {
-      if (compareRanges(action.value, status.appliedFilter?.rangeValue)) {
-        info.rangeModified = 0
-      } else {
-        info.rangeModified = 1
-        info.status = FilterStatus.MODIFIED
-      }
+      info.rangeModified = compareRanges(action.value, status.appliedFilter?.rangeValue) ? 0 : 1
 
       break
     }
@@ -61,10 +46,6 @@ export const statusReducer = (status: FilterStatusInfo, action: any): FilterStat
 
       info.sourceModified = removed.length + added.length
 
-      if (info.sourceModified > 0) {
-        info.status = FilterStatus.MODIFIED
-      }
-
       break
     }
 
@@ -74,9 +55,15 @@ export const statusReducer = (status: FilterStatusInfo, action: any): FilterStat
 
       info.taxonomyModified = removed.length + added.length
 
-      if (info.taxonomyModified > 0) {
-        info.status = FilterStatus.MODIFIED
+      break
+    }
+
+    case 'other_changed': {
+      if (info.appliedFilter) {
+        info.appliedFilter.otherItems = action.value
       }
+
+      info.otherModified = action.value?.filter(i => i.status !== OtherItemStatus.APPLIED)?.length
 
       break
     }
@@ -86,10 +73,16 @@ export const statusReducer = (status: FilterStatusInfo, action: any): FilterStat
 
       return info
     }
+
+    default: {
+      throw Error('Unknown action: ' + action.type)
+    }
   }
 
   if (info.modified() === 0) {
     info.status = status.prevStatus
+  } else {
+    info.status = FilterStatus.MODIFIED
   }
 
   return info

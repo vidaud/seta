@@ -19,7 +19,7 @@ const DataSourceFilter = ({ data, selectedKeys, onSelectionChange }: Props) => {
       onSelectionChange?.(keys)
     }
   }
-  const disabled = data === undefined || data[0].children === undefined
+  const disabled = !data?.length || !data[0].children?.length
 
   return (
     <Tree

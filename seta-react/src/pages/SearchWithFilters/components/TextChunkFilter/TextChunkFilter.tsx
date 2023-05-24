@@ -1,18 +1,21 @@
-import { Center, Flex, SegmentedControl, Text, Tooltip, rem } from '@mantine/core'
+import { Center, Flex, SegmentedControl, Text, Tooltip, Indicator, rem } from '@mantine/core'
 
 import { TextChunkValues } from '../../types/filters'
 
 type Props = {
   value?: TextChunkValues
   onChange?(value: TextChunkValues): void
+  modified?: boolean
 }
 
-const TextChunkFilter = ({ value, onChange }: Props) => {
+const TextChunkFilter = ({ value, onChange, modified }: Props) => {
   return (
     <Flex direction="row" align="center" wrap="nowrap">
-      <Text span fz="lg" fw={500} mr={rem(10)}>
-        Text chunk
-      </Text>
+      <Indicator inline pr={rem(10)} mr={rem(10)} color="orange" disabled={!modified}>
+        <Text span fz="lg" fw={500}>
+          Text chunk
+        </Text>
+      </Indicator>
       <SegmentedControl
         size="md"
         value={value}

@@ -1,3 +1,5 @@
+import type { ClassNameProp } from '~/types/children-props'
+
 export type YearCount = {
   year: string
   doc_count: number
@@ -36,7 +38,7 @@ export type QueryAggregationContract = {
   search_type?: string
   date_year?: YearCount[]
   source_collection_reference?: { sources: SourceInfo[] }
-  taxonomy?: Taxonomy[]
+  taxonomies?: Taxonomy[]
 }
 
 export type AdvancedFiltersContract = {
@@ -45,11 +47,12 @@ export type AdvancedFiltersContract = {
   source?: string[]
   collection?: string[]
   reference?: string[]
-  taxonomy_paths?: string[]
+  taxonomy_path?: string[]
+  other?: { name: string; value: string }[]
 }
 
 export type AdvancedFilterProps = {
   queryContract?: QueryAggregationContract | null
   onApplyFilter(value: AdvancedFiltersContract): void
   filtersDisabled?: boolean
-}
+} & ClassNameProp

@@ -94,8 +94,8 @@ export const parseQueryContract = (contract?: QueryAggregationContract | null) =
       resources = mapResourcesToFilter(contract.source_collection_reference.sources)
     }
 
-    if (contract.taxonomy !== undefined) {
-      taxonimies = mapTaxonomyToFilter(contract.taxonomy)
+    if (contract.taxonomies !== undefined) {
+      taxonimies = mapTaxonomyToFilter(contract.taxonomies)
     }
   }
 

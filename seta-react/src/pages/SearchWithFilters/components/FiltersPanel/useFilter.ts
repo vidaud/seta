@@ -1,19 +1,76 @@
-/* eslint-disable max-statements */
+/* eslint-disable max-params */
 import { useState, useReducer } from 'react'
 
+import { itemsReducer } from './items-reducer'
 import { statusReducer } from './status-reducer'
 
 import { parseQueryContract } from '../../custom/map-filters'
 import type { QueryAggregationContract } from '../../types/contracts'
-import type { RangeValue } from '../../types/filters'
+import type { RangeValue, SelectionKeys } from '../../types/filters'
 import {
   TextChunkValues,
   FilterStatusInfo,
   FilterStatus,
   ViewFilterInfo
 } from '../../types/filters'
+import type { OtherItem } from '../../types/other-filter'
 
-const useFilter = (queryContract?: QueryAggregationContract | null) => {
+const buildFilterInfo = (
+  chunkText: TextChunkValues,
+  enableDateFilter: boolean,
+  rangeValue: RangeValue,
+  resourceSelectedKeys?: SelectionKeys | null,
+  taxonomySelectedKeys?: SelectionKeys | null,
+  otherItems?: OtherItem[]
+): ViewFilterInfo => {
+  const fi = new ViewFilterInfo()
+
+  fi.chunkValue = TextChunkValues[chunkText]
+  fi.rangeValueEnabled = enableDateFilter
+  fi.rangeValue = enableDateFilter ? { ...rangeValue } : undefined
+
+  if (resourceSelectedKeys) {
+    fi.sourceValues = []
+
+    for (const rKey in resourceSelectedKeys) {
+      if (!resourceSelectedKeys[rKey].checked) {
+        continue
+      }
+
+      fi.sourceValues.push({
+        key: rKey,
+        label: rKey,
+        longLabel: rKey
+      })
+    }
+  }
+
+  if (taxonomySelectedKeys) {
+    fi.taxonomyValues = []
+
+    for (const tKey in taxonomySelectedKeys) {
+      if (!taxonomySelectedKeys[tKey].checked) {
+        continue
+      }
+
+      fi.taxonomyValues.push({
+        key: tKey,
+        label: tKey,
+        longLabel: tKey
+      })
+    }
+  }
+
+  fi.otherItems = otherItems
+
+  return fi
+}
+
+const useFilter = (
+  queryContract?: QueryAggregationContract | null,
+  resourceSelectedKeys?: SelectionKeys | null,
+  taxonomySelectedKeys?: SelectionKeys | null
+) => {
   const [prevContract, setPrevContract] = useState(queryContract)
 
   const { rangeVal, resources, taxonimies } = parseQueryContract(queryContract)
@@ -29,13 +86,15 @@ const useFilter = (queryContract?: QueryAggregationContract | null) => {
   const filterStatusInfo = new FilterStatusInfo()
 
   filterStatusInfo.prevStatus = FilterStatus.UNKNOWN
+
   filterStatusInfo.appliedFilter = new ViewFilterInfo()
 
   filterStatusInfo.appliedFilter.chunkValue = TextChunkValues[chunkText]
-  filterStatusInfo.appliedFilter.rangeValueEnabled = false
 
   const [status, dispatchStatus] = useReducer(statusReducer, filterStatusInfo)
+  const [otherItems, dispatchOtherItems] = useReducer(itemsReducer, undefined)
 
+  //!Yes, it compares the pointers, not the content
   if (queryContract !== prevContract) {
     setPrevContract(queryContract)
 
@@ -43,11 +102,25 @@ const useFilter = (queryContract?: QueryAggregationContract | null) => {
     setRangeValue(rangeVal)
     setResourceNodes(resources)
     setTaxonomyNodes(taxonimies)
+    dispatchOtherItems({ type: 'set-applied' })
 
-    filterStatusInfo.prevStatus = FilterStatus.APPLIED
-    filterStatusInfo.status = FilterStatus.APPLIED
+    const newStatus = new FilterStatusInfo()
 
-    dispatchStatus({ type: 'replace', value: filterStatusInfo })
+    newStatus.status = FilterStatus.APPLIED
+    newStatus.prevStatus = FilterStatus.APPLIED
+
+    const newItems = itemsReducer(otherItems, { type: 'set-applied' })
+
+    newStatus.appliedFilter = buildFilterInfo(
+      chunkText,
+      enableDateFilter,
+      rangeValue,
+      resourceSelectedKeys,
+      taxonomySelectedKeys,
+      newItems
+    )
+
+    dispatchStatus({ type: 'replace', value: newStatus })
   }
 
   return {
@@ -61,7 +134,9 @@ const useFilter = (queryContract?: QueryAggregationContract | null) => {
     resourceNodes,
     taxonomyNodes,
     status,
-    dispatchStatus
+    dispatchStatus,
+    otherItems,
+    dispatchOtherItems
   }
 }
 

@@ -1,8 +1,6 @@
 import type { AxiosRequestConfig, AxiosResponse } from 'axios'
 
-// We're using console.log() to log the request and response in the browser console.
-// eslint-disable-next-line no-console
-const log = console.log
+import logger from '~/utils/logger'
 
 const dontLog = !import.meta.env.DEV || import.meta.env.VITE_API_DISABLE_LOGGER === 'true'
 
@@ -43,7 +41,7 @@ export const logRequest = (config: AxiosRequestConfig) => {
   const { url, method } = config
   const methodValue = method?.toUpperCase() ?? 'GET'
 
-  log(`%c${methodValue} %c${url}`, color('gray3'), color('gray2'))
+  logger.log(`%c${methodValue} %c${url}`, color('gray3'), color('gray2'))
 }
 
 export const logResponse = (response: AxiosResponse) => {
@@ -60,12 +58,23 @@ export const logResponse = (response: AxiosResponse) => {
   const roundedSeconds = Math.round(duration / 10) / 100
   const durationFormatted = duration >= 1000 ? `${roundedSeconds}s` : `${duration}ms`
 
-  log(
+  const requestData = config?.data ? JSON.parse(config.data) : undefined
+
+  const group = [
     `%c${methodValue} %c${url} %c${status} ${statusText} %c${durationFormatted}  `,
     color(methodValue),
     color('gray'),
     color(status >= 300 ? 'brown' : 'green'),
-    color(duration >= 500 ? 'red' : duration >= 200 ? 'orange' : 'purple'),
-    data
-  )
+    color(duration >= 500 ? 'red' : duration >= 200 ? 'orange' : 'purple')
+  ]
+
+  logger.groupCollapsed(...group)
+
+  if (requestData) {
+    logger.log('PAYLOAD:', requestData)
+  }
+
+  logger.log('RESPONSE:', data)
+
+  logger.groupEnd()
 }

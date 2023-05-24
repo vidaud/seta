@@ -10,17 +10,11 @@ import { getOffset } from '~/utils/pagination-utils'
 
 const DOCUMENTS_API_PATH = '/corpus'
 
-export enum SearchType {
-  Document = 'DOCUMENT_SEARCH',
-  Chunk = 'CHUNK_SEARCH',
-  AllChunks = 'ALL_CHUNKS_SEARCH'
-}
-
 export type DocumentsPayload = {
   term?: string
   n_docs?: number
   from_doc?: number
-  search_type?: SearchType
+  search_type?: string
   source?: string[]
   collection?: string[]
   subject?: string[]
@@ -32,7 +26,8 @@ export type DocumentsPayload = {
   author?: string[]
   date_range?: string[]
   aggs?: AggregationType[]
-  other?: string[]
+  taxonomy_path?: string[]
+  other?: { name: string; value: string }[]
 }
 
 export type DocumentsResponse = {
@@ -41,9 +36,16 @@ export type DocumentsResponse = {
   aggregations?: Aggregations
 }
 
+export type DocumentsOptions = Omit<DocumentsPayload, 'from_doc' | 'n_docs'>
+
 export const queryKey = {
   root: 'documents',
-  docs: (term: string, page: number, perPage: number) => [queryKey.root, term, { page, perPage }]
+  docs: (term: string, page: number, perPage: number, searchOptions?: DocumentsOptions) => [
+    queryKey.root,
+    term,
+    { page, perPage },
+    { searchOptions }
+  ]
 }
 
 const getDocuments = async (
@@ -51,7 +53,11 @@ const getDocuments = async (
   config?: AxiosRequestConfig
 ): Promise<DocumentsResponse> => {
   const defaultPayload: DocumentsPayload = {
-    aggs: [AggregationType.DateYear],
+    aggs: [
+      AggregationType.DateYear,
+      AggregationType.CollectionReference,
+      AggregationType.Taxonomies
+    ],
     n_docs: 100
   }
 
@@ -70,18 +76,20 @@ const getDocuments = async (
 type UseDocumentsOptions = UseQueryOptions<DocumentsResponse> & {
   page: number
   perPage: number
+  searchOptions?: DocumentsOptions
 }
 
 export const useDocuments = (
   query: string,
-  { page = 1, perPage = 10, ...options }: UseDocumentsOptions
+  { page = 1, perPage = 10, searchOptions, ...options }: UseDocumentsOptions
 ) =>
   useQuery({
-    queryKey: queryKey.docs(query, page, perPage),
+    queryKey: queryKey.docs(query, page, perPage, searchOptions),
 
     queryFn: ({ signal }) =>
       getDocuments(
         {
+          ...searchOptions,
           term: query,
           from_doc: getOffset(page, perPage),
           n_docs: perPage
