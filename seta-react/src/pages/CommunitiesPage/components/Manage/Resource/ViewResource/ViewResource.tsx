@@ -32,6 +32,9 @@ const useStyles = createStyles({
   },
   td: {
     width: '50%'
+  },
+  button: {
+    background: '#F8AE21'
   }
 })
 
@@ -105,6 +108,19 @@ const ViewMyResource = () => {
                   href={`${environment.COMMUNITIES_API_PATH}/update/${rows?.community_id}/${rows?.resource_id}`}
                 >
                   Update
+                </Button>
+              </Group>
+            </Paper>
+          </Grid.Col>
+          <Grid.Col span={12}>
+            <Paper shadow="xs" p="md">
+              <Group spacing={30} position="right">
+                <Button
+                  className={classes.button}
+                  component="a"
+                  href={`${environment.COMMUNITIES_API_PATH}/details/${rows?.community_id}/${rows?.resource_id}/contribution/new`}
+                >
+                  Upload
                 </Button>
               </Group>
             </Paper>

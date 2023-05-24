@@ -5,8 +5,6 @@ import checker from 'vite-plugin-checker'
 import svgrPlugin from 'vite-plugin-svgr'
 import viteTsconfigPaths from 'vite-tsconfig-paths'
 
-const isBuild = process.env.NODE_ENV === 'production'
-
 // Checker plugin options for production build
 /** @type {Parameters<import('vite-plugin-checker').checker>[0]} */
 const checkerProd = {
@@ -25,32 +23,35 @@ const checkerDev = {
   }
 }
 
-export default defineConfig({
-  plugins: [
-    react(),
-    viteTsconfigPaths(),
-    svgrPlugin(),
+export default defineConfig(({ mode }) => {
+  const isBuild = mode === 'production'
 
-    checker(isBuild ? checkerProd : checkerDev)
-  ],
+  return {
+    plugins: [
+      react(),
+      viteTsconfigPaths(),
+      svgrPlugin(),
 
-  server: {
-    host: 'localhost',
-    port: 3000,
-    // Uncomment the line below to open the page automatically when running the server locally
-    // open: 'http://localhost:3000/'
+      checker(isBuild ? checkerProd : checkerDev)
+    ],
 
-    strictPort: true,
-    hmr: {
-      clientPort: 3000
+    server: {
+      host: 'localhost',
+      port: 3000,
+      // Uncomment the line below to open the page automatically when running the server locally
+      // open: 'http://localhost:3000/'
+      strictPort: true,
+      hmr: {
+        clientPort: 3000
+      }
+    },
+
+    build: {
+      outDir: 'build'
+    },
+
+    esbuild: {
+      drop: isBuild ? ['console', 'debugger'] : []
     }
-  },
-
-  build: {
-    outDir: 'build'
-  },
-
-  esbuild: {
-    drop: ['console', 'debugger']
   }
 })

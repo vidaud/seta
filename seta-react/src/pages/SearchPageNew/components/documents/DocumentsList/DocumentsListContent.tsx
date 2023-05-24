@@ -49,7 +49,7 @@ const DocumentsListContent = forwardRef<HTMLDivElement, Props>(
         {info}
 
         {documents.map(document => (
-          <DocumentInfo key={document.document_id} document={document} queryTerms={queryTerms} />
+          <DocumentInfo key={document._id} document={document} queryTerms={queryTerms} />
         ))}
 
         {paginator}

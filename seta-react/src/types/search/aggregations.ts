@@ -2,7 +2,7 @@ export enum AggregationType {
   Source = 'source',
   DateYear = 'date_year',
   CollectionReference = 'source_collection_reference',
-  TaxonomyName = 'taxonomy:taxonomyname'
+  Taxonomies = 'taxonomies'
 }
 
 type SimpleAggregation = {
@@ -11,13 +11,13 @@ type SimpleAggregation = {
 }
 
 type CollectionReference = SimpleAggregation & {
-  references: SimpleAggregation
+  references?: SimpleAggregation[]
 }
 
 type CollectionsAggregation = {
   sources: [
     SimpleAggregation & {
-      collections: CollectionReference[]
+      collections?: CollectionReference[]
     }
   ]
 }
@@ -43,5 +43,5 @@ export type Aggregations = {
   [AggregationType.Source]?: SimpleAggregation[]
   [AggregationType.DateYear]?: [{ doc_count: number; year: string }]
   [AggregationType.CollectionReference]?: CollectionsAggregation
-  [AggregationType.TaxonomyName]?: TaxonomyAggregation[]
+  [AggregationType.Taxonomies]?: TaxonomyAggregation[]
 }

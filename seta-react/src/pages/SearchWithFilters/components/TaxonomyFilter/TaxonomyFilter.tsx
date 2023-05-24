@@ -20,7 +20,7 @@ const TaxonomyFilter = ({ data, selectedKeys, onSelectionChange }: Props) => {
     }
   }
 
-  const disabled = data === undefined || data[0].children === undefined
+  const disabled = !data?.length || !data[0].children?.length
 
   return (
     <Tree

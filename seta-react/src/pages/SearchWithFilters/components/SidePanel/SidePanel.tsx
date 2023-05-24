@@ -4,11 +4,16 @@ import { IconListSearch, IconSearch, IconAlertCircle, IconWallet } from '@tabler
 import type { AdvancedFilterProps } from '../../types/contracts'
 import FiltersPanel from '../FiltersPanel'
 
-const SidePanel = ({ queryContract, onApplyFilter, filtersDisabled }: AdvancedFilterProps) => {
+const SidePanel = ({
+  className,
+  queryContract,
+  onApplyFilter,
+  filtersDisabled
+}: AdvancedFilterProps) => {
   const defaultValue: string | undefined = filtersDisabled ? undefined : 'filters'
 
   return (
-    <Container size={rem(400)} ml={0} pt={rem(50)} pb={rem(50)}>
+    <Container className={className} size={rem(400)} ml={0} pb={rem(50)} w={rem(400)}>
       <Accordion defaultValue={defaultValue} variant="contained" order={3}>
         <Accordion.Item value="filters">
           <Accordion.Control icon={<IconListSearch size={rem(20)} />} disabled={filtersDisabled}>
