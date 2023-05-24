@@ -87,7 +87,7 @@ const SuggestionsPopup = ({ opened, onOpenChange }: Props) => {
       withArrow
       arrowSize={12}
       shadow="sm"
-      offset={-2}
+      offset={6}
     >
       <Popover.Target>
         <SearchInput

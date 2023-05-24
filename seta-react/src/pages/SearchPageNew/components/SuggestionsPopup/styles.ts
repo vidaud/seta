@@ -29,8 +29,7 @@ export const closeButton = css`
   right: 0;
 `
 
-export const inputWrapper: ThemedCSS = theme => css`
+export const inputWrapper = css`
   width: 66vw;
-  padding: ${theme.spacing.sm};
-  padding-top: 0;
+  padding: 0;
 `

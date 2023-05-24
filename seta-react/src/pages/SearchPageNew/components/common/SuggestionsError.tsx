@@ -1,3 +1,4 @@
+import type { MantineStyleSystemProps } from '@mantine/core'
 import { Anchor, Flex, Text } from '@mantine/core'
 import { BiErrorAlt } from 'react-icons/bi'
 
@@ -10,14 +11,17 @@ type Props = {
   subject?: string
   withIcon?: boolean
   onTryAgain?: () => void
-} & SizeProp
+} & SizeProp &
+  MantineStyleSystemProps
 
 const SuggestionsError = ({
   size = 'sm',
   message,
   subject = 'suggestions',
   withIcon,
-  onTryAgain
+  mt = '2rem',
+  onTryAgain,
+  ...styles
 }: Props) => {
   const tryAgain = onTryAgain && (
     <>
@@ -35,16 +39,14 @@ const SuggestionsError = ({
   )
 
   return (
-    <S.Container>
-      <Flex align="center" justify="center" gap="sm">
-        {icon}
+    <Flex align="center" justify="center" gap="sm" mt={mt} {...styles}>
+      {icon}
 
-        <Text fz={size} color="red.6">
-          {info}
-          {tryAgain}
-        </Text>
-      </Flex>
-    </S.Container>
+      <Text fz={size} color="red.6">
+        {info}
+        {tryAgain}
+      </Text>
+    </Flex>
   )
 }
 

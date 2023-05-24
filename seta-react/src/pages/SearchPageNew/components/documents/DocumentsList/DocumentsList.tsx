@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 import type { DocumentsOptions, DocumentsResponse } from '~/api/search/documents'
 import { useDocuments } from '~/api/search/documents'
@@ -12,18 +12,25 @@ type Props = {
   query: string
   terms: string[]
   searchOptions?: DocumentsOptions
-  onDocumentsLoaded?: (documents: DocumentsResponse) => void
+  onDocumentsChanged?: (documents: DocumentsResponse) => void
 }
 
-const DocumentsList = ({ query, terms, searchOptions, onDocumentsLoaded }: Props) => {
+const DocumentsList = ({ query, terms, searchOptions, onDocumentsChanged }: Props) => {
+  const documentsChangedRef = useRef(onDocumentsChanged)
+
   const [page, setPage] = useState(1)
 
   const { data, isLoading, error, refetch } = useDocuments(query, {
     page,
     perPage: PER_PAGE,
-    searchOptions,
-    onSuccess: onDocumentsLoaded
+    searchOptions
   })
+
+  useEffect(() => {
+    if (data) {
+      documentsChangedRef.current?.(data)
+    }
+  }, [data])
 
   const { total_docs, documents } = data ?? {}
 
@@ -32,10 +39,10 @@ const DocumentsList = ({ query, terms, searchOptions, onDocumentsLoaded }: Props
     perPage: PER_PAGE,
     page,
     info: {
-      singular: 'document',
+      singular: 'result',
       currentPageItems: documents?.length ?? 0
     },
-    resetPageDependencies: [query],
+    resetPageDependencies: [query, searchOptions],
     scrollDependencies: [data],
     onPageChange: setPage
   })

@@ -1,4 +1,4 @@
-import { Box, Flex } from '@mantine/core'
+import { Flex } from '@mantine/core'
 import { Outlet } from 'react-router-dom'
 
 import Footer from '../../components/Footer'
@@ -9,9 +9,9 @@ const AppLayout = () => {
     <Flex direction="column" className="min-h-screen">
       <Header />
 
-      <Box sx={{ flexGrow: 1 }}>
+      <Flex direction="column" mih="600px" sx={{ flexGrow: 1 }}>
         <Outlet />
-      </Box>
+      </Flex>
 
       <Footer />
     </Flex>
