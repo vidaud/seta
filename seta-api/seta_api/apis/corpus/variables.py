@@ -247,25 +247,6 @@ class Variable:
         corpus_put_params["keywords"] = fields.List(fields.Nested(self.keywords_model))
         return self.namespace.model("corpus_put_request", corpus_put_params)
 
-    # def __define_post_get_response(self):
-        # document["keywords"] = fields.List(fields.Nested(self.keywords_model))
-        # document["taxonomy"] = fields.List(fields.Nested(self.taxonomy_model_tree))
-        # post_get_response["documents"] = fields.List(fields.Nested(self.namespace.model("document", document)))
-        #
-        # collection["references"] = fields.List(fields.Nested(self.namespace.model("reference", reference)))
-        # source["collections"] = fields.List(fields.Nested(self.namespace.model("collection", collection)))
-        # source_collection_reference_agg["sources"] = fields.List(fields.Nested(self.namespace.model("source", source)))
-        #
-        # aggregation = {"date_year": fields.List(fields.Nested(self.namespace.model("date_year_agg", date_year_agg))),
-        #                "source": fields.List(fields.Nested(self.namespace.model("source_agg", source_agg))),
-        #                "source_collection_reference": fields.List(
-        #                    fields.Nested(
-        #                        self.namespace.model("source_collection_reference_agg",
-        #                                             source_collection_reference_agg))),
-        #                "taxonomy": fields.List(fields.Nested(self.taxonomy_agg_model_tree))
-        #                }
-        # post_get_response["aggregations"] = fields.List(fields.Nested(self.namespace.model("aggregation", aggregation)))
-        # return post_get_response
 
 
 
