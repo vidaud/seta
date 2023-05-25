@@ -19,7 +19,7 @@ export type ResourcesResponse = {
 
 const RESOURCE_API_PATH = '/resources/'
 
-export const cacheKey = () => ['resources']
+export const cacheKey = () => ['my-resources']
 
 const getMyResources = async (): Promise<ResourcesResponse[]> => {
   const { data } = await community_api.get<ResourcesResponse[]>(`${RESOURCE_API_PATH}`)

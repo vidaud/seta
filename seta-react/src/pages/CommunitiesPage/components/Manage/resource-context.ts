@@ -7,7 +7,7 @@ export type ResourceValues = {
   abstract: string
 }
 
-export const cacheKey = () => ['communities']
+export const cacheKey = () => ['my-resources']
 
 // You can give context variables any name
 export const [ResourceFormProvider, useResourceContext, useResource] =

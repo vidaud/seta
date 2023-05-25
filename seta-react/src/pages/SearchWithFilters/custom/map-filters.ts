@@ -1,10 +1,4 @@
-import type {
-  QueryAggregationContract,
-  SourceInfo,
-  Taxonomy,
-  TaxonomyCategory,
-  YearCount
-} from '../types/contracts'
+import type { QueryAggregationContract, SourceInfo, Taxonomy, YearCount } from '../types/contracts'
 import type { RangeValue } from '../types/filters'
 
 const mapYearsRangeToFilter = (value: YearCount[]): RangeValue => {
@@ -13,20 +7,15 @@ const mapYearsRangeToFilter = (value: YearCount[]): RangeValue => {
   return [Math.min(...years), Math.max(...years)]
 }
 
-const mapTaxonomyCategories = (
-  parentId: string,
-  parentLabel: string,
-  value: TaxonomyCategory[] | undefined
-) => {
-  if (!value) {
+const mapTaxonomyCategories = (parentId: string, parentLabel?: string, value?: Taxonomy[]) => {
+  if (!value?.length) {
     return undefined
   }
 
   return value.map(c => {
     return {
       key: `${parentId}:${c.name_in_path}`,
-      label: `${c.label} (${c.doc_count})`,
-      longLabel: `${parentLabel}:${c.label}`,
+      label: `${c.label ?? ''} (${c.doc_count})`,
       children: mapTaxonomyCategories(c.name_in_path, c.label, c.subcategories)
     }
   })
@@ -36,9 +25,8 @@ const mapTaxonomyToFilter = (value: Taxonomy[]) => {
   return value.map(t => {
     return {
       key: t.name_in_path,
-      label: `${t.name} (${t.doc_count})`,
-      longLabel: t.name,
-      children: mapTaxonomyCategories(t.name_in_path, t.name, t.subcategories)
+      label: `${t.label} (${t.doc_count})`,
+      children: mapTaxonomyCategories(t.name_in_path, t.label, t.subcategories)
     }
   })
 }
@@ -81,12 +69,12 @@ type TreeNode = {
 }
 
 export const parseQueryContract = (contract?: QueryAggregationContract | null) => {
-  let rangeVal: RangeValue = [1976, new Date().getFullYear()]
+  let rangeVal: RangeValue | undefined = undefined
   let resources: TreeNode[] | undefined = undefined
-  let taxonimies: TreeNode[] | undefined = undefined
+  let taxonomies: TreeNode[] | undefined = undefined
 
   if (contract) {
-    if (contract.date_year) {
+    if (contract.date_year && contract.date_year.length) {
       rangeVal = mapYearsRangeToFilter(contract.date_year)
     }
 
@@ -95,9 +83,9 @@ export const parseQueryContract = (contract?: QueryAggregationContract | null) =
     }
 
     if (contract.taxonomies !== undefined) {
-      taxonimies = mapTaxonomyToFilter(contract.taxonomies)
+      taxonomies = mapTaxonomyToFilter(contract.taxonomies)
     }
   }
 
-  return { rangeVal, resources, taxonimies }
+  return { rangeVal, resources, taxonomies }
 }

@@ -18,7 +18,7 @@ import type { OtherItem } from '../../types/other-filter'
 const buildFilterInfo = (
   chunkText: TextChunkValues,
   enableDateFilter: boolean,
-  rangeValue: RangeValue,
+  rangeValue?: RangeValue,
   resourceSelectedKeys?: SelectionKeys | null,
   taxonomySelectedKeys?: SelectionKeys | null,
   otherItems?: OtherItem[]
@@ -26,8 +26,8 @@ const buildFilterInfo = (
   const fi = new ViewFilterInfo()
 
   fi.chunkValue = TextChunkValues[chunkText]
-  fi.rangeValueEnabled = enableDateFilter
-  fi.rangeValue = enableDateFilter ? { ...rangeValue } : undefined
+  fi.rangeValueEnabled = enableDateFilter && !!rangeValue
+  fi.rangeValue = enableDateFilter && !!rangeValue ? { ...rangeValue } : undefined
 
   if (resourceSelectedKeys) {
     fi.sourceValues = []
@@ -73,15 +73,15 @@ const useFilter = (
 ) => {
   const [prevContract, setPrevContract] = useState(queryContract)
 
-  const { rangeVal, resources, taxonimies } = parseQueryContract(queryContract)
+  const { rangeVal, resources, taxonomies } = parseQueryContract(queryContract)
   const [chunkText, setChunkText] = useState<TextChunkValues>(TextChunkValues.CHUNK_SEARCH)
 
-  const [rangeValue, setRangeValue] = useState<RangeValue>(rangeVal)
+  const [rangeValue, setRangeValue] = useState(rangeVal)
   const [resourceNodes, setResourceNodes] = useState(resources)
-  const [taxonomyNodes, setTaxonomyNodes] = useState(taxonimies)
+  const [taxonomyNodes, setTaxonomyNodes] = useState(taxonomies)
 
   const [enableDateFilter, setEnableDateFilter] = useState(false)
-  const [rangeBoundaries, setRangeBoundaries] = useState({ min: rangeVal[0], max: rangeVal[1] })
+  const [rangeBoundaries, setRangeBoundaries] = useState({ min: rangeVal?.[0], max: rangeVal?.[1] })
 
   const filterStatusInfo = new FilterStatusInfo()
 
@@ -96,12 +96,19 @@ const useFilter = (
 
   //!Yes, it compares the pointers, not the content
   if (queryContract !== prevContract) {
+    console.log('useFilter', queryContract)
+
     setPrevContract(queryContract)
 
-    setRangeBoundaries({ min: rangeVal[0], max: rangeVal[1] })
+    if (!rangeVal) {
+      setEnableDateFilter(false)
+    }
+
     setRangeValue(rangeVal)
+    setRangeBoundaries({ min: rangeVal?.[0], max: rangeVal?.[1] })
+
     setResourceNodes(resources)
-    setTaxonomyNodes(taxonimies)
+    setTaxonomyNodes(taxonomies)
     dispatchOtherItems({ type: 'set-applied' })
 
     const newStatus = new FilterStatusInfo()

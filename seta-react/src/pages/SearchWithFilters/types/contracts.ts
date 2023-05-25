@@ -1,5 +1,7 @@
 import type { ClassNameProp } from '~/types/children-props'
 
+import type { OtherType } from './other-filter'
+
 export type YearCount = {
   year: string
   doc_count: number
@@ -18,20 +20,16 @@ export type SourceInfo = ReferenceInfo & {
   collections?: CollectionInfo[]
 }
 
-export type TaxonomyCategory = {
-  code: string
-  doc_count: number
-  label: string
+export type Taxonomy = {
+  doc_count?: number
+  classifier?: string
+  code?: string
+  label?: string
   longLabel?: string
   name_in_path: string
-  subcategories?: TaxonomyCategory[]
-}
-
-export type Taxonomy = {
-  doc_count: number
-  name: string
-  name_in_path: string
-  subcategories?: TaxonomyCategory[]
+  validated?: string
+  version?: string
+  subcategories?: Taxonomy[]
 }
 
 export type QueryAggregationContract = {
@@ -48,7 +46,7 @@ export type AdvancedFiltersContract = {
   collection?: string[]
   reference?: string[]
   taxonomy_path?: string[]
-  other?: { name: string; value: string }[]
+  other?: OtherType[]
 }
 
 export type AdvancedFilterProps = {

@@ -2,7 +2,7 @@
 import type { AdvancedFiltersContract } from '../types/contracts'
 import type { RangeValue, SelectionKeys } from '../types/filters'
 import { TextChunkValues } from '../types/filters'
-import type { OtherItem } from '../types/other-filter'
+import type { OtherItem, OtherType } from '../types/other-filter'
 import { OtherItemStatus } from '../types/other-filter'
 
 const mapSearchTypeToQuery = (searchType: TextChunkValues): string => {
@@ -10,7 +10,12 @@ const mapSearchTypeToQuery = (searchType: TextChunkValues): string => {
 }
 
 const mapYearsRangeToQuery = (value: RangeValue): string[] => {
-  return [`gte:${value[0].toString()}`, `lte:${value[1].toString()}`]
+  //keep lower interval
+  const gte = value[0]
+  //!transform upper interval to 'lower than' (selected year + 1)
+  const lt = value[1] + 1
+
+  return [`gte:${gte}`, `lt:${lt}`]
 }
 
 const mapSelectedDataSources = (
@@ -97,11 +102,18 @@ export const buildFiltersContract = (
   }
 
   if (otherItems) {
-    contract.other = otherItems
-      .filter(i => i.status !== OtherItemStatus.DELETED)
-      .map(i => {
-        return { name: i.name, value: i.value }
+    const items = otherItems.filter(i => i.status !== OtherItemStatus.DELETED)
+
+    if (items?.length) {
+      contract.other = []
+
+      items.forEach(i => {
+        const ot: OtherType = {}
+
+        ot[i.name] = i.value
+        contract.other?.push(ot)
       })
+    }
   }
 
   return contract

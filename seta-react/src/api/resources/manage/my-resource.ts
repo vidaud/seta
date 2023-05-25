@@ -40,8 +40,8 @@ export type CreateInvitationAPI = {
   message: string
 }
 
-export const cacheKey = (id?: string) => ['resources', id]
-export const cacheResourceKey = () => ['resources']
+export const cacheKey = (id?: string) => ['my-resources', id]
+export const cacheResourceKey = () => ['my-resources']
 
 export const getResource = async (id?: string): Promise<ResourceResponse> => {
   const { data } = await community_api.get<ResourceResponse>(`${RESOURCE_API_PATH}${id}`)
@@ -65,7 +65,7 @@ export const createResource = async (id?: string, values?: CreateResourceAPI) =>
     })
     .then(response => {
       if (response.status === 201) {
-        window.location.href = `${environment.COMMUNITIES_API_PATH}/details/${id}`
+        window.location.href = `/my-communities/${id}`
       }
     })
 }
@@ -85,7 +85,27 @@ export const updateResource = async (
     })
     .then(response => {
       if (response.status === 200) {
-        window.location.href = `/communities/details/${id}`
+        window.location.href = `/my-resources/${resource_id}`
+      }
+    })
+}
+
+export const updateCommunityResource = async (
+  id?: string,
+  resource_id?: string,
+  values?: UpdateResourceAPI
+) => {
+  await community_api
+    .put(`${RESOURCE_API_PATH}${resource_id}`, values, {
+      headers: {
+        accept: 'application/json',
+        'X-CSRF-TOKEN': csrf_token,
+        'Content-Type': 'application/x-www-form-urlencoded'
+      }
+    })
+    .then(response => {
+      if (response.status === 200) {
+        window.location.href = `/my-communities/${id}`
       }
     })
 }
@@ -101,7 +121,7 @@ export const deleteResourceByID = async (resource_id?: string, id?: string) => {
     })
     .then(response => {
       if (response.status === 200) {
-        window.location.href = `/communities/details/${id}`
+        window.location.href = `/my-resources/`
       }
     })
 }

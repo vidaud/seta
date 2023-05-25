@@ -7,10 +7,9 @@ import {
   createStyles,
   Title,
   Button,
-  Textarea,
-  Anchor,
-  Breadcrumbs
+  Textarea
 } from '@mantine/core'
+import { useNavigate } from 'react-router-dom'
 
 import { createCommunity } from '../../../../../../api/communities/manage/my-community'
 import type { CommunityValues } from '../../community-context'
@@ -25,17 +24,9 @@ const useStyles = createStyles({
   }
 })
 
-const items = [
-  { title: 'My Communities', href: '/communities/my-list' },
-  { title: 'New Community' }
-].map(item => (
-  <Anchor href={item.href} key={item.title}>
-    {item.title}
-  </Anchor>
-))
-
 const NewCommunity = () => {
   const { classes, cx } = useStyles()
+  const navigate = useNavigate()
 
   const form = useCommunity({
     initialValues: {
@@ -53,7 +44,6 @@ const NewCommunity = () => {
 
   return (
     <>
-      <Breadcrumbs>{items}</Breadcrumbs>
       <Paper withBorder shadow="md" p={30} mt={30} radius="md" mx="auto" maw={1000}>
         <CommunityFormProvider form={form}>
           <form onSubmit={form.onSubmit(handleSubmit)}>
@@ -93,7 +83,7 @@ const NewCommunity = () => {
                 color="blue"
                 onClick={() => {
                   form.reset()
-                  window.location.href = '/communities/my-list'
+                  navigate(-1)
                 }}
               >
                 Cancel

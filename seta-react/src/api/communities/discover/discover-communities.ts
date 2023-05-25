@@ -18,7 +18,7 @@ export type CommunitiesResponse = {
   created_at: Date
 }
 
-export const cacheKey = () => ['discover']
+export const cacheKey = () => ['communities']
 
 const getAllCommunities = async (): Promise<CommunitiesResponse[]> => {
   const { data } = await community_api.get<CommunitiesResponse[]>(

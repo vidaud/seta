@@ -9,7 +9,7 @@ export type UserPermissionsResponse = {
   scope: string
 }
 
-export const cacheKey = (id?: string) => ['permissions', id]
+export const cacheKey = (id?: string) => ['my-communities', id]
 
 export const getCommunityPermissions = async (id?: string): Promise<UserPermissionsResponse[]> => {
   const { data } = await community_api.get<UserPermissionsResponse[]>(

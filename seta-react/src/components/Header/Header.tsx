@@ -78,7 +78,8 @@ const Header = () => {
     {
       label: 'Communities',
       className: 'seta-item',
-      url: '/communities/dashboard',
+      url: '/dashboard',
+      visible: authenticated,
       template: navLinkTemplate
     },
     {

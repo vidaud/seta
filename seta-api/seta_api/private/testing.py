@@ -55,7 +55,7 @@ corpus_put_data = test_ns.model(
         "language": fields.String(),
         "taxonomy": fields.List(fields.Nested(test_ns.model("taxonomy_sub", taxonomy))),
         "keywords": fields.List(fields.Nested(test_ns.model('keywords', keywords))),
-        "other": fields.List(other)
+        "other": fields.List(fields.Nested(test_ns.model('other', other)))
     })
 
 @test_ns.route('corpus', methods=['PUT'])

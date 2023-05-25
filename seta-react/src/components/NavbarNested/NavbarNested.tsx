@@ -4,22 +4,26 @@ import { IconNotes, IconCalendarStats, IconGauge } from '@tabler/icons-react'
 import { LinksGroup } from '../NavbarLinksGroup/NavbarLinksGroup'
 
 const mockdata = [
-  { label: 'Dashboard', icon: IconGauge, link: '/communities/dashboard' },
+  {
+    label: 'Dashboard',
+    icon: IconGauge,
+    link: '/dashboard'
+  },
   {
     label: 'Discovery',
     icon: IconNotes,
     initiallyOpened: true,
     links: [
-      { label: 'Communities', link: '/discover/communities' },
-      { label: 'Resources', link: '/discover/resources' }
+      { label: 'Communities', link: '/communities/' },
+      { label: 'Resources', link: '/resources/' }
     ]
   },
   {
     label: 'Manage',
     icon: IconCalendarStats,
     links: [
-      { label: 'My Communities', link: '/communities/my-list' },
-      { label: 'My Resources', link: '/communities/my-resources' }
+      { label: 'My Communities', link: '/my-communities/' },
+      { label: 'My Resources', link: '/my-resources/' }
     ]
   }
 ]

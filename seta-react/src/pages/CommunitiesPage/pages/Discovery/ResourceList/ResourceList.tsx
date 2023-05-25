@@ -4,11 +4,7 @@ import './style.css'
 const ResourceListPage = () => {
   // const data = useCommunities()
 
-  return (
-    <div className="page">
-      <ResourceList />
-    </div>
-  )
+  return <ResourceList />
 }
 
 export default ResourceListPage

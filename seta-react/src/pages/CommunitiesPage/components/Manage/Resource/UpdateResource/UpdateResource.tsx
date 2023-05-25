@@ -8,11 +8,9 @@ import {
   createStyles,
   Title,
   Button,
-  Textarea,
-  Anchor,
-  Breadcrumbs
+  Textarea
 } from '@mantine/core'
-import { useParams } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 
 import { updateResource, useResourceID } from '../../../../../../api/resources/manage/my-resource'
 import ComponentLoading from '../../../common/ComponentLoading'
@@ -25,17 +23,11 @@ const useStyles = createStyles({
   },
   sized: {
     width: '30%'
+  },
+  link: {
+    color: '#228be6'
   }
 })
-
-const items = [
-  { title: 'My Communities', href: '/communities/my-list' },
-  { title: 'Update Community' }
-].map(item => (
-  <Anchor href={item.href} key={item.title}>
-    {item.title}
-  </Anchor>
-))
 
 const UpdateResource = () => {
   const { classes, cx } = useStyles()
@@ -69,7 +61,6 @@ const UpdateResource = () => {
 
   return (
     <>
-      <Breadcrumbs>{items}</Breadcrumbs>
       <Paper withBorder shadow="md" p={30} mt={30} radius="md" mx="auto" maw={1000}>
         <ResourceFormProvider form={form}>
           <form onSubmit={form.onSubmit(handleSubmit)}>
@@ -103,15 +94,10 @@ const UpdateResource = () => {
               </Radio.Group>
             </Group>
             <Group position="right">
-              <Button
-                variant="outline"
-                size="xs"
-                color="blue"
-                onClick={() => {
-                  window.location.href = `/communities/details/${id}/${resourceId}`
-                }}
-              >
-                Cancel
+              <Button variant="outline" size="xs" color="blue">
+                <Link className={classes.link} to={`/my-resources/${resourceId}`} replace={true}>
+                  Cancel
+                </Link>
               </Button>
               <Button size="xs" type="submit">
                 Save

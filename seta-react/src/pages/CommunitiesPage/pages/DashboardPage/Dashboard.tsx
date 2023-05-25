@@ -12,7 +12,7 @@ import './style.css'
 
 const CommunityDashboard = () => {
   return (
-    <div className="page">
+    <>
       <DashboardCards data={attributes.props.data} />
       <Grid>
         <Grid.Col xs={5}>
@@ -31,7 +31,7 @@ const CommunityDashboard = () => {
           </Paper>
         </Grid.Col>
       </Grid>
-    </div>
+    </>
   )
 }
 
