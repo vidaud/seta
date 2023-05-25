@@ -37,7 +37,7 @@ const CommunityResources = resources => {
   }, [resources, items])
 
   const getResource = item => {
-    window.location.href = `/communities/details/${item.community_id}/${item.resource_id}`
+    // navigate(`/my-communities/${item.community_id}/${item.resource_id}`)
   }
 
   const rows = items?.data?.map(item => {

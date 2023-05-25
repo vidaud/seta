@@ -11,12 +11,12 @@ import {
   ActionIcon
 } from '@mantine/core'
 import { IconDots, IconEye, IconSearch } from '@tabler/icons-react'
+import { Link } from 'react-router-dom'
 
 import type { ResourcesResponse } from '~/api/resources/manage/my-resources'
 import type { Resource } from '~/models/communities/resources'
 
 import { useAllResources } from '../../../../../api/resources/discover/discover-resources'
-import { environment } from '../../../../../environments/environment'
 import { ComponentEmpty, ComponentError } from '../../common'
 import ComponentLoading from '../../common/ComponentLoading'
 import { Th } from '../../community-utils'
@@ -49,9 +49,11 @@ const ResourceList = () => {
         }`
       }
     },
-
     scrolled: {
       boxShadow: theme.shadows.sm
+    },
+    link: {
+      color: 'black'
     }
   }))
   const { classes, cx } = useStyles()
@@ -116,12 +118,14 @@ const ResourceList = () => {
                     </ActionIcon>
                   </Menu.Target>
                   <Menu.Dropdown>
-                    <Menu.Item
-                      icon={<IconEye size="1rem" stroke={1.5} />}
-                      component="a"
-                      href={`${environment.COMMUNITIES_API_PATH}/view/${row.community_id}`}
-                    >
-                      View Details
+                    <Menu.Item icon={<IconEye size="1rem" stroke={1.5} />}>
+                      <Link
+                        className={classes.link}
+                        to={`/resources/${row.resource_id}`}
+                        replace={true}
+                      >
+                        View Details
+                      </Link>
                     </Menu.Item>
                   </Menu.Dropdown>
                 </Menu>

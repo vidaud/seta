@@ -26,7 +26,7 @@ const useStyles = createStyles(theme => ({
   }
 }))
 
-const Stats = totalResources => {
+const Stats = ({ resourceNumber, memberNumber }) => {
   const { classes } = useStyles()
 
   return (
@@ -39,7 +39,7 @@ const Stats = totalResources => {
         <Container size="xs" px="xs" className={classes.container}>
           <Text className={classes.text}>Members</Text>
           <Group position="right">
-            <Button>21</Button>
+            <Button>{memberNumber?.length}</Button>
           </Group>
         </Container>
       </Group>
@@ -48,7 +48,7 @@ const Stats = totalResources => {
         <Container size="xs" px="xs" className={classes.container}>
           <Text className={classes.text}>Resources</Text>
           <Group position="right">
-            <Button>{totalResources.resourceNumber}</Button>
+            <Button>{resourceNumber?.length}</Button>
           </Group>
         </Container>
       </Group>

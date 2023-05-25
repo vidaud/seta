@@ -1,5 +1,5 @@
 import { Card, Text, Group, createStyles, Button, rem, Container } from '@mantine/core'
-import { useParams } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 
 const useStyles = createStyles(theme => ({
   card: {
@@ -24,6 +24,9 @@ const useStyles = createStyles(theme => ({
   },
   text: {
     width: '50%'
+  },
+  link: {
+    color: 'white'
   }
 }))
 
@@ -41,12 +44,10 @@ const Stats = ({ resourceNumber, inviteNumber, memberNumber }) => {
         <Container size="xs" px="xs" className={classes.container}>
           <Text className={classes.text}>Members</Text>
           <Group position="right">
-            <Button
-              onClick={() => {
-                window.location.href = `/communities/${id}/members`
-              }}
-            >
-              {memberNumber?.length}
+            <Button>
+              <Link className={classes.link} to={`/my-communities/${id}/members`} replace={true}>
+                {memberNumber?.length}
+              </Link>
             </Button>
           </Group>
         </Container>
@@ -65,12 +66,10 @@ const Stats = ({ resourceNumber, inviteNumber, memberNumber }) => {
         <Container size="xs" px="xs" className={classes.container}>
           <Text className={classes.text}>Pending Invites</Text>
           <Group position="right">
-            <Button
-              onClick={() => {
-                window.location.href = `/communities/${id}/invite`
-              }}
-            >
-              {inviteNumber?.length}
+            <Button>
+              <Link className={classes.link} to={`/my-communities/${id}/invites`} replace={true}>
+                {inviteNumber?.length}
+              </Link>
             </Button>
           </Group>
         </Container>
@@ -78,8 +77,10 @@ const Stats = ({ resourceNumber, inviteNumber, memberNumber }) => {
 
       <Card.Section className={classes.section}>
         <Group spacing={30}>
-          <Button radius="xl" component="a" href={`/communities/details/${id}/new`}>
-            + New Resource
+          <Button radius="xl">
+            <Link className={classes.link} to={`/my-communities/${id}/new`} replace={true}>
+              + New Resource
+            </Link>
           </Button>
         </Group>
       </Card.Section>

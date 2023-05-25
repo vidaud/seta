@@ -5,9 +5,7 @@ const CreateContribution = () => {
   return (
     <>
       <ContextProvider>
-        <div className="page">
-          <MainContainer />
-        </div>
+        <MainContainer />
       </ContextProvider>
     </>
   )

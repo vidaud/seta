@@ -3,10 +3,10 @@ import MyCommunityList from '../../../components/Manage/Community/MyCommunityLis
 
 const MyCommunityListPage = () => {
   return (
-    <div className="page">
+    <>
       <CreateCommunity />
       <MyCommunityList />
-    </div>
+    </>
   )
 }
 

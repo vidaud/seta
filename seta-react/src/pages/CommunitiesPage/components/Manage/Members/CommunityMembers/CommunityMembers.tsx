@@ -47,29 +47,32 @@ const CommunityMembers = () => {
     }
   }, [data, items])
 
-  if (isLoading || !data) {
+  if (isLoading || !data || !items) {
     return <ComponentLoading />
   }
 
-  const rows = items?.map(row => (
-    <tr key={row.user_id}>
-      <td>{row.user_id}</td>
-      <td>
-        <Badge
-          color={jobColors[row.role.toLowerCase()]}
-          variant={theme.colorScheme === 'dark' ? 'light' : 'outline'}
-        >
-          {row.role}
-        </Badge>
-      </td>
-      <td>{row.community_id}</td>
-      <td>{row.join_date.toString()}</td>
-      <td>{row.status}</td>
-    </tr>
-  ))
+  const rows =
+    items && items.length > 0
+      ? items?.map(row => (
+          <tr key={row.user_id}>
+            <td>{row.user_id}</td>
+            <td>
+              <Badge
+                color={jobColors[row.role.toLowerCase()]}
+                variant={theme.colorScheme === 'dark' ? 'light' : 'outline'}
+              >
+                {row.role}
+              </Badge>
+            </td>
+            <td>{row.community_id}</td>
+            <td>{row.join_date.toString()}</td>
+            <td>{row.status}</td>
+          </tr>
+        ))
+      : []
 
   return (
-    <div className="page">
+    <>
       <Title className={cx(classes.title)} order={3}>
         List of Members
       </Title>
@@ -87,7 +90,7 @@ const CommunityMembers = () => {
           <tbody>{rows}</tbody>
         </Table>
       </ScrollArea>
-    </div>
+    </>
   )
 }
 
