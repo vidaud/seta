@@ -1,5 +1,7 @@
 import type { ClassNameProp } from '~/types/children-props'
 
+import type { OtherType } from './other-filter'
+
 export type YearCount = {
   year: string
   doc_count: number
@@ -44,7 +46,7 @@ export type AdvancedFiltersContract = {
   collection?: string[]
   reference?: string[]
   taxonomy_path?: string[]
-  other?: { name: string; value: string }[]
+  other?: OtherType[]
 }
 
 export type AdvancedFilterProps = {
