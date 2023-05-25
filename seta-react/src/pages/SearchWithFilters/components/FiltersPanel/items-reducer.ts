@@ -1,10 +1,100 @@
-/* eslint-disable complexity */
 import type { OtherItem } from '../../types/other-filter'
 import { OtherItemStatus } from '../../types/other-filter'
 
 type Action = {
   type: string
   value?: OtherItem
+}
+
+const resetKey = (items: OtherItem[], id?: string, status?: OtherItemStatus): OtherItem[] => {
+  switch (status) {
+    case OtherItemStatus.NEW: {
+      return items.filter(i => i.id !== id)
+    }
+
+    default: {
+      const newStatus =
+        status === OtherItemStatus.APPLIED ? OtherItemStatus.DELETED : OtherItemStatus.APPLIED
+
+      return items.map(i => {
+        if (i.id === id) {
+          return { ...i, status: newStatus }
+        }
+
+        return i
+      })
+    }
+  }
+}
+
+const deleteApplied = (items: OtherItem[]): OtherItem[] => {
+  const newItems: OtherItem[] = []
+
+  for (let i = 0; i < items.length; i++) {
+    const item = items[i]
+
+    if (item.status === OtherItemStatus.APPLIED) {
+      newItems.push({ ...item, status: OtherItemStatus.DELETED })
+    } else {
+      newItems.push({ ...item })
+    }
+  }
+
+  return newItems
+}
+
+const clearModified = (items: OtherItem[]): OtherItem[] => {
+  const newItems: OtherItem[] = []
+
+  for (let i = 0; i < items.length; i++) {
+    const item = items[i]
+
+    if (item.status === OtherItemStatus.NEW) {
+      continue
+    }
+
+    newItems.push({ ...item, status: OtherItemStatus.APPLIED })
+  }
+
+  return newItems
+}
+
+const setApplied = (items: OtherItem[]): OtherItem[] => {
+  const newItems: OtherItem[] = []
+
+  for (let i = 0; i < items.length; i++) {
+    const item = items[i]
+
+    if (item.status === OtherItemStatus.DELETED) {
+      continue
+    }
+
+    newItems.push({ ...item, status: OtherItemStatus.APPLIED })
+  }
+
+  return newItems
+}
+
+const deleteItem = (items: OtherItem[], value?: OtherItem): OtherItem[] => {
+  const id = value?.id
+
+  const item = items.find(i => i.id === id)
+
+  if (item === undefined || item.status === OtherItemStatus.DELETED) {
+    return { ...items }
+  }
+
+  if (item.status === OtherItemStatus.APPLIED) {
+    return items.map(i => {
+      if (i.id === id) {
+        return { ...i, status: OtherItemStatus.DELETED }
+      }
+
+      return i
+    })
+  }
+
+  return items.filter(i => i.id !== id)
 }
 
 export const itemsReducer = (
@@ -25,16 +115,12 @@ export const itemsReducer = (
     }
 
     case 'updated': {
-      if (items === undefined) {
-        return undefined
-      }
-
-      return items.map(i => {
+      return items?.map(i => {
         if (i.id === action.value?.id) {
           return action.value
         }
 
-        return i
+        return { ...i }
       })
     }
 
@@ -43,25 +129,7 @@ export const itemsReducer = (
         return undefined
       }
 
-      const id = action.value?.id
-
-      const item = items.find(i => i.id === id)
-
-      if (item === undefined || item.status === OtherItemStatus.DELETED) {
-        return { ...items }
-      }
-
-      if (item.status === OtherItemStatus.APPLIED) {
-        return items.map(i => {
-          if (i.id === id) {
-            return { ...i, status: OtherItemStatus.DELETED }
-          }
-
-          return i
-        })
-      }
-
-      return items.filter(i => i.id !== id)
+      return deleteItem(items, action.value)
     }
 
     case 'set-applied': {
@@ -69,19 +137,31 @@ export const itemsReducer = (
         return undefined
       }
 
-      const newItems: OtherItem[] = []
+      return setApplied(items)
+    }
 
-      for (let i = 0; i < items.length; i++) {
-        const item = items[i]
-
-        if (item.status === OtherItemStatus.DELETED) {
-          continue
-        }
-
-        newItems.push({ ...item, status: OtherItemStatus.APPLIED })
+    case 'clear-modified': {
+      if (items === undefined) {
+        return undefined
       }
 
-      return newItems
+      return clearModified(items)
+    }
+
+    case 'delete-applied': {
+      if (items === undefined) {
+        return undefined
+      }
+
+      return deleteApplied(items)
+    }
+
+    case 'reset-key': {
+      if (items === undefined) {
+        return undefined
+      }
+
+      return resetKey(items, action.value?.id, action.value?.status)
     }
 
     default: {

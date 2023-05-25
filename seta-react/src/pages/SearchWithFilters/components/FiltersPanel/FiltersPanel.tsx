@@ -2,12 +2,14 @@ import { useState } from 'react'
 import { Container, Flex, Accordion, ScrollArea, Indicator, rem, Text } from '@mantine/core'
 
 import { itemsReducer } from './items-reducer'
+import useClearFilter from './useClearFilter'
 import useFilter from './useFilter'
 
 import { buildFiltersContract } from '../../custom/map-query'
 import type { AdvancedFilterProps } from '../../types/contracts'
+import { FilterStatus } from '../../types/filter-info'
 import type { RangeValue, SelectionKeys } from '../../types/filters'
-import { TextChunkValues, FilterStatus } from '../../types/filters'
+import { TextChunkValues } from '../../types/filters'
 import ApplyFilters from '../ApplyFilters'
 import DataSourceFilter from '../DataSourceFilter'
 import OtherFilter from '../OtherFilter/OtherFilter'
@@ -36,13 +38,13 @@ const FiltersPanel = ({ queryContract, onApplyFilter }: AdvancedFilterProps) => 
   } = useFilter(queryContract, resourceSelectedKeys, taxonomySelectedKeys)
 
   const handleApplyFilters = () => {
-    const contract = buildFiltersContract(
-      chunkText,
-      enableDateFilter ? rangeValue : undefined,
-      resourceSelectedKeys,
-      taxonomySelectedKeys,
-      otherItems
-    )
+    const contract = buildFiltersContract({
+      searchType: chunkText,
+      yearsRange: enableDateFilter ? rangeValue : undefined,
+      selectedResources: resourceSelectedKeys,
+      selectedTaxonomies: taxonomySelectedKeys,
+      otherItems: otherItems
+    })
 
     dispatchStatus({ type: 'set_status', value: FilterStatus.PROCESSING })
 
@@ -59,7 +61,7 @@ const FiltersPanel = ({ queryContract, onApplyFilter }: AdvancedFilterProps) => 
     dispatchStatus({ type: 'range_changed', value: value })
   }
 
-  const handleSourceSelectionChange = (value: SelectionKeys) => {
+  const handleSourceSelectionChange = (value: SelectionKeys | null) => {
     dispatchStatus({
       type: 'source_changed',
       value: value ? Object.keys(value) : null
@@ -68,7 +70,7 @@ const FiltersPanel = ({ queryContract, onApplyFilter }: AdvancedFilterProps) => 
     setResourceSelectedKeys(value)
   }
 
-  const handleTaxonomySelectionChange = (value: SelectionKeys) => {
+  const handleTaxonomySelectionChange = (value: SelectionKeys | null) => {
     dispatchStatus({
       type: 'taxonomy_changed',
       value: value ? Object.keys(value) : null
@@ -94,9 +96,28 @@ const FiltersPanel = ({ queryContract, onApplyFilter }: AdvancedFilterProps) => 
     })
   }
 
+  const { handleClearFilters } = useClearFilter({
+    status: status,
+    otherItems: otherItems,
+    resourceSelectedKeys: resourceSelectedKeys,
+    taxonomySelectedKeys: taxonomySelectedKeys,
+    dispatchStatus: dispatchStatus,
+    dispatchOtherItems: dispatchOtherItems,
+    handleTextChunkChange: handleTextChunkChange,
+    handleEnableDateChanged: handleEnableDateChanged,
+    handleSourceSelectionChange: handleSourceSelectionChange,
+    handleTaxonomySelectionChange: handleTaxonomySelectionChange,
+    handleItemChange: handleItemChange,
+    handleRangeChange: handleRangeChange
+  })
+
   return (
     <Flex direction="column" align="center" gap="md">
-      <ApplyFilters status={status} onApplyFilters={handleApplyFilters} />
+      <ApplyFilters
+        status={status}
+        onApplyFilters={handleApplyFilters}
+        onClear={handleClearFilters}
+      />
       <TextChunkFilter
         value={chunkText}
         onChange={handleTextChunkChange}
