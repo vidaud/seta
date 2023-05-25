@@ -10,7 +10,7 @@ import {
   Button,
   Textarea
 } from '@mantine/core'
-import { useNavigate, useParams } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 
 import {
   updateCommunity,
@@ -26,13 +26,15 @@ const useStyles = createStyles({
   },
   sized: {
     width: '30%'
+  },
+  link: {
+    color: '#228be6'
   }
 })
 
 const UpdateCommunity = () => {
   const { classes, cx } = useStyles()
   const { id } = useParams()
-  const navigate = useNavigate()
 
   const { data, isLoading } = useCommunityID(id)
 
@@ -101,15 +103,10 @@ const UpdateCommunity = () => {
               </Radio.Group>
             </Group>
             <Group position="right">
-              <Button
-                variant="outline"
-                size="xs"
-                color="blue"
-                onClick={() => {
-                  navigate(-1)
-                }}
-              >
-                Cancel
+              <Button variant="outline" size="xs" color="blue">
+                <Link className={classes.link} to={`/my-communities/${id}`} replace={true}>
+                  Cancel
+                </Link>
               </Button>
               <Button size="xs" type="submit">
                 Save

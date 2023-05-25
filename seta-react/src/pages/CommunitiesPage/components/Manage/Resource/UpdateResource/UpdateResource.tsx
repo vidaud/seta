@@ -10,7 +10,7 @@ import {
   Button,
   Textarea
 } from '@mantine/core'
-import { useNavigate, useParams } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 
 import { updateResource, useResourceID } from '../../../../../../api/resources/manage/my-resource'
 import ComponentLoading from '../../../common/ComponentLoading'
@@ -23,6 +23,9 @@ const useStyles = createStyles({
   },
   sized: {
     width: '30%'
+  },
+  link: {
+    color: '#228be6'
   }
 })
 
@@ -30,7 +33,6 @@ const UpdateResource = () => {
   const { classes, cx } = useStyles()
   const { id } = useParams()
   const { resourceId } = useParams()
-  const navigate = useNavigate()
 
   const { data, isLoading } = useResourceID(resourceId)
 
@@ -92,15 +94,10 @@ const UpdateResource = () => {
               </Radio.Group>
             </Group>
             <Group position="right">
-              <Button
-                variant="outline"
-                size="xs"
-                color="blue"
-                onClick={() => {
-                  navigate(-1)
-                }}
-              >
-                Cancel
+              <Button variant="outline" size="xs" color="blue">
+                <Link className={classes.link} to={`/my-resources/${resourceId}`} replace={true}>
+                  Cancel
+                </Link>
               </Button>
               <Button size="xs" type="submit">
                 Save

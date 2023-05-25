@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
 import { Card, Grid, Table, Text, createStyles } from '@mantine/core'
-import { useNavigate } from 'react-router-dom'
 
 const useStyles = createStyles(theme => ({
   card: {
@@ -30,7 +29,6 @@ const useStyles = createStyles(theme => ({
 const CommunityResources = resources => {
   const { classes } = useStyles()
   const [items, setItems] = useState(resources)
-  const navigate = useNavigate()
 
   useEffect(() => {
     if (resources) {
@@ -39,7 +37,7 @@ const CommunityResources = resources => {
   }, [resources, items])
 
   const getResource = item => {
-    navigate(`/manage/my-resources/details/${item.community_id}/${item.resource_id}`)
+    // navigate(`/my-communities/${item.community_id}/${item.resource_id}`)
   }
 
   const rows = items?.data?.map(item => {

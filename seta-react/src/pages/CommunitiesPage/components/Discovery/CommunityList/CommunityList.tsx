@@ -12,12 +12,12 @@ import {
   ActionIcon
 } from '@mantine/core'
 import { IconDots, IconEye, IconSearch } from '@tabler/icons-react'
+import { Link } from 'react-router-dom'
 
 import type { Community } from '~/models/communities/communities'
 
 import { useAllCommunities } from '../../../../../api/communities/discover/discover-communities'
 import type { CommunitiesResponse } from '../../../../../api/communities/manage/my-communities'
-import { environment } from '../../../../../environments/environment'
 import { ComponentEmpty, ComponentError } from '../../common'
 import ComponentLoading from '../../common/ComponentLoading'
 import { Th, sortCommunityData } from '../../community-utils'
@@ -49,9 +49,11 @@ const CommunityList = () => {
         }`
       }
     },
-
     scrolled: {
       boxShadow: theme.shadows.sm
+    },
+    link: {
+      color: 'black'
     }
   }))
   const { classes, cx } = useStyles()
@@ -126,12 +128,14 @@ const CommunityList = () => {
                     </ActionIcon>
                   </Menu.Target>
                   <Menu.Dropdown>
-                    <Menu.Item
-                      icon={<IconEye size="1rem" stroke={1.5} />}
-                      component="a"
-                      href={`${environment.COMMUNITIES_API_PATH}/view/${row.community_id}`}
-                    >
-                      View Details
+                    <Menu.Item icon={<IconEye size="1rem" stroke={1.5} />}>
+                      <Link
+                        className={classes.link}
+                        to={`/communities/${row.community_id}`}
+                        replace={true}
+                      >
+                        View Details
+                      </Link>
                     </Menu.Item>
                   </Menu.Dropdown>
                 </Menu>

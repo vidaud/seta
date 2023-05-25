@@ -47,7 +47,7 @@ const ViewCommunity = () => {
           </Paper>
         </Grid.Col>
         <Grid.Col span={1}>
-          <Stats resourceNumber={row?.resources.length} />
+          <Stats resourceNumber={row?.resources} memberNumber={row?.members} />
         </Grid.Col>
         <Grid.Col span={5}>
           <CommunityResources data={row?.resources} />

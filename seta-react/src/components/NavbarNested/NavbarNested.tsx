@@ -14,16 +14,16 @@ const mockdata = [
     icon: IconNotes,
     initiallyOpened: true,
     links: [
-      { label: 'Communities', link: '/discover/communities' },
-      { label: 'Resources', link: '/discover/resources' }
+      { label: 'Communities', link: '/communities/' },
+      { label: 'Resources', link: '/resources/' }
     ]
   },
   {
     label: 'Manage',
     icon: IconCalendarStats,
     links: [
-      { label: 'My Communities', link: '/manage/my-communities/' },
-      { label: 'My Resources', link: '/manage/my-resources' }
+      { label: 'My Communities', link: '/my-communities/' },
+      { label: 'My Resources', link: '/my-resources/' }
     ]
   }
 ]

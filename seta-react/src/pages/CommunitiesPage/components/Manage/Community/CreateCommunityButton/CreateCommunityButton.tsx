@@ -1,21 +1,23 @@
-import { Group, Button } from '@mantine/core'
-import { useNavigate } from 'react-router-dom'
+import { Group, Button, createStyles } from '@mantine/core'
+import { Link } from 'react-router-dom'
 
 import * as S from './styles'
 
+const useStyles = createStyles({
+  link: {
+    color: 'white'
+  }
+})
+
 const CreateCommunity = () => {
-  const navigate = useNavigate()
+  const { classes } = useStyles()
 
   return (
     <Group position="right" css={S.root}>
-      <Button
-        component="a"
-        color="green"
-        onClick={() => {
-          navigate('/manage/my-communities/new')
-        }}
-      >
-        + New Community
+      <Button color="green">
+        <Link className={classes.link} to="/my-communities/new">
+          + New Community
+        </Link>
       </Button>
     </Group>
   )

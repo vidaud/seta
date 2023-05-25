@@ -11,6 +11,7 @@ import RequireAuth from './components/RequireAuth'
 import AppLayout from '../../layouts/AppLayout'
 import CommunityLayout from '../../layouts/CommunityLayout/CommunityLayout'
 import ViewCommunity from '../../pages/CommunitiesPage/components/Discovery/ViewCommunity/ViewCommunity'
+import ViewResource from '../../pages/CommunitiesPage/components/Discovery/ViewResource/ViewResource'
 import ManageCommunity from '../../pages/CommunitiesPage/components/Manage/Community/ManageCommunity/ManageCommunity'
 import NewCommunity from '../../pages/CommunitiesPage/components/Manage/Community/NewCommunity/NewCommunity'
 import UpdateCommunity from '../../pages/CommunitiesPage/components/Manage/Community/UpdateCommunity/UpdateCommunity'
@@ -20,7 +21,7 @@ import CommunityInvites from '../../pages/CommunitiesPage/components/Manage/Invi
 import CommunityMembers from '../../pages/CommunitiesPage/components/Manage/Members/CommunityMembers/CommunityMembers'
 import NewResource from '../../pages/CommunitiesPage/components/Manage/Resource/NewResource/NewResource'
 import UpdateResource from '../../pages/CommunitiesPage/components/Manage/Resource/UpdateResource/UpdateResource'
-import ViewMyResource from '../../pages/CommunitiesPage/components/Manage/Resource/ViewResource/ViewResource'
+import ViewMyResource from '../../pages/CommunitiesPage/components/Manage/Resource/ViewMyResource/ViewMyResource'
 import CommunityUsersPermissions from '../../pages/CommunitiesPage/components/UserPermissions/Community/CommunityUserPermissions'
 import ResourceUsersPermissions from '../../pages/CommunitiesPage/components/UserPermissions/Resource/ResourceUserPermissions'
 import DashboardsPage from '../../pages/CommunitiesPage/pages/DashboardPage'
@@ -39,9 +40,10 @@ import SearchPageNew from '../../pages/SearchPageNew'
 import SearchWithFilters from '../../pages/SearchWithFilters'
 
 const ROOT_PATH = '/'
-const COMMUNITY_PATH = '/communities/'
-const MANAGE_PATH = '/manage/'
-const DISCOVER_PATH = '/discover'
+const MANAGE_COMMUNITY_PATH = '/my-communities/'
+const MANAGE_RESOURCE_PATH = '/my-resources/'
+const DISCOVER_COMMUNITY_PATH = '/communities/'
+const DISCOVER_RESOURCE_PATH = '/resources/'
 
 const routes = createRoutesFromElements(
   <Route path={ROOT_PATH} element={<AppLayout />}>
@@ -94,17 +96,9 @@ const routes = createRoutesFromElements(
         }
       />
     </Route>
-    <Route path={MANAGE_PATH} element={<CommunityLayout />}>
+    <Route path={MANAGE_COMMUNITY_PATH} element={<CommunityLayout />}>
       <Route
-        path="my-communities/view/:id"
-        element={
-          <RequireAuth>
-            <ViewCommunity />
-          </RequireAuth>
-        }
-      />
-      <Route
-        path="my-communities"
+        path=""
         element={
           <RequireAuth>
             <MyCommunityListPage />
@@ -112,7 +106,7 @@ const routes = createRoutesFromElements(
         }
       />
       <Route
-        path="my-communities/new"
+        path="new"
         element={
           <RequireAuth>
             <NewCommunity />
@@ -120,7 +114,7 @@ const routes = createRoutesFromElements(
         }
       />
       <Route
-        path="my-communities/update/:id"
+        path=":id/update"
         element={
           <RequireAuth>
             <UpdateCommunity />
@@ -128,7 +122,7 @@ const routes = createRoutesFromElements(
         }
       />
       <Route
-        path="my-communities/:id/members"
+        path=":id/members"
         element={
           <RequireAuth>
             <CommunityMembers />
@@ -136,7 +130,7 @@ const routes = createRoutesFromElements(
         }
       />
       <Route
-        path="my-communities/:id/invites"
+        path=":id/invites"
         element={
           <RequireAuth>
             <CommunityInvites />
@@ -144,7 +138,7 @@ const routes = createRoutesFromElements(
         }
       />
       <Route
-        path="my-communities/details/:id"
+        path=":id"
         element={
           <RequireAuth>
             <ViewMyCommunity />
@@ -152,31 +146,7 @@ const routes = createRoutesFromElements(
         }
       />
       <Route
-        path="my-communities/details/:id/new"
-        element={
-          <RequireAuth>
-            <NewResource />
-          </RequireAuth>
-        }
-      />
-      <Route
-        path="my-resources"
-        element={
-          <RequireAuth>
-            <MyResourceListPage />
-          </RequireAuth>
-        }
-      />
-      <Route
-        path="my-communities/manage/:id"
-        element={
-          <RequireAuth>
-            <ManageCommunity />
-          </RequireAuth>
-        }
-      />
-      <Route
-        path="my-resources/details/:id/:resourceId"
+        path=":id/:resourceId"
         element={
           <RequireAuth>
             <ViewMyResource />
@@ -184,18 +154,18 @@ const routes = createRoutesFromElements(
         }
       />
       <Route
-        path="my-resources/details/:id/:resourceId/contribution/new"
+        path=":id/new"
         element={
           <RequireAuth>
-            <CreateContribution />
+            <NewResource />
           </RequireAuth>
         }
       />
       <Route
-        path="my-resources/update/:id/:resourceId"
+        path=":id/manage"
         element={
           <RequireAuth>
-            <UpdateResource />
+            <ManageCommunity />
           </RequireAuth>
         }
       />
@@ -216,9 +186,43 @@ const routes = createRoutesFromElements(
         }
       />
     </Route>
-    <Route path={DISCOVER_PATH} element={<CommunityLayout />}>
+    <Route path={MANAGE_RESOURCE_PATH} element={<CommunityLayout />}>
       <Route
-        path="communities"
+        path=""
+        element={
+          <RequireAuth>
+            <MyResourceListPage />
+          </RequireAuth>
+        }
+      />
+      <Route
+        path=":resourceId"
+        element={
+          <RequireAuth>
+            <ViewMyResource />
+          </RequireAuth>
+        }
+      />
+      <Route
+        path=":resourceId/contribution/new"
+        element={
+          <RequireAuth>
+            <CreateContribution />
+          </RequireAuth>
+        }
+      />
+      <Route
+        path=":resourceId/update"
+        element={
+          <RequireAuth>
+            <UpdateResource />
+          </RequireAuth>
+        }
+      />
+    </Route>
+    <Route path={DISCOVER_COMMUNITY_PATH} element={<CommunityLayout />}>
+      <Route
+        path=""
         element={
           <RequireAuth>
             <CommunityListPage />
@@ -226,10 +230,28 @@ const routes = createRoutesFromElements(
         }
       />
       <Route
-        path="resources"
+        path=":id"
+        element={
+          <RequireAuth>
+            <ViewCommunity />
+          </RequireAuth>
+        }
+      />
+    </Route>
+    <Route path={DISCOVER_RESOURCE_PATH} element={<CommunityLayout />}>
+      <Route
+        path=""
         element={
           <RequireAuth>
             <ResourceListPage />
+          </RequireAuth>
+        }
+      />
+      <Route
+        path=":id"
+        element={
+          <RequireAuth>
+            <ViewResource />
           </RequireAuth>
         }
       />

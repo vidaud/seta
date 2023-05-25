@@ -5,7 +5,7 @@ export type InvitationValues = {
   message: string
 }
 
-export const cacheKey = () => ['communities']
+export const cacheKey = () => ['my-communities']
 
 // You can give context variables any name
 export const [InvitationFormProvider, useInvitationContext, useInvitation] =

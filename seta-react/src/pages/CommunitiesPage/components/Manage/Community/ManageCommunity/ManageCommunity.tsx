@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Button, Group, Paper, Text, Grid, Title, createStyles, Table } from '@mantine/core'
-import { useNavigate, useParams } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 
 import { useCommunityID } from '../../../../../../api/communities/manage/my-community'
 import ComponentLoading from '../../../common/ComponentLoading'
@@ -25,6 +25,9 @@ const useStyles = createStyles({
   },
   table: {
     marginTop: '20px'
+  },
+  link: {
+    color: 'white'
   }
 })
 
@@ -33,7 +36,6 @@ const ManageCommunity = () => {
   const { id } = useParams()
   const { data, isLoading } = useCommunityID(id)
   const [row, setRow] = useState(data)
-  const navigate = useNavigate()
 
   useEffect(() => {
     if (data) {
@@ -50,14 +52,10 @@ const ManageCommunity = () => {
       <div className={classes.page}>
         <Group position="right">
           <InviteMember id={row?.communities.community_id} />
-          <Button
-            color="blue"
-            component="a"
-            onClick={() => {
-              navigate(`/manage/my-communities/details/${id}/new`)
-            }}
-          >
-            New Resource
+          <Button color="blue">
+            <Link className={classes.link} to={`/my-communities/${id}/new`} replace={true}>
+              New Resource
+            </Link>
           </Button>
         </Group>
         <Grid grow>
@@ -84,14 +82,10 @@ const ManageCommunity = () => {
                 </tbody>
               </Table>
               <Group spacing={30} position="right">
-                <Button
-                  color="green"
-                  component="a"
-                  onClick={() => {
-                    navigate(`/manage/my-communities/update/${id}`)
-                  }}
-                >
-                  Update
+                <Button color="green">
+                  <Link className={classes.link} to={`/my-communities/${id}/update`} replace={true}>
+                    Update
+                  </Link>
                 </Button>
               </Group>
             </Paper>

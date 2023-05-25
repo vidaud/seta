@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Button, Grid, Group, Paper, Text, Title, createStyles } from '@mantine/core'
-import { useNavigate, useParams } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 
 import { useCommunityID } from '../../../../../../api/communities/manage/my-community'
 import ComponentLoading from '../../../common/ComponentLoading'
@@ -13,12 +13,14 @@ const useStyles = createStyles({
   },
   text: {
     textAlign: 'left'
+  },
+  link: {
+    color: 'white'
   }
 })
 const ViewMyCommunity = () => {
   const { classes } = useStyles()
   const { id } = useParams()
-  const navigate = useNavigate()
 
   const { data, isLoading } = useCommunityID(id)
   const [row, setRow] = useState(data)
@@ -43,13 +45,14 @@ const ViewMyCommunity = () => {
             </Title>
             <Text className={classes.text}>{row?.communities.description}</Text>
             <Group spacing={30} position="right">
-              <Button
-                component="a"
-                onClick={() => {
-                  navigate(`/manage/my-communities/manage/${row?.communities.community_id}`)
-                }}
-              >
-                Manage
+              <Button>
+                <Link
+                  className={classes.link}
+                  to={`/my-communities/${row?.communities.community_id}/manage`}
+                  replace={true}
+                >
+                  Manage
+                </Link>
               </Button>
             </Group>
           </Paper>

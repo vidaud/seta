@@ -16,7 +16,7 @@ export type CreateMembershipAPI = {
   community_id: string
 }
 
-export const cacheKey = (id?: string) => ['communities', id]
+export const cacheKey = (id?: string) => ['my-communities', id]
 
 export const getMembership = async (id?: string): Promise<MembershipResponse[]> => {
   const { data } = await community_api.get<MembershipResponse[]>(

@@ -10,6 +10,7 @@ import {
   rem
 } from '@mantine/core'
 import { IconChevronLeft, IconChevronRight } from '@tabler/icons-react'
+import { useNavigate } from 'react-router-dom'
 
 const useStyles = createStyles(theme => ({
   control: {
@@ -59,6 +60,7 @@ interface LinksGroupProps {
 
 export const LinksGroup = ({ icon: Icon, label, initiallyOpened, links }: LinksGroupProps) => {
   const { classes, theme } = useStyles()
+  const navigate = useNavigate()
   const hasLinks = Array.isArray(links)
   const [opened, setOpened] = useState(initiallyOpened || false)
   const ChevronIcon = theme.dir === 'ltr' ? IconChevronRight : IconChevronLeft
@@ -66,9 +68,11 @@ export const LinksGroup = ({ icon: Icon, label, initiallyOpened, links }: LinksG
     <Text<'a'>
       component="a"
       className={classes.link}
-      href={link.link}
+      // href={link.link}
+      onClick={() => {
+        navigate(`${link.link}`)
+      }}
       key={link.label}
-      // onClick={event => event.preventDefault()}
     >
       {link.label}
     </Text>

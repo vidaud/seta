@@ -1,12 +1,9 @@
 import { useEffect, useState } from 'react'
-import { Button, Grid, Group, Paper, Text, Title, createStyles } from '@mantine/core'
-import { useNavigate, useParams } from 'react-router-dom'
+import { Grid, Paper, Text, Title, createStyles } from '@mantine/core'
+import { useParams } from 'react-router-dom'
 
-import {
-  deleteResourceByID,
-  useResourceID
-} from '../../../../../../api/resources/manage/my-resource'
-import ComponentLoading from '../../../common/ComponentLoading'
+import { useResourceID } from '../../../../../api/resources/manage/my-resource'
+import ComponentLoading from '../../common/ComponentLoading'
 
 const useStyles = createStyles({
   title: {
@@ -27,12 +24,11 @@ const useStyles = createStyles({
   }
 })
 
-const ViewMyResource = () => {
+const ViewResource = () => {
   const { classes } = useStyles()
-  const { resourceId } = useParams()
-  const navigate = useNavigate()
+  const { id } = useParams()
 
-  const { data, isLoading } = useResourceID(resourceId)
+  const { data, isLoading } = useResourceID(id)
   const [rows, setRows] = useState(data)
 
   useEffect(() => {
@@ -43,10 +39,6 @@ const ViewMyResource = () => {
 
   if (isLoading || !data) {
     return <ComponentLoading />
-  }
-
-  const deleteResource = () => {
-    deleteResourceByID(rows?.resource_id, rows?.community_id)
   }
 
   return (
@@ -76,36 +68,6 @@ const ViewMyResource = () => {
                 </tr>
               </tbody>
             </table>
-            <Group spacing={30} position="right">
-              <Button color="red" onClick={deleteResource}>
-                Delete
-              </Button>
-              <Button
-                component="a"
-                onClick={() => {
-                  navigate(`/manage/my-resources/update/${rows?.community_id}/${rows?.resource_id}`)
-                }}
-              >
-                Update
-              </Button>
-            </Group>
-          </Paper>
-        </Grid.Col>
-        <Grid.Col span={12}>
-          <Paper shadow="xs" p="md">
-            <Group spacing={30} position="right">
-              <Button
-                className={classes.button}
-                component="a"
-                onClick={() => {
-                  navigate(
-                    `/manage/my-resources/details/${rows?.community_id}/${rows?.resource_id}/contribution/new`
-                  )
-                }}
-              >
-                Upload
-              </Button>
-            </Group>
           </Paper>
         </Grid.Col>
       </Grid>
@@ -113,4 +75,4 @@ const ViewMyResource = () => {
   )
 }
 
-export default ViewMyResource
+export default ViewResource

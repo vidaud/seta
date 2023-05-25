@@ -59,7 +59,7 @@ export type ManageCommunityAPI = {
   created_at: Date
 }
 
-export const cacheKey = (id?: string) => ['communities', id]
+export const cacheKey = (id?: string) => ['my-communities', id]
 
 const getCommunity = async (id?: string): Promise<Community> => {
   const communities = await community_api.get<CommunityResponse>(
@@ -114,7 +114,7 @@ export const createCommunity = async (values?: CreateCommunityAPI) => {
     })
     .then(response => {
       if (response.status === 201) {
-        window.location.href = `/manage/my-communities`
+        window.location.href = `/my-communities`
       }
     })
 }
@@ -130,7 +130,7 @@ export const updateCommunity = async (id?: string, values?: UpdateCommunityAPI) 
     })
     .then(response => {
       if (response.status === 200) {
-        window.location.href = `/manage/my-communities`
+        window.location.href = `/my-communities`
       }
     })
 }
@@ -146,7 +146,7 @@ export const deleteCommunityByID = async (id?: string) => {
     })
     .then(response => {
       if (response.status === 200) {
-        window.location.href = `/manage/my-communities`
+        window.location.href = `/my-communities`
       }
     })
 }
