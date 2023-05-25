@@ -6,7 +6,7 @@ from .corpus.corpus import corpus_api
 from .similar.similar import similar_api
 from .ontology.ontology import ontology_api
 from .embeddings.embeddings import emb_api
-from .extract_text.extract_text import extract_api
+from .file_to_text.file_to_text import file_to_text_api
 
 authorizations = {
     'apikey': {
@@ -43,4 +43,4 @@ api.add_namespace(corpus_api, path="/")
 api.add_namespace(similar_api, path="/")
 api.add_namespace(ontology_api, path="/")
 api.add_namespace(emb_api, path="/")
-api.add_namespace(extract_api, path="/")
+api.add_namespace(file_to_text_api, path="/")
