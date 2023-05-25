@@ -18,7 +18,8 @@ corpus_parser.add_argument("date_range", action="split")
 corpus_parser.add_argument("aggs", action="split")
 corpus_parser.add_argument("other", action="split")
 
-other = fields.Wildcard(fields.String())
+other = {}
+other["*"] = fields.String()
 
 keywords = {}
 keywords["keyword"] = fields.String()
@@ -40,7 +41,7 @@ document["in_force"] = fields.String()
 document["keywords"] = None
 document["language"] = fields.String()
 document["link_origin"] = fields.String()
-document["other"] = fields.List(other)
+document["other"] = None
 document["reference"] = fields.String()
 document["score"] = fields.Float
 document["taxonomy"] = None
@@ -122,7 +123,7 @@ corpus_put_params["in_force"] = fields.String()
 corpus_put_params["language"] = fields.String()
 corpus_put_params["taxonomy"] = None
 corpus_put_params["keywords"] = None
-corpus_put_params["other"] = fields.List(other)
+corpus_put_params["other"] = None
 
 corpus_post_params = {}
 corpus_post_params["term"] = fields.String(description="term to be searched", example="data")
@@ -151,8 +152,7 @@ corpus_post_params["date_range"] = fields.List(fields.String, description="examp
 corpus_post_params["aggs"] = fields.List(fields.String, description="field to be aggregated, allowed fields are:"
                                                                     '"source", "date_year", "source_collection_reference", '
                                                                     '"taxonomy:taxonomyname", "taxonomies"')
-corpus_post_params["other"] = fields.List(other,
-                                          descritpion='"other":[{"other.crc":"de1cbd1eecdd19cb0d527f3a3433c6958e4b8b1b02ce69c960e02a611f27b036"}]')
+corpus_post_params["other"] = None
 
 corpus_delete_id_response = {}
 corpus_delete_id_response["deleted_document_id"] = fields.String
@@ -176,7 +176,7 @@ corpus_get_id_response["link_alias"] = fields.String()
 corpus_get_id_response["link_related"] = fields.String()
 corpus_get_id_response["link_reference"] = fields.String()
 corpus_get_id_response["mime_type"] = fields.String()
-corpus_get_id_response["other"] = fields.List(other)
+corpus_get_id_response["other"] = None
 corpus_get_id_response["reference"] = fields.String()
 corpus_get_id_response["score"] = fields.Float
 corpus_get_id_response["taxonomy"] = None
@@ -202,9 +202,11 @@ class Variable:
         self.taxonomy_agg_model_tree = self.namespace.model("taxonomy_agg_tree", taxonomy_agg)
 
         self.keywords_model = self.namespace.model("keywords", keywords)
+        self.other_model = self.namespace.model("other", other)
 
         document["keywords"] = fields.List(fields.Nested(self.keywords_model))
         document["taxonomy"] = fields.List(fields.Nested(self.taxonomy_model_tree))
+        document["other"] = fields.List(fields.Nested(self.other_model))
         post_get_response["documents"] = fields.List(fields.Nested(self.namespace.model("document", document)))
 
         collection["references"] = fields.List(fields.Nested(self.namespace.model("reference", reference)))
@@ -225,12 +227,14 @@ class Variable:
     def get_corpus_get_id_response(self):
         corpus_get_id_response["keywords"] = fields.List(fields.Nested(self.keywords_model))
         corpus_get_id_response["taxonomy"] = fields.List(fields.Nested(self.taxonomy_model_tree))
+        corpus_get_id_response["other"] = fields.List(fields.Nested(self.other_model))
         return self.namespace.model("corpus_get_id_response", corpus_get_id_response)
 
     def get_delete_id_request_model(self):
         return self.namespace.model("corpus_delete_id_response", corpus_delete_id_response)
 
     def get_post_request_model(self):
+        corpus_post_params["other"] = fields.List(fields.Nested(self.other_model))
         return self.namespace.model("corpus_post_params", corpus_post_params)
 
     def get_post_response_model(self):
@@ -245,6 +249,7 @@ class Variable:
     def get_put_request_model(self):
         corpus_put_params["taxonomy"] = fields.List(fields.Nested(self.taxonomy_model_tree))
         corpus_put_params["keywords"] = fields.List(fields.Nested(self.keywords_model))
+        corpus_put_params["other"] = fields.List(fields.Nested(self.other_model))
         return self.namespace.model("corpus_put_request", corpus_put_params)
 
 
