@@ -21,7 +21,7 @@ export type CreateInvitationAPI = {
   message: string
 }
 
-export const cacheKey = (id?: string) => ['my-communities', id]
+export const cacheKey = (id?: string) => ['invites', id]
 
 export const getInvite = async (id?: string): Promise<InviteResponse[]> => {
   const { data } = await community_api.get<InviteResponse[]>(

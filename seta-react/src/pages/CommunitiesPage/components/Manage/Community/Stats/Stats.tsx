@@ -67,7 +67,7 @@ const Stats = ({ resourceNumber, inviteNumber, memberNumber }) => {
           <Text className={classes.text}>Pending Invites</Text>
           <Group position="right">
             <Button>
-              <Link className={classes.link} to={`/my-communities/${id}/invite`} replace={true}>
+              <Link className={classes.link} to={`/my-communities/${id}/invites`} replace={true}>
                 {inviteNumber?.length}
               </Link>
             </Button>
