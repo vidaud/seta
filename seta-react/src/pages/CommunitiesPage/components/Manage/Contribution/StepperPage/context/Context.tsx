@@ -1,9 +1,7 @@
 import { createContext, useState } from 'react'
 
-import type { EmbeddingsResponse } from '~/api/embeddings/embedding'
-
 type ContributionContextProps = {
-  files: File[]
+  file: File[]
   formData: {
     name: string
     email: string
@@ -22,17 +20,21 @@ type ContributionContextProps = {
   handleMimeTypeChange?: (event) => void
 }
 
+type Embeddings = {
+  vector: number[]
+}
+
 export const Context = createContext<any | undefined>(undefined)
 
 export const ContextProvider = ({ children }) => {
-  const [files, setFiles] = useState<File[]>([])
+  const [file, setFile] = useState<File | null>(null)
   const today = new Date()
   const [textUpload, setTextUpload] = useState('')
   const [date, setDate] = useState<Date | null>(today)
   const [language, setLanguage] = useState<string | null>('english')
   const [mimType, setMimeType] = useState<string | null>(null)
   const [taxonomy, setTaxonomy] = useState<string | null>('english')
-  const [embeddings, setEmbeddings] = useState<EmbeddingsResponse | undefined>()
+  const [embeddings, setEmbeddings] = useState<Embeddings | undefined>()
   const [formData, setFormData] = useState({
     language: language,
     taxonomy: taxonomy,
@@ -45,8 +47,7 @@ export const ContextProvider = ({ children }) => {
     mime_type: '',
     reference: '',
     text: '',
-    sbert_embedding: embeddings,
-    sbert_embedding_list: [embeddings],
+    vector: embeddings?.vector,
     other: null
   })
 
@@ -60,7 +61,7 @@ export const ContextProvider = ({ children }) => {
   }
 
   const handleDocumentSelect = index => {
-    setFiles(index)
+    setFile(index)
   }
 
   const handleTextInput = text => {
@@ -108,15 +109,15 @@ export const ContextProvider = ({ children }) => {
   }
 
   const data = {
-    files: files,
+    file: file,
     formData: formData,
     textUpload: textUpload,
     date: date,
     language: language,
     taxonomy: taxonomy,
     embeddings: embeddings,
-    setEmbeddings: setEmbeddings,
     mimType: mimType,
+    setEmbeddings: setEmbeddings,
     handleLanguageChange: handleLanguageChange,
     handleTaxonomyChange: handleTaxonomyChange,
     handleFormDataChange: handleFormDataChange,

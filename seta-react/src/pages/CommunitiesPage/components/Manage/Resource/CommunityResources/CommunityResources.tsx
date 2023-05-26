@@ -48,7 +48,7 @@ const CommunityResources = resources => {
 
   const rows = items?.data?.map(item => {
     return (
-      <tr key={item.community_id} className={classes.rowSection}>
+      <tr key={item.resource_id} className={classes.rowSection}>
         <Grid onClick={() => getResource(item)}>
           <Grid.Col span={8}>
             <Text className={classes.textSection}>Title: {item.title}</Text>

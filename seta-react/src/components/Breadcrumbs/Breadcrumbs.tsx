@@ -8,7 +8,8 @@ const useStyles = createStyles({
       pointerEvents: 'none'
     }
   },
-  link: {}
+  link: {},
+  breadcrumbs: { paddingBottom: '2rem' }
 })
 
 const BreadcrumbsComponent = () => {
@@ -35,7 +36,7 @@ const BreadcrumbsComponent = () => {
       )
     })
 
-  return <Breadcrumbs sx={{ paddingBottom: '2rem' }}>{crumbs}</Breadcrumbs>
+  return <Breadcrumbs className={classes.breadcrumbs}>{crumbs}</Breadcrumbs>
 }
 
 export default BreadcrumbsComponent

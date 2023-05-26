@@ -23,7 +23,7 @@ const useStyles = createStyles({
 export const StepperThree = () => {
   const { classes } = useStyles()
   const [value, setValue] = useState('select')
-  const { taxonomy, handleTaxonomyChange } = useContext(Context)
+  const { taxonomy, handleTaxonomyChange, query } = useContext(Context)
 
   return (
     <>

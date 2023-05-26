@@ -4,29 +4,36 @@ import api from '../api'
 
 const EMBEDDINGS_API_PATH = '/compute_embeddings'
 
-export type EmbeddingsResponse = {
+export type EmbeddingsValue = {
   vector: number[]
+  chunk: number
   version: string
+  text: string
+}
+
+export type EmbeddingsResponse = {
+  emb_with_chunk_text: EmbeddingsValue[]
 }
 
 export const queryKey = {
   root: 'embeddings',
-  terms: (terms?: string) => [queryKey.root, terms]
+  text: (text?: string) => [queryKey.root, text]
 }
 
-const getEmbeddings = async (terms?: string): Promise<EmbeddingsResponse> => {
-  if (!terms) {
-    return { vector: [], version: '' }
+const getEmbeddings = async (text?: string): Promise<EmbeddingsResponse> => {
+  if (!text) {
+    return { emb_with_chunk_text: [{ vector: [], chunk: 0, version: '', text: '' }] }
   }
 
-  const { data } = await api.get<EmbeddingsResponse>(`${EMBEDDINGS_API_PATH}?text=${terms}`)
+  const { data } = await api.post<EmbeddingsResponse>(`${EMBEDDINGS_API_PATH}?text=${text}`)
+
+  console.log(data)
 
   // Remove duplicates
   return {
-    vector: data.vector,
-    version: data.version
+    emb_with_chunk_text: data.emb_with_chunk_text
   }
 }
 
-export const useEmbedding = (terms?: string) =>
-  useQuery({ queryKey: queryKey.terms(terms), queryFn: () => getEmbeddings(terms) })
+export const useEmbedding = (text?: string) =>
+  useQuery({ queryKey: queryKey.text(text), queryFn: () => getEmbeddings(text) })
