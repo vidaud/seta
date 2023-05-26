@@ -1,5 +1,7 @@
 import { createContext, useState } from 'react'
 
+import type { EmbeddingsResponse } from '~/api/embeddings/embedding'
+
 type ContributionContextProps = {
   files: File[]
   formData: {
@@ -29,8 +31,11 @@ export const ContextProvider = ({ children }) => {
   const [date, setDate] = useState<Date | null>(today)
   const [language, setLanguage] = useState<string | null>('english')
   const [mimType, setMimeType] = useState<string | null>(null)
+  const [taxonomy, setTaxonomy] = useState<string | null>('english')
+  const [embeddings, setEmbeddings] = useState<EmbeddingsResponse | undefined>()
   const [formData, setFormData] = useState({
     language: language,
+    taxonomy: taxonomy,
     title: '',
     link_origin: '',
     date: today,
@@ -40,6 +45,8 @@ export const ContextProvider = ({ children }) => {
     mime_type: '',
     reference: '',
     text: '',
+    sbert_embedding: embeddings,
+    sbert_embedding_list: [embeddings],
     other: null
   })
 
@@ -80,6 +87,16 @@ export const ContextProvider = ({ children }) => {
     })
   }
 
+  const handleTaxonomyChange = text => {
+    setTaxonomy(text)
+    setFormData(prevFormData => {
+      return {
+        ...prevFormData,
+        taxonomy: text
+      }
+    })
+  }
+
   const handleMimeTypeChange = text => {
     setMimeType(text)
     setFormData(prevFormData => {
@@ -96,8 +113,12 @@ export const ContextProvider = ({ children }) => {
     textUpload: textUpload,
     date: date,
     language: language,
+    taxonomy: taxonomy,
+    embeddings: embeddings,
+    setEmbeddings: setEmbeddings,
     mimType: mimType,
     handleLanguageChange: handleLanguageChange,
+    handleTaxonomyChange: handleTaxonomyChange,
     handleFormDataChange: handleFormDataChange,
     handleTextInput: handleTextInput,
     handleDateChange: handleDateChange,

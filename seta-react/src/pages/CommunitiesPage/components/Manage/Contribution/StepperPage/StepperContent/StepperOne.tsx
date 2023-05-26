@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import {
   Box,
   Button,
@@ -14,6 +14,7 @@ import {
   createStyles
 } from '@mantine/core'
 
+import { useEmbedding } from '../../../../../../../api/embeddings/embedding'
 import { Context } from '../context/Context'
 
 const useStyles = createStyles({
@@ -43,9 +44,23 @@ const useStyles = createStyles({
 })
 
 export const StepperOne = () => {
-  const { files, textUpload, handleDocumentSelect, handleTextInput } = useContext(Context)
+  const { files, textUpload, handleDocumentSelect, handleTextInput, setEmbeddings } =
+    useContext(Context)
   const [activeTab, setActiveTab] = useState<string | null>('file')
   const { classes } = useStyles()
+  const formData = new FormData()
+
+  files?.forEach(file => {
+    formData.append('file', file)
+  })
+
+  const { data } = useEmbedding(files.length > 0 ? formData : textUpload)
+
+  useEffect(() => {
+    if (data) {
+      setEmbeddings(data)
+    }
+  }, [data])
 
   return (
     <>
