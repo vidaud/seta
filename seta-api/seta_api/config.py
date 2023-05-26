@@ -38,7 +38,8 @@ class Config:
     JRCBOX_PATH = "https://jrcbox.jrc.ec.europa.eu/index.php/s/"
     JRCBOX_PASS = "Op-next-seta-2022-14-14"
     JRCBOX_WEBDAV = "https://jrcbox.jrc.ec.europa.eu/public.php/webdav/"
-    
+
+    TIKA_PATH = "tika/tika-app-2.4.1.jar"
     #======================================#
     
     #===========Flask-PyMongo Configuration========#
