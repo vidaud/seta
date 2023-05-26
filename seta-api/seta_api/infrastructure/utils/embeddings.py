@@ -41,7 +41,7 @@ class Embeddings:
     @staticmethod
     def embeddings_from_text(text):
         emb, vec = compute_embeddings(text)
-        return version, vec
+        return version, vec, emb
 
 
 
