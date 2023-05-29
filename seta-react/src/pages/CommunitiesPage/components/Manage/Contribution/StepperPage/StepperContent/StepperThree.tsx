@@ -1,6 +1,10 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Box, Group, Text, Title, createStyles, Radio, Flex, Select, Paper } from '@mantine/core'
 
+import type { DocumentsOptions, DocumentsResponse } from '~/api/embeddings/taxonomy'
+
+import { useDocuments } from '../../../../../../../api/embeddings/taxonomy'
+import TaxonomyTree from '../../../../../../SearchPageNew/components/documents/DocumentInfo/components/TaxonomyTree/TaxonomyTree'
 import { Context } from '../context/Context'
 
 const useStyles = createStyles({
@@ -21,9 +25,33 @@ const useStyles = createStyles({
 })
 
 export const StepperThree = () => {
+  const { embeddings, taxonomy, handleTaxonomyChange } = useContext(Context)
+  const [taxValue, setTaxValue] = useState<any>()
+  const [showTree, setShowTree] = useState<boolean>(false)
+  const [searchOptions, setSearchOptions] = useState<DocumentsOptions | undefined>({
+    semantic_sort_id_list: embeddings.vector
+  })
   const { classes } = useStyles()
   const [value, setValue] = useState('select')
-  const { taxonomy, handleTaxonomyChange, query } = useContext(Context)
+
+  const onDocumentsLoaded = (response: DocumentsResponse) => {
+    const { taxonomies } = response.aggregations ?? {}
+
+    setTaxValue(taxonomies)
+    console.log(response)
+  }
+
+  const { data } = useDocuments({
+    searchOptions,
+    onSuccess: onDocumentsLoaded
+  })
+
+  useEffect(() => {
+    if (data) {
+      console.log(data)
+      console.log(taxValue)
+    }
+  }, [data, taxValue])
 
   return (
     <>
@@ -52,15 +80,21 @@ export const StepperThree = () => {
               {/** stepper content */}
               <Box className={classes.content}>
                 {value === 'select' ? (
-                  <Select
-                    className={classes.label}
-                    label="Select taxonomy option"
-                    name="taxonomy"
-                    value={taxonomy}
-                    data={[]}
-                    onChange={handleTaxonomyChange}
-                    withAsterisk
-                  />
+                  <Group>
+                    <Select
+                      className={classes.label}
+                      label="Select taxonomy option"
+                      name="taxonomy"
+                      value={taxonomy}
+                      data={taxValue ? taxValue : []}
+                      onChange={() => {
+                        handleTaxonomyChange
+                        setShowTree(true)
+                      }}
+                      withAsterisk
+                    />
+                    {showTree ? <TaxonomyTree taxonomy={taxValue} /> : null}
+                  </Group>
                 ) : (
                   <div>Create</div>
                 )}

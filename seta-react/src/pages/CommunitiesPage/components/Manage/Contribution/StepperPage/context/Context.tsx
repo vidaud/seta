@@ -1,25 +1,5 @@
 import { createContext, useState } from 'react'
 
-type ContributionContextProps = {
-  file: File[]
-  formData: {
-    name: string
-    email: string
-    phone: string
-    title: string
-    link_origin: string
-  }
-  textUpload: string
-  date: Date | null
-  language: string | null
-  handleFormDataChange: (event) => void
-  handleTextInput: (text: string) => void
-  handleDateChange: (text: any) => void
-  handleDocumentSelect: (index: File[]) => void
-  handleLanguageChange: (text: any) => void
-  handleMimeTypeChange?: (event) => void
-}
-
 type Embeddings = {
   vector: number[]
 }
@@ -33,7 +13,7 @@ export const ContextProvider = ({ children }) => {
   const [date, setDate] = useState<Date | null>(today)
   const [language, setLanguage] = useState<string | null>('english')
   const [mimType, setMimeType] = useState<string | null>(null)
-  const [taxonomy, setTaxonomy] = useState<string | null>('english')
+  const [taxonomy, setTaxonomy] = useState<string | null>()
   const [embeddings, setEmbeddings] = useState<Embeddings | undefined>()
   const [formData, setFormData] = useState({
     language: language,
