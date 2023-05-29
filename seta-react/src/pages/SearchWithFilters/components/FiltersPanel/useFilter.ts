@@ -1,70 +1,14 @@
-/* eslint-disable max-params */
 import { useState, useReducer } from 'react'
 
 import { itemsReducer } from './items-reducer'
 import { statusReducer } from './status-reducer'
+import { buildFilterInfo } from './utils'
 
 import { parseQueryContract } from '../../custom/map-filters'
 import type { QueryAggregationContract } from '../../types/contracts'
-import type { RangeValue, SelectionKeys } from '../../types/filters'
-import {
-  TextChunkValues,
-  FilterStatusInfo,
-  FilterStatus,
-  ViewFilterInfo
-} from '../../types/filters'
-import type { OtherItem } from '../../types/other-filter'
-
-const buildFilterInfo = (
-  chunkText: TextChunkValues,
-  enableDateFilter: boolean,
-  rangeValue?: RangeValue,
-  resourceSelectedKeys?: SelectionKeys | null,
-  taxonomySelectedKeys?: SelectionKeys | null,
-  otherItems?: OtherItem[]
-): ViewFilterInfo => {
-  const fi = new ViewFilterInfo()
-
-  fi.chunkValue = TextChunkValues[chunkText]
-  fi.rangeValueEnabled = enableDateFilter && !!rangeValue
-  fi.rangeValue = enableDateFilter && !!rangeValue ? { ...rangeValue } : undefined
-
-  if (resourceSelectedKeys) {
-    fi.sourceValues = []
-
-    for (const rKey in resourceSelectedKeys) {
-      if (!resourceSelectedKeys[rKey].checked) {
-        continue
-      }
-
-      fi.sourceValues.push({
-        key: rKey,
-        label: rKey,
-        longLabel: rKey
-      })
-    }
-  }
-
-  if (taxonomySelectedKeys) {
-    fi.taxonomyValues = []
-
-    for (const tKey in taxonomySelectedKeys) {
-      if (!taxonomySelectedKeys[tKey].checked) {
-        continue
-      }
-
-      fi.taxonomyValues.push({
-        key: tKey,
-        label: tKey,
-        longLabel: tKey
-      })
-    }
-  }
-
-  fi.otherItems = otherItems
-
-  return fi
-}
+import { FilterStatus, FilterStatusInfo, ViewFilterInfo } from '../../types/filter-info'
+import type { SelectionKeys } from '../../types/filters'
+import { TextChunkValues } from '../../types/filters'
 
 const useFilter = (
   queryContract?: QueryAggregationContract | null,
@@ -96,8 +40,6 @@ const useFilter = (
 
   //!Yes, it compares the pointers, not the content
   if (queryContract !== prevContract) {
-    console.log('useFilter', queryContract)
-
     setPrevContract(queryContract)
 
     if (!rangeVal) {
@@ -118,14 +60,18 @@ const useFilter = (
 
     const newItems = itemsReducer(otherItems, { type: 'set-applied' })
 
-    newStatus.appliedFilter = buildFilterInfo(
+    newStatus.appliedFilter = buildFilterInfo({
       chunkText,
       enableDateFilter,
       rangeValue,
       resourceSelectedKeys,
       taxonomySelectedKeys,
-      newItems
-    )
+      otherItems: newItems
+    })
+
+    newStatus.currentFilter = newStatus.appliedFilter.copy()
+    //!otherItems are ignore on currentFilter
+    newStatus.currentFilter.otherItems = undefined
 
     dispatchStatus({ type: 'replace', value: newStatus })
   }

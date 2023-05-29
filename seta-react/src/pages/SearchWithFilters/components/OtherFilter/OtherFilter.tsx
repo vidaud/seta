@@ -28,7 +28,7 @@ const OtherFilter = ({ data, onItemChange }: Props) => {
     )
 
     if (item) {
-      //re-instate the applied status fpr existing item
+      //re-instate the applied status for existing item
       if (item.status === OtherItemStatus.DELETED) {
         onItemChange?.('updated', { ...item, status: OtherItemStatus.APPLIED })
 
