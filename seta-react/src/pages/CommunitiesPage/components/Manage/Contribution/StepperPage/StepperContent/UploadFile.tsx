@@ -18,7 +18,7 @@ const useStyles = createStyles({
   }
 })
 
-export const UploadFile = () => {
+export const UploadFile = handleTextInput => {
   const { file, handleDocumentSelect } = useContext(Context)
   const { classes } = useStyles()
 
@@ -30,10 +30,10 @@ export const UploadFile = () => {
 
   useEffect(() => {
     if (data) {
-      console.log(data)
+      handleTextInput(data.text)
       //   setEmbeddings(data.emb_with_chunk_text[0])
     }
-  }, [data])
+  }, [data, handleTextInput])
 
   return (
     <>

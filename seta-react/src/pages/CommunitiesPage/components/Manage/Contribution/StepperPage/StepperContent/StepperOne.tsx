@@ -1,8 +1,11 @@
-import React, { useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Box, Group, Paper, Stack, Text, Title, Tabs, createStyles } from '@mantine/core'
 
 import { UploadFile } from './UploadFile'
 import { UploadText } from './UploadText'
+
+import { useEmbedding } from '../../../../../../../api/embeddings/embedding'
+import { Context } from '../context/Context'
 
 const useStyles = createStyles({
   container: {
@@ -31,8 +34,16 @@ const useStyles = createStyles({
 })
 
 export const StepperOne = () => {
+  const { textUpload, handleTextInput, setEmbeddings } = useContext(Context)
   const [activeTab, setActiveTab] = useState<string | null>('file')
   const { classes } = useStyles()
+  const { data } = useEmbedding(textUpload)
+
+  useEffect(() => {
+    if (data) {
+      setEmbeddings(data.emb_with_chunk_text[0])
+    }
+  }, [data, setEmbeddings])
 
   return (
     <>
@@ -57,7 +68,11 @@ export const StepperOne = () => {
                   <Tabs.Tab value="text">Text Upload</Tabs.Tab>
                 </Tabs.List>
 
-                {activeTab === 'file' ? <UploadFile /> : <UploadText />}
+                {activeTab === 'file' ? (
+                  <UploadFile handleTextInput={handleTextInput} />
+                ) : (
+                  <UploadText />
+                )}
               </Tabs>
             </Box>
           </Stack>

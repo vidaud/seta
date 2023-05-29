@@ -1,7 +1,6 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext } from 'react'
 import { Textarea, Tabs, createStyles } from '@mantine/core'
 
-import { useEmbedding } from '../../../../../../../api/embeddings/embedding'
 import { Context } from '../context/Context'
 
 const useStyles = createStyles({
@@ -11,16 +10,8 @@ const useStyles = createStyles({
 })
 
 export const UploadText = () => {
-  const { textUpload, handleTextInput, setEmbeddings } = useContext(Context)
+  const { textUpload, handleTextInput } = useContext(Context)
   const { classes } = useStyles()
-
-  const { data } = useEmbedding(textUpload)
-
-  useEffect(() => {
-    if (data) {
-      setEmbeddings(data.emb_with_chunk_text[0])
-    }
-  }, [data])
 
   return (
     <>
