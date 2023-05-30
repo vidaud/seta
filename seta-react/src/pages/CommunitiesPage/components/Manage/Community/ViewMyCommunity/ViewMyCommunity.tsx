@@ -45,15 +45,13 @@ const ViewMyCommunity = () => {
             </Title>
             <Text className={classes.text}>{row?.communities.description}</Text>
             <Group spacing={30} position="right">
-              <Button>
-                <Link
-                  className={classes.link}
-                  to={`/my-communities/${row?.communities.community_id}/manage`}
-                  replace={true}
-                >
-                  Manage
-                </Link>
-              </Button>
+              <Link
+                className={classes.link}
+                to={`/my-communities/${row?.communities.community_id}/manage`}
+                replace={true}
+              >
+                <Button>Manage</Button>
+              </Link>
             </Group>
           </Paper>
         </Grid.Col>

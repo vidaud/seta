@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Button, Grid, Group, Paper, Text, Title, createStyles } from '@mantine/core'
+import { Grid, Paper, Text, Title, createStyles } from '@mantine/core'
 import { useParams } from 'react-router-dom'
 
 import { useCommunityID } from '../../../../../api/communities/manage/my-community'
@@ -41,9 +41,9 @@ const ViewCommunity = () => {
               {row?.communities.title}
             </Title>
             <Text className={classes.text}>{row?.communities.description}</Text>
-            <Group spacing={30} position="right">
+            {/* <Group spacing={30} position="right">
               <Button size="xs">+ JOIN</Button>
-            </Group>
+            </Group> */}
           </Paper>
         </Grid.Col>
         <Grid.Col span={1}>

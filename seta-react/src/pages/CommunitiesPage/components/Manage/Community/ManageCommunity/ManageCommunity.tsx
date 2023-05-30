@@ -4,18 +4,13 @@ import { Link, useParams } from 'react-router-dom'
 
 import { useCommunityID } from '../../../../../../api/communities/manage/my-community'
 import ComponentLoading from '../../../common/ComponentLoading'
-import changeRequestAttributes from '../../../Dashboard/ChangeRequests/changeRequestAttributes.json'
-import ChangeRequests from '../../../Dashboard/ChangeRequests/ChangeRequests'
-import joinAttributes from '../../../Dashboard/LastJoinRequests/joinAttributes.json'
-import LastJoinRequests from '../../../Dashboard/LastJoinRequests/LastJoinRequests'
 import CommunityResources from '../../Resource/CommunityResources/CommunityResources'
 import InviteMember from '../InviteMemberModal/InviteMemberModal'
 
 const useStyles = createStyles({
   page: {
     minHeight: '31rem',
-    height: 'auto',
-    padding: '2rem'
+    height: 'auto'
   },
   title: {
     textAlign: 'left'
@@ -52,11 +47,10 @@ const ManageCommunity = () => {
       <div className={classes.page}>
         <Group position="right">
           <InviteMember id={row?.communities.community_id} />
-          <Button color="blue">
-            <Link className={classes.link} to={`/my-communities/${id}/new`} replace={true}>
-              New Resource
-            </Link>
-          </Button>
+
+          <Link className={classes.link} to={`/my-communities/${id}/new`} replace={true}>
+            <Button color="blue">New Resource</Button>
+          </Link>
         </Group>
         <Grid grow>
           <Grid.Col span={12}>
@@ -73,7 +67,7 @@ const ManageCommunity = () => {
                   </tr>
                   <tr>
                     <td>Data Type: {row?.communities.data_type}</td>
-                    <td>Created by: {row?.communities.creator?.full_name}</td>
+                    <td>Created by: {row?.communities.creator?.user_id}</td>
                   </tr>
                   <tr>
                     <td>Status: {row?.communities.status}</td>
@@ -82,22 +76,10 @@ const ManageCommunity = () => {
                 </tbody>
               </Table>
               <Group spacing={30} position="right">
-                <Button color="green">
-                  <Link className={classes.link} to={`/my-communities/${id}/update`} replace={true}>
-                    Update
-                  </Link>
-                </Button>
+                <Link className={classes.link} to={`/my-communities/${id}/update`} replace={true}>
+                  <Button color="green">Update</Button>
+                </Link>
               </Group>
-            </Paper>
-          </Grid.Col>
-          <Grid.Col span={5}>
-            <Paper withBorder p="md" radius="md" key="Last Join Requests">
-              <LastJoinRequests data={joinAttributes.props.data} />
-            </Paper>
-          </Grid.Col>
-          <Grid.Col span={5}>
-            <Paper withBorder p="md" radius="md" key="Change Requests">
-              <ChangeRequests data={changeRequestAttributes.props.data} />
             </Paper>
           </Grid.Col>
           <Grid.Col span={12}>

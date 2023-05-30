@@ -128,15 +128,15 @@ const CommunityList = () => {
                     </ActionIcon>
                   </Menu.Target>
                   <Menu.Dropdown>
-                    <Menu.Item icon={<IconEye size="1rem" stroke={1.5} />}>
-                      <Link
-                        className={classes.link}
-                        to={`/communities/${row.community_id}`}
-                        replace={true}
-                      >
+                    <Link
+                      className={classes.link}
+                      to={`/communities/${row.community_id}`}
+                      replace={true}
+                    >
+                      <Menu.Item icon={<IconEye size="1rem" stroke={1.5} />}>
                         View Details
-                      </Link>
-                    </Menu.Item>
+                      </Menu.Item>
+                    </Link>
                   </Menu.Dropdown>
                 </Menu>
               </Group>
@@ -209,7 +209,7 @@ const CommunityList = () => {
           </tr>
         </thead>
         <tbody>
-          {rows.length > 0 ? (
+          {rows?.length > 0 ? (
             rows
           ) : (
             <tr>

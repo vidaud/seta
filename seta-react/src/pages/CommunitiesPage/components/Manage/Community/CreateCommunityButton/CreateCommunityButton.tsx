@@ -14,11 +14,9 @@ const CreateCommunity = () => {
 
   return (
     <Group position="right" css={S.root}>
-      <Button color="green">
-        <Link className={classes.link} to="/my-communities/new">
-          + New Community
-        </Link>
-      </Button>
+      <Link className={classes.link} to="/my-communities/new">
+        <Button color="green">+ New Community</Button>
+      </Link>
     </Group>
   )
 }

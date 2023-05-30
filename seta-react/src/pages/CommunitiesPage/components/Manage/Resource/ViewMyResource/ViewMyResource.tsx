@@ -82,33 +82,31 @@ const ViewMyResource = () => {
               <Button color="red" onClick={deleteResource}>
                 Delete
               </Button>
-              <Button>
-                <Link
-                  className={classes.link}
-                  to={`/my-resources/${rows?.resource_id}/update`}
-                  replace={true}
-                >
-                  Update
-                </Link>
-              </Button>
+              <Link
+                className={classes.link}
+                to={`/my-resources/${rows?.resource_id}/update`}
+                replace={true}
+              >
+                <Button>Update</Button>
+              </Link>
             </Group>
           </Paper>
         </Grid.Col>
-        <Grid.Col span={12}>
+        {/* <Grid.Col span={12}>
           <Paper shadow="xs" p="md">
             <Group spacing={30} position="right">
-              <Button className={classes.button}>
-                <Link
-                  className={classes.link}
-                  to={`/my-resources/${rows?.resource_id}/contribution/new`}
-                  replace={true}
-                >
+              <Link
+                className={classes.link}
+                to={`/my-resources/${rows?.resource_id}/contribution/new`}
+                replace={true}
+              >
+                <Button className={classes.button}>
                   Upload
-                </Link>
-              </Button>
+                </Button>
+              </Link>        
             </Group>
           </Paper>
-        </Grid.Col>
+        </Grid.Col> */}
       </Grid>
     </>
   )

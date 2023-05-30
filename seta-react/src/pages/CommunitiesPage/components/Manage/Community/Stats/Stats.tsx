@@ -44,11 +44,9 @@ const Stats = ({ resourceNumber, inviteNumber, memberNumber }) => {
         <Container size="xs" px="xs" className={classes.container}>
           <Text className={classes.text}>Members</Text>
           <Group position="right">
-            <Button>
-              <Link className={classes.link} to={`/my-communities/${id}/members`} replace={true}>
-                {memberNumber?.length}
-              </Link>
-            </Button>
+            <Link className={classes.link} to={`/my-communities/${id}/members`} replace={true}>
+              <Button>{memberNumber?.length}</Button>
+            </Link>
           </Group>
         </Container>
       </Group>
@@ -66,22 +64,18 @@ const Stats = ({ resourceNumber, inviteNumber, memberNumber }) => {
         <Container size="xs" px="xs" className={classes.container}>
           <Text className={classes.text}>Pending Invites</Text>
           <Group position="right">
-            <Button>
-              <Link className={classes.link} to={`/my-communities/${id}/invites`} replace={true}>
-                {inviteNumber?.length}
-              </Link>
-            </Button>
+            <Link className={classes.link} to={`/my-communities/${id}/invites`} replace={true}>
+              <Button>{inviteNumber?.length}</Button>
+            </Link>
           </Group>
         </Container>
       </Group>
 
       <Card.Section className={classes.section}>
         <Group spacing={30}>
-          <Button radius="xl">
-            <Link className={classes.link} to={`/my-communities/${id}/new`} replace={true}>
-              + New Resource
-            </Link>
-          </Button>
+          <Link className={classes.link} to={`/my-communities/${id}/new`} replace={true}>
+            <Button radius="xl">+ New Resource</Button>
+          </Link>
         </Group>
       </Card.Section>
     </Card>

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Card, Grid, Table, Text, createStyles } from '@mantine/core'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 
 const useStyles = createStyles(theme => ({
   card: {
@@ -24,6 +24,9 @@ const useStyles = createStyles(theme => ({
     paddingLeft: theme.spacing.sm,
     paddingRight: theme.spacing.sm,
     paddingBottom: theme.spacing.sm
+  },
+  noResources: {
+    textAlign: 'center'
   }
 }))
 
@@ -31,6 +34,7 @@ const CommunityResources = resources => {
   const { classes } = useStyles()
   const navigate = useNavigate()
   const [items, setItems] = useState(resources)
+  const location = useLocation()
 
   useEffect(() => {
     if (resources) {
@@ -39,9 +43,9 @@ const CommunityResources = resources => {
   }, [resources, items])
 
   const getResource = item => {
-    if (item.community_id) {
+    if (item.community_id && location.pathname.includes('/my-communities')) {
       navigate(`/my-communities/${item.community_id}/${item.resource_id}`)
-    } else {
+    } else if (location.pathname.includes('/my-resources')) {
       navigate(`/my-resources/${item.resource_id}`)
     }
   }
@@ -71,7 +75,13 @@ const CommunityResources = resources => {
       </Card.Section>
       <Card.Section>
         <Table>
-          <tbody>{rows}</tbody>
+          {rows.length > 0 ? (
+            <tbody>{rows}</tbody>
+          ) : (
+            <tbody>
+              <div className={classes.noResources}>No resources yet for this community</div>
+            </tbody>
+          )}
         </Table>
       </Card.Section>
     </Card>
