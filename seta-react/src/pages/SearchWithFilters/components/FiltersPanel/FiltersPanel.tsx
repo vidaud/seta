@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Container, Flex, Accordion, ScrollArea, Indicator, rem, Text } from '@mantine/core'
 
 import { itemsReducer } from './items-reducer'
@@ -17,9 +17,11 @@ import TaxonomyFilter from '../TaxonomyFilter'
 import TextChunkFilter from '../TextChunkFilter'
 import YearsRangeFilter from '../YearsRangeFilter'
 
-const FiltersPanel = ({ queryContract, onApplyFilter }: AdvancedFilterProps) => {
+const FiltersPanel = ({ queryContract, onApplyFilter, onStatusChange }: AdvancedFilterProps) => {
   const [resourceSelectedKeys, setResourceSelectedKeys] = useState<SelectionKeys | null>(null)
   const [taxonomySelectedKeys, setTaxonomySelectedKeys] = useState<SelectionKeys | null>(null)
+
+  const statusChangeRef = useRef(onStatusChange)
 
   const {
     chunkText,
@@ -36,6 +38,10 @@ const FiltersPanel = ({ queryContract, onApplyFilter }: AdvancedFilterProps) => 
     otherItems,
     dispatchOtherItems
   } = useFilter(queryContract, resourceSelectedKeys, taxonomySelectedKeys)
+
+  useEffect(() => {
+    statusChangeRef.current?.(status.status)
+  }, [status])
 
   const handleApplyFilters = () => {
     const contract = buildFiltersContract({
@@ -112,7 +118,7 @@ const FiltersPanel = ({ queryContract, onApplyFilter }: AdvancedFilterProps) => 
   })
 
   return (
-    <Flex direction="column" align="center" gap="md">
+    <Flex direction="column" align="center" gap="xl">
       <ApplyFilters
         status={status}
         onApplyFilters={handleApplyFilters}
@@ -158,6 +164,7 @@ const FiltersPanel = ({ queryContract, onApplyFilter }: AdvancedFilterProps) => 
             </ScrollArea.Autosize>
           </Accordion.Panel>
         </Accordion.Item>
+
         <Accordion.Item value="taxonomy-tree">
           <Accordion.Control>
             <Indicator inline pr={10} color="orange" disabled={!status.taxonomyModified}>
@@ -174,6 +181,7 @@ const FiltersPanel = ({ queryContract, onApplyFilter }: AdvancedFilterProps) => 
             </ScrollArea.Autosize>
           </Accordion.Panel>
         </Accordion.Item>
+
         <Accordion.Item value="other">
           <Accordion.Control>
             <Indicator inline pr={10} color="orange" disabled={!status.otherModified}>

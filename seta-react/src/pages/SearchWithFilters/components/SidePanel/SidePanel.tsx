@@ -1,8 +1,20 @@
-import { Accordion, Container, Alert, rem } from '@mantine/core'
-import { IconListSearch, IconSearch, IconAlertCircle, IconWallet } from '@tabler/icons-react'
+import { useState } from 'react'
+import type { DefaultMantineColor } from '@mantine/core'
+import { Alert, Box } from '@mantine/core'
+import { IconAlertCircle, IconListSearch, IconSearch, IconWallet } from '@tabler/icons-react'
+
+import ToggleSection from '~/components/ToggleSection'
+import { FilterStatus } from '~/pages/SearchWithFilters/types/filter-info'
 
 import type { AdvancedFilterProps } from '../../types/contracts'
 import FiltersPanel from '../FiltersPanel'
+
+const markerColor: Record<FilterStatus, DefaultMantineColor | null> = {
+  [FilterStatus.UNKNOWN]: null,
+  [FilterStatus.PROCESSING]: null,
+  [FilterStatus.MODIFIED]: 'orange',
+  [FilterStatus.APPLIED]: 'teal'
+}
 
 const SidePanel = ({
   className,
@@ -10,39 +22,39 @@ const SidePanel = ({
   onApplyFilter,
   filtersDisabled
 }: AdvancedFilterProps) => {
-  const defaultValue: string | undefined = filtersDisabled ? undefined : 'filters'
+  const [filtersStatus, setFiltersStatus] = useState<FilterStatus | null>(null)
+
+  const marker = markerColor[filtersStatus ?? FilterStatus.UNKNOWN]
 
   return (
-    <Container className={className} size={rem(400)} ml={0} pb={rem(50)} w={rem(400)}>
-      <Accordion defaultValue={defaultValue} variant="contained" order={3}>
-        <Accordion.Item value="filters">
-          <Accordion.Control icon={<IconListSearch size={rem(20)} />} disabled={filtersDisabled}>
-            Filter
-          </Accordion.Control>
-          <Accordion.Panel>
-            <FiltersPanel queryContract={queryContract} onApplyFilter={onApplyFilter} />
-          </Accordion.Panel>
-        </Accordion.Item>
+    <Box className={className}>
+      <ToggleSection
+        icon={<IconListSearch size={20} />}
+        color="teal"
+        title="Filters"
+        marker={marker}
+        open={!filtersDisabled}
+        disabled={filtersDisabled}
+      >
+        <FiltersPanel
+          queryContract={queryContract}
+          onApplyFilter={onApplyFilter}
+          onStatusChange={setFiltersStatus}
+        />
+      </ToggleSection>
 
-        <Accordion.Item value="search">
-          <Accordion.Control icon={<IconSearch size={rem(20)} />}>My Search</Accordion.Control>
-          <Accordion.Panel>
-            <Alert icon={<IconAlertCircle size="1rem" />} title="Not implemented yet!" color="red">
-              This panel will contain my search libray.
-            </Alert>
-          </Accordion.Panel>
-        </Accordion.Item>
+      <ToggleSection icon={<IconSearch size={20} />} color="grape" title="My Search">
+        <Alert icon={<IconAlertCircle size="1rem" />} title="Not implemented yet!" color="red">
+          This panel will contain my search library.
+        </Alert>
+      </ToggleSection>
 
-        <Accordion.Item value="wallet">
-          <Accordion.Control icon={<IconWallet size={rem(20)} />}>My Documents</Accordion.Control>
-          <Accordion.Panel>
-            <Alert icon={<IconAlertCircle size="1rem" />} title="Not implemented yet!" color="red">
-              This panel will contain my document library.
-            </Alert>
-          </Accordion.Panel>
-        </Accordion.Item>
-      </Accordion>
-    </Container>
+      <ToggleSection icon={<IconWallet size={20} />} color="orange" title="My Documents">
+        <Alert icon={<IconAlertCircle size="1rem" />} title="Not implemented yet!" color="red">
+          This panel will contain my documents library.
+        </Alert>
+      </ToggleSection>
+    </Box>
   )
 }
 

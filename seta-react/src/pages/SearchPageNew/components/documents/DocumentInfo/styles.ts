@@ -93,15 +93,10 @@ export const path: ThemedCSS = theme => css`
 
 export const details: ThemedCSS = theme => css`
   ${contentMarginLeft(theme)};
-  margin-top: ${theme.spacing.lg};
-  transition: margin 300ms ${theme.transitionTimingFunction};
 
-  // Required to prevent the content from "jumping" when the details are hidden
-  &[aria-hidden='true'] {
-    margin-top: 0;
-    margin-bottom: 0;
-    display: block !important;
-    visibility: hidden;
+  // Set the margin on the inner div to prevent the content from "jumping" when the details are toggled
+  & > div {
+    margin-top: ${theme.spacing.lg};
   }
 `
 

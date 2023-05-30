@@ -1,3 +1,4 @@
+import { Text } from '@mantine/core'
 import { Tree } from 'primereact/tree'
 import type { TreeSelectionParams } from 'primereact/tree'
 import type TreeNode from 'primereact/treenode'
@@ -19,7 +20,12 @@ const DataSourceFilter = ({ data, selectedKeys, onSelectionChange }: Props) => {
       onSelectionChange?.(keys)
     }
   }
-  const disabled = !data?.length || !data[0].children?.length
+
+  if (!data?.length) {
+    return <Text color="gray">No data</Text>
+  }
+
+  const disabled = !data[0].children?.length
 
   return (
     <Tree

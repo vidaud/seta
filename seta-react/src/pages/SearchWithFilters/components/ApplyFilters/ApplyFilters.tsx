@@ -1,6 +1,8 @@
 import { Button, Indicator, HoverCard } from '@mantine/core'
 import { IconAdjustmentsHorizontal } from '@tabler/icons-react'
 
+import { useStyles } from './styles'
+
 import type { FilterStatusInfo } from '../../types/filter-info'
 import { FilterStatus } from '../../types/filter-info'
 import type { ClearAction } from '../../types/filters'
@@ -13,6 +15,8 @@ type Props = {
 }
 
 const ApplyFilters = ({ status, onApplyFilters, onClear }: Props) => {
+  const { classes } = useStyles()
+
   let color: string | undefined = undefined
   let processing = false
   let hoverDisabled = false
@@ -20,7 +24,7 @@ const ApplyFilters = ({ status, onApplyFilters, onClear }: Props) => {
 
   switch (status?.status) {
     case FilterStatus.APPLIED:
-      color = 'green'
+      color = 'teal'
       modified = status?.applied()
       break
 
@@ -49,9 +53,13 @@ const ApplyFilters = ({ status, onApplyFilters, onClear }: Props) => {
 
   return (
     <HoverCard
+      classNames={classes}
       withinPortal
       position="right-start"
       width={500}
+      offset={{ mainAxis: 20, crossAxis: -15 }}
+      arrowOffset={10}
+      shadow="lg"
       withArrow
       openDelay={400}
       closeDelay={400}
@@ -69,7 +77,7 @@ const ApplyFilters = ({ status, onApplyFilters, onClear }: Props) => {
         >
           <Button
             leftIcon={<IconAdjustmentsHorizontal />}
-            radius="md"
+            radius="sm"
             size="lg"
             variant="outline"
             onClick={onApplyFilters}

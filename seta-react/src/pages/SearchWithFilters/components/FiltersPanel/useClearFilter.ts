@@ -55,6 +55,8 @@ const useClearFilter = ({
 
   const clearModifiedSources = (): void => {
     if (!status.appliedFilter?.sourceValues) {
+      handleSourceSelectionChange?.(null)
+
       return
     }
 
@@ -101,6 +103,8 @@ const useClearFilter = ({
 
   const clearModifiedTaxonomies = (): void => {
     if (!status.appliedFilter?.taxonomyValues) {
+      handleTaxonomySelectionChange?.(null)
+
       return
     }
 
@@ -178,6 +182,8 @@ const useClearFilter = ({
   }
 
   const handleClearFilters = (action: ClearAction) => {
+    console.log('handleClearFilters', action)
+
     switch (action.type) {
       case ClearType.ALL: {
         clearAll()
