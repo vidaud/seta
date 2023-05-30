@@ -1,15 +1,15 @@
-import werkzeug
 from flask import request, jsonify, current_app
 from flask_restx import Namespace, Resource, reqparse, abort
 
 from seta_api.infrastructure.auth_validator import auth_validator
 from .file_to_text_logic import extract_text
 from http import HTTPStatus
+from werkzeug.datastructures import FileStorage
 
 file_to_text_api = Namespace('seta-api-file-to-text', description='File to text')
 
 parser_file = reqparse.RequestParser()
-parser_file.add_argument('file', type=werkzeug.datastructures.FileStorage, location='files')
+parser_file.add_argument('file', type=FileStorage, location='files')
 
 
 @file_to_text_api.route("file_to_text")
