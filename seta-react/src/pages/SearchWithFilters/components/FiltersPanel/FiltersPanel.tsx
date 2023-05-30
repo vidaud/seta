@@ -1,13 +1,15 @@
-import { useState } from 'react'
-import { Container, Flex, Accordion, ScrollArea, Indicator, rem, Text } from '@mantine/core'
+import { useEffect, useRef, useState } from 'react'
+import { Container, Flex, Accordion, ScrollArea, rem, Text } from '@mantine/core'
 
 import { itemsReducer } from './items-reducer'
+import useClearFilter from './useClearFilter'
 import useFilter from './useFilter'
 
 import { buildFiltersContract } from '../../custom/map-query'
 import type { AdvancedFilterProps } from '../../types/contracts'
+import { FilterStatus } from '../../types/filter-info'
 import type { RangeValue, SelectionKeys } from '../../types/filters'
-import { TextChunkValues, FilterStatus } from '../../types/filters'
+import { TextChunkValues } from '../../types/filters'
 import ApplyFilters from '../ApplyFilters'
 import DataSourceFilter from '../DataSourceFilter'
 import OtherFilter from '../OtherFilter/OtherFilter'
@@ -15,9 +17,16 @@ import TaxonomyFilter from '../TaxonomyFilter'
 import TextChunkFilter from '../TextChunkFilter'
 import YearsRangeFilter from '../YearsRangeFilter'
 
-const FiltersPanel = ({ queryContract, onApplyFilter }: AdvancedFilterProps) => {
+type KeyLabel = {
+  key: string
+  label: string
+}
+
+const FiltersPanel = ({ queryContract, onApplyFilter, onStatusChange }: AdvancedFilterProps) => {
   const [resourceSelectedKeys, setResourceSelectedKeys] = useState<SelectionKeys | null>(null)
   const [taxonomySelectedKeys, setTaxonomySelectedKeys] = useState<SelectionKeys | null>(null)
+
+  const statusChangeRef = useRef(onStatusChange)
 
   const {
     chunkText,
@@ -32,17 +41,23 @@ const FiltersPanel = ({ queryContract, onApplyFilter }: AdvancedFilterProps) => 
     status,
     dispatchStatus,
     otherItems,
-    dispatchOtherItems
+    dispatchOtherItems,
+    resourcesFlat,
+    taxonomiesFlat
   } = useFilter(queryContract, resourceSelectedKeys, taxonomySelectedKeys)
 
+  useEffect(() => {
+    statusChangeRef.current?.(status.status)
+  }, [status])
+
   const handleApplyFilters = () => {
-    const contract = buildFiltersContract(
-      chunkText,
-      enableDateFilter ? rangeValue : undefined,
-      resourceSelectedKeys,
-      taxonomySelectedKeys,
-      otherItems
-    )
+    const contract = buildFiltersContract({
+      searchType: chunkText,
+      yearsRange: enableDateFilter ? rangeValue : undefined,
+      selectedResources: resourceSelectedKeys,
+      selectedTaxonomies: taxonomySelectedKeys,
+      otherItems: otherItems
+    })
 
     dispatchStatus({ type: 'set_status', value: FilterStatus.PROCESSING })
 
@@ -59,19 +74,49 @@ const FiltersPanel = ({ queryContract, onApplyFilter }: AdvancedFilterProps) => 
     dispatchStatus({ type: 'range_changed', value: value })
   }
 
-  const handleSourceSelectionChange = (value: SelectionKeys) => {
+  const handleSourceSelectionChange = (value: SelectionKeys | null) => {
+    let checkedKeys: KeyLabel[] | null = null
+
+    if (value) {
+      checkedKeys = []
+
+      for (const key in value) {
+        if (value[key].checked) {
+          const kl = resourcesFlat.current?.find(t => t.key === key)
+          const lbl = kl ? kl.label : key
+
+          checkedKeys.push({ key: key, label: lbl })
+        }
+      }
+    }
+
     dispatchStatus({
       type: 'source_changed',
-      value: value ? Object.keys(value) : null
+      value: checkedKeys
     })
 
     setResourceSelectedKeys(value)
   }
 
-  const handleTaxonomySelectionChange = (value: SelectionKeys) => {
+  const handleTaxonomySelectionChange = (value: SelectionKeys | null) => {
+    let checkedKeys: KeyLabel[] | null = null
+
+    if (value) {
+      checkedKeys = []
+
+      for (const key in value) {
+        if (value[key].checked) {
+          const kl = taxonomiesFlat.current?.find(t => t.key === key)
+          const lbl = kl ? kl.label : key
+
+          checkedKeys.push({ key: key, label: lbl })
+        }
+      }
+    }
+
     dispatchStatus({
       type: 'taxonomy_changed',
-      value: value ? Object.keys(value) : null
+      value: checkedKeys
     })
 
     setTaxonomySelectedKeys(value)
@@ -94,14 +139,29 @@ const FiltersPanel = ({ queryContract, onApplyFilter }: AdvancedFilterProps) => 
     })
   }
 
+  const { handleClearFilters } = useClearFilter({
+    status: status,
+    otherItems: otherItems,
+    resourceSelectedKeys: resourceSelectedKeys,
+    taxonomySelectedKeys: taxonomySelectedKeys,
+    dispatchStatus: dispatchStatus,
+    dispatchOtherItems: dispatchOtherItems,
+    handleTextChunkChange: handleTextChunkChange,
+    handleEnableDateChanged: handleEnableDateChanged,
+    handleSourceSelectionChange: handleSourceSelectionChange,
+    handleTaxonomySelectionChange: handleTaxonomySelectionChange,
+    handleItemChange: handleItemChange,
+    handleRangeChange: handleRangeChange
+  })
+
   return (
-    <Flex direction="column" align="center" gap="md">
-      <ApplyFilters status={status} onApplyFilters={handleApplyFilters} />
-      <TextChunkFilter
-        value={chunkText}
-        onChange={handleTextChunkChange}
-        modified={(status.chunkModified ?? 0) > 0}
+    <Flex direction="column" align="center" gap="xl">
+      <ApplyFilters
+        status={status}
+        onApplyFilters={handleApplyFilters}
+        onClear={handleClearFilters}
       />
+      <TextChunkFilter value={chunkText} onChange={handleTextChunkChange} />
       <Container w={rem(350)} mb={rem(10)}>
         <YearsRangeFilter
           enableDateFilter={enableDateFilter}
@@ -110,7 +170,6 @@ const FiltersPanel = ({ queryContract, onApplyFilter }: AdvancedFilterProps) => 
           rangeBoundaries={rangeBoundaries}
           onValueChange={setRangeValue}
           onValueChangeEnd={handleRangeChange}
-          modified={(status.rangeModified ?? 0) > 0}
         />
       </Container>
 
@@ -123,9 +182,7 @@ const FiltersPanel = ({ queryContract, onApplyFilter }: AdvancedFilterProps) => 
       >
         <Accordion.Item value="sources-tree">
           <Accordion.Control>
-            <Indicator inline pr={10} color="orange" disabled={!status.sourceModified}>
-              <Text span>Data sources</Text>
-            </Indicator>
+            <Text span>Data sources</Text>
           </Accordion.Control>
           <Accordion.Panel>
             <ScrollArea.Autosize mx="auto" mah={rem(300)}>
@@ -137,11 +194,10 @@ const FiltersPanel = ({ queryContract, onApplyFilter }: AdvancedFilterProps) => 
             </ScrollArea.Autosize>
           </Accordion.Panel>
         </Accordion.Item>
+
         <Accordion.Item value="taxonomy-tree">
           <Accordion.Control>
-            <Indicator inline pr={10} color="orange" disabled={!status.taxonomyModified}>
-              <Text span>Taxonomies</Text>
-            </Indicator>
+            <Text span>Taxonomies</Text>
           </Accordion.Control>
           <Accordion.Panel>
             <ScrollArea.Autosize mx="auto" mah={rem(300)}>
@@ -153,11 +209,10 @@ const FiltersPanel = ({ queryContract, onApplyFilter }: AdvancedFilterProps) => 
             </ScrollArea.Autosize>
           </Accordion.Panel>
         </Accordion.Item>
+
         <Accordion.Item value="other">
           <Accordion.Control>
-            <Indicator inline pr={10} color="orange" disabled={!status.otherModified}>
-              <Text span>Other</Text>
-            </Indicator>
+            <Text span>Other</Text>
           </Accordion.Control>
           <Accordion.Panel>
             <OtherFilter data={otherItems} onItemChange={handleItemChange} />

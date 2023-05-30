@@ -92,11 +92,7 @@ class TokenInfo(Resource):
                         
                     decoded_token["resource_permissions"] = permissions
         
-        except HTTPException as he:
-            app.logger.exception(str(he))
-            raise         
-
-        except JWTExtendedException as e:
+        except Exception as e:
             message = str(e)
             app.logger.exception(message)
             abort(HTTPStatus.UNAUTHORIZED, message)

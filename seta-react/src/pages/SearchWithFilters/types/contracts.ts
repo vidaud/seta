@@ -1,5 +1,6 @@
 import type { ClassNameProp } from '~/types/children-props'
 
+import type { FilterStatus } from './filter-info'
 import type { OtherType } from './other-filter'
 
 export type YearCount = {
@@ -52,5 +53,6 @@ export type AdvancedFiltersContract = {
 export type AdvancedFilterProps = {
   queryContract?: QueryAggregationContract | null
   onApplyFilter(value: AdvancedFiltersContract): void
+  onStatusChange?(status: FilterStatus): void
   filtersDisabled?: boolean
 } & ClassNameProp

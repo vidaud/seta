@@ -1,5 +1,8 @@
-import { Breadcrumbs, createStyles } from '@mantine/core'
-import { Link, useLocation } from 'react-router-dom'
+import { Flex, Breadcrumbs as MantineBreadcrumbs, createStyles } from '@mantine/core'
+import { AiOutlineHome } from 'react-icons/ai'
+import { Link, NavLink, useLocation } from 'react-router-dom'
+
+import * as S from './styles'
 
 const useStyles = createStyles({
   active: {
@@ -11,12 +14,12 @@ const useStyles = createStyles({
   link: {},
   breadcrumbs: { paddingBottom: '2rem' }
 })
-
-const BreadcrumbsComponent = () => {
+const Breadcrumbs = () => {
   const location = useLocation()
   const { classes } = useStyles()
 
   let currentLink = ''
+
   const crumbs = location.pathname
     .split('/')
     .filter(crumb => crumb !== '')
@@ -36,7 +39,16 @@ const BreadcrumbsComponent = () => {
       )
     })
 
-  return <Breadcrumbs className={classes.breadcrumbs}>{crumbs}</Breadcrumbs>
+  return (
+    <Flex align="center" css={S.root}>
+      <MantineBreadcrumbs>
+        <NavLink to="/" css={S.link}>
+          <AiOutlineHome size="1.5rem" />
+        </NavLink>
+        {crumbs}
+      </MantineBreadcrumbs>
+    </Flex>
+  )
 }
 
-export default BreadcrumbsComponent
+export default Breadcrumbs

@@ -1,70 +1,14 @@
-/* eslint-disable max-params */
-import { useState, useReducer } from 'react'
+import { useState, useReducer, useRef } from 'react'
 
 import { itemsReducer } from './items-reducer'
 import { statusReducer } from './status-reducer'
+import { buildFilterInfo } from './utils'
 
 import { parseQueryContract } from '../../custom/map-filters'
 import type { QueryAggregationContract } from '../../types/contracts'
-import type { RangeValue, SelectionKeys } from '../../types/filters'
-import {
-  TextChunkValues,
-  FilterStatusInfo,
-  FilterStatus,
-  ViewFilterInfo
-} from '../../types/filters'
-import type { OtherItem } from '../../types/other-filter'
-
-const buildFilterInfo = (
-  chunkText: TextChunkValues,
-  enableDateFilter: boolean,
-  rangeValue?: RangeValue,
-  resourceSelectedKeys?: SelectionKeys | null,
-  taxonomySelectedKeys?: SelectionKeys | null,
-  otherItems?: OtherItem[]
-): ViewFilterInfo => {
-  const fi = new ViewFilterInfo()
-
-  fi.chunkValue = TextChunkValues[chunkText]
-  fi.rangeValueEnabled = enableDateFilter && !!rangeValue
-  fi.rangeValue = enableDateFilter && !!rangeValue ? { ...rangeValue } : undefined
-
-  if (resourceSelectedKeys) {
-    fi.sourceValues = []
-
-    for (const rKey in resourceSelectedKeys) {
-      if (!resourceSelectedKeys[rKey].checked) {
-        continue
-      }
-
-      fi.sourceValues.push({
-        key: rKey,
-        label: rKey,
-        longLabel: rKey
-      })
-    }
-  }
-
-  if (taxonomySelectedKeys) {
-    fi.taxonomyValues = []
-
-    for (const tKey in taxonomySelectedKeys) {
-      if (!taxonomySelectedKeys[tKey].checked) {
-        continue
-      }
-
-      fi.taxonomyValues.push({
-        key: tKey,
-        label: tKey,
-        longLabel: tKey
-      })
-    }
-  }
-
-  fi.otherItems = otherItems
-
-  return fi
-}
+import { FilterStatus, FilterStatusInfo, ViewFilterInfo } from '../../types/filter-info'
+import type { SelectionKeys } from '../../types/filters'
+import { TextChunkValues } from '../../types/filters'
 
 const useFilter = (
   queryContract?: QueryAggregationContract | null,
@@ -73,12 +17,15 @@ const useFilter = (
 ) => {
   const [prevContract, setPrevContract] = useState(queryContract)
 
-  const { rangeVal, resources, taxonomies } = parseQueryContract(queryContract)
+  const { rangeVal, resources, taxonomies, resourcesArray, taxonomiesArray } =
+    parseQueryContract(queryContract)
   const [chunkText, setChunkText] = useState<TextChunkValues>(TextChunkValues.CHUNK_SEARCH)
 
   const [rangeValue, setRangeValue] = useState(rangeVal)
   const [resourceNodes, setResourceNodes] = useState(resources)
   const [taxonomyNodes, setTaxonomyNodes] = useState(taxonomies)
+  const resourcesFlat = useRef(resourcesArray)
+  const taxonomiesFlat = useRef(taxonomiesArray)
 
   const [enableDateFilter, setEnableDateFilter] = useState(false)
   const [rangeBoundaries, setRangeBoundaries] = useState({ min: rangeVal?.[0], max: rangeVal?.[1] })
@@ -96,7 +43,31 @@ const useFilter = (
 
   //!Yes, it compares the pointers, not the content
   if (queryContract !== prevContract) {
-    console.log('useFilter', queryContract)
+    const setNewStatus = () => {
+      const newStatus = new FilterStatusInfo()
+
+      newStatus.status = FilterStatus.APPLIED
+      newStatus.prevStatus = FilterStatus.APPLIED
+
+      const newItems = itemsReducer(otherItems, { type: 'set-applied' })
+
+      newStatus.appliedFilter = buildFilterInfo({
+        chunkText,
+        enableDateFilter,
+        rangeValue,
+        resourceSelectedKeys,
+        taxonomySelectedKeys,
+        otherItems: newItems,
+        resources: resourcesFlat.current,
+        taxonomies: taxonomiesFlat.current
+      })
+
+      newStatus.currentFilter = newStatus.appliedFilter.copy()
+      //!otherItems are ignore on currentFilter
+      newStatus.currentFilter.otherItems = undefined
+
+      dispatchStatus({ type: 'replace', value: newStatus })
+    }
 
     setPrevContract(queryContract)
 
@@ -109,25 +80,14 @@ const useFilter = (
 
     setResourceNodes(resources)
     setTaxonomyNodes(taxonomies)
+
     dispatchOtherItems({ type: 'set-applied' })
 
-    const newStatus = new FilterStatusInfo()
+    //!call this before setting current resourcesFlat & taxonomiesFlat
+    setNewStatus()
 
-    newStatus.status = FilterStatus.APPLIED
-    newStatus.prevStatus = FilterStatus.APPLIED
-
-    const newItems = itemsReducer(otherItems, { type: 'set-applied' })
-
-    newStatus.appliedFilter = buildFilterInfo(
-      chunkText,
-      enableDateFilter,
-      rangeValue,
-      resourceSelectedKeys,
-      taxonomySelectedKeys,
-      newItems
-    )
-
-    dispatchStatus({ type: 'replace', value: newStatus })
+    resourcesFlat.current = resourcesArray
+    taxonomiesFlat.current = taxonomiesArray
   }
 
   return {
@@ -143,7 +103,9 @@ const useFilter = (
     status,
     dispatchStatus,
     otherItems,
-    dispatchOtherItems
+    dispatchOtherItems,
+    resourcesFlat,
+    taxonomiesFlat
   }
 }
 

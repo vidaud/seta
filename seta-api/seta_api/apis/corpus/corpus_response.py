@@ -5,9 +5,23 @@ from nltk.tokenize import word_tokenize
 from nltk.text import ConcordanceIndex
 import re
 from seta_api.apis.corpus import taxonomy
+import math
 
 
-def handle_corpus_response(aggs, res, search_type, semantic_sort_id, term, current_app):
+def normalize_es_score(score, normalize):
+    if normalize:
+        normalized_score = sigmoid(score)
+        return normalized_score
+    else:
+        # subtract 1 to cosine similarity because it was added for es rank
+        return score - 1
+
+
+def sigmoid(x):
+    return 1 / (1 + math.exp(-x))
+
+
+def handle_corpus_response(aggs, res, search_type, semantic_sort_id, term, current_app, is_score_to_be_normalized):
     documents = {"total_docs": None, "documents": []}
     tax = taxonomy.Taxonomy()
     for response in res["responses"]:
@@ -35,7 +49,7 @@ def handle_corpus_response(aggs, res, search_type, semantic_sort_id, term, curre
                                            "link_origin": document['_source']["link_origin"],
                                            "date": is_field_in_doc(document['_source'], "date"),
                                            "source": document['_source']['source'],
-                                           "score": document['_score'],
+                                           "score": normalize_es_score(document['_score'], is_score_to_be_normalized),
                                            "language": is_field_in_doc(document['_source'], "language"),
                                            "in_force": is_field_in_doc(document['_source'], "in_force"),
                                            "collection": is_field_in_doc(document['_source'], "collection"),

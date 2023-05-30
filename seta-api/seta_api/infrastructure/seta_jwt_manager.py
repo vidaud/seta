@@ -3,7 +3,7 @@ from json import JSONDecodeError
 from flask_jwt_extended import JWTManager
 from flask_jwt_extended.config import config as jwt_config
 from flask_jwt_extended.exceptions import CSRFError
-from flask_jwt_extended.exceptions import JWTDecodeError
+from flask_jwt_extended.exceptions import JWTDecodeError, NoAuthorizationError
 import requests
 from hmac import compare_digest
 from flask import Flask
@@ -12,10 +12,12 @@ class SetaJWTManager(JWTManager):
     
     token_info_url=None
     logger = None
+    app: Flask = None
     
     def init_app(self, app: Flask, add_context_processor: bool = False) -> None:
         super().init_app(app=app, add_context_processor=add_context_processor)
         self.token_info_url = app.config.get("JWT_TOKEN_INFO_URL")
+        self.app = app
     
     """
     Override _decode_jwt_from_config
@@ -35,7 +37,7 @@ class SetaJWTManager(JWTManager):
             
             #verification copied from flask_jwt_extended.tokens.py->_decode_token
             if jwt_config.identity_claim_key not in decoded_token:
-                raise JWTDecodeError("Missing claim: {}".format(jwt_config.identity_claim_key))
+                raise JSONDecodeError("Missing claim: {}".format(jwt_config.identity_claim_key))
             
             if "type" not in decoded_token:
                 decoded_token["type"] = "access"
@@ -48,15 +50,20 @@ class SetaJWTManager(JWTManager):
                 
             if csrf_value:                
                 if "csrf" not in decoded_token:
-                    raise JWTDecodeError("Missing claim: csrf")
+                    raise CSRFError("Missing claim: csrf")
                 if not compare_digest(decoded_token["csrf"], csrf_value):
                     raise CSRFError("CSRF double submit tokens do not match")
             #end _decode_token verification
             
             return decoded_token
         except ConnectionError as ce:
-            raise JWTDecodeError(str(ce))
+            self.app.logger.exception(ce)
+            raise NoAuthorizationError()
         except JSONDecodeError as je:
-            raise JWTDecodeError(str(je))
+            self.app.logger.exception(je)
+            raise NoAuthorizationError()
+        except CSRFError:
+            raise
         except Exception as e:
-            raise JWTDecodeError(str(e))            
+            self.app.logger.exception(e)
+            raise NoAuthorizationError()            

@@ -15,6 +15,8 @@ import * as S from './styles'
 
 import DocumentInfo from '../DocumentInfo'
 
+const MARGIN_TOP = '4rem'
+
 type Props = DataProps<DocumentsResponse> & {
   queryTerms: string[]
   paginator?: ReactElement | false | null
@@ -24,11 +26,19 @@ type Props = DataProps<DocumentsResponse> & {
 const DocumentsListContent = forwardRef<HTMLDivElement, Props>(
   ({ data, isLoading, error, onTryAgain, queryTerms, paginator, info }, ref) => {
     if (error) {
-      return <SuggestionsError size="md" subject="documents" withIcon onTryAgain={onTryAgain} />
+      return (
+        <SuggestionsError
+          size="md"
+          mt={MARGIN_TOP}
+          subject="documents"
+          withIcon
+          onTryAgain={onTryAgain}
+        />
+      )
     }
 
     if (isLoading || !data) {
-      return <SuggestionsLoading size="lg" color="blue" variant="bars" />
+      return <SuggestionsLoading size="lg" mt={MARGIN_TOP} color="blue" variant="bars" />
     }
 
     const { documents } = data
@@ -37,6 +47,7 @@ const DocumentsListContent = forwardRef<HTMLDivElement, Props>(
       return (
         <SuggestionsEmpty
           size="md"
+          mt={MARGIN_TOP}
           withIcon
           message="No documents found."
           secondary="Please refine your search and try again."
