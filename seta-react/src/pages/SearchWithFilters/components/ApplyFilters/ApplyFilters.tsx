@@ -1,7 +1,7 @@
 import { Button, Indicator, HoverCard } from '@mantine/core'
 import { IconAdjustmentsHorizontal } from '@tabler/icons-react'
 
-import { useStyles } from './styles'
+import * as S from './styles'
 
 import type { FilterStatusInfo } from '../../types/filter-info'
 import { FilterStatus } from '../../types/filter-info'
@@ -15,11 +15,12 @@ type Props = {
 }
 
 const ApplyFilters = ({ status, onApplyFilters, onClear }: Props) => {
-  const { classes } = useStyles()
+  const { classes } = S.useStyles()
 
   let color: string | undefined = undefined
   let processing = false
   let hoverDisabled = false
+  let applyDisabled = true
   let modified: number | null = null
 
   switch (status?.status) {
@@ -30,6 +31,7 @@ const ApplyFilters = ({ status, onApplyFilters, onClear }: Props) => {
 
     case FilterStatus.MODIFIED:
       color = 'orange'
+      applyDisabled = false
       modified = status?.modified()
       break
 
@@ -50,6 +52,11 @@ const ApplyFilters = ({ status, onApplyFilters, onClear }: Props) => {
   if (modified === 0) {
     modified = null
   }
+
+  const buttonStyle =
+    status?.status === FilterStatus.APPLIED || status?.status === FilterStatus.PROCESSING
+      ? S.buttonInactive
+      : undefined
 
   return (
     <HoverCard
@@ -76,12 +83,13 @@ const ApplyFilters = ({ status, onApplyFilters, onClear }: Props) => {
           processing={processing}
         >
           <Button
+            css={buttonStyle}
             leftIcon={<IconAdjustmentsHorizontal />}
             radius="sm"
             size="lg"
             variant="outline"
             onClick={onApplyFilters}
-            disabled={processing}
+            disabled={applyDisabled}
           >
             Apply Filters
           </Button>

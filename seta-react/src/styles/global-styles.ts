@@ -5,10 +5,12 @@ import { growX } from '~/styles/keyframe-animations'
 const globalStyles: MantineThemeOverride['globalStyles'] = theme => ({
   'span.highlight': {
     position: 'relative',
-    padding: '2px',
-    margin: '0 -2px',
+    padding: '0 1px',
+    margin: '1px -1px',
     display: 'inline-block',
     zIndex: 1,
+    transition: 'color 300ms ease',
+    color: theme.colors.orange[9],
 
     '&:before': {
       content: '" "',
