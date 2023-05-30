@@ -1,20 +1,10 @@
 import { useEffect, useState } from 'react'
-import {
-  createStyles,
-  Table,
-  ScrollArea,
-  Text,
-  TextInput,
-  rem,
-  Button,
-  Group,
-  Menu,
-  ActionIcon
-} from '@mantine/core'
-import { IconDots, IconEye, IconSearch } from '@tabler/icons-react'
-import { Link } from 'react-router-dom'
+import { createStyles, Table, ScrollArea, Text, TextInput, rem } from '@mantine/core'
+import { IconSearch } from '@tabler/icons-react'
 
 import type { Community } from '~/models/communities/communities'
+
+import CommunityButton from './CommunityButton/CommunityButton'
 
 import { useAllCommunities } from '../../../../../api/communities/discover/discover-communities'
 import type { CommunitiesResponse } from '../../../../../api/communities/manage/my-communities'
@@ -106,40 +96,7 @@ const CommunityList = () => {
             <td>{row.membership}</td>
             <td>{row.status}</td>
             <td>
-              <Group>
-                {row.membership === 'Private' ? (
-                  <Button variant="outline" size="xs">
-                    + JOIN
-                  </Button>
-                ) : (
-                  <Button variant="filled" size="xs">
-                    + JOINED
-                  </Button>
-                )}
-                <Menu
-                  transitionProps={{ transition: 'pop' }}
-                  withArrow
-                  position="bottom-end"
-                  withinPortal
-                >
-                  <Menu.Target>
-                    <ActionIcon>
-                      <IconDots size="1rem" stroke={1.5} />
-                    </ActionIcon>
-                  </Menu.Target>
-                  <Menu.Dropdown>
-                    <Link
-                      className={classes.link}
-                      to={`/communities/${row.community_id}`}
-                      replace={true}
-                    >
-                      <Menu.Item icon={<IconEye size="1rem" stroke={1.5} />}>
-                        View Details
-                      </Menu.Item>
-                    </Link>
-                  </Menu.Dropdown>
-                </Menu>
-              </Group>
+              <CommunityButton community={row} />
             </td>
           </tr>
         ))

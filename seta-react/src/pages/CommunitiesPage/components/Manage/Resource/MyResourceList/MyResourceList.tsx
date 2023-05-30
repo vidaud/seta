@@ -33,7 +33,7 @@ const MyResourceList = () => {
   }
 
   if (data) {
-    if (data.length === 0) {
+    if (data?.length === 0) {
       return <ComponentEmpty />
     }
   }

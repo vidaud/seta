@@ -75,7 +75,7 @@ const CommunityResources = resources => {
       </Card.Section>
       <Card.Section>
         <Table>
-          {rows.length > 0 ? (
+          {rows?.length > 0 ? (
             <tbody>{rows}</tbody>
           ) : (
             <tbody>
