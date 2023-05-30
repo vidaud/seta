@@ -37,7 +37,7 @@ const TaxonomyFilter = ({ data, selectedKeys, onSelectionChange }: Props) => {
       selectionMode="checkbox"
       selectionKeys={selectedKeys}
       onSelectionChange={onSelectionChangeHandler}
-      propagateSelectionUp={false}
+      propagateSelectionUp={true}
       propagateSelectionDown={false}
     />
   )

@@ -4,7 +4,7 @@ import { IconClearAll } from '@tabler/icons-react'
 import MultipleValuesInfo from './MultipleValuesInfo'
 import RangeValueInfo from './RangeValueInfo'
 import TextChunkInfo from './TextChunkInfo'
-import { getSourceLists, getTaxonomyLists, getOtherLists } from './utils'
+import { getSourceLists, getTaxonomyLists, getOtherLists, FilterStatusColors } from './utils'
 
 import { FilterStatus } from '../../types/filter-info'
 import type { FilterStatusInfo } from '../../types/filter-info'
@@ -41,8 +41,8 @@ const FilterInfo = ({ status, onClear }: Props) => {
           <Button
             compact
             leftIcon={<IconClearAll size={rem(16)} />}
-            color="green"
-            variant="light"
+            color={FilterStatusColors.APPLIED}
+            variant="outline"
             disabled={status?.prevStatus === FilterStatus.UNKNOWN}
             onClick={e => {
               e.stopPropagation()
@@ -54,8 +54,8 @@ const FilterInfo = ({ status, onClear }: Props) => {
           <Button
             compact
             leftIcon={<IconClearAll size={rem(16)} />}
-            color="orange"
-            variant="light"
+            color={FilterStatusColors.MODIFIED}
+            variant="outline"
             disabled={status?.modified() === 0}
             onClick={e => {
               e.stopPropagation()

@@ -4,6 +4,12 @@ export enum TextChunkValues {
   ALL_CHUNKS_SEARCH = 'ALL_CHUNKS_SEARCH'
 }
 
+export const TextChunkLabels: Record<TextChunkValues, string> = {
+  CHUNK_SEARCH: 'First chunk',
+  DOCUMENT_SEARCH: 'Single chunk only',
+  ALL_CHUNKS_SEARCH: 'Any chunks'
+}
+
 export type RangeValue = [number, number]
 
 type SelectionKeyType = {

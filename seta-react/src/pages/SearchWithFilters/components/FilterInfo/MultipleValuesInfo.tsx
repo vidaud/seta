@@ -2,6 +2,8 @@ import type { AccordionControlProps } from '@mantine/core'
 import { Tooltip, Badge, Flex, Accordion, Box, ActionIcon, rem } from '@mantine/core'
 import { IconX, IconEraser, IconEraserOff } from '@tabler/icons-react'
 
+import { FilterStatusColors } from './utils'
+
 import type { NodeInfo } from '../../types/filter-info'
 import type { ClearAction, ClearCategory } from '../../types/filters'
 import { ClearType } from '../../types/filters'
@@ -38,13 +40,13 @@ const MultipleValuesInfo = ({ title, category, applied, deleted, added, onClear 
   const removeButton = (color: string, key: string) => {
     return (
       <ActionIcon
-        size="xs"
+        size="md"
         color={color}
         radius="xl"
         variant="transparent"
         onClick={e => clearKey(e, key)}
       >
-        <IconX size={rem(10)} />
+        <IconX size={rem(16)} />
       </ActionIcon>
     )
   }
@@ -53,24 +55,29 @@ const MultipleValuesInfo = ({ title, category, applied, deleted, added, onClear 
     const label = strike ? <s>{node.label}</s> : node.label
 
     return (
-      <Badge
-        key={node.key}
-        color={color}
-        variant="outline"
-        styles={{ root: { textTransform: 'none' } }}
-        pr={3}
-        rightSection={removeButton(color, node.key)}
-      >
-        {label}
-      </Badge>
+      <Tooltip label={node.key} multiline withArrow color="gray" offset={-0.5}>
+        <Badge
+          size="lg"
+          key={node.key}
+          color={color}
+          radius="sm"
+          variant="outline"
+          styles={{ root: { textTransform: 'none' } }}
+          pr={3}
+          rightSection={removeButton(color, node.key)}
+          maw={400}
+        >
+          {label}
+        </Badge>
+      </Tooltip>
     )
   }
 
-  const appliedBadges = applied?.map(a => badge(a, 'green', false))
+  const appliedBadges = applied?.map(a => badge(a, FilterStatusColors.APPLIED, false))
 
-  const deletedBadges = deleted?.map(a => badge(a, 'orange', true))
+  const deletedBadges = deleted?.map(a => badge(a, FilterStatusColors.DELETED, true))
 
-  const addedBadges = added?.map(a => badge(a, 'orange', false))
+  const addedBadges = added?.map(a => badge(a, FilterStatusColors.MODIFIED, false))
 
   const appliedCount = applied?.length ?? 0
   const modifiedCount = (deleted?.length ?? 0) + (added?.length ?? 0)
@@ -79,26 +86,28 @@ const MultipleValuesInfo = ({ title, category, applied, deleted, added, onClear 
     return (
       <Box sx={{ display: 'flex', alignItems: 'center', paddingRight: 5 }}>
         <Accordion.Control {...props} />
-        <Tooltip label={'Clear ' + appliedCount + ' applied'}>
+        <Tooltip label={'Clear ' + appliedCount + ' applied'} withArrow color="gray">
           <ActionIcon
+            size="md"
             variant="outline"
-            color="green"
+            color={FilterStatusColors.APPLIED}
             m={2}
             disabled={appliedCount === 0}
             onClick={clearApplied}
           >
-            <IconEraser size="0.8rem" />
+            <IconEraser size="1rem" />
           </ActionIcon>
         </Tooltip>
-        <Tooltip label={'Clear ' + modifiedCount + ' modified'}>
+        <Tooltip label={'Clear ' + modifiedCount + ' modified'} withArrow color="gray">
           <ActionIcon
+            size="md"
             variant="outline"
-            color="orange"
+            color={FilterStatusColors.MODIFIED}
             m={2}
             disabled={modifiedCount === 0}
             onClick={clearModified}
           >
-            <IconEraserOff size="0.8rem" />
+            <IconEraserOff size="1rem" />
           </ActionIcon>
         </Tooltip>
       </Box>

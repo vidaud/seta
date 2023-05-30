@@ -1,4 +1,4 @@
-import { useState, useReducer } from 'react'
+import { useState, useReducer, useRef } from 'react'
 
 import { itemsReducer } from './items-reducer'
 import { statusReducer } from './status-reducer'
@@ -17,12 +17,15 @@ const useFilter = (
 ) => {
   const [prevContract, setPrevContract] = useState(queryContract)
 
-  const { rangeVal, resources, taxonomies } = parseQueryContract(queryContract)
+  const { rangeVal, resources, taxonomies, resourcesArray, taxonomiesArray } =
+    parseQueryContract(queryContract)
   const [chunkText, setChunkText] = useState<TextChunkValues>(TextChunkValues.CHUNK_SEARCH)
 
   const [rangeValue, setRangeValue] = useState(rangeVal)
   const [resourceNodes, setResourceNodes] = useState(resources)
   const [taxonomyNodes, setTaxonomyNodes] = useState(taxonomies)
+  const resourcesFlat = useRef(resourcesArray)
+  const taxonomiesFlat = useRef(taxonomiesArray)
 
   const [enableDateFilter, setEnableDateFilter] = useState(false)
   const [rangeBoundaries, setRangeBoundaries] = useState({ min: rangeVal?.[0], max: rangeVal?.[1] })
@@ -40,6 +43,32 @@ const useFilter = (
 
   //!Yes, it compares the pointers, not the content
   if (queryContract !== prevContract) {
+    const setNewStatus = () => {
+      const newStatus = new FilterStatusInfo()
+
+      newStatus.status = FilterStatus.APPLIED
+      newStatus.prevStatus = FilterStatus.APPLIED
+
+      const newItems = itemsReducer(otherItems, { type: 'set-applied' })
+
+      newStatus.appliedFilter = buildFilterInfo({
+        chunkText,
+        enableDateFilter,
+        rangeValue,
+        resourceSelectedKeys,
+        taxonomySelectedKeys,
+        otherItems: newItems,
+        resources: resourcesFlat.current,
+        taxonomies: taxonomiesFlat.current
+      })
+
+      newStatus.currentFilter = newStatus.appliedFilter.copy()
+      //!otherItems are ignore on currentFilter
+      newStatus.currentFilter.otherItems = undefined
+
+      dispatchStatus({ type: 'replace', value: newStatus })
+    }
+
     setPrevContract(queryContract)
 
     if (!rangeVal) {
@@ -51,29 +80,14 @@ const useFilter = (
 
     setResourceNodes(resources)
     setTaxonomyNodes(taxonomies)
+
     dispatchOtherItems({ type: 'set-applied' })
 
-    const newStatus = new FilterStatusInfo()
+    //!call this before setting current resourcesFlat & taxonomiesFlat
+    setNewStatus()
 
-    newStatus.status = FilterStatus.APPLIED
-    newStatus.prevStatus = FilterStatus.APPLIED
-
-    const newItems = itemsReducer(otherItems, { type: 'set-applied' })
-
-    newStatus.appliedFilter = buildFilterInfo({
-      chunkText,
-      enableDateFilter,
-      rangeValue,
-      resourceSelectedKeys,
-      taxonomySelectedKeys,
-      otherItems: newItems
-    })
-
-    newStatus.currentFilter = newStatus.appliedFilter.copy()
-    //!otherItems are ignore on currentFilter
-    newStatus.currentFilter.otherItems = undefined
-
-    dispatchStatus({ type: 'replace', value: newStatus })
+    resourcesFlat.current = resourcesArray
+    taxonomiesFlat.current = taxonomiesArray
   }
 
   return {
@@ -89,7 +103,9 @@ const useFilter = (
     status,
     dispatchStatus,
     otherItems,
-    dispatchOtherItems
+    dispatchOtherItems,
+    resourcesFlat,
+    taxonomiesFlat
   }
 }
 

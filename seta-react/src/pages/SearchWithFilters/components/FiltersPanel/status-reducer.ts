@@ -27,9 +27,9 @@ const sourceChanged = (info: FilterStatusInfo, values) => {
   } else {
     info.currentFilter.sourceValues = values?.map(i => {
       return {
-        key: i,
-        label: i,
-        longLabel: i
+        key: i.key,
+        label: i.label,
+        longLabel: i.label
       }
     })
   }
@@ -50,9 +50,9 @@ const taxonomyChanged = (info: FilterStatusInfo, values) => {
   } else {
     info.currentFilter.taxonomyValues = values?.map(i => {
       return {
-        key: i,
-        label: i,
-        longLabel: i
+        key: i.key,
+        label: i.label,
+        longLabel: i.label
       }
     })
   }

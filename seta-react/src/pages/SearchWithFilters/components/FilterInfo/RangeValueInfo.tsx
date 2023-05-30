@@ -1,5 +1,7 @@
 import { Grid, Badge, Text } from '@mantine/core'
 
+import { FilterStatusColors } from './utils'
+
 import type { RangeValue } from '../../types/filters'
 
 type Props = {
@@ -9,7 +11,7 @@ type Props = {
 }
 
 const RangeValueInfo = ({ enabled, value, modified }: Props) => {
-  const color = modified ? 'orange' : 'green'
+  const color = modified ? FilterStatusColors.MODIFIED : FilterStatusColors.APPLIED
 
   if (!value && !enabled) {
     return null
@@ -35,6 +37,7 @@ const RangeValueInfo = ({ enabled, value, modified }: Props) => {
         {enabled && (
           <Badge
             color={color}
+            size="lg"
             variant="outline"
             styles={{ root: { textTransform: 'none' } }}
             mr={5}
@@ -43,7 +46,12 @@ const RangeValueInfo = ({ enabled, value, modified }: Props) => {
           </Badge>
         )}
         {value && (
-          <Badge color={color} variant="outline" styles={{ root: { textTransform: 'none' } }}>
+          <Badge
+            size="lg"
+            color={color}
+            variant="outline"
+            styles={{ root: { textTransform: 'none' } }}
+          >
             {label}
           </Badge>
         )}
