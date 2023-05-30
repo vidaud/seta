@@ -1,16 +1,16 @@
 import { Box, Flex } from '@mantine/core'
 import { Outlet } from 'react-router-dom'
 
-import BreadcrumbsComponent from '../../components/Breadcrumbs/Breadcrumbs'
+import Breadcrumbs from '../../components/Breadcrumbs'
 import NavbarNested from '../../components/NavbarNested'
 
 const CommunityLayout = () => {
   return (
-    <Flex direction="column" className="communities min-h-screen">
+    <Flex direction="column" className="min-h-screen communities">
       <NavbarNested />
 
       <Box sx={{ flexGrow: 1, padding: '2rem' }}>
-        <BreadcrumbsComponent />
+        <Breadcrumbs readFromPath />
         <Outlet />
       </Box>
     </Flex>

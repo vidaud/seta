@@ -203,8 +203,6 @@ const useClearFilter = ({
   }
 
   const handleClearFilters = (action: ClearAction) => {
-    console.log('handleClearFilters', action)
-
     switch (action.type) {
       case ClearType.ALL: {
         clearAll()

@@ -1,3 +1,4 @@
+import { css } from '@emotion/react'
 import { createStyles } from '@mantine/core'
 
 export const useStyles = createStyles(theme => {
@@ -13,3 +14,11 @@ export const useStyles = createStyles(theme => {
     }
   }
 })
+
+export const buttonInactive: ThemedCSS = theme => css`
+  && {
+    background-color: ${theme.colors.gray[0]};
+    border-color: ${theme.colors.blue[4]};
+    border-style: dashed;
+  }
+`
