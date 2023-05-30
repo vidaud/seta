@@ -1,4 +1,3 @@
-/* eslint-disable max-params */
 import type { AdvancedFiltersContract } from '../types/contracts'
 import type { RangeValue, SelectionKeys } from '../types/filters'
 import { TextChunkValues } from '../types/filters'
@@ -60,13 +59,21 @@ const mapSelectedDataSources = (
   return { dsIds, cIds, rIds }
 }
 
-export const buildFiltersContract = (
-  searchType: TextChunkValues,
-  yearsRange?: RangeValue,
-  selectedResources?: SelectionKeys | null,
-  selectedTaxonomies?: SelectionKeys | null,
+type Props = {
+  searchType: TextChunkValues
+  yearsRange?: RangeValue
+  selectedResources?: SelectionKeys | null
+  selectedTaxonomies?: SelectionKeys | null
   otherItems?: OtherItem[]
-): AdvancedFiltersContract => {
+}
+
+export const buildFiltersContract = ({
+  searchType,
+  yearsRange,
+  selectedResources,
+  selectedTaxonomies,
+  otherItems
+}: Props): AdvancedFiltersContract => {
   const contract: AdvancedFiltersContract = {
     search_type: mapSearchTypeToQuery(searchType)
   }

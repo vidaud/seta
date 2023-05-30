@@ -1,19 +1,25 @@
-import type { DefaultMantineColor, LoaderProps } from '@mantine/core'
-import { Loader } from '@mantine/core'
+import type { DefaultMantineColor, LoaderProps, MantineStyleSystemProps } from '@mantine/core'
+import { Flex, Loader } from '@mantine/core'
 
-import * as S from './styles'
 import type { SizeProp } from './types'
 
 type Props = {
   color?: DefaultMantineColor
   variant?: LoaderProps['variant']
-} & SizeProp
+} & SizeProp &
+  MantineStyleSystemProps
 
-const SuggestionsLoading = ({ color = 'gray', size = 'md', variant }: Props) => {
+const SuggestionsLoading = ({
+  color = 'gray',
+  size = 'md',
+  variant,
+  mt = '2rem',
+  ...styles
+}: Props) => {
   return (
-    <S.Container>
+    <Flex align="center" justify="center" mt={mt} {...styles}>
       <Loader color={color} size={size} variant={variant} />
-    </S.Container>
+    </Flex>
   )
 }
 

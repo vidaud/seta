@@ -1,4 +1,4 @@
-import type { DefaultMantineColor } from '@mantine/core'
+import type { DefaultMantineColor, MantineStyleSystemProps } from '@mantine/core'
 import { Box, Flex, Text } from '@mantine/core'
 import { BiInfoCircle } from 'react-icons/bi'
 
@@ -12,7 +12,8 @@ type Props = {
   withIcon?: boolean
   color?: DefaultMantineColor
   iconColor?: DefaultMantineColor
-} & SizeProp
+} & SizeProp &
+  MantineStyleSystemProps
 
 const SuggestionsEmpty = ({
   message,
@@ -20,7 +21,9 @@ const SuggestionsEmpty = ({
   size = 'sm',
   color = 'gray.6',
   withIcon,
-  iconColor = 'gray.5'
+  iconColor = 'gray.5',
+  mt = '2rem',
+  ...styles
 }: Props) => {
   const icon = withIcon && (
     <Box
@@ -41,16 +44,14 @@ const SuggestionsEmpty = ({
   )
 
   return (
-    <S.Container>
-      <Flex align="center" justify="center" gap="sm">
-        {icon}
+    <Flex align="center" justify="center" gap="sm" mt={mt} {...styles}>
+      {icon}
 
-        <Text fz={size} color={color}>
-          {message ?? 'No results'}
-          {secondaryMessage}
-        </Text>
-      </Flex>
-    </S.Container>
+      <Text fz={size} color={color}>
+        {message ?? 'No results'}
+        {secondaryMessage}
+      </Text>
+    </Flex>
   )
 }
 

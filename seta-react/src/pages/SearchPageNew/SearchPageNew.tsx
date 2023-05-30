@@ -1,6 +1,8 @@
 import { useState } from 'react'
-import { Box, Flex } from '@mantine/core'
+import { Flex, Text } from '@mantine/core'
+import { CgFileDocument } from 'react-icons/cg'
 
+import Page from '~/components/Page/Page'
 import SidePanel from '~/pages/SearchWithFilters/components/SidePanel'
 import type {
   AdvancedFiltersContract,
@@ -36,7 +38,7 @@ const SearchPageNew = () => {
     setSearchOptions(value)
   }
 
-  const handleDocumentsLoaded = (response: DocumentsResponse) => {
+  const handleDocumentsChanged = (response: DocumentsResponse) => {
     const { search_type } = searchOptions ?? {}
     const { date_year, source_collection_reference, taxonomies } = response.aggregations ?? {}
 
@@ -48,29 +50,36 @@ const SearchPageNew = () => {
     })
   }
 
-  return (
-    <Flex css={S.pageWrapper}>
-      <Box sx={{ position: 'sticky', top: 0 }}>
-        <SidePanel
-          css={S.sidebar}
-          queryContract={queryContract}
-          onApplyFilter={handleApplyFilter}
-        />
-      </Box>
+  const sidebar = <SidePanel queryContract={queryContract} onApplyFilter={handleApplyFilter} />
 
+  const documentsList = query && (
+    <DocumentsList
+      query={query.value}
+      terms={query.terms}
+      searchOptions={searchOptions}
+      onDocumentsChanged={handleDocumentsChanged}
+    />
+  )
+
+  const noDocuments = !query && (
+    <Flex direction="column" align="center" css={S.noDocuments}>
+      <CgFileDocument />
+
+      <Text mt="md" align="center">
+        Search for documents
+      </Text>
+    </Flex>
+  )
+
+  return (
+    <Page sidebarContent={sidebar} breadcrumbs>
       <Flex direction="column" align="center" css={S.searchWrapper}>
         <SearchSuggestionInput onSearch={handleSearch} />
 
-        {query && (
-          <DocumentsList
-            query={query.value}
-            terms={query.terms}
-            searchOptions={searchOptions}
-            onDocumentsLoaded={handleDocumentsLoaded}
-          />
-        )}
+        {documentsList}
+        {/* {noDocuments} */}
       </Flex>
-    </Flex>
+    </Page>
   )
 }
 
