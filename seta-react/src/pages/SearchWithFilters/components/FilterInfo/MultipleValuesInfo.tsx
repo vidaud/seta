@@ -14,10 +14,19 @@ type Props = {
   applied?: NodeInfo[] | null
   deleted?: NodeInfo[] | null
   added?: NodeInfo[] | null
-  onClear?(action: ClearAction): void
+  keyAsTooltip?: boolean
+  onClear?: (action: ClearAction) => void
 }
 
-const MultipleValuesInfo = ({ title, category, applied, deleted, added, onClear }: Props) => {
+const MultipleValuesInfo = ({
+  title,
+  category,
+  applied,
+  deleted,
+  added,
+  onClear,
+  keyAsTooltip = true
+}: Props) => {
   if (!applied?.length && !deleted?.length && !added?.length) {
     return null
   }
@@ -55,7 +64,13 @@ const MultipleValuesInfo = ({ title, category, applied, deleted, added, onClear 
     const label = strike ? <s>{node.label}</s> : node.label
 
     return (
-      <Tooltip label={node.key} multiline withArrow color="gray" offset={-0.5}>
+      <Tooltip
+        label={keyAsTooltip ? node.key : node.label}
+        multiline
+        withArrow
+        color="gray"
+        offset={-0.5}
+      >
         <Badge
           size="lg"
           key={node.key}

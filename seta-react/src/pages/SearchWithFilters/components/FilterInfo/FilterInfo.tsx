@@ -93,6 +93,7 @@ const FilterInfo = ({ status, onClear }: Props) => {
         <MultipleValuesInfo
           title="Other"
           category={ClearCategory.OTHER}
+          keyAsTooltip={false}
           applied={otherApplied}
           deleted={otherDeleted}
           added={otherAdded}
