@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Button, Grid, Group, Paper, Text, Title, createStyles } from '@mantine/core'
+import { Button, Grid, Group, Text, Title, createStyles, Card, Table } from '@mantine/core'
 import { Link, useParams } from 'react-router-dom'
 
 import {
@@ -8,7 +8,7 @@ import {
 } from '../../../../../../api/resources/manage/my-resource'
 import ComponentLoading from '../../../common/ComponentLoading'
 
-const useStyles = createStyles({
+const useStyles = createStyles(theme => ({
   title: {
     textAlign: 'left'
   },
@@ -17,7 +17,7 @@ const useStyles = createStyles({
   },
   table: {
     width: '100%',
-    paddingTop: '1%'
+    paddingTop: theme.spacing.md
   },
   td: {
     width: '50%'
@@ -27,8 +27,12 @@ const useStyles = createStyles({
   },
   link: {
     color: 'white'
+  },
+  imageSection: {
+    background: '#D9D9D9',
+    padding: theme.spacing.sm
   }
-})
+}))
 
 const ViewMyResource = () => {
   const { classes } = useStyles()
@@ -55,15 +59,22 @@ const ViewMyResource = () => {
     <>
       <Grid grow>
         <Grid.Col span={12}>
-          <Paper shadow="xs" p="md">
+          <Card withBorder radius="md">
+            <Card.Section className={classes.imageSection}>
+              <Text size="md">Details</Text>
+            </Card.Section>
             <Title order={5} className={classes.title}>
               {rows?.title}
             </Title>
-            <Text className={classes.text}>Community: {rows?.community_id}</Text>
-            <Text className={classes.text}>Abstract: {rows?.abstract}</Text>
-            <table className={classes.table}>
+            <Text size="xs" className={classes.text}>
+              Abstract: {rows?.abstract}
+            </Text>
+            <Table className={classes.table}>
               <tbody>
                 <tr>
+                  <td className={classes.td}>
+                    <Text className={classes.text}>Community by: {rows?.community_id}</Text>
+                  </td>
                   <td className={classes.td}>
                     <Text className={classes.text}>Status: {rows?.status}</Text>
                   </td>
@@ -73,11 +84,14 @@ const ViewMyResource = () => {
                     <Text className={classes.text}>Created by: {rows?.creator_id}</Text>
                   </td>
                   <td className={classes.td}>
-                    <Text className={classes.text}>Created at: {rows?.created_at.toString()}</Text>
+                    <Text className={classes.text}>
+                      Created at:{' '}
+                      {rows?.created_at ? new Date(rows?.created_at).toDateString() : null}
+                    </Text>
                   </td>
                 </tr>
               </tbody>
-            </table>
+            </Table>
             <Group spacing={30} position="right">
               <Button color="red" onClick={deleteResource}>
                 Delete
@@ -90,7 +104,7 @@ const ViewMyResource = () => {
                 <Button>Update</Button>
               </Link>
             </Group>
-          </Paper>
+          </Card>
         </Grid.Col>
         {/* <Grid.Col span={12}>
           <Paper shadow="xs" p="md">

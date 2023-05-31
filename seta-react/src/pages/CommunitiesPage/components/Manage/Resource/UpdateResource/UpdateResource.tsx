@@ -90,7 +90,7 @@ const UpdateResource = () => {
                 </Button>
               </Link>
               <Button size="xs" type="submit">
-                Save
+                Update
               </Button>
             </Group>
           </form>

@@ -8,7 +8,7 @@ const useStyles = createStyles(theme => ({
   },
   imageSection: {
     background: '#D9D9D9',
-    padding: theme.spacing.md,
+    padding: theme.spacing.sm,
     color: '#000000'
   },
   rowSection: {
@@ -71,7 +71,7 @@ const CommunityResources = resources => {
   return (
     <Card withBorder radius="md" className={classes.card}>
       <Card.Section className={classes.imageSection}>
-        <Text size="xl">Resources</Text>
+        <Text size="md">Resources</Text>
       </Card.Section>
       <Card.Section>
         <Table>

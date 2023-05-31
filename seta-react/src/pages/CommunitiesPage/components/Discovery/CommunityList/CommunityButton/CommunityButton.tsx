@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react'
-import { ActionIcon, Button, Group, createStyles } from '@mantine/core'
+import { ActionIcon, Button, Group, createStyles, Tooltip } from '@mantine/core'
 import { IconEye } from '@tabler/icons-react'
 import { Link } from 'react-router-dom'
 
 import { useMembershipID } from '../../../../../../api/communities/discover/community'
 import MembershipRequest from '../../../Manage/Members/InviteMemberModal/InviteMemberModal'
+import ViewClosedCommunity from '../../ViewClosedCommunity/ViewClosedCommunity'
 
 const useStyles = createStyles({
   link: {
@@ -28,15 +29,17 @@ const CommunityButton = props => {
       <Group>
         {data && data?.members?.length > 0 ? (
           <Group>
-            <Link
-              className={classes.link}
-              to={`/communities/${props.community.community_id}`}
-              replace={true}
-            >
-              <ActionIcon>
-                <IconEye size="1rem" stroke={1.5} />
-              </ActionIcon>
-            </Link>
+            <Tooltip label="View Details">
+              <Link
+                className={classes.link}
+                to={`/communities/${props.community.community_id}`}
+                replace={true}
+              >
+                <ActionIcon>
+                  <IconEye size="1rem" stroke={1.5} />
+                </ActionIcon>
+              </Link>
+            </Tooltip>
 
             <Button variant="filled" size="xs">
               + JOINED
@@ -44,9 +47,7 @@ const CommunityButton = props => {
           </Group>
         ) : (
           <Group>
-            <ActionIcon>
-              <IconEye size="1rem" stroke={1.5} />
-            </ActionIcon>
+            <ViewClosedCommunity community={props.community} />
             <MembershipRequest community_id={props.community.community_id} />
           </Group>
         )}

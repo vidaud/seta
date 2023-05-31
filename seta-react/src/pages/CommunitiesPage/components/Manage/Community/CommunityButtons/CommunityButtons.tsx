@@ -1,4 +1,4 @@
-import { Group, ActionIcon, Menu, createStyles } from '@mantine/core'
+import { Group, ActionIcon, Menu, createStyles, Tooltip } from '@mantine/core'
 import { IconDots, IconPencil, IconTrash, IconEye, IconSettings } from '@tabler/icons-react'
 import { Link } from 'react-router-dom'
 
@@ -21,11 +21,14 @@ const CommunityButtons = item => {
   return (
     <Group spacing={0} position="right">
       <InviteMember id={item.item.community_id} />
+
       <Menu transitionProps={{ transition: 'pop' }} withArrow position="bottom-end" withinPortal>
         <Menu.Target>
-          <ActionIcon>
-            <IconDots size="1rem" stroke={1.5} />
-          </ActionIcon>
+          <Tooltip label="Community Actions">
+            <ActionIcon>
+              <IconDots size="1rem" stroke={1.5} />
+            </ActionIcon>
+          </Tooltip>
         </Menu.Target>
         <Menu.Dropdown>
           <Link

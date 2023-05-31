@@ -1,4 +1,4 @@
-import { Card, Text, Group, createStyles, Button, rem, Container } from '@mantine/core'
+import { Card, Text, Group, createStyles, Button, rem, Container, Tooltip } from '@mantine/core'
 
 const useStyles = createStyles(theme => ({
   card: {
@@ -6,7 +6,7 @@ const useStyles = createStyles(theme => ({
   },
   imageSection: {
     background: '#D9D9D9',
-    padding: theme.spacing.md,
+    padding: theme.spacing.sm,
     color: '#000000'
   },
   section: {
@@ -32,14 +32,16 @@ const Stats = ({ resourceNumber, memberNumber }) => {
   return (
     <Card withBorder radius="md" className={classes.card}>
       <Card.Section className={classes.imageSection}>
-        <Text size="xl">STATS</Text>
+        <Text size="md">STATS</Text>
       </Card.Section>
 
       <Group position="apart" mt="md">
         <Container size="xs" px="xs" className={classes.container}>
           <Text className={classes.text}>Members</Text>
           <Group position="right">
-            <Button>{memberNumber?.length}</Button>
+            <Tooltip label={`This community has already ` + memberNumber?.length + ` members`}>
+              <Button>{memberNumber?.length}</Button>
+            </Tooltip>
           </Group>
         </Container>
       </Group>
@@ -48,7 +50,9 @@ const Stats = ({ resourceNumber, memberNumber }) => {
         <Container size="xs" px="xs" className={classes.container}>
           <Text className={classes.text}>Resources</Text>
           <Group position="right">
-            <Button>{resourceNumber?.length}</Button>
+            <Tooltip label={`This community has already ` + memberNumber?.length + ` resources`}>
+              <Button>{resourceNumber?.length}</Button>
+            </Tooltip>
           </Group>
         </Container>
       </Group>

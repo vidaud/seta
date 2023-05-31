@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react'
-import { Grid, Paper, Text, Title, createStyles } from '@mantine/core'
+import { Grid, Table, Text, Title, createStyles, Card } from '@mantine/core'
 import { useParams } from 'react-router-dom'
 
 import { useResourceID } from '../../../../../api/resources/manage/my-resource'
 import ComponentLoading from '../../common/ComponentLoading'
 
-const useStyles = createStyles({
+const useStyles = createStyles(theme => ({
   title: {
     textAlign: 'left'
   },
@@ -21,8 +21,13 @@ const useStyles = createStyles({
   },
   button: {
     background: '#F8AE21'
+  },
+  imageSection: {
+    background: '#D9D9D9',
+    padding: theme.spacing.sm,
+    color: '#000000'
   }
-})
+}))
 
 const ViewResource = () => {
   const { classes } = useStyles()
@@ -45,15 +50,22 @@ const ViewResource = () => {
     <>
       <Grid grow>
         <Grid.Col span={12}>
-          <Paper shadow="xs" p="md">
+          <Card withBorder radius="md">
+            <Card.Section className={classes.imageSection}>
+              <Text size="md">Details</Text>
+            </Card.Section>
             <Title order={5} className={classes.title}>
               {rows?.title}
             </Title>
-            <Text className={classes.text}>Community: {rows?.community_id}</Text>
-            <Text className={classes.text}>Abstract: {rows?.abstract}</Text>
-            <table className={classes.table}>
+            <Text size="xs" className={classes.text}>
+              Abstract: {rows?.abstract}
+            </Text>
+            <Table className={classes.table}>
               <tbody>
                 <tr>
+                  <td className={classes.td}>
+                    <Text className={classes.text}>Community: {rows?.community_id}</Text>
+                  </td>
                   <td className={classes.td}>
                     <Text className={classes.text}>Status: {rows?.status}</Text>
                   </td>
@@ -63,12 +75,15 @@ const ViewResource = () => {
                     <Text className={classes.text}>Created by: {rows?.creator_id}</Text>
                   </td>
                   <td className={classes.td}>
-                    <Text className={classes.text}>Created at: {rows?.created_at.toString()}</Text>
+                    <Text className={classes.text}>
+                      Created at:{' '}
+                      {rows?.created_at ? new Date(rows?.created_at).toDateString() : null}
+                    </Text>
                   </td>
                 </tr>
               </tbody>
-            </table>
-          </Paper>
+            </Table>
+          </Card>
         </Grid.Col>
       </Grid>
     </>

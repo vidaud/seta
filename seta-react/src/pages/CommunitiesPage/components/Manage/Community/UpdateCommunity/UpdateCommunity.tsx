@@ -111,7 +111,7 @@ const UpdateCommunity = () => {
               </Link>
 
               <Button size="xs" type="submit">
-                Save
+                Update
               </Button>
             </Group>
           </form>
