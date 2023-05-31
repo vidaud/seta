@@ -44,7 +44,12 @@ const UpdateResource = () => {
       resource_id: '',
       title: '',
       abstract: ''
-    }
+    },
+    validate: values => ({
+      resource_id: values.resource_id.length < 2 ? 'ID must have at least 2 letters' : null,
+      title: values.title.length < 2 ? 'Too short title' : null,
+      abstract: values.abstract.length < 2 ? 'Too short abstract' : null
+    })
   })
 
   useEffect(() => {
@@ -71,6 +76,7 @@ const UpdateResource = () => {
               label="ID"
               {...form.getInputProps('resource_id')}
               className={cx(classes.input, classes.sized)}
+              disabled={true}
               withAsterisk
             />
             <TextInput
@@ -83,6 +89,7 @@ const UpdateResource = () => {
               label="Abstract"
               {...form.getInputProps('abstract')}
               className={cx(classes.input)}
+              withAsterisk
             />
             <Group spacing={100} display="flex">
               <Radio.Group name="status" label="Status" {...form.getInputProps('status')}>

@@ -47,7 +47,13 @@ const UpdateCommunity = () => {
       description: '',
       data_type: '',
       status: ''
-    }
+    },
+    validate: values => ({
+      community_id: values.community_id.length < 2 ? 'ID must have at least 2 letters' : null,
+      title: values.title.length < 2 ? 'Too short title' : null,
+      description: values.description.length < 2 ? 'Too short description' : null,
+      data_type: values.data_type.length < 1 ? 'Please select data type' : null
+    })
   })
 
   useEffect(() => {
@@ -74,6 +80,7 @@ const UpdateCommunity = () => {
               label="ID"
               {...form.getInputProps('community_id')}
               className={cx(classes.input, classes.sized)}
+              disabled={true}
               withAsterisk
             />
             <TextInput
@@ -86,6 +93,7 @@ const UpdateCommunity = () => {
               label="Description"
               {...form.getInputProps('description')}
               className={cx(classes.input)}
+              withAsterisk
             />
             <Group spacing={100} display="flex">
               <Radio.Group name="data_type" label="Data Type" {...form.getInputProps('data_type')}>
