@@ -7,10 +7,9 @@ import {
   TextInput,
   rem,
   Group,
-  Menu,
   ActionIcon
 } from '@mantine/core'
-import { IconDots, IconEye, IconSearch } from '@tabler/icons-react'
+import { IconEye, IconSearch } from '@tabler/icons-react'
 import { Link } from 'react-router-dom'
 
 import type { ResourcesResponse } from '~/api/resources/manage/my-resources'
@@ -106,29 +105,11 @@ const ResourceList = () => {
             <td>{row.status}</td>
             <td>
               <Group>
-                <Menu
-                  transitionProps={{ transition: 'pop' }}
-                  withArrow
-                  position="bottom-end"
-                  withinPortal
-                >
-                  <Menu.Target>
-                    <ActionIcon>
-                      <IconDots size="1rem" stroke={1.5} />
-                    </ActionIcon>
-                  </Menu.Target>
-                  <Menu.Dropdown>
-                    <Menu.Item icon={<IconEye size="1rem" stroke={1.5} />}>
-                      <Link
-                        className={classes.link}
-                        to={`/resources/${row.resource_id}`}
-                        replace={true}
-                      >
-                        View Details
-                      </Link>
-                    </Menu.Item>
-                  </Menu.Dropdown>
-                </Menu>
+                <Link className={classes.link} to={`/resources/${row.resource_id}`} replace={true}>
+                  <ActionIcon>
+                    <IconEye size="1rem" stroke={1.5} />
+                  </ActionIcon>
+                </Link>
               </Group>
             </td>
           </tr>

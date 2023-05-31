@@ -5,6 +5,7 @@ export type ResourceValues = {
   resource_id: string
   title: string
   abstract: string
+  status?: string
 }
 
 export const cacheKey = () => ['my-resources']

@@ -28,7 +28,12 @@ const NewResource = () => {
       resource_id: '',
       title: '',
       abstract: ''
-    }
+    },
+    validate: values => ({
+      resource_id: values.resource_id.length < 2 ? 'ID must have at least 2 letters' : null,
+      title: values.title.length < 2 ? 'Too short title' : null,
+      abstract: values.abstract.length < 2 ? 'Too short abstract' : null
+    })
   })
 
   const handleSubmit = (values: ResourceValues) => {
@@ -63,6 +68,7 @@ const NewResource = () => {
               label="Abstract"
               {...form.getInputProps('abstract')}
               className={cx(classes.input)}
+              withAsterisk
             />
             <Group position="right">
               <Button
