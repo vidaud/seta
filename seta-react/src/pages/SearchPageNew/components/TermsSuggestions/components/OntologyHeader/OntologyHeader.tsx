@@ -1,6 +1,5 @@
 import type { ActionIconProps, ChipProps, SelectItem } from '@mantine/core'
-import { Text, Select, Chip, ActionIcon, Flex, Tooltip } from '@mantine/core'
-import { IconWand } from '@tabler/icons-react'
+import { Text, Select, Chip, Flex, Tooltip } from '@mantine/core'
 
 import { useSearch } from '~/pages/SearchPageNew/contexts/search-context'
 import { useTermsSelection } from '~/pages/SearchPageNew/contexts/terms-selection-context'
@@ -84,20 +83,20 @@ const OntologyHeader = ({
     </Text>
   )
 
-  const enrichButton = hasToken && (
-    <Tooltip label="Enrich query automatically">
-      <ActionIcon size="lg" radius="md" onClick={onEnrichToggle} {...enrichedProps}>
-        <IconWand />
-      </ActionIcon>
-    </Tooltip>
-  )
+  // const enrichButton = hasToken && (
+  //   <Tooltip label="Enrich query automatically">
+  //     <ActionIcon size="lg" radius="md" onClick={onEnrichToggle} {...enrichedProps}>
+  //       <IconWand />
+  //     </ActionIcon>
+  //   </Tooltip>
+  // )
 
   return (
     <Flex css={S.root} className={className} align="center" justify="space-between">
       {token}
 
       <Flex align="center" gap="sm">
-        {enrichButton}
+        {/* {enrichButton} */}
 
         <Select data={viewOptions} value={currentView} onChange={handleViewChange} />
       </Flex>

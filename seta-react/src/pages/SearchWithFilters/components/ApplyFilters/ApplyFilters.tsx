@@ -53,10 +53,11 @@ const ApplyFilters = ({ status, onApplyFilters, onClear }: Props) => {
     modified = null
   }
 
-  const buttonStyle =
-    status?.status === FilterStatus.APPLIED || status?.status === FilterStatus.PROCESSING
-      ? S.buttonInactive
-      : undefined
+  const buttonStyle = [
+    (status?.status === FilterStatus.APPLIED || status?.status === FilterStatus.PROCESSING) &&
+      S.buttonInactive,
+    S.button
+  ]
 
   return (
     <HoverCard
@@ -75,6 +76,7 @@ const ApplyFilters = ({ status, onApplyFilters, onClear }: Props) => {
     >
       <HoverCard.Target>
         <Indicator
+          css={S.indicator}
           color={color}
           size={24}
           inline

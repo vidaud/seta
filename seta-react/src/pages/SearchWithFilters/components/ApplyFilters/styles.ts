@@ -1,4 +1,5 @@
 import { css } from '@emotion/react'
+import type { MantineTheme } from '@mantine/core'
 import { createStyles } from '@mantine/core'
 
 export const useStyles = createStyles(theme => {
@@ -14,6 +15,21 @@ export const useStyles = createStyles(theme => {
     }
   }
 })
+
+const getTransition = (theme: MantineTheme) =>
+  [
+    `color 200ms ${theme.transitionTimingFunction}`,
+    `background-color 200ms ${theme.transitionTimingFunction}`,
+    `border-color 200ms ${theme.transitionTimingFunction}`
+  ].join(', ')
+
+export const indicator: ThemedCSS = theme => css`
+  transition: ${getTransition(theme)};
+`
+
+export const button: ThemedCSS = theme => css`
+  transition: ${getTransition(theme)};
+`
 
 export const buttonInactive: ThemedCSS = theme => css`
   && {
