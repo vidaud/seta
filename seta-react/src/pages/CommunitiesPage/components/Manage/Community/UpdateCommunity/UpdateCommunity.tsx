@@ -46,7 +46,7 @@ const UpdateCommunity = () => {
       title: '',
       description: '',
       data_type: '',
-      status: ''
+      status: 'active'
     },
     validate: values => ({
       community_id: values.community_id.length < 2 ? 'ID must have at least 2 letters' : null,
@@ -100,12 +100,6 @@ const UpdateCommunity = () => {
                 <Group mt="xs">
                   <Radio value="representative" label="Representative" />
                   <Radio value="evidence" label="Evidence" />
-                </Group>
-              </Radio.Group>
-              <Radio.Group name="status" label="Status" {...form.getInputProps('status')}>
-                <Group mt="xs">
-                  <Radio value="active" label="Active" />
-                  <Radio value="blocked" label="Blocked" />
                 </Group>
               </Radio.Group>
             </Group>

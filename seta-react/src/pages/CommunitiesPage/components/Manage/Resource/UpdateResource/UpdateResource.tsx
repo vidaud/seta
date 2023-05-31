@@ -1,14 +1,5 @@
 import { useEffect } from 'react'
-import {
-  Paper,
-  TextInput,
-  Divider,
-  Radio,
-  Group,
-  createStyles,
-  Button,
-  Textarea
-} from '@mantine/core'
+import { Paper, TextInput, Divider, Group, createStyles, Button, Textarea } from '@mantine/core'
 import { Link, useParams } from 'react-router-dom'
 
 import { updateResource, useResourceID } from '../../../../../../api/resources/manage/my-resource'
@@ -43,7 +34,8 @@ const UpdateResource = () => {
       community_id: '',
       resource_id: '',
       title: '',
-      abstract: ''
+      abstract: '',
+      status: 'active'
     },
     validate: values => ({
       resource_id: values.resource_id.length < 2 ? 'ID must have at least 2 letters' : null,
@@ -91,14 +83,6 @@ const UpdateResource = () => {
               className={cx(classes.input)}
               withAsterisk
             />
-            <Group spacing={100} display="flex">
-              <Radio.Group name="status" label="Status" {...form.getInputProps('status')}>
-                <Group mt="xs">
-                  <Radio value="active" label="Active" />
-                  <Radio value="blocked" label="Blocked" />
-                </Group>
-              </Radio.Group>
-            </Group>
             <Group position="right">
               <Link className={classes.link} to={`/my-resources/${resourceId}`} replace={true}>
                 <Button variant="outline" size="xs" color="blue">
