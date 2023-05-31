@@ -10,6 +10,7 @@ import type {
 } from '~/pages/SearchWithFilters/types/contracts'
 
 import type { DocumentsOptions, DocumentsResponse } from '~/api/search/documents'
+import type { Crumb } from '~/types/breadcrumbs'
 
 import DocumentsList from './components/documents/DocumentsList'
 import SearchSuggestionInput from './components/SearchSuggestionInput'
@@ -71,8 +72,15 @@ const SearchPageNew = () => {
     </Flex>
   )
 
+  const breadcrumbs: Crumb[] = [
+    {
+      title: 'Search',
+      path: '/search-new'
+    }
+  ]
+
   return (
-    <Page sidebarContent={sidebar} breadcrumbs>
+    <Page sidebarContent={sidebar} breadcrumbs={breadcrumbs}>
       <Flex direction="column" align="center" css={S.searchWrapper}>
         <SearchSuggestionInput onSearch={handleSearch} />
 
