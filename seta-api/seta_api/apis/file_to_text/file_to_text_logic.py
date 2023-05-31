@@ -1,14 +1,29 @@
-# import magic
+import magic
+import tempfile
 from subprocess import Popen, PIPE
 from flask_restx import abort
 from http import HTTPStatus
+import os
+import shutil
+from werkzeug.utils import secure_filename
 
-mime_blacklist = ["application/x-zip-compressed", "application/octet-stream", "application/x-tar"]
+
+def mime_is_in_blacklist(mime):
+    mime_blacklist = ["Zip archive data", "POSIX tar archive", "7-zip archive data", "bzip2 compressed data",
+                      "XZ compressed data", "gzip compressed data", "executable"]
+    for m in mime_blacklist:
+        if m in mime:
+            return True
+    return False
 
 
 def allowed_extension(file):
-    mime = file.mimetype
-    if mime in mime_blacklist:
+    temp_dir = tempfile.TemporaryDirectory()
+    filename = secure_filename(file.filename)
+    file.save(os.path.join(temp_dir.name, filename))
+    mime = magic.from_file(os.path.join(temp_dir.name, filename))
+    shutil.rmtree(temp_dir.name)
+    if mime_is_in_blacklist(mime):
         return False, mime
     return True, mime
 
