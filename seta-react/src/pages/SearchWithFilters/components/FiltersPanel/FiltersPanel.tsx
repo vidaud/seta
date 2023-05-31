@@ -1,7 +1,9 @@
 import { useEffect, useRef, useState } from 'react'
 import { Container, Flex, Accordion, ScrollArea, rem, Text } from '@mantine/core'
+import { useLogger } from '@mantine/hooks'
 
 import { itemsReducer } from './items-reducer'
+import TinyChart from './TinyChart'
 import useClearFilter from './useClearFilter'
 import useFilter from './useFilter'
 
@@ -42,9 +44,10 @@ const FiltersPanel = ({ queryContract, onApplyFilter, onStatusChange }: Advanced
     dispatchStatus,
     otherItems,
     dispatchOtherItems,
-    resourcesFlat,
-    taxonomiesFlat
+    filterData
   } = useFilter(queryContract, resourceSelectedKeys, taxonomySelectedKeys)
+
+  useLogger('FiltersPanel', [status])
 
   useEffect(() => {
     statusChangeRef.current?.(status.status)
@@ -82,7 +85,7 @@ const FiltersPanel = ({ queryContract, onApplyFilter, onStatusChange }: Advanced
 
       for (const key in value) {
         if (value[key].checked) {
-          const kl = resourcesFlat.current?.find(t => t.key === key)
+          const kl = filterData.current?.sources?.find(t => t.key === key)
           const lbl = kl ? kl.label : key
 
           checkedKeys.push({ key: key, label: lbl })
@@ -106,7 +109,7 @@ const FiltersPanel = ({ queryContract, onApplyFilter, onStatusChange }: Advanced
 
       for (const key in value) {
         if (value[key].checked) {
-          const kl = taxonomiesFlat.current?.find(t => t.key === key)
+          const kl = filterData.current?.taxonomies?.find(t => t.key === key)
           const lbl = kl ? kl.label : key
 
           checkedKeys.push({ key: key, label: lbl })
@@ -123,7 +126,11 @@ const FiltersPanel = ({ queryContract, onApplyFilter, onStatusChange }: Advanced
   }
 
   const handleEnableDateChanged = (value: boolean): void => {
-    dispatchStatus({ type: 'enable_range', value: value, range: rangeValue })
+    dispatchStatus({
+      type: 'enable_range',
+      value: { enabled: value, range: value ? rangeValue : undefined }
+    })
+
     setEnableDateFilter(value)
   }
 
@@ -161,13 +168,18 @@ const FiltersPanel = ({ queryContract, onApplyFilter, onStatusChange }: Advanced
         onApplyFilters={handleApplyFilters}
         onClear={handleClearFilters}
       />
-      <TextChunkFilter value={chunkText} onChange={handleTextChunkChange} />
+      <TextChunkFilter
+        value={chunkText}
+        onChange={handleTextChunkChange}
+        disabled={status?.status === FilterStatus.PROCESSING}
+      />
       <Container w={rem(350)} mb={rem(10)}>
         <YearsRangeFilter
           enableDateFilter={enableDateFilter}
           onEnableDateChanged={handleEnableDateChanged}
           value={rangeValue}
           rangeBoundaries={rangeBoundaries}
+          chartData={filterData?.current?.years}
           onValueChange={setRangeValue}
           onValueChangeEnd={handleRangeChange}
         />
@@ -185,13 +197,17 @@ const FiltersPanel = ({ queryContract, onApplyFilter, onStatusChange }: Advanced
             <Text span>Data sources</Text>
           </Accordion.Control>
           <Accordion.Panel>
-            <ScrollArea.Autosize mx="auto" mah={rem(300)}>
+            <ScrollArea.Autosize mx="auto" mah={rem(250)}>
               <DataSourceFilter
                 data={resourceNodes}
                 selectedKeys={resourceSelectedKeys}
                 onSelectionChange={handleSourceSelectionChange}
               />
             </ScrollArea.Autosize>
+            <TinyChart
+              chartData={filterData?.current?.sources}
+              selectedKeys={resourceSelectedKeys}
+            />
           </Accordion.Panel>
         </Accordion.Item>
 
@@ -200,13 +216,17 @@ const FiltersPanel = ({ queryContract, onApplyFilter, onStatusChange }: Advanced
             <Text span>Taxonomies</Text>
           </Accordion.Control>
           <Accordion.Panel>
-            <ScrollArea.Autosize mx="auto" mah={rem(300)}>
+            <ScrollArea.Autosize mx="auto" mah={rem(250)}>
               <TaxonomyFilter
                 data={taxonomyNodes}
                 selectedKeys={taxonomySelectedKeys}
                 onSelectionChange={handleTaxonomySelectionChange}
               />
             </ScrollArea.Autosize>
+            <TinyChart
+              chartData={filterData?.current?.taxonomies}
+              selectedKeys={taxonomySelectedKeys}
+            />
           </Accordion.Panel>
         </Accordion.Item>
 

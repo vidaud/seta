@@ -5,6 +5,7 @@ import { TextChunkLabels, TextChunkValues } from '../../types/filters'
 
 type Props = {
   value?: TextChunkValues
+  disabled?: boolean
   onChange?(value: TextChunkValues): void
 }
 
@@ -39,13 +40,19 @@ const chunks: SegmentedControlItem[] = chunkValues.map(({ value, tooltip, label 
   )
 }))
 
-const TextChunkFilter = ({ value, onChange }: Props) => (
+const TextChunkFilter = ({ value, disabled, onChange }: Props) => (
   <Flex align="center" wrap="nowrap" gap="sm">
     <Text span fz="lg" fw={500}>
       Text chunk:
     </Text>
 
-    <SegmentedControl size="md" value={value} onChange={onChange} data={chunks} />
+    <SegmentedControl
+      size="md"
+      value={value}
+      onChange={onChange}
+      data={chunks}
+      disabled={disabled}
+    />
   </Flex>
 )
 
