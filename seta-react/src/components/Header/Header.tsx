@@ -1,5 +1,5 @@
 import type { MouseEventHandler } from 'react'
-import { useEffect, useRef, useState } from 'react'
+import { useRef } from 'react'
 import { Button } from 'primereact/button'
 import { InputText } from 'primereact/inputtext'
 import { Menubar } from 'primereact/menubar'
@@ -7,8 +7,9 @@ import type { MenuItem, MenuItemTemplateType } from 'primereact/menuitem'
 import { TieredMenu } from 'primereact/tieredmenu'
 import { Link, NavLink } from 'react-router-dom'
 
+import { useCurrentUser } from '~/contexts/user-context'
+
 import authentificationService from '../../services/authentification.service'
-import storageService from '../../services/storage.service'
 
 import './style.css'
 
@@ -51,27 +52,16 @@ const navEnd = (
 
 const Header = () => {
   const dashboard = useRef<TieredMenu>(null)
-  const [authenticated, setAuthenticated] = useState(false)
 
-  useEffect(() => {
-    const loggedIn = storageService.isLoggedIn()
+  const { user } = useCurrentUser()
 
-    // TODO: Move the current user or authentication checks to a context/hook
-    setAuthenticated(loggedIn)
-  }, [])
+  const authenticated = !!user
 
   const navMenu: MenuItem[] = [
     {
       label: 'Search',
       className: 'seta-item',
       url: '/search',
-      visible: authenticated,
-      template: navLinkTemplate
-    },
-    {
-      label: 'Search New [WIP]',
-      className: 'seta-item',
-      url: '/search-new',
       visible: authenticated,
       template: navLinkTemplate
     },

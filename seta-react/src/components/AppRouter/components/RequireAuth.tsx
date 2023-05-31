@@ -1,16 +1,25 @@
+import { Flex, Loader } from '@mantine/core'
 import { Navigate } from 'react-router-dom'
 
-import storageService from '../../../services/storage.service'
+import { useCurrentUser } from '~/contexts/user-context'
+
 import type { ChildrenProp } from '../../../types/children-props'
 
 // TODO: Get this from an environment variable
 const AUTH_PATH = '/login'
 
 const RequireAuth = ({ children }: ChildrenProp) => {
-  // FIXME: StorageService isn't really a secure way to identify if a user is logged in
-  const isAuthenticated = storageService.isLoggedIn()
+  const { user, isLoading } = useCurrentUser()
 
-  return isAuthenticated ? children : <Navigate to={AUTH_PATH} />
+  if (isLoading) {
+    return (
+      <Flex align="center" justify="center" m="auto" h="100vh">
+        <Loader size="xl" />
+      </Flex>
+    )
+  }
+
+  return user ? children : <Navigate to={AUTH_PATH} />
 }
 
 export default RequireAuth

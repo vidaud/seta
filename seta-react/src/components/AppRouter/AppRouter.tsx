@@ -35,7 +35,6 @@ import HomePage from '../../pages/HomePage'
 import LoginPage from '../../pages/LoginPage'
 import NotFoundPage from '../../pages/NotFoundPage'
 import ProfilePage from '../../pages/ProfilePage'
-import SearchPage from '../../pages/SearchPage/SearchPage'
 import SearchPageNew from '../../pages/SearchPageNew'
 
 const ROOT_PATH = '/'
@@ -50,21 +49,14 @@ const routes = createRoutesFromElements(
     <Route path="home" element={<Navigate to={ROOT_PATH} />} />
 
     <Route
-      path="search-new"
+      path="search"
       element={
         <RequireAuth>
           <SearchPageNew />
         </RequireAuth>
       }
     />
-    <Route
-      path="search"
-      element={
-        <RequireAuth>
-          <SearchPage />
-        </RequireAuth>
-      }
-    />
+
     <Route
       path="profile"
       element={
