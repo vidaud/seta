@@ -49,6 +49,7 @@ const MultipleValuesInfo = ({
   const removeButton = (color: string, key: string) => {
     return (
       <ActionIcon
+        key={`remove-${key}`}
         size="md"
         color={color}
         radius="xl"
@@ -70,6 +71,7 @@ const MultipleValuesInfo = ({
         withArrow
         color="gray"
         offset={-0.5}
+        key={`tooltip-${node.key}`}
       >
         <Badge
           size="lg"

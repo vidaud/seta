@@ -1,12 +1,8 @@
+import type { FilterData } from '../../types/filter-data'
 import { ViewFilterInfo } from '../../types/filter-info'
 import type { RangeValue, SelectionKeys } from '../../types/filters'
 import { TextChunkValues } from '../../types/filters'
 import type { OtherItem } from '../../types/other-filter'
-
-type KeyLabel = {
-  key: string
-  label: string
-}
 
 type Props = {
   chunkText: TextChunkValues
@@ -15,8 +11,8 @@ type Props = {
   resourceSelectedKeys?: SelectionKeys | null
   taxonomySelectedKeys?: SelectionKeys | null
   otherItems?: OtherItem[]
-  resources?: KeyLabel[]
-  taxonomies?: KeyLabel[]
+  resources?: FilterData[]
+  taxonomies?: FilterData[]
 }
 
 export const buildFilterInfo = ({

@@ -15,17 +15,15 @@ const useFilter = (
   resourceSelectedKeys?: SelectionKeys | null,
   taxonomySelectedKeys?: SelectionKeys | null
 ) => {
-  const [prevContract, setPrevContract] = useState(queryContract)
+  const { rangeVal, resources, taxonomies, data } = parseQueryContract(queryContract)
 
-  const { rangeVal, resources, taxonomies, resourcesArray, taxonomiesArray } =
-    parseQueryContract(queryContract)
+  const [prevContract, setPrevContract] = useState(queryContract)
   const [chunkText, setChunkText] = useState<TextChunkValues>(TextChunkValues.CHUNK_SEARCH)
 
   const [rangeValue, setRangeValue] = useState(rangeVal)
   const [resourceNodes, setResourceNodes] = useState(resources)
   const [taxonomyNodes, setTaxonomyNodes] = useState(taxonomies)
-  const resourcesFlat = useRef(resourcesArray)
-  const taxonomiesFlat = useRef(taxonomiesArray)
+  const filterData = useRef(data)
 
   const [enableDateFilter, setEnableDateFilter] = useState(false)
   const [rangeBoundaries, setRangeBoundaries] = useState({ min: rangeVal?.[0], max: rangeVal?.[1] })
@@ -58,8 +56,8 @@ const useFilter = (
         resourceSelectedKeys,
         taxonomySelectedKeys,
         otherItems: newItems,
-        resources: resourcesFlat.current,
-        taxonomies: taxonomiesFlat.current
+        resources: filterData.current.sources,
+        taxonomies: filterData.current.taxonomies
       })
 
       newStatus.currentFilter = newStatus.appliedFilter.copy()
@@ -86,8 +84,7 @@ const useFilter = (
     //!call this before setting current resourcesFlat & taxonomiesFlat
     setNewStatus()
 
-    resourcesFlat.current = resourcesArray
-    taxonomiesFlat.current = taxonomiesArray
+    filterData.current = data
   }
 
   return {
@@ -104,8 +101,7 @@ const useFilter = (
     dispatchStatus,
     otherItems,
     dispatchOtherItems,
-    resourcesFlat,
-    taxonomiesFlat
+    filterData
   }
 }
 

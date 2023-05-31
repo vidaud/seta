@@ -1,12 +1,10 @@
 import type { QueryAggregationContract, SourceInfo, Taxonomy, YearCount } from '../types/contracts'
+import type { FilterData, FilterDatas } from '../types/filter-data'
 import type { RangeValue } from '../types/filters'
 
-type KeyLabel = {
+type TreeNode = {
   key: string
   label: string
-}
-
-type TreeNode = KeyLabel & {
   children?: TreeNode[]
 }
 
@@ -17,9 +15,8 @@ const mapYearsRangeToFilter = (value: YearCount[]): RangeValue => {
 }
 
 const mapTaxonomyCategories = (
-  array: KeyLabel[],
+  array: FilterData[],
   parentId: string,
-  parentLabel?: string,
   value?: Taxonomy[]
 ): TreeNode[] | undefined => {
   if (!value?.length) {
@@ -36,18 +33,18 @@ const mapTaxonomyCategories = (
       label: `${c.label ?? ''} (${c.doc_count})`
     }
 
-    array.push({ key: key, label: c.label ?? '' })
     nodes.push(node)
+    array.push({ key: key, label: c.label ?? '', category: 'taxonomy', count: c.doc_count })
 
-    node.children = mapTaxonomyCategories(array, key, c.label, c.subcategories)
+    node.children = mapTaxonomyCategories(array, key, c.subcategories)
   })
 
   return nodes
 }
 
-const mapTaxonomyToFilter = (value: Taxonomy[]): { nodes: TreeNode[]; array: KeyLabel[] } => {
+const mapTaxonomyToFilter = (value: Taxonomy[]): { nodes: TreeNode[]; array: FilterData[] } => {
   const nodes: TreeNode[] = []
-  const array: KeyLabel[] = []
+  const array: FilterData[] = []
 
   value.forEach(t => {
     const node: TreeNode = {
@@ -56,17 +53,22 @@ const mapTaxonomyToFilter = (value: Taxonomy[]): { nodes: TreeNode[]; array: Key
     }
 
     nodes.push(node)
-    array.push({ key: t.name_in_path, label: t.label ?? '' })
+    array.push({
+      key: t.name_in_path,
+      label: t.label ?? '',
+      category: 'catalogue',
+      count: t.doc_count
+    })
 
-    node.children = mapTaxonomyCategories(array, t.name_in_path, t.label, t.subcategories)
+    node.children = mapTaxonomyCategories(array, t.name_in_path, t.subcategories)
   })
 
   return { nodes, array }
 }
 
-const mapResourcesToFilter = (value: SourceInfo[]): { nodes: TreeNode[]; array: KeyLabel[] } => {
+const mapResourcesToFilter = (value: SourceInfo[]): { nodes: TreeNode[]; array: FilterData[] } => {
   const nodes: TreeNode[] = []
-  const array: KeyLabel[] = []
+  const array: FilterData[] = []
 
   value.forEach(s => {
     const source: TreeNode = {
@@ -75,7 +77,7 @@ const mapResourcesToFilter = (value: SourceInfo[]): { nodes: TreeNode[]; array: 
     }
 
     nodes.push(source)
-    array.push({ key: s.key, label: s.key })
+    array.push({ key: s.key, label: s.key, category: 'source', count: s.doc_count })
 
     if (s.collections) {
       source.children = s.collections.map(c => {
@@ -84,7 +86,7 @@ const mapResourcesToFilter = (value: SourceInfo[]): { nodes: TreeNode[]; array: 
           label: `${c.key} (${s.doc_count})`
         }
 
-        array.push({ key: colNode.key, label: c.key })
+        array.push({ key: colNode.key, label: c.key, category: 'collection', count: c.doc_count })
 
         if (c.references) {
           colNode.children = c.references.map(r => {
@@ -93,7 +95,7 @@ const mapResourcesToFilter = (value: SourceInfo[]): { nodes: TreeNode[]; array: 
               label: `${r.key} (${s.doc_count})`
             }
 
-            array.push({ key: refNode.key, label: r.key })
+            array.push({ key: refNode.key, label: r.key, category: 'resource', count: r.doc_count })
 
             return refNode
           })
@@ -110,29 +112,32 @@ const mapResourcesToFilter = (value: SourceInfo[]): { nodes: TreeNode[]; array: 
 export const parseQueryContract = (contract?: QueryAggregationContract | null) => {
   let rangeVal: RangeValue | undefined = undefined
   let resources: TreeNode[] | undefined = undefined
-  let resourcesArray: KeyLabel[] | undefined = undefined
   let taxonomies: TreeNode[] | undefined = undefined
-  let taxonomiesArray: KeyLabel[] | undefined = undefined
+  const filtersData: FilterDatas = {}
 
   if (contract) {
     if (contract.date_year && contract.date_year.length) {
       rangeVal = mapYearsRangeToFilter(contract.date_year)
+
+      filtersData.years = contract.date_year.map(y => {
+        return { key: y.year, label: y.year, category: 'year', count: y.doc_count }
+      })
     }
 
     if (contract.source_collection_reference?.sources) {
       const { nodes, array } = mapResourcesToFilter(contract.source_collection_reference.sources)
 
       resources = nodes
-      resourcesArray = array
+      filtersData.sources = array
     }
 
     if (contract.taxonomies !== undefined) {
       const { nodes, array } = mapTaxonomyToFilter(contract.taxonomies)
 
       taxonomies = nodes
-      taxonomiesArray = array
+      filtersData.taxonomies = array
     }
   }
 
-  return { rangeVal, resources, taxonomies, resourcesArray, taxonomiesArray }
+  return { rangeVal, resources, taxonomies, data: filtersData }
 }

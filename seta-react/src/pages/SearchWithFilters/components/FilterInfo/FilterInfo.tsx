@@ -24,7 +24,7 @@ const FilterInfo = ({ status, onClear }: Props) => {
 
   const rangeModified = !!status?.rangeModified
   const rangeValue = rangeModified
-    ? status?.currentFilter?.rangeValue
+    ? status?.currentFilter?.rangeValue ?? status?.appliedFilter?.rangeValue
     : status?.appliedFilter?.rangeValue
   const rangeEnabled = rangeModified
     ? status?.currentFilter?.rangeValueEnabled
