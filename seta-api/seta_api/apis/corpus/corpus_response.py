@@ -69,7 +69,7 @@ def retrieve_total_number(response, search_type):
         return response['aggregations']['total']['value']
 
 
-def compose_source_collection_reference_response_tree(response_buckets):
+def compose_source_collection_reference_response_tree(response_buckets, current_app):
     aggregation = {}
     for item in response_buckets:
         s = item["key"][0]
@@ -95,8 +95,12 @@ def compose_source_collection_reference_response_tree(response_buckets):
     for s in aggregation:
         source = {"key": s, "doc_count": aggregation[s]["doc_count"], "collections": []}
         for c in aggregation[s]["collections"]:
+            if c == current_app.config["AGG_MISSING_NAME"]:
+                continue
             collection = {"key": c, "doc_count": aggregation[s]["collections"][c]["doc_count"], "references": []}
             for r in aggregation[s]["collections"][c]["references"]:
+                if r == current_app.config["AGG_MISSING_NAME"]:
+                    continue
                 reference = {"key": r, "doc_count": aggregation[s]["collections"][c]["references"][r]["doc_count"]}
                 collection["references"].append(reference)
             source["collections"].append(collection)
@@ -131,7 +135,7 @@ def handle_aggs_response(aggs, response, documents, current_app):
                     y = {"year": year["key_as_string"], "doc_count": year["doc_count"]}
                     documents["aggregations"][agg].append(y)
             case "source_collection_reference":
-                documents["aggregations"][agg] = compose_source_collection_reference_response_tree(response["aggregations"][agg]["buckets"])
+                documents["aggregations"][agg] = compose_source_collection_reference_response_tree(response["aggregations"][agg]["buckets"], current_app)
             case agg if agg.startswith("taxonomy:"):
                 documents["aggregations"]["taxonomy"] = compose_response_tree_given_a_taxonomy(response["aggregations"]["taxonomy"]["buckets"], agg, current_app)
             case "taxonomies":

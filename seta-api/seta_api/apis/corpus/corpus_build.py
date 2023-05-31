@@ -60,7 +60,7 @@ def build_corpus_request(term, n_docs, from_doc, sources, collection, reference,
         body["aggs"] = {"total": {"cardinality": {"field": "document_id"}}}
 
     body = fill_body_for_sort(body, emb_vector, semantic_sort_id, sort)
-    body = fill_body_for_aggregations(aggs, body)
+    body = fill_body_for_aggregations(aggs, body, current_app)
     return body
 
 
@@ -94,7 +94,7 @@ def check_embeddings_query(current_app, emb_vector, emb_vector_list, query, sema
     return query_to_use
 
 
-def fill_body_for_aggregations(aggs, body):
+def fill_body_for_aggregations(aggs, body, current_app):
     aggregation_size = 1000
     if not aggs:
         return body
@@ -114,8 +114,10 @@ def fill_body_for_aggregations(aggs, body):
                 body = add_aggs(agg_body, "years", body)
             case "source_collection_reference":
                 agg_body = {"multi_terms": {"terms": [{"field": "source.keyword"},
-                                                      {"field": "collection.keyword", "missing": "NO_CLASS"},
-                                                      {"field": "reference.keyword", "missing": "NO_CLASS"}],
+                                                      {"field": "collection.keyword",
+                                                       "missing": current_app.config["AGG_MISSING_NAME"]},
+                                                      {"field": "reference.keyword",
+                                                       "missing": current_app.config["AGG_MISSING_NAME"]}],
                                             "size": aggregation_size}}
                 body = add_aggs(agg_body, agg, body)
             case _:
