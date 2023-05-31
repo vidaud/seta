@@ -24,6 +24,7 @@ pathlib==1.0.1
 requests==2.28.2
 jsonschema==4.17.3
 flask_apscheduler==1.12.4
+python-magic==0.4.27
 
 #mongo client:
 flask-pymongo==2.3.0
