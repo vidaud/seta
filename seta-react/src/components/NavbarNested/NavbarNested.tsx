@@ -1,14 +1,14 @@
 import { Navbar, ScrollArea, createStyles, rem } from '@mantine/core'
-import { IconNotes, IconCalendarStats, IconGauge } from '@tabler/icons-react'
+import { IconNotes, IconCalendarStats } from '@tabler/icons-react'
 
 import { LinksGroup } from '../NavbarLinksGroup/NavbarLinksGroup'
 
 const mockdata = [
-  {
-    label: 'Dashboard',
-    icon: IconGauge,
-    link: '/dashboard'
-  },
+  // {
+  //   label: 'Dashboard',
+  //   icon: IconGauge,
+  //   link: '/dashboard'
+  // },
   {
     label: 'Discovery',
     icon: IconNotes,

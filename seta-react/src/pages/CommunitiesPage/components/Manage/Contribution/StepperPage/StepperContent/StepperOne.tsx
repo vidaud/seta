@@ -1,19 +1,10 @@
-import React, { useContext, useState } from 'react'
-import {
-  Box,
-  Button,
-  Group,
-  List,
-  Paper,
-  Stack,
-  Text,
-  Title,
-  FileButton,
-  Textarea,
-  Tabs,
-  createStyles
-} from '@mantine/core'
+import React, { useContext, useEffect, useState } from 'react'
+import { Box, Group, Paper, Stack, Text, Title, Tabs, createStyles } from '@mantine/core'
 
+import { UploadFile } from './UploadFile'
+import { UploadText } from './UploadText'
+
+import { useEmbedding } from '../../../../../../../api/embeddings/embedding'
 import { Context } from '../context/Context'
 
 const useStyles = createStyles({
@@ -43,9 +34,16 @@ const useStyles = createStyles({
 })
 
 export const StepperOne = () => {
-  const { files, textUpload, handleDocumentSelect, handleTextInput } = useContext(Context)
+  const { textUpload, handleTextInput, setEmbeddings } = useContext(Context)
   const [activeTab, setActiveTab] = useState<string | null>('file')
   const { classes } = useStyles()
+  const { data } = useEmbedding(textUpload)
+
+  useEffect(() => {
+    if (data) {
+      setEmbeddings(data.emb_with_chunk_text[0])
+    }
+  }, [data, setEmbeddings])
 
   return (
     <>
@@ -71,40 +69,9 @@ export const StepperOne = () => {
                 </Tabs.List>
 
                 {activeTab === 'file' ? (
-                  <Tabs.Panel value="file" className={classes.panelOne}>
-                    <Group position="left" className={classes.tabLeft}>
-                      <FileButton
-                        onChange={handleDocumentSelect}
-                        accept="image/png,image/jpeg"
-                        multiple
-                      >
-                        {props => <Button {...props}>Upload image</Button>}
-                      </FileButton>
-
-                      {files?.length > 0 && (
-                        <Text size="sm" mt="sm">
-                          Picked files:
-                        </Text>
-                      )}
-
-                      <List size="sm" mt={5} withPadding>
-                        {files?.map(file => (
-                          <List.Item key={file.name}>{file.name}</List.Item>
-                        ))}
-                      </List>
-                    </Group>
-                    <Group position="right" className={classes.tabRight}>
-                      <Button color="green"> Auto Taxonomy </Button>
-                    </Group>
-                  </Tabs.Panel>
+                  <UploadFile handleTextInput={handleTextInput} />
                 ) : (
-                  <Tabs.Panel value="text" className={classes.panelTwo}>
-                    <Textarea
-                      value={textUpload}
-                      onChange={handleTextInput}
-                      placeholder="Paste your text here"
-                    />
-                  </Tabs.Panel>
+                  <UploadText />
                 )}
               </Tabs>
             </Box>

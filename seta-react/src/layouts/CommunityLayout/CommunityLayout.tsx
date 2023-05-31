@@ -6,7 +6,7 @@ import NavbarNested from '../../components/NavbarNested'
 
 const CommunityLayout = () => {
   return (
-    <Flex direction="column" className="min-h-screen communities">
+    <Flex direction="column" className="communities min-h-screen">
       <NavbarNested />
 
       <Box sx={{ flexGrow: 1, padding: '2rem' }}>

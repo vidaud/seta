@@ -11,6 +11,9 @@ const useStyles = createStyles({
   },
   sized: {
     width: '30%'
+  },
+  form: {
+    textAlign: 'left'
   }
 })
 
@@ -36,7 +39,7 @@ const NewResource = () => {
     <>
       <Paper withBorder shadow="md" p={30} mt={30} radius="md" mx="auto" maw={1000}>
         <ResourceFormProvider form={form}>
-          <form onSubmit={form.onSubmit(handleSubmit)}>
+          <form className={cx(classes.form)} onSubmit={form.onSubmit(handleSubmit)}>
             <Divider my="xs" label="Add New Resource" labelPosition="center" />
             <TextInput
               label="Community ID"
