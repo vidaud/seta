@@ -19,7 +19,10 @@ const MembershipRequest = ({ community_id }) => {
     initialValues: {
       community_id: community_id,
       message: ''
-    }
+    },
+    validate: values => ({
+      message: values.message.length < 2 ? 'Too short message' : null
+    })
   })
 
   const handleSubmit = (values: MembershipValues) => {
