@@ -101,7 +101,7 @@ const ResourceList = () => {
             <td>{row.community_id}</td>
             <td>{row.title}</td>
             <td>{row.abstract}</td>
-            <td>{row.created_at.toString()}</td>
+            <td>{new Date(row.created_at).toDateString()}</td>
             <td>{row.creator_id}</td>
             <td>{row.status}</td>
             <td>

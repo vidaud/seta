@@ -75,7 +75,12 @@ const ManageCommunity = () => {
                 <tbody>
                   <tr>
                     <td>Membership: {row?.communities.membership}</td>
-                    <td>Created at: {row?.communities.created_at.toString()}</td>
+                    <td>
+                      Created at:{' '}
+                      {row?.communities?.created_at
+                        ? new Date(row?.communities.created_at).toDateString()
+                        : null}
+                    </td>
                   </tr>
                   <tr>
                     <td>Data Type: {row?.communities.data_type}</td>

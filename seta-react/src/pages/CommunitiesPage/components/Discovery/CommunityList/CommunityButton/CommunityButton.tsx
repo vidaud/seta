@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom'
 
 import { useMembershipID } from '../../../../../../api/communities/discover/community'
 import MembershipRequest from '../../../Manage/Members/InviteMemberModal/InviteMemberModal'
+import ViewClosedCommunity from '../../ViewClosedCommunity/ViewClosedCommunity'
 
 const useStyles = createStyles({
   link: {
@@ -46,11 +47,7 @@ const CommunityButton = props => {
           </Group>
         ) : (
           <Group>
-            <Tooltip label="View Details">
-              <ActionIcon>
-                <IconEye size="1rem" stroke={1.5} />
-              </ActionIcon>
-            </Tooltip>
+            <ViewClosedCommunity community={props.community} />
             <MembershipRequest community_id={props.community.community_id} />
           </Group>
         )}

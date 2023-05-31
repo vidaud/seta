@@ -19,7 +19,7 @@ export type CommunityResponse = {
     full_name: string
     email: string
   }
-  created_at: Date
+  created_at: Date | undefined
 }
 
 export type Community = {
@@ -56,7 +56,7 @@ export type ManageCommunityAPI = {
     full_name: string
     email: string
   }
-  created_at: Date
+  created_at: Date | undefined
 }
 
 export const cacheKey = (id?: string) => ['my-communities', id]

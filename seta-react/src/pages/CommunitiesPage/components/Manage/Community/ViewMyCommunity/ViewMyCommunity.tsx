@@ -80,7 +80,10 @@ const ViewMyCommunity = () => {
                   </td>
                   <td className={classes.td}>
                     <Text className={classes.text}>
-                      Created at: {row?.communities.created_at.toString()}
+                      Created at:{' '}
+                      {row?.communities?.created_at
+                        ? new Date(row?.communities.created_at).toDateString()
+                        : null}
                     </Text>
                   </td>
                 </tr>

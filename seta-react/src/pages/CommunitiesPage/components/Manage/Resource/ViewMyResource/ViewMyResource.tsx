@@ -84,7 +84,10 @@ const ViewMyResource = () => {
                     <Text className={classes.text}>Created by: {rows?.creator_id}</Text>
                   </td>
                   <td className={classes.td}>
-                    <Text className={classes.text}>Created at: {rows?.created_at.toString()}</Text>
+                    <Text className={classes.text}>
+                      Created at:{' '}
+                      {rows?.created_at ? new Date(rows?.created_at).toDateString() : null}
+                    </Text>
                   </td>
                 </tr>
               </tbody>
