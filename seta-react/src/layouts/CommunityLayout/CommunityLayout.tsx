@@ -1,7 +1,7 @@
 import { Box, Flex } from '@mantine/core'
 import { Outlet } from 'react-router-dom'
 
-import BreadcrumbsComponent from '../../components/Breadcrumbs/Breadcrumbs'
+import Breadcrumbs from '../../components/Breadcrumbs'
 import NavbarNested from '../../components/NavbarNested'
 
 const CommunityLayout = () => {
@@ -10,7 +10,7 @@ const CommunityLayout = () => {
       <NavbarNested />
 
       <Box sx={{ flexGrow: 1, padding: '2rem' }}>
-        <BreadcrumbsComponent />
+        <Breadcrumbs readFromPath />
         <Outlet />
       </Box>
     </Flex>

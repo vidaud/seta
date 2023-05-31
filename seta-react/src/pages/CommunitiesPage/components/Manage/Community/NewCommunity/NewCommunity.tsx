@@ -5,7 +5,6 @@ import {
   Radio,
   Group,
   createStyles,
-  Title,
   Button,
   Textarea
 } from '@mantine/core'
@@ -21,6 +20,9 @@ const useStyles = createStyles({
   },
   sized: {
     width: '30%'
+  },
+  form: {
+    textAlign: 'left'
   }
 })
 
@@ -46,7 +48,7 @@ const NewCommunity = () => {
     <>
       <Paper withBorder shadow="md" p={30} mt={30} radius="md" mx="auto" maw={1000}>
         <CommunityFormProvider form={form}>
-          <form onSubmit={form.onSubmit(handleSubmit)}>
+          <form className={cx(classes.form)} onSubmit={form.onSubmit(handleSubmit)}>
             <Divider my="xs" label="Add New Community" labelPosition="center" />
             <TextInput
               label="ID"
@@ -65,9 +67,6 @@ const NewCommunity = () => {
               {...form.getInputProps('description')}
               className={cx(classes.input)}
             />
-            <Title order={5} className={cx(classes.input)}>
-              To be approved
-            </Title>
             <Group spacing={100} display="flex">
               <Radio.Group name="data_type" label="Data Type" {...form.getInputProps('data_type')}>
                 <Group mt="xs">

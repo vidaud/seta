@@ -52,7 +52,7 @@ const CommunityMembers = () => {
   }
 
   const rows =
-    items && items.length > 0
+    items && items?.length > 0
       ? items?.map(row => (
           <tr key={row.user_id}>
             <td>{row.user_id}</td>

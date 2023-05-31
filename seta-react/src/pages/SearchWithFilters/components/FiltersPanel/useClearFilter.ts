@@ -22,6 +22,7 @@ type Props = {
   handleRangeChange?(value: RangeValue): void
 }
 
+// eslint-disable-next-line max-lines-per-function
 const useClearFilter = ({
   status,
   otherItems,
@@ -85,17 +86,27 @@ const useClearFilter = ({
     handleSourceSelectionChange?.(selectionKeys)
   }
 
-  const clearResourceKey = (cKey: string | undefined): void => {
-    if (!cKey || !resourceSelectedKeys) {
+  const toggleResourceKey = (cKey: string | undefined): void => {
+    if (!cKey) {
       return
     }
 
     const selectionKeys: SelectionKeys = {}
+    let found = false
 
-    for (const key in resourceSelectedKeys) {
-      if (key !== cKey) {
-        selectionKeys[key] = { ...resourceSelectedKeys[key] }
+    if (resourceSelectedKeys) {
+      for (const key in resourceSelectedKeys) {
+        if (key !== cKey) {
+          selectionKeys[key] = { ...resourceSelectedKeys[key] }
+        } else {
+          found = true
+        }
       }
+    }
+
+    //if it wasn't in the selected list, than add it
+    if (!found) {
+      selectionKeys[cKey] = { checked: true }
     }
 
     handleSourceSelectionChange?.(selectionKeys)
@@ -133,17 +144,27 @@ const useClearFilter = ({
     handleTaxonomySelectionChange?.(selectionKeys)
   }
 
-  const clearTaxonomyKey = (cKey: string | undefined): void => {
-    if (!cKey || !taxonomySelectedKeys) {
+  const toggleTaxonomyKey = (cKey: string | undefined): void => {
+    if (!cKey) {
       return
     }
 
     const selectionKeys: SelectionKeys = {}
+    let found = false
 
-    for (const key in taxonomySelectedKeys) {
-      if (key !== cKey) {
-        selectionKeys[key] = { ...taxonomySelectedKeys[key] }
+    if (taxonomySelectedKeys) {
+      for (const key in taxonomySelectedKeys) {
+        if (key !== cKey) {
+          selectionKeys[key] = { ...taxonomySelectedKeys[key] }
+        } else {
+          found = true
+        }
       }
+    }
+
+    //if it wasn't in the selected list, than add it
+    if (!found) {
+      selectionKeys[cKey] = { checked: true }
     }
 
     handleTaxonomySelectionChange?.(selectionKeys)
@@ -182,8 +203,6 @@ const useClearFilter = ({
   }
 
   const handleClearFilters = (action: ClearAction) => {
-    console.log('handleClearFilters', action)
-
     switch (action.type) {
       case ClearType.ALL: {
         clearAll()
@@ -250,11 +269,11 @@ const useClearFilter = ({
       case ClearType.KEY: {
         switch (action.value?.category) {
           case ClearCategory.SOURCE:
-            clearResourceKey(action.value.key)
+            toggleResourceKey(action.value.key)
             break
 
           case ClearCategory.TAXONOMY:
-            clearTaxonomyKey(action.value.key)
+            toggleTaxonomyKey(action.value.key)
             break
 
           case ClearCategory.OTHER:

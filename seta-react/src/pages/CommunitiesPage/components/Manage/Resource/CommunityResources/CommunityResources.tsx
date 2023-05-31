@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Card, Grid, Table, Text, createStyles } from '@mantine/core'
+import { useLocation, useNavigate } from 'react-router-dom'
 
 const useStyles = createStyles(theme => ({
   card: {
@@ -23,12 +24,17 @@ const useStyles = createStyles(theme => ({
     paddingLeft: theme.spacing.sm,
     paddingRight: theme.spacing.sm,
     paddingBottom: theme.spacing.sm
+  },
+  noResources: {
+    textAlign: 'center'
   }
 }))
 
 const CommunityResources = resources => {
   const { classes } = useStyles()
+  const navigate = useNavigate()
   const [items, setItems] = useState(resources)
+  const location = useLocation()
 
   useEffect(() => {
     if (resources) {
@@ -37,12 +43,16 @@ const CommunityResources = resources => {
   }, [resources, items])
 
   const getResource = item => {
-    // navigate(`/my-communities/${item.community_id}/${item.resource_id}`)
+    if (item.community_id && location.pathname.includes('/my-communities')) {
+      navigate(`/my-communities/${item.community_id}/${item.resource_id}`)
+    } else if (location.pathname.includes('/my-resources')) {
+      navigate(`/my-resources/${item.resource_id}`)
+    }
   }
 
   const rows = items?.data?.map(item => {
     return (
-      <tr key={item.community_id} className={classes.rowSection}>
+      <tr key={item.resource_id} className={classes.rowSection}>
         <Grid onClick={() => getResource(item)}>
           <Grid.Col span={8}>
             <Text className={classes.textSection}>Title: {item.title}</Text>
@@ -65,7 +75,13 @@ const CommunityResources = resources => {
       </Card.Section>
       <Card.Section>
         <Table>
-          <tbody>{rows}</tbody>
+          {rows?.length > 0 ? (
+            <tbody>{rows}</tbody>
+          ) : (
+            <tbody>
+              <div className={classes.noResources}>No resources yet for this community</div>
+            </tbody>
+          )}
         </Table>
       </Card.Section>
     </Card>

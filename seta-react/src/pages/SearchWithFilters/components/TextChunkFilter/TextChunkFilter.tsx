@@ -1,66 +1,52 @@
-import { Center, Flex, SegmentedControl, Text, Tooltip, Indicator, rem } from '@mantine/core'
+import type { SegmentedControlItem } from '@mantine/core'
+import { Center, Flex, SegmentedControl, Text, Tooltip } from '@mantine/core'
 
-import { TextChunkValues } from '../../types/filters'
+import { TextChunkLabels, TextChunkValues } from '../../types/filters'
 
 type Props = {
   value?: TextChunkValues
   onChange?(value: TextChunkValues): void
-  modified?: boolean
 }
 
-const TextChunkFilter = ({ value, onChange, modified }: Props) => {
-  return (
-    <Flex direction="row" align="center" wrap="nowrap">
-      <Indicator inline pr={rem(10)} mr={rem(10)} color="orange" disabled={!modified}>
-        <Text span fz="lg" fw={500}>
-          Text chunk
+const chunkValues: { value: string; tooltip: string; label: string }[] = [
+  {
+    value: TextChunkValues.CHUNK_SEARCH,
+    tooltip: TextChunkLabels.CHUNK_SEARCH,
+    label: '1'
+  },
+  {
+    value: TextChunkValues.DOCUMENT_SEARCH,
+    tooltip: TextChunkLabels.DOCUMENT_SEARCH,
+    label: '∃!'
+  },
+  {
+    value: TextChunkValues.ALL_CHUNKS_SEARCH,
+    tooltip: TextChunkLabels.ALL_CHUNKS_SEARCH,
+    label: '∃'
+  }
+]
+
+const chunks: SegmentedControlItem[] = chunkValues.map(({ value, tooltip, label }) => ({
+  value,
+  label: (
+    <Tooltip label={tooltip} offset={10} withinPortal>
+      <Center>
+        <Text span weight="bold">
+          {label}
         </Text>
-      </Indicator>
-      <SegmentedControl
-        size="md"
-        value={value}
-        onChange={onChange}
-        data={[
-          {
-            value: TextChunkValues.CHUNK_SEARCH,
-            label: (
-              <Tooltip label="Chunk" offset={10} withinPortal>
-                <Center>
-                  <Text span weight="bold">
-                    1
-                  </Text>
-                </Center>
-              </Tooltip>
-            )
-          },
-          {
-            value: TextChunkValues.DOCUMENT_SEARCH,
-            label: (
-              <Tooltip label="Document" offset={10} withinPortal>
-                <Center>
-                  <Text span weight="bold">
-                    ∃!
-                  </Text>
-                </Center>
-              </Tooltip>
-            )
-          },
-          {
-            value: TextChunkValues.ALL_CHUNKS_SEARCH,
-            label: (
-              <Tooltip label="All chunks" offset={10} withinPortal>
-                <Center>
-                  <Text span weight="bold">
-                    ∃
-                  </Text>
-                </Center>
-              </Tooltip>
-            )
-          }
-        ]}
-      />
-    </Flex>
+      </Center>
+    </Tooltip>
   )
-}
+}))
+
+const TextChunkFilter = ({ value, onChange }: Props) => (
+  <Flex align="center" wrap="nowrap" gap="sm">
+    <Text span fz="lg" fw={500}>
+      Text chunk:
+    </Text>
+
+    <SegmentedControl size="md" value={value} onChange={onChange} data={chunks} />
+  </Flex>
+)
 
 export default TextChunkFilter

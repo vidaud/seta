@@ -4,13 +4,14 @@ import { Flex, clsx } from '@mantine/core'
 import Breadcrumbs from '~/components/Breadcrumbs'
 import Sidebar from '~/components/Sidebar'
 
+import type { Crumb } from '~/types/breadcrumbs'
 import type { ChildrenProp, ClassNameProp } from '~/types/children-props'
 
 import * as S from './styles'
 
 type Props = {
   sidebarContent?: ReactElement
-  breadcrumbs?: boolean
+  breadcrumbs?: Crumb[]
 } & ChildrenProp &
   ClassNameProp
 
@@ -19,10 +20,10 @@ const Page = ({ className, sidebarContent, breadcrumbs, children }: Props) => {
 
   return (
     <Flex direction="column" css={S.root} className={rootCls}>
-      {breadcrumbs && <Breadcrumbs />}
+      {breadcrumbs && <Breadcrumbs crumbs={breadcrumbs} />}
 
       <Flex css={S.pageWrapper}>
-        {sidebarContent && <Sidebar withBreadcrumbs={breadcrumbs}>{sidebarContent}</Sidebar>}
+        {sidebarContent && <Sidebar withBreadcrumbs={!!breadcrumbs}>{sidebarContent}</Sidebar>}
 
         <Flex direction="column" align="center" css={S.contentWrapper}>
           {children}

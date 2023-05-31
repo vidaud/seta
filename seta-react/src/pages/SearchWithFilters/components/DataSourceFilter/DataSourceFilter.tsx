@@ -37,7 +37,7 @@ const DataSourceFilter = ({ data, selectedKeys, onSelectionChange }: Props) => {
       selectionKeys={selectedKeys}
       onSelectionChange={onSelectionChangeHandler}
       className="text-sm"
-      propagateSelectionUp={false}
+      propagateSelectionUp={true}
       propagateSelectionDown={false}
     />
   )

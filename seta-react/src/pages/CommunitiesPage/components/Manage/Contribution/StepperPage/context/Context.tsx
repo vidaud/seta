@@ -1,36 +1,23 @@
 import { createContext, useState } from 'react'
 
-type ContributionContextProps = {
-  files: File[]
-  formData: {
-    name: string
-    email: string
-    phone: string
-    title: string
-    link_origin: string
-  }
-  textUpload: string
-  date: Date | null
-  language: string | null
-  handleFormDataChange: (event) => void
-  handleTextInput: (text: string) => void
-  handleDateChange: (text: any) => void
-  handleDocumentSelect: (index: File[]) => void
-  handleLanguageChange: (text: any) => void
-  handleMimeTypeChange?: (event) => void
+type Embeddings = {
+  vector: number[]
 }
 
 export const Context = createContext<any | undefined>(undefined)
 
 export const ContextProvider = ({ children }) => {
-  const [files, setFiles] = useState<File[]>([])
+  const [file, setFile] = useState<File | null>(null)
   const today = new Date()
   const [textUpload, setTextUpload] = useState('')
   const [date, setDate] = useState<Date | null>(today)
   const [language, setLanguage] = useState<string | null>('english')
   const [mimType, setMimeType] = useState<string | null>(null)
+  const [taxonomy, setTaxonomy] = useState<string | null>()
+  const [embeddings, setEmbeddings] = useState<Embeddings | undefined>()
   const [formData, setFormData] = useState({
     language: language,
+    taxonomy: taxonomy,
     title: '',
     link_origin: '',
     date: today,
@@ -40,6 +27,7 @@ export const ContextProvider = ({ children }) => {
     mime_type: '',
     reference: '',
     text: '',
+    vector: embeddings?.vector,
     other: null
   })
 
@@ -53,7 +41,7 @@ export const ContextProvider = ({ children }) => {
   }
 
   const handleDocumentSelect = index => {
-    setFiles(index)
+    setFile(index)
   }
 
   const handleTextInput = text => {
@@ -80,6 +68,16 @@ export const ContextProvider = ({ children }) => {
     })
   }
 
+  const handleTaxonomyChange = text => {
+    setTaxonomy(text)
+    setFormData(prevFormData => {
+      return {
+        ...prevFormData,
+        taxonomy: text
+      }
+    })
+  }
+
   const handleMimeTypeChange = text => {
     setMimeType(text)
     setFormData(prevFormData => {
@@ -91,13 +89,17 @@ export const ContextProvider = ({ children }) => {
   }
 
   const data = {
-    files: files,
+    file: file,
     formData: formData,
     textUpload: textUpload,
     date: date,
     language: language,
+    taxonomy: taxonomy,
+    embeddings: embeddings,
     mimType: mimType,
+    setEmbeddings: setEmbeddings,
     handleLanguageChange: handleLanguageChange,
+    handleTaxonomyChange: handleTaxonomyChange,
     handleFormDataChange: handleFormDataChange,
     handleTextInput: handleTextInput,
     handleDateChange: handleDateChange,

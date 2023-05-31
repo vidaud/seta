@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { Container, Flex, Accordion, ScrollArea, Indicator, rem, Text } from '@mantine/core'
+import { Container, Flex, Accordion, ScrollArea, rem, Text } from '@mantine/core'
 
 import { itemsReducer } from './items-reducer'
 import useClearFilter from './useClearFilter'
@@ -16,6 +16,11 @@ import OtherFilter from '../OtherFilter/OtherFilter'
 import TaxonomyFilter from '../TaxonomyFilter'
 import TextChunkFilter from '../TextChunkFilter'
 import YearsRangeFilter from '../YearsRangeFilter'
+
+type KeyLabel = {
+  key: string
+  label: string
+}
 
 const FiltersPanel = ({ queryContract, onApplyFilter, onStatusChange }: AdvancedFilterProps) => {
   const [resourceSelectedKeys, setResourceSelectedKeys] = useState<SelectionKeys | null>(null)
@@ -36,7 +41,9 @@ const FiltersPanel = ({ queryContract, onApplyFilter, onStatusChange }: Advanced
     status,
     dispatchStatus,
     otherItems,
-    dispatchOtherItems
+    dispatchOtherItems,
+    resourcesFlat,
+    taxonomiesFlat
   } = useFilter(queryContract, resourceSelectedKeys, taxonomySelectedKeys)
 
   useEffect(() => {
@@ -68,18 +75,48 @@ const FiltersPanel = ({ queryContract, onApplyFilter, onStatusChange }: Advanced
   }
 
   const handleSourceSelectionChange = (value: SelectionKeys | null) => {
+    let checkedKeys: KeyLabel[] | null = null
+
+    if (value) {
+      checkedKeys = []
+
+      for (const key in value) {
+        if (value[key].checked) {
+          const kl = resourcesFlat.current?.find(t => t.key === key)
+          const lbl = kl ? kl.label : key
+
+          checkedKeys.push({ key: key, label: lbl })
+        }
+      }
+    }
+
     dispatchStatus({
       type: 'source_changed',
-      value: value ? Object.keys(value) : null
+      value: checkedKeys
     })
 
     setResourceSelectedKeys(value)
   }
 
   const handleTaxonomySelectionChange = (value: SelectionKeys | null) => {
+    let checkedKeys: KeyLabel[] | null = null
+
+    if (value) {
+      checkedKeys = []
+
+      for (const key in value) {
+        if (value[key].checked) {
+          const kl = taxonomiesFlat.current?.find(t => t.key === key)
+          const lbl = kl ? kl.label : key
+
+          checkedKeys.push({ key: key, label: lbl })
+        }
+      }
+    }
+
     dispatchStatus({
       type: 'taxonomy_changed',
-      value: value ? Object.keys(value) : null
+      value: checkedKeys
     })
 
     setTaxonomySelectedKeys(value)
@@ -124,11 +161,7 @@ const FiltersPanel = ({ queryContract, onApplyFilter, onStatusChange }: Advanced
         onApplyFilters={handleApplyFilters}
         onClear={handleClearFilters}
       />
-      <TextChunkFilter
-        value={chunkText}
-        onChange={handleTextChunkChange}
-        modified={(status.chunkModified ?? 0) > 0}
-      />
+      <TextChunkFilter value={chunkText} onChange={handleTextChunkChange} />
       <Container w={rem(350)} mb={rem(10)}>
         <YearsRangeFilter
           enableDateFilter={enableDateFilter}
@@ -137,7 +170,6 @@ const FiltersPanel = ({ queryContract, onApplyFilter, onStatusChange }: Advanced
           rangeBoundaries={rangeBoundaries}
           onValueChange={setRangeValue}
           onValueChangeEnd={handleRangeChange}
-          modified={(status.rangeModified ?? 0) > 0}
         />
       </Container>
 
@@ -150,9 +182,7 @@ const FiltersPanel = ({ queryContract, onApplyFilter, onStatusChange }: Advanced
       >
         <Accordion.Item value="sources-tree">
           <Accordion.Control>
-            <Indicator inline pr={10} color="orange" disabled={!status.sourceModified}>
-              <Text span>Data sources</Text>
-            </Indicator>
+            <Text span>Data sources</Text>
           </Accordion.Control>
           <Accordion.Panel>
             <ScrollArea.Autosize mx="auto" mah={rem(300)}>
@@ -167,9 +197,7 @@ const FiltersPanel = ({ queryContract, onApplyFilter, onStatusChange }: Advanced
 
         <Accordion.Item value="taxonomy-tree">
           <Accordion.Control>
-            <Indicator inline pr={10} color="orange" disabled={!status.taxonomyModified}>
-              <Text span>Taxonomies</Text>
-            </Indicator>
+            <Text span>Taxonomies</Text>
           </Accordion.Control>
           <Accordion.Panel>
             <ScrollArea.Autosize mx="auto" mah={rem(300)}>
@@ -184,9 +212,7 @@ const FiltersPanel = ({ queryContract, onApplyFilter, onStatusChange }: Advanced
 
         <Accordion.Item value="other">
           <Accordion.Control>
-            <Indicator inline pr={10} color="orange" disabled={!status.otherModified}>
-              <Text span>Other</Text>
-            </Indicator>
+            <Text span>Other</Text>
           </Accordion.Control>
           <Accordion.Panel>
             <OtherFilter data={otherItems} onItemChange={handleItemChange} />

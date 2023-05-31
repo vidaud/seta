@@ -73,3 +73,9 @@ export const getOtherLists = (status?: FilterStatusInfo) => {
 
   return { otherApplied, otherDeleted, otherAdded }
 }
+
+export enum FilterStatusColors {
+  APPLIED = 'teal',
+  MODIFIED = 'orange',
+  DELETED = 'orange.4'
+}
