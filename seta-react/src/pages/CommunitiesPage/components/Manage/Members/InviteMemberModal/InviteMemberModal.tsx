@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Popover, Button, Group, Textarea, createStyles } from '@mantine/core'
+import { Popover, Button, Group, Textarea, createStyles, Tooltip } from '@mantine/core'
 
 import { createMembershipRequest } from '../../../../../../api/communities/membership'
 import type { MembershipValues } from '../../imembership-context'
@@ -42,9 +42,11 @@ const MembershipRequest = ({ community_id }) => {
     >
       <Popover.Target>
         <Group position="right">
-          <Button variant="outline" size="xs" onClick={() => setOpened(o => !o)}>
-            + Join
-          </Button>
+          <Tooltip label="Join Community">
+            <Button variant="outline" size="xs" onClick={() => setOpened(o => !o)}>
+              + Join
+            </Button>
+          </Tooltip>
         </Group>
       </Popover.Target>
       <Popover.Dropdown

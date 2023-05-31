@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Popover, Button, Group, Textarea, createStyles, Input } from '@mantine/core'
+import { Popover, Button, Group, Textarea, createStyles, Input, Tooltip } from '@mantine/core'
 
 import { createCommunityInvite } from '../../../../../../api/communities/invite'
 import { InvitationFormProvider, useInvitation } from '../../invite-context'
@@ -42,9 +42,11 @@ const InviteMember = communityId => {
     >
       <Popover.Target>
         <Group position="right">
-          <Button variant="outline" size="xs" color="orange" onClick={() => setOpened(o => !o)}>
-            + Invite
-          </Button>
+          <Tooltip label="Invite friends to this community">
+            <Button variant="outline" size="xs" color="orange" onClick={() => setOpened(o => !o)}>
+              + Invite
+            </Button>
+          </Tooltip>
         </Group>
       </Popover.Target>
       <Popover.Dropdown

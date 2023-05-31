@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Button, Group, Paper, Text, Grid, Title, createStyles, Table } from '@mantine/core'
+import { Button, Group, Text, Grid, Title, createStyles, Table, Tooltip, Card } from '@mantine/core'
 import { Link, useParams } from 'react-router-dom'
 
 import { useCommunityID } from '../../../../../../api/communities/manage/my-community'
@@ -7,7 +7,7 @@ import ComponentLoading from '../../../common/ComponentLoading'
 import CommunityResources from '../../Resource/CommunityResources/CommunityResources'
 import InviteMember from '../InviteMemberModal/InviteMemberModal'
 
-const useStyles = createStyles({
+const useStyles = createStyles(theme => ({
   page: {
     minHeight: '31rem',
     height: 'auto'
@@ -23,8 +23,15 @@ const useStyles = createStyles({
   },
   link: {
     color: 'white'
+  },
+  imageSection: {
+    background: '#D9D9D9',
+    padding: theme.spacing.sm
+  },
+  group: {
+    paddingBottom: theme.spacing.md
   }
-})
+}))
 
 const ManageCommunity = () => {
   const { classes } = useStyles()
@@ -45,16 +52,21 @@ const ManageCommunity = () => {
   return (
     <>
       <div className={classes.page}>
-        <Group position="right">
+        <Group position="right" className={classes.group}>
           <InviteMember id={row?.communities.community_id} />
 
-          <Link className={classes.link} to={`/my-communities/${id}/new`} replace={true}>
-            <Button color="blue">New Resource</Button>
-          </Link>
+          <Tooltip label="Add new resource to this community">
+            <Link className={classes.link} to={`/my-communities/${id}/new`} replace={true}>
+              <Button color="blue">New Resource</Button>
+            </Link>
+          </Tooltip>
         </Group>
         <Grid grow>
           <Grid.Col span={12}>
-            <Paper shadow="xs" p="md">
+            <Card withBorder radius="md">
+              <Card.Section className={classes.imageSection}>
+                <Text size="md">Details</Text>
+              </Card.Section>
               <Title order={5} className={classes.title}>
                 {row?.communities.title}
               </Title>
@@ -76,11 +88,13 @@ const ManageCommunity = () => {
                 </tbody>
               </Table>
               <Group spacing={30} position="right">
-                <Link className={classes.link} to={`/my-communities/${id}/update`} replace={true}>
-                  <Button color="green">Update</Button>
-                </Link>
+                <Tooltip label="Update community details">
+                  <Link className={classes.link} to={`/my-communities/${id}/update`} replace={true}>
+                    <Button color="green">Update</Button>
+                  </Link>
+                </Tooltip>
               </Group>
-            </Paper>
+            </Card>
           </Grid.Col>
           <Grid.Col span={12}>
             <CommunityResources data={row?.resources} />

@@ -7,7 +7,8 @@ import {
   TextInput,
   rem,
   Group,
-  ActionIcon
+  ActionIcon,
+  Tooltip
 } from '@mantine/core'
 import { IconEye, IconSearch } from '@tabler/icons-react'
 import { Link } from 'react-router-dom'
@@ -105,11 +106,17 @@ const ResourceList = () => {
             <td>{row.status}</td>
             <td>
               <Group>
-                <Link className={classes.link} to={`/resources/${row.resource_id}`} replace={true}>
-                  <ActionIcon>
-                    <IconEye size="1rem" stroke={1.5} />
-                  </ActionIcon>
-                </Link>
+                <Tooltip label="View Details">
+                  <Link
+                    className={classes.link}
+                    to={`/resources/${row.resource_id}`}
+                    replace={true}
+                  >
+                    <ActionIcon>
+                      <IconEye size="1rem" stroke={1.5} />
+                    </ActionIcon>
+                  </Link>
+                </Tooltip>
               </Group>
             </td>
           </tr>
@@ -128,6 +135,7 @@ const ResourceList = () => {
       <Table
         horizontalSpacing="md"
         verticalSpacing="xs"
+        fontSize="xs"
         miw={700}
         sx={{ tableLayout: 'fixed' }}
         className={cx(classes.header, { [classes.scrolled]: scrolled })}

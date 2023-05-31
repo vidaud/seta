@@ -105,6 +105,7 @@ const MyResourceList = () => {
       <Table
         horizontalSpacing="md"
         verticalSpacing="xs"
+        fontSize="xs"
         miw={700}
         sx={{ tableLayout: 'fixed' }}
         className={cx(classes.header, { [classes.scrolled]: scrolled })}
