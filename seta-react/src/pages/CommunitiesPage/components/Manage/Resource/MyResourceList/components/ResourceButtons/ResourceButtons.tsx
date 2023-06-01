@@ -2,7 +2,7 @@ import { Group, ActionIcon, Menu, createStyles, Tooltip } from '@mantine/core'
 import { IconDots, IconPencil, IconTrash, IconEye } from '@tabler/icons-react'
 import { Link } from 'react-router-dom'
 
-import { deleteResourceByID } from '../../../../../../api/resources/manage/my-resource'
+import { deleteResourceByID } from '../../../../../../../../api/resources/manage/my-resource'
 
 const useStyles = createStyles({
   link: {

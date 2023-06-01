@@ -4,7 +4,7 @@ import { IconSearch } from '@tabler/icons-react'
 
 import type { Community } from '~/models/communities/communities'
 
-import CommunityButton from './CommunityButton/CommunityButton'
+import CommunityButton from './components/CommunityButton/CommunityButton'
 
 import { useAllCommunities } from '../../../../../api/communities/discover/discover-communities'
 import { ComponentEmpty, ComponentError } from '../../common'

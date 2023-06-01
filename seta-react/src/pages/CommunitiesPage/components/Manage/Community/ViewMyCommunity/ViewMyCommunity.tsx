@@ -2,10 +2,11 @@ import { useEffect, useState } from 'react'
 import { Button, Grid, Group, Text, Title, createStyles, Card, Table } from '@mantine/core'
 import { Link, useParams } from 'react-router-dom'
 
+import Stats from './components/Stats/Stats'
+
 import { useCommunityID } from '../../../../../../api/communities/manage/my-community'
 import ComponentLoading from '../../../common/ComponentLoading'
 import CommunityResources from '../../Resource/CommunityResources/CommunityResources'
-import Stats from '../Stats/Stats'
 
 const useStyles = createStyles(theme => ({
   title: {

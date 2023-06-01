@@ -1,9 +1,9 @@
 import { Paper, TextInput, Divider, Group, createStyles, Button, Textarea } from '@mantine/core'
 import { useNavigate } from 'react-router-dom'
 
-import { createCommunity } from '../../../../../../api/communities/manage/my-community'
-import type { CommunityValues } from '../../community-context'
-import { useCommunity, CommunityFormProvider } from '../../community-context'
+import { createCommunity } from '../../../../../../../../api/communities/manage/my-community'
+import type { CommunityValues } from '../../../../community-context'
+import { useCommunity, CommunityFormProvider } from '../../../../community-context'
 
 const useStyles = createStyles({
   input: {

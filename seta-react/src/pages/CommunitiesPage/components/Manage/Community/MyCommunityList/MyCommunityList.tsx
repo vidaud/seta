@@ -4,13 +4,13 @@ import { IconSearch } from '@tabler/icons-react'
 
 import type { Community } from '~/models/communities/communities'
 
+import CommunityButtons from './components/CommunityButtons/CommunityButtons'
 import { useStyles } from './constants'
 
 import { useCommunities } from '../../../../../../api/communities/manage/my-communities'
 import { ComponentEmpty, ComponentError } from '../../../common'
 import ComponentLoading from '../../../common/ComponentLoading'
 import { Th, sortCommunityData } from '../../../community-utils'
-import CommunityButtons from '../CommunityButtons/CommunityButtons'
 import DeleteCommunity from '../DeleteCommunityButton/DeleteCommunityButton'
 
 const MyCommunityList = () => {

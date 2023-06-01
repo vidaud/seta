@@ -2,8 +2,8 @@ import { Group, ActionIcon, Menu, createStyles, Tooltip } from '@mantine/core'
 import { IconDots, IconPencil, IconTrash, IconEye, IconSettings } from '@tabler/icons-react'
 import { Link } from 'react-router-dom'
 
-import { deleteCommunityByID } from '../../../../../../api/communities/manage/my-community'
-import InviteMember from '../InviteMemberModal/InviteMemberModal'
+import { deleteCommunityByID } from '../../../../../../../../api/communities/manage/my-community'
+import InviteMember from '../../../InviteMemberModal/InviteMemberModal'
 
 const useStyles = createStyles({
   link: {

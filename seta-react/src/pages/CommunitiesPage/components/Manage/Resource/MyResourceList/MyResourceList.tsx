@@ -4,13 +4,13 @@ import { IconSearch } from '@tabler/icons-react'
 
 import type { Resource } from '~/models/communities/resources'
 
+import ResourceButtons from './components/ResourceButtons/ResourceButtons'
 import { useStyles } from './constants'
 
 import { useMyResources } from '../../../../../../api/resources/manage/my-resources'
 import { ComponentEmpty, ComponentError } from '../../../common'
 import ComponentLoading from '../../../common/ComponentLoading'
 import { Th, sortResourceData } from '../../../resource-utils'
-import ResourceButtons from '../ResourceButtons/ResourceButtons'
 
 const MyResourceList = () => {
   const { classes, cx } = useStyles()

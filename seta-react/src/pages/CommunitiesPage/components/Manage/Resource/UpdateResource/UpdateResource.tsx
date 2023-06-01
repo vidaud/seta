@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { Paper, TextInput, Divider, Group, createStyles, Button, Textarea } from '@mantine/core'
-import { Link, useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 
 import { updateResource, useResourceID } from '../../../../../../api/resources/manage/my-resource'
 import ComponentLoading from '../../../common/ComponentLoading'
@@ -26,6 +26,7 @@ const UpdateResource = () => {
   const { classes, cx } = useStyles()
   const { id } = useParams()
   const { resourceId } = useParams()
+  const navigate = useNavigate()
 
   const { data, isLoading } = useResourceID(resourceId)
 
@@ -84,11 +85,17 @@ const UpdateResource = () => {
               withAsterisk
             />
             <Group position="right">
-              <Link className={classes.link} to={`/my-resources/${resourceId}`} replace={true}>
-                <Button variant="outline" size="xs" color="blue">
-                  Cancel
-                </Button>
-              </Link>
+              <Button
+                variant="outline"
+                size="xs"
+                color="blue"
+                onClick={() => {
+                  navigate(-1)
+                }}
+              >
+                Cancel
+              </Button>
+
               <Button size="xs" type="submit">
                 Update
               </Button>
