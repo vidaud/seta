@@ -168,18 +168,10 @@ const routes = createRoutesFromElements(
         }
       />
       <Route
-        path="permissions/community/:id/"
+        path=":id/permissions"
         element={
           <RequireAuth>
             <CommunityUsersPermissions />
-          </RequireAuth>
-        }
-      />
-      <Route
-        path="permissions/resource/:resourceId/"
-        element={
-          <RequireAuth>
-            <ResourceUsersPermissions />
           </RequireAuth>
         }
       />
@@ -217,7 +209,16 @@ const routes = createRoutesFromElements(
           </RequireAuth>
         }
       />
+      <Route
+        path=":resourceId/permissions"
+        element={
+          <RequireAuth>
+            <ResourceUsersPermissions />
+          </RequireAuth>
+        }
+      />
     </Route>
+
     <Route path={DISCOVER_COMMUNITY_PATH} element={<CommunityLayout />}>
       <Route
         path=""
