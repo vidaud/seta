@@ -153,7 +153,7 @@ const MyResourceList = () => {
               reversed={reverseSortDirection}
               onSort={() => setSorting('created_at')}
             >
-              Data Type
+              Created At
             </Th>
             <Th
               sorted={sortBy === 'creator_id'}

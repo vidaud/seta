@@ -92,7 +92,7 @@ const CommunityList = () => {
             <td>{row.community_id}</td>
             <td>{row.title}</td>
             <td>{row.description}</td>
-            <td>{row.data_type}</td>
+            {/* <td>{row.data_type}</td> */}
             <td>{row.membership}</td>
             <td>{row.status}</td>
             <td>
@@ -142,13 +142,13 @@ const CommunityList = () => {
             >
               Description
             </Th>
-            <Th
+            {/* <Th
               sorted={sortBy === 'data_type'}
               reversed={reverseSortDirection}
               onSort={() => setSorting('data_type')}
             >
               Data Type
-            </Th>
+            </Th> */}
             <Th
               sorted={sortBy === 'membership'}
               reversed={reverseSortDirection}
