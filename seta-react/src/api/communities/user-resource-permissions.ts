@@ -6,7 +6,7 @@ import type { UserPermissionsResponse } from '../types/user-permissions-types'
 
 const PERMISSIONS_API_PATH = '/permissions'
 
-export const cacheKey = (resourceId?: string) => ['my-resources', resourceId]
+export const cacheKey = (resourceId?: string) => ['permissions', resourceId]
 
 export const getResourcePermissions = async (
   resourceId?: string

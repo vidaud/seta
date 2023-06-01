@@ -5,7 +5,7 @@ export type MembershipValues = {
   message: string
 }
 
-export const cacheKey = () => ['communities']
+export const cacheKey = () => ['memberships']
 
 // You can give context variables any name
 export const [MembershipFormProvider, useMembershipContext, useMembership] =
