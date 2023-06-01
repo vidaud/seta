@@ -52,8 +52,8 @@ const CommunityMembers = () => {
   }
 
   const rows =
-    items && items?.length > 0
-      ? items?.map(row => (
+    items && items?.members.length > 0
+      ? items?.members.map(row => (
           <tr key={row.user_id}>
             <td>{row.user_id}</td>
             <td>

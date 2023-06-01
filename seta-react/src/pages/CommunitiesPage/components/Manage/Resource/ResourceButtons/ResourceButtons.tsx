@@ -14,7 +14,7 @@ const ResourceButtons = item => {
   const { classes } = useStyles()
 
   const deleteResource = () => {
-    deleteResourceByID(item.item.resource_id, item.item.community_id)
+    deleteResourceByID(item.item.resource_id)
   }
 
   return (

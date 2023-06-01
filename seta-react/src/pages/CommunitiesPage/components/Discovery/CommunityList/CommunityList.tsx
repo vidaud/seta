@@ -7,7 +7,6 @@ import type { Community } from '~/models/communities/communities'
 import CommunityButton from './CommunityButton/CommunityButton'
 
 import { useAllCommunities } from '../../../../../api/communities/discover/discover-communities'
-import type { CommunitiesResponse } from '../../../../../api/communities/manage/my-communities'
 import { ComponentEmpty, ComponentError } from '../../common'
 import ComponentLoading from '../../common/ComponentLoading'
 import { Th, sortCommunityData } from '../../community-utils'
@@ -19,7 +18,7 @@ const CommunityList = () => {
   const [scrolled, setScrolled] = useState(false)
 
   const { data, isLoading, error, refetch } = useAllCommunities()
-  const [sortedData, setSortedData] = useState<CommunitiesResponse[]>([])
+  const [sortedData, setSortedData] = useState<Community[]>([])
 
   const useStyles = createStyles(theme => ({
     header: {

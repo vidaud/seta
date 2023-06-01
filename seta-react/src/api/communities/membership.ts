@@ -4,30 +4,27 @@ import { getCookie } from 'typescript-cookie'
 import community_api from './api'
 
 import { environment } from '../../environments/environment'
-
-export type MembershipResponse = {
-  community_id: string
-  user_id: string
-  role: string
-  join_date: Date
-  status: string
-}
-
-export type CreateMembershipAPI = {
-  community_id: string
-}
-
-export type CreateMembershipRequestAPI = {
-  community_id: string
-  message: string
-}
+import type {
+  CreateMembershipRequestAPI,
+  MembershipResponse,
+  Memberships
+} from '../types/membership-types'
 
 export const cacheKey = (id?: string) => ['memberships', id]
 
-export const getMembership = async (id?: string): Promise<MembershipResponse[]> => {
-  const { data } = await community_api.get<MembershipResponse[]>(
-    `${environment.COMMUNITIES_API_PATH}/${id}/memberships`
-  )
+export const getMembership = async (id?: string): Promise<Memberships> => {
+  const members = await community_api
+    .get<MembershipResponse[]>(`${environment.COMMUNITIES_API_PATH}/${id}/memberships`)
+    .then(result => {
+      return result
+    })
+    .catch(e => {
+      console.log(e)
+    })
+
+  const data = {
+    members: members ? members?.data : []
+  }
 
   return data
 }

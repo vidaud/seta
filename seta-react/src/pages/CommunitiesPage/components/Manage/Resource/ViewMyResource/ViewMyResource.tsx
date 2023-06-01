@@ -52,7 +52,7 @@ const ViewMyResource = () => {
   }
 
   const deleteResource = () => {
-    deleteResourceByID(rows?.resource_id, rows?.community_id)
+    deleteResourceByID(rows?.resource_id)
   }
 
   return (

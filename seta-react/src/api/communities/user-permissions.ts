@@ -1,13 +1,9 @@
 import { useQuery } from '@tanstack/react-query'
 
 import community_api from '../api'
+import type { UserPermissionsResponse } from '../types/user-permissions-types'
 
 const PERMISSIONS_API_PATH = '/permissions'
-
-export type UserPermissionsResponse = {
-  user_id: string
-  scope: string
-}
 
 export const cacheKey = (id?: string) => ['my-communities', id]
 
