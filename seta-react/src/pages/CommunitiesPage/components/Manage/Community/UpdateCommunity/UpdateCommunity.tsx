@@ -1,14 +1,5 @@
 import { useEffect } from 'react'
-import {
-  Paper,
-  TextInput,
-  Divider,
-  Radio,
-  Group,
-  createStyles,
-  Button,
-  Textarea
-} from '@mantine/core'
+import { Paper, TextInput, Divider, Group, createStyles, Button, Textarea } from '@mantine/core'
 import { Link, useParams } from 'react-router-dom'
 
 import {
@@ -45,7 +36,7 @@ const UpdateCommunity = () => {
       community_id: '',
       title: '',
       description: '',
-      data_type: '',
+      data_type: 'evidence',
       status: 'active'
     },
     validate: values => ({
@@ -95,14 +86,14 @@ const UpdateCommunity = () => {
               className={cx(classes.input)}
               withAsterisk
             />
-            <Group spacing={100} display="flex">
+            {/* <Group spacing={100} display="flex">
               <Radio.Group name="data_type" label="Data Type" {...form.getInputProps('data_type')}>
                 <Group mt="xs">
                   <Radio value="representative" label="Representative" />
                   <Radio value="evidence" label="Evidence" />
                 </Group>
               </Radio.Group>
-            </Group>
+            </Group> */}
             <Group position="right">
               <Link className={classes.link} to={`/my-communities/${id}`} replace={true}>
                 <Button variant="outline" size="xs" color="blue">

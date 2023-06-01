@@ -3,6 +3,7 @@ import { createStyles, Table, ScrollArea, rem, Title } from '@mantine/core'
 import { useParams } from 'react-router-dom'
 
 import { useInviteID } from '../../../../../../api/communities/invite'
+import { ComponentEmpty, ComponentError } from '../../../common'
 import ComponentLoading from '../../../common/ComponentLoading'
 
 const useStyles = createStyles(theme => ({
@@ -36,7 +37,7 @@ const CommunityInvites = () => {
   const { classes, cx } = useStyles()
   const [scrolled, setScrolled] = useState(false)
   const { id } = useParams()
-  const { data, isLoading } = useInviteID(id)
+  const { data, isLoading, error, refetch } = useInviteID(id)
   const [items, setItems] = useState(data)
 
   useEffect(() => {
@@ -44,6 +45,16 @@ const CommunityInvites = () => {
       setItems(data)
     }
   }, [data, items])
+
+  if (error) {
+    return <ComponentError onTryAgain={refetch} />
+  }
+
+  if (data) {
+    if (data.length === 0) {
+      return <ComponentEmpty />
+    }
+  }
 
   if (isLoading || !data) {
     return <ComponentLoading />

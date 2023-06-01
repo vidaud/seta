@@ -1,63 +1,19 @@
 import { useQuery } from '@tanstack/react-query'
 import { getCookie } from 'typescript-cookie'
 
+import type {
+  Community,
+  CommunityResponse,
+  CreateCommunityAPI,
+  ManageCommunityAPI,
+  UpdateCommunityAPI
+} from '~/api/types/community-types'
+import type { InviteResponse } from '~/api/types/invite-types'
+import type { MembershipResponse } from '~/api/types/membership-types'
+import type { ResourceResponse } from '~/api/types/resource-types'
+
 import { environment } from '../../../environments/environment'
-import type { ResourceResponse } from '../../resources/manage/my-resource'
 import community_api from '../api'
-import type { InviteResponse } from '../invite'
-import type { MembershipResponse } from '../membership'
-
-export type CommunityResponse = {
-  community_id: string
-  title: string
-  description: string
-  membership: string
-  data_type: string
-  status: string
-  creator: {
-    user_id: string
-    full_name: string
-    email: string
-  }
-  created_at: Date | undefined
-}
-
-export type Community = {
-  communities: CommunityResponse
-  resources: ResourceResponse[]
-  invites: InviteResponse[]
-  members: MembershipResponse[]
-}
-
-export type CreateCommunityAPI = {
-  community_id: string
-  title: string
-  description?: string
-  data_type: string
-}
-
-export type UpdateCommunityAPI = {
-  community_id: string
-  title: string
-  description: string
-  data_type: string
-  status: string
-}
-
-export type ManageCommunityAPI = {
-  community_id: string
-  title: string
-  description: string
-  membership: string
-  data_type: string
-  status: string
-  creator: {
-    user_id: string
-    full_name: string
-    email: string
-  }
-  created_at: Date | undefined
-}
 
 export const cacheKey = (id?: string) => ['my-communities', id]
 

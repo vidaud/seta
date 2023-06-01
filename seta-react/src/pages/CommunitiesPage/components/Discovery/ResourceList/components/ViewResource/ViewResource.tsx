@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react'
 import { Grid, Table, Text, Title, createStyles, Card } from '@mantine/core'
 import { useParams } from 'react-router-dom'
 
-import { useResourceID } from '../../../../../api/resources/manage/my-resource'
-import ComponentLoading from '../../common/ComponentLoading'
+import { useResourceID } from '../../../../../../../api/resources/manage/my-resource'
+import ComponentLoading from '../../../../common/ComponentLoading'
 
 const useStyles = createStyles(theme => ({
   title: {

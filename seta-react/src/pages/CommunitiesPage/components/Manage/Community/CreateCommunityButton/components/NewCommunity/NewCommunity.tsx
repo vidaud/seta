@@ -1,18 +1,9 @@
-import {
-  Paper,
-  TextInput,
-  Divider,
-  Radio,
-  Group,
-  createStyles,
-  Button,
-  Textarea
-} from '@mantine/core'
+import { Paper, TextInput, Divider, Group, createStyles, Button, Textarea } from '@mantine/core'
 import { useNavigate } from 'react-router-dom'
 
-import { createCommunity } from '../../../../../../api/communities/manage/my-community'
-import type { CommunityValues } from '../../community-context'
-import { useCommunity, CommunityFormProvider } from '../../community-context'
+import { createCommunity } from '../../../../../../../../api/communities/manage/my-community'
+import type { CommunityValues } from '../../../../community-context'
+import { useCommunity, CommunityFormProvider } from '../../../../community-context'
 
 const useStyles = createStyles({
   input: {
@@ -35,7 +26,7 @@ const NewCommunity = () => {
       community_id: '',
       title: '',
       description: '',
-      data_type: '',
+      data_type: 'evidence',
       status: 'active'
     },
     validate: values => ({
@@ -74,14 +65,14 @@ const NewCommunity = () => {
               className={cx(classes.input)}
               withAsterisk
             />
-            <Group spacing={100} display="flex">
+            {/* <Group spacing={100} display="flex">
               <Radio.Group name="data_type" label="Data Type" {...form.getInputProps('data_type')}>
                 <Group mt="xs">
                   <Radio value="representative" label="Representative" />
                   <Radio value="evidence" label="Evidence" />
                 </Group>
               </Radio.Group>
-            </Group>
+            </Group> */}
             <Group position="right">
               <Button
                 variant="outline"

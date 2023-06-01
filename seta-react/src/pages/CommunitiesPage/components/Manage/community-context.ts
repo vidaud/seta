@@ -8,7 +8,7 @@ export type CommunityValues = {
   status: string
 }
 
-export const cacheKey = () => ['communities']
+export const cacheKey = () => ['my-communities']
 
 // You can give context variables any name
 export const [CommunityFormProvider, useCommunityContext, useCommunity] =

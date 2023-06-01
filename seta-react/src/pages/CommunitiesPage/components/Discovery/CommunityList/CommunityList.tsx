@@ -4,10 +4,9 @@ import { IconSearch } from '@tabler/icons-react'
 
 import type { Community } from '~/models/communities/communities'
 
-import CommunityButton from './CommunityButton/CommunityButton'
+import CommunityButton from './components/CommunityButton/CommunityButton'
 
 import { useAllCommunities } from '../../../../../api/communities/discover/discover-communities'
-import type { CommunitiesResponse } from '../../../../../api/communities/manage/my-communities'
 import { ComponentEmpty, ComponentError } from '../../common'
 import ComponentLoading from '../../common/ComponentLoading'
 import { Th, sortCommunityData } from '../../community-utils'
@@ -19,7 +18,7 @@ const CommunityList = () => {
   const [scrolled, setScrolled] = useState(false)
 
   const { data, isLoading, error, refetch } = useAllCommunities()
-  const [sortedData, setSortedData] = useState<CommunitiesResponse[]>([])
+  const [sortedData, setSortedData] = useState<Community[]>([])
 
   const useStyles = createStyles(theme => ({
     header: {
@@ -92,7 +91,7 @@ const CommunityList = () => {
             <td>{row.community_id}</td>
             <td>{row.title}</td>
             <td>{row.description}</td>
-            <td>{row.data_type}</td>
+            {/* <td>{row.data_type}</td> */}
             <td>{row.membership}</td>
             <td>{row.status}</td>
             <td>
@@ -142,13 +141,13 @@ const CommunityList = () => {
             >
               Description
             </Th>
-            <Th
+            {/* <Th
               sorted={sortBy === 'data_type'}
               reversed={reverseSortDirection}
               onSort={() => setSorting('data_type')}
             >
               Data Type
-            </Th>
+            </Th> */}
             <Th
               sorted={sortBy === 'membership'}
               reversed={reverseSortDirection}

@@ -2,13 +2,14 @@ import { useEffect, useState } from 'react'
 import { Table, Group, Text, ScrollArea } from '@mantine/core'
 import { useParams } from 'react-router-dom'
 
-import { useCommunityPermissionsID } from '../../../../../api/communities/user-permissions'
+import { useCommunityPermissionsID } from '../../../../../api/communities/user-community-permissions'
+import { ComponentEmpty, ComponentError } from '../../common'
 import ComponentLoading from '../../common/ComponentLoading'
 
 const CommunityUsersPermissions = () => {
   const { id } = useParams()
 
-  const { data, isLoading } = useCommunityPermissionsID(id)
+  const { data, isLoading, error, refetch } = useCommunityPermissionsID(id)
   const [items, setItems] = useState(data)
 
   useEffect(() => {
@@ -17,12 +18,22 @@ const CommunityUsersPermissions = () => {
     }
   }, [data, items])
 
+  if (error) {
+    return <ComponentError onTryAgain={refetch} />
+  }
+
+  if (data) {
+    if (data.length === 0) {
+      return <ComponentEmpty />
+    }
+  }
+
   if (isLoading || !data) {
     return <ComponentLoading />
   }
 
   const rows = items?.map(item => (
-    <tr key={item.user_id}>
+    <tr key={item.scope}>
       <td>
         <Group spacing="sm">
           <Text fz="sm" fw={500}>

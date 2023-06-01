@@ -3,9 +3,9 @@ import { ActionIcon, Button, Group, createStyles, Tooltip } from '@mantine/core'
 import { IconEye } from '@tabler/icons-react'
 import { Link } from 'react-router-dom'
 
-import { useMembershipID } from '../../../../../../api/communities/discover/community'
-import MembershipRequest from '../../../Manage/Members/InviteMemberModal/InviteMemberModal'
-import ViewClosedCommunity from '../../ViewClosedCommunity/ViewClosedCommunity'
+import { useMembershipID } from '../../../../../../../api/communities/membership'
+import MembershipRequest from '../../../../Manage/Members/InviteMemberModal/InviteMemberModal'
+import ViewClosedCommunity from '../ViewClosedCommunity'
 
 const useStyles = createStyles({
   link: {
