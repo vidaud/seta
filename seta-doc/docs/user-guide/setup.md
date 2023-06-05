@@ -53,7 +53,7 @@ In SeTA there are two APIs:
 - Communities API       
 - SeTA API             
 
-In order to start setting the data, it is important to setup first the communities enviroment.
+To prepare the upload of the data, it is important to setup first the Communities API to then follow with the SeTA API.
 
 ### Communities API 
 
