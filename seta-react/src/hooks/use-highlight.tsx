@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 
 const highlight = (text: string, terms: string[], className = 'highlight') => {
-  if (!terms.length) {
+  if (!text || !terms.length) {
     return text
   }
 
