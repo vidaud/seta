@@ -10,27 +10,47 @@ In the SeTA web application, we have two types of communities: public communitie
 
 ## Communities Web Interface
 
-The main screen of the Communities is the ^^Dashboard^^. Here you can see the information related to the communities:    
+On the main page of the Communities, there are two side panels on the left side: *Discovery* and *Manage* and in the center, there is a list of the Communities the user had Join.
 
 
-- The Communities created (*My Communities*)
-- The Resources created (*My Resources*)
-- The members of the Communities (*Members*)
-- The notifications (*Notifications*)
-- The latest join request to the Communities (*Last Join Request*)
-- Changes Requests (*Change Request*)
-- The last Resources (*Last Resources*)
+On the Discovery panel it is possible to access to:
+
+- Communities *(Communities joined)*        
+- Resources *(The Resources related to those communities)*        
+
+On the Manage panel it is possible to access to:             
+
+- My Communities                 
+- My Resources               
+
+
+<figure markdown>
+  ![Image title](../img/seta_communities.png)
+  <figcaption>Communities page</figcaption>
+</figure>
+
 
 ### Create a Community
                      
-1. From the side menu click on ^^Manage^^ -> ^^My Communities^^.  
+1. From the side panel click on ^^Manage^^ -> ^^My Communities^^.  
 2. Click on the top right bottom ^^New Community^^.  
 3. Enter the Community id, title and description.  
-4. Select the ^^Membership^^ option: *Private, Public*.  
-5. Select the ^^Data Type^^: *Evidence, Representative*.  
-6. Click Save. Once you create your Community you will be sent back to your communities list. 
-7. From your Community list you can invite new members.
+4. Click Save. Once you create your Community you will be sent back to your communities list. 
+5. From your Community list you can invite new members.
+<!--4. Select the ^^Membership^^ option: *Private, Public*.  
+5. Select the ^^Data Type^^: *Evidence, Representative*.  -->
 
+<figure markdown>
+  ![Image title](../img/my_communities.png)
+  <figcaption>My Communities</figcaption>
+</figure>
+
+
+
+<figure markdown>
+  ![Image title](../img/new_community.png)
+  <figcaption>New Community</figcaption>
+</figure>
 
 ### Change the name of a Community                
                         

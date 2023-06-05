@@ -48,7 +48,7 @@ If we don't want to search with this option, it is always possible to cancel the
 On the left side of the search bar, there are three panels that helps manage the results: 
 
 ### Filters         
-After launching a search, a new section with the results will appear below the search box (see image below). Together with the results there are some filters that can be applied to refine the search:
+Together with the results there are some filters that can be applied to refine the search:
 
 - Text chunk   
 Chunking is a process of extracting phrases from unstructured text, in our case, it is possible to filter the results by: 
