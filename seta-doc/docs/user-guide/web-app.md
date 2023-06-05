@@ -11,21 +11,21 @@ Within the search page the options to search are:
 If we search by a term, when we start typing in the search bar, a dropdown box appears automatically, in this dropdown box we see two sections:
 
 - a section with a list of *autocomplete* words (left side), 
-- a section with a map of the *related terms* to search (right side). Also, in this section, there is the possibility to choose for *related terms* or *related terms clusters*. And finally, there is a *wizard* ![Image title](../img/wizard.png) tool to use if we want to **enrich query automatically**. 
+- a section with a map of the *related terms* to search (right side). Also, in this section, there is the possibility to choose for *Related Terms Clusters* or *Related Terms*.
 
 
 <figure markdown>
-  ![Image title](../img/search_term.png){ width="800" }
+  ![Image title](../img/search_term.png)
   <figcaption>Search by term</figcaption>
 </figure>
 
 
 ### Search by phrase
-If we want to search by phrase it is necessary to enclose with double quotes *^^" "^^* the phrase, after that, as with the term search, the dropdown box will appear automatically with the two sections: *autocomplete* and *related terms*.
+If we want to search by phrase it is necessary to enclose with double quotes *^^" "^^* the phrase, after that, as with the term search, the dropdown box will appear automatically with the two sections: *autocomplete* and *Related Terms Clusters* or *Related Terms*.
 
 
 <figure markdown>
-  ![Image title](../img/search_phrase.png){ width="800" }
+  ![Image title](../img/search_phrase.png)
   <figcaption>Search by phrase</figcaption>
 </figure>
 
@@ -45,44 +45,44 @@ If we don't want to search with this option, it is always possible to cancel the
   <figcaption>Search by document or text</figcaption>
 </figure>
 
+On the left side of the search bar, there are three panels that helps manage the results: 
 
-### Options
-After launching a search, a new section with the results will appear below the search box (see image *Detailed results*). Together with the results there are some options to improve the search:
+### Filters         
+After launching a search, a new section with the results will appear below the search box (see image below). Together with the results there are some filters that can be applied to refine the search:
 
-- Post Search   
-In the left side of the new section it is possible to find tab Post Search. Here there is a histogram which can be used to apply filters. Click on a specific part of the histogram and the list of documents will be updated displaying only the related documents according to the specific part of the histogram clicked.
+- Text chunk   
+Chunking is a process of extracting phrases from unstructured text, in our case, it is possible to filter the results by: 
+    1. First chunk of the text
+    2. Single chunk only,  or
+    3. Any chunks
 
-- Refine Search      
-In tab Refine Search it is possible to see the list of filters available to apply to the search query:     
-    - Search type  
-    - Time Range        
+- Filter by date range
+If this option is switched on, then the time range bar below, can be adjust to the custom year range.        
 
-- Sort results        
-On top of the results section on column ^^Score^^ and column ^^Year^^ there is the ^^Sort By arrow^^ option. 
+- Data sources        
+In this section it is possible to select from the different sources available a more specific source topic.
 
-If the user clicks on the *increase/decrease arrows* the arrow will *increase/decrease* and the items of the list will change their order.
-
-To select the columns, you want to see on the results table, go to the top of the results section on the left corner of the list of documents, click in the dropdown bar in there you will see the list of column headers selected by default. Uncheck the columns you do not want to see.  You can use this option to *show/hide* columns on preference.
-
-- Detail result                
-Each item of the result list has an expand icon **>** on the left corner. By clicking on it, it is possible to see more details about the single item:          
-    - Collection        
-    - Date           
-    - Eurovoc concepts
-    - Document reference
-    - Source
-    - In force
-
-Furthermore, you can see a table with the left and right context of the single result.
-
-### Concepts tab           
-It is possible to see the visual representation of the topic. The Concept map will help you organize the results and explore the relationships in a topic. Through the concept map it is possible to organize and represent the searched term and explore the connections between elements.  
+- Taxonomies                
+From the different taxonomies proposed in this section, it can be possible to select only the results with a specific group of interest.
 
 
-### Document Map tab         
-Mapping is the process of relating the structure values or content of a document in one format to the values and fields in an alternate document format. In the Document Map tab, you will see the maps between different related documents to your search.  
+Once all the filters are selected, click in the button “Apply Filters” at the top of the section to apply them.
+
 
 <figure markdown>
-  ![Image title](../img/search_results_detail.png){ width="800" }
-  <figcaption>Detailed results</figcaption>
+  ![Image title](../img/search_results_filters.png){ width="300" }
+  <figcaption>Filters</figcaption>
 </figure>
+
+
+### My Search           
+In this panel, we can see the user's search library.               
+
+
+### My Documents         
+In this panel we can see the user's documents library.                 
+
+<!--<figure markdown>
+  ![Image title](../img/search_results_detail.png)
+  <figcaption>Detailed results</figcaption>
+</figure> -->

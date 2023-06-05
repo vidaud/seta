@@ -50,31 +50,10 @@ Once you are logged in, you can see in the top menu the link to the Search and t
 The SeTA APIs provides the functions and procedures to access data from a developer point of view.
 
 In SeTA there are two APIs:   
-- SeTA API    
-- Communities API 
+- Communities API       
+- SeTA API             
 
-### SeTA API
-
-
-#### Prerequisites
-
-
-#### EU Login Authentication
-
-Open a browser and go to seta-ui [login](/login) page. Connect with EU Login account or use a GitHub authentication. After that you can open a new tab in the same browser or go to [Search API swagger documentation](/seta-api/doc).
-
-
-!!! info
-    If you open a new tab or window from another browser, you need to open the browser developer tool and copy the value of the ^^csrf_access_token^^ cookie 
-
-You can start using Search API.
-
-
-<figure markdown>
-![Image title](../img/seta-api.png){ width="900" }
-<figcaption>SeTA API</figcaption>
-</figure>
-
+In order to start setting the data, it is important to setup first the communities enviroment.
 
 ### Communities API 
 
@@ -130,10 +109,6 @@ After successful authentication, check that you have the following entries in th
         "domain": "eu.europa.ec"
     }
 ``` -->
-
-
-
-
 
 
 <figure markdown>
@@ -362,7 +337,32 @@ Check that the objects for the resource scopes in the **seta database - users** 
 -->
 
 
-At this point, Community API usage is set up and you can start using the methods under **seta-api-corpus** region.
+At this point, Community API usage is set up and now it is possible to go to SeTA API to start using the methods under **seta-api-corpus** region for the upload of data.
+
+### SeTA API
+
+#### Prerequisites
+
+
+#### EU Login Authentication
+
+Open a browser and go to seta-ui [login](/login) page. Connect with EU Login account or use a GitHub authentication. After that you can open a new tab in the same browser or go to [Search API swagger documentation](/seta-api/doc).
+
+
+!!! info
+    If you open a new tab or window from another browser, you need to open the browser developer tool and copy the value of the ^^csrf_access_token^^ cookie 
+
+
+You can start using Search API.
+
+
+<figure markdown>
+![Image title](../img/seta-api.png){ width="900" }
+<figcaption>SeTA API</figcaption>
+</figure>
+
+
+
 
 
 [^1]:https://webgate.ec.europa.eu/ern/userguide/Content/A.HOW%20TO%20JOIN/Register%20on%20EU-Login.htm
