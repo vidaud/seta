@@ -10,7 +10,7 @@ from seta_flask_server.repository.models import CommunityChangeRequestModel
 from seta_flask_server.repository.interfaces import ICommunityChangeRequestsBroker, IUsersBroker
 from seta_flask_server.infrastructure.decorators import auth_validator
 from seta_flask_server.infrastructure.scope_constants import CommunityScopeConstants, SystemScopeConstants
-from seta_flask_server.infrastructure.constants import RequestStatusConstants
+from seta_flask_server.infrastructure.constants import RequestStatusConstants, UserRoleConstants
 
 from .models.community_dto import(new_change_request_parser, update_change_request_parser, change_request_model)
 
@@ -47,7 +47,9 @@ class CommunityChangeRequestList(Resource):
         user = self.usersBroker.get_user_by_id(user_id)        
         if user is None or user.is_not_active():
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
-        if not user.has_system_scope(SystemScopeConstants.ApproveCommunityChangeRequest):
+
+        hasApproveRight = user.role.lower() == UserRoleConstants.Admin.lower() or user.has_system_scope(SystemScopeConstants.ApproveCommunityChangeRequest)        
+        if not hasApproveRight:        
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
 
         return self.changeRequestsBroker.get_all_pending()
@@ -139,8 +141,9 @@ class CommunityChangeRequest(Resource):
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
         
         #if not the initiator of the request, verify ApproveChangeRequest scope
-        if request.requested_by != auth_id:            
-            if not user.has_system_scope(scope=SystemScopeConstants.ApproveCommunityChangeRequest):
+        if request.requested_by != auth_id:
+            hasApproveRight = user.role.lower() == UserRoleConstants.Admin.lower() or user.has_system_scope(SystemScopeConstants.ApproveCommunityChangeRequest)        
+            if not hasApproveRight:       
                 abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
         
         return request
@@ -164,7 +167,9 @@ class CommunityChangeRequest(Resource):
 
         if user is None or user.is_not_active():
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
-        if not user.has_system_scope(scope=SystemScopeConstants.ApproveCommunityChangeRequest):
+            
+        hasApproveRight = user.role.lower() == UserRoleConstants.Admin.lower() or user.has_system_scope(SystemScopeConstants.ApproveCommunityChangeRequest)        
+        if not hasApproveRight:
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
 
         request = None

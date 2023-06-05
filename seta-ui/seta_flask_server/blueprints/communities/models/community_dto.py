@@ -80,8 +80,8 @@ update_change_request_parser.add_argument("status",
                                   required=True,
                                   nullable=False,
                                   case_sensitive=False,
-                                  choices=RequestStatusConstants.List,
-                                  help=f"Status, one of {RequestStatusConstants.EditList}")
+                                  choices=RequestStatusConstants.EditList,
+                                  help=f"Change request status")
 
 
 change_request_model = Model("CommunityChangeRequest",
