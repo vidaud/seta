@@ -139,10 +139,8 @@ class UsersBroker(implements(IUsersBroker)):
                         self.collection.insert_one(claim.to_json(), session=session)
                         
                 #insert default system scopes
-                scopes = [
-                    SystemScope(user_id=user.user_id, system_scope=SystemScopeConstants.CreateCommunity, area="community").to_json()
-                          ]
-                self.collection.insert_many(scopes, session=session)
+                if user.system_scopes is not None and len(user.system_scopes) > 0:
+                    self.collection.insert_many(user.system_scopes, session=session)
 
         
         return user        

@@ -39,7 +39,7 @@ auth_data.add_argument("provider",
                         required=True,
                         nullable=False,
                         location='json',
-                        help="User or application name")
+                        help="Authentication provider")
 auth_data.add_argument("rsa_original_message",
                         required=True,
                         nullable=False,
