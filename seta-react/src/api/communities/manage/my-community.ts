@@ -108,3 +108,14 @@ export const deleteCommunityByID = async (id?: string) => {
 }
 // export const useNewCommunity = (properties?: CommunityAPI) =>
 //   useQuery(cacheKey(), () => createCommunity(properties))
+
+const getCommunityResources = async (id?: string): Promise<ResourceResponse[]> => {
+  const { data } = await community_api.get<ResourceResponse[]>(
+    `${environment.COMMUNITIES_API_PATH}/${id}/resources`
+  )
+
+  return data
+}
+
+export const useCommunityResources = (id?: string) =>
+  useQuery({ queryKey: cacheKey(id), queryFn: () => getCommunityResources(id) })

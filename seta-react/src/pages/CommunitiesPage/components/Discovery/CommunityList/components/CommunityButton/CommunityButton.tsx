@@ -42,7 +42,7 @@ const CommunityButton = props => {
             </Tooltip>
 
             <Button variant="filled" size="xs">
-              + JOINED
+              LEAVE
             </Button>
           </Group>
         ) : (

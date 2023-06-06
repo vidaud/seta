@@ -22,7 +22,10 @@ class Config:
     DEFAULT_FROM_DOC_NUMBER = 0
     SEARCH_TYPES = ["DOCUMENT_SEARCH", "CHUNK_SEARCH", "ALL_CHUNKS_SEARCH"]
     AGG_MISSING_NAME = "NO_CLASS"
-    
+
+    #term enrichment
+    DEFAULT_ENRICHMENT_TYPE = "similar"
+
     ES_HOST = "seta-es:9200"
     ES_INIT_DATA_DUMP_FILE = "seta-public-000001-8.2-data.zip"
     ES_UPDATE_DATA_DUMP_FILE = "dump10000_up.zip"
