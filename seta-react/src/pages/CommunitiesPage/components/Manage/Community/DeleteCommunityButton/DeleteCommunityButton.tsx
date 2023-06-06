@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Text, Popover, Button, Group, createStyles } from '@mantine/core'
+import { Text, Popover, Button, Group, createStyles, Title } from '@mantine/core'
 import { IconTrash } from '@tabler/icons-react'
 
 import { deleteCommunityByID } from '../../../../../../api/communities/manage/my-community'
@@ -16,7 +16,7 @@ const DeleteCommunity = ({ props }) => {
   const [opened, setOpened] = useState(false)
 
   const deleteCommunity = () => {
-    deleteCommunityByID(props.item.community_id)
+    deleteCommunityByID(props.communities.community_id)
   }
 
   return (
@@ -42,30 +42,48 @@ const DeleteCommunity = ({ props }) => {
           </Button>
         </Group>
       </Popover.Target>
-      <Popover.Dropdown
-        sx={theme => ({
-          background: theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.white
-        })}
-      >
-        <Text weight={500} className={cx(classes.form)}>
-          Are you sure you want to delete {props.item.community_id} community?
-        </Text>
-        <Text size="sm" className={cx(classes.form)}>
-          By deleting this community you also agree to delete its resources
-        </Text>
-        <Text size="sm" className={cx(classes.form)}>
-          Press Confirm to proceed with the deletion or press Cancel to abort
-        </Text>
+      {props.resources?.length === 0 ? (
+        <Popover.Dropdown
+          sx={theme => ({
+            background: theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.white
+          })}
+        >
+          <Text weight={500} className={cx(classes.form)}>
+            Are you sure you want to delete {props.communities.community_id} community?
+          </Text>
+          <Text size="sm" className={cx(classes.form)}>
+            Press Confirm to proceed with the deletion or press Cancel to abort
+          </Text>
+          <Group className={cx(classes.form)} position="right">
+            <Button variant="outline" size="xs" color="blue" onClick={() => setOpened(o => !o)}>
+              Cancel
+            </Button>
+            <Button size="xs" color="blue" onClick={() => deleteCommunity()}>
+              Confirm
+            </Button>
+          </Group>
+        </Popover.Dropdown>
+      ) : (
+        <Popover.Dropdown
+          sx={theme => ({
+            background: theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.white
+          })}
+        >
+          <Title color="orange" order={4}>
+            Warning!
+          </Title>
+          <Text size="sm" className={cx(classes.form)}>
+            {props.communities.community_id} community has {props.resources?.length} remaining
+            resources which should be deleted first to allow the community to be deleted.
+          </Text>
 
-        <Group className={cx(classes.form)} position="right">
-          <Button variant="outline" size="xs" color="blue" onClick={() => setOpened(o => !o)}>
-            Cancel
-          </Button>
-          <Button size="xs" color="blue" onClick={() => deleteCommunity()}>
-            Confirm
-          </Button>
-        </Group>
-      </Popover.Dropdown>
+          <Group className={cx(classes.form)} position="right">
+            <Button variant="outline" size="xs" color="blue" onClick={() => setOpened(o => !o)}>
+              Close
+            </Button>
+          </Group>
+        </Popover.Dropdown>
+      )}
     </Popover>
   )
 }
