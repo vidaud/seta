@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Table, Checkbox, ScrollArea, rem, TextInput, Group } from '@mantine/core'
+import { Table, ScrollArea, TextInput } from '@mantine/core'
 import { IconSearch } from '@tabler/icons-react'
 
 import type { Community } from '~/models/communities/communities'
@@ -11,11 +11,9 @@ import { useCommunities } from '../../../../../../api/communities/manage/my-comm
 import { ComponentEmpty, ComponentError } from '../../../common'
 import ComponentLoading from '../../../common/ComponentLoading'
 import { Th, sortCommunityData } from '../../../community-utils'
-import DeleteCommunity from '../DeleteCommunityButton/DeleteCommunityButton'
 
 const MyCommunityList = () => {
   const { classes, cx } = useStyles()
-  const [selection, setSelection] = useState(['1'])
   const [search, setSearch] = useState('')
   const [sortBy, setSortBy] = useState<keyof Community | null>(null)
   const [reverseSortDirection, setReverseSortDirection] = useState(false)
@@ -60,28 +58,9 @@ const MyCommunityList = () => {
     )
   }
 
-  const toggleRow = (community_id: string) =>
-    setSelection(current =>
-      current.includes(community_id)
-        ? current.filter(item => item !== community_id)
-        : [...current, community_id]
-    )
-  const toggleAll = () =>
-    setSelection(current =>
-      current.length === data.length ? [] : data.map(item => item.community_id)
-    )
   const rows = sortedData?.map(item => {
-    const selected = selection.includes(item.community_id)
-
     return (
-      <tr key={item.community_id} className={cx({ [classes.rowSelected]: selected })}>
-        <td>
-          <Checkbox
-            checked={selection.includes(item.community_id)}
-            onChange={() => toggleRow(item.community_id)}
-            transitionDuration={0}
-          />
-        </td>
+      <tr key={item.community_id}>
         <td>{item.community_id}</td>
         <td>{item.title}</td>
         <td>{item.description}</td>
@@ -104,9 +83,6 @@ const MyCommunityList = () => {
         value={search}
         onChange={handleSearchChange}
       />
-      <Group display={selection.length > 1 ? 'block' : 'none'}>
-        <DeleteCommunity />
-      </Group>
       <Table
         horizontalSpacing="md"
         verticalSpacing="xs"
@@ -117,14 +93,6 @@ const MyCommunityList = () => {
       >
         <thead>
           <tr>
-            <th style={{ width: rem(40) }}>
-              <Checkbox
-                onChange={toggleAll}
-                checked={selection.length === data.length}
-                indeterminate={selection.length > 0 && selection.length !== data.length}
-                transitionDuration={0}
-              />
-            </th>
             <Th
               sorted={sortBy === 'community_id'}
               reversed={reverseSortDirection}
