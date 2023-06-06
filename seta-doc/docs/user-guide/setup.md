@@ -144,7 +144,7 @@ After successful authentication, check that you have the following entries in th
 
 
 
-Open a new tab in the same browser for the [Community API swagger documentation](/api/communities/v1/doc)
+Open a new tab in the same browser for the [Community API swagger documentation](/seta-ui/api/v1/communities/doc)
 
 <figure markdown>
 ![Image title](../img/communities_api.png){ width="800" }

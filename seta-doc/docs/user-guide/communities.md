@@ -52,16 +52,26 @@ On the Manage panel it is possible to access to:
   <figcaption>New Community</figcaption>
 </figure>
 
-### Change the name of a Community                
+### Update details of a Community                
                         
-Only **users with rights to edit** can change the Community name.  
+Only **users with rights to edit** can change the Community name.                  
+
+**From My Communities list**
 
 1. From the side menu click on ^^Manage^^ -> ^^My Communities^^.  
 2. From the communities list click on the Community you want to change.  
-2. On the top of the community window click on button ^^Manage^^.  
-3. In the next window, in section ^^Details^^ click on button at the bottom of the section ^^Update^^.  
-4. You can change the details of your Community: *Community ID, Title, Description, Data Type, Membership*.     
-5. Click *Update*
+2. Click in the three dots at the right side of button ^^Invite^^ and select the option ^^Update^^.  
+3. In the next window, you can update the *Title* and *Description*.  
+4. Click *Update*
+
+**From Manage options**
+
+1. From the side menu click on ^^Manage^^ -> ^^My Communities^^.  
+2. From the communities list click on the Community you want to change.  
+2. Click in the three dots at the right side of button ^^Invite^^ and select the option ^^Manage^^.  
+3. In the next window, on section ^^Details^^, click on button you can update the *Title* and *Description*.  
+4. Click *Update*
+
 
  
 ### Difference between a manager and a creator in a Community
