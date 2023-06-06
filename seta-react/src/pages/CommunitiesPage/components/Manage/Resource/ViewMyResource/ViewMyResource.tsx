@@ -52,7 +52,7 @@ const ViewMyResource = () => {
   }
 
   const deleteResource = () => {
-    deleteResourceByID(rows?.resource_id, rows?.community_id)
+    deleteResourceByID(rows?.resource_id)
   }
 
   return (
@@ -98,7 +98,7 @@ const ViewMyResource = () => {
               </Button>
               <Link
                 className={classes.link}
-                to={`/my-resources/${rows?.resource_id}/update`}
+                to={`/my-communities/${rows?.community_id}/${rows?.resource_id}/update`}
                 replace={true}
               >
                 <Button>Update</Button>

@@ -3,6 +3,7 @@ import { createStyles, Table, ScrollArea, rem, Title, Badge, useMantineTheme } f
 import { useParams } from 'react-router-dom'
 
 import { useMembershipID } from '../../../../../../api/communities/membership'
+import { ComponentEmpty, ComponentError } from '../../../common'
 import ComponentLoading from '../../../common/ComponentLoading'
 import { jobColors } from '../../../types'
 
@@ -37,7 +38,7 @@ const CommunityMembers = () => {
   const { classes, cx } = useStyles()
   const [scrolled, setScrolled] = useState(false)
   const { id } = useParams()
-  const { data, isLoading } = useMembershipID(id)
+  const { data, isLoading, error, refetch } = useMembershipID(id)
   const [items, setItems] = useState(data)
   const theme = useMantineTheme()
 
@@ -47,13 +48,23 @@ const CommunityMembers = () => {
     }
   }, [data, items])
 
+  if (error) {
+    return <ComponentError onTryAgain={refetch} />
+  }
+
+  if (data) {
+    if (data?.members.length === 0) {
+      return <ComponentEmpty />
+    }
+  }
+
   if (isLoading || !data || !items) {
     return <ComponentLoading />
   }
 
   const rows =
-    items && items?.length > 0
-      ? items?.map(row => (
+    items && items?.members.length > 0
+      ? items?.members.map(row => (
           <tr key={row.user_id}>
             <td>{row.user_id}</td>
             <td>

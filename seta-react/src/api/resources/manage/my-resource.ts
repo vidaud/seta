@@ -1,44 +1,16 @@
 import { useQuery } from '@tanstack/react-query'
 import { getCookie } from 'typescript-cookie'
 
+import type {
+  CreateResourceAPI,
+  ResourceResponse,
+  UpdateResourceAPI
+} from '~/api/types/resource-types'
+
 import { environment } from '../../../environments/environment'
 import community_api from '../../communities/api'
 
 const RESOURCE_API_PATH = '/resources/'
-
-export type ResourceResponse = {
-  resource_id: string
-  community_id: string
-  title: string
-  abstract: string
-  limits: {
-    total_files_no: number
-    total_storage_mb: number
-    file_size_mb: number
-  }
-  status: string
-  creator_id: string
-  created_at: Date
-}
-
-export type CreateResourceAPI = {
-  community_id: string
-  resource_id: string
-  title: string
-  abstract: string
-}
-
-export type UpdateResourceAPI = {
-  community_id: string
-  resource_id: string
-  title: string
-  abstract: string
-}
-
-export type CreateInvitationAPI = {
-  email: string[]
-  message: string
-}
 
 export const cacheKey = (id?: string) => ['my-resources', id]
 export const cacheResourceKey = () => ['my-resources']
@@ -110,7 +82,7 @@ export const updateCommunityResource = async (
     })
 }
 
-export const deleteResourceByID = async (resource_id?: string, id?: string) => {
+export const deleteResourceByID = async (resource_id?: string) => {
   await community_api
     .delete(`${RESOURCE_API_PATH}${resource_id}`, {
       headers: {

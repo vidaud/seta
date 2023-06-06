@@ -13,7 +13,6 @@ import {
 import { IconEye, IconSearch } from '@tabler/icons-react'
 import { Link } from 'react-router-dom'
 
-import type { ResourcesResponse } from '~/api/resources/manage/my-resources'
 import type { Resource } from '~/models/communities/resources'
 
 import { useAllResources } from '../../../../../api/resources/discover/discover-resources'
@@ -29,7 +28,7 @@ const ResourceList = () => {
   const [scrolled, setScrolled] = useState(false)
 
   const { data, isLoading, error, refetch } = useAllResources()
-  const [sortedData, setSortedData] = useState<ResourcesResponse[]>([])
+  const [sortedData, setSortedData] = useState<Resource[]>([])
 
   const useStyles = createStyles(theme => ({
     header: {
@@ -175,7 +174,7 @@ const ResourceList = () => {
               reversed={reverseSortDirection}
               onSort={() => setSorting('created_at')}
             >
-              Data Type
+              Created At
             </Th>
             <Th
               sorted={sortBy === 'creator_id'}

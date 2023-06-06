@@ -1,6 +1,7 @@
 from flask import json
 from datetime import datetime
 import pytz
+from seta_flask_server.infrastructure.scope_constants import SystemScopeConstants
 import shortuuid
 
 from .user_claim import UserClaim
@@ -239,11 +240,7 @@ class SetaUser:
                                                     last_name=json_dct['lastName'],
                                                     domain=json_dct['domain'])
         
-        is_admin = json_dct.get('is_admin')
-        if not is_admin:
-            user.add_claim(UserClaim.create_default_role_claim(user_id))
-        else:
-            user.add_claim(UserClaim.create_role_claim(user_id, UserRoleConstants.Admin))
+        set_common_props(user, json_dct.get('is_admin', False))
         
         return user
     
@@ -269,10 +266,23 @@ class SetaUser:
                                                         first_name=first_name, last_name=last_name,
                                                         domain=json_dct['company'])
         
-        is_admin = json_dct.get('is_admin')
-        if not is_admin:
-            user.add_claim(UserClaim.create_default_role_claim(user_id))
-        else:
-            user.add_claim(UserClaim.create_role_claim(user_id, UserRoleConstants.Admin))
+        set_common_props(user, json_dct.get('is_admin', False))
         
         return user
+    
+def set_common_props(user: SetaUser, is_admin: bool):
+
+    if is_admin:
+        user.add_claim(UserClaim.create_role_claim(user.user_id, UserRoleConstants.Admin))   
+
+        user.system_scopes = [
+                    SystemScope(user_id=user.user_id, system_scope=SystemScopeConstants.CreateCommunity, area="community").to_json(),
+                    SystemScope(user_id=user.user_id, system_scope=SystemScopeConstants.ApproveCommunityChangeRequest, area="community").to_json(),
+                    SystemScope(user_id=user.user_id, system_scope=SystemScopeConstants.ApproveResourceChangeRequest, area="community").to_json()
+                ]
+     
+    else:
+        user.add_claim(UserClaim.create_default_role_claim(user.user_id))
+        user.system_scopes = [
+                    SystemScope(user_id=user.user_id, system_scope=SystemScopeConstants.CreateCommunity, area="community").to_json()
+                    ]

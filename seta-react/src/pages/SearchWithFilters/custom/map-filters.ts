@@ -70,32 +70,42 @@ const mapResourcesToFilter = (value: SourceInfo[]): { nodes: TreeNode[]; array: 
   const nodes: TreeNode[] = []
   const array: FilterData[] = []
 
-  value.forEach(s => {
-    const source: TreeNode = {
-      key: `${s.key}`,
-      label: `${s.key} (${s.doc_count})`
+  value.forEach(source => {
+    const sourceNode: TreeNode = {
+      key: `${source.key}`,
+      label: `${source.key} (${source.doc_count})`
     }
 
-    nodes.push(source)
-    array.push({ key: s.key, label: s.key, category: 'source', count: s.doc_count })
+    nodes.push(sourceNode)
+    array.push({ key: source.key, label: source.key, category: 'source', count: source.doc_count })
 
-    if (s.collections) {
-      source.children = s.collections.map(c => {
+    if (source.collections) {
+      sourceNode.children = source.collections.map(collection => {
         const colNode: TreeNode = {
-          key: `${s.key}:${c.key}`,
-          label: `${c.key} (${s.doc_count})`
+          key: `${source.key}:${collection.key}`,
+          label: `${collection.key} (${collection.doc_count})`
         }
 
-        array.push({ key: colNode.key, label: c.key, category: 'collection', count: c.doc_count })
+        array.push({
+          key: colNode.key,
+          label: collection.key,
+          category: 'collection',
+          count: collection.doc_count
+        })
 
-        if (c.references) {
-          colNode.children = c.references.map(r => {
+        if (collection.references) {
+          colNode.children = collection.references.map(reference => {
             const refNode: TreeNode = {
-              key: `${s.key}:${c.key}:${r.key}`,
-              label: `${r.key} (${s.doc_count})`
+              key: `${source.key}:${collection.key}:${reference.key}`,
+              label: `${reference.key} (${reference.doc_count})`
             }
 
-            array.push({ key: refNode.key, label: r.key, category: 'resource', count: r.doc_count })
+            array.push({
+              key: refNode.key,
+              label: reference.key,
+              category: 'resource',
+              count: reference.doc_count
+            })
 
             return refNode
           })

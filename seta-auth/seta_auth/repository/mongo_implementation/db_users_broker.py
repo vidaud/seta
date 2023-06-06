@@ -16,7 +16,7 @@ class UsersBroker(implements(IUsersBroker)):
     
     
     def get_user_by_id(self, user_id: str) -> SetaUser:
-        filter = {"user_id": user_id}
+        filter = {"user_id": user_id, "email": {"$exists" : True}}
         
         user = self.collection.find_one(filter)
         

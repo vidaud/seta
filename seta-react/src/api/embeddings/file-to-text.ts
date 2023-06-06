@@ -2,12 +2,9 @@ import { useQuery } from '@tanstack/react-query'
 import type { AxiosRequestConfig } from 'axios'
 
 import api from '../api'
+import type { FileToTextResponse } from '../types/file-to-text.-types'
 
 const FILE_TO_TEXT_API_PATH = '/file_to_text'
-
-export type FileToTextResponse = {
-  text: string
-}
 
 export const queryKey = {
   root: 'file_to_text',

@@ -1,7 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { Box, Group, Text, Title, createStyles, Radio, Flex, Select, Paper } from '@mantine/core'
 
-import type { DocumentsOptions, DocumentsResponse } from '~/api/embeddings/taxonomy'
+import type { DocumentsOptions } from '~/api/embeddings/taxonomy'
+import type { DocumentsResponse } from '~/api/types/taxonomy-types'
 
 import { useDocuments } from '../../../../../../../api/embeddings/taxonomy'
 import TaxonomyTree from '../../../../../../SearchPageNew/components/documents/DocumentInfo/components/TaxonomyTree/TaxonomyTree'
@@ -38,7 +39,6 @@ export const StepperThree = () => {
     const { taxonomies } = response.aggregations ?? {}
 
     setTaxValue(taxonomies)
-    console.log(response)
   }
 
   const { data } = useDocuments({
@@ -49,7 +49,6 @@ export const StepperThree = () => {
   useEffect(() => {
     if (data) {
       console.log(data)
-      console.log(taxValue)
     }
   }, [data, taxValue])
 
@@ -88,7 +87,7 @@ export const StepperThree = () => {
                       value={taxonomy}
                       data={taxValue ? taxValue : []}
                       onChange={() => {
-                        handleTaxonomyChange
+                        handleTaxonomyChange()
                         setShowTree(true)
                       }}
                       withAsterisk

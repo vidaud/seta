@@ -4,13 +4,13 @@ import { IconSearch } from '@tabler/icons-react'
 
 import type { Community } from '~/models/communities/communities'
 
+import CommunityButtons from './components/CommunityButtons/CommunityButtons'
 import { useStyles } from './constants'
 
 import { useCommunities } from '../../../../../../api/communities/manage/my-communities'
 import { ComponentEmpty, ComponentError } from '../../../common'
 import ComponentLoading from '../../../common/ComponentLoading'
 import { Th, sortCommunityData } from '../../../community-utils'
-import CommunityButtons from '../CommunityButtons/CommunityButtons'
 import DeleteCommunity from '../DeleteCommunityButton/DeleteCommunityButton'
 
 const MyCommunityList = () => {
@@ -85,7 +85,7 @@ const MyCommunityList = () => {
         <td>{item.community_id}</td>
         <td>{item.title}</td>
         <td>{item.description}</td>
-        <td>{item.data_type}</td>
+        {/* <td>{item.data_type}</td> */}
         <td>{item.membership}</td>
         <td>{item.status}</td>
         <td>
@@ -146,13 +146,13 @@ const MyCommunityList = () => {
             >
               Description
             </Th>
-            <Th
+            {/* <Th
               sorted={sortBy === 'data_type'}
               reversed={reverseSortDirection}
               onSort={() => setSorting('data_type')}
             >
               Data Type
-            </Th>
+            </Th> */}
             <Th
               sorted={sortBy === 'membership'}
               reversed={reverseSortDirection}
