@@ -1,8 +1,10 @@
+import { useEffect, useState } from 'react'
 import { Group, ActionIcon, Menu, createStyles, Tooltip } from '@mantine/core'
-import { IconDots, IconPencil, IconTrash, IconEye, IconSettings } from '@tabler/icons-react'
+import { IconDots, IconPencil, IconEye, IconSettings } from '@tabler/icons-react'
 import { Link } from 'react-router-dom'
 
-import { deleteCommunityByID } from '../../../../../../../../api/communities/manage/my-community'
+import { useCommunityID } from '../../../../../../../../api/communities/manage/my-community'
+import DeleteCommunity from '../../../DeleteCommunityButton/DeleteCommunityButton'
 import InviteMember from '../../../InviteMemberModal/InviteMemberModal'
 
 const useStyles = createStyles({
@@ -11,16 +13,20 @@ const useStyles = createStyles({
   }
 })
 
-const CommunityButtons = item => {
+const CommunityButtons = ({ item }) => {
   const { classes } = useStyles()
+  const { data } = useCommunityID(item.community_id)
+  const [row, setRow] = useState(data)
 
-  const deleteCommunity = () => {
-    deleteCommunityByID(item.item.community_id)
-  }
+  useEffect(() => {
+    if (data) {
+      setRow(data)
+    }
+  }, [data, row])
 
   return (
     <Group spacing={0} position="right">
-      <InviteMember id={item.item.community_id} />
+      <InviteMember id={item.community_id} />
 
       <Menu transitionProps={{ transition: 'pop' }} withArrow position="bottom-end" withinPortal>
         <Menu.Target>
@@ -33,32 +39,22 @@ const CommunityButtons = item => {
         <Menu.Dropdown>
           <Link
             className={classes.link}
-            to={`/my-communities/${item.item.community_id}/update`}
+            to={`/my-communities/${item.community_id}/update`}
             replace={true}
           >
             <Menu.Item icon={<IconPencil size="1rem" stroke={1.5} />}>Update</Menu.Item>
           </Link>
           <Link
             className={classes.link}
-            to={`/my-communities/${item.item.community_id}/manage`}
+            to={`/my-communities/${item.community_id}/manage`}
             replace={true}
           >
             <Menu.Item icon={<IconSettings size="1rem" stroke={1.5} />}>Manage</Menu.Item>
           </Link>
-          <Link
-            className={classes.link}
-            to={`/my-communities/${item.item.community_id}`}
-            replace={true}
-          >
+          <Link className={classes.link} to={`/my-communities/${item.community_id}`} replace={true}>
             <Menu.Item icon={<IconEye size="1rem" stroke={1.5} />}>View Details</Menu.Item>
           </Link>
-          <Menu.Item
-            icon={<IconTrash size="1rem" stroke={1.5} />}
-            color="red"
-            onClick={deleteCommunity}
-          >
-            Delete Community
-          </Menu.Item>
+          <DeleteCommunity props={row} />
         </Menu.Dropdown>
       </Menu>
     </Group>

@@ -1,8 +1,8 @@
 import { Group, ActionIcon, Menu, createStyles, Tooltip } from '@mantine/core'
-import { IconDots, IconPencil, IconTrash, IconEye } from '@tabler/icons-react'
+import { IconDots, IconPencil, IconEye } from '@tabler/icons-react'
 import { Link } from 'react-router-dom'
 
-import { deleteResourceByID } from '../../../../../../../../api/resources/manage/my-resource'
+import DeleteResource from '../../../DeleteResourceButton/DeleteResourceButton'
 
 const useStyles = createStyles({
   link: {
@@ -12,10 +12,6 @@ const useStyles = createStyles({
 
 const ResourceButtons = item => {
   const { classes } = useStyles()
-
-  const deleteResource = () => {
-    deleteResourceByID(item.item.resource_id)
-  }
 
   return (
     <Group spacing={0}>
@@ -43,14 +39,7 @@ const ResourceButtons = item => {
           >
             <Menu.Item icon={<IconEye size="1rem" stroke={1.5} />}>View Details</Menu.Item>
           </Link>
-
-          <Menu.Item
-            icon={<IconTrash size="1rem" stroke={1.5} />}
-            color="red"
-            onClick={deleteResource}
-          >
-            Delete Resource
-          </Menu.Item>
+          <DeleteResource props={item} />
         </Menu.Dropdown>
       </Menu>
     </Group>
