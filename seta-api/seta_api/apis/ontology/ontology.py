@@ -40,9 +40,11 @@ class Ontology(Resource):
 
 
 ontology_list_parser = reqparse.RequestParser()
-ontology_list_parser.add_argument('terms', required=True, action="split")
+ontology_list_parser.add_argument('terms', action="split")
+ontology_list_parser.add_argument('term')
 ontology_list_resp = {"nodes": fields.List(fields.List(fields.String))}
 ontology_list_response_model = ontology_api.model("ontology_list_response_model", ontology_list_resp)
+
 
 @ontology_api.route("ontology-list")
 @ontology_api.doc(
@@ -53,7 +55,8 @@ ontology_list_response_model = ontology_api.model("ontology_list_response_model"
                 'The result should be interpretd as follows: the first item in each sublist is first level'
                 ' connection to the query term. The following terms in sublists have second level relation'
                 ' to the main query term and direct connection to the head of sublist.',
-    params={'terms': 'The list of terms from which build the ontology tree.'},
+    params={'term': 'The term from which build the ontology tree.',
+            'terms': 'TO BE REMOVED'},
     responses={200: 'Success', 404: 'Not Found Error'},
     security='apikey')
 @ontology_api.response(200, 'Success', ontology_list_response_model)
@@ -62,9 +65,8 @@ class OntologyList(Resource):
     @ontology_api.expect(ontology_list_parser)
     def get(self):
         args = ontology_list_parser.parse_args()
-
         try:
-            graphjs = build_tree(args['terms'], current_app=app)
+            graphjs = build_tree(args['term'], args['terms'], current_app=app)
             return jsonify(graphjs)
         except ApiLogicError as aex:
             abort(404, str(aex))

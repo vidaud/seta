@@ -1,5 +1,4 @@
-from seta_api.infrastructure.ApiLogicError import ApiLogicError
-from seta_api.infrastructure.utils.w2v_elasticsearch import (word_exists, get_size, 
+from seta_api.infrastructure.utils.w2v_elasticsearch import (word_exists, get_size,
                                                 get_most_similar,is_similarity_gt_value)
 
 import copy
@@ -8,13 +7,12 @@ import itertools
 
 
 def build_graph(term, current_app):
-
+    graphjs = {"nodes": [], "links": []}
     if not word_exists(current_app, term):
-        raise ApiLogicError('Term out of vocabulary.')
+        return graphjs
 
     size = get_size(term, current_app)
-    graphjs = {"nodes": [{"id": term, "depth": '0', "size": size, 'graph_size': sqrt(size) // 40 + 3}],
-               "links": []}
+    graphjs["nodes"].append({"id": term, "depth": '0', "size": size, 'graph_size': sqrt(size) // 40 + 3})
 
     nodes = get_most_similar(term, current_app, 7)
 
@@ -37,14 +35,24 @@ def build_graph(term, current_app):
     return graphjs
 
 
-def build_tree(terms, current_app):
+def build_tree(term, terms, current_app):
     total_nodes = set()
-    for term in terms:
-        if not word_exists(current_app, term):
-            continue
-        partial_nodes = get_most_similar(term, current_app, 20)
-        total_nodes.update(partial_nodes)
-    nodes = list(total_nodes)
+    nodes = []
+    if term:
+        nodes = get_most_similar(term, current_app, 20)
+        #to let the check in building tree phase work
+        terms = [term]
+        #if the above line is removed in the code
+        #instead of "not in terms" -> "!= term"
+
+    if terms:
+        for t in terms:
+            if not word_exists(current_app, t):
+                continue
+            partial_nodes = get_most_similar(t, current_app, 20)
+            total_nodes.update(partial_nodes)
+        nodes = list(total_nodes)
+
     graphjs = {"nodes": []}
     nodes2 = []
     done = []
