@@ -1,20 +1,44 @@
+import { useState } from 'react'
 import { Text, Popover, Button, Group, createStyles } from '@mantine/core'
+import { IconTrash } from '@tabler/icons-react'
 
-const useStyles = createStyles({
+import { deleteCommunityByID } from '../../../../../../api/communities/manage/my-community'
+
+const useStyles = createStyles(theme => ({
   form: {
     marginTop: '20px'
-  }
-})
+  },
+  text: { paddingBottom: theme.spacing.md }
+}))
 
-const DeleteCommunity = () => {
+const DeleteCommunity = ({ props }) => {
   const { classes, cx } = useStyles()
+  const [opened, setOpened] = useState(false)
+
+  const deleteCommunity = () => {
+    deleteCommunityByID(props.item.community_id)
+  }
 
   return (
-    <Popover width={300} trapFocus position="bottom" withArrow shadow="md">
+    <Popover
+      width={300}
+      trapFocus
+      position="bottom"
+      withArrow
+      shadow="md"
+      opened={opened}
+      onChange={setOpened}
+    >
       <Popover.Target>
         <Group position="left">
-          <Button className="deleteCommunity" color="red">
-            Delete
+          <Button
+            className="deleteCommunity"
+            variant="outline"
+            color="red"
+            leftIcon={<IconTrash size="1rem" stroke={1.5} />}
+            onClick={() => setOpened(o => !o)}
+          >
+            Delete Community
           </Button>
         </Group>
       </Popover.Target>
@@ -23,14 +47,22 @@ const DeleteCommunity = () => {
           background: theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.white
         })}
       >
-        <Text>Are you sure you want to delete this community?</Text>
+        <Text weight={500} className={cx(classes.form)}>
+          Are you sure you want to delete {props.item.community_id} community?
+        </Text>
+        <Text size="sm" className={cx(classes.form)}>
+          By deleting this community you also agree to delete its resources
+        </Text>
+        <Text size="sm" className={cx(classes.form)}>
+          Press Confirm to proceed with the deletion or press Cancel to abort
+        </Text>
 
         <Group className={cx(classes.form)} position="right">
-          <Button variant="outline" size="xs" color="blue">
+          <Button variant="outline" size="xs" color="blue" onClick={() => setOpened(o => !o)}>
             Cancel
           </Button>
-          <Button size="xs" color="red">
-            Delete
+          <Button size="xs" color="blue" onClick={() => deleteCommunity()}>
+            Confirm
           </Button>
         </Group>
       </Popover.Dropdown>

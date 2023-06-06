@@ -101,8 +101,6 @@ const ResourceList = () => {
             <td>{row.title}</td>
             <td>{row.abstract}</td>
             <td>{new Date(row.created_at).toDateString()}</td>
-            <td>{row.creator_id}</td>
-            <td>{row.status}</td>
             <td>
               <Group>
                 <Tooltip label="View Details">
@@ -175,20 +173,6 @@ const ResourceList = () => {
               onSort={() => setSorting('created_at')}
             >
               Created At
-            </Th>
-            <Th
-              sorted={sortBy === 'creator_id'}
-              reversed={reverseSortDirection}
-              onSort={() => setSorting('creator_id')}
-            >
-              Membership
-            </Th>
-            <Th
-              sorted={sortBy === 'status'}
-              reversed={reverseSortDirection}
-              onSort={() => setSorting('status')}
-            >
-              Status
             </Th>
             <th> </th>
           </tr>

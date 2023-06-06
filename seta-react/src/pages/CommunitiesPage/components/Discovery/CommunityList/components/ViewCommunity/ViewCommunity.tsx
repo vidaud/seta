@@ -87,7 +87,7 @@ const ViewCommunity = () => {
             </Table>
             <Group spacing={30} position="right">
               <Button variant="filled" size="xs">
-                + JOINED
+                LEAVE
               </Button>
             </Group>
           </Card>

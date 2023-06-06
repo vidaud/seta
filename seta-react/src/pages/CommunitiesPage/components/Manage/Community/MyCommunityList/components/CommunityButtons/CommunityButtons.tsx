@@ -1,8 +1,8 @@
 import { Group, ActionIcon, Menu, createStyles, Tooltip } from '@mantine/core'
-import { IconDots, IconPencil, IconTrash, IconEye, IconSettings } from '@tabler/icons-react'
+import { IconDots, IconPencil, IconEye, IconSettings } from '@tabler/icons-react'
 import { Link } from 'react-router-dom'
 
-import { deleteCommunityByID } from '../../../../../../../../api/communities/manage/my-community'
+import DeleteCommunity from '../../../DeleteCommunityButton/DeleteCommunityButton'
 import InviteMember from '../../../InviteMemberModal/InviteMemberModal'
 
 const useStyles = createStyles({
@@ -13,10 +13,6 @@ const useStyles = createStyles({
 
 const CommunityButtons = item => {
   const { classes } = useStyles()
-
-  const deleteCommunity = () => {
-    deleteCommunityByID(item.item.community_id)
-  }
 
   return (
     <Group spacing={0} position="right">
@@ -52,13 +48,7 @@ const CommunityButtons = item => {
           >
             <Menu.Item icon={<IconEye size="1rem" stroke={1.5} />}>View Details</Menu.Item>
           </Link>
-          <Menu.Item
-            icon={<IconTrash size="1rem" stroke={1.5} />}
-            color="red"
-            onClick={deleteCommunity}
-          >
-            Delete Community
-          </Menu.Item>
+          <DeleteCommunity props={item} />
         </Menu.Dropdown>
       </Menu>
     </Group>
