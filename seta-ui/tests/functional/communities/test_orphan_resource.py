@@ -34,7 +34,7 @@ def test_orphan(client: FlaskClient, authentication_url: str, seta_api_corpus: s
     access_token = response_json["access_token"]
     
     response = create_community(client=client, access_token=access_token, 
-                    id="blue", title="Blue Community", description="Blue Community for test", data_type="representative")
+                    id="blue", title="Blue Community", description="Blue Community for test")
     assert response.status_code == HTTPStatus.CREATED
     
     response = create_resource(client=client, access_token=access_token, community_id=community_id,

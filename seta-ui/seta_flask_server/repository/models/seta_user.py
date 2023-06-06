@@ -278,7 +278,7 @@ def set_common_props(user: SetaUser, is_admin: bool):
         user.system_scopes = [
                     SystemScope(user_id=user.user_id, system_scope=SystemScopeConstants.CreateCommunity, area="community").to_json(),
                     SystemScope(user_id=user.user_id, system_scope=SystemScopeConstants.ApproveCommunityChangeRequest, area="community").to_json(),
-                    SystemScope(user_id=user.user_id, system_scope=SystemScopeConstants.ApproveResourceChangeRequest, area="community").to_json()
+                    SystemScope(user_id=user.user_id, system_scope=SystemScopeConstants.ApproveResourceChangeRequest, area="resource").to_json()
                 ]
      
     else:

@@ -8,7 +8,6 @@ class CommunityModel:
     title: str
     description: str
     membership: str
-    data_type: str
     status: str
     creator_id: str = None
     created_at: datetime = None
@@ -32,7 +31,6 @@ class CommunityModel:
         return{
             "title": self.title,
             "description": self.description,
-            "data_type": self.data_type,
             "status": self.status,
             "modified_at": self.modified_at
         }
@@ -43,7 +41,6 @@ class CommunityModel:
                    title=json_dict["title"],
                    description=json_dict["description"],
                    membership=json_dict["membership"],
-                   data_type=json_dict["data_type"],
                    status=json_dict["status"],
                    creator_id=json_dict["creator_id"],
                    created_at=json_dict["created_at"],

@@ -8,16 +8,16 @@ def get_community(client: FlaskClient, access_token:str, id: str):
 
     return client.get(url, content_type='application/json', headers=auth_headers(access_token))
 
-def create_community(client: FlaskClient, access_token:str, id: str, title: str, description: str, data_type: str):
+def create_community(client: FlaskClient, access_token:str, id: str, title: str, description: str):
     url = f"{API_V1}/communities/"
 
-    data=f"community_id={id}&title={title}&description={description}&data_type={data_type}" 
+    data=f"community_id={id}&title={title}&description={description}" 
     return client.post(url, data=data, content_type="application/x-www-form-urlencoded", headers=auth_headers(access_token))
 
-def update_community(client: FlaskClient, access_token:str, id: str, title: str, description: str, data_type: str, status: str):
+def update_community(client: FlaskClient, access_token:str, id: str, title: str, description: str,status: str):
     url = f"{API_V1}/communities/{id}"
 
-    data=f"title={title}&description={description}&data_type={data_type}&status={status}" 
+    data=f"title={title}&description={description}&status={status}" 
     return client.put(url, data=data, content_type="application/x-www-form-urlencoded", headers=auth_headers(access_token))
 
 def delete_community(client: FlaskClient, access_token:str, id: str):

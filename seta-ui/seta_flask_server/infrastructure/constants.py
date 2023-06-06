@@ -35,17 +35,22 @@ class CommunityMembershipConstants:
     Opened = "opened"
     Closed = "closed"
     List = [Opened, Closed]
+
+class DiscoverCommunityStatus:
+    Unknown = "unknown"
+    Member = "membership"
+    Pending = "pending"
+    Invited = "invited"
+    Rejected = "rejected"
+
+    List = [Unknown, Member, Pending, Invited, Rejected]
+    
     
 class CommunityRoleConstants:        
     Owner = "CommunityOwner"
     Manager = "CommunityManager"
     ResourceCreator = "ResourceCreator"
     Member = "CommunityMember"
-    
-class CommunityDataTypeConstants:
-    Evidence = "evidence"
-    Representative = "representative"
-    List = [Evidence, Representative]
     
 class CommunityRequestFieldConstants:
     Membership = "membership"

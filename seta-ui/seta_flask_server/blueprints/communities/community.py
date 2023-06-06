@@ -11,6 +11,8 @@ from seta_flask_server.infrastructure.decorators import auth_validator
 from seta_flask_server.infrastructure.scope_constants import CommunityScopeConstants, SystemScopeConstants
 from seta_flask_server.infrastructure.constants import CommunityMembershipConstants, CommunityStatusConstants
 
+from seta_flask_server.infrastructure.clients.private_api_client import PrivateResourceClient
+
 from http import HTTPStatus
 from .models.community_dto import(new_community_parser, update_community_parser, community_model, user_info_model)
 
@@ -44,7 +46,7 @@ class CommunityList(Resource):
     
     @communities_ns.doc(description='Create a new community and add this user as a member with elevated scopes.',        
         responses={int(HTTPStatus.CREATED): "Added new community.", 
-                   int(HTTPStatus.FORBIDDEN): "Insufficient rights, scope 'community/create' required",
+                   int(HTTPStatus.FORBIDDEN): "Insufficient rights, scope '/seta/community/create' required",
                    int(HTTPStatus.CONFLICT): "Community already exists."},
         security='CSRF')
     @communities_ns.expect(new_community_parser)
@@ -73,10 +75,12 @@ class CommunityList(Resource):
             id_exists = self.communitiesBroker.community_id_exists(community_id)
                        
             if not id_exists:
-                model = CommunityModel(community_id=community_id, title=community_dict["title"], description=community_dict["description"], 
-                                    membership=CommunityMembershipConstants.Closed, 
-                                    data_type=community_dict["data_type"], status=CommunityStatusConstants.Active, 
-                                    creator_id=identity["user_id"])
+                model = CommunityModel(community_id=community_id, 
+                                       title=community_dict["title"], 
+                                       description=community_dict["description"], 
+                                        membership=CommunityMembershipConstants.Closed, 
+                                        status=CommunityStatusConstants.Active, 
+                                        creator_id=identity["user_id"])
 
                 scopes = [
                     EntityScope(user_id=model.creator_id,  id=model.community_id, scope=CommunityScopeConstants.Owner).to_community_json(),
@@ -113,7 +117,7 @@ class Community(Resource):
         
         super().__init__(api, *args, **kwargs)
     
-    @communities_ns.doc(description='Retrieve community, if user is a member of it',        
+    @communities_ns.doc(description='Retrieve a community',        
         responses={int(HTTPStatus.OK): "Retrieved community.",
                    int(HTTPStatus.NOT_FOUND): "Community id not found."
                   },
@@ -151,14 +155,14 @@ class Community(Resource):
         if not self.communitiesBroker.community_id_exists(id):
             abort(HTTPStatus.NOT_FOUND)
 
-        if not user.has_community_scope(id=id, scope=CommunityScopeConstants.Manager):
+        if not user.has_any_community_scope(id=id, scopes=[CommunityScopeConstants.Owner, CommunityScopeConstants.Manager]):
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")       
         
         community_dict = update_community_parser.parse_args()
         
         try:            
             model = CommunityModel(community_id=id, title=community_dict["title"], description=community_dict["description"], 
-                                    membership=None, data_type=community_dict["data_type"], status=community_dict["status"])
+                                    membership=None, status=community_dict["status"])
             
             self.communitiesBroker.update(model)
         except:
