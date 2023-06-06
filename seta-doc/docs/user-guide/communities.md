@@ -7,11 +7,9 @@ In the SeTA web application, we have two types of communities: public communitie
 
 * **Private Community**:  The information and conversations can only be accessed by users with log-ins(often sent via invitation to a specific user). All users are forced to ask for authorization to join and then been able to see content and conversations. In this type of communities, the administrators have the ability to deny access to users who don't fit membership credentials.
 
-
 ## Communities Web Interface
 
-On the main page of the Communities, there are two side panels on the left side: *Discovery* and *Manage* and in the center, there is a list of the Communities the user had Join.
-
+On the main page of the Communities, there are two side panels on the left side: *Discovery* and *Manage* and in the centre, there is a list of the Communities the user had Join.
 
 On the Discovery panel it is possible to access to:
 
@@ -23,12 +21,10 @@ On the Manage panel it is possible to access to:
 - My Communities                 
 - My Resources               
 
-
 <figure markdown>
   ![Image title](../img/seta_communities.png)
   <figcaption>Communities page</figcaption>
 </figure>
-
 
 ### Create a Community
                      
@@ -46,7 +42,6 @@ On the Manage panel it is possible to access to:
 </figure>
 
 
-
 <figure markdown>
   ![Image title](../img/new_community.png)
   <figcaption>New Community</figcaption>
@@ -59,21 +54,71 @@ Only **users with rights to edit** can change the Community name.
 **From My Communities list**
 
 1. From the side menu click on ^^Manage^^ -> ^^My Communities^^.  
-2. From the communities list click on the Community you want to change.  
+2. You can either enter in the search bar the name of the Community you are looking for or select from the Community list.  
 2. Click in the three dots at the right side of button ^^Invite^^ and select the option ^^Update^^.  
 3. In the next window, you can update the *Title* and *Description*.  
-4. Click *Update*
+4. Click ^^Update^^
 
-**From Manage options**
+**From Manage option**
 
 1. From the side menu click on ^^Manage^^ -> ^^My Communities^^.  
-2. From the communities list click on the Community you want to change.  
+2. You can either enter in the search bar the name of the Community you are looking for or select from the Community list.  
 2. Click in the three dots at the right side of button ^^Invite^^ and select the option ^^Manage^^.  
-3. In the next window, on section ^^Details^^, click on button you can update the *Title* and *Description*.  
-4. Click *Update*
+3. In the next window, on section ^^Details^^, click on button ^^Update^^ 
+4. You can update the *Title* and *Description*.  
+5. Click ^^Update^^
 
+**From View Details option**
+
+1. From the side menu click on ^^Manage^^ -> ^^My Communities^^.  
+2. You can either enter in the search bar the name of the Community you are looking for or select from the Community list.  
+2. Click in the three dots at the right side of button ^^Invite^^ and select the option ^^View Details^^.  
+3. In the next window, on section ^^Details^^, click on button ^^Manage^^ 
+4. In the next window, on section ^^Details^^, click on button ^^Update^^ 
+5. You can update the *Title* and *Description*.  
+6. Click ^^Update^^
+
+### Create a Resource in a Community
+
+**Create a Resource in a Community from Manage**   
+1. From the side menu click on ^^Manage^^ -> ^^My Communities^^.  
+2. You can either enter in the search bar the name of the Community you are looking for or select from the Community list.   
+3. Click in the three dots at the right side of button ^^Invite^^ and select the option ^^Manage^^.    
+4. In the next window, click on button ^^New Resource^^ on the top right.  
+5. Setup the *Resource ID, Title, Abstract* and click *Save*
+
+** Create a Resource in a Community from View Details**   
+1. From the side menu click on ^^Manage^^ -> ^^My Communities^^.  
+2. You can either enter in the search bar the name of the Community you are looking for or select from the Community list.      
+3. Click in the three dots at the right side of button ^^Invite^^ and select the option ^^View Details^^.       
+4. In the next window, you can either go to section ^^Details^^ or section ^^STATS^^.    
+5. On section ^^Details^^, click on button ^^Manage^^ or and click on button ^^New Resource^^ on the top right.  
+5. On section ^^STATS^^, click on button ^^New Resource^^ at the button.  
+6. On both options, setup the *Resource ID, Title, Abstract* and click *Save*
 
  
+
+### Update details of a Resource                
+
+**From Update option**
+
+1. From the side menu click on ^^Manage^^ -> ^^My Resources^^.  
+2. You can either enter in the search bar the name of the Resource you are looking for or select from the Resources list.  
+2. Click in the three dots at the right side of each Resource and select the option ^^Update^^.  
+3. In the next window, you can update the *Title* and *Abstract*.  
+4. Click ^^Update^^
+
+**From View Details option**
+
+1. From the side menu click on ^^Manage^^ -> ^^My Resources^^.  
+2. You can either enter in the search bar the name of the Resource you are looking for or select from the Resources list.  
+2. Click in the three dots at the right side of each Resource and select the option ^^View Details^^.  
+3. In the next window, click on button ^^Update^^ at the button.  
+4. You can update the *Title* and *Abstract*.  
+5. Click ^^Update^^
+
+
+
 ### Difference between a manager and a creator in a Community
               
 **As a Community creator he will have the following tasks:**
@@ -86,7 +131,6 @@ Only **users with rights to edit** can change the Community name.
 - Remove documents and comments on documents. 
 - Remove and block people from the Community. 
 - Upload or remove a document. 
-
 
 **As a Community manager he will have the following tasks:**
 
@@ -114,7 +158,6 @@ Only **users with rights to edit** can change the Community name.
     
 <!--check if this is true:  Once the creator has left the Community, creator status can't be granted to a manager or moderator. If you can't claim the manager role in a Community it may be because there are managers or other people have recently been accepted to become a manager.-->
 
-
 ### Difference between a viewer and contributor in public communities
                         
 In public communities you can interact with a Community as a viewer or as a contributor.   
@@ -124,13 +167,12 @@ In public communities you can interact with a Community as a viewer or as a cont
     
 - **Viewer**: someone who isn't a member of the Community. 
     - No manager approval required. 
-    - Can view tghe resources and documents related. 
+    - Can view the resources and documents related. 
     
 
 ### Manage the upload of documents for a Community
                
 As a manager you can review and approve people before they can upload a document.
-
 
 ### Remove documents in a Community
                
@@ -141,7 +183,6 @@ Creators and managers can remove documents from their Community.
 1. From the side menu click on ^^Manage^^ -> ^^My Resources^^.    
 2. From the resources list click on the delete icon.  
 3. Click Confirm. 
-
 
 ### Remove someone from a Community
                      
@@ -181,23 +222,6 @@ Anyone can see who is a member of a public Community. In a private Community you
 1. From the side menu click on ^^Manage^^ -> ^^My Communities^^.    
 2. Click ^^Members^^ in section ^^Stats^^. 
 
-### Create a Resource in a Community
-
-You can create a Resource inside a Community or from the menu My Resources
-
-
-**Create a Resource in a Community**   
-1. From the side menu click on ^^Manage^^ -> ^^My Communities^^.  
-2. You can either enter in the search bar the name of the Community you are looking for or select from the Community list.   
-3. Click in the Community you want to add the resource.  
-4. Click in button ^^New Resource^^  
-5. Setup the *Title, Abstract, Membership, To be Approved* and click *Save*
-
-
-**Create a Resource from My Resources**   
-1. From the side menu click on ^^Manage^^ -> ^^My Resources^^.  
-2. Click in button ^^Add Resource^^  
-3. Setup the *Title, Abstract, Membership, To be Approved* and click *Save*
 
 ### Upload document in a Community
 
@@ -212,7 +236,6 @@ You can upload a document inside a Community Resource or from the menu My Resour
 5. Setup the *Metadata* information, click ^^Next^^.    
 6. Setup the *Taxonomy* or *Taxonomies*,  they can be one of the existing or create new.  
 7. Review the data and save the document. 
-
 
 **Upload a document in a Resource**   
 
@@ -268,13 +291,11 @@ If your ability to upload a document or participate in a Community has been turn
 1. From the side menu click on ^^Manage^^ -> ^^My Resources^^.   
 2. You will see a list of the Resources in the page.
 
-
 ### See a list of Resources
 <!--{== *are public Resources from other communities?*==}-->
 
 1. From the side menu click on ^^Discover^^ -> ^^Resources^^.   
 2. You can either enter in the search bar the name of the Resource you are looking for, or select it from the Resource list.
-
 
 <!--### {== How to report something in a Community ==}
                        
@@ -285,3 +306,4 @@ If your ability to upload a document or participate in a Community has been turn
 
 !!! warning
     Creators may or may not choose to remove the document or block the person who shared the document.-->
+
