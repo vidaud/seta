@@ -118,7 +118,7 @@ After successfully start all the containers you are ready to open your browser a
 
 * **SETA API:** [[location] /seta-api/doc](/seta-api/doc)
 
-* **SETA API Communities:** [[location] /api/communities/v1/doc](/api/communities/v1/doc)
+* **SETA API Communities:** [[location] /seta-ui/api/v1/communities/doc](/seta-ui/api/v1/communities/doc)
 
 * **Documentation:** [[location] /docs](/docs)
   
