@@ -4,18 +4,21 @@ from flask_restx.reqparse import RequestParser
 from seta_flask_server.infrastructure.constants import (RequestStatusConstants, ResourceRequestFieldConstants)
 
 new_change_request_parser = RequestParser(bundle_errors=True)
+
 new_change_request_parser.add_argument("field_name", 
                                   location="form",
                                   required=True,
                                   nullable=False,
                                   case_sensitive=False,
                                   choices=ResourceRequestFieldConstants.List,
-                                  help=f"Requested field, one of {ResourceRequestFieldConstants.List}")
+                                  help=f"Requested field name")
+
 new_change_request_parser.add_argument("new_value", 
                                   location="form",
                                   required=True,
                                   nullable=False,
                                   help="New value for field")
+
 new_change_request_parser.add_argument("old_value", 
                                   location="form",
                                   required=True,
@@ -23,6 +26,7 @@ new_change_request_parser.add_argument("old_value",
                                   help="Current value at request")
 
 update_change_request_parser = RequestParser(bundle_errors=True)
+
 update_change_request_parser.add_argument("status",
                                   location="form",
                                   required=True,

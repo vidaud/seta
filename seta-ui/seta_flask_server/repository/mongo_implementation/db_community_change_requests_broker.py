@@ -68,11 +68,17 @@ class CommunityChangeRequestsBroker(implements(ICommunityChangeRequestsBroker)):
         
         return [CommunityChangeRequestModel.from_db_json(c) for c in requests]
     
-    def has_pending_field(self, community_id: str, filed_name: str) -> bool:
-        filter={"community_id": community_id, "field_name": filed_name, "status": RequestStatusConstants.Pending, "request_id": {"$exists" : True}}
+    def has_pending_field(self, community_id: str, field_name: str) -> bool:
+        filter={"community_id": community_id, "field_name": field_name, "status": RequestStatusConstants.Pending, "request_id": {"$exists" : True}}
         exists_count = self.collection.count_documents(filter)
         
         return exists_count > 0
+    
+    def get_all_by_community_id(self, community_id: str) -> list[CommunityChangeRequestModel]:
+        filter =  {"community_id": community_id, "request_id": {"$exists" : True}}
+        requests = self.collection.find(filter)
+        
+        return [CommunityChangeRequestModel.from_db_json(c) for c in requests]
     
     @staticmethod
     def generate_uuid() -> str:

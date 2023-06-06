@@ -35,7 +35,11 @@ class Config:
     #seta-api url for internal docker LAN calls
     PRIVATE_API_URL = "http://seta-api:8081/seta-api-private/v1/"
 
+    #disable swagger for internal apis
     DISABLE_SWAGGER_DOCUMENTATION = False
+
+    #automatic approval of community/resource change requests
+    AUTO_APPROVE_CHANGE_REQUEST = False
 
     #======================================#
 
@@ -183,7 +187,11 @@ class ProdConfig(Config):
     #enable scheduler tasks
     SCHEDULER_ENABLED = True
 
+    #disable swagger for internal apis
     DISABLE_SWAGGER_DOCUMENTATION = True
+
+    #automatic approval of community/resource change requests
+    AUTO_APPROVE_CHANGE_REQUEST = False
 
     #======================================#
 
