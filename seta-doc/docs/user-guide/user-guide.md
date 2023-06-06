@@ -230,4 +230,4 @@ Seta-API will get at each request another authorization decoded token from seta-
 
 Start using the methods under **seta-api-corpus** region.
 
-![Screenshot](../img/api_corpus.png)   
+![Screenshot](../img/seta_api_suggestions_corpus.png)   

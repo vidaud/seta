@@ -29,7 +29,7 @@ theme:
         bug: octicons/bug-16
         example: octicons/beaker-16
         quote: octicons/quote-16
-    logo: material/note-search-outline
+    logo: material/file-document-multiple
     favicon: img/favicon.png
   palette:
     - scheme: seta
@@ -67,17 +67,14 @@ markdown_extensions:
     - md_in_html
     - tables
     
-extra:
-  seta_url: !ENV DOCS_HOST
-  customer:
-    name: Your name here
-    web: !ENV [DOCS_HOST, 'https:localhost\']
-    salt: salt.example.com
+#extra:
+  #homepage: /
   
 extra_css:
   - stylesheets/extra.css
  
 nav:
+  #- SeTA: /
   - What is SeTA: 
     - SeTA: index.md
   - Who should use it and why: 
