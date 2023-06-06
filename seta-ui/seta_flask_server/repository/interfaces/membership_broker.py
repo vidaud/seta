@@ -25,7 +25,7 @@ class IMembershipsBroker(Interface):
         pass
     
     #---requests-----#
-    def create_request(self, model: MembershipRequestModel) -> None:
+    def create_request(self, model: MembershipRequestModel) -> bool:
         pass
 
     def approve_request(self, model: MembershipRequestModel, community_scopes: list[dict]) -> None:

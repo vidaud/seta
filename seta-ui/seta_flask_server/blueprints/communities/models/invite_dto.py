@@ -33,6 +33,6 @@ invite_model = Model("Invite",
             "message": fields.String(description="Sent invite message"),            
             "status": fields.String(description="The invite status", enum=InviteStatusConstants.List),
             "expire_date": fields.DateTime(description="Community join date", attribute="expire_date"),
-            "initiated_by": fields.String(description="Sender user identifier"),
+            "initiated_by": fields.String(description="Sender"),
             "initiated_date": fields.DateTime(description="Send date", attribute="initiated_date")
         })

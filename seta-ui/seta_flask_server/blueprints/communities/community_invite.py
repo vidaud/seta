@@ -19,7 +19,7 @@ community_invite_ns.models[invite_model.name] = invite_model
 
 @community_invite_ns.route('/<string:community_id>/invites', endpoint="community_create_invite", methods=['POST', 'GET'])
 @community_invite_ns.param("community_id", "Community identifier") 
-class CommunityCreateChangeRequest(Resource):
+class CommunityCreateInvites(Resource):
     """Handles HTTP POST requests to URL: /communities/{community_id}/invites."""
     
     @inject

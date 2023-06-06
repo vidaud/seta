@@ -1,7 +1,7 @@
 from flask_restx import Model, fields
 from flask_restx.reqparse import RequestParser
 
-from seta_flask_server.infrastructure.constants import (CommunityStatusConstants, CommunityDataTypeConstants, 
+from seta_flask_server.infrastructure.constants import (CommunityStatusConstants, 
                                       CommunityMembershipConstants, CommunityRequestFieldConstants,
                                       RequestStatusConstants)
 
@@ -23,14 +23,6 @@ new_community_parser.add_argument("description",
                                   required=True,
                                   nullable=False,
                                   help="Relevand information about this community")
-#new_community_parser.add_argument('membership')
-new_community_parser.add_argument("data_type",
-                                  location="form",
-                                  required=True,
-                                  nullable=False,
-                                  case_sensitive=False,
-                                  choices=CommunityDataTypeConstants.List,
-                                  help=f"Data type, one of {CommunityDataTypeConstants.List}")
 
 update_community_parser = new_community_parser.copy()
 update_community_parser.remove_argument("community_id")
@@ -48,8 +40,7 @@ community_model = Model("Community",
             "community_id": fields.String(description="Community identifier"),
             "title": fields.String(description="Community title"),
             "description": fields.String(description="Community relevant description"),
-            "membership": fields.String(description="The membership status", enum=CommunityMembershipConstants.List),
-            "data_type": fields.String(description="The community data type", enum=CommunityDataTypeConstants.List),
+            "membership": fields.String(description="The membership status", enum=CommunityMembershipConstants.List),            
             "status": fields.String(description="The community status", enum=CommunityStatusConstants.List),
             "creator": fields.Nested(model=user_info_model),
             "created_at": fields.DateTime(description="Creation date", attribute="created_at")

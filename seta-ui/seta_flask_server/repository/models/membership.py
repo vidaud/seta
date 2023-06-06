@@ -1,5 +1,7 @@
-from datetime import datetime
+from datetime import datetime, timedelta
+import pytz
 from dataclasses import dataclass, asdict
+from seta_flask_server.infrastructure.constants import RequestStatusConstants
 
 @dataclass
 class MembershipModel:
@@ -52,6 +54,13 @@ class MembershipRequestModel:
             "review_date": self.review_date,
             "reviewed_by": self.reviewed_by
         }
+    
+    @property
+    def reject_timeout(self) -> datetime:
+        if self.status == RequestStatusConstants.Rejected:
+            return (self.initiated_date + timedelta(days=30)).replace(tzinfo=pytz.utc)
+        
+        return None
     
     @classmethod 
     def from_db_json(cls, json_dict: dict):

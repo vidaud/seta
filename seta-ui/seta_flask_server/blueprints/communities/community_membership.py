@@ -299,12 +299,11 @@ class RequestList(Resource):
             
             if community_exists:
                 member_exists = self.membershipsBroker.membership_exists(community_id=community_id, user_id=user_id)
-                request_exists = self.membershipsBroker.request_exists(community_id=community_id, user_id=user_id)
                         
-                if not member_exists and not request_exists:
+                if not member_exists:
                     model = MembershipRequestModel(community_id=community_id, requested_by=user_id, message=request_dict["message"])
                     
-                    self.membershipsBroker.create_request(model)
+                    request_exists = not self.membershipsBroker.create_request(model)
         except:
             app.logger.exception("MembershipList->post")
             abort(HTTPStatus.INTERNAL_SERVER_ERROR)

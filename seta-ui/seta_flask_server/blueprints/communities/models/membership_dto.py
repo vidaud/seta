@@ -54,4 +54,5 @@ request_model = Model("MembershipRequest",
             "status": fields.String(description="The request status", enum=RequestStatusConstants.List),
             "reviewed_by": fields.String(description="Review user identifier"),
             "review_date": fields.DateTime(description="Reviewed on", attribute="review_date"),
+            "reject_timeout": fields.DateTime(description="Timeout end date in case of rejection")
         })

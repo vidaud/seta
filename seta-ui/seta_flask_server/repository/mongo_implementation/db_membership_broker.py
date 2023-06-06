@@ -91,20 +91,29 @@ class MembershipsBroker(implements(IMembershipsBroker)):
         exists_count = self.collection.count_documents(filter)
         return exists_count > 0
     
-    def create_request(self, model: MembershipRequestModel) -> None:
+    def create_request(self, model: MembershipRequestModel) -> bool:
         '''Create a request for a community membership'''
         
         if self.membership_exists(user_id=model.requested_by, community_id=model.community_id):
-            return None
+            return False
         
-        if self.request_exists(community_id=model.community_id, user_id=model.requested_by):
-            return None
-                
         now = datetime.now(tz=pytz.utc)
+        
+        request = self.get_request(user_id=model.requested_by, community_id=model.community_id)
+
+        if request is not None:
+            #check if the rejected request expired
+            if request.status == RequestStatusConstants.Rejected and request.reject_timeout < now:
+                #delete membership
+                self.collection.delete_one(self._filter_request(user_id=model.requested_by, community_id=model.community_id))
+            else:
+                return False                
+        
         model.initiated_date = now
         model.status = RequestStatusConstants.Pending
                             
         self.collection.insert_one(model.to_json())
+        return True
 
     def approve_request(self, model: MembershipRequestModel, community_scopes: list[dict]) -> None:
         '''Update request'''
@@ -135,7 +144,7 @@ class MembershipsBroker(implements(IMembershipsBroker)):
         self.collection.update_one(self._filter_request(model.community_id, model.requested_by), uq)
     
     def get_requests_by_community_id(self, community_id: str) -> list[MembershipRequestModel]:
-        filter =  {"community_id": community_id, "message":{"$exists" : True}}
+        filter =  {"community_id": community_id, "requested_by":{"$exists" : True}}
         requests = self.collection.find(filter)
         
         return [MembershipRequestModel.from_db_json(c) for c in requests]
