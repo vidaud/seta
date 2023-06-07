@@ -16,7 +16,7 @@ const DeleteCommunity = ({ props }) => {
   const [opened, setOpened] = useState(false)
 
   const deleteCommunity = () => {
-    deleteCommunityByID(props.communities.community_id)
+    deleteCommunityByID(props?.communities?.community_id)
   }
 
   return (
@@ -42,14 +42,14 @@ const DeleteCommunity = ({ props }) => {
           </Button>
         </Group>
       </Popover.Target>
-      {props.resources?.length === 0 ? (
+      {props?.resources?.length === 0 ? (
         <Popover.Dropdown
           sx={theme => ({
             background: theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.white
           })}
         >
           <Text weight={500} className={cx(classes.form)}>
-            Are you sure you want to delete {props.communities.community_id} community?
+            Are you sure you want to delete {props?.communities?.community_id} community?
           </Text>
           <Text size="sm" className={cx(classes.form)}>
             Press Confirm to proceed with the deletion or press Cancel to abort
@@ -73,7 +73,7 @@ const DeleteCommunity = ({ props }) => {
             Warning!
           </Title>
           <Text size="sm" className={cx(classes.form)}>
-            {props.communities.community_id} community has {props.resources?.length} remaining
+            {props?.communities.community_id} community has {props?.resources?.length} remaining
             resources which should be deleted first to allow the community to be deleted.
           </Text>
 

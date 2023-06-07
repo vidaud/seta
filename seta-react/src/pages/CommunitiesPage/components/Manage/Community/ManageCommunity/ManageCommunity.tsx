@@ -2,7 +2,9 @@ import { useEffect, useState } from 'react'
 import { Button, Group, Text, Grid, Title, createStyles, Table, Tooltip, Card } from '@mantine/core'
 import { Link, useParams } from 'react-router-dom'
 
-import { useCommunityID } from '../../../../../../api/communities/manage/my-community'
+import ChangeRequests from './components/ChangeRequests/ChangeRequests'
+
+import { useMyCommunityID } from '../../../../../../api/communities/manage/my-community'
 import ComponentLoading from '../../../common/ComponentLoading'
 import CommunityResources from '../../Resource/CommunityResources/CommunityResources'
 import InviteMember from '../InviteMemberModal/InviteMemberModal'
@@ -36,7 +38,7 @@ const useStyles = createStyles(theme => ({
 const ManageCommunity = () => {
   const { classes } = useStyles()
   const { id } = useParams()
-  const { data, isLoading } = useCommunityID(id)
+  const { data, isLoading } = useMyCommunityID(id)
   const [row, setRow] = useState(data)
 
   useEffect(() => {
@@ -84,8 +86,8 @@ const ManageCommunity = () => {
                   </tr>
                   <tr>{/* <td>Data Type: {row?.communities.data_type}</td> */}</tr>
                   <tr>
-                    <td>Created by: {row?.communities.creator?.user_id}</td>
                     <td>Status: {row?.communities.status}</td>
+                    <td />
                   </tr>
                 </tbody>
               </Table>
@@ -101,6 +103,15 @@ const ManageCommunity = () => {
           <Grid.Col span={12}>
             <CommunityResources data={row?.resources} />
           </Grid.Col>
+          <Grid.Col span={6}>
+            <Card withBorder radius="md">
+              <Card.Section className={classes.imageSection}>
+                <Text size="md">Pending Join Requests</Text>
+              </Card.Section>
+              <ChangeRequests />
+            </Card>
+          </Grid.Col>
+          <Grid.Col span={6} />
         </Grid>
       </div>
     </>

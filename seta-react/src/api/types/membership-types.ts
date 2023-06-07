@@ -12,5 +12,16 @@ export type MembershipResponse = {
 
 export type CreateMembershipRequestAPI = {
   community_id: string
+  message?: string
+}
+
+export type MembershipRequest = {
+  community_id: string
+  requested_by: string
   message: string
+  initiated_date: Date
+  status: string
+  reviewed_by: null
+  review_date: Date
+  reject_timeout: Date
 }

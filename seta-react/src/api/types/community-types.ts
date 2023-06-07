@@ -7,21 +7,25 @@ export type CommunityResponse = {
   title: string
   description: string
   membership: string
-  data_type: string
   status: string
-  creator: {
-    user_id: string
-    full_name: string
-    email: string
-  }
   created_at: Date
+  membership_request?: {
+    message: string
+    initiated_date: Date
+    status: string
+  }
+}
+
+export type MyCommunity = {
+  communities: CommunityResponse
+  resources: ResourceResponse[]
+  invites: InviteResponse[]
+  members: MembershipResponse[]
 }
 
 export type Community = {
   communities: CommunityResponse
   resources: ResourceResponse[]
-  invites: InviteResponse[]
-  members: MembershipResponse[]
 }
 
 export type CreateCommunityAPI = {

@@ -62,18 +62,11 @@ const ViewCommunity = () => {
               <tbody>
                 <tr>
                   <td className={classes.td}>
-                    <Text className={classes.text}>Members: {row?.members.length}</Text>
-                  </td>
-                  <td className={classes.td}>
                     <Text className={classes.text}>Status: {row?.communities.status}</Text>
                   </td>
+                  <td className={classes.td} />
                 </tr>
                 <tr>
-                  <td className={classes.td}>
-                    <Text className={classes.text}>
-                      Created by: {row?.communities.creator.user_id}
-                    </Text>
-                  </td>
                   <td className={classes.td}>
                     <Text className={classes.text}>
                       Created at:{' '}
@@ -82,6 +75,7 @@ const ViewCommunity = () => {
                         : null}
                     </Text>
                   </td>
+                  <td className={classes.td} />
                 </tr>
               </tbody>
             </Table>
@@ -93,7 +87,7 @@ const ViewCommunity = () => {
           </Card>
         </Grid.Col>
         <Grid.Col span={1}>
-          <Stats resourceNumber={row?.resources} memberNumber={row?.members} />
+          <Stats resourceNumber={row?.resources} />
         </Grid.Col>
         <Grid.Col span={5}>
           <CommunityResources data={row?.resources} />

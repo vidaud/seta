@@ -48,13 +48,11 @@ const ViewClosedCommunity = ({ community }) => {
             </tr>
             <tr>
               <td className={classes.td}>
-                <Text className={classes.text}>Created by: {community.creator.user_id}</Text>
-              </td>
-              <td className={classes.td}>
                 <Text className={classes.text}>
                   Created at: {new Date(community.created_at).toDateString()}
                 </Text>
               </td>
+              <td className={classes.td} />
             </tr>
           </tbody>
         </Table>

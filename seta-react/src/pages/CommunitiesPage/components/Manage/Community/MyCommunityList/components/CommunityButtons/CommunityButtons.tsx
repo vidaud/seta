@@ -3,7 +3,7 @@ import { Group, ActionIcon, Menu, createStyles, Tooltip } from '@mantine/core'
 import { IconDots, IconPencil, IconEye, IconSettings } from '@tabler/icons-react'
 import { Link } from 'react-router-dom'
 
-import { useCommunityID } from '../../../../../../../../api/communities/manage/my-community'
+import { useMyCommunityID } from '../../../../../../../../api/communities/manage/my-community'
 import DeleteCommunity from '../../../DeleteCommunityButton/DeleteCommunityButton'
 import InviteMember from '../../../InviteMemberModal/InviteMemberModal'
 
@@ -15,7 +15,7 @@ const useStyles = createStyles({
 
 const CommunityButtons = ({ item }) => {
   const { classes } = useStyles()
-  const { data } = useCommunityID(item.community_id)
+  const { data } = useMyCommunityID(item.community_id)
   const [row, setRow] = useState(data)
 
   useEffect(() => {
