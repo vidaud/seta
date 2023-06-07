@@ -12,5 +12,5 @@ export type MembershipResponse = {
 
 export type CreateMembershipRequestAPI = {
   community_id: string
-  message: string
+  message?: string
 }

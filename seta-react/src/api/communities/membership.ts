@@ -53,3 +53,19 @@ export const createMembershipRequest = async (id?: string, values?: CreateMember
       }
     })
 }
+
+export const createOpenMembership = async (id?: string) => {
+  await community_api
+    .post<CreateMembershipRequestAPI[]>(`${environment.COMMUNITIES_API_PATH}/${id}/memberships`, {
+      headers: {
+        accept: 'application/json',
+        'X-CSRF-TOKEN': csrf_token,
+        'Content-Type': 'application/x-www-form-urlencoded'
+      }
+    })
+    .then(response => {
+      if (response.status === 200) {
+        // console.log(response)
+      }
+    })
+}

@@ -71,17 +71,13 @@ const ViewCommunity = () => {
                 <tr>
                   <td className={classes.td}>
                     <Text className={classes.text}>
-                      Created by: {row?.communities.creator.user_id}
-                    </Text>
-                  </td>
-                  <td className={classes.td}>
-                    <Text className={classes.text}>
                       Created at:{' '}
                       {row?.communities?.created_at
                         ? new Date(row?.communities.created_at).toDateString()
                         : null}
                     </Text>
                   </td>
+                  <td className={classes.td} />
                 </tr>
               </tbody>
             </Table>

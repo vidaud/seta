@@ -84,8 +84,8 @@ const ManageCommunity = () => {
                   </tr>
                   <tr>{/* <td>Data Type: {row?.communities.data_type}</td> */}</tr>
                   <tr>
-                    <td>Created by: {row?.communities.creator?.user_id}</td>
                     <td>Status: {row?.communities.status}</td>
+                    <td />
                   </tr>
                 </tbody>
               </Table>

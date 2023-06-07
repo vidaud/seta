@@ -21,7 +21,7 @@ const MembershipRequest = ({ community_id }) => {
       message: ''
     },
     validate: values => ({
-      message: values.message.length < 2 ? 'Too short message' : null
+      message: values?.message && values?.message.length < 2 ? 'Too short message' : null
     })
   })
 
@@ -43,8 +43,8 @@ const MembershipRequest = ({ community_id }) => {
       <Popover.Target>
         <Group position="right">
           <Tooltip label="Join Community">
-            <Button variant="outline" size="xs" onClick={() => setOpened(o => !o)}>
-              + Join
+            <Button variant="filled" color="green" size="xs" onClick={() => setOpened(o => !o)}>
+              + JOIN
             </Button>
           </Tooltip>
         </Group>
