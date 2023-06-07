@@ -1,7 +1,7 @@
 import { createContext, useContext, useEffect, useRef, useState } from 'react'
 import { isAxiosError } from 'axios'
 
-import { useUserInfo } from '~/api/auth'
+import { logout, useUserInfo } from '~/api/auth'
 import type { ChildrenProp } from '~/types/children-props'
 import type { User } from '~/types/user'
 
@@ -9,6 +9,7 @@ type UserContextProps = {
   user: User | null
   isLoading: boolean
   verify: () => void
+  logout: () => Promise<unknown>
 }
 
 const UserContext = createContext<UserContextProps | undefined>(undefined)
@@ -65,7 +66,8 @@ export const UserProvider = ({ children }: ChildrenProp) => {
   const value: UserContextProps = {
     user,
     isLoading: loading,
-    verify: verifyUser
+    verify: verifyUser,
+    logout
   }
 
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>
