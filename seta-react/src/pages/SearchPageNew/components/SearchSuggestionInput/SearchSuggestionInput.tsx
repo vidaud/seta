@@ -4,7 +4,8 @@ import { Box } from '@mantine/core'
 import SuggestionsPopup from '~/pages/SearchPageNew/components/SuggestionsPopup'
 import { SearchProvider } from '~/pages/SearchPageNew/contexts/search-context'
 import { SearchInputProvider } from '~/pages/SearchPageNew/contexts/search-input-context'
-import type { SearchValue } from '~/pages/SearchPageNew/types/search'
+import type { EnrichedStatus, SearchValue } from '~/pages/SearchPageNew/types/search'
+import { EnrichType } from '~/pages/SearchPageNew/types/search'
 import type { Token, TokenMatch } from '~/pages/SearchPageNew/types/token'
 
 import type { ClassNameProp } from '~/types/children-props'
@@ -35,6 +36,11 @@ const SearchSuggestionInput = ({ className, onSearch }: Props) => {
   const [value, setValue] = useState('')
   const [tokens, setTokens] = useState<Token[]>([])
   const [currentToken, setCurrentToken] = useState<TokenMatch | null>(null)
+
+  const [enrichedStatus, setEnrichedStatus] = useState<EnrichedStatus>({
+    enriched: false,
+    type: EnrichType.Similar
+  })
 
   const handleSuggestionSelected = (suggestion: string) => {
     const replaceWith = suggestion.match(/\s/g) ? `"${suggestion}"` : suggestion
@@ -72,7 +78,7 @@ const SearchSuggestionInput = ({ className, onSearch }: Props) => {
   }
 
   const handleSearch = () => {
-    onSearch({ value, tokens })
+    onSearch({ value, tokens, enrichedStatus })
   }
 
   return (
@@ -88,7 +94,10 @@ const SearchSuggestionInput = ({ className, onSearch }: Props) => {
         onSearch={handleSearch}
       >
         <SearchInputProvider inputValue={value} setInputValue={setValue}>
-          <SuggestionsPopup />
+          <SuggestionsPopup
+            enrichQuery={enrichedStatus.enriched}
+            onEnrichToggle={setEnrichedStatus}
+          />
         </SearchInputProvider>
       </SearchProvider>
     </Box>

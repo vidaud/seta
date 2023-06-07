@@ -36,9 +36,36 @@ export const header: ThemedCSS = theme => css`
   grid-template-columns: ${PROGRESS_WIDTH} 1fr auto;
   align-items: center;
   gap: ${theme.spacing.lg};
+  position: relative;
 
   & .seta-Progress-bar {
     animation: ${fill} 300ms ease;
+  }
+
+  & .score {
+    position: absolute;
+    opacity: 0;
+    visibility: hidden;
+    left: ${theme.spacing.sm};
+    margin-top: 0;
+    width: ${PROGRESS_WIDTH};
+    text-align: center;
+    font-size: 0.65rem;
+    color: ${theme.colors.gray[5]};
+    cursor: default;
+    transition: all 200ms ${theme.transitionTimingFunction};
+
+    &:hover {
+      color: ${theme.colors.gray[7]};
+    }
+  }
+
+  &[data-open='true'] {
+    & .score {
+      opacity: 1;
+      visibility: visible;
+      margin-top: 2.5rem;
+    }
   }
 
   &[data-details='true'] {
