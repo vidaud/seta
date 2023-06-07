@@ -4,7 +4,7 @@ import { Link, useParams } from 'react-router-dom'
 
 import Stats from './components/Stats/Stats'
 
-import { useCommunityID } from '../../../../../../api/communities/manage/my-community'
+import { useMyCommunityID } from '../../../../../../api/communities/manage/my-community'
 import ComponentLoading from '../../../common/ComponentLoading'
 import CommunityResources from '../../Resource/CommunityResources/CommunityResources'
 
@@ -35,7 +35,7 @@ const ViewMyCommunity = () => {
   const { classes } = useStyles()
   const { id } = useParams()
 
-  const { data, isLoading } = useCommunityID(id)
+  const { data, isLoading } = useMyCommunityID(id)
   const [row, setRow] = useState(data)
 
   useEffect(() => {
@@ -67,11 +67,9 @@ const ViewMyCommunity = () => {
               <tbody>
                 <tr>
                   <td className={classes.td}>
-                    <Text className={classes.text}>Members: {row?.members.length}</Text>
-                  </td>
-                  <td className={classes.td}>
                     <Text className={classes.text}>Status: {row?.communities.status}</Text>
                   </td>
+                  <td className={classes.td} />
                 </tr>
                 <tr>
                   <td className={classes.td}>

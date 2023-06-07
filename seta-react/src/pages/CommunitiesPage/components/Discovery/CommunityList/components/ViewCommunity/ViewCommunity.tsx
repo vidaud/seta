@@ -62,11 +62,9 @@ const ViewCommunity = () => {
               <tbody>
                 <tr>
                   <td className={classes.td}>
-                    <Text className={classes.text}>Members: {row?.members.length}</Text>
-                  </td>
-                  <td className={classes.td}>
                     <Text className={classes.text}>Status: {row?.communities.status}</Text>
                   </td>
+                  <td className={classes.td} />
                 </tr>
                 <tr>
                   <td className={classes.td}>
@@ -89,7 +87,7 @@ const ViewCommunity = () => {
           </Card>
         </Grid.Col>
         <Grid.Col span={1}>
-          <Stats resourceNumber={row?.resources} memberNumber={row?.members} />
+          <Stats resourceNumber={row?.resources} />
         </Grid.Col>
         <Grid.Col span={5}>
           <CommunityResources data={row?.resources} />

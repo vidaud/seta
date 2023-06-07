@@ -3,6 +3,7 @@ import { getCookie } from 'typescript-cookie'
 
 import type {
   Community,
+  MyCommunity,
   CommunityResponse,
   CreateCommunityAPI,
   ManageCommunityAPI,
@@ -18,6 +19,25 @@ import community_api from '../api'
 export const cacheKey = (id?: string) => ['my-communities', id]
 
 const getCommunity = async (id?: string): Promise<Community> => {
+  const communities = await community_api.get<CommunityResponse>(
+    `${environment.COMMUNITIES_API_PATH}/${id}`
+  )
+  const resources = await community_api.get<ResourceResponse[]>(
+    `${environment.COMMUNITIES_API_PATH}/${id}/resources`
+  )
+
+  const data = {
+    communities: communities.data,
+    resources: resources.data
+  }
+
+  return data
+}
+
+export const useCommunityID = (id?: string) =>
+  useQuery({ queryKey: cacheKey(id), queryFn: () => getCommunity(id) })
+
+const getMyCommunity = async (id?: string): Promise<MyCommunity> => {
   const communities = await community_api.get<CommunityResponse>(
     `${environment.COMMUNITIES_API_PATH}/${id}`
   )
@@ -43,8 +63,8 @@ const getCommunity = async (id?: string): Promise<Community> => {
   return data
 }
 
-export const useCommunityID = (id?: string) =>
-  useQuery({ queryKey: cacheKey(id), queryFn: () => getCommunity(id) })
+export const useMyCommunityID = (id?: string) =>
+  useQuery({ queryKey: cacheKey(id), queryFn: () => getMyCommunity(id) })
 
 const getCommunityManage = async (id?: string): Promise<ManageCommunityAPI> => {
   const { data } = await community_api.get<ManageCommunityAPI>(

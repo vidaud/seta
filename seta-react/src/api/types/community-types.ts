@@ -16,11 +16,16 @@ export type CommunityResponse = {
   }
 }
 
-export type Community = {
+export type MyCommunity = {
   communities: CommunityResponse
   resources: ResourceResponse[]
   invites: InviteResponse[]
   members: MembershipResponse[]
+}
+
+export type Community = {
+  communities: CommunityResponse
+  resources: ResourceResponse[]
 }
 
 export type CreateCommunityAPI = {

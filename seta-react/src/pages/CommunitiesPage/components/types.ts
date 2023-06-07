@@ -32,6 +32,12 @@ export const jobColors: Record<string, string> = {
   contributor: 'yellow'
 }
 
+export const statusColors: Record<string, string> = {
+  approved: 'blue',
+  rejected: 'pink',
+  pending: 'yellow'
+}
+
 export interface TableScrollAreaProps {
   data: { user: string; date: string; role: string }[]
 }

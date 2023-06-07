@@ -2,8 +2,8 @@ import { useState } from 'react'
 import { Popover, Button, Group, Textarea, createStyles, Tooltip } from '@mantine/core'
 
 import { createMembershipRequest } from '../../../../../../api/communities/membership'
-import type { MembershipValues } from '../../imembership-context'
-import { MembershipFormProvider, useMembership } from '../../imembership-context'
+import type { MembershipValues } from '../../membership-context'
+import { MembershipFormProvider, useMembership } from '../../membership-context'
 
 const useStyles = createStyles({
   form: {
