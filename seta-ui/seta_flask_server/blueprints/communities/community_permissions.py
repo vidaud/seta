@@ -9,10 +9,12 @@ from seta_flask_server.infrastructure.decorators import auth_validator
 from seta_flask_server.repository.interfaces import IUsersBroker, IUserPermissionsBroker, ICommunitiesBroker
 from seta_flask_server.infrastructure.scope_constants import CommunityScopeConstants
 
-from seta_flask_server.blueprints.communities.models.permissions_dto import user_scope_model, community_scopes_parser
+from seta_flask_server.blueprints.communities.models.permissions_dto import user_scopes_model, user_info_model, community_scopes_parser
+from .helpers.scopes_helper import create_user_scopes
 
 permissions_ns = Namespace('Community User Permissions', validate=True, description='SETA Community User Permissions')
-permissions_ns.models[user_scope_model.name] = user_scope_model
+permissions_ns.models[user_info_model.name] = user_info_model
+permissions_ns.models[user_scopes_model.name] = user_scopes_model
 
 @permissions_ns.route('/community/<string:community_id>', endpoint="community_permission_list", methods=['GET'])
 @permissions_ns.param("community_id", "Community id")
@@ -31,23 +33,28 @@ class CommunityPermissionList(Resource):
         responses={int(HTTPStatus.OK): "'Retrieved permissions list.",
                    int(HTTPStatus.NOT_FOUND): "Community not found"},
         security='CSRF')
-    @permissions_ns.marshal_list_with(user_scope_model, mask="*")
+    @permissions_ns.marshal_list_with(user_scopes_model, mask="*")
     @auth_validator()    
     def get(self, community_id):
-        '''Retrieve all community user permissions'''
+        '''Retrieve all community user permissions, available to community managers'''
         
         if not self.communitiesBroker.community_id_exists(community_id):
             abort(HTTPStatus.NOT_FOUND)
 
         identity = get_jwt_identity()
         auth_id = identity["user_id"]
+
         user = self.usersBroker.get_user_by_id(auth_id)
         if user is None or user.is_not_active():
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
+
         if not user.has_any_community_scope(id=community_id, scopes=[CommunityScopeConstants.Manager, CommunityScopeConstants.Owner]):
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
 
-        return self.permissionsBroker.get_all_community_scopes(community_id=community_id)
+        scopes = self.permissionsBroker.get_all_community_scopes(community_id=community_id)
+        
+        return create_user_scopes(scopes=scopes, usersBroker=self.usersBroker)
+
 
 @permissions_ns.route('/community/<string:community_id>/user/<string:user_id>', endpoint="community_user_permissions", methods=['GET','POST'])
 @permissions_ns.param("community_id", "Community id")
@@ -67,10 +74,10 @@ class CommunityUserPermissions(Resource):
         responses={int(HTTPStatus.OK): "'Retrieved permissions list.",
                    int(HTTPStatus.NOT_FOUND): "Community or user not found"},
         security='CSRF')
-    @permissions_ns.marshal_list_with(user_scope_model, mask="*")
+    @permissions_ns.marshal_with(user_scopes_model, mask="*")
     @auth_validator()    
     def get(self, community_id, user_id):
-        '''Retrieve user permissions for community'''
+        '''Retrieve user permissions for community, available to community managers'''
         
         if not self.communitiesBroker.community_id_exists(community_id):
             abort(HTTPStatus.NOT_FOUND, "Community id not found")
@@ -88,7 +95,14 @@ class CommunityUserPermissions(Resource):
         if not user.has_any_community_scope(id=community_id, scopes=[CommunityScopeConstants.Manager, CommunityScopeConstants.Owner]):
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
 
-        return self.permissionsBroker.get_user_community_scopes_by_id(community_id=community_id, user_id=user_id)
+        scopes = self.permissionsBroker.get_user_community_scopes_by_id(community_id=community_id, user_id=user_id)
+        list =  create_user_scopes(scopes=scopes, usersBroker=self.usersBroker)
+
+        #it should be only one entry
+        if len(list) > 0:
+            return list[0]
+
+        return None
 
     @permissions_ns.doc(description='Replace all user permissions for the community',        
     responses={
@@ -100,7 +114,7 @@ class CommunityUserPermissions(Resource):
     @permissions_ns.expect(community_scopes_parser)
     @auth_validator()
     def post(self, community_id, user_id):
-        '''Add/Replace user permissions'''
+        '''Add/Replace user permissions, available to community managers'''
 
         if not self.communitiesBroker.community_id_exists(community_id):
             abort(HTTPStatus.NOT_FOUND, "Community id not found")
@@ -111,8 +125,10 @@ class CommunityUserPermissions(Resource):
         identity = get_jwt_identity()
         auth_id = identity["user_id"]   
         user = self.usersBroker.get_user_by_id(auth_id)
+
         if user is None or user.is_not_active():
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
+
         if not user.has_any_community_scope(id=community_id, scopes=[CommunityScopeConstants.Manager, CommunityScopeConstants.Owner]):
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")    
 

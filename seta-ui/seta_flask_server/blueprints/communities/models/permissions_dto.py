@@ -3,9 +3,12 @@ from flask_restx.reqparse import RequestParser
 
 from seta_flask_server.infrastructure.scope_constants import CommunityScopeConstants, ResourceScopeConstants
 
-user_scope_model = Model("User Scope", {
+from .models_dto import user_info_model
+
+user_scopes_model = Model("User Scope", {
     "user_id": fields.String(description="User identifier"),    
-    "scope": fields.String(description="Scope")
+    "user_info": fields.Nested(model=user_info_model, description="User info", skip_none=True),
+    "scopes": fields.List(fields.String(description="Scope"))
 })
 
 def community_scope_list(value):
@@ -23,9 +26,10 @@ community_scopes_parser = RequestParser(bundle_errors=True)
 community_scopes_parser.add_argument("scope", 
                                   location="form",
                                   required=False,
-                                  type=community_scope_list,
                                   action='append',
-                                  help=f"Scopes list, any of {CommunityScopeConstants.EditList}")
+                                  case_sensitive=False,
+                                  choices=CommunityScopeConstants.EditList,
+                                  help="Community scopes list")
 
 
 def resource_scope_list(value):
@@ -43,6 +47,7 @@ resource_scopes_parser = RequestParser(bundle_errors=True)
 resource_scopes_parser.add_argument("scope", 
                                   location="form",
                                   required=False,
-                                  type=resource_scope_list,
                                   action='append',
-                                  help=f"Scopes list, any of {ResourceScopeConstants.EditList}")
+                                  case_sensitive=False,
+                                  choices=ResourceScopeConstants.EditList,
+                                  help=f"Resource scopes list")

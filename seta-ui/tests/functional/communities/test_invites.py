@@ -61,7 +61,7 @@ def test_create_community_invite(client: FlaskClient, authentication_url:str, us
 @pytest.mark.parametrize("user_id, community_id", [("seta_community_manager", "blue")])
 def test_accept_invite(client: FlaskClient, authentication_url:str, user_id: str, community_id: str):
     """
-        'user2' accepts the invtiation to 'blue' community
+        'user2' accepts the invitation to 'blue' community
     """
     
     #this is used just to get the invite id, the invitation link will be genrated in the invite message

@@ -12,9 +12,10 @@ from seta_flask_server.infrastructure.decorators import auth_validator
 from seta_flask_server.infrastructure.scope_constants import CommunityScopeConstants
 from seta_flask_server.infrastructure.constants import InviteStatusConstants
 
-from .models.invite_dto import (new_invite_parser, invite_model)
+from .models.invite_dto import (new_invite_parser, invite_model, user_info_model)
 
 community_invite_ns = Namespace('Community Invites', validate=True, description='SETA Community Invites')
+community_invite_ns.models[user_info_model.name] = user_info_model
 community_invite_ns.models[invite_model.name] = invite_model
 
 @community_invite_ns.route('/<string:community_id>/invites', endpoint="community_create_invite", methods=['POST', 'GET'])
@@ -38,7 +39,7 @@ class CommunityCreateInvites(Resource):
     @community_invite_ns.marshal_list_with(invite_model, mask="*")
     @auth_validator()    
     def get(self, community_id):
-        '''Retrieve pending invites'''
+        '''Retrieve pending invites, available to community managers'''
         
         identity = get_jwt_identity()
         auth_id = identity["user_id"]
@@ -46,13 +47,25 @@ class CommunityCreateInvites(Resource):
         user = self.usersBroker.get_user_by_id(auth_id)
         if user is None or user.is_not_active():
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
+
         if not user.has_any_community_scope(id=community_id,scopes=[CommunityScopeConstants.SendInvite, CommunityScopeConstants.Manager]):
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
             
         if not self.communitiesBroker.community_id_exists(community_id):
             abort(HTTPStatus.NOT_FOUND)
         
-        return self.invitesBroker.get_all_by_status_and_community_id(community_id=community_id, status=InviteStatusConstants.Pending)
+        invites = self.invitesBroker.get_all_by_status_and_community_id(community_id=community_id, status=InviteStatusConstants.Pending)
+
+        for invite in invites:
+            initiator = self.usersBroker.get_user_by_id(user_id=invite.initiated_by, load_scopes=False)
+            if initiator:
+                invite.initiated_by_info = initiator.user_info
+
+            invited = self.usersBroker.get_user_by_id(user_id=invite.invited_user, load_scopes=False)
+            if invited:
+                invite.invited_user_info = invited.user_info
+        
+        return invites
         
     @community_invite_ns.doc(description='Create new invites.',        
         responses={int(HTTPStatus.CREATED): "Added invites.", 
@@ -62,7 +75,7 @@ class CommunityCreateInvites(Resource):
     @community_invite_ns.expect(new_invite_parser)
     @auth_validator()
     def post(self, community_id):
-        '''Create invites'''
+        '''Create invites, available to community managers'''
         
         identity = get_jwt_identity()
         auth_id = identity["user_id"]

@@ -1,5 +1,6 @@
 from datetime import datetime
 from dataclasses import dataclass, asdict
+from .user_info import UserInfo
 
 @dataclass(kw_only=True)
 class ResourceLimitsModel:
@@ -27,6 +28,8 @@ class ResourceModel:
     creator_id: str = None,
     created_at: datetime = None,
     modified_at: datetime = None
+
+    creator: UserInfo = None
     
     def __post_init__(self):
         if self.resource_id:
@@ -35,7 +38,10 @@ class ResourceModel:
             self.community_id = self.community_id.lower()
 
     def to_json(self):
-        return asdict(self)
+        json = asdict(self)
+        json.pop("creator", None)
+        
+        return json
 
     def to_json_update(self):
         return{
@@ -46,7 +52,7 @@ class ResourceModel:
         }
 
     @classmethod 
-    def from_db_json(cls, json_dict):
+    def from_db_json(cls, json_dict: dict):
         limits = ResourceLimitsModel.from_db_json(json_dict["limits"])
 
         return cls(resource_id=json_dict["resource_id"],
@@ -56,10 +62,10 @@ class ResourceModel:
                    status=json_dict["status"],
                    creator_id=json_dict["creator_id"],
                    created_at=json_dict["created_at"],
-                   modified_at=json_dict.get("modified_at", None),
+                   modified_at=json_dict.get("modified_at"),
                    limits=limits)
 
-@dataclass(kw_only=True)
+@dataclass
 class ResourceContributorModel:
     resource_id: str = None,
     user_id: str = None,
@@ -72,7 +78,7 @@ class ResourceContributorModel:
         return asdict(self)
 
     @classmethod 
-    def from_db_json(cls, json_dict):
+    def from_db_json(cls, json_dict: dict):
         return cls(resource_id=json_dict["resource_id"],
                    user_id=json_dict["user_id"],
                    file_name=json_dict["file_name"],
@@ -81,7 +87,7 @@ class ResourceContributorModel:
                    uploaded_at=json_dict["uploaded_at"])
 
 
-@dataclass(kw_only=True)        
+@dataclass   
 class ResourceChangeRequestModel:
     request_id: str = None
     resource_id: str = None    
@@ -93,9 +99,16 @@ class ResourceChangeRequestModel:
     initiated_date: datetime = None
     reviewed_by: str = None
     review_date: datetime = None
+
+    requested_by_info: UserInfo = None
+    reviewed_by_info: UserInfo = None
     
     def to_json(self):
-        return asdict(self)
+        json = asdict(self)
+        json.pop("requested_by_info", None)
+        json.pop("reviewed_by_info", None)
+
+        return json
     
     def to_json_update(self):
         return{            
@@ -105,7 +118,7 @@ class ResourceChangeRequestModel:
         }
         
     @classmethod 
-    def from_db_json(cls, json_dict):
+    def from_db_json(cls, json_dict: dict):
         return cls(request_id=json_dict["request_id"],
                    resource_id=json_dict["resource_id"],
                    field_name=json_dict["field_name"],
@@ -114,5 +127,5 @@ class ResourceChangeRequestModel:
                    requested_by=json_dict["requested_by"],
                    status=json_dict["status"],
                    initiated_date=json_dict["initiated_date"],
-                   reviewed_by=json_dict["reviewed_by"],
-                   review_date=json_dict["review_date"])
+                   reviewed_by=json_dict.get("reviewed_by"),
+                   review_date=json_dict.get("review_date"))

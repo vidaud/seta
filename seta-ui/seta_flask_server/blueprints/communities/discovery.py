@@ -81,25 +81,28 @@ class DiscoverCommunities(Resource):
                 continue
 
             invite = next((i for i in invites if i.community_id == community.community_id), None)
-            if invite:
-                initiator = self.usersBroker.get_user_by_id(user_id=invite.initiated_by, load_scopes=False)
-                
+            if invite:                
                 discover["status"] = DiscoverCommunityStatus.Invited
-                discover["pending_invite"] = {
+                discover["pending_invite"] = {                    
                     "invite_id": invite.invite_id,
+                    "community_id": community.community_id,
                     "message": invite.message,
+                    "status": invite.status,
                     "expire_date": invite.expire_date,
-                    "initiated_by": "unknown",
+                    "initiated_by": invite.initiated_by,
                     "initiated_date": invite.initiated_date
                 }
 
+                initiator = self.usersBroker.get_user_by_id(user_id=invite.initiated_by, load_scopes=False)
                 if initiator:
-                    discover["pending_invite"]["initiated_by"] = initiator.email
+                    discover["pending_invite"]["initiated_by_info"] = initiator.user_info.to_json()
+                
                 continue
             
             request = next((r for r in requests if r.community_id == community.community_id), None)
             if request:
                 discover["membership_request"] = {
+                    "community_id": community.community_id,                    
                     "message": request.message,
                     "initiated_date": request.initiated_date,
                     "status": request.status
@@ -113,7 +116,8 @@ class DiscoverCommunities(Resource):
                     if request.reviewed_by:
                         reviewer = self.usersBroker.get_user_by_id(request.reviewed_by)
                         if reviewer:
-                             discover["membership_request"]["reviewed_by"] = reviewer.email
+                             discover["membership_request"]["reviewed_by"] = request.reviewed_by
+                             discover["membership_request"]["reviewed_by_info"] = reviewer.user_info.to_json()
                              discover["membership_request"]["review_date"] = request.review_date
                              discover["membership_request"]["reject_timeout"] = request.reject_timeout
 
@@ -135,10 +139,11 @@ class DiscoverResources(Resource):
     @discovery_ns.doc(description='Discover resources.',        
         responses={int(HTTPStatus.OK): "'Retrieved resource list."},
         security='CSRF')
-    @discovery_ns.marshal_list_with(discover_resource_model, mask="*")
+    @discovery_ns.marshal_list_with(discover_resource_model, mask="*", skip_none=True)
     @jwt_required()    
     def get(self):
         '''Discover resources, accesible to any user'''
+        
         identity = get_jwt_identity()
         user_id = identity["user_id"]
 

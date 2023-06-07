@@ -469,10 +469,8 @@ def test_add_community_owner(client: FlaskClient, authentication_url:str, user_i
     response = get_user_permissions(client=client, access_token=access_token, community_id=community_id, user_id=owner_id)
     assert response.status_code == HTTPStatus.OK
 
-    scopes = [CommunityScopeConstants.Owner]    
-
-    for scope in response.json:
-        scopes.append(scope["scope"])
+    scopes = response.json["scopes"]
+    scopes.append(CommunityScopeConstants.Owner)
     
     response = replace_user_permissions(client=client, access_token=access_token, community_id=community_id, user_id=owner_id, scopes=scopes)
     assert response.status_code == HTTPStatus.OK  

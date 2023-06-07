@@ -1,6 +1,7 @@
 from datetime import datetime
 from flask import json
 from dataclasses import dataclass, asdict, field
+from .user_info import UserInfo
 
 @dataclass
 class CommunityModel:
@@ -12,15 +13,14 @@ class CommunityModel:
     creator_id: str = None
     created_at: datetime = None
     modified_at: datetime = None
-    creator: dict = field(init=False, repr=False)    
+    creator: UserInfo = None
     
     def __post_init__(self):
-        self.community_id = self.community_id.lower()        
-        self.creator = {"user_id": self.creator_id, "full_name": None, "email": None}        
+        self.community_id = self.community_id.lower()
 
     def to_json(self) -> dict:
         json = asdict(self)
-        json.pop("creator")
+        json.pop("creator", None)
         
         return json
     
@@ -58,9 +58,16 @@ class CommunityChangeRequestModel:
     initiated_date: datetime = None
     reviewed_by: str = None
     review_date: datetime = None
+
+    requested_by_info: UserInfo = None
+    reviewed_by_info: UserInfo = None
     
     def to_json(self) -> dict:
-        return asdict(self)
+        json = asdict(self)
+        json.pop("requested_by_info", None)
+        json.pop("reviewed_by_info", None)
+
+        return json
     
     def to_json_update(self) -> dict:
         return {            
@@ -70,7 +77,7 @@ class CommunityChangeRequestModel:
         }
         
     @classmethod 
-    def from_db_json(cls, json_dict):
+    def from_db_json(cls, json_dict: dict):
         return cls(request_id=json_dict["request_id"],
                    community_id=json_dict["community_id"],
                    field_name=json_dict["field_name"],
@@ -79,5 +86,5 @@ class CommunityChangeRequestModel:
                    requested_by=json_dict["requested_by"],
                    status=json_dict["status"],
                    initiated_date=json_dict["initiated_date"],
-                   reviewed_by=json_dict["reviewed_by"],
-                   review_date=json_dict["review_date"])
+                   reviewed_by=json_dict.get("reviewed_by"),
+                   review_date=json_dict.get("review_date"))
