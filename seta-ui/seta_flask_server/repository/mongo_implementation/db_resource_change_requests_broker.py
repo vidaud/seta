@@ -74,10 +74,10 @@ class ResourceChangeRequestsBroker(implements(IResourceChangeRequestsBroker)):
         
         return [ResourceChangeRequestModel.from_db_json(c) for c in requests]
     
-    def has_pending_field(self, resource_id: str, filed_name: str) -> bool:
+    def has_pending_field(self, resource_id: str, field_name: str) -> bool:
         '''Check if there's another pending request for the same field'''
 
-        filter={"resource_id": resource_id, "field_name": filed_name, "status": RequestStatusConstants.Pending, "request_id": {"$exists" : True}}
+        filter={"resource_id": resource_id, "field_name": field_name, "status": RequestStatusConstants.Pending, "request_id": {"$exists" : True}}
         exists_count = self.collection.count_documents(filter)
         
         return exists_count > 0
@@ -89,6 +89,22 @@ class ResourceChangeRequestsBroker(implements(IResourceChangeRequestsBroker)):
         requests = self.collection.find(filter)
         
         return [ResourceChangeRequestModel.from_db_json(c) for c in requests]    
+    
+    def get_all_by_resource_id(self, resource_id: str) -> list[ResourceChangeRequestModel]:
+        filter =  {"resource_id": resource_id, "request_id": {"$exists" : True}}
+        requests = self.collection.find(filter)
+        
+        return [ResourceChangeRequestModel.from_db_json(c) for c in requests]
+
+    def get_all_by_community_id(self, community_id: str) -> list[ResourceChangeRequestModel]:
+         #get resources_ids
+        ids = self.collection.find({"community_id": community_id}, {"resource_id": 1})
+        resource_ids = [i["resource_id"] for i in ids]
+
+        filter =  {"resource_id": {"$in": resource_ids}, "request_id": {"$exists" : True}}
+        requests = self.collection.find(filter)
+        
+        return [ResourceChangeRequestModel.from_db_json(c) for c in requests] 
 
     @staticmethod
     def generate_uuid() -> str:

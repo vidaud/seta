@@ -7,19 +7,22 @@ from injector import inject
 from http import HTTPStatus
 
 from seta_flask_server.repository.models import CommunityChangeRequestModel
-from seta_flask_server.repository.interfaces import ICommunityChangeRequestsBroker, IUsersBroker
+from seta_flask_server.repository.interfaces import ICommunityChangeRequestsBroker, IUsersBroker, IResourceChangeRequestsBroker
 from seta_flask_server.infrastructure.decorators import auth_validator
 from seta_flask_server.infrastructure.scope_constants import CommunityScopeConstants, SystemScopeConstants
-from seta_flask_server.infrastructure.constants import RequestStatusConstants, UserRoleConstants
+from seta_flask_server.infrastructure.constants import RequestStatusConstants, UserRoleConstants, CommunityRequestFieldConstants, CommunityMembershipConstants
 
-from .models.community_dto import(new_change_request_parser, update_change_request_parser, change_request_model)
+from .models.community_dto import(new_change_request_parser, update_change_request_parser, 
+                    change_request_model, resource_change_request_model, all_change_requests_model)
 
 community_change_request_ns = Namespace('Community Change Requests', validate=True, description='SETA Community Change Requests')
 community_change_request_ns.models[change_request_model.name] = change_request_model
+community_change_request_ns.models[resource_change_request_model.name] = resource_change_request_model
+community_change_request_ns.models[all_change_requests_model.name] = all_change_requests_model
 
 @community_change_request_ns.route('/change-requests/pending', endpoint="community_change_request_list", methods=['GET', 'POST'])
 class CommunityChangeRequestList(Resource):
-    '''Get a list of pending community change requests'''
+    '''Get list of all pending change requests for communities'''
     
     @inject
     def __init__(self, usersBroker: IUsersBroker, changeRequestsBroker: ICommunityChangeRequestsBroker, api=None, *args, **kwargs):
@@ -28,7 +31,7 @@ class CommunityChangeRequestList(Resource):
         
         super().__init__(api, *args, **kwargs)
         
-    @community_change_request_ns.doc(description='Retrieve pending change requests for communitites.',
+    @community_change_request_ns.doc(description='Retrieve all pending change requests for communities',
         responses={
                     int(HTTPStatus.OK): "'Retrieved pending change requests.",
                     int(HTTPStatus.FORBIDDEN): "Insufficient rights, scope 'community/change_request/approve' required"
@@ -38,7 +41,7 @@ class CommunityChangeRequestList(Resource):
     @community_change_request_ns.marshal_list_with(change_request_model, mask="*")
     @auth_validator()
     def get(self):
-        '''Retrieve pending change requests'''
+        '''Retrieve all pending change requests for communities, available to sysadmins'''
         
         identity = get_jwt_identity()
         user_id = identity["user_id"]
@@ -54,27 +57,32 @@ class CommunityChangeRequestList(Resource):
 
         return self.changeRequestsBroker.get_all_pending()
     
-@community_change_request_ns.route('/<string:community_id>/change-requests', endpoint="community_create_change_request", methods=['POST'])
+@community_change_request_ns.route('/<string:community_id>/change-requests', endpoint="community_create_change_request", methods=['GET','POST'])
 @community_change_request_ns.param("community_id", "Community identifier") 
 class CommunityCreateChangeRequest(Resource):
     """Handles HTTP POST requests to URL: /communities/{community_id}/change-requests."""
     
     @inject
-    def __init__(self, usersBroker: IUsersBroker, changeRequestsBroker: ICommunityChangeRequestsBroker, api=None, *args, **kwargs):
+    def __init__(self, usersBroker: IUsersBroker, 
+                 changeRequestsBroker: ICommunityChangeRequestsBroker, 
+                 resourceRequestsBroker: IResourceChangeRequestsBroker, 
+                 api=None, *args, **kwargs):
         self.usersBroker = usersBroker
         self.changeRequestsBroker = changeRequestsBroker
+        self.resourceRequestsBroker = resourceRequestsBroker
         
         super().__init__(api, *args, **kwargs)
         
     @community_change_request_ns.doc(description='Add new change request for a community field.',        
         responses={int(HTTPStatus.CREATED): "Added new change request.", 
                    int(HTTPStatus.CONFLICT): "Community has already a pending change request for this field",
-                   int(HTTPStatus.FORBIDDEN): "Insufficient rights, scope 'community/manager' required",},
+                   int(HTTPStatus.FORBIDDEN): "Insufficient rights, scope 'community/manager' or 'community/owner' required",
+                   int(HTTPStatus.BAD_REQUEST): "Filed name or input values are wrong"},
         security='CSRF')
     @community_change_request_ns.expect(new_change_request_parser)
     @auth_validator()
     def post(self, community_id):
-        '''Create a community change request'''
+        '''Create a community change request, available to community managers'''
         
         identity = get_jwt_identity()
         auth_id = identity["user_id"]
@@ -82,27 +90,80 @@ class CommunityCreateChangeRequest(Resource):
         user = self.usersBroker.get_user_by_id(auth_id)
         if user is None or user.is_not_active():
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
+            
         if not user.has_any_community_scope(id=community_id, scopes=[CommunityScopeConstants.Manager, CommunityScopeConstants.Owner]):
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
         
         request_dict = new_change_request_parser.parse_args()
         
-        if self.changeRequestsBroker.has_pending_field(community_id=community_id, filed_name=request_dict["field_name"]):
+        field_name = request_dict["field_name"]
+        if self.changeRequestsBroker.has_pending_field(community_id=community_id, field_name=field_name):
             abort(HTTPStatus.CONFLICT, "Community has already a pending change request for this field")
+
+        #validate field values
+        new_value=request_dict["new_value"]
+        old_value=request_dict["old_value"]
+
+        match field_name:
+            case CommunityRequestFieldConstants.Membership:
+                if not new_value in CommunityMembershipConstants.List:
+                    abort(HTTPStatus.BAD_REQUEST, f"New value has to be one of {CommunityMembershipConstants.List}")
+                if not old_value in CommunityMembershipConstants.List:
+                    abort(HTTPStatus.BAD_REQUEST, f"Old value has to be one of {CommunityMembershipConstants.List}")
         
-        model = CommunityChangeRequestModel(community_id = community_id, field_name=request_dict["field_name"],
-                                            new_value=request_dict["new_value"], old_value=request_dict["old_value"],
+        model = CommunityChangeRequestModel(community_id = community_id, field_name = field_name,
+                                            new_value = new_value, old_value = old_value,
                                             status = RequestStatusConstants.Pending, requested_by = auth_id)
         try:
             self.changeRequestsBroker.create(model)
         except:
             app.logger.exception("CreateChangeRequest->post")
             abort(HTTPStatus.INTERNAL_SERVER_ERROR)
+
+        message = "New change request added"
+
+        if app.config["AUTO_APPROVE_CHANGE_REQUEST"]:
+            try:  
+                model.status = RequestStatusConstants.Approved
+                model.reviewed_by = 'system'
+
+                self.changeRequestsBroker.update(model)                
+
+                message = "Change request approved!"
+            except:
+                app.logger.exception("CreateChangeRequest->auto_approve")            
                 
-        response = jsonify(status="success", message="New change request added")
+        response = jsonify(status="success", message = message)
         response.status_code = HTTPStatus.CREATED
         
         return response
+    
+    @community_change_request_ns.doc(description='Retrieve all change requests for a community',
+        responses={
+                    int(HTTPStatus.OK): "'Retrieved change requests.",
+                    int(HTTPStatus.FORBIDDEN): "Insufficient rights, scope 'community/manager' or 'community/owner' required"
+                },
+        
+        security='CSRF')
+    @community_change_request_ns.marshal_with(all_change_requests_model, mask="*")
+    @auth_validator()
+    def get(self, community_id):
+        '''Retrieve all change requests for a community, available to community managers'''
+        
+        identity = get_jwt_identity()
+        auth_id = identity["user_id"]
+        
+        user = self.usersBroker.get_user_by_id(auth_id)
+        if user is None or user.is_not_active():
+            abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
+            
+        if not user.has_any_community_scope(id=community_id, scopes=[CommunityScopeConstants.Manager, CommunityScopeConstants.Owner]):
+            abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
+        
+        return {
+            "community_change_requests": self.changeRequestsBroker.get_all_by_community_id(community_id),
+            "resource_change_requests":  self.resourceRequestsBroker.get_all_by_community_id(community_id)
+        } 
    
 @community_change_request_ns.route('/<string:community_id>/change-requests/<string:request_id>', endpoint="community_change_request", methods=['GET', 'PUT'])
 @community_change_request_ns.param("community_id", "Community identifier") 
@@ -117,7 +178,7 @@ class CommunityChangeRequest(Resource):
         
         super().__init__(api, *args, **kwargs)
         
-    @community_change_request_ns.doc(description='Retrieve change request for the community.',
+    @community_change_request_ns.doc(description='Retrieve a change request for a community.',
     responses={int(HTTPStatus.OK): "'Retrieved change request.",
                int(HTTPStatus.NOT_FOUND): "Request not found.",
                int(HTTPStatus.FORBIDDEN): "Insufficient rights, scope 'community/change_request/approve' required"
@@ -126,7 +187,7 @@ class CommunityChangeRequest(Resource):
     @community_change_request_ns.marshal_with(change_request_model, mask="*")
     @auth_validator()    
     def get(self, community_id, request_id):
-        '''Retrieve user request'''
+        '''Retrieve a community change request, available to sysadmins and initiator'''
         
         identity = get_jwt_identity()
         auth_id = identity["user_id"]
@@ -142,7 +203,7 @@ class CommunityChangeRequest(Resource):
         
         #if not the initiator of the request, verify ApproveChangeRequest scope
         if request.requested_by != auth_id:
-            hasApproveRight = user.role.lower() == UserRoleConstants.Admin.lower() or user.has_system_scope(SystemScopeConstants.ApproveCommunityChangeRequest)        
+            hasApproveRight = user.role.lower() == UserRoleConstants.Admin.lower() or user.has_system_scope(SystemScopeConstants.ApproveCommunityChangeRequest)
             if not hasApproveRight:       
                 abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
         
@@ -151,14 +212,14 @@ class CommunityChangeRequest(Resource):
     @community_change_request_ns.doc(description='Approve/reject request',        
     responses={
                 int(HTTPStatus.OK): "Request updated.", 
-                int(HTTPStatus.FORBIDDEN): "Insufficient rights, scope 'community/membership/approve' required",
+                int(HTTPStatus.FORBIDDEN): "Insufficient rights, scope 'community/change_request/approve' required",
                 int(HTTPStatus.NOT_FOUND): "Request not found."
                 },
     security='CSRF')
     @community_change_request_ns.expect(update_change_request_parser)
     @auth_validator()
     def put(self, community_id, request_id):
-        '''Update a request'''
+        '''Update a change request for community, available to sysadmins'''
         
         identity = get_jwt_identity()
         auth_id = identity["user_id"]
