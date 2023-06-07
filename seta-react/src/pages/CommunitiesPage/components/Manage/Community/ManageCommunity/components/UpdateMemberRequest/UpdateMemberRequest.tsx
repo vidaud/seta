@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Popover, Button, Group, createStyles, Tooltip, Select, ActionIcon } from '@mantine/core'
 import { IconPencil } from '@tabler/icons-react'
 
@@ -31,6 +31,12 @@ const UpdateMemberRequest = ({ props }) => {
       status: ''
     }
   })
+
+  useEffect(() => {
+    if (props) {
+      form.setValues(props)
+    }
+  }, [props])
 
   const handleSubmit = (values: MembershipRequestValues) => {
     updateMembershipRequest(props.community_id, values, props.requested_by)
