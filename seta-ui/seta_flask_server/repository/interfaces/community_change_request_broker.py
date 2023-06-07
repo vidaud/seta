@@ -14,8 +14,11 @@ class ICommunityChangeRequestsBroker(Interface):
     def get_all_pending(self) -> list[CommunityChangeRequestModel]:
         pass
     
-    def has_pending_field(self, community_id: str, filed_name: str) -> bool:
+    def has_pending_field(self, community_id: str, field_name: str) -> bool:
         pass
     
     def get_all_by_user_id(self, user_id:str) -> list[CommunityChangeRequestModel]:
+        pass
+
+    def get_all_by_community_id(self, community_id: str) -> list[CommunityChangeRequestModel]:
         pass

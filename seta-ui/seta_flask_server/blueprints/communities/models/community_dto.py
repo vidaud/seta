@@ -6,6 +6,7 @@ from seta_flask_server.infrastructure.constants import (CommunityStatusConstants
                                       RequestStatusConstants)
 
 from .models_dto import (user_info_model)
+from .resource_request_dto import change_request_model as resource_change_request_model
 
 new_community_parser = RequestParser(bundle_errors=True)
 new_community_parser.add_argument("community_id",
@@ -53,7 +54,7 @@ new_change_request_parser.add_argument("field_name",
                                   nullable=False,
                                   case_sensitive=False,
                                   choices=CommunityRequestFieldConstants.List,
-                                  help=f"Requested field, one of {CommunityRequestFieldConstants.List}")
+                                  help=f"Requested field name")
 new_change_request_parser.add_argument("new_value", 
                                   location="form",
                                   required=True,
@@ -88,3 +89,9 @@ change_request_model = Model("CommunityChangeRequest",
                                  "reviewed_by": fields.String(description="User identifier that reviewed the request"),
                                  "review_date": fields.DateTime(description="Reviewed date", attribute="review_date")
                              })
+
+all_change_requests_model = Model("AllChangeRequests",
+                                  {
+                                      "community_change_requests": fields.List(fields.Nested(change_request_model)),
+                                      "resource_change_requests":  fields.List(fields.Nested(resource_change_request_model))
+                                  })

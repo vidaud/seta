@@ -47,4 +47,4 @@ resource_model = Model("Resource",
             "status": fields.String(description="The resource status", enum=ResourceStatusConstants.List),
             "creator_id": fields.String(description="Creator user identifier"),
             "created_at": fields.DateTime(description="Creation date", attribute="created_at")
-        })                                  
+        })
