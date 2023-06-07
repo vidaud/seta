@@ -7,8 +7,7 @@ import type { MenuItem, MenuItemTemplateType } from 'primereact/menuitem'
 import { TieredMenu } from 'primereact/tieredmenu'
 import { Link, NavLink } from 'react-router-dom'
 
-import { useCurrentUser } from '~/contexts/user-context'
-
+import { useCurrentUser } from '../../contexts/user-context'
 import authentificationService from '../../services/authentification.service'
 
 import './style.css'
@@ -71,6 +70,12 @@ const Header = () => {
       url: '/communities',
       visible: authenticated,
       template: navLinkTemplate
+    },
+    {
+      label: 'Documentation',
+      className: 'seta-item',
+      url: '/docs',
+      visible: authenticated
     },
     {
       label: 'Faqs',
