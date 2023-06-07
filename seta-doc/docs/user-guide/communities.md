@@ -77,6 +77,16 @@ Only **users with rights to edit** can change the Community name.
 6. You can update the *Title* and *Description*.  
 7. Click ^^Update^^
 
+<figure markdown>
+  ![Image title](../img/communities_update1.png)
+  <figcaption>Update a Community</figcaption>
+</figure>
+
+<figure markdown>
+  ![Image title](../img/communities_update.png)
+  <figcaption>Update a Community</figcaption>
+</figure>
+
 ### Create a Resource in a Community
 
 **Create a Resource in a Community from Manage**   
@@ -86,16 +96,24 @@ Only **users with rights to edit** can change the Community name.
 4. In the next window, click on button ^^New Resource^^ on the top right.  
 5. Setup the *Resource ID, Title, Abstract* and click *Save*
 
-** Create a Resource in a Community from View Details**   
+**Create a Resource in a Community from View Details**   
 1. From the side menu click on ^^Manage^^ -> ^^My Communities^^.  
 2. You can either enter in the search bar the name of the Community you are looking for or select from the Community list.      
 3. Click in the three dots at the right side of button ^^Invite^^ and select the option ^^View Details^^.       
 4. In the next window, you can either go to section ^^Details^^ or section ^^STATS^^.    
 5. On section ^^Details^^, click on button ^^Manage^^ or and click on button ^^New Resource^^ on the top right.  
 5. On section ^^STATS^^, click on button ^^New Resource^^ at the button.  
-6. On both options, setup the *Resource ID, Title, Abstract* and click *Save*.
+6. On both options, setup the *Resource ID, Title, Abstract* and click *Save*.            
 
- 
+<figure markdown>
+  ![Image title](../img/communities_new_resource_manage.png)
+  <figcaption>New Resource in a Community</figcaption>
+</figure>
+
+<figure markdown>
+  ![Image title](../img/communities_new_resource.png)
+  <figcaption>New Resource in a Community</figcaption>
+</figure>
 
 ### Update details of a Resource                
 
@@ -116,8 +134,26 @@ Only **users with rights to edit** can change the Community name.
 5. You can update the *Title* and *Abstract*.  
 6. Click ^^Update^^.
 
+<figure markdown>
+  ![Image title](../img/resource_community_update.png)
+  <figcaption>Update a Resource</figcaption>
+</figure>
+
+<figure markdown>
+  ![Image title](../img/resource_update.png)
+  <figcaption>Update a Resource</figcaption>
+</figure>
 
 ### Join a Community
+
+**From Discovery** 
+                        
+1. From the side menu click on ^^Discovery^^ -> ^^Communities^^.       
+2. You can either enter in the search bar the name of the Community you are looking for or select from the Community list.      
+3. Click on the button ^^Join^^.       
+    
+
+### Invite to Join a Community
 
 **From My Communities list** 
                         
@@ -126,7 +162,6 @@ Only **users with rights to edit** can change the Community name.
 3. Click on the button ^^Invite^^.       
 4. In the pop-up window, write the emails of the users you want to invite and a message.    
 5. Click ^^Send^^.       
-
 
 **From Manage Communities**        
                   
@@ -137,7 +172,6 @@ Only **users with rights to edit** can change the Community name.
 5. In the pop-up window, write the emails of the users you want to invite and a message.    
 6. Click ^^Send^^.       
 
-
 **From View Details option**                    
 
 1. From the side menu click on ^^Manage^^ -> ^^My Communities^^.  
@@ -146,16 +180,40 @@ Only **users with rights to edit** can change the Community name.
 4. In the next window, on section Details, click on button ^^Manage^^ at the button.     
 5. In the next window, click on button ^^Invite^^ at the top right.
 6. In the pop-up window, write the emails of the users you want to invite and a message.    
-7. Click ^^Send^^.       
+7. Click ^^Send^^.   
+
+<figure markdown>
+  ![Image title](../img/communities_invite.png)
+  <figcaption>Invite to Join a Community</figcaption>
+</figure>
 
 
 ### See the members of a Community
-Anyone can see who is a member of a public Community. In a private Community you have to be a member to see who the other members are. 
+<!--Anyone can see who is a member of a public Community. In a private Community you have to be a member to see who the other members are. -->
+**From Discovery**             
+1. From the side menu click on ^^Discovery^^ -> ^^Communities^^.       
+2. You can either enter in the search bar the name of the Community you are looking for or select from the Community list.      
+3. Click on the ^^eye^^ icon to view the details.                  
+4. In the next window, in section ^^STATS^^, you can see the number of members.              
 
-1. From the side menu click on ^^Manage^^ -> ^^My Communities^^.    
-2. Click ^^Members^^ in section ^^Stats^^. 
+!!! info
+	If you are not a member of the Community you will only see the number of members.               
+
+**From My Communities list** 
+                        
+1. From the side menu click on ^^Manage^^ -> ^^My Communities^^.       
+2. You can either enter in the search bar the name of the Community you are looking for or select from the Community list.      
+3. Click in the three dots at the right side of each Community and select the option ^^View Details^^.                    
+4. In the next window, in section ^^STATS^^, you can click in the number of members to go to the list of members.              
 
 
+<figure markdown>
+  ![Image title](../img/communities_members.png)
+  <figcaption>Members of a Community</figcaption>
+</figure>
+
+
+      
 ### Delete a Resource    
 
 **From My Resources list**
@@ -170,10 +228,17 @@ Anyone can see who is a member of a public Community. In a private Community you
 2. You can either enter in the search bar the name of the Resource you are looking for or select from the Resources list.  
 3. After you select the Resource, click in the three dots at the right side of each Resource and select the option ^^View Details^^.      
 4. In the next window, click on button ^^Delete^^ on the right bottom.      
-   
+
+
+<figure markdown>
+  ![Image title](../img/delete_resource.png)
+  <figcaption>Delete a Resource</figcaption>
+</figure>
+
+
 
 ### Delete a Community
-!!! info
+!!! warning
     Please consider that before you can delete a Community you need to delete the Resources related.
 
 **From My Communities list**
@@ -183,129 +248,59 @@ Anyone can see who is a member of a public Community. In a private Community you
 3. After you select the Community, click on button ^^Delete^^ on the left top of the Communities list.
 4. It is also possible to delete the Community by clicking in the three dots at the right side of each Community and select the option ^^Delete Community^^. 
 
-### Difference between a manager and a creator in a Community
-              
-**As a Community creator he will have the following tasks:**
-
-- Make another member a manager or contributor. 
-- Remove a manager or contributor. 
-- Manage Community settings (ex: change the Community name or privacy settings). 
-- Approve or deny membership requests and participant requests. 
-- Approve or deny documents in the Community. 
-- Remove documents and comments on documents. 
-- Remove and block people from the Community. 
-- Upload or remove a document. 
-
-**As a Community manager he will have the following tasks:**
-
-- Approve or deny membership requests and participant requests. 
-- Approve or deny documents in the Community. 
-- Remove documents and comments on documents. 
-- Remove people from the Community. 
-- Upload or remove a document.  
-
-!!! warning
-    All communities must have a manager. 
-
-### Difference between a viewer and contributor in public communities
-                        
-In public communities you can interact with a Community as a viewer or as a contributor.   
-
--  **Contributor**:  someone who has joined the Community. 
-    - Can upload a document. 
-    
-- **Viewer**: someone who isn't a member of the Community. 
-    - No manager approval required. 
-    - Can view the resources and documents related. 
-    
-
-### Manage the upload of documents for a Community
-               
-As a manager you can review and approve people before they can upload a document.
-
-### Remove documents in a Community
-               
-Creators and managers can remove documents from their Community.
-
-**To remove a document from your Community:**  
-
-1. From the side menu click on ^^Manage^^ -> ^^My Resources^^.    
-2. From the resources list click on the delete icon.  
-3. Click Confirm. 
-
-### Remove someone from a Community
-                     
-**To remove a member:**   
-
-1. From the side menu click on ^^Manage^^ -> ^^My Communities^^.     
-2. From the communities list click on the Community you want to change.  
-3. On the top of the window click on button ^^Manage^^.    
-4. On section *Members* click on the member you want to remove.  
-5. Click on the delete icon and select ^^Remove^^ member from Community. 
-6. Click ^^Confirm^^.   
-
-!!! info
-    Removed members will have to request to join the Community again if they wish to re-join.
 
 
-### Upload document in a Community
+<figure markdown>
+  ![Image title](../img/delete_community.png)
+  <figcaption>Delete a Community</figcaption>
+</figure>
 
-You can upload a document inside a Community Resource or from the menu My Resources
-
-**Upload a document in a Community**   
-
-1. From the side menu click on ^^Manage^^ -> ^^My Communities^^.   
-2. You can either enter in the search bar the name of the Community you are looking for or select it from the Community list.
-3. On the *Resources* section, click on the ^^Resource^^ you want to upload the document. 
-4. After you upload the document, click ^^Next^^.   
-5. Setup the *Metadata* information, click ^^Next^^.    
-6. Setup the *Taxonomy* or *Taxonomies*,  they can be one of the existing or create new.  
-7. Review the data and save the document. 
-
-**Upload a document in a Resource**   
-
-1. From the side menu click on ^^Manage^^ -> ^^My Resources^^.   
-2. You can either enter in the search bar the name of the Resource you are looking for or select it from Resources list 
-3. Click on button ^^Upload^^ on the *Documents* section. 
-4. After you upload the document, click ^^Next^^.   
-5. Setup the *Metadata* information, click ^^Next^^.    
-6. Setup the *Taxonomy* or *Taxonomies*,  they can be one of the existing or create new.  
-7. Review the data and save the document. 
-
-!!! note
-    In public communities creators might require approval before you can upload a document for the first time.
-
-### Delete Documents from a Community
-
-You can delete a document inside a Community Resource or from the menu My Resources:      
-
-**Delete documents in a Community:**   
-1. From the side menu click on ^^Manage^^ -> ^^My Communities^^.   
-2. You can either enter in the search bar the name of the Community you are looking for, or select it from the Community list.     
-3. On the *Resources* section, click on the ^^Resource^^ you want to delete the document.     
-4. On the Resources page, from the Documents list select the document and click on the delete button.       
-
-**Delete all your documents you've shared in the Community:**   
-1. From the side menu click on ^^Manage^^ -> ^^My Resources^^.   
-2. You can either enter in the search bar the name of the Resource you are looking for, or select it from Resources list.    
-3. On the *Resources* section, click on the ^^Resource^^ you want to delete the document.    
-4. On the Resources page, from the Documents list select the document and click on the delete button. 
-
-
-### See a list of My Communities
+### See the list of Communities
 
 1. From the side menu click on ^^Manage^^ -> ^^My Communities^^.   
 2. You will see a list of the Communities in the page.
+3. You can enter in the search bar the name of the Community you are looking for.                 
+<figure markdown>
+  ![Image title](../img/communities_list.png)
+  <figcaption>Communities</figcaption>
+</figure>
 
-### See a list of My Resources
+### See the list of My Communities
 
-1. From the side menu click on ^^Manage^^ -> ^^My Resources^^.   
-2. You will see a list of the Resources in the page.
+1. From the side menu click on ^^Manage^^ -> ^^My Communities^^.   
+2. You will see a list of the Communities in the page.
+3. You can enter in the search bar the name of the Community you are looking for.                  
 
-### See a list of Resources
+<figure markdown>
+  ![Image title](../img/my_communities.png)
+  <figcaption>My Communities</figcaption>
+</figure>                 
+
+
+### See the list of Resources
 <!--{== *are public Resources from other communities?*==}-->
 
-1. From the side menu click on ^^Discover^^ -> ^^Resources^^.   
-2. You can either enter in the search bar the name of the Resource you are looking for, or select it from the Resource list.
+1. From the side menu click on ^^Discover^^ -> ^^Resources^^.      
+2. You will see a list of the Resources in the page.                        
+3. You can either enter in the search bar the name of the Resource you are looking for.              
+
+
+<figure markdown>
+  ![Image title](../img/resource_list.png)
+  <figcaption>Resources</figcaption>
+</figure>
+
+### See the list of My Resources
+
+1. From the side menu click on ^^Manage^^ -> ^^My Resources^^.              
+2. You will see a list of the Resources in the page.                   
+3. You can either enter in the search bar the name of the Resource you are looking for.        
+
+
+<figure markdown>
+  ![Image title](../img/my_resources_list.png)
+  <figcaption>My Resources</figcaption>
+</figure>
+
 
 

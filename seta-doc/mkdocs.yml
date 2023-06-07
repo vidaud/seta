@@ -1,4 +1,4 @@
-site_name: SeTA Docs
+site_name: SeTA Documentation
 site_description: SeTA - Semantic Text Analyser
 theme:
   name: material
@@ -29,7 +29,8 @@ theme:
         bug: octicons/bug-16
         example: octicons/beaker-16
         quote: octicons/quote-16
-    logo: material/file-document-multiple
+    #logo: material/file-document-multiple
+    logo: material/home
     favicon: img/favicon.png
   palette:
     - scheme: seta
@@ -66,9 +67,9 @@ markdown_extensions:
     - footnotes
     - md_in_html
     - tables
-    
-#extra:
-  #homepage: /
+
+extra:
+  homepage: /
   
 extra_css:
   - stylesheets/extra.css
