@@ -4,6 +4,9 @@ theme:
   name: material
   custom_dir: overrides
   features:
+    - header.autohide
+    - navigation.instant
+    #- navigation.tabs
     - navigation.tracking
     - navigation.path
     - toc.follow
@@ -93,7 +96,7 @@ nav:
     - Web App:
       - Search: 
         - Methodology: user-guide/methodology.md
-        - Web App: user-guide/web-app.md
+        - Web Interface: user-guide/web-app.md
       - Communities: 
         - General: user-guide/communities.md
     - APIs: 

@@ -11,12 +11,12 @@ In the SeTA web application, we have two types of communities: public communitie
 
 On the main page of the Communities, there are two side panels on the left side: *Discovery* and *Manage* and in the centre, there is a list of the Communities the user had Join.
 
-On the Discovery panel it is possible to access to:
+On **Discovery** panel it is possible to access to:
 
-- Communities *(Communities joined)*        
+- Communities *(List of Communities)*        
 - Resources *(The Resources related to those communities)*        
 
-On the Manage panel it is possible to access to:             
+On **Manage** panel it is possible to access to:             
 
 - My Communities                 
 - My Resources               

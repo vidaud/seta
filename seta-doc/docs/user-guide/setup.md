@@ -53,7 +53,7 @@ In SeTA there are two APIs:
 - Communities API       
 - SeTA API             
 
-To prepare the upload of the data, it is important to setup first the Communities API to then follow with the SeTA API.
+To prepare the upload of the data, it is important to setup first the **Communities API** to then follow with **SeTA API**.
 
 ### Communities API 
 
@@ -148,7 +148,7 @@ Open a new tab in the same browser for the [Community API swagger documentation]
 
 <figure markdown>
 ![Image title](../img/communities_api.png){ width="800" }
-<figcaption>Communities API</figcaption>
+<figcaption>SeTA Communities</figcaption>
 </figure>
 
 
@@ -159,6 +159,10 @@ Open the *browser developer tool* and copy the value of the ^^**csrf_access_toke
 
 Click on the **Authorize** button to open the Available authorizations dialog; set the CSRF value and click on *Authorize* button; leave the **Bearer** field empty.
 
+<figure markdown>
+![Image title](../img/authorize.png){ width="500" }
+<figcaption>Authorize</figcaption>
+</figure>
 
 !!! warning "Only if you want to use seta-api in another browser:"
     * open the browser developer tool and copy the value of the **access_token_cookie**
@@ -166,13 +170,9 @@ Click on the **Authorize** button to open the Available authorizations dialog; s
 
 SeTA-API will get at each request another authorization decoded token from seta-ui through the *token info* endpoint using the authenticated JWT.
 
-!!! info 
-    You can verify the authorization token at [authorization doc]({{ setaUrls.auth_Token }}) passing the JWT access token as payload.
+> You can verify the authorization token at [authorization doc]({{ setaUrls.auth_Token }}) passing the JWT access token as payload.
 
-<figure markdown>
-![Image title](../img/authorize.png){ width="500" }
-<figcaption>Authorize</figcaption>
-</figure>
+
 
 
 
@@ -346,14 +346,14 @@ At this point, Community API usage is set up and now it is possible to go to SeT
 
 #### EU Login Authentication
 
-Open a browser and go to seta-ui [[location] {{ setaUrls.login }}]({{ setaUrls.login }}) page. Connect with EU Login account or use a GitHub authentication. After that you can open a new tab in the same browser or go to [Search API swagger documentation]({{ setaUrls.apiSeta }}).
+Open a browser and go to seta-ui [login]({{ setaUrls.login }}) page. Connect with EU Login account or use a GitHub authentication. After that, you can open a new tab in the same browser or go to [Search API swagger documentation]({{ setaUrls.apiSeta }}).
 
 
 !!! info
     If you open a new tab or window from another browser, you need to open the browser developer tool and copy the value of the ^^csrf_access_token^^ cookie 
 
 
-You can start using Search API.
+You can start using SeTA API.
 
 
 <figure markdown>
