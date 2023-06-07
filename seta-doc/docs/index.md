@@ -1,4 +1,5 @@
 # SeTA 
+
 **SeTA** (“Semantic Text Analyser”) is a tool that offers a search functionality in large document collections. Upon providing a keyword, a set of keywords, or a piece of text, the tool will indicate a list of documents, and locations therein, where the keyword(s) occur. The search is enhanced beyond merely finding the keywords literally, first by the use of a taxonomy (that structures pre-defined keywords) and second by semantic interpretation of the keywords (that uses the meaning of the words in addition to their literal form). The search results can, as next step, be easily screened and filtered by the user with the help of the tool.       
 \     
 SeTA helps to explore the information in a document collection by making sense of the textual content and finding links.

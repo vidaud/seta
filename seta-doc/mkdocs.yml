@@ -70,6 +70,14 @@ markdown_extensions:
 
 extra:
   homepage: /
+  setaUrls: 
+    home: /
+    apiCommunities: /seta-ui/api/v1/communities/doc
+    apiSeta: /seta-api/doc
+    docs: /docs
+    login: /login
+    auth_decode_Token: /authorization/v1/token_info
+    auth_Token: /authorization/v1/doc
   
 extra_css:
   - stylesheets/extra.css

@@ -58,7 +58,7 @@ role claim (claim_value can different):
 
 Community API
 
-Open a new tab in the same browser for the community api swagger documentation: http://localhost/seta-ui/api/v1/communities/doc
+Open a new tab in the same browser for the [Community API swagger documentation]({{ setaUrls.apiCommunities }})
 
 Open the browser developer tool and copy the value of the 'csrf_access_token' cookie
 
@@ -174,7 +174,7 @@ Check the objects for the resource scopes in the seta database - users collectio
 
 SeTA-API Corpus
 
-Open a new tab in the same browser for the seta-api swagger documentation: http://localhost/seta-api/doc
+Open a new tab in the same browser for the seta-api swagger documentation: [[location] {{ setaUrls.apiSeta }}]({{ setaUrls.apiSeta }})
 
 
 
@@ -185,8 +185,8 @@ click on the Authorize button to open the Available authorizations dialog; in th
 
 
 
-Seta-API will get at each request another authorization decoded token from seta-ui at http://localhost/authorization/v1/token_info endpoint using the authenticated JWT.
+Seta-API will get at each request another authorization decoded token from seta-ui at [[location] {{ setaUrls.auth_decode_Token }}]({{ setaUrls.auth_decode_Token }}) endpoint using the authenticated JWT.
 
-Note: You can verify the authorization token at http://localhost/authorization/v1/doc passing the JWT access token as payload.
+Note: You can verify the authorization token at [[location] {{ setaUrls.auth_Token }}]({{ setaUrls.auth_Token }}) passing the JWT access token as payload.
 
 Start using the methods under seta-api-corpus region.

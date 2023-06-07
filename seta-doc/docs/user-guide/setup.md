@@ -69,7 +69,7 @@ The Docker containers must be running.
 
 #### EU Login Authentication
 
-Open browser and go to seta-ui [login](/login) page.
+Open browser and go to seta-ui [login]({{ setaUrls.login }}) page.
 
 Connect with EU Login account (*you can also use GitHub authentication, but EU Login will be used as an example here*).
 
@@ -144,7 +144,7 @@ After successful authentication, check that you have the following entries in th
 
 
 
-Open a new tab in the same browser for the [Community API swagger documentation](/seta-ui/api/v1/communities/doc)
+Open a new tab in the same browser for the [Community API swagger documentation]({{ setaUrls.apiCommunities }})
 
 <figure markdown>
 ![Image title](../img/communities_api.png){ width="800" }
@@ -167,7 +167,7 @@ Click on the **Authorize** button to open the Available authorizations dialog; s
 SeTA-API will get at each request another authorization decoded token from seta-ui through the *token info* endpoint using the authenticated JWT.
 
 !!! info 
-    You can verify the authorization token at [authorization doc](/authorization/v1/doc) passing the JWT access token as payload.
+    You can verify the authorization token at [authorization doc]({{ setaUrls.auth_Token }}) passing the JWT access token as payload.
 
 <figure markdown>
 ![Image title](../img/authorize.png){ width="500" }
@@ -346,7 +346,7 @@ At this point, Community API usage is set up and now it is possible to go to SeT
 
 #### EU Login Authentication
 
-Open a browser and go to seta-ui [login](/login) page. Connect with EU Login account or use a GitHub authentication. After that you can open a new tab in the same browser or go to [Search API swagger documentation](/seta-api/doc).
+Open a browser and go to seta-ui [[location] {{ setaUrls.login }}]({{ setaUrls.login }}) page. Connect with EU Login account or use a GitHub authentication. After that you can open a new tab in the same browser or go to [Search API swagger documentation]({{ setaUrls.apiSeta }}).
 
 
 !!! info

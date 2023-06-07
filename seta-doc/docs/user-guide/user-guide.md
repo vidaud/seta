@@ -93,7 +93,7 @@ After successful authentication, check that you have the following entries in th
     user_id is a randomly generated short guid for each new account
 #### Community API
 
-Open a new tab in the same browser for the community api swagger documentation: [http://localhost/seta-ui/api/v1/communities/doc](http://localhost/seta-ui/api/v1/communities/doc)
+Open a new tab in the same browser for the community api swagger documentation: [[location] {{ setaUrls.apiCommunities }}]({{ setaUrls.apiCommunities }})
 
 Open the browser developer tool and copy the value of the ^^csrf_access_token^^ cookie
 
@@ -217,16 +217,16 @@ Check the following:
 
 #### SeTA-API Corpus
 
-Open a new tab in the same browser for the seta-api swagger documentation: [http://localhost/seta-api/doc](http://localhost/seta-api/doc)
+Open a new tab in the same browser for the seta-api swagger documentation: [[location] {{ setaUrls.apiSeta }}]({{ setaUrls.apiSeta }})
 
 !!! tip "Only if you want to use seta-api in another browser:"
     * open the browser developer tool and copy the value of the **_access_token_cookie** cookie
     * click on the **Authorize** button to open the Available authorizations dialog; in the apikey text input set **Bearer** value then click on the *Authorize* button.
 
-Seta-API will get at each request another authorization decoded token from seta-ui at [http://localhost/authorization/v1/token_info](http://localhost/authorization/v1/token_info) endpoint using the authenticated JWT.
+Seta-API will get at each request another authorization decoded token from seta-ui at [[location] {{ setaUrls.auth_decode_Token }}]({{ setaUrls.auth_decode_Token }}) endpoint using the authenticated JWT.
 
 !!! note "Note:" 
-    You can verify the authorization token at [http://localhost/authorization/v1/doc](http://localhost/authorization/v1/doc) passing the JWT access token as payload.
+    You can verify the authorization token at [[location] {{ setaUrls.auth_Token }}]({{ setaUrls.auth_Token }}) passing the JWT access token as payload.
 
 Start using the methods under **seta-api-corpus** region.
 
