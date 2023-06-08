@@ -32,7 +32,7 @@ class MembersipRequestList(Resource):
         
         super().__init__(api, *args, **kwargs)
         
-    @membership_request_ns.doc(description='Retrieve request list for this community.',
+    @membership_request_ns.doc(description='Retrieve pending request list for this community.',
         responses={int(HTTPStatus.OK): "'Retrieved request list.",
                    int(HTTPStatus.FORBIDDEN): "Insufficient rights, scope '/seta/community/manager' required",
                    int(HTTPStatus.NOT_FOUND): "Community not found"},
@@ -40,7 +40,7 @@ class MembersipRequestList(Resource):
     @membership_request_ns.marshal_list_with(request_model, mask="*", skip_none = True)
     @auth_validator()    
     def get(self, community_id):
-        '''Retrieve community requests, available to community managers'''
+        '''Retrieve pending community requests, available to community managers'''
         
         identity = get_jwt_identity()
         auth_id = identity["user_id"]
@@ -56,7 +56,7 @@ class MembersipRequestList(Resource):
         if not self.communitiesBroker.community_id_exists(community_id):
             abort(HTTPStatus.NOT_FOUND)
         
-        requests = self.membershipsBroker.get_requests_by_community_id(community_id)
+        requests = self.membershipsBroker.get_requests_by_community_id(community_id=community_id, status=RequestStatusConstants.Pending)
 
         for request in requests:
             requested_by = self.usersBroker.get_user_by_id(request.requested_by, load_scopes=False)
@@ -73,7 +73,7 @@ class MembersipRequestList(Resource):
     @membership_request_ns.doc(description='Add new request for the community for the authorized user.',        
         responses={int(HTTPStatus.CREATED): "Added new request.", 
                    int(HTTPStatus.NOT_FOUND): "Community not found",
-                   int(HTTPStatus.CONFLICT): "Member or request already exists."},
+                   int(HTTPStatus.CONFLICT): "Member or pending request already exists."},
         security='CSRF')
     @membership_request_ns.expect(new_request_parser)
     @auth_validator()
@@ -124,7 +124,7 @@ class MembersipRequestList(Resource):
 @membership_request_ns.route('/<string:community_id>/requests/<string:user_id>', endpoint="request", methods=['GET', 'PUT'])
 @membership_request_ns.param("community_id", "Community identifier")
 @membership_request_ns.param("user_id", "User identifier")
-class MembersipRequest(Resource):
+class MembershipRequest(Resource):
     """Handles HTTP requests to URL: /communities/{community_id}/requests/{user_id}."""
 
     @inject
@@ -183,7 +183,7 @@ class MembersipRequest(Resource):
     @membership_request_ns.expect(update_request_parser)
     @auth_validator()
     def put(self, community_id, user_id):
-        '''Update a membership request, available to community managers'''
+        '''Approve/reject a membership request, available to community managers'''
         
         identity = get_jwt_identity()
         auth_id = identity["user_id"]
@@ -204,10 +204,10 @@ class MembersipRequest(Resource):
         status = request_dict["status"]
 
         request = self.membershipsBroker.get_request(community_id=community_id, user_id=user_id)
-            
-        if request.status.lower() == status.lower():
-            abort(HTTPStatus.CONFLICT, f"Request was aleardy {status}")
+        request_status = request.status.lower()
 
+        if request_status == status.lower() or request_status != RequestStatusConstants.Pending:
+            abort(HTTPStatus.CONFLICT, f"Request was already {request_status}")
                    
         model = MembershipRequestModel(community_id=community_id, requested_by=user_id, status=status, reviewed_by=auth_id)        
 
