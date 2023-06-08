@@ -1,5 +1,8 @@
+import { useEffect, useState } from 'react'
 import { Card, Text, Group, createStyles, Button, rem, Container, Tooltip } from '@mantine/core'
 import { Link, useParams } from 'react-router-dom'
+
+import { useCurrentUserPermissions } from '../../../../scope-context'
 
 const useStyles = createStyles(theme => ({
   card: {
@@ -34,6 +37,14 @@ const useStyles = createStyles(theme => ({
 const Stats = ({ resourceNumber }) => {
   const { classes } = useStyles()
   const { id } = useParams()
+  const { community_scopes } = useCurrentUserPermissions()
+  const [scopes, setScopes] = useState<string[] | undefined>([])
+
+  useEffect(() => {
+    const findCommunity = community_scopes?.filter(scope => scope.community_id === id)
+
+    findCommunity ? setScopes(findCommunity[0]?.scopes) : setScopes([])
+  }, [community_scopes, id])
 
   return (
     <Card withBorder radius="md" className={classes.card}>
@@ -78,15 +89,17 @@ const Stats = ({ resourceNumber }) => {
         </Container>
       </Group> */}
 
-      <Card.Section className={classes.section}>
-        <Group spacing={30}>
-          <Tooltip label="Add new resource to this community">
-            <Link className={classes.link} to={`/my-communities/${id}/new`} replace={true}>
-              <Button radius="xl">+ New Resource</Button>
-            </Link>
-          </Tooltip>
-        </Group>
-      </Card.Section>
+      {scopes?.includes('/seta/resource/create') ? (
+        <Card.Section className={classes.section}>
+          <Group spacing={30}>
+            <Tooltip label="Add new resource to this community">
+              <Link className={classes.link} to={`/my-communities/${id}/new`} replace={true}>
+                <Button radius="xl">+ New Resource</Button>
+              </Link>
+            </Tooltip>
+          </Group>
+        </Card.Section>
+      ) : null}
     </Card>
   )
 }

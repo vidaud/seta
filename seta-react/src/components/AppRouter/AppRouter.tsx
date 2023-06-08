@@ -142,7 +142,9 @@ const routes = createRoutesFromElements(
         path=":id/:resourceId"
         element={
           <RequireAuth>
-            <ViewMyResource />
+            <ScopeProvider>
+              <ViewMyResource />
+            </ScopeProvider>
           </RequireAuth>
         }
       />
@@ -166,7 +168,9 @@ const routes = createRoutesFromElements(
         path=":id/manage"
         element={
           <RequireAuth>
-            <ManageCommunity />
+            <ScopeProvider>
+              <ManageCommunity />
+            </ScopeProvider>
           </RequireAuth>
         }
       />
@@ -192,7 +196,9 @@ const routes = createRoutesFromElements(
         path=":resourceId"
         element={
           <RequireAuth>
-            <ViewMyResource />
+            <ScopeProvider>
+              <ViewMyResource />
+            </ScopeProvider>
           </RequireAuth>
         }
       />

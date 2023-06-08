@@ -18,11 +18,11 @@ const ResourceButtons = item => {
   const [scopes, setScopes] = useState<string[] | undefined>([])
 
   useEffect(() => {
-    const findCommunity = resource_scopes?.filter(
-      scope => scope?.community_id === item.item.community_id
+    const findResource = resource_scopes?.filter(
+      scope => scope?.resource_id === item.item.resource_id
     )
 
-    findCommunity ? setScopes(findCommunity[0]?.scopes) : setScopes([])
+    findResource ? setScopes(findResource[0]?.scopes) : setScopes([])
   }, [resource_scopes, item])
 
   console.log(scopes)
@@ -38,13 +38,15 @@ const ResourceButtons = item => {
           </Tooltip>
         </Menu.Target>
         <Menu.Dropdown>
-          <Link
-            className={classes.link}
-            to={`/my-resources/${item.item.resource_id}/update`}
-            replace={true}
-          >
-            <Menu.Item icon={<IconPencil size="1rem" stroke={1.5} />}>Update</Menu.Item>
-          </Link>
+          {scopes?.includes('/seta/resource/edit') ? (
+            <Link
+              className={classes.link}
+              to={`/my-resources/${item.item.resource_id}/update`}
+              replace={true}
+            >
+              <Menu.Item icon={<IconPencil size="1rem" stroke={1.5} />}>Update</Menu.Item>
+            </Link>
+          ) : null}
 
           <Link
             className={classes.link}
@@ -53,7 +55,7 @@ const ResourceButtons = item => {
           >
             <Menu.Item icon={<IconEye size="1rem" stroke={1.5} />}>View Details</Menu.Item>
           </Link>
-          <DeleteResource props={item} />
+          {scopes?.includes('/seta/resource/data/delete') ? <DeleteResource props={item} /> : null}
         </Menu.Dropdown>
       </Menu>
     </Group>

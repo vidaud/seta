@@ -24,7 +24,7 @@ type CommunityScopes = {
 }
 
 type ResourceScopes = {
-  community_id: string
+  resource_id: string
   scopes: string[]
 }
 
