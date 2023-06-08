@@ -50,31 +50,10 @@ Once you are logged in, you can see in the top menu the link to the Search and t
 The SeTA APIs provides the functions and procedures to access data from a developer point of view.
 
 In SeTA there are two APIs:   
-- SeTA API    
-- Communities API 
+- Communities API       
+- SeTA API             
 
-### SeTA API
-
-
-#### Prerequisites
-
-
-#### EU Login Authentication
-
-Open a browser and go to seta-ui [login](/login) page. Connect with EU Login account or use a GitHub authentication. After that you can open a new tab in the same browser or go to [Search API swagger documentation](/seta-api/doc).
-
-
-!!! info
-    If you open a new tab or window from another browser, you need to open the browser developer tool and copy the value of the ^^csrf_access_token^^ cookie 
-
-You can start using Search API.
-
-
-<figure markdown>
-![Image title](../img/seta-api.png){ width="900" }
-<figcaption>SeTA API</figcaption>
-</figure>
-
+To prepare the upload of the data, it is important to setup first the **Communities API** to then follow with **SeTA API**.
 
 ### Communities API 
 
@@ -90,7 +69,7 @@ The Docker containers must be running.
 
 #### EU Login Authentication
 
-Open browser and go to seta-ui [login](/login) page.
+Open browser and go to seta-ui [login]({{ setaUrls.login }}) page.
 
 Connect with EU Login account (*you can also use GitHub authentication, but EU Login will be used as an example here*).
 
@@ -132,10 +111,6 @@ After successful authentication, check that you have the following entries in th
 ``` -->
 
 
-
-
-
-
 <figure markdown>
 ![Image title](../img/community_create_scope.png){ width="700" }
 <figcaption>Community create scope</figcaption>
@@ -169,11 +144,11 @@ After successful authentication, check that you have the following entries in th
 
 
 
-Open a new tab in the same browser for the [Community API swagger documentation](/api/communities/v1/doc)
+Open a new tab in the same browser for the [Community API swagger documentation]({{ setaUrls.apiCommunities }})
 
 <figure markdown>
 ![Image title](../img/communities_api.png){ width="800" }
-<figcaption>Communities API</figcaption>
+<figcaption>SeTA Communities</figcaption>
 </figure>
 
 
@@ -184,6 +159,10 @@ Open the *browser developer tool* and copy the value of the ^^**csrf_access_toke
 
 Click on the **Authorize** button to open the Available authorizations dialog; set the CSRF value and click on *Authorize* button; leave the **Bearer** field empty.
 
+<figure markdown>
+![Image title](../img/authorize.png){ width="500" }
+<figcaption>Authorize</figcaption>
+</figure>
 
 !!! warning "Only if you want to use seta-api in another browser:"
     * open the browser developer tool and copy the value of the **access_token_cookie**
@@ -191,13 +170,9 @@ Click on the **Authorize** button to open the Available authorizations dialog; s
 
 SeTA-API will get at each request another authorization decoded token from seta-ui through the *token info* endpoint using the authenticated JWT.
 
-!!! info 
-    You can verify the authorization token at [authorization doc](/authorization/v1/doc) passing the JWT access token as payload.
+> You can verify the authorization token at [authorization doc]({{ setaUrls.auth_Token }}) passing the JWT access token as payload.
 
-<figure markdown>
-![Image title](../img/authorize.png){ width="500" }
-<figcaption>Authorize</figcaption>
-</figure>
+
 
 
 
@@ -362,7 +337,32 @@ Check that the objects for the resource scopes in the **seta database - users** 
 -->
 
 
-At this point, Community API usage is set up and you can start using the methods under **seta-api-corpus** region.
+At this point, Community API usage is set up and now it is possible to go to SeTA API to start using the methods under **seta-api-corpus** region for the upload of data.
+
+### SeTA API
+
+#### Prerequisites
+
+
+#### EU Login Authentication
+
+Open a browser and go to seta-ui [login]({{ setaUrls.login }}) page. Connect with EU Login account or use a GitHub authentication. After that, you can open a new tab in the same browser or go to [Search API swagger documentation]({{ setaUrls.apiSeta }}).
+
+
+!!! info
+    If you open a new tab or window from another browser, you need to open the browser developer tool and copy the value of the ^^csrf_access_token^^ cookie 
+
+
+You can start using SeTA API.
+
+
+<figure markdown>
+![Image title](../img/seta-api.png){ width="900" }
+<figcaption>SeTA API</figcaption>
+</figure>
+
+
+
 
 
 [^1]:https://webgate.ec.europa.eu/ern/userguide/Content/A.HOW%20TO%20JOIN/Register%20on%20EU-Login.htm

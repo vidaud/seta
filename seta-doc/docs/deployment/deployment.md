@@ -45,11 +45,13 @@ Create an ***.env*** file containing the variables as described in the file  *.e
 
 After successfully start all the containers you are ready to open your browser and start typing:
 
-* **for UI:** [http://localhost](http://localhost)
+* **for UI:** [[location] {{ setaUrls.home }}]({{ setaUrls.home }})
 
-* **for API:** [http://localhost/seta-api/doc](http://localhost/seta-api/doc)
+* **for SeTA API:** [[location] {{ setaUrls.apiSeta }}]({{ setaUrls.apiSeta }})
 
-* **for DOCS:** [http://localhost/docs](http://localhost/docs)
+* **for SeTA COMMUNITIES API:** [[location] {{ setaUrls.apiCommunities }}]({{ setaUrls.apiCommunities }})
+
+* **for DOCS:** [[location] {{ setaUrls.apiCommunities }}]({{ setaUrls.apiCommunities }})
 
 #### To stop services
 ```
