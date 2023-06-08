@@ -23,25 +23,13 @@
 					"key": "0-1",
 					"label": "",
 					"icon": "",
-					"data":"<b>2. What can I find in My Search?</b>",
+					"data":"<b>2. What can I find in My Search section?</b>",
 					"children": [
 						{
 						"key": "0-1-0",
                         "label": "",
                         "icon": "",
 						"data":"&emsp;In this panel it is possible to see the search library."}]
-				},
-				{
-					"key": "0-2",
-					"label": "",
-					"icon": "",
-					"data":"<b>3. How <u>Other</u> panel works?</b>",
-					"children": [
-						{
-						"key": "0-2-0",
-                        "label": "",
-                        "icon": "",
-						"data":"&emsp;With this option you can customize your own filter."}]
 				}
 			]
         },

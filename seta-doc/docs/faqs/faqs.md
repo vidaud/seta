@@ -14,12 +14,12 @@
     - Taxonomies 
     - Other 
 
-??? abstract "What can I find in My Search?" 
+??? abstract "What can I find in My Search section?" 
         
     In this panel it is possible to see the search library.
 
-??? abstract "How ^^Other^^ panel works?"                     
-    With this option you can customize your own filter.
+<!--??? abstract "How ^^Other^^ panel works?"                     
+    With this option you can customize your own filter.-->
 
 
 ## Communities 
