@@ -44,8 +44,8 @@ update_request_parser.add_argument("status",
                                   required=True,
                                   nullable=False,
                                   case_sensitive=False,
-                                  choices=RequestStatusConstants.List,
-                                  help=f"Status, one of {RequestStatusConstants.EditList}")
+                                  choices=RequestStatusConstants.EditList,
+                                  help=f"Request status")
 
 request_model = Model("MembershipRequest",
         {

@@ -101,8 +101,9 @@ class MembershipsBroker(implements(IMembershipsBroker)):
         request = self.get_request(user_id=model.requested_by, community_id=model.community_id)
 
         if request is not None:
-            #check if the rejected request expired
-            if request.status == RequestStatusConstants.Rejected and request.reject_timeout < now:
+            #check if the rejected request expired or approved
+            if ((request.status == RequestStatusConstants.Approved) or 
+                (request.status == RequestStatusConstants.Rejected and request.reject_timeout < now)):
                 #delete membership
                 self.collection.delete_one(self._filter_request(user_id=model.requested_by, community_id=model.community_id))
             else:
@@ -139,8 +140,12 @@ class MembershipsBroker(implements(IMembershipsBroker)):
         
         self.request_collection.update_one(self._filter_request(model.community_id, model.requested_by), uq)
     
-    def get_requests_by_community_id(self, community_id: str) -> list[MembershipRequestModel]:
+    def get_requests_by_community_id(self, community_id: str, status: str = None) -> list[MembershipRequestModel]:
         filter =  {"community_id": community_id, "requested_by": {"$exists" : True}, "field_name": {"$exists" : False}}
+
+        if status:
+            filter["status"] = status
+
         requests = self.request_collection.find(filter)
         
         return [MembershipRequestModel.from_db_json(c) for c in requests]

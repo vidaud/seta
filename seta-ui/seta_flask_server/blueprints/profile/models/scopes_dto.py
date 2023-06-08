@@ -14,7 +14,7 @@ community_scopes_model = Model("CommunityScopes",{
 })
 
 resource_scopes_model = Model("ResourceScopes",{
-    "community_id": fields.String(description="Identifier"),
+    "resource_id": fields.String(description="Identifier"),
     "scopes": fields.List(fields.String(description="Scope", enum=ResourceScopeConstants.List))
 })
 
