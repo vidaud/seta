@@ -77,6 +77,9 @@ There are some filters that can be applied to refine the search of the results:
 `Other`
 : 
 
+
+
+
 Once all the filters are selected, click in the button **Apply Filters** at the top of the section to apply them.
 
 

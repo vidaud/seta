@@ -1,645 +1,97 @@
 {
-    "root": [
+    "root": [        
         {
             "key": "0",
-            "label": "About SeTA",
-            "data": "<b>About SeTA</b>",
-            "icon": "",
-            "children": [{
-                "key": "0-0",
-                "label": "",
-                "data": "<b>1. What is SeTA?</b>",
-                "icon": "",
-                "children": [
-                    {
-                        "key": "0-0-0",
+			"label": "Search in SeTA",
+			"data": "<b>Search</b>",
+			"icon": "",
+			"children": [				
+				{
+					"key": "0-0",
+					"label": "",
+					"icon": "",
+					"data":"<b>1. How can I refine the results of my search?</b>",
+					"children": [
+						{
+						"key": "0-0-0",
                         "label": "",
                         "icon": "",
-                        "data": "SeTA – Semantic Text Analyser – applies advanced text analysis techniques to large document collections, helping policy analysts to understand the concepts expressed in thousands of documents and to see in a visual manner the relationships between these concepts and their development over time.<br></br><center><iframe width='560' height='315' src='https://www.youtube.com/embed/jd6iXKr2UZg' title='YouTube video player' allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share' allowFullScreen> </iframe></center><br></br>Hundreds of thousands of documents have been collected from different sources and analysed by the SeTA tool. These systems and repositories are under the responsibility of the Publications Office of the European Union (OP) which publishes and disseminates the publications of the institutions and other bodies of the European Union:<br></br>&emsp;&emsp;&emsp;<b>• EUR-Lex</b><br></br>&emsp;&emsp;&emsp;<b>• EU Publications</b><br></br> &emsp;&emsp;&emsp;<b>• CORDIS</b> <br></br> &emsp;&emsp;&emsp;<b>• EU ODP</b><br></br>&emsp;&emsp;&emsp;<b>• PUBSY</b><br></br>The auxiliary document repository also contains documents from: <br></br>&emsp;&emsp;&emsp;- Full copy of Wikipedia dump (6M articles, 13GB). <br></br>&emsp;&emsp;&emsp;- 39 million open source scientific articles that were collected by the Allen Institute for Artificial Intelligence <br></br>&emsp;&emsp;&emsp;- A full copy (590.000 documents) of the US federal legislation since 1994."
-                        }
-                    ]
-            },
-            {
-                "key": "0-1",
-                "label": "",
-                "data": "<b>2. How is the information extracted and later trained to be used in SeTA?</b>",
-                "icon": "",
-                "children": [{ "key": "0-1-0", "label": "", "icon": " ", "data": "The result information comes from a knowledge base. It is created as a result of two steps:<br></br>&emsp;1) document collection, cleaning and storage and <br></br>&emsp;2) the actual text analysis and modelling.<br></br>The corpus of the public policy-related European documents counts more than 500.000 documents, coming from the following sourcesescribed: <b>EUR-LEX</b>, <b>EU Publications</b>, <b>CORDIS</b>, the <b>EU Open Data Portal</b>, and <b>JRC PUBSY</b>. <br></br>Documents are retrieved through <b>SPARQL, SOAP, OAI-PHM, FTP or HTTP</b> protocol parsing, even though every source has its own specificities.<br></br>The output is a document repository containing the completely cleaned unified plain text, divided into sentences.This new document structure is stored within an ElasticSearch (ES) database which allows searching and reproduction for human readers.The original text is also stored in the same database." }]
-            },
-            {
-                "key": "0-2",
-                "label": "Home",
-                "data": "<b>3. How is the database trained to create the relations between the results data?</b>",
-                "icon": "",
-                "children": [{ "key": "0-1-0", "label": "", "icon": " ", "data": "We used a powerful python library for language modelling called 'gensim' for the neural network training.<br></br>Currently there are three topologies in use:<br></br>&emsp;&emsp;- <b>Skip-gram Word2Vec</b> for similarity queries<br></br>&emsp;&emsp;- Continuous Bag of Words <b>(CBOW)</b> with sub-word information (FastText, Bojanowski 2016) is used for calculations in the vector space<br></br>&emsp;&emsp;- <b>Doc2Vec DM </b>(distributed memory, Le and Mikolov, 2014) for document similarity calculations.<br></br>The training of one network using Word2Vec topology takes about 20 hours on a fast Linux workstation with 36 physical cores and plenty of RAM. Models persisted to hard disk take about 5GB.<br></br> The training of one network in FastText topology takes about 80 hours on the same system and the models are also of about 5GB in size.<br></br>The training of one network in Doc2Vec topology takes about 8 hours on the same workstation and the models are of about 25GB in size.<br></br>All the texts collected are in English only (except for some older legal texts where multiple languages are interleaved on the same page).<br></br>The reasons for this decision are: <br></br>&emsp;&emsp;&emsp;1. English language sentence dependency parsing is rather straightforward and there are several open source semantic parsers with excellenttuning for this language. <br></br>&emsp;&emsp;&emsp;2. We are interested in extracting knowledge from plain text and as the translation of, for example, a directive into all EU languages does not create new knowledge, processing a single language well should capture the available information." }]
-            }
-        ]
+						"data":"&emsp;&emsp;&emsp;1. From the <u>Search</u> page.<br></br>&emsp;&emsp;&emsp;2. Launch a search, a new section with the results will appear below the search box.<br></br>&emsp;&emsp;&emsp;3. In the left side of the new section there is a side bar with a section: <u>Filters</u>.<br></br> &emsp;&emsp;&emsp;In this section you can see the list of filters available to apply to the results:<br></br>&emsp;&emsp;&emsp;&emsp;&emsp; -Text chunk<br></br>&emsp;&emsp;&emsp;&emsp;&emsp;- Filter by date range<br></br>&emsp;&emsp;&emsp;&emsp;&emsp;- Data sources<br></br>&emsp;&emsp;&emsp;&emsp;&emsp;- Taxonomies<br></br>&emsp;&emsp;&emsp;&emsp;&emsp;- Other."
+						}]
+				},
+				{
+					"key": "0-1",
+					"label": "",
+					"icon": "",
+					"data":"<b>2. What can I find in My Search?</b>",
+					"children": [
+						{
+						"key": "0-1-0",
+                        "label": "",
+                        "icon": "",
+						"data":"&emsp;In this panel it is possible to see the search library."}]
+				},
+				{
+					"key": "0-2",
+					"label": "",
+					"icon": "",
+					"data":"<b>3. How <u>Other</u> panel works?</b>",
+					"children": [
+						{
+						"key": "0-2-0",
+                        "label": "",
+                        "icon": "",
+						"data":"&emsp;With this option you can customize your own filter."}]
+				}
+			]
         },
         {
-            "key": "1",
-			"label": "Search in SeTA",
-			"data": "<b>Search in SeTA</b>",
+			"key": "1",
+			"label": "",
 			"icon": "",
-			"children": [
+			"data": "<b>Communities</b>",
+			"children": [								
 				{
 					"key": "1-0",
 					"label": "",
 					"icon": "",
-					"data":"<b>1. How can I find the search menu?</b>",
+					"data":"<b>1. How can I find Communities I might be interested in?</b>",
 					"children": [
 						{
 						"key": "1-0-0",
                         "label": "",
                         "icon": "",
-						"data":"In order to see the search option, it is necessary to logged into the application (<u>EU Login</u>).<br></br>&emsp;&emsp;&emsp;1. From the <u>Header</u> menu, click <u>Login</u>.<br></br>&emsp;&emsp;&emsp;2. Enter your <u>EU credentials</u>.<br></br>&emsp;&emsp;&emsp;3. The app redirects to the landing page where the search bar appears in the top menu to interact with.<br></br>&emsp;&emsp;&emsp;4. In the middle of the page you will find an input text box.<br></br>From there, you are invited to interact in two possible ways: by start typing in the box, by uploading a document/text.<br></br>When the <b>Switch option</b> is on, every time a new search starts, a modal window appears proposing the related terms to the current search. To turn on this option, just scroll."
+						"data":"&emsp;&emsp;&emsp;1. From the side menu click on <u>Discover</u> -> <u>Communities</u>.<br></br>&emsp;&emsp;&emsp;2. You will see a list of the Communities in the page. <br></br>&emsp;&emsp;&emsp;3. You can also enter in the search bar the name of the Community you are looking for."
 						}]
 				},
 				{
 					"key": "1-1",
 					"label": "",
 					"icon": "",
-					"data":"<b>2. How can I search by text or by uploading a document</b>",
+					"data":"<b>2. How can I create a new Community?</b>",
 					"children": [
 						{
 						"key": "1-1-0",
                         "label": "",
                         "icon": "",
-						"data":"&emsp;&emsp;&emsp;1. From the <u>Search</u> page.<br></br>&emsp;&emsp;&emsp;2. Click in the <u>'cloud'</u> button near to the search box.<br></br>An upload modal will be displayed.<br></br>You can add a document by: <i>drag and drop, clicking on browse</i>. In both cases, after drag and dropping or uploading the document, automatically the search query is set up and the user will be redirected to the results page. Otherwise, to start searching by text, you can simply copy and paste the text in the text area and click Search."
-						}
-					]
+						"data":"&emsp;&emsp;&emsp;1. From the side panel click on <u>Manage</u> -> <u>My Communities</u>.<br></br>&emsp;&emsp;&emsp;2. Click on the top right bottom <u>New Community</u><br></br>&emsp;&emsp;&emsp;3. Enter the Community id, title and description.<br></br>&emsp;&emsp;&emsp;4. Click Save. Once you create your Community you will be sent back to your communities list.<br></br>&emsp;&emsp;&emsp;5. In My Communities list, on every Community row,  you can invite new members with button <u>Invite</u>.<br></br>&emsp;&emsp;&emsp;"
+						}]
 				},
 				{
 					"key": "1-2",
 					"label": "",
 					"icon": "",
-					"data":"<b>3. How can I see the recent searches?</b>",
+					"data":"<b>3. How can I join a Community?</b>",
 					"children": [
 						{
 						"key": "1-2-0",
                         "label": "",
                         "icon": "",
-						"data":"&emsp;&emsp;&emsp;1. From the <u>Search</u> page.<br></br>&emsp;&emsp;&emsp;2. Start typing in the search box. A window will open and display the recent searches done by the user and the favourite searches saved for quick access.<br></br>&emsp;&emsp;&emsp;3. Click in one of the two proposed: <i>recent searches, saved queries items</i> and start searching with that specific term.<br></br>Once the search query is set up, the result of the search will be displayed in the <u>Document List</u> page."
-						}]
-				},
-				{
-					"key": "1-3",
-					"label": "",
-					"icon": "",
-					"data":"<b>4. How can I save the current term I am searching?</b>",
-					"children": [
-						{
-						"key": "1-3-0",
-                        "label": "",
-                        "icon": "",
-						"data":"&emsp;&emsp;&emsp;1. From the <u>Search</u> page.<br></br>&emsp;&emsp;&emsp;2. Start typing in the search box. A window will open and display the recent searches done by the user and the favourite searches saved for quick access.<br></br>&emsp;&emsp;&emsp;3. Click in one of the two proposed: <i>recent searches, saved queries items</i> and start searching with that specific term.<br></br>Once the search query is set up, the result of the search will be displayed in the <u>Document List</u> page."
-						}]
-				},
-				{
-					"key": "1-4",
-					"label": "",
-					"icon": "",
-					"data":"<b>5. How can I refine the results of my search?</b>",
-					"children": [
-						{
-						"key": "1-4-0",
-                        "label": "",
-                        "icon": "",
-						"data":"&emsp;&emsp;&emsp;1. From the <u>Search</u> page.<br></br>&emsp;&emsp;&emsp;2. Launch a search, a new section with the results will appear below the search box.<br></br>&emsp;&emsp;&emsp;3. In the left side of the new section, there is a side bar with two tabs: <u>'Refine Search'</u> and <u>'Post Search'</u>. In tab <u>'Refine Search'</u> you can see the list of filters available to apply to the search query: <u> Type of visualization, Quick Filters, Repositories, Document References, Publication Years, References, etc.</u>"
-						}]
-				},
-				{
-					"key": "1-5",
-					"label": "",
-					"icon": "",
-					"data":"<b>6. How can I use Post Search?</b>",
-					"children": [
-						{
-						"key": "1-5-0",
-                        "label": "",
-                        "icon": "",
-						"data":"&emsp;&emsp;&emsp;1. From the <u>Search</u> page.<br></br>&emsp;&emsp;&emsp;2. Launch a search, a new section with the results will appear below the search box.<br></br>&emsp;&emsp;&emsp;3. In the left side of the new section, there is a side bar with two tabs: <u>'Refine Search'</u> and <u>'Post Search'</u>.<br></br>&emsp;&emsp;&emsp;4. Click on tab 'Post Search' and the table of filters will be replaced by the histogram which can be used to apply filters.<br></br>&emsp;&emsp;&emsp;5. Click on a specific part of the histogram, and the list of documents will be updated and you will see only the related documents to the specific part of the histogram clicked."
-						}]
-				},
-				{
-					"key": "1-6",
-					"label": "",
-					"icon": "",
-					"data":"<b>7. How can I sort the results of Search?</b>",
-					"children": [
-						{
-						"key": "1-6-0",
-                        "label": "",
-                        "icon": "",
-						"data":"&emsp;&emsp;&emsp;1. From the <u>Search</u> page.<br></br>&emsp;&emsp;&emsp;2. Launch a search, a new section with the results will appear below the search box.<br></br>&emsp;&emsp;&emsp;3. On top of the results section, on column <u>'Score'</u> and column <u>'Year'</u>, there is the <u>Sort By arrow</u> option.<br></br>If the user clicks on the <i>'increase/decrease arrows'</i> the arrow will <i>'increase/decrease'</i> and the items of the list will change their order."
-						}]
-				},
-				{
-					"key": "1-7",
-					"label": "",
-					"icon": "",
-					"data":"<b>8. How can I reduce the number of results columns I see on the result list?</b>",
-					"children": [
-						{
-						"key": "1-7-0",
-                        "label": "",
-                        "icon": "",
-						"data":"&emsp;&emsp;&emsp;1. From the <u>Search</u> page.<br></br>&emsp;&emsp;&emsp;2. Launch a search, a new section with the results will appear below the search box.<br></br>&emsp;&emsp;&emsp;3. On top of the results section, on the left corner of the list of documents, click in the dropdown bar, in there, you will see the list of column headers selected by default.<br></br>&emsp;&emsp;&emsp;4. Uncheck the columns you do not want to see. <br></br>You can use this option to show/hide columns on preference."
-						}]
-				},
-				{
-					"key": "1-8",
-					"label": "",
-					"icon": "",
-					"data":"<b>9. How can I save some of the results in my Library?</b>",
-					"children": [
-						{
-						"key": "1-8-0",
-                        "label": "",
-                        "icon": "",
-						"data":"&emsp;&emsp;&emsp;1. From the <u>Search</u> page.<br></br>&emsp;&emsp;&emsp;2. Launch a search, a new section with the results will appear below the search box.<br></br>&emsp;&emsp;&emsp;3. In the opposite of expand icon, in the right corner of each item, you can find the <u>'Add to Library'</u> icon.<br></br>&emsp;&emsp;&emsp;4. Click and choose the option to add and save the selected item into the preferred library. <br></br>Subsequently, you will find the selected item in <u>'My Library'</u>."}]
-				},
-                {
-					"key": "1-9",
-					"label": "",
-					"icon": "",
-					"data":"<b>10. How can I see the metadata information of the results file from the result list?</b>",
-					"children": [
-						{
-						"key": "1-9-0",
-                        "label": "",
-                        "icon": "",
-						"data":"&emsp;&emsp;&emsp;1. From the <u>Search</u> page.<br></br>&emsp;&emsp;&emsp;2. Launch a search, a new section with the results will appear below the search box.<br></br>&emsp;&emsp;&emsp;3. Each item of the result list has an expand icon on the left corner. Click on it, and the item will be expanded.<br></br>&emsp;&emsp;&emsp;4. After the click, it will be possible to see the <u>Metadata of the selected document, Context and Diagram of Concepts</u>.<br></br>&emsp;&emsp;&emsp;5. Under the <u>Context section</u>, you can also expand the full text, by  just clicking in the <u>'plus'</u> icon."
-						}]
-				},
-				{
-					"key": "1-10",
-					"label": "",
-					"icon": "",
-					"data":"<b>11. How can I use the 'Diagram of Concepts' for related searches of my current search?</b>",
-					"children": [
-						{
-						"key": "1-10-0",
-                        "label": "",
-                        "icon": "",
-						"data":"&emsp;&emsp;&emsp;1. From the <u>Search</u> page.<br></br>&emsp;&emsp;&emsp;2. Launch a search, a new section with the results will appear below the search box.<br></br>&emsp;&emsp;&emsp;3. Each item of the result list has an expand icon on the left corner. Click on it, and the item will be expanded.<br></br>After the click, it will be possible to see the <u>Diagram of Concepts</u> of the expanded item. The <u>Diagram of Concept</u> list can be drag and dropped on the search bar and set this way the search query."
-						}]
-				},
-				{
-					"key": "1-11",
-					"label": "",
-					"icon": "",
-					"data":"<b>12. What is the 'Concepts' tab?</b>",
-					"children": [
-						{
-						"key": "1-11-0",
-                        "label": "",
-                        "icon": "",
-						"data":"It is possible to see the visual representation of the topic. The Concept map will help you organize the results and explore the relationships in a topic. Through the concept map it is possible to organize and represent the searched term and explore the connections between elements.<br></br>&emsp;&emsp;&emsp;1. From the <u>Search</u> page.<br></br>&emsp;&emsp;&emsp;2. Launch a search, a new section with the results will appear below the search box.<br></br>&emsp;&emsp;&emsp;3. Click on tab <u>'Concepts'.</u>"
-						}]
-				},
-				{
-					"key": "1-12",
-					"label": "",
-					"icon": "",
-					"data":"<b>13. What can I see in the 'Document Map' tab?</b>",
-					"children": [
-						{
-						"key": "1-12-0",
-                        "label": "",
-                        "icon": "",
-						"data":"Mapping is the process of relating the structure, values, or content of a document in one format to the values and fields in an alternate document format. In the 'Document Map' tab, you will see the maps between different related documents to your search.<br></br>&emsp;&emsp;&emsp;1. From the <u>Search</u> page.<br></br>&emsp;&emsp;&emsp;2. Launch a search, a new section with the results will appear below the search box.<br></br>&emsp;&emsp;&emsp;3. Click on tab <u>'Document Map'.</u>"
-						}]
-				}
-			]
-        },
-        {
-			"key": "2",
-			"label": "",
-			"icon": "",
-			"data": "<b>My Profile</b>",
-			"children": [
-				{
-					"key": "2-0",
-					"label": "",
-					"icon": "",
-					"data":"<b>1. How do I view my saved searches?</b>",
-					"children": [
-						{
-						"key": "2-0-0",
-                        "label": "",
-                        "icon": "",
-						"data":"&emsp;&emsp;&emsp;1. From the <u>Header</u> menu. Go to the right side, to the <u>Profile</u> icon (this option appears, when the you are logged in).<br></br>&emsp;&emsp;&emsp;2. Click on the icon and choose <u>My searches</u>.<br></br>With this option it is possible to go to the page with the list of saved search queries."
-						}]
-
-				},
-				{
-					"key": "2-1",
-					"label": "",
-					"icon": "",
-					"data":"<b>2. How do I view the results documents I saved?</b>",
-					"children": [
-						{
-						"key": "2-1-0",
-                        "label": "",
-                        "icon": "",
-						"data":"&emsp;&emsp;&emsp;1. From the <u>Header</u> menu. Go to the right side, to the <u>Profile</u> icon (this option appears, when the you are logged in).<br></br>&emsp;&emsp;&emsp;2. Click on the icon and choose <u>My Library</u>.<br></br>With this option it is possible to go to the page with the list of documents added to the favourite library."
-						}]
-
-				},
-				{
-					"key": "2-2",
-					"label": "",
-					"icon": "",
-					"data":"<b>3. How do I view my profile settings?</b>",
-					"children": [
-						{
-						"key": "2-2-0",
-                        "label": "",
-                        "icon": "",
-						"data":"&emsp;&emsp;&emsp;1. From the <u>Header</u> menu. Go to the right side, to the <u>Profile</u> icon (this option appears, when the you are logged in).<br></br>&emsp;&emsp;&emsp;2. Click on the icon and choose <u>Profile</u>."
-						}]
-
-				}
-			]
-		},
-        {
-			"key": "3",
-			"label": "",
-			"icon": "",
-			"data": "<b>Communities</b>",
-			"children": [
-				{
-					"key": "3-0",
-					"label": "",
-					"icon": "",
-					"data":"<b>1. What are the communities in SeTA?</b>",
-					"children": [
-						{
-						"key": "3-0-0",
-                        "label": "",
-                        "icon": "",
-						"data":"The communities of the SeTA web app, is a shared space where members engage with each other to connect, and learn about similar interests, opinions of different type of publications.<br></br>In the SeTA web app, we have two types of communities: open communities and private communities.<br></br>&emsp;&emsp;&emsp;<b>• Open Community:</b> Anyone with access to the web app can view all discussion forums and information in the online community. Anyone can join the community and contribute  to the community.<br></br>&emsp;&emsp;&emsp;<b>• Private Community:</b> The information and conversations can only be accessed by users with log-ins(often sent via invitation to a specific group or pre-loaded into the community platform's membership database). All users are forced to ask for authorization to join and then been able to see content and conversations. In this type of communities, the administrators have the ability to deny access to users who don't fit membership credentials (i.e. <i>members, customers, participants in a specific industry</i>)"
-						}]
-
-				},
-				{
-					"key": "3-1",
-					"label": "",
-					"icon": "",
-					"data":"<b>2. How can I create a community?</b>",
-					"children": [
-						{
-						"key": "3-1-0",
-                        "label": "",
-                        "icon": "",
-						"data":"&emsp;&emsp;&emsp;1. From the <u>Header</u> menu, click <u>Communities</u>.<br></br>&emsp;&emsp;&emsp;2. Click <u>Create new community</u>.<br></br>&emsp;&emsp;&emsp;3. Enter your community name.<br></br>&emsp;&emsp;&emsp;4. Select the privacy option. If you selected private, select whether to make your community visible or hidden.<br></br>&emsp;&emsp;&emsp;5. Add people to your community.<br></br>&emsp;&emsp;&emsp;6. Click Create.<br></br>Once you create your community, you personalize it by uploading a cover photo and adding a description. You can update the community by changing the community description and making an announcement.<br></br>Only admins can upload or change cover photos for their community.<br></br>&emsp;&emsp;&emsp;1. From the <u>Header</u> menu, click <u>Communities</u>.<br></br>&emsp;&emsp;&emsp;2. Click <u>Edit</u> in the bottom right corner of the cover photo and select where you'd like to choosean image from or select Reposition.<br></br>&emsp;&emsp;&emsp;3. Select the image, drag to reposition and click Save Changes.<br></br>Keep in mind that the recommended size for community cover photos is 1,640px by 856px (or 1. 91:1 ratio)."
-						}]
-				},
-				{
-					"key": "3-2",
-					"label": "",
-					"icon": "",
-					"data":"<b>3. How do I change the name of a community?</b>",
-					"children": [
-						{
-						"key": "3-2-0",
-                        "label": "",
-                        "icon": "",
-						"data":"Only community admins can change the community name.<br></br>&emsp;&emsp;&emsp;1. From the <u>Header</u> menu, click <u>Communities</u>.<br></br>&emsp;&emsp;&emsp;2. Click <u>Community Settings</u> in the left menu.<br></br>&emsp;&emsp;&emsp;3. Click next to <u>Name and Description</u>.<br></br>&emsp;&emsp;&emsp;4. Enter a name and click Save.<br></br>Once you change the name of your community, all members will receive a notification that you've changed the name."
-						}]
-				},
-                {
-					"key": "3-3",
-					"label": "",
-					"icon": "",
-					"data":"<b>4. What is the difference between an admin and a moderator in a community?</b>",
-					"children": [
-						{
-						"key": "3-3-0",
-                        "label": "",
-                        "icon": "",
-						"data":"As a community admin, he will have the following tasks:<br></br>&emsp;&emsp;a) Make another member an admin or moderator.<br></br>&emsp;&emsp;b) Remove an admin or moderator.<br></br>&emsp;&emsp;c) Manage community settings (ex: change the community name, cover photo or privacy settings).<br></br>&emsp;&emsp;d) Approve or deny membership requests and participant requests.<br></br>&emsp;&emsp;e) Approve or deny posts in the community.<br></br>&emsp;&emsp;f) Remove posts and comments on posts.<br></br>&emsp;&emsp;g) Remove and ban people from the community.<br></br>&emsp;&emsp;h) Pin or unpin a post.<br></br>As a community moderator, he will have the following tasks:<br></br>&emsp;&emsp;a) Approve or deny membership requests and participant requests.<br></br>&emsp;&emsp;b) Approve or deny posts in the community.<br></br>&emsp;&emsp;c) Remove posts and comments on posts.<br></br>&emsp;&emsp;d) Remove and ban people from the community.<br></br>&emsp;&emsp;e) Pin or unpin a post."
-						}]
-
-				},
-				{
-					"key": "3-4",
-					"label": "",
-					"icon": "",
-					"data":"<b>5. What happens when a community doesn't have any admins?</b>",
-					"children": [
-						{
-						"key": "3-4-0",
-                        "label": "",
-                        "icon": "",
-						"data":"All communities must have an admin.<br></br>To claim the admin role:<br></br>&emsp;&emsp;&emsp;1. From the <u>Header</u> menu, click <u>Communities</u>.<br></br>&emsp;&emsp;&emsp;2. Click More below your community's cover photo, then click <u>Members</u>.<br></br>&emsp;&emsp;&emsp;3. Click <u>Become Admin</u> below <u>Admins & Moderators</u>.<br></br>&emsp;&emsp;&emsp;4. Click Confirm.<br></br>Only one admin spot can be claimed. Once the creator has left the community, creator status can't be granted to an admin or moderator.<br></br>If you can't claim the admin role in a community, it may be because there are moderators or other people have recently been accepted to become an admin."
-						}]
-
-				},
-				{
-					"key": "3-5",
-					"label": "",
-					"icon": "",
-					"data":"<b>6. What is the difference between a member, visitor and participant in open communities?</b>",
-					"children": [
-						{
-						"key": "3-5-0",
-                        "label": "",
-                        "icon": "",
-						"data":"In open communities, you can interact with a community as a member or as a visitor. Once a member or visitor posts or comments in the community, they become a participant.<br></br>&emsp;• <b>Member:</b> someone who has joined the community.<br></br>&emsp;&emsp;- No admin approval required.<br></br>&emsp;&emsp;- Can post and comment.<br></br>&emsp;• <b>Visitor</b>: someone who isn't a member of the community.<br></br>&emsp;&emsp;- No admin approval required.<br></br>&emsp;&emsp;- Can post and comment.<br></br>&emsp;• <b>Participant</b>: a member or visitor who has posted or commented in the community.<br></br>&emsp;&emsp;- Admin approval required if admin has turned on participant approval.<br></br>&emsp;&emsp;- Can post and comment."
+						"data":"&emsp;&emsp;&emsp;1. From the side menu click on <u>Discovery</u> -> <u>Communities</u>.<br></br>&emsp;&emsp;&emsp;2. You can either enter in the search bar the name of the Community you are looking for or select from the Community list. <br></br>&emsp;&emsp;&emsp;3. Click on the button <u>Join</u>.<br></br>&emsp;&emsp;&emsp;"
 						}]
 				}
 
 			]
-		},
-		{
-			"key": "4",
-			"label": "",
-			"icon": "",
-			"data": "<b>Manage a community</b>",
-			"children": [
-				{
-					"key": "4-0",
-					"label": "",
-					"icon": "",
-					"data":"<b>1. How do I manage the membership of my community?</b>",
-					"children": [
-						{
-						"key": "4-0-0",
-                        "label": "",
-                        "icon": "",
-						"data":"In open communities, people can become members without admin approval, and visitors (people who aren't members)can post and comment.<br></br>You can choose to approve members and visitors as participants before they publish a post or comment for the first time. Once someone is approved as a participant, you can still require admin approval of their future posts.<br></br>If you're an admin of a private community, you can choose to turn on membership approval for your community. This means admins or moderators will have to approve membership requests before someone can join the community."
-						}]
-				},
-				{
-					"key": "4-1",
-					"label": "",
-					"icon": "",
-					"data":"<b>2. How do I manage the post for a community I admin?</b>",
-					"children": [
-						{
-						"key": "4-1-0",
-                        "label": "",
-                        "icon": "",
-						"data":"In open communities, visitors (people who aren't members) can post and comment if admins allow, and people can become members without admin approval. You can still review and approve people before they can post or comment."
-						}]
-				},
-				{
-					"key": "4-2",
-					"label": "",
-					"icon": "",
-					"data":"<b>3. How do I remove posts in a community I admin?</b>",
-					"children": [
-						{
-						"key": "4-2-0",
-                        "label": "",
-                        "icon": "",
-						"data":"Admins and moderators can remove posts from their community and give feedback about why the post was removed.<br></br>To remove a post from your community:<br></br>&emsp;&emsp;&emsp;1. From the <u>Header</u> menu, click <u>Communities</u>.<br></br>&emsp;&emsp;&emsp;2. Find the post you want to remove and click in the top right of the post.<br></br>&emsp;&emsp;&emsp;3. Click <u>Remove post</u>.<br></br>&emsp;&emsp;&emsp;4. Select the rule(s) that the post violated and add an optional note from the admin.<br></br>&emsp;&emsp;&emsp;5. Click next to Share violated rules and notes with [<u>Name</u>] to share the feedback about why the post was removed.<br></br>&emsp;&emsp;&emsp;6. Click Confirm. <br></br>If you add a note from the admin, the author of the post will receive a notification that their post was removed. If they click the notification, they'll be able to see the rules their post violated and the note from the admin for 14 days.<br></br>Keep in mind that if you include a note from the admin it will come from an anonymous admin, not a specific individual."
-						}]
-				},
-				{
-					"key": "4-3",
-					"label": "",
-					"icon": "",
-					"data":"<b>4. How do I turn off commenting on a post or replies for a comment in a community?</b>",
-					"children": [
-						{
-						"key": "4-3-0",
-                        "label": "",
-                        "icon": "",
-						"data":"Admins, moderators and the post creator can turn off commenting on a post. Admins and moderators can turn off replies for a comment.<br></br><b>&emsp;&emsp;&emsp;To turn off commenting on a post:</b><br></br>&emsp;&emsp;&emsp;&emsp;&emsp;1. From the <u>Header</u> menu, click <u>Communities</u>.<br></br>&emsp;&emsp;&emsp;&emsp;&emsp;2. Go to the post you want to turn off comments for.<br></br>&emsp;&emsp;&emsp;&emsp;&emsp;3. Click more and then select <u>Turn off commenting</u>.<br></br>You can turn commenting back on by clicking more next to the post, then selecting <u>Turn on commenting</u>.<br></br><b>&emsp;&emsp;&emsp;To turn off replies for a comment in a group you admin or moderate:</b><br></br>&emsp;&emsp;&emsp;&emsp;&emsp;1. From the <u>Header</u> menu, click <u>Communities</u>.<br></br>&emsp;&emsp;&emsp;&emsp;&emsp;2. Go to the comment you want to turn off replies for.<br></br>&emsp;&emsp;&emsp;&emsp;&emsp;3. Click more and then select Turn off replies for comment.<br></br>You can turn replies back on by clicking more next to the comment then selecting <u>Turn on replies for comment.</u>"
-						}]
-				},
-				{
-					"key": "4-4",
-					"label": "",
-					"icon": "",
-					"data":"<b>5. How do I create a chat in the community?</b>",
-					"children": [
-						{
-						"key": "4-4-0",
-                        "label": "",
-                        "icon": "",
-						"data":"Community admins and moderators can create chats. In some communities, admins can choose to allow members to create or suggest chats.<br></br>You may see Suggested topics for new chats. If you choose from Suggested topics, a chat image, name, and description will be provided as part of a template you can edit.<br></br>&emsp;&emsp;&emsp;1. From the <u>Header</u> menu, click <u>Communities</u>.<br></br>&emsp;&emsp;&emsp;2. Select the chat on the left.<br></br>&emsp;&emsp;&emsp;3. Click <u>Add</u>, then click <u>New chat</u>.<br></br>&emsp;&emsp;&emsp;4. Enter a chat name, an optional description and an optional category.<br></br>&emsp;&emsp;&emsp;5. Click <u>Create chat</u>.<br></br>Any community member can join a community chat and read all content, including content sent before they joined. However, in open communities:<br></br>&emsp;&emsp;- If participant approval is turned on then the member must first be approved as a participant before they can participate in chats.<br></br>&emsp;&emsp;- Visitors can't participate in chats, even if they're approved as participants."
-						}]
-				},
-				{
-					"key": "4-5",
-					"label": "",
-					"icon": "",
-					"data":"<b>6. How do I sort posts in a community I admin?</b>",
-					"children": [
-						{
-						"key": "4-5-0",
-                        "label": "",
-                        "icon": "",
-						"data":"&emsp;&emsp;&emsp;1. From the <u>Header</u> menu, click <u>Communities</u>.<br></br>&emsp;&emsp;&emsp;2. Click <u>Community settings</u> in the left menu.<br></br>&emsp;&emsp;&emsp;3. Below Manage discussion, select Sort posts.<br></br>&emsp;&emsp;&emsp;4. Select the default order for all posts in your community."
-						}]
-				},
-				{
-					"key": "4-6",
-					"label": "",
-					"icon": "",
-					"data":"<b>7. How do I manage topics in a community I admin?</b>",
-					"children": [
-						{
-						"key": "4-6-0",
-                        "label": "",
-                        "icon": "",
-						"data":"Topics are hashtags added to community posts to help people discover content they might be interested in. Community admins can pin a topic if they want people to find it easily or hide a topic if they don't want it to be prominent.<br></br> <b>&emsp;&emsp;&emsp;To pin a topic:</b><br></br>&emsp;&emsp;&emsp;&emsp;&emsp;1. From the <u>Header</u> menu, click <u>Communities</u>.<br></br>&emsp;&emsp;&emsp;&emsp;&emsp;2. Select <u>Topics</u> at the top of the community.<br></br>&emsp;&emsp;&emsp;&emsp;&emsp;3. Next to the topic you want to pin, click more and select <u>Pin topic</u>.<br></br><b>&emsp;&emsp;&emsp;To hide a topic:</b><br></br>&emsp;&emsp;&emsp;&emsp;&emsp;1. From the <u>Header</u> menu, click <u>Communities</u>.<br></br>&emsp;&emsp;&emsp;&emsp;&emsp;2. Select <u>Topics</u> at the top of the community.<br></br>&emsp;&emsp;&emsp;&emsp;&emsp;3. Next to the topic you want to hide, click more and select <u>Hide topic.</u>"}]
-				},
-				{
-
-					"key": "4-7",
-					"label": "",
-					"icon": "",
-					"data":"<b>8. How do I invite new members to the community?</b>",
-					"children": [
-						{
-						"key": "4-7-0",
-                        "label": "",
-                        "icon": "",
-						"data":"In SeTA web app there are two options:<br></br>&emsp;&emsp;&emsp;<b>Invite with email:</b> Admins can invite new members to a community by email.  The email will include a link to the community, where the person can confirm that they want to join. In open communities, they'll be automatically approved. In private communities, they'll have to be approved by a community admin. Only the person who received the email can join the community with that link.<br></br>&emsp;&emsp;&emsp;&emsp;&emsp;1. From the <u>Header</u> menu, click <u>Communities</u>.<br></br>&emsp;&emsp;&emsp;&emsp;&emsp;2. Click + Invite below the cover photo.<br></br>&emsp;&emsp;&emsp;&emsp;&emsp;3. Select Invite with email.<br></br>&emsp;&emsp;&emsp;&emsp;&emsp;4. Add email addresses.<br></br>&emsp;&emsp;&emsp;&emsp;&emsp;5. Click Send invite.<br></br>&emsp;&emsp;&emsp;<b>Invite with link:</b> Admins and members can use a link to invite others to a community. Once someone receives the invite to join the community, they'll then have to request to join and be approved by a community admin. The link will expire after either 48 hours or 20 people click on it, whichever comes first. After the link expires, you can create a new link. Keep in mind that people who receive the link from you might understand you're a member of this community.<br></br> &emsp;&emsp;&emsp;&emsp;&emsp;1. From the <u>Header</u> menu, click <u>Communities</u>.<br></br>&emsp;&emsp;&emsp;&emsp;&emsp;2. Click + Invite below the cover photo.<br></br>&emsp;&emsp;&emsp;&emsp;&emsp;3. Select Invite with link.<br></br>&emsp;&emsp;&emsp;&emsp;&emsp;4. Click the link to copy it, then share it.<br></br>Once someone is invited to join a community, they'll be able to preview the community before deciding if they'd like to join the community, unless they were invited to the community by email. If someone is previewing the community, they won't be included in the total member count.<br></br>If you invite people to a community, an admin may need to approve the request before they can join. Admins and members can only invite a limited number of people to join each day."}]
-				},
-				{
-
-					"key": "4-8",
-					"label": "",
-					"icon": "",
-					"data":"<b>9. How do I remove or ban someone from a community?</b>",
-					"children": [
-						{
-						"key": "4-8-0",
-                        "label": "",
-                        "icon": "",
-						"data":"<b>&emsp;&emsp;&emsp;To remove or ban a member:</b><br></br>&emsp;&emsp;&emsp;&emsp;&emsp;1. From the <u>Header</u> menu, click <u>Communities</u>.<br></br>&emsp;&emsp;&emsp;&emsp;&emsp;2. Click <u>Members</u> below the cover photo.<br></br>&emsp;&emsp;&emsp;&emsp;&emsp;3. Find the member you want to remove or ban.<br></br>&emsp;&emsp;&emsp;&emsp;&emsp;4. Click next to their name and select <u>Remove</u> member or <u>Ban</u> from community.<br></br>&emsp;&emsp;&emsp;&emsp;&emsp;5. If you're removing the member and you'd also like to ban them, click <u>Ban</u> [name].<br></br>&emsp;&emsp;&emsp;&emsp;&emsp;6. Click <u>Confirm</u>.<br></br><b>&emsp;&emsp;&emsp;To remove a ban you've put on someone:</b><br></br>&emsp;&emsp;&emsp;&emsp;&emsp;1. From the <u>Header</u> menu, click <u>Communities</u>.<br></br>&emsp;&emsp;&emsp;&emsp;&emsp;2. Click <u>Members</u> below the cover photo.<br></br>&emsp;&emsp;&emsp;&emsp;&emsp;3. Click <u>Unban</u> next to the name of the person you'd like to unban.<br></br>&emsp;&emsp;&emsp;&emsp;&emsp;4. Click <u>Unban</u> to confirm.<br></br>Removed members will have to request to join the community again if they wish to rejoin. Banned members won't be able to find the community in search or see any of its content, and they can't be invitedto the community again by members."}]
-				},
-				{
-					"key": "4-9",
-					"label": "",
-					"icon": "",
-					"data":"<b>10. How do I pause a community that I admin?</b>",
-					"children": [
-						{
-						"key": "4-9-0",
-                        "label": "",
-                        "icon": "",
-						"data":"If you're an admin of a community, you can pause your community if you need a break from maintaining it or if you need time to catch up on tasks such as managing posts or membership. A message will be added to the top of the community explaining that all activity is paused. New posts, comments and reactions are paused for everyone, including admins.<br></br>If you're a community admin and you want to permanently remove your community, you can delete it.<br></br><b>&emsp;&emsp;&emsp;To pause a community:</b><br></br>&emsp;&emsp;&emsp;&emsp;&emsp;1. From the <u>Header</u> menu, click <u>Communities</u>.<br></br>&emsp;&emsp;&emsp;&emsp;&emsp;2. Click below the cover photo.<br></br>&emsp;&emsp;&emsp;&emsp;&emsp;3. Select <u>Pause community</u>.<br></br>&emsp;&emsp;&emsp;&emsp;&emsp;4. Select a reason for pausing the community, then click Continue. To confirm you want to pause your community, click Continue again.<br></br>&emsp;&emsp;&emsp;&emsp;&emsp;5. You will then have the option to write a community announcement about the pause, and schedule when the community will automatically resume.<br></br>&emsp;&emsp;&emsp;&emsp;&emsp;6. Click <u>Pause Community</u> at the bottom.<br></br><b>&emsp;&emsp;&emsp;To change when a community will automatically resume:</b><br></br>&emsp;&emsp;&emsp;&emsp;&emsp;1. From the <u>Header</u> menu, click <u>Communities</u>.<br></br>&emsp;&emsp;&emsp;&emsp;&emsp;2. Click <u>Edit</u> below the cover photo, then adjust the date and time and click Confirm.<br></br><b>&emsp;&emsp;&emsp;To resume a community:</b><br></br>&emsp;&emsp;&emsp;&emsp;&emsp;1. From the <u>Header</u> menu, click <u>Communities</u>.<br></br>&emsp;&emsp;&emsp;&emsp;&emsp;2. Click <u>Resume</u> below the cover photo, then click Confirm.<br></br>When a community is paused, members can still:<br></br>&emsp;&emsp;&emsp;• Delete their existing posts or comments.<br></br>&emsp;&emsp;&emsp;• Access their information.<br></br>&emsp;&emsp;&emsp;• Leave the community."}]
-				},
-				{
-					"key": "4-10",
-					"label": "",
-					"icon": "",
-					"data":"<b>11. How do I delete a community that I admin?</b>",
-					"children": [
-						{
-						"key": "4-10-0",
-                        "label": "",
-                        "icon": "",
-						"data":"If you're a community admin, you can delete your community by removing all members (in private communities) or banning all members (in open communities) and then leaving the community, as long as the community creator has left the community or you are the community creator. When no members remain in the community, it will automatically be deleted. Deleting a community is permanent and cannot be reversed. Alternatively, you can pause a community.<br></br><b>&emsp;&emsp;&emsp;To delete a community:</b><br></br>&emsp;&emsp;&emsp;&emsp;&emsp;1. From the <u>Header</u> menu, click <u>Communities</u>.<br></br>&emsp;&emsp;&emsp;&emsp;&emsp;2. Click <u>Members</u> (for private communities) or <u>People</u> (for open communities) at the top of the community.<br></br>&emsp;&emsp;&emsp;&emsp;&emsp;3. Click next to each member's name and select <u>Remove member</u> (for private communities) or <u>Ban from community</u> (for open communities).<br></br>&emsp;&emsp;&emsp;&emsp;&emsp;4. Click Confirm.<br></br>Once you've removed the other members, click next to your name and select Leave Community. Click Leave Community again to confirm.<br></br>Community members aren't notified when you delete a community."}]
-				}
-			]
-
-		},
-		{
-			"key": "5",
-			"label": "",
-			"icon": "",
-			"data": "<b>Join a Community</b>",
-			"children": [
-				{
-					"key": "5-0",
-					"label": "",
-					"icon": "",
-					"data":"<b>1. How can I join a community?</b>",
-					"children": [
-						{
-						"key": "5-0-0",
-                        "label": "",
-                        "icon": "",
-						"data":"&emsp;&emsp;&emsp;1. From the <u>Header</u> menu, click <u>Communities</u>.<br></br>&emsp;&emsp;&emsp;2. In the search bar, enter the name of the community you're looking for. <br></br>&emsp;&emsp;&emsp;3. Select the community then click + <u>Join Community</u> below the cover photo.<br></br>&emsp;&emsp;&emsp;4. Click <u>Join Community.</u>"
-						}]
-				},
-				{
-					"key": "5-1",
-					"label": "",
-					"icon": "",
-					"data":"<b>2. What access I will have once I join a community?</b>",
-					"children": [
-						{
-						"key": "5-1-0",
-                        "label": "",
-                        "icon": "",
-						"data":"You will be able to:<br></br>&emsp;&emsp;• Discuss topics of the community interest.<br></br>&emsp;&emsp;• Learn together.<br></br>&emsp;&emsp;• Collaborate on personal projects or course goals.<br></br>&emsp;&emsp;• Share advice and related news.<br></br>&emsp;&emsp;• Face-to-face meetings.<br></br>&emsp;&emsp;•Social media groups.<br></br>&emsp;&emsp;• Discussions.<br></br>&emsp;&emsp;• Webinars.<br></br>&emsp;&emsp;• Group activities."
-						}]
-				},
-				{
-					"key": "5-2",
-					"label": "",
-					"icon": "",
-					"data":"<b>3. How do I find new communities I might be interested in?</b>",
-					"children": [
-						{
-						"key": "5-2-0",
-                        "label": "",
-                        "icon": "",
-						"data":"&emsp;&emsp;&emsp;1. From the <u>Header</u> menu, click <u>Communities.</u><br></br>&emsp;&emsp;&emsp;2. From your Feed, click <u>Communities</u> in the left menu.<br></br>&emsp;&emsp;&emsp;3. Click <u>Discover</u> to see <u>Suggested for You</u>, <u>Categories</u> or <u>More Suggestions.</u>"
-						}]
-				},
-				{
-					"key": "5-3",
-					"label": "",
-					"icon": "",
-					"data":"<b>4. How can I see the members of a community?</b>",
-					"children": [
-						{
-						"key": "5-3-0",
-                        "label": "",
-                        "icon": "",
-						"data":"Anyone can see who's a member of an open community. In a private community, you have to be a member to see who the other members are.<br></br>See the members of a community:<br></br>&emsp;&emsp;&emsp;1. From the <u>Header</u> menu, click <u>Communities</u>. <br></br>&emsp;&emsp;&emsp;2. Click <u>Members</u> (for private communities) or <u>People</u> (for open communities) at the top of the community.<br></br>The member list will update automatically as people join and leave the community."
-						}]
-				},
-				{
-					"key": "5-4",
-					"label": "",
-					"icon": "",
-					"data":"<b>5. How do I post to a community?</b>",
-					"children": [
-						{
-						"key": "5-4-0",
-                        "label": "",
-                        "icon": "",
-						"data":"&emsp;&emsp;&emsp;1. From the <u>Header</u> menu, click <u>Communities</u>.<br></br>&emsp;&emsp;&emsp;2. Click the box next to your profile picture near the top of the page. From here you can write a post. You might need to select three black vertical dots to find all of the available post formats.<br></br>If you don't see a post option available in your community, it could be because the community admins don't allow this kind of post in your community.<br></br>In open communities, admins might require approval before you can post or comment for the first time. The approval process might involve answering participation labels and agreeing to the community rules. Only admins and moderators can see your answers."
-					}]
-				},
-				{
-					"key": "5-5",
-					"label": "",
-					"icon": "",
-					"data":"<b>6. How do I delete posts and comments from a community?</b>",
-					"children": [
-						{
-						"key": "5-5-0",
-                        "label": "",
-                        "icon": "",
-						"data":"If you'd like to delete posts and comments from a community, you can choose to delete:<br></br>&emsp;&emsp;&emsp;<b>Delete individual posts, comments or reactions in the community:</b><br></br>&emsp;&emsp;&emsp;&emsp;&emsp;1. Click your profile in the top right of the SeTA web app.<br></br>&emsp;&emsp;&emsp;&emsp;&emsp;2. On your profile, click below your name and select Activity Log.<br></br>&emsp;&emsp;&emsp;&emsp;&emsp;3. Next to Activity Log in the top left, click Filter.<br></br>&emsp;&emsp;&emsp;&emsp;&emsp;4. Scroll down and select Communities then click Save Changes.<br></br>&emsp;&emsp;&emsp;&emsp;&emsp;5. In the left menu, scroll to what you want to delete then click and select Delete, Unlike or Remove Reaction.<br></br>&emsp;&emsp;&emsp;<b>Delete all your posts, comments, and other content you've shared in the community:</b><br></br>&emsp;&emsp;&emsp;&emsp;&emsp;1. Click your profile picture in the top right of the SeTA web app.<br></br>&emsp;&emsp;&emsp;&emsp;&emsp;2. On your profile, click below your name and select Activity Log.<br></br>&emsp;&emsp;&emsp;&emsp;&emsp;3. Next to Activity Log in the top left, click Filter.<br></br>&emsp;&emsp;&emsp;&emsp;&emsp;4. Scroll down and select Membership Activity then click Save Changes. <br></br>&emsp;&emsp;&emsp;&emsp;&emsp;5. In the left menu, scroll to the community you want to delete your content from, then click and select Delete Your Activity.<br></br>&emsp;&emsp;&emsp;&emsp;&emsp;6. Click Delete to confirm."
-						}]
-				},
-				{
-					"key": "5-6",
-					"label": "",
-					"icon": "",
-					"data":"<b>7. Why can't I post, comment or participate in a community?</b>",
-					"children": [
-						{
-						"key": "5-6-0",
-                        "label": "",
-                        "icon": "",
-						"data":"If your ability to post, comment or participate in a community has been turned off, it may be because a community admin has temporarily turned off your ability to post, comment or participate in their community. They might have temporarily suspended you, temporarily limited how frequently you can post or comment or slowed down comments on a post."
-						}]
-				},
-				{
-					"key": "5-7",
-					"label": "",
-					"icon": "",
-					"data":"<b>8. How do I leave a community?</b>",
-					"children": [
-						{
-						"key": "5-7-0",
-                        "label": "",
-                        "icon": "",
-						"data":"&emsp;&emsp;&emsp;1. From the <u>Header</u> menu, click <u>Communities</u>.<br></br>&emsp;&emsp;&emsp;2. Click Joined in the top right, then select <u>Leave Community</u>.<br></br>&emsp;&emsp;&emsp;3. Click <u>Leave Community</u> to confirm.<br></br>When you leave a community:<br></br>&emsp;&emsp;a) Members won't be notified if you leave.<br></br>&emsp;&emsp;b) You're removed from the member list and the community will be removed from your list of communities."
-						}]
-				},
-				{
-					"key": "5-8",
-					"label": "",
-					"icon": "",
-					"data":"<b>9. How do I see a list of my communities?</b>",
-					"children": [
-						{
-						"key": "5-8-0",
-                        "label": "",
-                        "icon": "",
-						"data":"&emsp;&emsp;&emsp;1. From the <u>Header</u> menu, click <u>Communities</u>.<br></br>&emsp;&emsp;&emsp;2. In the left menu is <u>Communities You Manage</u> and <u>Communities You've Joined.</u>"
-						}]
-				},
-				{
-
-					"key": "5-9",
-					"label": "",
-					"icon": "",
-					"data":"<b>10. How do I report something I see in a community?</b>",
-					"children": [
-						{
-						"key": "5-9-0",
-                        "label": "",
-                        "icon": "",
-						"data":"To report something, you see in a community:<br></br>&emsp;&emsp;&emsp;1. From the <u>Header</u> menu, click <u>Communities</u>.<br></br>&emsp;&emsp;&emsp;2. Go to the post you want to report.<br></br>&emsp;&emsp;&emsp;3. Click in the top right of the post.<br></br>&emsp;&emsp;&emsp;4. Select <u>Report post to community admins</u> to report the post to an admin.<br></br>Admins may or may not choose to remove the post or ban the person who shared the post."
-						}]
-				}
-			]
-
 		}
     ]
 }
