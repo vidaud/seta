@@ -1,6 +1,8 @@
 import { useQuery } from '@tanstack/react-query'
 import { getCookie } from 'typescript-cookie'
 
+import type { MembershipValues } from '~/pages/CommunitiesPage/components/Manage/membership-context'
+
 import community_api from './api'
 
 import { environment } from '../../environments/environment'
@@ -66,6 +68,42 @@ export const createOpenMembership = async (id?: string) => {
     .then(response => {
       if (response.status === 200) {
         // console.log(response)
+      }
+    })
+}
+
+export const updateCommunityMembership = async (
+  id?: string,
+  values?: MembershipValues,
+  userId?: string
+) => {
+  await community_api
+    .put(`${environment.COMMUNITIES_API_PATH}/${id}/memberships/${userId}`, values, {
+      headers: {
+        accept: 'application/json',
+        'X-CSRF-TOKEN': csrf_token,
+        'Content-Type': 'application/x-www-form-urlencoded'
+      }
+    })
+    .then(response => {
+      if (response.status === 200) {
+        window.location.reload()
+      }
+    })
+}
+
+export const deleteMembershipByID = async (id?: string, userId?: string) => {
+  await community_api
+    .delete(`${environment.COMMUNITIES_API_PATH}/${id}/memberships/${userId}`, {
+      headers: {
+        accept: 'application/json',
+        'X-CSRF-TOKEN': csrf_token,
+        'Content-Type': 'application/x-www-form-urlencoded'
+      }
+    })
+    .then(response => {
+      if (response.status === 200) {
+        window.location.href = `/my-communities/${id}/members`
       }
     })
 }

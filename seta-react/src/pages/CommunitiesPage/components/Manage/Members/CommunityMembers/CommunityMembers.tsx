@@ -1,6 +1,18 @@
 import { useEffect, useState } from 'react'
-import { createStyles, Table, ScrollArea, rem, Title, Badge, useMantineTheme } from '@mantine/core'
+import {
+  createStyles,
+  Table,
+  ScrollArea,
+  rem,
+  Title,
+  Badge,
+  useMantineTheme,
+  Group
+} from '@mantine/core'
 import { useParams } from 'react-router-dom'
+
+import DeleteMembership from './components/DeleteMembership/DeleteMembership'
+import UpdateMembership from './components/UpdateMembership/UpdateMembership'
 
 import { useMembershipID } from '../../../../../../api/communities/membership'
 import { ComponentEmpty, ComponentError } from '../../../common'
@@ -78,6 +90,12 @@ const CommunityMembers = () => {
             <td>{row.community_id}</td>
             <td>{row.join_date.toString()}</td>
             <td>{row.status}</td>
+            <td>
+              <Group spacing={0}>
+                <UpdateMembership props={row} />
+                <DeleteMembership props={row} />
+              </Group>
+            </td>
           </tr>
         ))
       : []
@@ -87,7 +105,7 @@ const CommunityMembers = () => {
       <Title className={cx(classes.title)} order={3}>
         List of Members
       </Title>
-      <ScrollArea h={220} onScrollPositionChange={({ y }) => setScrolled(y !== 0)}>
+      <ScrollArea h={300} onScrollPositionChange={({ y }) => setScrolled(y !== 0)}>
         <Table miw={500}>
           <thead className={cx(classes.header, { [classes.scrolled]: scrolled })}>
             <tr>
@@ -96,6 +114,7 @@ const CommunityMembers = () => {
               <th>Community</th>
               <th>Join Date</th>
               <th>Status</th>
+              <th>Actions</th>
             </tr>
           </thead>
           <tbody>{rows}</tbody>
