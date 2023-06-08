@@ -1,9 +1,12 @@
-site_name: SeTA Docs
+site_name: SeTA Documentation
 site_description: SeTA - Semantic Text Analyser
 theme:
   name: material
   custom_dir: overrides
   features:
+    - header.autohide
+    - navigation.instant
+    #- navigation.tabs
     - navigation.tracking
     - navigation.path
     - toc.follow
@@ -29,7 +32,8 @@ theme:
         bug: octicons/bug-16
         example: octicons/beaker-16
         quote: octicons/quote-16
-    logo: material/note-search-outline
+    #logo: material/file-document-multiple
+    logo: material/home
     favicon: img/favicon.png
   palette:
     - scheme: seta
@@ -66,18 +70,23 @@ markdown_extensions:
     - footnotes
     - md_in_html
     - tables
-    
+
 extra:
-  seta_url: !ENV DOCS_HOST
-  customer:
-    name: Your name here
-    web: !ENV [DOCS_HOST, 'https:localhost\']
-    salt: salt.example.com
+  homepage: /
+  setaUrls: 
+    home: /
+    apiCommunities: /seta-ui/api/v1/communities/doc
+    apiSeta: /seta-api/doc
+    docs: /docs
+    login: /login
+    auth_decode_Token: /authorization/v1/token_info
+    auth_Token: /authorization/v1/doc
   
 extra_css:
   - stylesheets/extra.css
  
 nav:
+  #- SeTA: /
   - What is SeTA: 
     - SeTA: index.md
   - Who should use it and why: 
@@ -87,7 +96,7 @@ nav:
     - Web App:
       - Search: 
         - Methodology: user-guide/methodology.md
-        - Web App: user-guide/web-app.md
+        - Web Interface: user-guide/web-app.md
       - Communities: 
         - General: user-guide/communities.md
     - APIs: 

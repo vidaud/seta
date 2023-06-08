@@ -25,14 +25,13 @@ It will recreate containers: _seta-ui-react_ and _seta-nginx_
 At some point there will be a message **SeTA-API is up and running**
 
 
-<<<<<<< HEAD
 After successfully start all the containers, you are ready to open your browser and go to one of the following links:
 
 * **User Web App:** [[location] /](/)
 
 * **SETA API:** [[location] /seta-api/doc](/seta-api/doc)
 
-* **SETA API Communities:** [[location] /api/communities/v1/doc](/api/communities/v1/doc)
+* **SETA API Communities:** [[location] /seta-ui/api/v1/communities/doc](/seta-ui/api/v1/communities/doc)
 
 * **Documentation:** [[location] /docs](/docs)
 
@@ -54,8 +53,3 @@ https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12
 Unless required by applicable law or agreed to in writing, software distributed under the Licence is distributed on an "AS IS" basis, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.             
  
 See the Licence for the specific language governing permissions and limitations under the Licence.
-=======
-After that you are ready to open your browser and start typing:  
-* **for UI:** http://localhost
-* **for API:** http://localhost/seta-api/doc
->>>>>>> fb06018f8cc5ae9a22c863f9e08736c9246c8463

@@ -146,13 +146,13 @@ At some point there will be a message **SeTA-API is up and running**
 
 After successfully start all the containers, you are ready to open your browser and go to one of the following links:
 
-* **User Web App:** [[location] /](/)
+* **User Web App:** [[location] {{ setaUrls.home }}]({{ setaUrls.home }})
 
-* **SETA API:** [[location] /seta-api/doc](/seta-api/doc)
+* **SETA API:** [[location] {{ setaUrls.apiSeta }}]({{ setaUrls.apiSeta }})
 
-* **SETA API Communities:** [[location] /api/communities/v1/doc](/api/communities/v1/doc)
+* **SETA API Communities:** [[location] {{ setaUrls.apiCommunities }}]({{ setaUrls.apiCommunities }})
 
-* **Documentation:** [[location] /docs](/docs)
+* **Documentation:** [[location] {{ setaUrls.apiCommunities }}]({{ setaUrls.apiCommunities }})
 
 
 
