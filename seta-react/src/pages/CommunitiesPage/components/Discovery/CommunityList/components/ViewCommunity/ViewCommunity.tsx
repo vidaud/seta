@@ -3,6 +3,7 @@ import { Button, Card, Grid, Group, Text, Title, createStyles, Table } from '@ma
 import { useParams } from 'react-router-dom'
 
 import { useCommunityID } from '../../../../../../../api/communities/manage/my-community'
+import { leaveCommunity } from '../../../../../../../api/communities/my-membership'
 import ComponentLoading from '../../../../common/ComponentLoading'
 import CommunityResources from '../../../../Manage/Resource/CommunityResources/CommunityResources'
 import Stats from '../../../ResourceList/components/Stats/Stats'
@@ -44,6 +45,10 @@ const ViewCommunity = () => {
     return <ComponentLoading />
   }
 
+  const deleteMembership = () => {
+    leaveCommunity(id)
+  }
+
   return (
     <>
       <Grid grow>
@@ -80,7 +85,7 @@ const ViewCommunity = () => {
               </tbody>
             </Table>
             <Group spacing={30} position="right">
-              <Button variant="filled" size="xs">
+              <Button variant="filled" size="xs" onClick={() => deleteMembership()}>
                 LEAVE
               </Button>
             </Group>

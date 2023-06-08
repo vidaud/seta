@@ -5,6 +5,7 @@ import { Link, useParams } from 'react-router-dom'
 import Stats from './components/Stats/Stats'
 
 import { useMyCommunityID } from '../../../../../../api/communities/manage/my-community'
+import { leaveCommunity } from '../../../../../../api/communities/my-membership'
 import ComponentLoading from '../../../common/ComponentLoading'
 import CommunityResources from '../../Resource/CommunityResources/CommunityResources'
 import { useCurrentUserPermissions } from '../../scope-context'
@@ -54,6 +55,10 @@ const ViewMyCommunity = () => {
     return <ComponentLoading />
   }
 
+  const deleteMembership = () => {
+    leaveCommunity(id)
+  }
+
   return (
     <>
       <Grid grow>
@@ -99,7 +104,7 @@ const ViewMyCommunity = () => {
                 {scopes?.includes('/seta/community/manager') ? (
                   <Button>Manage</Button>
                 ) : (
-                  <Button variant="filled" size="xs">
+                  <Button variant="filled" size="xs" onClick={() => deleteMembership()}>
                     LEAVE
                   </Button>
                 )}

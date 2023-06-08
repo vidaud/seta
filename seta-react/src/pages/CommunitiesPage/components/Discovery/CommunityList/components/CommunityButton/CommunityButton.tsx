@@ -3,6 +3,7 @@ import { ActionIcon, Button, Group, createStyles, Tooltip } from '@mantine/core'
 import { IconEye } from '@tabler/icons-react'
 import { Link } from 'react-router-dom'
 
+import { leaveCommunity } from '../../../../../../../api/communities/my-membership'
 import MembershipRequest from '../../../../Manage/Members/InviteMemberModal/InviteMemberModal'
 import OpenCommunityMember from '../../../../Manage/Members/OpenCommunityMember/OpenCommunityMember'
 import ViewClosedCommunity from '../ViewClosedCommunity'
@@ -23,6 +24,10 @@ const CommunityButton = props => {
     }
   }, [props, data])
 
+  const deleteMembership = () => {
+    leaveCommunity(data.community.community_id)
+  }
+
   return (
     <>
       <Group>
@@ -42,7 +47,7 @@ const CommunityButton = props => {
           <ViewClosedCommunity community={data.community} />
         )}
         {data.community.status === 'membership' ? (
-          <Button variant="filled" size="xs">
+          <Button variant="filled" size="xs" onClick={() => deleteMembership()}>
             LEAVE
           </Button>
         ) : data.community.status === 'pending' ? (
