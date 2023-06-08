@@ -30,7 +30,8 @@ const useStyles = createStyles(theme => ({
   }
 }))
 
-const Stats = ({ resourceNumber, inviteNumber, memberNumber }) => {
+// const Stats = ({ resourceNumber, inviteNumber, memberNumber }) => {
+const Stats = ({ resourceNumber }) => {
   const { classes } = useStyles()
   const { id } = useParams()
 
@@ -40,7 +41,7 @@ const Stats = ({ resourceNumber, inviteNumber, memberNumber }) => {
         <Text size="md">STATS</Text>
       </Card.Section>
 
-      <Group position="apart" mt="md">
+      {/* <Group position="apart" mt="md">
         <Container size="xs" px="xs" className={classes.container}>
           <Text className={classes.text}>Members</Text>
           <Group position="right">
@@ -51,7 +52,7 @@ const Stats = ({ resourceNumber, inviteNumber, memberNumber }) => {
             </Tooltip>
           </Group>
         </Container>
-      </Group>
+      </Group> */}
 
       <Group position="apart" mt="md">
         <Container size="xs" px="xs" className={classes.container}>
@@ -64,7 +65,7 @@ const Stats = ({ resourceNumber, inviteNumber, memberNumber }) => {
         </Container>
       </Group>
 
-      <Group position="apart" mt="md">
+      {/* <Group position="apart" mt="md">
         <Container size="xs" px="xs" className={classes.container}>
           <Text className={classes.text}>Pending Invites</Text>
           <Group position="right">
@@ -75,7 +76,7 @@ const Stats = ({ resourceNumber, inviteNumber, memberNumber }) => {
             </Tooltip>
           </Group>
         </Container>
-      </Group>
+      </Group> */}
 
       <Card.Section className={classes.section}>
         <Group spacing={30}>

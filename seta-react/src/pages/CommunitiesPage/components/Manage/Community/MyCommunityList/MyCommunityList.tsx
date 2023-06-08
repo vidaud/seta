@@ -19,6 +19,7 @@ const MyCommunityList = () => {
   const [reverseSortDirection, setReverseSortDirection] = useState(false)
   const [scrolled, setScrolled] = useState(false)
   const { data, isLoading, error, refetch } = useCommunities()
+
   const [sortedData, setSortedData] = useState(data)
 
   useEffect(() => {

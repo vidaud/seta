@@ -7,6 +7,7 @@ import Stats from './components/Stats/Stats'
 import { useMyCommunityID } from '../../../../../../api/communities/manage/my-community'
 import ComponentLoading from '../../../common/ComponentLoading'
 import CommunityResources from '../../Resource/CommunityResources/CommunityResources'
+import { useCurrentUserPermissions } from '../../scope-context'
 
 const useStyles = createStyles(theme => ({
   title: {
@@ -37,12 +38,17 @@ const ViewMyCommunity = () => {
 
   const { data, isLoading } = useMyCommunityID(id)
   const [row, setRow] = useState(data)
+  const { community_scopes } = useCurrentUserPermissions()
+  const [scopes, setScopes] = useState<string[] | undefined>([])
 
   useEffect(() => {
     if (data) {
       setRow(data)
+      const findCommunity = community_scopes?.filter(scope => scope.community_id === id)
+
+      findCommunity ? setScopes(findCommunity[0].scopes) : setScopes([])
     }
-  }, [data, row])
+  }, [data, row, community_scopes, id])
 
   if (isLoading || !data) {
     return <ComponentLoading />
@@ -90,7 +96,13 @@ const ViewMyCommunity = () => {
                 to={`/my-communities/${row?.communities.community_id}/manage`}
                 replace={true}
               >
-                <Button>Manage</Button>
+                {scopes?.includes('/seta/community/manager') ? (
+                  <Button>Manage</Button>
+                ) : (
+                  <Button variant="filled" size="xs">
+                    LEAVE
+                  </Button>
+                )}
               </Link>
             </Group>
           </Card>
@@ -98,8 +110,8 @@ const ViewMyCommunity = () => {
         <Grid.Col span={1}>
           <Stats
             resourceNumber={row?.resources}
-            inviteNumber={row?.invites}
-            memberNumber={row?.members}
+            // inviteNumber={row?.invites}
+            // memberNumber={row?.members}
           />
         </Grid.Col>
         <Grid.Col span={5}>

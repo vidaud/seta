@@ -22,6 +22,7 @@ import CommunityMembers from '../../pages/CommunitiesPage/components/Manage/Memb
 import NewResource from '../../pages/CommunitiesPage/components/Manage/Resource/NewResource/NewResource'
 import UpdateResource from '../../pages/CommunitiesPage/components/Manage/Resource/UpdateResource/UpdateResource'
 import ViewMyResource from '../../pages/CommunitiesPage/components/Manage/Resource/ViewMyResource/ViewMyResource'
+import { ScopeProvider } from '../../pages/CommunitiesPage/components/Manage/scope-context'
 import CommunityUsersPermissions from '../../pages/CommunitiesPage/components/UserPermissions/Community/CommunityUserPermissions'
 import ResourceUsersPermissions from '../../pages/CommunitiesPage/components/UserPermissions/Resource/ResourceUserPermissions'
 import DashboardsPage from '../../pages/CommunitiesPage/pages/DashboardPage'
@@ -131,7 +132,9 @@ const routes = createRoutesFromElements(
         path=":id"
         element={
           <RequireAuth>
-            <ViewMyCommunity />
+            <ScopeProvider>
+              <ViewMyCommunity />
+            </ScopeProvider>
           </RequireAuth>
         }
       />

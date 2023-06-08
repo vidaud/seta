@@ -1,7 +1,9 @@
+import { useEffect, useState } from 'react'
 import { Group, ActionIcon, Menu, createStyles, Tooltip } from '@mantine/core'
 import { IconDots, IconPencil, IconEye } from '@tabler/icons-react'
 import { Link } from 'react-router-dom'
 
+import { useCurrentUserPermissions } from '../../../../scope-context'
 import DeleteResource from '../../../DeleteResourceButton/DeleteResourceButton'
 
 const useStyles = createStyles({
@@ -12,6 +14,18 @@ const useStyles = createStyles({
 
 const ResourceButtons = item => {
   const { classes } = useStyles()
+  const { resource_scopes } = useCurrentUserPermissions()
+  const [scopes, setScopes] = useState<string[] | undefined>([])
+
+  useEffect(() => {
+    const findCommunity = resource_scopes?.filter(
+      scope => scope?.community_id === item.item.community_id
+    )
+
+    findCommunity ? setScopes(findCommunity[0]?.scopes) : setScopes([])
+  }, [resource_scopes, item])
+
+  console.log(scopes)
 
   return (
     <Group spacing={0}>
