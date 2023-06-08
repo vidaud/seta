@@ -6,7 +6,7 @@ from injector import inject
 from http import HTTPStatus
 
 from seta_flask_server.repository.models import SetaApplication
-from seta_flask_server.repository.interfaces import IAppsBroker, IUsersBroker
+from seta_flask_server.repository.interfaces import IAppsBroker
 from .models.apps_dto import (app_model, new_app_parser, update_app_parser)
 
 applications_ns = Namespace('Applications', validate=True, description='SETA User Applications')

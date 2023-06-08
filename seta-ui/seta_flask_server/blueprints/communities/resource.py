@@ -12,9 +12,10 @@ from seta_flask_server.infrastructure.scope_constants import ResourceScopeConsta
 from seta_flask_server.infrastructure.clients.private_api_client import PrivateResourceClient
 
 from http import HTTPStatus
-from .models.resource_dto import (update_resource_parser, resource_model, resource_limits_model)
+from .models.resource_dto import (update_resource_parser, resource_model, resource_limits_model, user_info_model)
 
 resources_ns = Namespace('Resources', description='SETA Resources')
+resources_ns.models[user_info_model.name] = user_info_model
 resources_ns.models[resource_limits_model.name] = resource_limits_model
 resources_ns.models[resource_model.name] = resource_model 
 
@@ -35,11 +36,17 @@ class UserResources(Resource):
     @resources_ns.marshal_list_with(resource_model, mask="*")
     @auth_validator()
     def get(self):
-        '''Retrieve list of accessible resources'''      
+        '''Retrieve list of accessible resources, available to any user'''      
         identity = get_jwt_identity()
         user_id = identity["user_id"]     
                   
-        return self.resourcesBroker.get_all_queryable_by_user_id(user_id)
+        resources = self.resourcesBroker.get_all_queryable_by_user_id(user_id)
+        for resource in resources:
+            creator = self.usersBroker.get_user_by_id(resource.creator_id, load_scopes=False)
+            if creator:
+                resource.creator = creator.user_info
+
+        return resources
 
 @resources_ns.route('/<string:id>', methods=['GET', 'PUT', 'DELETE'])
 @resources_ns.param("id", "Resource identifier")
@@ -61,11 +68,15 @@ class CommunityResource(Resource):
     @resources_ns.marshal_with(resource_model, mask="*")
     @auth_validator()
     def get(self, id):
-        '''Retrieve resource'''                
+        '''Retrieve resource, available to any user'''                
         resource = self.resourcesBroker.get_by_id(id)
         
         if resource is None:
             abort(HTTPStatus.NOT_FOUND)
+
+        creator = self.usersBroker.get_user_by_id(resource.creator_id, load_scopes=False)
+        if creator:
+            resource.creator = creator.user_info
         
         return resource
 
@@ -77,7 +88,7 @@ class CommunityResource(Resource):
     @resources_ns.expect(update_resource_parser)
     @auth_validator()
     def put(self, id):
-        '''Update a resource'''
+        '''Update a resource, available to resource editor and community managers'''
         
         identity = get_jwt_identity()
         auth_id = identity["user_id"]
@@ -92,7 +103,8 @@ class CommunityResource(Resource):
             abort(HTTPStatus.NOT_FOUND)
 
         community_scopes = [CommunityScopeConstants.Owner, CommunityScopeConstants.Manager]
-        if not user.has_resource_scope(id=id, scope=ResourceScopeConstants.Edit) and not user.has_any_community_scope(id=resource.community_id, scopes=community_scopes):
+        if (not user.has_resource_scope(id=id, scope=ResourceScopeConstants.Edit) and 
+                not user.has_any_community_scope(id=resource.community_id, scopes=community_scopes)):
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")      
         
         resource_dict = update_resource_parser.parse_args()
@@ -119,7 +131,7 @@ class CommunityResource(Resource):
         security='CSRF')
     @auth_validator()
     def delete(self, id):
-        '''Delete resource'''
+        '''Delete resource, available to resource editor and community managers'''
         
         identity = get_jwt_identity()
         auth_id = identity["user_id"]
@@ -136,7 +148,8 @@ class CommunityResource(Resource):
             abort(HTTPStatus.NOT_FOUND)
 
         community_scopes = [CommunityScopeConstants.Owner, CommunityScopeConstants.Manager]
-        if not user.has_resource_scope(id=id, scope=ResourceScopeConstants.Edit) and not user.has_any_community_scope(id=resource.community_id, scopes=community_scopes):
+        if (not user.has_resource_scope(id=id, scope=ResourceScopeConstants.Edit) 
+                and not user.has_any_community_scope(id=resource.community_id, scopes=community_scopes)):
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
         
         try:            

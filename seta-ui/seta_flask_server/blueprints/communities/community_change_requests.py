@@ -13,9 +13,10 @@ from seta_flask_server.infrastructure.scope_constants import CommunityScopeConst
 from seta_flask_server.infrastructure.constants import RequestStatusConstants, UserRoleConstants, CommunityRequestFieldConstants, CommunityMembershipConstants
 
 from .models.community_dto import(new_change_request_parser, update_change_request_parser, 
-                    change_request_model, resource_change_request_model, all_change_requests_model)
+                    change_request_model, resource_change_request_model, all_change_requests_model, user_info_model)
 
 community_change_request_ns = Namespace('Community Change Requests', validate=True, description='SETA Community Change Requests')
+community_change_request_ns.models[user_info_model.name] = user_info_model
 community_change_request_ns.models[change_request_model.name] = change_request_model
 community_change_request_ns.models[resource_change_request_model.name] = resource_change_request_model
 community_change_request_ns.models[all_change_requests_model.name] = all_change_requests_model
@@ -55,7 +56,19 @@ class CommunityChangeRequestList(Resource):
         if not hasApproveRight:        
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
 
-        return self.changeRequestsBroker.get_all_pending()
+        requests = self.changeRequestsBroker.get_all_pending()
+
+        for request in requests:
+            requested_by = self.usersBroker.get_user_by_id(request.requested_by, load_scopes=False)
+            if requested_by:
+                request.requested_by_info = requested_by.user_info
+
+            if request.reviewed_by:
+                reviewed_by = self.usersBroker.get_user_by_id(request.reviewed_by, load_scopes=False)
+                if reviewed_by:
+                    request.reviewed_by_info = reviewed_by.user_info
+
+        return requests
     
 @community_change_request_ns.route('/<string:community_id>/change-requests', endpoint="community_create_change_request", methods=['GET','POST'])
 @community_change_request_ns.param("community_id", "Community identifier") 
@@ -159,10 +172,35 @@ class CommunityCreateChangeRequest(Resource):
             
         if not user.has_any_community_scope(id=community_id, scopes=[CommunityScopeConstants.Manager, CommunityScopeConstants.Owner]):
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
+
+        community_change_requests = self.changeRequestsBroker.get_all_by_community_id(community_id)
+        resource_change_requests = self.resourceRequestsBroker.get_all_by_community_id(community_id)
+
+        #add community crs infos
+        for community_request in community_change_requests:
+            requested_by = self.usersBroker.get_user_by_id(community_request.requested_by, load_scopes=False)
+            if requested_by:
+                community_request.requested_by_info = requested_by.user_info
+
+            if community_request.reviewed_by:
+                reviewed_by = self.usersBroker.get_user_by_id(community_request.reviewed_by, load_scopes=False)
+                if reviewed_by:
+                    community_request.reviewed_by_info = reviewed_by.user_info
+
+        #add resourse crs infos
+        for resource_request in resource_change_requests:
+            requested_by = self.usersBroker.get_user_by_id(resource_request.requested_by, load_scopes=False)
+            if requested_by:
+                resource_request.requested_by_info = requested_by.user_info
+
+            if resource_request.reviewed_by:
+                reviewed_by = self.usersBroker.get_user_by_id(resource_request.reviewed_by, load_scopes=False)
+                if reviewed_by:
+                    resource_request.reviewed_by_info = reviewed_by.user_info
         
         return {
-            "community_change_requests": self.changeRequestsBroker.get_all_by_community_id(community_id),
-            "resource_change_requests":  self.resourceRequestsBroker.get_all_by_community_id(community_id)
+            "community_change_requests": community_change_requests,
+            "resource_change_requests":  resource_change_requests
         } 
    
 @community_change_request_ns.route('/<string:community_id>/change-requests/<string:request_id>', endpoint="community_change_request", methods=['GET', 'PUT'])
@@ -206,6 +244,15 @@ class CommunityChangeRequest(Resource):
             hasApproveRight = user.role.lower() == UserRoleConstants.Admin.lower() or user.has_system_scope(SystemScopeConstants.ApproveCommunityChangeRequest)
             if not hasApproveRight:       
                 abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
+
+        requested_by = self.usersBroker.get_user_by_id(request.requested_by, load_scopes=False)
+        if requested_by:
+            request.requested_by_info = requested_by.user_info
+
+        if request.reviewed_by:
+            reviewed_by = self.usersBroker.get_user_by_id(request.reviewed_by, load_scopes=False)
+            if reviewed_by:
+                request.reviewed_by_info = reviewed_by.user_info
         
         return request
     

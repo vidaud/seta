@@ -43,7 +43,7 @@ community_model = Model("Community",
             "description": fields.String(description="Community relevant description"),
             "membership": fields.String(description="The membership status", enum=CommunityMembershipConstants.List),            
             "status": fields.String(description="The community status", enum=CommunityStatusConstants.List),
-            "creator": fields.Nested(model=user_info_model),
+            "creator": fields.Nested(model=user_info_model, description="Community creator info", skip_none=True),
             "created_at": fields.DateTime(description="Creation date", attribute="created_at")
         })
 
@@ -84,14 +84,18 @@ change_request_model = Model("CommunityChangeRequest",
                                  "new_value": fields.String(description="New value for field"),
                                  "old_value": fields.String(description="Current value at request"),
                                  "requested_by": fields.String(description="User identifier that intiated the request"),
+                                 "requested_by_info": fields.Nested(model=user_info_model, description="Requested by"),
                                  "status": fields.String(description="Request status", enum=RequestStatusConstants.List),
                                  "initiated_date": fields.DateTime(description="Request intiated date", attribute="initiated_date"),
                                  "reviewed_by": fields.String(description="User identifier that reviewed the request"),
+                                 "reviewed_by_info": fields.Nested(model=user_info_model, description="Reviewed by", skip_none = True),
                                  "review_date": fields.DateTime(description="Reviewed date", attribute="review_date")
                              })
 
 all_change_requests_model = Model("AllChangeRequests",
                                   {
-                                      "community_change_requests": fields.List(fields.Nested(change_request_model)),
-                                      "resource_change_requests":  fields.List(fields.Nested(resource_change_request_model))
+                                      "community_change_requests": fields.List(fields.Nested(change_request_model, 
+                                                                description="Change requests for community", skip_none = True)),
+                                      "resource_change_requests":  fields.List(fields.Nested(resource_change_request_model, 
+                                                                description="Change requests for resource", skip_none = True))
                                   })

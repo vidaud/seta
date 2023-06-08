@@ -12,9 +12,10 @@ from seta_flask_server.infrastructure.decorators import auth_validator
 from seta_flask_server.infrastructure.scope_constants import SystemScopeConstants, ResourceScopeConstants, CommunityScopeConstants
 from seta_flask_server.infrastructure.constants import UserRoleConstants, ResourceRequestFieldConstants
 
-from .models.resource_request_dto import(new_change_request_parser, update_change_request_parser, change_request_model)
+from .models.resource_request_dto import(new_change_request_parser, update_change_request_parser, change_request_model, user_info_model)
 
 resource_change_request_ns = Namespace('Resource Change Requests', validate=True, description='SETA Resource Change Requests')
+resource_change_request_ns.models[user_info_model.name] = user_info_model
 resource_change_request_ns.models[change_request_model.name] = change_request_model
 
 @resource_change_request_ns.route('/change-requests/pending', methods=['GET', 'POST'])
@@ -37,10 +38,10 @@ class ResourceChangeRequestList(Resource):
                 },
         
         security='CSRF')
-    @resource_change_request_ns.marshal_list_with(change_request_model, mask="*")
+    @resource_change_request_ns.marshal_list_with(change_request_model, mask="*", skip_none=True)
     @auth_validator()
     def get(self):
-        '''Retrieve all pending change requests for communities, available to sysadmins'''
+        '''Retrieve all pending change requests for resources, available to sysadmins'''
         
         identity = get_jwt_identity()
         auth_id = identity["user_id"]
@@ -54,7 +55,18 @@ class ResourceChangeRequestList(Resource):
         if not hasApproveRight:        
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
 
-        return self.changeRequestsBroker.get_all_pending()
+        requests = self.changeRequestsBroker.get_all_pending()
+        for request in requests:
+            requested_by = self.usersBroker.get_user_by_id(request.requested_by, load_scopes=False)
+            if requested_by:
+                request.requested_by_info = requested_by.user_info
+
+            if request.reviewed_by:
+                reviewed_by = self.usersBroker.get_user_by_id(request.reviewed_by, load_scopes=False)
+                if reviewed_by:
+                    request.reviewed_by_info = reviewed_by.user_info
+
+        return requests
 
 @resource_change_request_ns.route('/<string:resource_id>/change-requests', methods=['GET','POST'])
 @resource_change_request_ns.param("resource_id", "Resource identifier") 
@@ -138,7 +150,7 @@ class ResourceCreateChangeRequest(Resource):
                int(HTTPStatus.FORBIDDEN): "Insufficient rights, scope 'community/manager' or 'community/owner' or 'resource/edit' required"
                },
     security='CSRF')
-    @resource_change_request_ns.marshal_with(change_request_model, mask="*")
+    @resource_change_request_ns.marshal_list_with(change_request_model, mask="*", skip_none=True)
     @auth_validator()    
     def get(self, resource_id):
         '''Retrieve all change requests for a resource, available to community managers and resource editors'''
@@ -158,7 +170,19 @@ class ResourceCreateChangeRequest(Resource):
                 and not user.has_resource_scope(ResourceScopeConstants.Edit)):
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
         
-        return self.changeRequestsBroker.get_all_by_resource_id(resource_id=resource_id)        
+        requests = self.changeRequestsBroker.get_all_by_resource_id(resource_id=resource_id)        
+
+        for request in requests:
+            requested_by = self.usersBroker.get_user_by_id(request.requested_by, load_scopes=False)
+            if requested_by:
+                request.requested_by_info = requested_by.user_info
+
+            if request.reviewed_by:
+                reviewed_by = self.usersBroker.get_user_by_id(request.reviewed_by, load_scopes=False)
+                if reviewed_by:
+                    request.reviewed_by_info = reviewed_by.user_info
+
+        return requests
         
 
 @resource_change_request_ns.route('/<string:resource_id>/change-requests/<string:request_id>', methods=['GET', 'PUT'])
@@ -203,6 +227,15 @@ class ResourceChangeRequest(Resource):
                 user.has_system_scope(SystemScopeConstants.ApproveResourceChangeRequest))
             if not hasApproveRight:
                 abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
+
+        requested_by = self.usersBroker.get_user_by_id(request.requested_by, load_scopes=False)
+        if requested_by:
+            request.requested_by_info = requested_by.user_info
+
+        if request.reviewed_by:
+            reviewed_by = self.usersBroker.get_user_by_id(request.reviewed_by, load_scopes=False)
+            if reviewed_by:
+                request.reviewed_by_info = reviewed_by.user_info
         
         return request
     

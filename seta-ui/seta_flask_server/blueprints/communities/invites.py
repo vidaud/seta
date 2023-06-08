@@ -36,21 +36,29 @@ class CommunityInvite(Resource):
     @invite_ns.marshal_with(invite_model, mask="*")
     @auth_validator()    
     def get(self, invite_id):
-        '''Retrieve invite'''
+        '''Retrieve invite, available to initiator and invitee'''
         
         identity = get_jwt_identity()
         auth_id = identity["user_id"]
         
-        request = self.invitesBroker.get_by_invite_id(invite_id)
+        invite = self.invitesBroker.get_by_invite_id(invite_id)
         
-        if request is None:
+        if invite is None:
             abort(HTTPStatus.NOT_FOUND)
         
         #if not the initiator of the request or the invitee, do not allow
-        if request.initiated_by != auth_id and request.invited_user != auth_id:            
+        if invite.initiated_by != auth_id and invite.invited_user != auth_id:            
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
+
+        initiator = self.usersBroker.get_user_by_id(user_id=invite.initiated_by, load_scopes=False)
+        if initiator:
+            invite.initiated_by_info = initiator.user_info
+
+        invited = self.usersBroker.get_user_by_id(user_id=invite.invited_user, load_scopes=False)
+        if invited:
+            invite.invited_user_info = invited.user_info
         
-        return request
+        return invite
     
     @invite_ns.doc(description='Accept/reject invite',        
     responses={
@@ -62,7 +70,7 @@ class CommunityInvite(Resource):
     @invite_ns.expect(update_invite_parser)
     @auth_validator()
     def put(self, invite_id):
-        '''Update an invite'''
+        '''Update an invite, available to invitee'''
         
         identity = get_jwt_identity()
         auth_id = identity["user_id"]
@@ -88,3 +96,38 @@ class CommunityInvite(Resource):
         response.status_code = HTTPStatus.OK
         
         return response    
+    
+@invite_ns.route('/', endpoint="my_invites", methods=['GET', 'PUT'])
+class MyCommunityInvites(Resource):
+    """Handles HTTP requests to URL: /invites"""
+    
+    @inject
+    def __init__(self, usersBroker: IUsersBroker, invitesBroker: ICommunityInvitesBroker, api=None, *args, **kwargs):
+        self.usersBroker = usersBroker
+        self.invitesBroker = invitesBroker
+        
+        super().__init__(api, *args, **kwargs)
+        
+    @invite_ns.doc(description='Retrieve my pending invites.',
+    responses={int(HTTPStatus.OK): "'Retrieved invites." },
+    security='CSRF')
+    @invite_ns.marshal_list_with(invite_model, mask="*")
+    @auth_validator()    
+    def get(self):
+        '''Retrieve my pending invites, available to any user'''
+        
+        identity = get_jwt_identity()
+        auth_id = identity["user_id"]
+        
+        invites = self.invitesBroker.get_all_by_status_and_invited_user_id(user_id = auth_id, status=InviteStatusConstants.Pending)
+        
+        for invite in invites:
+            initiator = self.usersBroker.get_user_by_id(user_id=invite.initiated_by, load_scopes=False)
+            if initiator:
+                invite.initiated_by_info = initiator.user_info
+
+            invited = self.usersBroker.get_user_by_id(user_id=invite.invited_user, load_scopes=False)
+            if invited:
+                invite.invited_user_info = invited.user_info
+
+        return invites

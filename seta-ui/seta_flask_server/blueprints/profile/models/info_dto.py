@@ -10,19 +10,12 @@ provider_model = Model("ExternalProvider",
                            "is_current_auth": fields.Boolean(description="Authenticates current user")
                        })
 
-application_model = Model("Application",
-                          {
-                              "name": fields.String(description="Application name"),
-                              "description": fields.String(description="Application description")
-                          })
-
 account_model = Model("AccountInfo", 
                 {
                     "username": fields.String(description="Internal SETA user identifier"),                  
                     "email": fields.String(description="User email address"),                    
                     "role": fields.String(description="User role", enum=UserRoleConstants.List),
-                    "external_providers": fields.List(fields.Nested(provider_model)),
-                    "applications": fields.List(fields.Nested(application_model))
+                    "external_providers": fields.List(fields.Nested(provider_model))
                 })
 
 user_info_model = Model("UserInfo", 

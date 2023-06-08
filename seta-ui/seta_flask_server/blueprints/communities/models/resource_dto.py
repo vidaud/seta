@@ -3,6 +3,9 @@ from flask_restx.reqparse import RequestParser
 
 from seta_flask_server.infrastructure.constants import (ResourceStatusConstants)
 
+
+from .models_dto import (user_info_model)
+
 new_resource_parser = RequestParser(bundle_errors=True)
 new_resource_parser.add_argument("resource_id",
                                   location="form", 
@@ -46,5 +49,6 @@ resource_model = Model("Resource",
             "limits": fields.Nested(model=resource_limits_model, description="The resource upload limits"),
             "status": fields.String(description="The resource status", enum=ResourceStatusConstants.List),
             "creator_id": fields.String(description="Creator user identifier"),
+            "creator": fields.Nested(model=user_info_model, description="Resource creator info", skip_none=True),
             "created_at": fields.DateTime(description="Creation date", attribute="created_at")
         })

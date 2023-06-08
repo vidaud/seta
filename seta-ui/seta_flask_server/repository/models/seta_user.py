@@ -11,6 +11,7 @@ from .external_provider import ExternalProvider
 
 from seta_flask_server.infrastructure.constants import ExternalProviderConstants
 from seta_flask_server.infrastructure.constants import ClaimTypeConstants, UserRoleConstants, UserStatusConstants
+from .user_info import UserInfo
 
 class SetaUser:
     
@@ -146,6 +147,31 @@ class SetaUser:
                 return uc.claim_value
         
         return UserRoleConstants.User
+    
+    @property
+    def user_info(self) -> UserInfo:
+        if self.status.lower() == UserStatusConstants.Deleted:
+            return UserInfo(user_id=self.user_id,full_name="Unknown",email="unknown")
+        
+        return UserInfo(user_id=self.user_id, email=self.email, full_name=self.full_name)
+    
+    @property
+    def full_name(self) -> str:
+        if self._authenticated_provider:
+            return f"{self._authenticated_provider.last_name} {self._authenticated_provider.first_name}"
+
+        if self.external_providers and len(self.external_providers) > 0:
+            # try to get ecas name
+            provider = next((p for p in self.external_providers 
+                                  if p.provider.lower() == ExternalProviderConstants.ECAS.lower())
+                                , None)
+            
+            if provider is None:
+                provider = self.external_providers[0]
+
+            return f"{provider.last_name} {provider.first_name}"
+
+        return None
         
     def is_not_active(self) -> bool:
         return self.status.lower() != UserStatusConstants.Active.lower()
