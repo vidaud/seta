@@ -75,7 +75,7 @@ There are some filters that can be applied to refine the search of the results:
 : From the different taxonomies proposed in this section, it can be possible to select only the results with a specific group of interest.
 
 `Other`
-: 
+: In this section it is possible to filter the results with an extra parameter, this parameter can be any of the ones that appear in tag ^^Other^^ from the uploaded documents.
 
 
 
