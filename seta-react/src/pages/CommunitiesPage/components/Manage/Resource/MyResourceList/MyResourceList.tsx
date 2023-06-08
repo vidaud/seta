@@ -11,6 +11,7 @@ import { useMyResources } from '../../../../../../api/resources/manage/my-resour
 import { ComponentEmpty, ComponentError } from '../../../common'
 import ComponentLoading from '../../../common/ComponentLoading'
 import { Th, sortResourceData } from '../../../resource-utils'
+import { useCurrentUserPermissions } from '../../scope-context'
 
 const MyResourceList = () => {
   const { classes, cx } = useStyles()
@@ -20,12 +21,18 @@ const MyResourceList = () => {
   const [scrolled, setScrolled] = useState(false)
   const { data, isLoading, error, refetch } = useMyResources()
   const [sortedData, setSortedData] = useState(data)
+  const { resource_scopes } = useCurrentUserPermissions()
 
   useEffect(() => {
     if (data) {
-      setSortedData(data)
+      const scopesId = new Set(resource_scopes?.map(({ resource_id }) => resource_id))
+      const result = data
+        ?.map(o => ({ ...o, matched: scopesId.has(o.resource_id) }))
+        .filter(i => i.matched === true)
+
+      setSortedData(result)
     }
-  }, [data])
+  }, [data, resource_scopes])
 
   if (error) {
     return <ComponentError onTryAgain={refetch} />

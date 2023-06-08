@@ -10,7 +10,6 @@ import RequireAuth from './components/RequireAuth'
 
 import AppLayout from '../../layouts/AppLayout'
 import CommunityLayout from '../../layouts/CommunityLayout/CommunityLayout'
-import ViewCommunity from '../../pages/CommunitiesPage/components/Discovery/CommunityList/components/ViewCommunity/ViewCommunity'
 import ViewResource from '../../pages/CommunitiesPage/components/Discovery/ResourceList/components/ViewResource/ViewResource'
 import NewCommunity from '../../pages/CommunitiesPage/components/Manage/Community/CreateCommunityButton/components/NewCommunity/NewCommunity'
 import ManageCommunity from '../../pages/CommunitiesPage/components/Manage/Community/ManageCommunity/ManageCommunity'
@@ -241,7 +240,9 @@ const routes = createRoutesFromElements(
         path=":id"
         element={
           <RequireAuth>
-            <ViewCommunity />
+            <ScopeProvider>
+              <ViewMyCommunity />
+            </ScopeProvider>
           </RequireAuth>
         }
       />
