@@ -1,13 +1,19 @@
 import { useEffect, useState } from 'react'
-import { Popover, Button, Group, createStyles, Tooltip, Select, ActionIcon } from '@mantine/core'
+import {
+  Popover,
+  Button,
+  Group,
+  createStyles,
+  Tooltip,
+  Select,
+  ActionIcon,
+  TextInput
+} from '@mantine/core'
 import { IconPencil } from '@tabler/icons-react'
 
-import { updateMembershipRequest } from '../../../../../../../../api/communities/membership-requests'
-import type { MembershipRequestValues } from '../../../../membership-request-context'
-import {
-  MembershipRequestFormProvider,
-  useMembershipRequest
-} from '../../../../membership-request-context'
+import { updateCommunityMembership } from '../../../../../../../../api/communities/membership'
+import type { MembershipValues } from '../../../../membership-context'
+import { MembershipFormProvider, useMembership } from '../../../../membership-context'
 
 const useStyles = createStyles({
   form: {
@@ -15,20 +21,20 @@ const useStyles = createStyles({
   }
 })
 const statusOptions = [
-  { label: 'pending', value: 'pending' },
-  { label: 'approved', value: 'approved' },
-  { label: 'rejected', value: 'rejected' }
+  { label: 'active', value: 'active' },
+  { label: 'blocked', value: 'blocked' }
 ]
 
-const UpdateMemberRequest = ({ props }) => {
+const UpdateMembership = ({ props }) => {
   const [opened, setOpened] = useState(false)
   const { classes, cx } = useStyles()
 
-  const form = useMembershipRequest({
+  const form = useMembership({
     initialValues: {
       community_id: props.community_id,
-      user_id: props.requested_by,
-      status: ''
+      user_id: props.user_id,
+      status: '',
+      role: ''
     }
   })
 
@@ -38,14 +44,14 @@ const UpdateMemberRequest = ({ props }) => {
     }
   }, [props])
 
-  const handleSubmit = (values: MembershipRequestValues) => {
-    updateMembershipRequest(props.community_id, values, props.requested_by)
+  const handleSubmit = (values: MembershipValues) => {
+    updateCommunityMembership(props.community_id, values, props.user_id)
     setOpened(o => !o)
   }
 
   return (
     <Popover
-      width={200}
+      width={300}
       trapFocus
       position="left"
       withArrow
@@ -55,7 +61,7 @@ const UpdateMemberRequest = ({ props }) => {
     >
       <Popover.Target>
         <Group position="right">
-          <Tooltip label="Update Status">
+          <Tooltip label="Update Membership">
             <ActionIcon>
               <IconPencil size="1rem" stroke={1.5} onClick={() => setOpened(o => !o)} />
             </ActionIcon>
@@ -67,8 +73,9 @@ const UpdateMemberRequest = ({ props }) => {
           background: theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.white
         })}
       >
-        <MembershipRequestFormProvider form={form}>
+        <MembershipFormProvider form={form}>
           <form onSubmit={form.onSubmit(handleSubmit)}>
+            <TextInput label="role" {...form.getInputProps('role')} withAsterisk />
             <Select
               {...form.getInputProps('status')}
               label="Status"
@@ -94,10 +101,10 @@ const UpdateMemberRequest = ({ props }) => {
               </Button>
             </Group>
           </form>
-        </MembershipRequestFormProvider>
+        </MembershipFormProvider>
       </Popover.Dropdown>
     </Popover>
   )
 }
 
-export default UpdateMemberRequest
+export default UpdateMembership

@@ -3,11 +3,11 @@ import { AiOutlineUser } from 'react-icons/ai'
 import { FaSignInAlt } from 'react-icons/fa'
 import { Link } from 'react-router-dom'
 
-import { useCurrentUser } from '~/contexts/user-context'
-
 import SiteHeader from './components/SiteHeader'
 import { getDropdownItems, getMenuItems, itemIsDivider } from './config'
 import * as S from './styles'
+
+import { useCurrentUser } from '../../contexts/user-context'
 
 import './style.css'
 
