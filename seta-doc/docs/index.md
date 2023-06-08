@@ -10,7 +10,6 @@ In order to make this kind of analysis possible, the document collection to be s
 - **PUBSY**, the publications repository of the European Commission's Joint Research Centre;      
 - and all publications of the **European Parliament**.      
 
-
 These four collections are online available for immediate search. SeTA can also work on additional document collections, but they first have to be ingested and pre-processed by the user.        
 SeTA is accessed via a web user interface, and also allows the use of APIs for automated access.        
 SeTA furthermore offers community spaces for groups of users to collaborate on joint tasks and document collections.      
@@ -30,16 +29,14 @@ Once we have the processed data, then is ingested and stored in an **Elasticsear
 Once everything is set up, the data is ready to be interrogated either through the User Web Interface or the API.
 
 
-
 ## Community space
 
-A SeTA communityies offers a shared place, where users can have the possibility of to interact with others users about specific areas of interest. The users can create different Communities according to their specific matter of interest, and share, and debate with other users with similar interests.        
+SeTA communities offers a shared place, where users can have the possibility of to interact with others users about specific areas of interest. The users can create different Communities according to their specific matter of interest, and share, and debate with other users with similar interests.        
 In the communities, users can create different resources, upload documents related to these resources and create their own custom Taxonomies when uploading the documents.        
 
 Users can also have access to other users communities if they want.  They will be able to see the available communities and ask to join them.   
 
 Communities can be private or public.  The private communities are available to users only after receiving an invitation. The public communities are visible from the dashboard of the Community page.      
-
 
 ## APIs
 
@@ -52,7 +49,7 @@ The APIs can be a good alternative for users that need to integrate the data wit
 
 
 
-
 [^1]:https://www.elastic.co/what-is/elasticsearch
 [^2]:https://swagger.io/docs/specification/about/
+
 

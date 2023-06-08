@@ -74,6 +74,8 @@ There are some filters that can be applied to refine the search of the results:
 `Taxonomies`                
 : From the different taxonomies proposed in this section, it can be possible to select only the results with a specific group of interest.
 
+`Other`
+: 
 
 Once all the filters are selected, click in the button **Apply Filters** at the top of the section to apply them.
 
