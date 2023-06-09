@@ -32,8 +32,15 @@ On **Manage** panel it is possible to access to:
                         
 1. From the side menu click on ^^Discovery^^ -> ^^Communities^^.       
 2. You can either enter in the search bar the name of the Community you are looking for or select from the Community list.      
-3. Click on the button ^^Join^^.       
+3. Click on the button ^^Join^^.     
+4. A pop-up window will appear to sent a message.
+5. The join button changes to ^^Pending^^ .
     
+
+<figure markdown>
+  ![Image title](../img/join_community.png)
+  <figcaption>Join Community</figcaption>
+</figure>
     
 ### Create a Community
                      

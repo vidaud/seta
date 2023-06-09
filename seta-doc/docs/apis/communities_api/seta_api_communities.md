@@ -24,28 +24,22 @@ The main categories are:
 The Communities section is the related to the creation, retrieve, update and delete the communities.                   
 
 
-
 **GET /communities**     
 Retrieve community list for this user.    
-
 
 
 **POST /communities**   
 
 Create a new community and add this user as a member with elevated scopes.    
 
-
 **GET /communities/{id}**      
 Retrieve community, if user is a member of it.    
-
 
 **DELETE /communities/{id}**      
 Delete community entries.     
 
-
 **PUT /communities/{id}**     
 Update community fields.
-
 
 <figure markdown>
 ![Image title](/docs/img/seta_api_communities.png){ width="900" }
@@ -57,23 +51,18 @@ Update community fields.
 **GET /communities/change-requests/pending**     
 Retrieve all pending change requests for communities, available to sysadmins.    
 
-
 **GET /communities/{community_id}/change-requests/**      
 Retrieve all change requests for a community
 
-
 **POST /communities/{community_id}/change-requests/**      
 Add new change request for a community field.    
-
 
 **GET /communities/{community_id}/change-requests/{request_id}**            
 Retrieve change request for the community.     
 
 
-
 **PUT /communities/{community_id}/change-requests/{request_id}**        
 Approve/reject request  
-
 
 <figure markdown>
 ![Image title](/docs/img/seta_api_communities_change_requests.png){ width="900" }
@@ -85,18 +74,14 @@ Approve/reject request
 **GET /communities/{community_id}/memberships**                       
 Retrieve community memberships, available to any member of this community.                            
 
-
 **POST  /communities/{community_id}/memberships**    
 Create a member for an opened community, available to any user.    
-
 
 **GET /communities/{community_id}/memberships/{user_id}**        
 Retrieve membership, available to community managers.                               
 
-
 **DELETE /communities/{community_id}/memberships/{user_id}**     
 Remove a membership, available to community managers.                           
-
 
 **PUT /communities/{community_id}/memberships/{user_id}**     
 Update a community membership, available to community managers.                      
@@ -113,7 +98,6 @@ Retrieve pending community requests, available to community managers.
 
 **POST  /communities/{community_id}/requests**    
 Create a community membership request, available to any user.    
-
 
 **GET /communities/{community_id}/requests/{user_id}**      
 Retrieve user request, available to community managers.                          
@@ -136,12 +120,10 @@ Retrieve membership, available to community managers.
 **DELETE /communities/{community_id}/membership**     
 Remove a membership, available to any community member.
 
-
 <figure markdown>
 ![Image title](/docs/img/seta_api_communities_my_membership.png)
 <figcaption> Community My Membership</figcaption>
 </figure>
-
 
 
 ## Community Invites
@@ -149,16 +131,13 @@ Remove a membership, available to any community member.
 **GET /communities/{community_id}/invites**       
 Retrieve pending invites, available to community managers.
 
-
 **POST /communities/{community_id}/invites**    
 Create invites, available to community managers.     
-
 
 ## Community Resources
 
 **GET /communities/{community_id}/resources**       
 Retrieve community resources, available to any user.
-
 
 **POST /communities/{community_id}/resources**    
 Create resource, available to community members.     
@@ -169,19 +148,16 @@ Create resource, available to community members.
 </figure>
 
 
-
 ## Invites
 
 **GET /invites/**      
 Retrieve my pending invites, available to any user. 
-
 
 **GET /invites/{invite_id}**      
 Retrieve invite, available to initiator and invitee.    
 
 **PUT /invites/{invite_id}**       
 Update an invite, available to invitee.     
-
 
 ## Resources
 **GET /resources/**   
@@ -197,18 +173,15 @@ Delete resource, available to resource editor and community managers.
 Update a resource, available to resource editor and community managers.                  
 
 
-
 <figure markdown>
 ![Image title](/docs/img/communities_api_invites_resources.png)
 <figcaption>Invites and  Resources</figcaption>
 </figure>
 
-
 ## Resource Change Requests
 
 **GET /resources/change-requests/pending**      
 Retrieve all pending change requests for resources, available to sysadmins.                 
-
 
 **GET  /resources/{resource_id}/change-requests**    
 Retrieve all change requests for a resource, available to community managers and resource editors.                  
@@ -216,20 +189,16 @@ Retrieve all change requests for a resource, available to community managers and
 **POST  /resources/{resource_id}/change-requests**    
 Create a resource change request, available to resource editors.   
 
-
 **GET  /resources/{resource_id}/change-requests/{request-id}**    
-Retrieve resource request, available to syadmins and initiator.                  
-
+Retrieve resource request, available to sysadmins and initiator.                  
 
 **PUT  /resources/{resource_id}/change-requests/{request-id}**    
 Update a change request for resource, available to sysadmins.
-
 
 <figure markdown>
 ![Image title](/docs/img/seta_api_communities_resource_change_request.png)
 <figcaption>Resources Change Requests</figcaption>
 </figure>
-
 
 
 ## Community User Permissions
@@ -259,17 +228,16 @@ Retrieve user permissions for resource, available to community managers.
 **POST /permissions/resource/{resource_id}/user/{user-id}**    
 Add/Replace user permissions, available to community managers.                    
 
-
 ## Discovery
 
 **GET  /discovery/communities**    
-Discover communities, accesbile to any user.                    
+Discover communities, accessible to any user.                    
 
 **GET /discovery/resources**    
-Discover resources, accesible to any user.                
-
+Discover resources, accessible to any user.                
 
 <figure markdown>
 ![Image title](/docs/img/seta_api_communities_resource_discovery.png)
 <figcaption>Resource User Permissions and Discovery</figcaption>
 </figure>
+
