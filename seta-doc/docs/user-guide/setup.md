@@ -166,7 +166,7 @@ Click on the **Authorize** button to open the Available authorizations dialog; s
 
 !!! warning "Only if you want to use seta-api in another browser:"
     * open the browser developer tool and copy the value of the **access_token_cookie**
-    * {==click on the **Authorize** button to open the Available authorizations dialog; in the apikey text input set **Bearer** value then click on the *Authorize* button.==}
+    * click on the **Authorize** button to open the Available authorizations dialog; in the apikey text input set **Bearer** value then click on the *Authorize* button.
 
 SeTA-API will get at each request another authorization decoded token from seta-ui through the *token info* endpoint using the authenticated JWT.
 
@@ -353,7 +353,6 @@ Open a browser and go to seta-ui [login]({{ setaUrls.login }}) page. Connect wit
     If you open a new tab or window from another browser, you need to open the browser developer tool and copy the value of the ^^csrf_access_token^^ cookie 
 
 
-You can start using SeTA API.
 
 
 <figure markdown>

@@ -13,7 +13,7 @@ On the main page of the Communities, there are two side panels on the left side:
 
 On **Discovery** panel it is possible to access to:
 
-- Communities *(List of Communities)*        
+- Communities *(List of available Communities)*        
 - Resources *(The Resources related to those communities)*        
 
 On **Manage** panel it is possible to access to:             
@@ -26,6 +26,15 @@ On **Manage** panel it is possible to access to:
   <figcaption>Communities page</figcaption>
 </figure>
 
+### Join a Community
+
+**From Discovery** 
+                        
+1. From the side menu click on ^^Discovery^^ -> ^^Communities^^.       
+2. You can either enter in the search bar the name of the Community you are looking for or select from the Community list.      
+3. Click on the button ^^Join^^.       
+    
+    
 ### Create a Community
                      
 1. From the side panel click on ^^Manage^^ -> ^^My Communities^^.  
@@ -144,14 +153,7 @@ Only **users with rights to edit** can change the Community name.
   <figcaption>Update a Resource</figcaption>
 </figure>
 
-### Join a Community
 
-**From Discovery** 
-                        
-1. From the side menu click on ^^Discovery^^ -> ^^Communities^^.       
-2. You can either enter in the search bar the name of the Community you are looking for or select from the Community list.      
-3. Click on the button ^^Join^^.       
-    
 
 ### Invite to Join a Community
 
