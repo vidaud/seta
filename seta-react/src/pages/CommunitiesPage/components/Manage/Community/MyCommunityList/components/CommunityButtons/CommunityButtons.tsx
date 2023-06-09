@@ -4,6 +4,7 @@ import { IconDots, IconPencil, IconEye, IconSettings } from '@tabler/icons-react
 import { Link } from 'react-router-dom'
 
 import { useMyCommunityID } from '../../../../../../../../api/communities/manage/my-community'
+import { useCurrentUserPermissions } from '../../../../scope-context'
 import DeleteCommunity from '../../../DeleteCommunityButton/DeleteCommunityButton'
 import InviteMember from '../../../InviteMemberModal/InviteMemberModal'
 
@@ -17,16 +18,23 @@ const CommunityButtons = ({ item }) => {
   const { classes } = useStyles()
   const { data } = useMyCommunityID(item.community_id)
   const [row, setRow] = useState(data)
+  const { community_scopes } = useCurrentUserPermissions()
+  const [scopes, setScopes] = useState<string[] | undefined>([])
 
   useEffect(() => {
     if (data) {
       setRow(data)
+      const findCommunity = community_scopes?.filter(
+        scope => scope.community_id === item.community_id
+      )
+
+      findCommunity ? setScopes(findCommunity[0].scopes) : setScopes([])
     }
-  }, [data, row])
+  }, [data, row, community_scopes, item])
 
   return (
     <Group spacing={0} position="right">
-      <InviteMember id={item.community_id} />
+      {scopes?.includes('/seta/community/manager') ? <InviteMember id={item.community_id} /> : null}
 
       <Menu transitionProps={{ transition: 'pop' }} withArrow position="bottom-end" withinPortal>
         <Menu.Target>
@@ -37,24 +45,28 @@ const CommunityButtons = ({ item }) => {
           </Tooltip>
         </Menu.Target>
         <Menu.Dropdown>
-          <Link
-            className={classes.link}
-            to={`/my-communities/${item.community_id}/update`}
-            replace={true}
-          >
-            <Menu.Item icon={<IconPencil size="1rem" stroke={1.5} />}>Update</Menu.Item>
-          </Link>
-          <Link
-            className={classes.link}
-            to={`/my-communities/${item.community_id}/manage`}
-            replace={true}
-          >
-            <Menu.Item icon={<IconSettings size="1rem" stroke={1.5} />}>Manage</Menu.Item>
-          </Link>
+          {scopes?.includes('/seta/community/manager') ? (
+            <Link
+              className={classes.link}
+              to={`/my-communities/${item.community_id}/update`}
+              replace={true}
+            >
+              <Menu.Item icon={<IconPencil size="1rem" stroke={1.5} />}>Update</Menu.Item>
+            </Link>
+          ) : null}
+          {scopes?.includes('/seta/community/manager') ? (
+            <Link
+              className={classes.link}
+              to={`/my-communities/${item.community_id}/manage`}
+              replace={true}
+            >
+              <Menu.Item icon={<IconSettings size="1rem" stroke={1.5} />}>Manage</Menu.Item>
+            </Link>
+          ) : null}
           <Link className={classes.link} to={`/my-communities/${item.community_id}`} replace={true}>
             <Menu.Item icon={<IconEye size="1rem" stroke={1.5} />}>View Details</Menu.Item>
           </Link>
-          <DeleteCommunity props={row} />
+          {scopes?.includes('/seta/community/manager') ? <DeleteCommunity props={row} /> : null}
         </Menu.Dropdown>
       </Menu>
     </Group>

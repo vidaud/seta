@@ -19,8 +19,8 @@ export type CommunityResponse = {
 export type MyCommunity = {
   communities: CommunityResponse
   resources: ResourceResponse[]
-  invites: InviteResponse[]
-  members: MembershipResponse[]
+  invites?: InviteResponse[]
+  members?: MembershipResponse[]
 }
 
 export type Community = {

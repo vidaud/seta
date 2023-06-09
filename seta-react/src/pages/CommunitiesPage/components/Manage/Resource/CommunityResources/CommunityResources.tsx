@@ -79,7 +79,7 @@ const CommunityResources = resources => {
             <tbody>{rows}</tbody>
           ) : (
             <tbody>
-              <div className={classes.noResources}>No resources yet for this community</div>
+              <tr className={classes.noResources}>No resources yet for this community</tr>
             </tbody>
           )}
         </Table>

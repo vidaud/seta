@@ -9,8 +9,6 @@ import type {
   ManageCommunityAPI,
   UpdateCommunityAPI
 } from '~/api/types/community-types'
-import type { InviteResponse } from '~/api/types/invite-types'
-import type { MembershipResponse } from '~/api/types/membership-types'
 import type { ResourceResponse } from '~/api/types/resource-types'
 
 import { environment } from '../../../environments/environment'
@@ -45,19 +43,19 @@ const getMyCommunity = async (id?: string): Promise<MyCommunity> => {
     `${environment.COMMUNITIES_API_PATH}/${id}/resources`
   )
 
-  const invites = await community_api.get<InviteResponse[]>(
-    `${environment.COMMUNITIES_API_PATH}/${id}/invites`
-  )
+  // const invites = await community_api.get<InviteResponse[]>(
+  //   `${environment.COMMUNITIES_API_PATH}/${id}/invites`
+  // )
 
-  const members = await community_api.get<MembershipResponse[]>(
-    `${environment.COMMUNITIES_API_PATH}/${id}/memberships`
-  )
+  // const members = await community_api.get<MembershipResponse[]>(
+  //   `${environment.COMMUNITIES_API_PATH}/${id}/memberships`
+  // )
 
   const data = {
     communities: communities.data,
-    resources: resources.data,
-    invites: invites.data,
-    members: members.data
+    resources: resources.data
+    // invites: invites.data,
+    // members: members.data
   }
 
   return data
