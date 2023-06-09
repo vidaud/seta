@@ -6,75 +6,48 @@ The main categories are:
 - Communities    
 - Community Change Requests     
 - Community Memberships      
+- Community Memberships Requests      
+- Community My Membership      
 - Community Invites       
+- Community Resources      
 - Invites   
 - Resources     
-- Resource Contributors     
-- Resource Change Requests     
+- Resource Change Request      
 - Community User Permissions     
+- Resource User Permissions     
+- Discovery     
+
         
 
  
 ## Communities
 
-The Communities section is the related to the creation, retrieve, update and delete the communities.
+The Communities section is the related to the creation, retrieve, update and delete the communities.                   
+
+
+
+**GET /communities**     
+Retrieve community list for this user.    
+
+
 
 **POST /communities**   
 
 Create a new community and add this user as a member with elevated scopes.    
-<!--    
-<figure markdown>
-![Image title](/docs/img/post_community.png){ width="900" }
-<figcaption>POST /community</figcaption>
-</figure>
 
-<figure markdown>
-![Image title](/docs/img/post_community_result.png){ width="900" }
-<figcaption>POST /community (result)</figcaption>
-</figure>
- -->
 
-**GET /communities**     
-Retrieve community list for this user.    
-<!--
-<figure markdown>
-![Image title](/docs/img/get_communities.png){ width="900" }
-<figcaption>GET /communities</figcaption>
-</figure>
-  -->
+**GET /communities/{id}**      
+Retrieve community, if user is a member of it.    
+
+
 
 **DELETE /communities/{id}**      
 
 Delete community entries.     
-<!--
-<figure markdown>
-![Image title](/docs/img/delete_communities_id.png){ width="900" }
-<figcaption>DELETE /communities{id}</figcaption>
-</figure>
- -->
 
 **PUT /communities/{id}**     
 Update community fields.
-<!--
-<figure markdown>
-![Image title](/docs/img/put_communities_id.png){ width="900" }
-<figcaption>PUT /communities{id}</figcaption>
-</figure>
-<figure markdown>
-![Image title](/docs/img/put_communities_id_result.png){ width="900" }
-<figcaption>PUT /communities{id} (result)</figcaption>
-</figure>
- -->
 
-**GET /communities/{id}**      
-Retrieve community, if user is a member of it.    
-<!--
-<figure markdown>
-![Image title](/docs/img/get_communities_id.png){ width="900" }
-<figcaption>GET /communities{id}</figcaption>
-</figure>
-
- -->
 
 <figure markdown>
 ![Image title](/docs/img/seta_api_communities.png){ width="900" }
@@ -84,53 +57,28 @@ Retrieve community, if user is a member of it.
 ## Community Change Requests
 
 **GET /communities/change-requests/pending**     
-Retrieve pending change requests for communities.    
+Retrieve all pending change requests for communities, available to sysadmins.    
 
-<!--  
 
-<figure markdown>
-![Image title](/docs/img/get_communities_change_request_pending.png){ width="900" }
-<figcaption>GET /communities change request</figcaption>
-</figure>
--->
+**GET /communities/{community_id}/change-requests/**      
+Retrieve all change requests for a community
+
 
 **POST /communities/{community_id}/change-requests/**      
 Add new change request for a community field.    
-<!--  
 
-<figure markdown>
-![Image title](/docs/img/post_communities_community_id.png){ width="900" }
-<figcaption>POST /communities{community_id} change requests</figcaption>
-</figure>
-
-<figure markdown>
-![Image title](/docs/img/post_communities_community_id_result.png){ width="900" }
-<figcaption>POST /communities{community_id} change requests (result)</figcaption>
-</figure>
-
--->
 
 **GET /communities/{community_id}/change-requests/{request_id}**      
 
 Retrieve change request for the community.     
-<!--
-<figure markdown>
-![Image title](/docs/img/get_communities_change_request_request_id.png){ width="900" }
-<figcaption>GET /communities{community_id} change requests{request_id}</figcaption>
-</figure>
 
-  -->
+
 
 **PUT /communities/{community_id}/change-requests/{request_id}**     
 
 Approve/reject request  
-<!--
-<figure markdown>
-![Image title](/docs/img/put_communities_id_change_request_id.png){ width="900" }
-<figcaption>PUT /communities{community_id} change requests{request_id}</figcaption>
-</figure>  
 
- -->
+
 <figure markdown>
 ![Image title](/docs/img/seta_api_communities_change_requests.png){ width="900" }
 <figcaption> Communities Change Requests</figcaption>

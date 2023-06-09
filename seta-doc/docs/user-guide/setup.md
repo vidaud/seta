@@ -147,7 +147,7 @@ After successful authentication, check that you have the following entries in th
 Open a new tab in the same browser for the [Community API swagger documentation]({{ setaUrls.apiCommunities }})
 
 <figure markdown>
-![Image title](../img/communities_api.png){ width="800" }
+![Image title](../img/communities_api.png)
 <figcaption>SeTA Communities</figcaption>
 </figure>
 
@@ -279,11 +279,11 @@ Check the objects for the community scopes in the **seta database - users** coll
 
 #### Create resource
 
-Expand **Resources** region and then Try out **POST** /resources/community/{community_id}:
+Expand **Community Resources** region and then Try out **POST** /communities/{community_id}/resources:
 
 
 <figure markdown>
-![Image title](../img/create-resource.png){ width="700" }
+![Image title](../img/create-resource.png)
 <figcaption>Create Resource</figcaption>
 </figure>
 
@@ -356,7 +356,7 @@ Open a browser and go to seta-ui [login]({{ setaUrls.login }}) page. Connect wit
 
 
 <figure markdown>
-![Image title](../img/seta-api.png){ width="900" }
+![Image title](../img/seta-api.png)
 <figcaption>SeTA API</figcaption>
 </figure>
 
