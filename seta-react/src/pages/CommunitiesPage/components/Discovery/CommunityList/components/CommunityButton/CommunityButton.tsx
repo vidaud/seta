@@ -60,7 +60,7 @@ const CommunityButton = props => {
           </Button>
         ) : data.community.status === 'unknown' && data.community.membership === 'closed' ? (
           <MembershipRequest community_id={data.community.community_id} />
-        ) : data.community.status === 'unknown' && data.community.membership === 'open' ? (
+        ) : data.community.status === 'unknown' && data.community.membership === 'opened' ? (
           <OpenCommunityMember community_id={data.community.community_id} />
         ) : data.community.status === 'rejected' ? (
           <Button variant="filled" size="xs" color="red">
