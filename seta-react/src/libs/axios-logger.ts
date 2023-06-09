@@ -58,7 +58,15 @@ export const logResponse = (response: AxiosResponse) => {
   const roundedSeconds = Math.round(duration / 10) / 100
   const durationFormatted = duration >= 1000 ? `${roundedSeconds}s` : `${duration}ms`
 
-  const requestData = config?.data ? JSON.parse(config.data) : undefined
+  let requestData = undefined
+
+  try {
+    if (config?.data) {
+      requestData = JSON.parse(config.data)
+    }
+  } catch (e) {
+    // do nothing
+  }
 
   const group = [
     `%c${methodValue} %c${url} %c${status} ${statusText} %c${durationFormatted}  `,

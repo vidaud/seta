@@ -17,6 +17,7 @@ import useTokens from './hooks/use-tokens'
 import * as S from './styles'
 
 type Props = Omit<TextInputProps, 'onChange'> & {
+  enrichQuery?: boolean
   onChange?: (value: string) => void
 }
 
@@ -24,6 +25,7 @@ const TokensInput = forwardRef<HTMLInputElement, Props>(
   (
     {
       className,
+      enrichQuery,
       value,
       onChange,
       onKeyDown,
@@ -43,8 +45,8 @@ const TokensInput = forwardRef<HTMLInputElement, Props>(
 
     useImperativeHandle(ref, () => inputRef.current as HTMLInputElement)
 
-    const { updateCurrentToken, renderTokens, tokens } = useTokens(String(value), inputRef)
-    const { setInputRef } = useSearchInput()
+    const { updateCurrentToken, renderTokens, tokens } = useTokens(String(value), inputRef, focused)
+    const { setInputRef, onBlur: onBlurContext } = useSearchInput()
 
     useEffect(() => {
       if (inputRef.current) {
@@ -101,6 +103,7 @@ const TokensInput = forwardRef<HTMLInputElement, Props>(
     const handleBlur: FocusEventHandler<HTMLInputElement> = e => {
       setFocused(false)
       onBlur?.(e)
+      onBlurContext?.()
     }
 
     const syncScroll = (scroll: number) => {
@@ -153,7 +156,7 @@ const TokensInput = forwardRef<HTMLInputElement, Props>(
 
         <div css={S.bg} />
 
-        <TokensInfo tokens={tokens} />
+        <TokensInfo tokens={tokens} enrichQuery={enrichQuery} />
       </Box>
     )
   }
