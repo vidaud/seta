@@ -4,8 +4,7 @@ from injector import inject
 from seta_flask_server.repository.interfaces import IDbConfig, IUsersBroker
 from .db_user_permissions import UserPermissionsBroker
 
-from seta_flask_server.repository.models import SetaUser, ExternalProvider, UserClaim, SystemScope
-from seta_flask_server.infrastructure.scope_constants import SystemScopeConstants
+from seta_flask_server.repository.models import SetaUser, SetaUserExt, ExternalProvider, UserClaim
 from seta_flask_server.infrastructure.constants import UserStatusConstants
 
 from datetime import datetime
@@ -124,7 +123,7 @@ class UsersBroker(implements(IUsersBroker)):
                 
                 #check if the generated id for this new user already exists in the db
                 while uid_exists:
-                    user.user_id = SetaUser.generate_uuid()
+                    user.user_id = SetaUserExt.generate_uuid()
                     uid_exists = self.user_uid_exists(user.user_id)
                 
                 #inser user record

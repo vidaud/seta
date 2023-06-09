@@ -5,6 +5,7 @@ from .info import account_info_ns
 from .rsa import rsa_ns
 from .apps import applications_ns
 from .scopes import scopes_ns
+from .resources import resources_ns
 
 authorizations = {
     'Bearer': {
@@ -39,3 +40,4 @@ profile_api.add_namespace(account_info_ns, path="/me")
 profile_api.add_namespace(rsa_ns, path="/me")
 profile_api.add_namespace(applications_ns, path="/me")
 profile_api.add_namespace(scopes_ns, path="/me")
+profile_api.add_namespace(resources_ns, path="/me")

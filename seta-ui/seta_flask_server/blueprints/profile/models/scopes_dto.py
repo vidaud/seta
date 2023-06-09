@@ -1,4 +1,3 @@
-from attr import field
 from flask_restx import Model, fields
 
 from seta_flask_server.infrastructure.scope_constants import CommunityScopeConstants, ResourceScopeConstants, SystemScopeConstants
