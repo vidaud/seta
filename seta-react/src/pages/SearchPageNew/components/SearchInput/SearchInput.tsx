@@ -2,6 +2,8 @@ import { forwardRef } from 'react'
 import { ActionIcon, Button, Flex, Tooltip } from '@mantine/core'
 import { IconCloudUp, IconSearch } from '@tabler/icons-react'
 
+import { useEnrichLoading } from '~/pages/SearchPageNew/contexts/enrich-loading-context'
+
 import * as S from './styles'
 
 import TokensInput from '../TokensInput'
@@ -16,6 +18,8 @@ type Props = {
 
 const SearchInput = forwardRef<HTMLDivElement, Props>(
   ({ className, value, onDeferredChange, onClick, onSearch }, ref) => {
+    const { loading } = useEnrichLoading()
+
     const allowSearch = (value?.trim().length ?? 0) > 1
 
     return (
@@ -43,6 +47,7 @@ const SearchInput = forwardRef<HTMLDivElement, Props>(
               leftIcon={<IconSearch />}
               onClick={onSearch}
               disabled={!allowSearch}
+              loading={loading}
             >
               Search
             </Button>

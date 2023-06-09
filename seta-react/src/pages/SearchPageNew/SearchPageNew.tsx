@@ -1,8 +1,8 @@
 import { useState } from 'react'
-import { Flex, Text } from '@mantine/core'
-import { CgFileDocument } from 'react-icons/cg'
+import { Flex } from '@mantine/core'
 
 import Page from '~/components/Page/Page'
+import { EnrichLoadingProvider } from '~/pages/SearchPageNew/contexts/enrich-loading-context'
 import SidePanel from '~/pages/SearchWithFilters/components/SidePanel'
 import type {
   AdvancedFiltersContract,
@@ -16,7 +16,7 @@ import DocumentsList from './components/documents/DocumentsList'
 import SearchSuggestionInput from './components/SearchSuggestionInput'
 import * as S from './styles'
 import type { SearchValue } from './types/search'
-import { buildSearchQuery } from './utils/search-utils'
+import { getSearchQueryAndTerms } from './utils/search-utils'
 
 type SearchState = {
   value: string
@@ -27,11 +27,14 @@ const SearchPageNew = () => {
   const [query, setQuery] = useState<SearchState>(null)
   const [searchOptions, setSearchOptions] = useState<DocumentsOptions | undefined>(undefined)
   const [queryContract, setQueryContract] = useState<QueryAggregationContract | null>(null)
+  const [enrichLoading, setEnrichLoading] = useState(false)
 
-  const handleSearch = ({ tokens }: SearchValue) => {
-    const value = buildSearchQuery(tokens)
-    const terms = tokens.map(token => token.rawValue)
+  const handleSearch = async ({ tokens, enrichedStatus }: SearchValue) => {
+    setEnrichLoading(true)
 
+    const { query: value, terms } = await getSearchQueryAndTerms(tokens, enrichedStatus)
+
+    setEnrichLoading(false)
     setQuery({ value, terms })
   }
 
@@ -62,31 +65,33 @@ const SearchPageNew = () => {
     />
   )
 
-  const noDocuments = !query && (
-    <Flex direction="column" align="center" css={S.noDocuments}>
-      <CgFileDocument />
+  // const noDocuments = !query && (
+  //   <Flex direction="column" align="center" css={S.noDocuments}>
+  //     <CgFileDocument />
 
-      <Text mt="md" align="center">
-        Search for documents
-      </Text>
-    </Flex>
-  )
+  //     <Text mt="md" align="center">
+  //       Search for documents
+  //     </Text>
+  //   </Flex>
+  // )
 
   const breadcrumbs: Crumb[] = [
     {
       title: 'Search',
-      path: '/search-new'
+      path: '/search'
     }
   ]
 
   return (
     <Page sidebarContent={sidebar} breadcrumbs={breadcrumbs}>
-      <Flex direction="column" align="center" css={S.searchWrapper}>
-        <SearchSuggestionInput onSearch={handleSearch} />
+      <EnrichLoadingProvider loading={enrichLoading}>
+        <Flex direction="column" align="center" css={S.searchWrapper}>
+          <SearchSuggestionInput onSearch={handleSearch} />
 
-        {documentsList}
-        {/* {noDocuments} */}
-      </Flex>
+          {documentsList}
+          {/* {noDocuments} */}
+        </Flex>
+      </EnrichLoadingProvider>
     </Page>
   )
 }

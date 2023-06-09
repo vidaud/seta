@@ -36,9 +36,21 @@ export const searchButton: ThemedCSS = theme => css`
 
   transition: background-color 0.2s ease, color 0.2s ease, opacity 0.2s ease;
 
-  &:disabled {
+  &:disabled,
+  &[data-loading='true'] {
     opacity: 0.7;
     background-color: ${theme.fn.primaryColor()};
     color: ${theme.colors.blue[1]};
+  }
+
+  &[data-loading='true'] {
+    &::before {
+      background-color: transparent;
+    }
+
+    & .seta-Button-leftIcon {
+      margin-left: 2px;
+      margin-right: 11px;
+    }
   }
 `
