@@ -22,7 +22,14 @@ class ResourcesBroker(implements(IResourcesBroker)):
                 
         #get active resources
         filter = {"community_id": {"$in": community_ids}, "status": ResourceStatusConstants.Active}        
-        resources = self.collection.find(filter)
-        
+
+        profile =  self.db["user-profiles"].find_one({"user_id": user_id, 
+                                                     "profile": "unsearchable-resources"}
+                                                    )
+
+        if profile and "resources" in profile:            
+            filter["resource_id"] = {"$nin": profile["resources"]}
+
+        resources = self.collection.find(filter, {"resource_id": 1})
         #return resource ids
         return [c["resource_id"] for c in resources]

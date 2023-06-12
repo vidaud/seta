@@ -63,3 +63,22 @@ def get_permissions(client: FlaskClient, access_token:str):
     url = f"{API_V1}/permissions"
 
     return client.get(url, content_type='application/json', headers=auth_headers(access_token))
+
+#=========== Unsearchables  =================#
+
+def get_resources(client: FlaskClient, access_token:str):
+    url = f"{API_V1}/resources"
+
+    return client.get(url, content_type='application/json', headers=auth_headers(access_token))
+
+def manage_resources(client: FlaskClient, access_token:str, resource_ids: list[str]):
+    url = f"{API_V1}/resources"
+
+    data =""
+    for id in resource_ids:
+        if data == "":
+            data += f"resource={id}"
+        else:
+            data += f"&resource={id}"
+            
+    return client.post(url, data=data, content_type="application/x-www-form-urlencoded", headers=auth_headers(access_token))

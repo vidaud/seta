@@ -7,7 +7,7 @@ from urllib.parse import urljoin
 from seta_flask_server.infrastructure.auth_helpers import create_login_response
 from seta_flask_server.infrastructure.extensions import github
 from seta_flask_server.repository.interfaces import IUsersBroker, ISessionsBroker
-from seta_flask_server.repository.models import SetaUser
+from seta_flask_server.repository.models import SetaUserExt
 
 from injector import inject
 from flask_github import GitHubError
@@ -58,7 +58,7 @@ def login_callback_github(access_token, userBroker: IUsersBroker, sessionBroker:
     email = str(github_user["email"]).lower()
     github_user["is_admin"] = email in admins
         
-    seta_user = SetaUser.from_github_json(github_user)
+    seta_user = SetaUserExt.from_github_json(github_user)
     
     next = request.args.get("next")
     #TODO: verify 'next' domain before redirect, replace with home_route if anything suspicious

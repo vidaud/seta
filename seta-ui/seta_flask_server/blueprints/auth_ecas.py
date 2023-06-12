@@ -4,7 +4,7 @@ from flask import (redirect, request, url_for)
 
 from seta_flask_server.infrastructure.auth_helpers import create_login_response
 from seta_flask_server.repository.interfaces import IUsersBroker, ISessionsBroker
-from seta_flask_server.repository.models import SetaUser
+from seta_flask_server.repository.models import SetaUserExt
 
 from urllib.parse import urljoin
 
@@ -63,7 +63,7 @@ def login_callback_ecas(userBroker: IUsersBroker, sessionBroker: ISessionsBroker
     email = str(attributes["email"]).lower()
     attributes["is_admin"] = email in admins
     
-    seta_user = SetaUser.from_ecas_json(attributes)
+    seta_user = SetaUserExt.from_ecas_json(attributes)
     
     #TODO: verify 'next' domain before redirect, replace with home_route if anything suspicious
     if not next:                        

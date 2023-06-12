@@ -10,3 +10,4 @@ from .community_invites_broker import ICommunityInvitesBroker
 from .user_permissions_broker import IUserPermissionsBroker
 from .sessions_broker import ISessionsBroker
 from .apps_broker import IAppsBroker
+from .user_profile import IUserProfile
