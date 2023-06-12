@@ -36,6 +36,15 @@ Within the search page the options to search are:
   <figcaption>Search by phrase</figcaption>
 </figure>
 
+### Enrich query automatically
+
+In the search by terms or phrase it is possible to apply a wizard so the search is enriched automatically. Every term is expanded in the background to include all the related terms.
+
+<figure markdown>
+  ![Image title](../img/search_enrich_terms.png)
+  <figcaption>Enrich query automatically</figcaption>
+</figure>
+
 
 ### Search by document or text
 

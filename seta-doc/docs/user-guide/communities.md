@@ -31,7 +31,7 @@ On **Manage** panel it is possible to access to:
 1. From the side menu click on ^^Discovery^^ -> ^^Communities^^.       
 2. You can either enter in the search bar the name of the Community you are looking for or select from the Community list.      
 3. Click on the button ^^Join^^.     
-4. If the *Membership* status is *closed*, a pop-up window will appear to sent a message to ask for the request.
+4. If the *Membership* status is *closed*, a pop-up window will appear to send a message to ask for the request.
 5. The status changes to *pending* and the join button changes to ^^PENDING^^ until the Community manager approves or reject the request to join. If the request is approved, the status changes to *membership* and the button changes to ^^LEAVE^^, if the request is rejected the status changes to *rejected* and the button changes to ^^REJECTED^^.
 5. If the *Membership* status is *opened*, it is possible to join without sending a request.  
     
@@ -51,12 +51,10 @@ On **Manage** panel it is possible to access to:
   <figcaption>Join Community (*approved*)</figcaption>
 </figure>
 
-
 <figure markdown>
   ![Image title](../img/join_community_rejected.png)
   <figcaption>Join Community (*rejected*)</figcaption>
 </figure>
-
 
     
 ### Create a Community
@@ -178,7 +176,6 @@ Only **users with rights to edit** can change the Community name.
 </figure>
 
 
-
 ### Invite to Join a Community
 
 **From My Communities list** 
@@ -221,10 +218,16 @@ Only **users with rights to edit** can change the Community name.
 2. You can either enter in the search bar the name of the Community you are looking for or select from the Community list.      
 3. Click in the three dots at the right side of each Community and select the option ^^Manage^^.       
 4. In the next window, in section ^^Pending Join Requests^^ you can see the pending requests.                     
-5. By Clicking in the *pen* icon, you can change the status to: *approved*.
+5. By clicking in the *pen* icon, under *actions* column you can change the status to: *approved*.
 6. Click ^^Send^^.      
 
  
+<figure markdown>
+  ![Image title](../img/seta_communities_accept_join.png)
+  <figcaption>List of requests to Join Community</figcaption>
+</figure>
+
+
 
 <figure markdown>
   ![Image title](../img/seta_communities_accept_req_join.png)
@@ -232,6 +235,37 @@ Only **users with rights to edit** can change the Community name.
 </figure>
 
 
+
+**Reject the request to Join My Community**        
+                  
+1. From the side menu click on ^^Manage^^ -> ^^My Communities^^.       
+2. You can either enter in the search bar the name of the Community you are looking for or select from the Community list.      
+3. Click in the three dots at the right side of each Community and select the option ^^Manage^^.       
+4. In the next window, in section ^^Pending Join Requests^^ you can see the pending requests.                     
+5. By clicking in the *pen* icon, under *actions* column you can change the status to: *rejected*.
+6. Click ^^Send^^.      
+
+ 
+<figure markdown>
+  ![Image title](../img/seta_communities_reject_req_join.png)
+  <figcaption>Reject request to Join Community</figcaption>
+</figure>
+
+
+**Keep Pending the request to Join My Community**        
+                  
+1. From the side menu click on ^^Manage^^ -> ^^My Communities^^.       
+2. You can either enter in the search bar the name of the Community you are looking for or select from the Community list.      
+3. Click in the three dots at the right side of each Community and select the option ^^Manage^^.       
+4. In the next window, in section ^^Pending Join Requests^^ you can see the pending requests.                     
+5. By clicking in the *pen* icon, under *actions* column you can change the status to: *pending*.
+6. Click ^^Send^^.      
+
+ 
+<figure markdown>
+  ![Image title](../img/seta_communities_pending_req_join.png)
+  <figcaption>Pending the request to Join Community</figcaption>
+</figure>
 
 ### See the members of a Community
 <!--Anyone can see who is a member of a public Community. In a private Community you have to be a member to see who the other members are. -->
@@ -242,7 +276,7 @@ Only **users with rights to edit** can change the Community name.
 4. In the next window, in section ^^STATS^^, you can see the number of members.              
 
 !!! info
-	If you are not a member of the Community you will only see the number of members.               
+  If you are not a member of the Community you will only see the number of members.               
 
 **From My Communities list** 
                         
@@ -251,12 +285,10 @@ Only **users with rights to edit** can change the Community name.
 3. Click in the three dots at the right side of each Community and select the option ^^View Details^^.                    
 4. In the next window, in section ^^STATS^^, you can click in the number of members to go to the list of members.              
 
-
 <figure markdown>
   ![Image title](../img/communities_members.png)
   <figcaption>Members of a Community</figcaption>
 </figure>
-
 
       
 ### Delete a Resource    
@@ -275,12 +307,10 @@ Only **users with rights to edit** can change the Community name.
 4. In the next window, click on button ^^Delete^^ on the right bottom.  
 5. A confirm window will appear to delete the resource.    
 
-
 <figure markdown>
   ![Image title](../img/delete_resource.png)
   <figcaption>Delete a Resource</figcaption>
 </figure>
-
 
 
 ### Delete a Community
@@ -294,7 +324,6 @@ Only **users with rights to edit** can change the Community name.
 3. After you select the Community, click on button ^^Delete^^ on the left top of the Communities list.
 4. It is also possible to delete the Community by clicking in the three dots at the right side of each Community and select the option ^^Delete Community^^. 
 5. A confirm window will appear to delete the Community.
-
 
 
 <figure markdown>
@@ -323,14 +352,11 @@ Only **users with rights to edit** can change the Community name.
   <figcaption>My Communities</figcaption>
 </figure>                 
 
-
 ### See the list of Resources
-<!--{== *are public Resources from other communities?*==}-->
 
 1. From the side menu click on ^^Discover^^ -> ^^Resources^^.      
 2. You will see a list of the Resources in the page.                        
 3. You can either enter in the search bar the name of the Resource you are looking for.              
-
 
 <figure markdown>
   ![Image title](../img/resource_list.png)
@@ -343,11 +369,11 @@ Only **users with rights to edit** can change the Community name.
 2. You will see a list of the Resources in the page.                   
 3. You can either enter in the search bar the name of the Resource you are looking for.        
 
-
 <figure markdown>
   ![Image title](../img/my_resources_list.png)
   <figcaption>My Resources</figcaption>
 </figure>
+
 
 
 
