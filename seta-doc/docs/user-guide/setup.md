@@ -147,7 +147,7 @@ After successful authentication, check that you have the following entries in th
 Open a new tab in the same browser for the [Community API swagger documentation]({{ setaUrls.apiCommunities }})
 
 <figure markdown>
-![Image title](../img/communities_api.png){ width="800" }
+![Image title](../img/communities_api.png)
 <figcaption>SeTA Communities</figcaption>
 </figure>
 
@@ -166,7 +166,7 @@ Click on the **Authorize** button to open the Available authorizations dialog; s
 
 !!! warning "Only if you want to use seta-api in another browser:"
     * open the browser developer tool and copy the value of the **access_token_cookie**
-    * {==click on the **Authorize** button to open the Available authorizations dialog; in the apikey text input set **Bearer** value then click on the *Authorize* button.==}
+    * click on the **Authorize** button to open the Available authorizations dialog; in the apikey text input set **Bearer** value then click on the *Authorize* button.
 
 SeTA-API will get at each request another authorization decoded token from seta-ui through the *token info* endpoint using the authenticated JWT.
 
@@ -279,11 +279,11 @@ Check the objects for the community scopes in the **seta database - users** coll
 
 #### Create resource
 
-Expand **Resources** region and then Try out **POST** /resources/community/{community_id}:
+Expand **Community Resources** region and then Try out **POST** /communities/{community_id}/resources:
 
 
 <figure markdown>
-![Image title](../img/create-resource.png){ width="700" }
+![Image title](../img/create-resource.png)
 <figcaption>Create Resource</figcaption>
 </figure>
 
@@ -353,11 +353,10 @@ Open a browser and go to seta-ui [login]({{ setaUrls.login }}) page. Connect wit
     If you open a new tab or window from another browser, you need to open the browser developer tool and copy the value of the ^^csrf_access_token^^ cookie 
 
 
-You can start using SeTA API.
 
 
 <figure markdown>
-![Image title](../img/seta-api.png){ width="900" }
+![Image title](../img/seta-api.png)
 <figcaption>SeTA API</figcaption>
 </figure>
 

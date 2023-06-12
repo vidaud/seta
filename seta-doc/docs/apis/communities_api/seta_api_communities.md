@@ -6,75 +6,40 @@ The main categories are:
 - Communities    
 - Community Change Requests     
 - Community Memberships      
+- Community Memberships Requests      
+- Community My Membership      
 - Community Invites       
+- Community Resources      
 - Invites   
 - Resources     
-- Resource Contributors     
-- Resource Change Requests     
+- Resource Change Request      
 - Community User Permissions     
+- Resource User Permissions     
+- Discovery     
+
         
 
- 
 ## Communities
 
-The Communities section is the related to the creation, retrieve, update and delete the communities.
+The Communities section is the related to the creation, retrieve, update and delete the communities.                   
+
+
+**GET /communities**     
+Retrieve community list for this user.    
+
 
 **POST /communities**   
 
 Create a new community and add this user as a member with elevated scopes.    
-<!--    
-<figure markdown>
-![Image title](/docs/img/post_community.png){ width="900" }
-<figcaption>POST /community</figcaption>
-</figure>
-
-<figure markdown>
-![Image title](/docs/img/post_community_result.png){ width="900" }
-<figcaption>POST /community (result)</figcaption>
-</figure>
- -->
-
-**GET /communities**     
-Retrieve community list for this user.    
-<!--
-<figure markdown>
-![Image title](/docs/img/get_communities.png){ width="900" }
-<figcaption>GET /communities</figcaption>
-</figure>
-  -->
-
-**DELETE /communities/{id}**      
-
-Delete community entries.     
-<!--
-<figure markdown>
-![Image title](/docs/img/delete_communities_id.png){ width="900" }
-<figcaption>DELETE /communities{id}</figcaption>
-</figure>
- -->
-
-**PUT /communities/{id}**     
-Update community fields.
-<!--
-<figure markdown>
-![Image title](/docs/img/put_communities_id.png){ width="900" }
-<figcaption>PUT /communities{id}</figcaption>
-</figure>
-<figure markdown>
-![Image title](/docs/img/put_communities_id_result.png){ width="900" }
-<figcaption>PUT /communities{id} (result)</figcaption>
-</figure>
- -->
 
 **GET /communities/{id}**      
 Retrieve community, if user is a member of it.    
-<!--
-<figure markdown>
-![Image title](/docs/img/get_communities_id.png){ width="900" }
-<figcaption>GET /communities{id}</figcaption>
-</figure>
 
- -->
+**DELETE /communities/{id}**      
+Delete community entries.     
+
+**PUT /communities/{id}**     
+Update community fields.
 
 <figure markdown>
 ![Image title](/docs/img/seta_api_communities.png){ width="900" }
@@ -84,53 +49,21 @@ Retrieve community, if user is a member of it.
 ## Community Change Requests
 
 **GET /communities/change-requests/pending**     
-Retrieve pending change requests for communities.    
+Retrieve all pending change requests for communities, available to sysadmins.    
 
-<!--  
-
-<figure markdown>
-![Image title](/docs/img/get_communities_change_request_pending.png){ width="900" }
-<figcaption>GET /communities change request</figcaption>
-</figure>
--->
+**GET /communities/{community_id}/change-requests/**      
+Retrieve all change requests for a community
 
 **POST /communities/{community_id}/change-requests/**      
 Add new change request for a community field.    
-<!--  
 
-<figure markdown>
-![Image title](/docs/img/post_communities_community_id.png){ width="900" }
-<figcaption>POST /communities{community_id} change requests</figcaption>
-</figure>
-
-<figure markdown>
-![Image title](/docs/img/post_communities_community_id_result.png){ width="900" }
-<figcaption>POST /communities{community_id} change requests (result)</figcaption>
-</figure>
-
--->
-
-**GET /communities/{community_id}/change-requests/{request_id}**      
-
+**GET /communities/{community_id}/change-requests/{request_id}**            
 Retrieve change request for the community.     
-<!--
-<figure markdown>
-![Image title](/docs/img/get_communities_change_request_request_id.png){ width="900" }
-<figcaption>GET /communities{community_id} change requests{request_id}</figcaption>
-</figure>
 
-  -->
 
-**PUT /communities/{community_id}/change-requests/{request_id}**     
-
+**PUT /communities/{community_id}/change-requests/{request_id}**        
 Approve/reject request  
-<!--
-<figure markdown>
-![Image title](/docs/img/put_communities_id_change_request_id.png){ width="900" }
-<figcaption>PUT /communities{community_id} change requests{request_id}</figcaption>
-</figure>  
 
- -->
 <figure markdown>
 ![Image title](/docs/img/seta_api_communities_change_requests.png){ width="900" }
 <figcaption> Communities Change Requests</figcaption>
@@ -138,144 +71,173 @@ Approve/reject request
 
 ## Community Memberships
 
+**GET /communities/{community_id}/memberships**                       
+Retrieve community memberships, available to any member of this community.                            
+
 **POST  /communities/{community_id}/memberships**    
-Add new member to an opened community.    
-<!--
+Create a member for an opened community, available to any user.    
 
-<figure markdown>
-![Image title](/docs/img/post_communities_community_id_memberships.png){ width="900" }
-<figcaption>POST /communities{community_id} memberships</figcaption>
-</figure>
- -->
-
-**GET /communities/{community_id}/memberships**    
-Retrieve membership list for this community.
-
+**GET /communities/{community_id}/memberships/{user_id}**        
+Retrieve membership, available to community managers.                               
 
 **DELETE /communities/{community_id}/memberships/{user_id}**     
-
-Remove membership.
-
-
-**GET /communities/{community_id}/memberships/{user_id}**    
-Retrieve user membership
-
+Remove a membership, available to community managers.                           
 
 **PUT /communities/{community_id}/memberships/{user_id}**     
-Update membership fields.
-
-
-**POST  /communities/{community_id}/requests**    
-Add new request for the community for the authorized user.    
-
-
-**GET /communities/{community_id}/requests**      
-Retrieve request list for this community.
-
-
-
-**GET /communities/{community_id}/requests/{user_id}**      
-Retrieve user request for the community.
-
-
-**PUT /communities/{community_id}/requests/{user_id}**      
-Approve/reject request.
+Update a community membership, available to community managers.                      
 
 <figure markdown>
-![Image title](/docs/img/seta_api_communities_memberships.png){ width="900" }
+![Image title](/docs/img/seta_api_communities_memberships.png)
 <figcaption> Community Memberships</figcaption>
 </figure>
 
+## Community Membership Requests
+
+**GET /communities/{community_id}/requests**      
+Retrieve pending community requests, available to community managers.                         
+
+**POST  /communities/{community_id}/requests**    
+Create a community membership request, available to any user.    
+
+**GET /communities/{community_id}/requests/{user_id}**      
+Retrieve user request, available to community managers.                          
+
+**PUT /communities/{community_id}/requests/{user_id}**                
+Approve/reject a membership request, available to community managers.                       
+
+<figure markdown>
+![Image title](/docs/img/seta_api_communities_membership_request.png)
+<figcaption> Community Membership Requests</figcaption>
+</figure>
+
+## Community My Membership 
+**GET /communities/membership-requests**                    
+Retrieve my membership requests, available to any user.                     
+
+**GET /communities/{community_id}/membership**       
+Retrieve membership, available to community managers.
+
+**DELETE /communities/{community_id}/membership**     
+Remove a membership, available to any community member.
+
+<figure markdown>
+![Image title](/docs/img/seta_api_communities_my_membership.png)
+<figcaption> Community My Membership</figcaption>
+</figure>
+
+
 ## Community Invites
 
-**POST  /communities/{community_id}/invites**    
-Create new invites.    
-
 **GET /communities/{community_id}/invites**       
+Retrieve pending invites, available to community managers.
 
-Retrieve pending invites for this community.
+**POST /communities/{community_id}/invites**    
+Create invites, available to community managers.     
 
+## Community Resources
+
+**GET /communities/{community_id}/resources**       
+Retrieve community resources, available to any user.
+
+**POST /communities/{community_id}/resources**    
+Create resource, available to community members.     
+
+<figure markdown>
+![Image title](/docs/img/seta_api_communities_invites.png)
+<figcaption>Community Invites and Community Resources</figcaption>
+</figure>
 
 
 ## Invites
 
+**GET /invites/**      
+Retrieve my pending invites, available to any user. 
+
 **GET /invites/{invite_id}**      
-Retrieve invite.    
+Retrieve invite, available to initiator and invitee.    
 
 **PUT /invites/{invite_id}**       
-
-Update an invite. Accept/reject invite.     
-
-<figure markdown>
-![Image title](/docs/img/seta_api_communities_invites.png){ width="900" }
-<figcaption> Community Invites</figcaption>
-</figure>
-
+Update an invite, available to invitee.     
 
 ## Resources
-**POST  /resources/community/{community_id}**    
-Create new resource por given community.    
-
-
-**GET  /resources/community/{community_id}**    
-Retrieve resources for a given community.  
-
-
-**DELETE  /resources/{id}**    
-Delete all resource entries.  
+**GET /resources/**   
+Retrieve list of accessible resources for this authorized user.             
 
 **GET /resources/{id}**   
-Retrieve resource.
+Retrieve resource, available to any user.
+
+**DELETE /resources/{id}**    
+Delete resource, available to resource editor and community managers.  
 
 **PUT /resources/{id}**      
-
-Update resource fields.
-
-## Resource Contributors
-
-**POST  /resources/{resource_id}/contributors**    
-Create new contributor por given resource.    
+Update a resource, available to resource editor and community managers.                  
 
 
-**GET /resources/{resource_id}/contributors**      
-Retrieve contributors of a given resource.
+<figure markdown>
+![Image title](/docs/img/communities_api_invites_resources.png)
+<figcaption>Invites and  Resources</figcaption>
+</figure>
 
 ## Resource Change Requests
 
 **GET /resources/change-requests/pending**      
+Retrieve all pending change requests for resources, available to sysadmins.                 
 
-Retrieve pending change requests for resources.
+**GET  /resources/{resource_id}/change-requests**    
+Retrieve all change requests for a resource, available to community managers and resource editors.                  
 
 **POST  /resources/{resource_id}/change-requests**    
-Add new change request for a resource field.   
-
+Create a resource change request, available to resource editors.   
 
 **GET  /resources/{resource_id}/change-requests/{request-id}**    
-Retrieve change request for the resource. 
-
-
+Retrieve resource request, available to sysadmins and initiator.                  
 
 **PUT  /resources/{resource_id}/change-requests/{request-id}**    
-Approve/reject request
+Update a change request for resource, available to sysadmins.
 
 <figure markdown>
-![Image title](/docs/img/seta_api_communities_resources.png){ width="900" }
-<figcaption>Resources, Contributors, Change Requests</figcaption>
+![Image title](/docs/img/seta_api_communities_resource_change_request.png)
+<figcaption>Resources Change Requests</figcaption>
 </figure>
+
 
 ## Community User Permissions
 
 **GET  /permissions/community/{community_id}**    
-Retrieve user-scope list for given community. 
-
-**POST  /permissions/community/{community_id}/user/{user-id}**    
-Replace all user permissions for the community. 
+Retrieve all community user permissions, available to community managers.                    
 
 **GET  /permissions/community/{community_id}/user/{user-id}**    
-Retrieve user-scopes for given community. 
+Retrieve user permissions for community, available to community managers.                
+
+**POST  /permissions/community/{community_id}/user/{user-id}**    
+Add/Replace user permissions, available to community managers.                    
 
 <figure markdown>
-![Image title](/docs/img/seta_api_communities_usr_permissions.png){ width="900" }
+![Image title](/docs/img/seta_api_communities_usr_permissions.png)
 <figcaption>Community User Permissions</figcaption>
+</figure>
+
+## Resource User Permissions
+
+**GET  /permissions/resource/{resource_id}**    
+Retrieve all resource permissions, available to community managers.                    
+
+**GET /permissions/resource/{resource_id}/user/{user-id}**    
+Retrieve user permissions for resource, available to community managers.                
+
+**POST /permissions/resource/{resource_id}/user/{user-id}**    
+Add/Replace user permissions, available to community managers.                    
+
+## Discovery
+
+**GET  /discovery/communities**    
+Discover communities, accessible to any user.                    
+
+**GET /discovery/resources**    
+Discover resources, accessible to any user.                
+
+<figure markdown>
+![Image title](/docs/img/seta_api_communities_resource_discovery.png)
+<figcaption>Resource User Permissions and Discovery</figcaption>
 </figure>
 

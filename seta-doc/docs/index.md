@@ -31,7 +31,7 @@ Once everything is set up, the data is ready to be interrogated either through t
 
 ## Community space
 
-SeTA communities offers a shared place, where users can have the possibility of to interact with others users about specific areas of interest. The users can create different Communities according to their specific matter of interest, and share, and debate with other users with similar interests.        
+SeTA communities offers a shared place, where users can have the possibility to interact with others users about specific areas of interest. The users can create different Communities according to their specific matter of interest, and share, and debate with other users with similar interests.        
 In the communities, users can create different resources, upload documents related to these resources and create their own custom Taxonomies when uploading the documents.        
 
 Users can also have access to other users communities if they want.  They will be able to see the available communities and ask to join them.   
