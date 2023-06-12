@@ -5,8 +5,14 @@ import { ViewFilterInfo, FilterStatus } from '../../types/filter-info'
 import type { RangeValue } from '../../types/filters'
 import { OtherItemStatus } from '../../types/other-filter'
 
-const compareRanges = (range1: RangeValue, range2?: RangeValue | null): boolean => {
-  if (range2 === undefined || range2 === null) {
+const compareRanges = (range1?: RangeValue, range2?: RangeValue | null): boolean => {
+  //both undefined or null
+  if ((range1 === undefined || range1 === null) && (range2 === undefined || range2 === null)) {
+    return true
+  }
+
+  //one of them udefined or null
+  if (range1 === undefined || range1 === null || range2 === undefined || range2 === null) {
     return false
   }
 
@@ -15,7 +21,9 @@ const compareRanges = (range1: RangeValue, range2?: RangeValue | null): boolean 
 
 const sourceChanged = (info: FilterStatusInfo, values) => {
   const keys = info.appliedFilter?.sourceValues?.map(s => s.key)
-  const { removed, added } = keysDiff(keys, values)
+  const valueKeys = values?.map(v => v.key)
+
+  const { removed, added } = keysDiff(keys, valueKeys)
 
   info.sourceModified = removed.length + added.length
 
@@ -38,7 +46,9 @@ const sourceChanged = (info: FilterStatusInfo, values) => {
 
 const taxonomyChanged = (info: FilterStatusInfo, values) => {
   const keys = info.appliedFilter?.taxonomyValues?.map(s => s.key)
-  const { removed, added } = keysDiff(keys, values)
+  const valueKeys = values?.map(v => v.key)
+
+  const { removed, added } = keysDiff(keys, valueKeys)
 
   info.taxonomyModified = removed.length + added.length
 
