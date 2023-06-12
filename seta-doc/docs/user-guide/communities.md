@@ -31,7 +31,8 @@ On **Manage** panel it is possible to access to:
 1. From the side menu click on ^^Discovery^^ -> ^^Communities^^.       
 2. You can either enter in the search bar the name of the Community you are looking for or select from the Community list.      
 3. Click on the button ^^Join^^.     
-4. If the *Membership* status is *closed*, a pop-up window will appear to sent a message, the join button changes to ^^Pending^^ .
+4. If the *Membership* status is *closed*, a pop-up window will appear to sent a message to ask for the request.
+5. The status changes to *pending* and the join button changes to ^^PENDING^^ until the Community manager approves or reject the request to join. If the request is approved, the status changes to *membership* and the button changes to ^^LEAVE^^, if the request is rejected the status changes to *rejected* and the button changes to ^^REJECTED^^.
 5. If the *Membership* status is *opened*, it is possible to join without sending a request.  
     
 
@@ -44,6 +45,19 @@ On **Manage** panel it is possible to access to:
   ![Image title](../img/seta_communities_pending_join.png)
   <figcaption>Join Community</figcaption>
 </figure>
+
+<figure markdown>
+  ![Image title](../img/join_community_approved.png)
+  <figcaption>Join Community (*approved*)</figcaption>
+</figure>
+
+
+<figure markdown>
+  ![Image title](../img/join_community_rejected.png)
+  <figcaption>Join Community (*rejected*)</figcaption>
+</figure>
+
+
     
 ### Create a Community
                      
@@ -208,7 +222,8 @@ Only **users with rights to edit** can change the Community name.
 3. Click in the three dots at the right side of each Community and select the option ^^Manage^^.       
 4. In the next window, in section ^^Pending Join Requests^^ you can see the pending requests.                     
 5. By Clicking in the *pen* icon, you can change the status to: *approved*.
-6. Click ^^Send^^.           
+6. Click ^^Send^^.      
+
  
 
 <figure markdown>
@@ -257,7 +272,8 @@ Only **users with rights to edit** can change the Community name.
 1. From the side menu click on ^^Manage^^ -> ^^My Resources^^.  
 2. You can either enter in the search bar the name of the Resource you are looking for or select from the Resources list.  
 3. After you select the Resource, click in the three dots at the right side of each Resource and select the option ^^View Details^^.      
-4. In the next window, click on button ^^Delete^^ on the right bottom.      
+4. In the next window, click on button ^^Delete^^ on the right bottom.  
+5. A confirm window will appear to delete the resource.    
 
 
 <figure markdown>
@@ -277,6 +293,7 @@ Only **users with rights to edit** can change the Community name.
 2. You can either enter in the search bar the name of the Community you are looking for or select from the Communities list.  
 3. After you select the Community, click on button ^^Delete^^ on the left top of the Communities list.
 4. It is also possible to delete the Community by clicking in the three dots at the right side of each Community and select the option ^^Delete Community^^. 
+5. A confirm window will appear to delete the Community.
 
 
 
