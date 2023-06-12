@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Button, Grid, Group, Text, Title, createStyles, Card, Table } from '@mantine/core'
-import { Link, useParams } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 
 import Stats from './components/Stats/Stats'
 
@@ -41,6 +41,7 @@ const ViewMyCommunity = () => {
   const [row, setRow] = useState(data)
   const { community_scopes } = useCurrentUserPermissions()
   const [scopes, setScopes] = useState<string[] | undefined>([])
+  const navigate = useNavigate()
 
   useEffect(() => {
     if (data) {
@@ -56,7 +57,9 @@ const ViewMyCommunity = () => {
   }
 
   const deleteMembership = () => {
-    leaveCommunity(id)
+    leaveCommunity(id).then(() => {
+      navigate(`/communities`)
+    })
   }
 
   return (
@@ -96,19 +99,19 @@ const ViewMyCommunity = () => {
               </tbody>
             </Table>
             <Group spacing={30} position="right">
-              <Link
-                className={classes.link}
-                to={`/my-communities/${row?.communities.community_id}/manage`}
-                replace={true}
-              >
-                {scopes?.includes('/seta/community/manager') ? (
+              {scopes?.includes('/seta/community/manager') ? (
+                <Link
+                  className={classes.link}
+                  to={`/my-communities/${row?.communities.community_id}/manage`}
+                  replace={true}
+                >
                   <Button>Manage</Button>
-                ) : (
-                  <Button variant="filled" size="xs" onClick={() => deleteMembership()}>
-                    LEAVE
-                  </Button>
-                )}
-              </Link>
+                </Link>
+              ) : (
+                <Button variant="filled" size="xs" onClick={() => deleteMembership()}>
+                  LEAVE
+                </Button>
+              )}
             </Group>
           </Card>
         </Grid.Col>
