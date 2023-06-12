@@ -28,17 +28,20 @@ On **Manage** panel it is possible to access to:
 
 ### Join a Community
 
-**From Discovery** 
-                        
 1. From the side menu click on ^^Discovery^^ -> ^^Communities^^.       
 2. You can either enter in the search bar the name of the Community you are looking for or select from the Community list.      
 3. Click on the button ^^Join^^.     
-4. A pop-up window will appear to sent a message.
-5. The join button changes to ^^Pending^^ .
+4. If the *Membership* status is *closed*, a pop-up window will appear to sent a message, the join button changes to ^^Pending^^ .
+5. If the *Membership* status is *opened*, it is possible to join without sending a request.  
     
 
 <figure markdown>
   ![Image title](../img/join_community.png)
+  <figcaption>Join Community</figcaption>
+</figure>
+
+<figure markdown>
+  ![Image title](../img/seta_communities_pending_join.png)
   <figcaption>Join Community</figcaption>
 </figure>
     
@@ -195,6 +198,24 @@ Only **users with rights to edit** can change the Community name.
   ![Image title](../img/communities_invite.png)
   <figcaption>Invite to Join a Community</figcaption>
 </figure>
+
+### Manage request to Join My Community
+
+**Accept the request to Join My Community**        
+                  
+1. From the side menu click on ^^Manage^^ -> ^^My Communities^^.       
+2. You can either enter in the search bar the name of the Community you are looking for or select from the Community list.      
+3. Click in the three dots at the right side of each Community and select the option ^^Manage^^.       
+4. In the next window, in section ^^Pending Join Requests^^ you can see the pending requests.                     
+5. By Clicking in the *pen* icon, you can change the status to: *approved*.
+6. Click ^^Send^^.           
+ 
+
+<figure markdown>
+  ![Image title](../img/seta_communities_accept_req_join.png)
+  <figcaption>Accept request to Join Community</figcaption>
+</figure>
+
 
 
 ### See the members of a Community
