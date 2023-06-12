@@ -19,7 +19,7 @@ export const leaveCommunity = async (id?: string) => {
     })
     .then(response => {
       if (response.status === 200) {
-        window.location.reload()
+        // window.location.reload()
       }
     })
 }

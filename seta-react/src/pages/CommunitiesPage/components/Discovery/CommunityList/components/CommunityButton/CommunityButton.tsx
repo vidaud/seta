@@ -14,7 +14,7 @@ const useStyles = createStyles({
   }
 })
 
-const CommunityButton = props => {
+const CommunityButton = ({ props, onReload }) => {
   const { classes } = useStyles()
   const [data, setData] = useState(props)
 
@@ -25,44 +25,44 @@ const CommunityButton = props => {
   }, [props, data])
 
   const deleteMembership = () => {
-    leaveCommunity(data.community.community_id)
+    leaveCommunity(data.community_id).then(() =>
+      setTimeout(() => {
+        onReload()
+      }, 100)
+    )
   }
 
   return (
     <>
       <Group>
-        {data.community.status === 'membership' || data.community.status === 'invited' ? (
+        {data.status === 'membership' || data.status === 'invited' ? (
           <Tooltip label="View Details">
-            <Link
-              className={classes.link}
-              to={`/communities/${data.community.community_id}`}
-              replace={true}
-            >
+            <Link className={classes.link} to={`/communities/${data.community_id}`} replace={true}>
               <ActionIcon>
                 <IconEye size="1rem" stroke={1.5} />
               </ActionIcon>
             </Link>
           </Tooltip>
         ) : (
-          <ViewClosedCommunity community={data.community} />
+          <ViewClosedCommunity community={data} />
         )}
-        {data.community.status === 'membership' ? (
+        {data.status === 'membership' ? (
           <Button variant="filled" size="xs" onClick={() => deleteMembership()}>
             LEAVE
           </Button>
-        ) : data.community.status === 'pending' ? (
+        ) : data.status === 'pending' ? (
           <Button variant="outline" size="xs">
             PENDING
           </Button>
-        ) : data.community.status === 'invited' ? (
+        ) : data.status === 'invited' ? (
           <Button variant="outline" size="xs" color="orange">
             INVITED
           </Button>
-        ) : data.community.status === 'unknown' && data.community.membership === 'closed' ? (
-          <MembershipRequest community_id={data.community.community_id} />
-        ) : data.community.status === 'unknown' && data.community.membership === 'opened' ? (
-          <OpenCommunityMember community_id={data.community.community_id} />
-        ) : data.community.status === 'rejected' ? (
+        ) : data.status === 'unknown' && data.membership === 'closed' ? (
+          <MembershipRequest community_id={data.community_id} onReload={onReload} />
+        ) : data.status === 'unknown' && data.membership === 'opened' ? (
+          <OpenCommunityMember community_id={data.community_id} onReload={onReload} />
+        ) : data.status === 'rejected' ? (
           <Button variant="filled" size="xs" color="red">
             REJECTED
           </Button>
