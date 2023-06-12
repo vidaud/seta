@@ -57,8 +57,9 @@ class DiscoverCommunities(Resource):
         memberships = self.membershipsBroker.get_memberships_by_user_id(user_id)
         
         #get user requests
-        requests = filter(lambda req: req.status == RequestStatusConstants.Pending or req.status ==  RequestStatusConstants.Rejected,
-                          self.membershipsBroker.get_requests_by_user_id(user_id))
+        result = self.membershipsBroker.get_requests_by_user_id(user_id)
+        requests = list(filter(lambda req: req.status == RequestStatusConstants.Pending or req.status ==  RequestStatusConstants.Rejected,
+                          result))
         
         #get pending invites
         invites = filter(lambda inv: inv.expire_date.replace(tzinfo=pytz.utc) > now,
@@ -81,7 +82,7 @@ class DiscoverCommunities(Resource):
                 continue
 
             invite = next((i for i in invites if i.community_id == community.community_id), None)
-            if invite:                
+            if invite: 
                 discover["status"] = DiscoverCommunityStatus.Invited
                 discover["pending_invite"] = {                    
                     "invite_id": invite.invite_id,
