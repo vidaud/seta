@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
 import { Container, Flex, Accordion, ScrollArea, rem, Text } from '@mantine/core'
-import { useLogger } from '@mantine/hooks'
 
 import { itemsReducer } from './items-reducer'
 import TinyChart from './TinyChart'
@@ -46,8 +45,6 @@ const FiltersPanel = ({ queryContract, onApplyFilter, onStatusChange }: Advanced
     dispatchOtherItems,
     filterData
   } = useFilter(queryContract, resourceSelectedKeys, taxonomySelectedKeys)
-
-  useLogger('FiltersPanel', [status])
 
   useEffect(() => {
     statusChangeRef.current?.(status.status)
