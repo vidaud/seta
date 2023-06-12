@@ -38,7 +38,7 @@ const MembershipRequest = ({ community_id, onReload }) => {
     <Popover
       width={300}
       trapFocus
-      position="bottom"
+      position="top"
       withArrow
       shadow="md"
       opened={opened}

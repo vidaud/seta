@@ -15,8 +15,6 @@ const DeleteMembership = ({ props }) => {
   const { classes, cx } = useStyles()
   const [opened, setOpened] = useState(false)
 
-  console.log(props)
-
   const deleteMembership = () => {
     deleteMembershipByID(props.community_id, props.user_id)
   }

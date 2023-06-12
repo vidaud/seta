@@ -12,6 +12,11 @@ export interface RowData {
   data_type: string
   membership: string
   status: string
+  creator: {
+    user_id: string
+    full_name: string
+    email: string
+  }
 }
 
 export interface TableSortProps {

@@ -25,8 +25,6 @@ const ResourceButtons = item => {
     findResource ? setScopes(findResource[0]?.scopes) : setScopes([])
   }, [resource_scopes, item])
 
-  console.log(scopes)
-
   return (
     <Group spacing={0}>
       <Menu transitionProps={{ transition: 'pop' }} withArrow position="bottom-end" withinPortal>

@@ -44,7 +44,7 @@ const CommunityButton = ({ props, onReload }) => {
             </Link>
           </Tooltip>
         ) : (
-          <ViewClosedCommunity community={data} />
+          <ViewClosedCommunity community={data.community_id} onReload={onReload} />
         )}
         {data.status === 'membership' ? (
           <Button variant="filled" size="xs" onClick={() => deleteMembership()}>

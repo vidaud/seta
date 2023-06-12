@@ -48,7 +48,7 @@ export const StepperThree = () => {
 
   useEffect(() => {
     if (data) {
-      console.log(data)
+      // console.log(data)
     }
   }, [data, taxValue])
 

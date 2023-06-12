@@ -9,10 +9,10 @@ export type CommunityResponse = {
   membership: string
   status: string
   created_at: Date
-  membership_request?: {
-    message: string
-    initiated_date: Date
-    status: string
+  creator: {
+    user_id: string
+    full_name: string
+    email: string
   }
 }
 
