@@ -21,7 +21,7 @@ export const getMembership = async (id?: string): Promise<Memberships> => {
       return result
     })
     .catch(e => {
-      console.log(e)
+      // console.log(e)
     })
 
   const data = {

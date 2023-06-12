@@ -42,3 +42,14 @@ export const updateMembershipRequest = async (
       }
     })
 }
+
+export const membershipRequests = async (): Promise<MembershipRequest[]> => {
+  const { data } = await community_api.get<MembershipRequest[]>(
+    `${environment.COMMUNITIES_API_PATH}/membership-requests`
+  )
+
+  return data
+}
+
+export const useAllMembershipRequests = () =>
+  useQuery({ queryKey: cacheKey(), queryFn: () => membershipRequests() })

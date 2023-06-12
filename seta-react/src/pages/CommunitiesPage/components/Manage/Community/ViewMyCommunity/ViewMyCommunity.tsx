@@ -31,6 +31,9 @@ const useStyles = createStyles(theme => ({
   },
   td: {
     width: '50%'
+  },
+  tdDisplay: {
+    display: 'flex'
   }
 }))
 const ViewMyCommunity = () => {
@@ -80,10 +83,17 @@ const ViewMyCommunity = () => {
             <Table className={classes.table}>
               <tbody>
                 <tr>
-                  <td className={classes.td}>
-                    <Text className={classes.text}>Status: {row?.communities.status}</Text>
+                  <td className={(classes.td, classes.tdDisplay)}>
+                    <Text className={classes.text}>Status: </Text>
+                    <Title
+                      order={6}
+                      style={{ paddingLeft: '10px' }}
+                      color={row?.communities.status === 'active' ? 'green' : 'blue'}
+                    >
+                      {data?.communities.status.toUpperCase()}
+                    </Title>
                   </td>
-                  <td className={classes.td} />
+                  <td className={classes.td}>Membership: {row?.communities.membership}</td>
                 </tr>
                 <tr>
                   <td className={classes.td}>
@@ -94,7 +104,7 @@ const ViewMyCommunity = () => {
                         : null}
                     </Text>
                   </td>
-                  <td className={classes.td} />
+                  <td className={classes.td}>Created by: {row?.communities.creator.full_name}</td>
                 </tr>
               </tbody>
             </Table>
