@@ -22,6 +22,8 @@ import NewResource from '../../pages/CommunitiesPage/components/Manage/Resource/
 import UpdateResource from '../../pages/CommunitiesPage/components/Manage/Resource/UpdateResource/UpdateResource'
 import ViewMyResource from '../../pages/CommunitiesPage/components/Manage/Resource/ViewMyResource/ViewMyResource'
 import { ScopeProvider } from '../../pages/CommunitiesPage/components/Manage/scope-context'
+import InvitesList from '../../pages/CommunitiesPage/components/Sidebar/Invites/InvitesList/InvitesList'
+import MembersList from '../../pages/CommunitiesPage/components/Sidebar/MembersList/MembersList'
 import CommunityUsersPermissions from '../../pages/CommunitiesPage/components/UserPermissions/Community/CommunityUserPermissions'
 import ResourceUsersPermissions from '../../pages/CommunitiesPage/components/UserPermissions/Resource/ResourceUserPermissions'
 import DashboardsPage from '../../pages/CommunitiesPage/pages/DashboardPage'
@@ -86,6 +88,26 @@ const routes = createRoutesFromElements(
         }
       />
     </Route>
+    <Route path="/invites" element={<CommunityLayout />}>
+      <Route
+        path=""
+        element={
+          <RequireAuth>
+            <InvitesList />
+          </RequireAuth>
+        }
+      />
+    </Route>
+    <Route path="/membership-requests" element={<CommunityLayout />}>
+      <Route
+        path=""
+        element={
+          <RequireAuth>
+            <MembersList />
+          </RequireAuth>
+        }
+      />
+    </Route>
     <Route path={MANAGE_COMMUNITY_PATH} element={<CommunityLayout />}>
       <Route
         path=""
@@ -115,7 +137,9 @@ const routes = createRoutesFromElements(
         path=":id/members"
         element={
           <RequireAuth>
-            <CommunityMembers />
+            <ScopeProvider>
+              <CommunityMembers />
+            </ScopeProvider>
           </RequireAuth>
         }
       />
