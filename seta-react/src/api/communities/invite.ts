@@ -37,6 +37,8 @@ export const createCommunityInvite = async (id?: string, values?: CreateInvitati
     })
 }
 
+export const cacheNoIDKey = () => ['invites']
+
 export const pendingInvites = async (): Promise<InviteResponse[]> => {
   const { data } = await community_api.get<InviteResponse[]>(`/invites/`)
 
@@ -44,4 +46,4 @@ export const pendingInvites = async (): Promise<InviteResponse[]> => {
 }
 
 export const useAllPendingInvites = () =>
-  useQuery({ queryKey: cacheKey(), queryFn: () => pendingInvites() })
+  useQuery({ queryKey: cacheNoIDKey(), queryFn: () => pendingInvites() })

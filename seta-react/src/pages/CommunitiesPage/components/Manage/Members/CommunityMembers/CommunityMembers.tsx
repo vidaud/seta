@@ -18,6 +18,7 @@ import { useMembershipID } from '../../../../../../api/communities/membership'
 import { ComponentEmpty, ComponentError } from '../../../common'
 import ComponentLoading from '../../../common/ComponentLoading'
 import { jobColors } from '../../../types'
+import { useCurrentUserPermissions } from '../../scope-context'
 
 const useStyles = createStyles(theme => ({
   header: {
@@ -51,6 +52,8 @@ const CommunityMembers = () => {
   const [scrolled, setScrolled] = useState(false)
   const { id } = useParams()
   const { data, isLoading, error, refetch } = useMembershipID(id)
+  const { community_scopes } = useCurrentUserPermissions()
+  const [scopes, setScopes] = useState<string[] | undefined>([])
   const [items, setItems] = useState(data)
   const theme = useMantineTheme()
 
@@ -58,7 +61,11 @@ const CommunityMembers = () => {
     if (data) {
       setItems(data)
     }
-  }, [data, items])
+
+    const findCommunity = community_scopes?.filter(scope => scope.community_id === id)
+
+    findCommunity ? setScopes(findCommunity[0]?.scopes) : setScopes([])
+  }, [data, items, community_scopes, id])
 
   if (error) {
     return <ComponentError onTryAgain={refetch} />
@@ -92,8 +99,12 @@ const CommunityMembers = () => {
             <td>{row.status}</td>
             <td>
               <Group spacing={0}>
-                <UpdateMembership props={row} />
-                <DeleteMembership props={row} />
+                {scopes?.includes('/seta/community/manager') ? (
+                  <>
+                    <UpdateMembership props={row} />
+                    <DeleteMembership props={row} />
+                  </>
+                ) : null}
               </Group>
             </td>
           </tr>
@@ -114,7 +125,7 @@ const CommunityMembers = () => {
               <th>Community</th>
               <th>Join Date</th>
               <th>Status</th>
-              <th>Actions</th>
+              {scopes?.includes('/seta/community/manager') ? <th>Actions</th> : null}
             </tr>
           </thead>
           <tbody>{rows}</tbody>

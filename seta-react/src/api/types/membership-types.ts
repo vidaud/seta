@@ -24,4 +24,14 @@ export type MembershipRequest = {
   reviewed_by: null
   review_date: Date
   reject_timeout: Date
+  reviewed_by_info: {
+    user_id: string
+    full_name: string
+    email: string
+  }
+  requested_by_info: {
+    user_id: string
+    full_name: string
+    email: string
+  }
 }
