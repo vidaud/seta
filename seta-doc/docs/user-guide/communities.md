@@ -127,6 +127,12 @@ Only **users with rights to edit** can change the Community name.
 4. In the next window, click on button ^^New Resource^^ on the top right.  
 5. Setup the *Resource ID, Title, Abstract* and click *Save*
 
+<figure markdown>
+  ![Image title](../img/communities_new_resource_manage.png)
+  <figcaption>New Resource in a Community</figcaption>
+</figure>
+
+
 **Create a Resource in a Community from View Details**   
 1. From the side menu click on ^^Manage^^ -> ^^My Communities^^.  
 2. You can either enter in the search bar the name of the Community you are looking for or select from the Community list.      
@@ -136,10 +142,13 @@ Only **users with rights to edit** can change the Community name.
 5. On section ^^STATS^^, click on button ^^New Resource^^ at the button.  
 6. On both options, setup the *Resource ID, Title, Abstract* and click *Save*.            
 
+
+
 <figure markdown>
-  ![Image title](../img/communities_new_resource_manage.png)
+  ![Image title](../img/communities_new_resource_detail.png)
   <figcaption>New Resource in a Community</figcaption>
 </figure>
+
 
 <figure markdown>
   ![Image title](../img/communities_new_resource.png)
@@ -156,6 +165,11 @@ Only **users with rights to edit** can change the Community name.
 4. In the next window, you can update the *Title* and *Abstract*.  
 5. Click ^^Update^^.
 
+<figure markdown>
+  ![Image title](../img/update_resource_fromList.png)
+  <figcaption>Update a Resource from My Resources</figcaption>
+</figure>
+
 **From View Details option**                    
 
 1. From the side menu click on ^^Manage^^ -> ^^My Resources^^.  
@@ -167,7 +181,7 @@ Only **users with rights to edit** can change the Community name.
 
 <figure markdown>
   ![Image title](../img/resource_community_update.png)
-  <figcaption>Update a Resource</figcaption>
+  <figcaption>Update a Resource from View Details</figcaption>
 </figure>
 
 <figure markdown>
@@ -186,6 +200,11 @@ Only **users with rights to edit** can change the Community name.
 4. In the pop-up window, write the emails of the users you want to invite and a message.    
 5. Click ^^Send^^.       
 
+<figure markdown>
+  ![Image title](../img/seta_communities_invite_join.png)
+  <figcaption>Invite to Join Community</figcaption>
+</figure>
+
 **From Manage Communities**        
                   
 1. From the side menu click on ^^Manage^^ -> ^^My Communities^^.       
@@ -193,7 +212,8 @@ Only **users with rights to edit** can change the Community name.
 3. Click in the three dots at the right side of each Community and select the option ^^Manage^^.       
 4. In the next window, click on button ^^Invite^^ at the top right.
 5. In the pop-up window, write the emails of the users you want to invite and a message.    
-6. Click ^^Send^^.       
+6. Click ^^Send^^.    
+
 
 **From View Details option**                    
 
@@ -206,8 +226,8 @@ Only **users with rights to edit** can change the Community name.
 7. Click ^^Send^^.   
 
 <figure markdown>
-  ![Image title](../img/communities_invite.png)
-  <figcaption>Invite to Join a Community</figcaption>
+  ![Image title](../img/seta_communities_invite_join_manage.png)
+  <figcaption>Invite to Join Community</figcaption>
 </figure>
 
 ### Manage request to Join My Community
@@ -223,7 +243,7 @@ Only **users with rights to edit** can change the Community name.
 
  
 <figure markdown>
-  ![Image title](../img/seta_communities_accept_join.png)
+  ![Image title](../img/seta_communities_accept_join.png){ width="800" }
   <figcaption>List of requests to Join Community</figcaption>
 </figure>
 
@@ -267,8 +287,20 @@ Only **users with rights to edit** can change the Community name.
   <figcaption>Pending the request to Join Community</figcaption>
 </figure>
 
+
+### Accept invitation to Join a Community
+
+1. From the side menu click on ^^Discovery^^ -> ^^Communities^^.       
+2. You can either enter in the search bar the name of the Community you are looking for or select from the Community list.      
+3. In the Community row you will see at the right side the button ^^Invited^^.                  
+
+<figure markdown>
+  ![Image title](../img/seta_communities_accept_invitation_join.png)
+  <figcaption>Invitation to Join Community</figcaption>
+</figure>
+
 ### See the members of a Community
-<!--Anyone can see who is a member of a public Community. In a private Community you have to be a member to see who the other members are. -->
+
 **From Discovery**             
 1. From the side menu click on ^^Discovery^^ -> ^^Communities^^.       
 2. You can either enter in the search bar the name of the Community you are looking for or select from the Community list.      
@@ -317,6 +349,13 @@ Only **users with rights to edit** can change the Community name.
 !!! warning
     Please consider that before you can delete a Community you need to delete the Resources related.
 
+<figure markdown>
+  ![Image title](../img/delete_community_warning.png)
+  <figcaption>Delete a Community</figcaption>
+</figure>
+
+
+
 **From My Communities list**
 
 1. From the side menu click on ^^Manage^^ -> ^^My Communities^^.  
@@ -337,7 +376,7 @@ Only **users with rights to edit** can change the Community name.
 2. You will see a list of the Communities in the page.
 3. You can enter in the search bar the name of the Community you are looking for.                 
 <figure markdown>
-  ![Image title](../img/communities_list.png)
+  ![Image title](../img/the_communities_list.png)
   <figcaption>Communities</figcaption>
 </figure>
 
@@ -348,7 +387,7 @@ Only **users with rights to edit** can change the Community name.
 3. You can enter in the search bar the name of the Community you are looking for.                  
 
 <figure markdown>
-  ![Image title](../img/my_communities.png)
+  ![Image title](../img/my_communities_list.png)
   <figcaption>My Communities</figcaption>
 </figure>                 
 
