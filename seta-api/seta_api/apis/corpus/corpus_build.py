@@ -1,7 +1,7 @@
 from flask import json
 from .corpus_build_search import build_search_query
 from seta_api.infrastructure.ApiLogicError import ApiLogicError
-
+import copy
 
 def retrieve_vector_list(semantic_sort_id, emb_vector, semantic_sort_id_list, emb_vector_list, current_app):
     vectors = []
@@ -19,21 +19,37 @@ def retrieve_vector_list(semantic_sort_id, emb_vector, semantic_sort_id_list, em
     return vectors
 
 
-def embeddings_query(semantic_sort_id, emb_vector, semantic_sort_id_list, emb_vector_list, current_app, query):
+def create_knn_query(semantic_sort_id_list, emb_vector_list, semantic_sort_id, emb_vector, current_app, k):
     vectors = retrieve_vector_list(semantic_sort_id, emb_vector, semantic_sort_id_list, emb_vector_list, current_app)
     if not vectors:
         raise ApiLogicError('Sbert vector is not retrieved')
-    source = ""
-    for i in range(len(vectors)):
-        if source == "":
-            source = "cosineSimilarity(params.queryVector[" + str(i) + "], 'sbert_embedding') + 1.0"
-        else:
-            source = source + " + cosineSimilarity(params.queryVector[" + str(i) + "], 'sbert_embedding') + 1.0"
-    query_to_use = {"script_score": {
-        "query": query, "script": {
-            "source": source,
-            "params": {"queryVector": vectors}}}}
-    return query_to_use
+    knn = []
+    for vector in vectors:
+        item = {"field": "sbert_embedding",
+                "query_vector": vector,
+                "k": k,
+                "num_candidates": current_app.config["KNN_SEARCH_NUM_CANDIDATES"]}
+        knn.append(item)
+    return knn
+
+
+def calculate_knn_search_k(knn_body, current_app):
+    knn_body["_source"] = ["id"]
+    knn_body["size"] = 0
+    knn_request = compose_request_for_msearch(knn_body, current_app)
+    total_docs = current_app.config["KNN_SEARCH_K"]
+    try:
+        res = current_app.es.msearch(searches=knn_request)
+        for response in res["responses"]:
+            if "error" in response:
+                raise ApiLogicError('KNN Malformed query.')
+            total_docs = response['hits']['total']['value']
+    except:
+        raise ApiLogicError('errors occurred while executing KNN search query.')
+    if total_docs < current_app.config["KNN_SEARCH_K"]:
+        return total_docs
+    else:
+        return current_app.config["KNN_SEARCH_K"]
 
 
 def build_corpus_request(term, n_docs, from_doc, sources, collection, reference, in_force, sort, taxonomy_path,
@@ -41,14 +57,11 @@ def build_corpus_request(term, n_docs, from_doc, sources, collection, reference,
                          aggs, search_type, other, current_app):
     query = build_search_query(term, sources, collection, reference, in_force, author, date_range, search_type,
                                other, taxonomy_path)
-    query_to_use = check_embeddings_query(current_app, emb_vector, emb_vector_list, query, semantic_sort_id,
-                                          semantic_sort_id_list)
-
     body = {
         "size": n_docs,
         "from": from_doc,
         "track_total_hits": True,
-        "query": query_to_use,
+        "query": query,
         "_source": ["id", "id_alias", "document_id", "source", "title", "abstract", "chunk_text", "chunk_number",
                     "collection", "reference", "author", "date", "link_origin", "link_alias", "link_related",
                     "link_reference", "mime_type", "in_force", "language", "taxonomy", "taxonomy_path",
@@ -58,9 +71,10 @@ def build_corpus_request(term, n_docs, from_doc, sources, collection, reference,
     if search_type == "CHUNK_SEARCH":
         body["collapse"] = {"field": "document_id"}
         body["aggs"] = {"total": {"cardinality": {"field": "document_id"}}}
-
-    body = fill_body_for_sort(body, emb_vector, semantic_sort_id, sort)
+    body = fill_body_for_sort(body, emb_vector, semantic_sort_id, emb_vector_list, semantic_sort_id_list, sort)
     body = fill_body_for_aggregations(aggs, body, current_app)
+    body = if_needed_add_knn_search_query(current_app, emb_vector, emb_vector_list, semantic_sort_id,
+                                          semantic_sort_id_list, body)
     return body
 
 
@@ -72,9 +86,9 @@ def compose_request_for_msearch(body, current_app):
     return request
 
 
-def fill_body_for_sort(body, emb_vector, semantic_sort_id, sort):
+def fill_body_for_sort(body, emb_vector, semantic_sort_id, emb_vector_list, semantic_sort_id_list, sort):
     if sort:
-        if semantic_sort_id or emb_vector:
+        if semantic_sort_id or emb_vector or emb_vector_list or semantic_sort_id_list:
             # embeddings define sorting, sort parameter must be ignored
             pass
         else:
@@ -85,13 +99,18 @@ def fill_body_for_sort(body, emb_vector, semantic_sort_id, sort):
     return body
 
 
-def check_embeddings_query(current_app, emb_vector, emb_vector_list, query, semantic_sort_id, semantic_sort_id_list):
-    if semantic_sort_id or emb_vector:
-        query_to_use = embeddings_query(semantic_sort_id, emb_vector, semantic_sort_id_list, emb_vector_list,
-                                        current_app, query)
-    else:
-        query_to_use = query
-    return query_to_use
+def if_needed_add_knn_search_query(current_app, emb_vector, emb_vector_list, semantic_sort_id, semantic_sort_id_list,
+                                   body):
+    # emb_vector, semantic_sort_id TO BE REMOVED
+    if semantic_sort_id_list or emb_vector_list or emb_vector or semantic_sort_id:
+        knn_k_check_body = copy.deepcopy(body)
+        k = calculate_knn_search_k(knn_k_check_body, current_app)
+        if k == 0:
+            # k must be grater than 0, knn search body not provided
+            return body
+        body["knn"] = create_knn_query(semantic_sort_id_list, emb_vector_list, semantic_sort_id, emb_vector,
+                                       current_app, k)
+    return body
 
 
 def fill_body_for_aggregations(aggs, body, current_app):
@@ -149,4 +168,3 @@ def build_sort_body(sort):
         sort_item = {item_list[0]: {"order": item_list[1]}}
         sort_list.append(sort_item)
     return sort_list
-

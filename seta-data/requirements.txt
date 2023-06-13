@@ -1,4 +1,4 @@
-elasticsearch==8.2.0
+elasticsearch==8.8.0
 python-secrets==22.6.1
 gensim==4.3.0
 PyYAML==6.0
