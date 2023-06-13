@@ -69,12 +69,6 @@ def insert_doc(args, es, index):
     return doc_id
 
 
-def is_score_to_be_normalized(semantic_sort_id, semantic_sort_id_list, emb_vector, emb_vector_list):
-    if semantic_sort_id or semantic_sort_id_list or emb_vector or emb_vector_list:
-        return False
-    return True
-
-
 def corpus(term, n_docs, from_doc, sources, collection, reference, in_force, sort, taxonomy_path, semantic_sort_id,
            emb_vector, semantic_sort_id_list, emb_vector_list, author, date_range, aggs, search_type, other,
            current_app):
@@ -92,6 +86,5 @@ def corpus(term, n_docs, from_doc, sources, collection, reference, in_force, sor
     # print(json.dumps(body))
     request = compose_request_for_msearch(body, current_app)
     res = current_app.es.msearch(searches=request)
-    normalize_score = is_score_to_be_normalized(semantic_sort_id, semantic_sort_id_list, emb_vector, emb_vector_list)
-    documents = handle_corpus_response(aggs, res, search_type, semantic_sort_id, term, current_app, normalize_score)
+    documents = handle_corpus_response(aggs, res, search_type, semantic_sort_id, term, current_app)
     return documents

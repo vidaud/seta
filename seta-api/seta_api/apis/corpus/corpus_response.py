@@ -8,20 +8,16 @@ from seta_api.apis.corpus import taxonomy
 import math
 
 
-def normalize_es_score(score, normalize):
-    if normalize:
-        normalized_score = sigmoid(score)
-        return normalized_score
-    else:
-        # subtract 1 to cosine similarity because it was added for es rank
-        return score - 1
+def normalize_es_score(score):
+    normalized_score = sigmoid(score)
+    return normalized_score
 
 
 def sigmoid(x):
     return 1 / (1 + math.exp(-x))
 
 
-def handle_corpus_response(aggs, res, search_type, semantic_sort_id, term, current_app, is_score_to_be_normalized):
+def handle_corpus_response(aggs, res, search_type, semantic_sort_id, term, current_app):
     documents = {"total_docs": None, "documents": []}
     tax = taxonomy.Taxonomy()
     for response in res["responses"]:
@@ -33,9 +29,6 @@ def handle_corpus_response(aggs, res, search_type, semantic_sort_id, term, curre
             abstract = document['_source']['abstract'] if isinstance(document['_source']['abstract'], str) else ""
             text = is_field_in_doc(document['_source'], "chunk_text")
             concordance_field = compute_concordance(abstract, term, text)
-            if document['_id'] == semantic_sort_id:
-                # for semantic sort the semantic_sort_id document is shown on top page and must be removed from the list
-                continue
             tax.create_tree_from_elasticsearch_format(is_field_in_doc(document['_source'], "taxonomy"),
                                                       is_field_in_doc(document['_source'], "taxonomy_path"))
             documents["documents"].append({"_id": document['_id'],
@@ -49,7 +42,7 @@ def handle_corpus_response(aggs, res, search_type, semantic_sort_id, term, curre
                                            "link_origin": document['_source']["link_origin"],
                                            "date": is_field_in_doc(document['_source'], "date"),
                                            "source": document['_source']['source'],
-                                           "score": normalize_es_score(document['_score'], is_score_to_be_normalized),
+                                           "score": normalize_es_score(document['_score']),
                                            "language": is_field_in_doc(document['_source'], "language"),
                                            "in_force": is_field_in_doc(document['_source'], "in_force"),
                                            "collection": is_field_in_doc(document['_source'], "collection"),

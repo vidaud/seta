@@ -1,4 +1,4 @@
-FROM docker.elastic.co/elasticsearch/elasticsearch:8.2.0
+FROM docker.elastic.co/elasticsearch/elasticsearch:8.8.0
 
 ENV https_proxy=$HTTPS_PROXY
 ENV http_proxy=$HTTP_PROXY
