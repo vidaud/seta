@@ -10,10 +10,8 @@ SeTA has two user interfaces:
 ## Web App
 The SeTA Web App is a user-friendly interface that allows the user to access the content in a Web browser. 
  
- <!--   ![Image title](../img/main_screen.jpg){ width="600" }  -->
-
 <figure markdown>
-![Image title](../img/main_screen.jpg){ width="600" }
+![Image title](../img/main_screen.jpg)
 <figcaption>SeTA main page</figcaption>
 </figure>
 
@@ -29,7 +27,7 @@ To access these features, first, you need either to login with an EU login[^1] a
 
 
 <figure markdown>
-![Image title](../img/login.png){ width="600" }
+![Image title](../img/login.png)
 <figcaption>Login</figcaption>
 </figure>
 
@@ -39,7 +37,7 @@ Once you are logged in, you can see in the top menu the link to the Search and t
 
 
 <figure markdown>
-![Image title](../img/seta_menu.png){ width="900" }
+![Image title](../img/seta_menu.png)
 <figcaption>Search</figcaption>
 </figure>
 
