@@ -33,7 +33,7 @@ def test_create_community(client: FlaskClient, authentication_url:str, user_id: 
     access_token = response_json["access_token"]
 
     response = create_community(client=client, access_token=access_token, 
-                    id="blue", title="Blue Community", description="Blue Community for test", data_type="representative")
+                    id="blue", title="Blue Community", description="Blue Community for test")
     assert response.status_code == HTTPStatus.CREATED
 
 @pytest.mark.parametrize("user_id, community_id, expected", [("seta_community_manager", "blue", HTTPStatus.CREATED),
@@ -166,7 +166,7 @@ def test_resource_update_change_requests(client: FlaskClient, authentication_url
     assert response.status_code == HTTPStatus.OK
     assert len(response.json) > 0
 
-    cr_limits = next(filter(lambda r: r["field_name"] == ResourceRequestFieldConstants.Limits, response.json))
+    cr_limits = next(filter(lambda r: r["field_name"] == ResourceRequestFieldConstants.Limits, response.json), None)
     assert cr_limits is not None
     
     response = update_resource_change_request(client=client, access_token=access_token, 

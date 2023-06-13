@@ -11,6 +11,7 @@ services:
       dockerfile: Dockerfile-dev-flask
     volumes:
       - ../seta-api:/home/seta
+      - /home/seta/tika
 
   seta-nginx:
     build:

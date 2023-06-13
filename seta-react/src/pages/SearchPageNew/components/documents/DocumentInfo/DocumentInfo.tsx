@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import { Anchor, Flex, Progress, Text, clsx } from '@mantine/core'
+import { Anchor, Flex, Progress, Text, clsx, Tooltip } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 import { FaChevronDown } from 'react-icons/fa'
 
@@ -33,6 +33,12 @@ const DocumentInfo = ({ document, queryTerms }: Props) => {
 
   const hasDetails = !!taxonomy?.length || !!chunk_text
 
+  const scorePercent = score.toLocaleString(undefined, {
+    style: 'percent',
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2
+  })
+
   const toggleIcon = hasDetails && (
     <div css={S.chevron} className={chevronClass}>
       <FaChevronDown />
@@ -41,8 +47,12 @@ const DocumentInfo = ({ document, queryTerms }: Props) => {
 
   return (
     <div css={S.root} className={openClass}>
-      <div css={S.header} data-details={hasDetails} onClick={toggle}>
-        <Progress size="xl" value={score} color="teal" />
+      <div css={S.header} data-details={hasDetails} data-open={detailsOpen} onClick={toggle}>
+        <Progress size="xl" value={score * 100} color="teal" />
+
+        <Tooltip className="score" label="Match score" position="bottom">
+          <div>{scorePercent}</div>
+        </Tooltip>
 
         <div css={S.title}>
           <Text fz="xl" fw={600} truncate={detailsOpen ? undefined : 'end'}>

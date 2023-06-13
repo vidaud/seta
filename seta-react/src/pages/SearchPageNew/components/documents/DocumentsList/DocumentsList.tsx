@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 
+import { useEnrichLoading } from '~/pages/SearchPageNew/contexts/enrich-loading-context'
+
 import type { DocumentsOptions, DocumentsResponse } from '~/api/search/documents'
 import { useDocuments } from '~/api/search/documents'
 import usePaginator from '~/hooks/use-paginator'
@@ -19,6 +21,8 @@ const DocumentsList = ({ query, terms, searchOptions, onDocumentsChanged }: Prop
   const documentsChangedRef = useRef(onDocumentsChanged)
 
   const [page, setPage] = useState(1)
+
+  const { loading: enrichLoading } = useEnrichLoading()
 
   const { data, isLoading, error, refetch } = useDocuments(query, {
     page,
@@ -51,7 +55,7 @@ const DocumentsList = ({ query, terms, searchOptions, onDocumentsChanged }: Prop
     <DocumentsListContent
       ref={scrollTargetRef}
       data={data}
-      isLoading={isLoading}
+      isLoading={isLoading || enrichLoading}
       error={error}
       onTryAgain={refetch}
       queryTerms={terms}

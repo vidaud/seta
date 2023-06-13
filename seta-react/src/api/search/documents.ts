@@ -40,9 +40,9 @@ export type DocumentsOptions = Omit<DocumentsPayload, 'from_doc' | 'n_docs'>
 
 export const queryKey = {
   root: 'documents',
-  docs: (term: string, page: number, perPage: number, searchOptions?: DocumentsOptions) => [
+  docs: (query: string, page: number, perPage: number, searchOptions?: DocumentsOptions) => [
     queryKey.root,
-    term,
+    query,
     { page, perPage },
     { searchOptions }
   ]
@@ -89,8 +89,8 @@ export const useDocuments = (
     queryFn: ({ signal }) =>
       getDocuments(
         {
-          ...searchOptions,
           term: query,
+          ...searchOptions,
           from_doc: getOffset(page, perPage),
           n_docs: perPage
         },

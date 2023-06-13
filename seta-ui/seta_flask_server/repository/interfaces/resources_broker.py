@@ -50,8 +50,14 @@ class IResourceChangeRequestsBroker(Interface):
     def get_all_pending(self) -> list[ResourceChangeRequestModel]:
         pass
     
-    def has_pending_field(self, resource_id: str, filed_name: str) -> bool:
+    def has_pending_field(self, resource_id: str, field_name: str) -> bool:
         pass
     
-    def get_all_by_user_id(self, user_id:str) -> list[ResourceChangeRequestModel]:
-        pass        
+    def get_all_by_user_id(self, user_id: str) -> list[ResourceChangeRequestModel]:
+        pass
+
+    def get_all_by_resource_id(self, resource_id: str) -> list[ResourceChangeRequestModel]:
+        pass     
+
+    def get_all_by_community_id(self, community_id: str) -> list[ResourceChangeRequestModel]:
+        pass   

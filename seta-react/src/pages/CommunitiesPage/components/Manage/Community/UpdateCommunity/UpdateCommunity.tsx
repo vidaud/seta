@@ -4,7 +4,7 @@ import { Link, useParams } from 'react-router-dom'
 
 import {
   updateCommunity,
-  useCommunityID
+  useMyCommunityID
 } from '../../../../../../api/communities/manage/my-community'
 import ComponentLoading from '../../../common/ComponentLoading'
 import type { CommunityValues } from '../../community-context'
@@ -29,7 +29,7 @@ const UpdateCommunity = () => {
   const { classes, cx } = useStyles()
   const { id } = useParams()
 
-  const { data, isLoading } = useCommunityID(id)
+  const { data, isLoading } = useMyCommunityID(id)
 
   const form = useCommunity({
     initialValues: {

@@ -29,7 +29,7 @@ def test_create_community(client: FlaskClient, authentication_url:str, user_id: 
     access_token = response_json["access_token"]
 
     response = create_community(client=client, access_token=access_token, 
-                    id="blue", title="Blue Community", description="Blue Community for test", data_type="representative")
+                    id="blue", title="Blue Community", description="Blue Community for test")
     assert response.status_code == HTTPStatus.CREATED
     response = get_community(client=client, access_token=access_token, id="blue")
     assert response.status_code == HTTPStatus.OK
@@ -51,7 +51,7 @@ def test_fail_create_community(client: FlaskClient, authentication_url:str, user
     access_token = response_json["access_token"]
 
     response = create_community(client=client, access_token=access_token, 
-                    id="blue", title="Blue Community", description="Blue Community for test", data_type="representative")
+                    id="blue", title="Blue Community", description="Blue Community for test")
     assert response.status_code == HTTPStatus.CONFLICT
 
 '''===========================================================''' 
@@ -83,8 +83,10 @@ def test_update_community(client: FlaskClient, authentication_url:str, user_id: 
     community_json = response.json
 
     response = update_community(client=client, access_token=access_token, 
-                    id=community_id, title=community_json["title"], description=new_description, 
-                    data_type=community_json["data_type"], status=community_json["status"])
+                    id=community_id, 
+                    title=community_json["title"], 
+                    description=new_description, 
+                    status=community_json["status"])
     assert response.status_code == HTTPStatus.OK
         
     response = get_community(client=client, access_token=access_token, id=community_id)
@@ -115,9 +117,12 @@ def test_fail_update_community(client: FlaskClient, authentication_url:str, user
    
     community_json = response.json
 
-    response = update_community(client=client, access_token=access_token, 
-                    id=community_id, title=community_json["title"], description=new_description, 
-                    data_type=community_json["data_type"], status=community_json["status"])
+    response = update_community(client=client, 
+                    access_token=access_token, 
+                    id=community_id, 
+                    title=community_json["title"], 
+                    description=new_description, 
+                    status=community_json["status"])
     assert response.status_code == HTTPStatus.FORBIDDEN
 
 @pytest.mark.parametrize("user_id, community_id", [("seta_admin", "red")])
@@ -137,8 +142,7 @@ def test_fail_non_existing_community(client: FlaskClient, authentication_url:str
     access_token = response_json["access_token"]
 
     response = update_community(client=client, access_token=access_token, 
-                    id=community_id, title="title", description="description", 
-                    data_type="representative", status="active")
+                    id=community_id, title="title", description="description", status="active")
     assert response.status_code == HTTPStatus.NOT_FOUND    
     
          
@@ -465,10 +469,8 @@ def test_add_community_owner(client: FlaskClient, authentication_url:str, user_i
     response = get_user_permissions(client=client, access_token=access_token, community_id=community_id, user_id=owner_id)
     assert response.status_code == HTTPStatus.OK
 
-    scopes = [CommunityScopeConstants.Owner]    
-
-    for scope in response.json:
-        scopes.append(scope["scope"])
+    scopes = response.json["scopes"]
+    scopes.append(CommunityScopeConstants.Owner)
     
     response = replace_user_permissions(client=client, access_token=access_token, community_id=community_id, user_id=owner_id, scopes=scopes)
     assert response.status_code == HTTPStatus.OK  

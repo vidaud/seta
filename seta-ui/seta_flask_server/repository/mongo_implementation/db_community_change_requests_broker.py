@@ -33,7 +33,7 @@ class CommunityChangeRequestsBroker(implements(ICommunityChangeRequestsBroker)):
         
         model.review_date = datetime.now(tz=pytz.utc)
         
-        filter={"community_id": model.community_id, "request_id": model.request_id}
+        filter={"community_id": model.community_id, "request_id": model.request_id, "field_name": {"$exists" : True}}
         uq={"$set": model.to_json_update() }
         
         with self.db.client.start_session(causal_consistency=True) as session:
@@ -48,7 +48,7 @@ class CommunityChangeRequestsBroker(implements(ICommunityChangeRequestsBroker)):
                 self.collection.update_one(cf, uq, session=session)
         
     def get_request(self, community_id: str, request_id: str) -> CommunityChangeRequestModel:
-        filter =  {"community_id": community_id, "request_id": request_id}
+        filter =  {"community_id": community_id, "request_id": request_id, "field_name": {"$exists" : True}}
         request = self.collection.find_one(filter)
         
         if request is None:
@@ -57,22 +57,28 @@ class CommunityChangeRequestsBroker(implements(ICommunityChangeRequestsBroker)):
         return CommunityChangeRequestModel.from_db_json(request)
     
     def get_all_pending(self) -> list[CommunityChangeRequestModel]:
-        filter =  {"status": RequestStatusConstants.Pending, "request_id": {"$exists" : True}}
+        filter =  {"status": RequestStatusConstants.Pending, "field_name": {"$exists" : True}}
         requests = self.collection.find(filter)
         
         return [CommunityChangeRequestModel.from_db_json(c) for c in requests]
     
     def get_all_by_user_id(self, user_id:str) -> list[CommunityChangeRequestModel]:
-        filter =  {"requested_by": user_id, "request_id": {"$exists" : True}}
+        filter =  {"requested_by": user_id, "field_name": {"$exists" : True}}
         requests = self.collection.find(filter)
         
         return [CommunityChangeRequestModel.from_db_json(c) for c in requests]
     
-    def has_pending_field(self, community_id: str, filed_name: str) -> bool:
-        filter={"community_id": community_id, "field_name": filed_name, "status": RequestStatusConstants.Pending, "request_id": {"$exists" : True}}
+    def has_pending_field(self, community_id: str, field_name: str) -> bool:
+        filter={"community_id": community_id, "field_name": field_name, "status": RequestStatusConstants.Pending, "request_id": {"$exists" : True}}
         exists_count = self.collection.count_documents(filter)
         
         return exists_count > 0
+    
+    def get_all_by_community_id(self, community_id: str) -> list[CommunityChangeRequestModel]:
+        filter =  {"community_id": community_id, "field_name": {"$exists" : True}}
+        requests = self.collection.find(filter)
+        
+        return [CommunityChangeRequestModel.from_db_json(c) for c in requests]
     
     @staticmethod
     def generate_uuid() -> str:

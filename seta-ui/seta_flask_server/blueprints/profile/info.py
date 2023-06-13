@@ -7,12 +7,11 @@ from http import HTTPStatus
 from injector import inject
 
 from seta_flask_server.repository.interfaces import IUsersBroker, ISessionsBroker
-from .models.info_dto import(user_info_model, account_model, application_model, provider_model)
+from .models.info_dto import(user_info_model, account_model, provider_model)
 
 account_info_ns = Namespace('Account Info', description='User Account')
 account_info_ns.models[user_info_model.name] = user_info_model
 account_info_ns.models[provider_model.name] = provider_model
-account_info_ns.models[application_model.name] = application_model
 account_info_ns.models[account_model.name] = account_model
 
 @account_info_ns.route('/user-info', endpoint="me_user_info", methods=['GET'])
@@ -71,7 +70,7 @@ class SetaAccount(Resource):
                    int(HTTPStatus.NOT_FOUND): "User not found or disabled",},
         
         security='CSRF')
-    @account_info_ns.marshal_list_with(account_model, mask="*") 
+    @account_info_ns.marshal_with(account_model, mask="*") 
     @jwt_required()
     def get(self):
         """Retrive account details"""
@@ -94,8 +93,7 @@ class SetaAccount(Resource):
             "username": user.user_id,                  
             "email": user.email,                    
             "role": user.role,
-            "external_providers": [],
-            "applications": []
+            "external_providers": []
         }
         
         for provider in user.external_providers:

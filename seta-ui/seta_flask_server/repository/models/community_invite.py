@@ -1,6 +1,8 @@
 from datetime import datetime
 from dataclasses import dataclass, asdict
 
+from .user_info import UserInfo
+
 @dataclass(kw_only=True)        
 class CommunityInviteModel:
     invite_id: str = None
@@ -12,6 +14,9 @@ class CommunityInviteModel:
     initiated_by: str = None    
     initiated_date: datetime = None
     modified_at: datetime = None
+
+    invited_user_info: UserInfo = None
+    initiated_by_info: UserInfo = None
     
     def __post_init__(self):
         if self.community_id:

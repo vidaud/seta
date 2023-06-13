@@ -10,7 +10,6 @@ import RequireAuth from './components/RequireAuth'
 
 import AppLayout from '../../layouts/AppLayout'
 import CommunityLayout from '../../layouts/CommunityLayout/CommunityLayout'
-import ViewCommunity from '../../pages/CommunitiesPage/components/Discovery/CommunityList/components/ViewCommunity/ViewCommunity'
 import ViewResource from '../../pages/CommunitiesPage/components/Discovery/ResourceList/components/ViewResource/ViewResource'
 import NewCommunity from '../../pages/CommunitiesPage/components/Manage/Community/CreateCommunityButton/components/NewCommunity/NewCommunity'
 import ManageCommunity from '../../pages/CommunitiesPage/components/Manage/Community/ManageCommunity/ManageCommunity'
@@ -22,6 +21,7 @@ import CommunityMembers from '../../pages/CommunitiesPage/components/Manage/Memb
 import NewResource from '../../pages/CommunitiesPage/components/Manage/Resource/NewResource/NewResource'
 import UpdateResource from '../../pages/CommunitiesPage/components/Manage/Resource/UpdateResource/UpdateResource'
 import ViewMyResource from '../../pages/CommunitiesPage/components/Manage/Resource/ViewMyResource/ViewMyResource'
+import { ScopeProvider } from '../../pages/CommunitiesPage/components/Manage/scope-context'
 import CommunityUsersPermissions from '../../pages/CommunitiesPage/components/UserPermissions/Community/CommunityUserPermissions'
 import ResourceUsersPermissions from '../../pages/CommunitiesPage/components/UserPermissions/Resource/ResourceUserPermissions'
 import DashboardsPage from '../../pages/CommunitiesPage/pages/DashboardPage'
@@ -131,7 +131,9 @@ const routes = createRoutesFromElements(
         path=":id"
         element={
           <RequireAuth>
-            <ViewMyCommunity />
+            <ScopeProvider>
+              <ViewMyCommunity />
+            </ScopeProvider>
           </RequireAuth>
         }
       />
@@ -139,7 +141,9 @@ const routes = createRoutesFromElements(
         path=":id/:resourceId"
         element={
           <RequireAuth>
-            <ViewMyResource />
+            <ScopeProvider>
+              <ViewMyResource />
+            </ScopeProvider>
           </RequireAuth>
         }
       />
@@ -163,7 +167,9 @@ const routes = createRoutesFromElements(
         path=":id/manage"
         element={
           <RequireAuth>
-            <ManageCommunity />
+            <ScopeProvider>
+              <ManageCommunity />
+            </ScopeProvider>
           </RequireAuth>
         }
       />
@@ -189,7 +195,9 @@ const routes = createRoutesFromElements(
         path=":resourceId"
         element={
           <RequireAuth>
-            <ViewMyResource />
+            <ScopeProvider>
+              <ViewMyResource />
+            </ScopeProvider>
           </RequireAuth>
         }
       />
@@ -232,7 +240,9 @@ const routes = createRoutesFromElements(
         path=":id"
         element={
           <RequireAuth>
-            <ViewCommunity />
+            <ScopeProvider>
+              <ViewMyCommunity />
+            </ScopeProvider>
           </RequireAuth>
         }
       />

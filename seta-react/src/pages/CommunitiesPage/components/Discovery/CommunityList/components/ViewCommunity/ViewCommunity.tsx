@@ -3,6 +3,7 @@ import { Button, Card, Grid, Group, Text, Title, createStyles, Table } from '@ma
 import { useParams } from 'react-router-dom'
 
 import { useCommunityID } from '../../../../../../../api/communities/manage/my-community'
+import { leaveCommunity } from '../../../../../../../api/communities/my-membership'
 import ComponentLoading from '../../../../common/ComponentLoading'
 import CommunityResources from '../../../../Manage/Resource/CommunityResources/CommunityResources'
 import Stats from '../../../ResourceList/components/Stats/Stats'
@@ -44,6 +45,10 @@ const ViewCommunity = () => {
     return <ComponentLoading />
   }
 
+  const deleteMembership = () => {
+    leaveCommunity(id)
+  }
+
   return (
     <>
       <Grid grow>
@@ -62,18 +67,11 @@ const ViewCommunity = () => {
               <tbody>
                 <tr>
                   <td className={classes.td}>
-                    <Text className={classes.text}>Members: {row?.members.length}</Text>
-                  </td>
-                  <td className={classes.td}>
                     <Text className={classes.text}>Status: {row?.communities.status}</Text>
                   </td>
+                  <td className={classes.td} />
                 </tr>
                 <tr>
-                  <td className={classes.td}>
-                    <Text className={classes.text}>
-                      Created by: {row?.communities.creator.user_id}
-                    </Text>
-                  </td>
                   <td className={classes.td}>
                     <Text className={classes.text}>
                       Created at:{' '}
@@ -82,18 +80,19 @@ const ViewCommunity = () => {
                         : null}
                     </Text>
                   </td>
+                  <td className={classes.td} />
                 </tr>
               </tbody>
             </Table>
             <Group spacing={30} position="right">
-              <Button variant="filled" size="xs">
+              <Button variant="filled" size="xs" onClick={() => deleteMembership()}>
                 LEAVE
               </Button>
             </Group>
           </Card>
         </Grid.Col>
         <Grid.Col span={1}>
-          <Stats resourceNumber={row?.resources} memberNumber={row?.members} />
+          <Stats resourceNumber={row?.resources} />
         </Grid.Col>
         <Grid.Col span={5}>
           <CommunityResources data={row?.resources} />

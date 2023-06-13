@@ -1,4 +1,6 @@
 from .seta_user import SetaUser
+from .seta_user_ext import SetaUserExt
+from .user_info import UserInfo
 from .user_claim import UserClaim
 from .rsa_key import RsaKey
 from .external_provider import ExternalProvider
@@ -10,3 +12,4 @@ from .community_invite import CommunityInviteModel
 from .resource import ResourceModel, ResourceLimitsModel, ResourceContributorModel, ResourceChangeRequestModel
 from .user_session import UserSession, SessionToken
 from .application import SetaApplication
+from .user_profile import UserProfileResources

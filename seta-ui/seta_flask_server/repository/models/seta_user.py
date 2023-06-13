@@ -1,16 +1,14 @@
 from flask import json
 from datetime import datetime
-import pytz
-from seta_flask_server.infrastructure.scope_constants import SystemScopeConstants
-import shortuuid
 
 from .user_claim import UserClaim
 from .entity_scope import EntityScope
 from .system_scope import SystemScope
 from .external_provider import ExternalProvider
 
-from seta_flask_server.infrastructure.constants import ExternalProviderConstants
-from seta_flask_server.infrastructure.constants import ClaimTypeConstants, UserRoleConstants, UserStatusConstants
+from seta_flask_server.infrastructure.constants import (ClaimTypeConstants, UserRoleConstants, 
+                                                        UserStatusConstants, ExternalProviderConstants)
+from .user_info import UserInfo
 
 class SetaUser:
     
@@ -85,6 +83,15 @@ class SetaUser:
         
         return to_return
     
+    @classmethod 
+    def from_db_json(cls, json_dict):
+        return cls(user_id=json_dict["user_id"],
+                   email=json_dict["email"],
+                   user_type=json_dict["user_type"],
+                   status=json_dict["status"],
+                   created_at=json_dict["created_at"],
+                   modified_at=json_dict.get("modified_at", None))
+    
     @property
     def authenticated_provider(self):
         return self._authenticated_provider
@@ -146,6 +153,31 @@ class SetaUser:
                 return uc.claim_value
         
         return UserRoleConstants.User
+    
+    @property
+    def user_info(self) -> UserInfo:
+        if self.status.lower() == UserStatusConstants.Deleted:
+            return UserInfo(user_id=self.user_id,full_name="Unknown",email="unknown")
+        
+        return UserInfo(user_id=self.user_id, email=self.email, full_name=self.full_name)
+    
+    @property
+    def full_name(self) -> str:
+        if self._authenticated_provider:
+            return f"{self._authenticated_provider.last_name} {self._authenticated_provider.first_name}"
+
+        if self.external_providers and len(self.external_providers) > 0:
+            # try to get ecas name
+            provider = next((p for p in self.external_providers 
+                                  if p.provider.lower() == ExternalProviderConstants.ECAS.lower())
+                                , None)
+            
+            if provider is None:
+                provider = self.external_providers[0]
+
+            return f"{provider.last_name} {provider.first_name}"
+
+        return None
         
     def is_not_active(self) -> bool:
         return self.status.lower() != UserStatusConstants.Active.lower()
@@ -209,80 +241,3 @@ class SetaUser:
                 return True
         
         return False
-        
-    @staticmethod
-    def generate_uuid() -> str:
-        return shortuuid.ShortUUID().random(length=20)        
-    
-    @classmethod 
-    def from_db_json(cls, json_dict):
-        return cls(user_id=json_dict["user_id"],
-                   email=json_dict["email"],
-                   user_type=json_dict["user_type"],
-                   status=json_dict["status"],
-                   created_at=json_dict["created_at"],
-                   modified_at=json_dict.get("modified_at", None))
-      
-    @classmethod
-    def from_ecas_json(cls, json_dct):
-        user_id = SetaUser.generate_uuid()
-        
-        user = cls(user_id=user_id,
-                   email=json_dct['email'],
-                   user_type='user',
-                   status=UserStatusConstants.Active,
-                   created_at=datetime.now(tz=pytz.utc))
-        
-        user.authenticated_provider = ExternalProvider(user_id=user_id, 
-                                                    provider_uid=json_dct['uid'], 
-                                                    provider=ExternalProviderConstants.ECAS, 
-                                                    first_name=json_dct['firstName'], 
-                                                    last_name=json_dct['lastName'],
-                                                    domain=json_dct['domain'])
-        
-        set_common_props(user, json_dct.get('is_admin', False))
-        
-        return user
-    
-    @classmethod
-    def from_github_json(cls, json_dct):
-        user_id = SetaUser.generate_uuid()
-        
-        user = cls(user_id=user_id,
-                   email=json_dct['email'],
-                   user_type='user',
-                   status=UserStatusConstants.Active,
-                   created_at=datetime.now(tz=pytz.utc))
-        
-        name = str(json_dct["name"]).split(maxsplit=1)
-        first_name = name[0]
-        if len(name) > 1:
-            last_name = name[1]
-        else:
-            last_name = ""
-        
-        user._authenticated_provider = ExternalProvider(user_id=user_id, provider_uid=json_dct['login'], 
-                                                        provider=ExternalProviderConstants.GITHUB, 
-                                                        first_name=first_name, last_name=last_name,
-                                                        domain=json_dct['company'])
-        
-        set_common_props(user, json_dct.get('is_admin', False))
-        
-        return user
-    
-def set_common_props(user: SetaUser, is_admin: bool):
-
-    if is_admin:
-        user.add_claim(UserClaim.create_role_claim(user.user_id, UserRoleConstants.Admin))   
-
-        user.system_scopes = [
-                    SystemScope(user_id=user.user_id, system_scope=SystemScopeConstants.CreateCommunity, area="community").to_json(),
-                    SystemScope(user_id=user.user_id, system_scope=SystemScopeConstants.ApproveCommunityChangeRequest, area="community").to_json(),
-                    SystemScope(user_id=user.user_id, system_scope=SystemScopeConstants.ApproveResourceChangeRequest, area="community").to_json()
-                ]
-     
-    else:
-        user.add_claim(UserClaim.create_default_role_claim(user.user_id))
-        user.system_scopes = [
-                    SystemScope(user_id=user.user_id, system_scope=SystemScopeConstants.CreateCommunity, area="community").to_json()
-                    ]

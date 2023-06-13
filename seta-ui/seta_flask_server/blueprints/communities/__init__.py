@@ -3,6 +3,8 @@ from flask import Blueprint, current_app
 
 from .community import communities_ns
 from .community_membership import membership_ns
+from .community_membership_request import membership_request_ns
+from .community_my_membership import my_membership_ns
 from .community_change_requests import community_change_request_ns
 from .community_invite import community_invite_ns
 from .community_resources import community_resources_ns
@@ -45,6 +47,8 @@ api = Api( communities_bp_v1,
 api.add_namespace(communities_ns, path="/communities")
 api.add_namespace(community_change_request_ns, path="/communities")
 api.add_namespace(membership_ns, path="/communities")
+api.add_namespace(membership_request_ns, path="/communities")
+api.add_namespace(my_membership_ns, path="/communities")
 api.add_namespace(community_invite_ns, path="/communities")
 api.add_namespace(community_resources_ns, path="/communities")
 

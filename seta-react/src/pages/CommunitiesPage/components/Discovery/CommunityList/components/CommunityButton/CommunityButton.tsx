@@ -3,8 +3,9 @@ import { ActionIcon, Button, Group, createStyles, Tooltip } from '@mantine/core'
 import { IconEye } from '@tabler/icons-react'
 import { Link } from 'react-router-dom'
 
-import { useMembershipID } from '../../../../../../../api/communities/membership'
+import { leaveCommunity } from '../../../../../../../api/communities/my-membership'
 import MembershipRequest from '../../../../Manage/Members/InviteMemberModal/InviteMemberModal'
+import OpenCommunityMember from '../../../../Manage/Members/OpenCommunityMember/OpenCommunityMember'
 import ViewClosedCommunity from '../ViewClosedCommunity'
 
 const useStyles = createStyles({
@@ -13,44 +14,59 @@ const useStyles = createStyles({
   }
 })
 
-const CommunityButton = props => {
+const CommunityButton = ({ props, onReload }) => {
   const { classes } = useStyles()
-  const { data } = useMembershipID(props.community.community_id)
-  const [row, setRow] = useState(data)
+  const [data, setData] = useState(props)
 
   useEffect(() => {
-    if (data) {
-      setRow(data)
+    if (props) {
+      setData(props)
     }
-  }, [data, row])
+  }, [props, data])
+
+  const deleteMembership = () => {
+    leaveCommunity(data.community_id).then(() =>
+      setTimeout(() => {
+        onReload()
+      }, 100)
+    )
+  }
 
   return (
     <>
       <Group>
-        {data && data?.members?.length > 0 ? (
-          <Group>
-            <Tooltip label="View Details">
-              <Link
-                className={classes.link}
-                to={`/communities/${props.community.community_id}`}
-                replace={true}
-              >
-                <ActionIcon>
-                  <IconEye size="1rem" stroke={1.5} />
-                </ActionIcon>
-              </Link>
-            </Tooltip>
-
-            <Button variant="filled" size="xs">
-              LEAVE
-            </Button>
-          </Group>
+        {data.status === 'membership' || data.status === 'invited' ? (
+          <Tooltip label="View Details">
+            <Link className={classes.link} to={`/communities/${data.community_id}`} replace={true}>
+              <ActionIcon>
+                <IconEye size="1rem" stroke={1.5} />
+              </ActionIcon>
+            </Link>
+          </Tooltip>
         ) : (
-          <Group>
-            <ViewClosedCommunity community={props.community} />
-            <MembershipRequest community_id={props.community.community_id} />
-          </Group>
+          <ViewClosedCommunity community={data.community_id} onReload={onReload} />
         )}
+        {data.status === 'membership' ? (
+          <Button variant="filled" size="xs" onClick={() => deleteMembership()}>
+            LEAVE
+          </Button>
+        ) : data.status === 'pending' ? (
+          <Button variant="outline" size="xs">
+            PENDING
+          </Button>
+        ) : data.status === 'invited' ? (
+          <Button variant="outline" size="xs" color="orange">
+            INVITED
+          </Button>
+        ) : data.status === 'unknown' && data.membership === 'closed' ? (
+          <MembershipRequest community_id={data.community_id} onReload={onReload} />
+        ) : data.status === 'unknown' && data.membership === 'opened' ? (
+          <OpenCommunityMember community_id={data.community_id} onReload={onReload} />
+        ) : data.status === 'rejected' ? (
+          <Button variant="filled" size="xs" color="red">
+            REJECTED
+          </Button>
+        ) : null}
       </Group>
     </>
   )

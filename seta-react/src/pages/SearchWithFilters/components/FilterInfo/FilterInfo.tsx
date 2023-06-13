@@ -9,7 +9,7 @@ import { getSourceLists, getTaxonomyLists, getOtherLists, FilterStatusColors } f
 import { FilterStatus } from '../../types/filter-info'
 import type { FilterStatusInfo } from '../../types/filter-info'
 import type { ClearAction } from '../../types/filters'
-import { ClearCategory, ClearType } from '../../types/filters'
+import { ClearCategory, ClearType, TextChunkValues } from '../../types/filters'
 
 type Props = {
   status?: FilterStatusInfo
@@ -34,6 +34,13 @@ const FilterInfo = ({ status, onClear }: Props) => {
   const { taxonomyApplied, taxonomyDeleted, taxonomyAdded } = getTaxonomyLists(status)
   const { otherApplied, otherDeleted, otherAdded } = getOtherLists(status)
 
+  const clearAllDisabled =
+    status?.prevStatus === FilterStatus.UNKNOWN ||
+    (status?.prevStatus === FilterStatus.APPLIED &&
+      status?.applied() === 1 &&
+      status?.currentFilter?.chunkValue === TextChunkValues.CHUNK_SEARCH)
+  const clearModifiedDisabled = status?.modified() === 0
+
   return (
     <ScrollArea.Autosize mx="auto" mah={rem(500)}>
       <Container fluid p={5}>
@@ -43,7 +50,7 @@ const FilterInfo = ({ status, onClear }: Props) => {
             leftIcon={<IconClearAll size={rem(16)} />}
             color={FilterStatusColors.APPLIED}
             variant="outline"
-            disabled={status?.prevStatus === FilterStatus.UNKNOWN}
+            disabled={clearAllDisabled}
             onClick={e => {
               e.stopPropagation()
               onClear?.({ type: ClearType.ALL })
@@ -56,7 +63,7 @@ const FilterInfo = ({ status, onClear }: Props) => {
             leftIcon={<IconClearAll size={rem(16)} />}
             color={FilterStatusColors.MODIFIED}
             variant="outline"
-            disabled={status?.modified() === 0}
+            disabled={clearModifiedDisabled}
             onClick={e => {
               e.stopPropagation()
               onClear?.({ type: ClearType.ALL_MODIFIED })

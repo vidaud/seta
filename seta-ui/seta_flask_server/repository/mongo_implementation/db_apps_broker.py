@@ -5,7 +5,7 @@ import pytz
 from injector import inject
 from seta_flask_server.repository.interfaces import IDbConfig, IAppsBroker
 
-from seta_flask_server.repository.models import SetaApplication, SetaUser, RsaKey, ExternalProvider
+from seta_flask_server.repository.models import SetaApplication, SetaUser, SetaUserExt, RsaKey, ExternalProvider
 from seta_flask_server.infrastructure.constants import UserStatusConstants, ExternalProviderConstants
 
 from flask import current_app
@@ -82,7 +82,7 @@ class AppsBroker(implements(IAppsBroker)):
             return
         
         now = datetime.now(tz=pytz.utc)
-        user_id = SetaUser.generate_uuid()
+        user_id = SetaUserExt.generate_uuid()
         
         seta_user = SetaUser(user_id=user_id, user_type="application", email=None, status=UserStatusConstants.Active, created_at=now)
         app.user_id = user_id   

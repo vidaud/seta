@@ -1,11 +1,12 @@
 from flask_restx import Model, fields
 from flask_restx.reqparse import RequestParser
 
-from seta_flask_server.infrastructure.constants import (CommunityStatusConstants, CommunityDataTypeConstants, 
+from seta_flask_server.infrastructure.constants import (CommunityStatusConstants, 
                                       CommunityMembershipConstants, CommunityRequestFieldConstants,
                                       RequestStatusConstants)
 
 from .models_dto import (user_info_model)
+from .resource_request_dto import change_request_model as resource_change_request_model
 
 new_community_parser = RequestParser(bundle_errors=True)
 new_community_parser.add_argument("community_id",
@@ -23,14 +24,6 @@ new_community_parser.add_argument("description",
                                   required=True,
                                   nullable=False,
                                   help="Relevand information about this community")
-#new_community_parser.add_argument('membership')
-new_community_parser.add_argument("data_type",
-                                  location="form",
-                                  required=True,
-                                  nullable=False,
-                                  case_sensitive=False,
-                                  choices=CommunityDataTypeConstants.List,
-                                  help=f"Data type, one of {CommunityDataTypeConstants.List}")
 
 update_community_parser = new_community_parser.copy()
 update_community_parser.remove_argument("community_id")
@@ -48,10 +41,9 @@ community_model = Model("Community",
             "community_id": fields.String(description="Community identifier"),
             "title": fields.String(description="Community title"),
             "description": fields.String(description="Community relevant description"),
-            "membership": fields.String(description="The membership status", enum=CommunityMembershipConstants.List),
-            "data_type": fields.String(description="The community data type", enum=CommunityDataTypeConstants.List),
+            "membership": fields.String(description="The membership status", enum=CommunityMembershipConstants.List),            
             "status": fields.String(description="The community status", enum=CommunityStatusConstants.List),
-            "creator": fields.Nested(model=user_info_model),
+            "creator": fields.Nested(model=user_info_model, description="Community creator info", skip_none=True),
             "created_at": fields.DateTime(description="Creation date", attribute="created_at")
         })
 
@@ -62,7 +54,7 @@ new_change_request_parser.add_argument("field_name",
                                   nullable=False,
                                   case_sensitive=False,
                                   choices=CommunityRequestFieldConstants.List,
-                                  help=f"Requested field, one of {CommunityRequestFieldConstants.List}")
+                                  help=f"Requested field name")
 new_change_request_parser.add_argument("new_value", 
                                   location="form",
                                   required=True,
@@ -92,8 +84,18 @@ change_request_model = Model("CommunityChangeRequest",
                                  "new_value": fields.String(description="New value for field"),
                                  "old_value": fields.String(description="Current value at request"),
                                  "requested_by": fields.String(description="User identifier that intiated the request"),
+                                 "requested_by_info": fields.Nested(model=user_info_model, description="Requested by"),
                                  "status": fields.String(description="Request status", enum=RequestStatusConstants.List),
                                  "initiated_date": fields.DateTime(description="Request intiated date", attribute="initiated_date"),
                                  "reviewed_by": fields.String(description="User identifier that reviewed the request"),
+                                 "reviewed_by_info": fields.Nested(model=user_info_model, description="Reviewed by", skip_none = True),
                                  "review_date": fields.DateTime(description="Reviewed date", attribute="review_date")
                              })
+
+all_change_requests_model = Model("AllChangeRequests",
+                                  {
+                                      "community_change_requests": fields.List(fields.Nested(change_request_model, 
+                                                                description="Change requests for community", skip_none = True)),
+                                      "resource_change_requests":  fields.List(fields.Nested(resource_change_request_model, 
+                                                                description="Change requests for resource", skip_none = True))
+                                  })

@@ -50,6 +50,7 @@ const CommunityList = () => {
   useEffect(() => {
     if (data) {
       setSortedData(data)
+      refetch()
     }
   }, [data])
 
@@ -95,7 +96,7 @@ const CommunityList = () => {
             <td>{row.membership}</td>
             <td>{row.status}</td>
             <td>
-              <CommunityButton community={row} />
+              <CommunityButton props={row} onReload={refetch} />
             </td>
           </tr>
         ))
@@ -170,7 +171,7 @@ const CommunityList = () => {
             rows
           ) : (
             <tr>
-              <td colSpan={Object.keys(data[0]).length}>
+              <td colSpan={data[0] ? Object.keys(data[0]).length : 1}>
                 <Text weight={500} align="center">
                   Nothing found
                 </Text>

@@ -3,12 +3,11 @@ export type Community = {
   title: string
   description: string
   membership: string
-  data_type: string
   status: string
+  created_at: Date
   creator: {
     user_id: string
     full_name: string
     email: string
   }
-  created_at: Date
 }

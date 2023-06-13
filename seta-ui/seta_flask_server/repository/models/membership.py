@@ -1,5 +1,9 @@
-from datetime import datetime
+from datetime import datetime, timedelta
+import pytz
 from dataclasses import dataclass, asdict
+from seta_flask_server.infrastructure.constants import RequestStatusConstants
+
+from .user_info import UserInfo
 
 @dataclass
 class MembershipModel:
@@ -9,13 +13,18 @@ class MembershipModel:
     join_date: datetime = None
     status: str = None
     modified_at: datetime = None 
+
+    user_info: UserInfo = None
     
     def __post_init__(self):
         if self.community_id:
-            self.community_id = self.community_id.lower()  
+            self.community_id = self.community_id.lower()
 
     def to_json(self) -> dict:
-        return asdict(self)
+        json = asdict(self)
+        json.pop("user_info", None)
+
+        return json
     
     def to_json_update(self) -> dict:
         return{
@@ -43,8 +52,17 @@ class MembershipRequestModel:
     reviewed_by: str = None
     review_date: datetime = None
 
+    requested_by_info: UserInfo = None
+    reviewed_by_info: UserInfo = None
+
     def to_json(self) -> dict:
-        return asdict(self)
+        json = asdict(self)
+
+        json.pop("requested_by_info", None)
+        json.pop("reviewed_by_info", None)
+        json.pop("reject_timeout", None)
+
+        return json
     
     def to_json_update(self):
         return{            
@@ -52,6 +70,13 @@ class MembershipRequestModel:
             "review_date": self.review_date,
             "reviewed_by": self.reviewed_by
         }
+    
+    @property
+    def reject_timeout(self) -> datetime:
+        if self.status == RequestStatusConstants.Rejected:
+            return (self.initiated_date + timedelta(days=30)).replace(tzinfo=pytz.utc)
+        
+        return None
     
     @classmethod 
     def from_db_json(cls, json_dict: dict):
@@ -62,3 +87,4 @@ class MembershipRequestModel:
                    initiated_date=json_dict["initiated_date"],
                    reviewed_by=json_dict.get("reviewed_by"),
                    review_date=json_dict.get("review_date"))
+    

@@ -1,13 +1,18 @@
-site_name: SeTA Docs
+site_name: SeTA Documentation
 site_description: SeTA - Semantic Text Analyser
 theme:
   name: material
   custom_dir: overrides
   features:
+    #- header.autohide
+    - navigation.instant
+    #- navigation.tabs
     - navigation.tracking
     - navigation.path
+    #- navigation.expand
+    - navigation.prune
     - toc.follow
-    - toc.integrate
+    #- toc.integrate
     - navigation.top
     - search.suggest
     - search.highlight
@@ -29,7 +34,8 @@ theme:
         bug: octicons/bug-16
         example: octicons/beaker-16
         quote: octicons/quote-16
-    logo: material/note-search-outline
+    logo: material/book-open-variant
+    #logo: material/home
     favicon: img/favicon.png
   palette:
     - scheme: seta
@@ -66,30 +72,35 @@ markdown_extensions:
     - footnotes
     - md_in_html
     - tables
-    
+
 extra:
-  seta_url: !ENV DOCS_HOST
-  customer:
-    name: Your name here
-    web: !ENV [DOCS_HOST, 'https:localhost\']
-    salt: salt.example.com
+  homepage: /docs
+  setaUrls: 
+    home: /
+    apiCommunities: /seta-ui/api/v1/communities/doc
+    apiSeta: /seta-api/doc
+    docs: /docs
+    login: /login
+    auth_decode_Token: /authorization/v1/token_info
+    auth_Token: /authorization/v1/doc
+  setaNames:
+    homeName: Seta WebApp
+  seTALogo: material/home
   
 extra_css:
   - stylesheets/extra.css
  
 nav:
-  - What is SeTA: 
-    - SeTA: index.md
-  - Who should use it and why: 
-    - Who should use it: general/who_use_it_and_why.md   
+  #- SeTA: /
+  - What is SeTA: index.md
+  - Who should use it and why: general/who_use_it_and_why.md   
   - Using SeTA:
     - Setup: user-guide/setup.md
     - Web App:
       - Search: 
         - Methodology: user-guide/methodology.md
-        - Web App: user-guide/web-app.md
-      - Communities: 
-        - General: user-guide/communities.md
+        - Web Interface: user-guide/web-app.md
+      - Communities: user-guide/communities.md
     - APIs: 
       - SeTA API: apis/seta_api/seta_api.md
       - Communities API: apis/communities_api/seta_api_communities.md
@@ -97,7 +108,6 @@ nav:
     - Docker: setup/docker-architecture.md
     - Deployment: setup/deployment.md 
     - Release: setup/release-notes.md
-  - FAQS: faqs/faqs.md
   - License: license/license_v1.md
   
 

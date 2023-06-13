@@ -36,3 +36,12 @@ export const createCommunityInvite = async (id?: string, values?: CreateInvitati
       }
     })
 }
+
+export const pendingInvites = async (): Promise<InviteResponse[]> => {
+  const { data } = await community_api.get<InviteResponse[]>(`/invites/`)
+
+  return data
+}
+
+export const useAllPendingInvites = () =>
+  useQuery({ queryKey: cacheKey(), queryFn: () => pendingInvites() })

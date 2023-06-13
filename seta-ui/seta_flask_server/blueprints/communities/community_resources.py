@@ -13,9 +13,10 @@ from seta_flask_server.infrastructure.scope_constants import ResourceScopeConsta
 from seta_flask_server.infrastructure.clients.private_api_client import PrivateResourceClient
 
 from http import HTTPStatus
-from .models.resource_dto import (new_resource_parser, resource_model, resource_limits_model)
+from .models.resource_dto import (new_resource_parser, resource_model, resource_limits_model, user_info_model)
 
 community_resources_ns = Namespace('Community Resources', description='SETA Community Resources')
+community_resources_ns.models[user_info_model.name] = user_info_model
 community_resources_ns.models[resource_limits_model.name] = resource_limits_model
 community_resources_ns.models[resource_model.name] = resource_model
 
@@ -39,12 +40,19 @@ class CommunityResourceList(Resource):
     @community_resources_ns.marshal_list_with(resource_model, mask="*")
     @auth_validator()    
     def get(self, community_id):
-        '''Retrieve resources'''
+        '''Retrieve community resources, available to any user'''
 
         if not self.communitiesBroker.community_id_exists(community_id):
             abort(HTTPStatus.NOT_FOUND)
 
-        return self.resourcesBroker.get_all_by_community_id(community_id)
+        resources = self.resourcesBroker.get_all_by_community_id(community_id)
+
+        for resource in resources:
+            creator = self.usersBroker.get_user_by_id(resource.creator_id, load_scopes=False)
+            if creator:
+                resource.creator = creator.user_info
+
+        return resources
 
     @community_resources_ns.doc(description='Create new resource.',        
         responses={int(HTTPStatus.CREATED): "Added resource.", 
@@ -54,7 +62,7 @@ class CommunityResourceList(Resource):
     @community_resources_ns.expect(new_resource_parser)
     @auth_validator()
     def post(self, community_id):
-        '''Create resource'''
+        '''Create resource, available to community members'''
         
         identity = get_jwt_identity()
         auth_id = identity["user_id"]

@@ -7,6 +7,7 @@ import {
   useResourceID
 } from '../../../../../../api/resources/manage/my-resource'
 import ComponentLoading from '../../../common/ComponentLoading'
+import { useCurrentUserPermissions } from '../../scope-context'
 
 const useStyles = createStyles(theme => ({
   title: {
@@ -40,12 +41,17 @@ const ViewMyResource = () => {
 
   const { data, isLoading } = useResourceID(resourceId)
   const [rows, setRows] = useState(data)
+  const { resource_scopes } = useCurrentUserPermissions()
+  const [scopes, setScopes] = useState<string[] | undefined>([])
 
   useEffect(() => {
     if (data) {
       setRows(data)
+      const findResource = resource_scopes?.filter(scope => scope.resource_id === resourceId)
+
+      findResource ? setScopes(findResource[0]?.scopes) : setScopes([])
     }
-  }, [data, rows])
+  }, [data, rows, resource_scopes, resourceId])
 
   if (isLoading || !data) {
     return <ComponentLoading />
@@ -93,16 +99,20 @@ const ViewMyResource = () => {
               </tbody>
             </Table>
             <Group spacing={30} position="right">
-              <Button color="red" onClick={deleteResource}>
-                Delete
-              </Button>
-              <Link
-                className={classes.link}
-                to={`/my-communities/${rows?.community_id}/${rows?.resource_id}/update`}
-                replace={true}
-              >
-                <Button>Update</Button>
-              </Link>
+              {scopes?.includes('/seta/resource/data/delete') ? (
+                <Button color="red" onClick={deleteResource}>
+                  Delete
+                </Button>
+              ) : null}
+              {scopes?.includes('/seta/resource/edit') ? (
+                <Link
+                  className={classes.link}
+                  to={`/my-communities/${rows?.community_id}/${rows?.resource_id}/update`}
+                  replace={true}
+                >
+                  <Button>Update</Button>
+                </Link>
+              ) : null}
             </Group>
           </Card>
         </Grid.Col>

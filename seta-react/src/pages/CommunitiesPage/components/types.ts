@@ -12,6 +12,11 @@ export interface RowData {
   data_type: string
   membership: string
   status: string
+  creator: {
+    user_id: string
+    full_name: string
+    email: string
+  }
 }
 
 export interface TableSortProps {
@@ -30,6 +35,12 @@ export const jobColors: Record<string, string> = {
   manager: 'cyan',
   viewer: 'pink',
   contributor: 'yellow'
+}
+
+export const statusColors: Record<string, string> = {
+  approved: 'blue',
+  rejected: 'pink',
+  pending: 'yellow'
 }
 
 export interface TableScrollAreaProps {

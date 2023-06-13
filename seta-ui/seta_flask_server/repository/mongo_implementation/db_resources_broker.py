@@ -7,7 +7,7 @@ from datetime import datetime
 import pytz
 
 from seta_flask_server.repository.interfaces.resources_broker import IResourcesBroker
-from seta_flask_server.repository.models import ResourceModel, ResourceLimitsModel, EntityScope
+from seta_flask_server.repository.models import ResourceModel, ResourceLimitsModel, UserProfileResources
 
 from seta_flask_server.infrastructure.constants import (ResourceStatusConstants, CommunityStatusConstants)
 
@@ -94,8 +94,15 @@ class ResourcesBroker(implements(IResourcesBroker)):
                 
         #get active resources
         filter = {"community_id": {"$in": community_ids}, "status": ResourceStatusConstants.Active, "community_id":{"$exists" : 1}}        
-        resources = self.collection.find(filter)
+
+        profile =  self.db["user-profiles"].find_one({"user_id": user_id, 
+                                                     "profile": UserProfileResources.UNSEARCHABLE_PROFILE_ID}
+                                                    )
+
+        if profile and "resources" in profile:            
+            filter["resource_id"] = {"$nin": profile["resources"]}
         
+        resources = self.collection.find(filter)
         return [ResourceModel.from_db_json(c) for c in resources]
 
     def get_all_by_community_id(self, community_id:str) -> list[ResourceModel]:

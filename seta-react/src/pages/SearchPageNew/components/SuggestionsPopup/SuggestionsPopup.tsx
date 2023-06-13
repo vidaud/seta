@@ -5,6 +5,8 @@ import { IconX } from '@tabler/icons-react'
 
 import { useSearch } from '~/pages/SearchPageNew/contexts/search-context'
 import { useSearchInput } from '~/pages/SearchPageNew/contexts/search-input-context'
+import type { EnrichedStatus } from '~/pages/SearchPageNew/types/search'
+import { EnrichType } from '~/pages/SearchPageNew/types/search'
 import { TermsView } from '~/pages/SearchPageNew/types/terms-view'
 
 import * as S from './styles'
@@ -15,20 +17,24 @@ import TermsSuggestions from '../TermsSuggestions'
 
 type Props = {
   opened?: boolean
+  enrichQuery?: boolean
   onOpenChange?: PopoverProps['onChange']
+  onEnrichToggle?: (status: EnrichedStatus) => void
 }
 
 const TOKEN_RESET_DELAY = 100
 
-const SuggestionsPopup = ({ opened, onOpenChange }: Props) => {
+const SuggestionsPopup = ({ opened, enrichQuery, onOpenChange, onEnrichToggle }: Props) => {
   const [popupOpen, setPopupOpen] = useState(opened ?? false)
   const [termsView, setTermsView] = useState(TermsView.TermsClusters)
-  const [enrichQuery, setEnrichQuery] = useState(false)
 
   const { setCurrentToken, onSearch } = useSearch()
   const { inputValue, setInputValue } = useSearchInput()
 
   const closingTimeoutRef = useRef<number | null>(null)
+
+  const enrichType =
+    termsView === TermsView.TermsClusters ? EnrichType.Ontology : EnrichType.Similar
 
   // Delay the token reset to avoid it disappearing before the animation ends when the popup is closing
   useEffect(() => {
@@ -51,6 +57,16 @@ const SuggestionsPopup = ({ opened, onOpenChange }: Props) => {
     }
   }, [inputValue])
 
+  // Retrigger the event when the view changes
+  useEffect(() => {
+    if (enrichQuery) {
+      onEnrichToggle?.({
+        enriched: true,
+        type: enrichType
+      })
+    }
+  }, [enrichType, enrichQuery, onEnrichToggle])
+
   const handlePopupChange = (value: boolean) => {
     setPopupOpen(value)
     onOpenChange?.(value)
@@ -71,7 +87,10 @@ const SuggestionsPopup = ({ opened, onOpenChange }: Props) => {
   }
 
   const handleEnrichToggle = () => {
-    setEnrichQuery(value => !value)
+    onEnrichToggle?.({
+      enriched: !enrichQuery,
+      type: enrichType
+    })
   }
 
   const handleSearch = () => {

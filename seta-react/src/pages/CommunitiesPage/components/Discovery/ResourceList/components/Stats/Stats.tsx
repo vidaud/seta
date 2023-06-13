@@ -26,7 +26,7 @@ const useStyles = createStyles(theme => ({
   }
 }))
 
-const Stats = ({ resourceNumber, memberNumber }) => {
+const Stats = ({ resourceNumber }) => {
   const { classes } = useStyles()
 
   return (
@@ -37,20 +37,9 @@ const Stats = ({ resourceNumber, memberNumber }) => {
 
       <Group position="apart" mt="md">
         <Container size="xs" px="xs" className={classes.container}>
-          <Text className={classes.text}>Members</Text>
-          <Group position="right">
-            <Tooltip label={`This community has already ` + memberNumber?.length + ` members`}>
-              <Button>{memberNumber?.length}</Button>
-            </Tooltip>
-          </Group>
-        </Container>
-      </Group>
-
-      <Group position="apart" mt="md">
-        <Container size="xs" px="xs" className={classes.container}>
           <Text className={classes.text}>Resources</Text>
           <Group position="right">
-            <Tooltip label={`This community has already ` + memberNumber?.length + ` resources`}>
+            <Tooltip label={`This community has already ` + resourceNumber?.length + ` resources`}>
               <Button>{resourceNumber?.length}</Button>
             </Tooltip>
           </Group>
