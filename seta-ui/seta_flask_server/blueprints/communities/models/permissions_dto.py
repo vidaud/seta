@@ -11,17 +11,6 @@ user_scopes_model = Model("User Scope", {
     "scopes": fields.List(fields.String(description="Scope"))
 })
 
-def community_scope_list(value):
-    '''Validation method for scope value in list'''    
-    value = value.lower()
-    
-    if value not in CommunityScopeConstants.EditList:
-        raise ValueError(
-            "Community scope has to be one of '" + str(CommunityScopeConstants.EditList) + "'."
-        )
-        
-    return value
-
 community_scopes_parser = RequestParser(bundle_errors=True)
 community_scopes_parser.add_argument("scope", 
                                   location="form",
@@ -29,7 +18,7 @@ community_scopes_parser.add_argument("scope",
                                   action='append',
                                   case_sensitive=False,
                                   choices=CommunityScopeConstants.EditList,
-                                  help="Community scopes list")
+                                  help="Community scopes, a list of " + str(CommunityScopeConstants.EditList))
 
 
 def resource_scope_list(value):
@@ -50,4 +39,4 @@ resource_scopes_parser.add_argument("scope",
                                   action='append',
                                   case_sensitive=False,
                                   choices=ResourceScopeConstants.EditList,
-                                  help=f"Resource scopes list")
+                                  help=f"Resource scopes list, a list of " + str(ResourceScopeConstants.EditList))

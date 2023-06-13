@@ -24,8 +24,8 @@ update_invite_parser.add_argument("status",
                                   required=True,
                                   nullable=False,
                                   case_sensitive=False,
-                                  choices=InviteStatusConstants.List,
-                                  help=f"Status, one of {InviteStatusConstants.EditList}")
+                                  choices=InviteStatusConstants.EditList,
+                                  help=f"Invite status")
 
 invite_model = Model("Invite",
         {

@@ -46,8 +46,10 @@ class RsaKey(Resource):
         security='CSRF')
     @rsa_ns.marshal_list_with(rsa_pair_model, mask="*")
     @jwt_required()
-    def post(self):
+    def post(self):        
         """Generate a new public/private keys pair for the user."""
+
+        #TODO: set @jwt_required(fresh=True) forcing a new JWT marked with fresh
 
         identity = get_jwt_identity() 
         keyPair = RSA.generate(bits=4096)
@@ -74,6 +76,8 @@ class RsaKey(Resource):
     @jwt_required()
     def delete(self):
         '''Delete the public RSA key'''
+
+        #TODO: set @jwt_required(fresh=True) forcing a new JWT marked with fresh
         
         identity = get_jwt_identity()
         self.rsaKeysBroker.delete_by_user_id(identity["user_id"])

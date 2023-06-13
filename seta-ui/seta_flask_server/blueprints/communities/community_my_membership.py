@@ -61,16 +61,15 @@ class MyMembership(Resource):
         
         return membership
     
-    @my_membership_ns.doc(description='Remove membership',        
+    @my_membership_ns.doc(description='Remove my membership',        
     responses={
                 int(HTTPStatus.OK): "Membership removed.",
-                int(HTTPStatus.NOT_FOUND): "Membership not found.",
-                int(HTTPStatus.CONFLICT): "Cannot remove the only owner."
+                int(HTTPStatus.NOT_FOUND): "Membership not found."
                 },
     security='CSRF')
     @auth_validator()
     def delete(self, community_id):
-        '''Remove a membership, available to any community member'''
+        '''Remove my membership, available to any community member'''
         
         identity = get_jwt_identity()
         auth_id = identity["user_id"]
@@ -82,19 +81,6 @@ class MyMembership(Resource):
         
         if not self.membershipsBroker.membership_exists(community_id, auth_id):
             abort(HTTPStatus.NOT_FOUND)
-
-        #verify owner scope for the target user_id
-        scopes = self.permissionsBroker.get_user_community_scopes_by_id(user_id = auth_id, community_id = community_id)
-        if any(cs.scope == CommunityScopeConstants.Owner for cs in scopes):
-
-            #only an owner can remove another owner (including himself)
-            if not user.has_community_scope(id=community_id, scope=CommunityScopeConstants.Owner):
-                abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
-
-            #check if it's not the only owner of this community
-            community_scopes = self.permissionsBroker.get_all_community_scopes(community_id)
-            if not any(cs.user_id != auth_id and cs.scope == CommunityScopeConstants.Owner for cs in community_scopes):
-                abort(HTTPStatus.CONFLICT, "Cannot remove the only owner for this community.")
                     
         try:                
             self.membershipsBroker.delete_membership(community_id = community_id, user_id = auth_id)

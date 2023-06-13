@@ -114,7 +114,7 @@ class MyCommunityInvites(Resource):
     @invite_ns.marshal_list_with(invite_model, mask="*")
     @auth_validator()    
     def get(self):
-        '''Retrieve my pending invites, available to any user'''
+        '''Retrieve pending invites sent to the authenticated user, available to any user'''
         
         identity = get_jwt_identity()
         auth_id = identity["user_id"]

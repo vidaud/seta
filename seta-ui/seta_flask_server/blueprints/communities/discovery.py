@@ -23,7 +23,7 @@ discovery_ns.models[discover_resource_model.name] = discover_resource_model
 
 @discovery_ns.route('/communities', endpoint="discover_community_list", methods=['GET'])
 class DiscoverCommunities(Resource):
-    '''Discover communities and resources, accesbile to any user'''
+    '''Discover communities and resources, available to any user'''
     
     @inject
     def __init__(self, communitiesBroker: ICommunitiesBroker, 
@@ -44,7 +44,7 @@ class DiscoverCommunities(Resource):
     @discovery_ns.marshal_list_with(discover_community_model, mask="*", skip_none=True)
     @jwt_required()    
     def get(self):
-        '''Discover communities, accesbile to any user'''   
+        '''Discover communities, available to any user'''   
         identity = get_jwt_identity()
         user_id = identity["user_id"]
         now = datetime.now(tz=pytz.utc)
@@ -143,7 +143,7 @@ class DiscoverResources(Resource):
     @discovery_ns.marshal_list_with(discover_resource_model, mask="*", skip_none=True)
     @jwt_required()    
     def get(self):
-        '''Discover resources, accesible to any user'''
+        '''Discover resources, available to any user'''
         
         identity = get_jwt_identity()
         user_id = identity["user_id"]

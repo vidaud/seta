@@ -1,7 +1,7 @@
 from seta_flask_server.repository.models import EntityScope
 from seta_flask_server.repository.interfaces import IUsersBroker
 
-def create_user_scopes(scopes: list[EntityScope], usersBroker: IUsersBroker) -> list[dict]:
+def group_user_scopes(scopes: list[EntityScope], usersBroker: IUsersBroker) -> list[dict]:
     user_scopes = []
     for scope in scopes:
         entry = next((us for us in user_scopes if us["user_id"] == scope.user_id), None)

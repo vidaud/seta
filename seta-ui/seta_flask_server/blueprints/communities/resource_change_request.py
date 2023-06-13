@@ -41,7 +41,11 @@ class ResourceChangeRequestList(Resource):
     @resource_change_request_ns.marshal_list_with(change_request_model, mask="*", skip_none=True)
     @auth_validator()
     def get(self):
-        '''Retrieve all pending change requests for resources, available to sysadmins'''
+        '''
+        Retrieve all pending change requests for resources, available to sysadmins
+
+        Permissions: either scope "/seta/resource/change_request/approve" or "Administrator" role
+        '''
         
         identity = get_jwt_identity()
         auth_id = identity["user_id"]
@@ -87,13 +91,16 @@ class ResourceCreateChangeRequest(Resource):
     @resource_change_request_ns.doc(description='Add new change request for a resource field.',        
         responses={int(HTTPStatus.CREATED): "Added new change request.", 
                    int(HTTPStatus.CONFLICT): "Resource has already a pending change request for this field",
-                   int(HTTPStatus.FORBIDDEN): "Insufficient rights, scope 'resource/edit' or 'community/manager' required",
+                   int(HTTPStatus.FORBIDDEN): "Insufficient rights",
                    int(HTTPStatus.BAD_REQUEST): "Filed name or input values are wrong"},
         security='CSRF')
     @resource_change_request_ns.expect(new_change_request_parser)
     @auth_validator()
     def post(self, resource_id):
-        '''Create a resource change request, available to resource editors'''
+        '''
+        Create change request for a resource, available to resource editors
+        Permission scope: "/seta/resource/edit"
+        '''
         
         identity = get_jwt_identity()
         auth_id = identity["user_id"]
@@ -147,13 +154,17 @@ class ResourceCreateChangeRequest(Resource):
     @resource_change_request_ns.doc(description='Retrieve all change requests for a resource',
     responses={int(HTTPStatus.OK): "'Retrieved change requests.",
                int(HTTPStatus.NOT_FOUND): "Request not found.",
-               int(HTTPStatus.FORBIDDEN): "Insufficient rights, scope 'community/manager' or 'community/owner' or 'resource/edit' required"
+               int(HTTPStatus.FORBIDDEN): "Insufficient rights"
                },
     security='CSRF')
     @resource_change_request_ns.marshal_list_with(change_request_model, mask="*", skip_none=True)
     @auth_validator()    
     def get(self, resource_id):
-        '''Retrieve all change requests for a resource, available to community managers and resource editors'''
+        '''
+        Retrieve all change requests for a resource, available to community managers and resource editors
+
+        Permission scopes: any of "/seta/community/owner", "/seta/community/manager" or "/seta/resource/edit"
+        '''
         
         identity = get_jwt_identity()
         auth_id = identity["user_id"]
@@ -207,7 +218,11 @@ class ResourceChangeRequest(Resource):
     @resource_change_request_ns.marshal_with(change_request_model, mask="*")
     @auth_validator()    
     def get(self, resource_id, request_id):
-        '''Retrieve resource request, available to syadmins and initiator'''
+        '''
+        Retrieve resource request, available to syadmins and initiator
+
+        Permissions: scope '/seta/resource/change_request/approve' or "Administrator" role or requested_by == authenticated_id
+        '''
         
         identity = get_jwt_identity()
         auth_id = identity["user_id"]
@@ -249,7 +264,11 @@ class ResourceChangeRequest(Resource):
     @resource_change_request_ns.expect(update_change_request_parser)
     @auth_validator()
     def put(self, resource_id, request_id):
-        '''Update a change request for resource, available to sysadmins'''
+        '''
+        Update a change request for resource, available to sysadmins
+
+        Permissions: scope '/seta/resource/change_request/approve' or "Administrator" role
+        '''
         
         identity = get_jwt_identity()
         auth_id = identity["user_id"]

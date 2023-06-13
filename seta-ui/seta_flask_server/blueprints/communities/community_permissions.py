@@ -6,37 +6,44 @@ from http import HTTPStatus
 from injector import inject
 
 from seta_flask_server.infrastructure.decorators import auth_validator
-from seta_flask_server.repository.interfaces import IUsersBroker, IUserPermissionsBroker, ICommunitiesBroker
+from seta_flask_server.repository.interfaces import IUsersBroker, IUserPermissionsBroker, ICommunitiesBroker, IMembershipsBroker
 from seta_flask_server.infrastructure.scope_constants import CommunityScopeConstants
 
 from seta_flask_server.blueprints.communities.models.permissions_dto import user_scopes_model, user_info_model, community_scopes_parser
-from .helpers.scopes_helper import create_user_scopes
+from .helpers.scopes_helper import group_user_scopes
 
 permissions_ns = Namespace('Community User Permissions', validate=True, description='SETA Community User Permissions')
 permissions_ns.models[user_info_model.name] = user_info_model
 permissions_ns.models[user_scopes_model.name] = user_scopes_model
 
 @permissions_ns.route('/community/<string:community_id>', endpoint="community_permission_list", methods=['GET'])
-@permissions_ns.param("community_id", "Community id")
+@permissions_ns.param("community_id", "Community identifier")
 class CommunityPermissionList(Resource):
-    '''Get a list of all community permissions'''
+    ''' Get the community permissions for all members.'''
     
     @inject
-    def __init__(self, usersBroker: IUsersBroker, permissionsBroker: IUserPermissionsBroker, communitiesBroker: ICommunitiesBroker, api=None, *args, **kwargs):
+    def __init__(self, usersBroker: IUsersBroker, 
+                 permissionsBroker: IUserPermissionsBroker, 
+                 communitiesBroker: ICommunitiesBroker,                  
+                 api=None, *args, **kwargs):
         self.usersBroker = usersBroker
         self.permissionsBroker = permissionsBroker
-        self.communitiesBroker = communitiesBroker
+        self.communitiesBroker = communitiesBroker        
         
         super().__init__(api, *args, **kwargs)
 
-    @permissions_ns.doc(description='Retrieve user-scope list for this community.',
+    @permissions_ns.doc(description='Retrieve full user-scope list for this community.',
         responses={int(HTTPStatus.OK): "'Retrieved permissions list.",
                    int(HTTPStatus.NOT_FOUND): "Community not found"},
         security='CSRF')
     @permissions_ns.marshal_list_with(user_scopes_model, mask="*")
     @auth_validator()    
     def get(self, community_id):
-        '''Retrieve all community user permissions, available to community managers'''
+        '''
+        Retrieve community permissions for all members, available to community managers.
+
+        Permission scopes: any of "/seta/community/manager", "/seta/community/owner"
+        '''
         
         if not self.communitiesBroker.community_id_exists(community_id):
             abort(HTTPStatus.NOT_FOUND)
@@ -53,31 +60,40 @@ class CommunityPermissionList(Resource):
 
         scopes = self.permissionsBroker.get_all_community_scopes(community_id=community_id)
         
-        return create_user_scopes(scopes=scopes, usersBroker=self.usersBroker)
+        return group_user_scopes(scopes=scopes, usersBroker=self.usersBroker)
 
 
 @permissions_ns.route('/community/<string:community_id>/user/<string:user_id>', endpoint="community_user_permissions", methods=['GET','POST'])
-@permissions_ns.param("community_id", "Community id")
-@permissions_ns.param("user_id", "User id")
+@permissions_ns.param("community_id", "Community identifier")
+@permissions_ns.param("user_id", "User identifier")
 class CommunityUserPermissions(Resource):
     '''Get a list of community permissions for one user and expose POST for the replace of user scopes'''
     
     @inject
-    def __init__(self, usersBroker: IUsersBroker, permissionsBroker: IUserPermissionsBroker, communitiesBroker: ICommunitiesBroker, api=None, *args, **kwargs):
+    def __init__(self, usersBroker: IUsersBroker, 
+                 permissionsBroker: IUserPermissionsBroker, 
+                 communitiesBroker: ICommunitiesBroker, 
+                 membershipsBroker: IMembershipsBroker,
+                 api=None, *args, **kwargs):
         self.usersBroker = usersBroker
         self.permissionsBroker = permissionsBroker
         self.communitiesBroker = communitiesBroker
+        self.membershipsBroker = membershipsBroker
         
         super().__init__(api, *args, **kwargs)
 
-    @permissions_ns.doc(description='Retrieve user scopes for a community.',
+    @permissions_ns.doc(description='Retrieve community permissions for a member.',
         responses={int(HTTPStatus.OK): "'Retrieved permissions list.",
                    int(HTTPStatus.NOT_FOUND): "Community or user not found"},
         security='CSRF')
     @permissions_ns.marshal_with(user_scopes_model, mask="*")
     @auth_validator()    
     def get(self, community_id, user_id):
-        '''Retrieve user permissions for community, available to community managers'''
+        '''
+        Retrieve community permissions for a member, available to community managers.
+
+        Permission scopes: any of "/seta/community/manager", "/seta/community/owner"
+        '''
         
         if not self.communitiesBroker.community_id_exists(community_id):
             abort(HTTPStatus.NOT_FOUND, "Community id not found")
@@ -96,7 +112,7 @@ class CommunityUserPermissions(Resource):
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
 
         scopes = self.permissionsBroker.get_user_community_scopes_by_id(community_id=community_id, user_id=user_id)
-        list =  create_user_scopes(scopes=scopes, usersBroker=self.usersBroker)
+        list =  group_user_scopes(scopes=scopes, usersBroker=self.usersBroker)
 
         #it should be only one entry
         if len(list) > 0:
@@ -104,23 +120,32 @@ class CommunityUserPermissions(Resource):
 
         return None
 
-    @permissions_ns.doc(description='Replace all user permissions for the community',        
+    @permissions_ns.doc(description='Manage community permissions for a member',        
     responses={
                 int(HTTPStatus.OK): "User permissions updated.", 
-                int(HTTPStatus.FORBIDDEN): "Insufficient rights, scope 'community/edit' required",
-                int(HTTPStatus.NOT_FOUND): "Community or user not found."
+                int(HTTPStatus.FORBIDDEN): "Insufficient rights",
+                int(HTTPStatus.NOT_FOUND): "Community or user not found.",
+                int(HTTPStatus.BAD_REQUEST): "User have to be a member of the community.",
                 },
     security='CSRF')
     @permissions_ns.expect(community_scopes_parser)
     @auth_validator()
     def post(self, community_id, user_id):
-        '''Add/Replace user permissions, available to community managers'''
+        '''
+        Manage community permissions for a member, available to community managers
+        
+        Permission scopes: any of "/seta/community/manager", "/seta/community/owner"
+        Only an owner can edit the permissions of another owner!
+        '''
 
         if not self.communitiesBroker.community_id_exists(community_id):
             abort(HTTPStatus.NOT_FOUND, "Community id not found")
             
         if not self.usersBroker.user_uid_exists(user_id):
             abort(HTTPStatus.NOT_FOUND, "User id not found")
+
+        if not self.membershipsBroker.membership_exists(community_id=community_id, user_id=user_id):
+            abort(HTTPStatus.BAD_REQUEST, "User have to be a member of the community!")
         
         identity = get_jwt_identity()
         auth_id = identity["user_id"]   
@@ -137,7 +162,7 @@ class CommunityUserPermissions(Resource):
 
         #verify owner scope in the list
         if scopes and CommunityScopeConstants.Owner in scopes:
-            #only an owner can add another owner
+            #only an owner can edit permissions for another owner
             if not user.has_community_scope(id=community_id, scope=CommunityScopeConstants.Owner):
                 abort(HTTPStatus.FORBIDDEN, "Insufficient rights, you must be an owner of the community.")
 
@@ -147,4 +172,3 @@ class CommunityUserPermissions(Resource):
         response.status_code = HTTPStatus.OK
         
         return response
-        
