@@ -130,7 +130,11 @@ class MembershipManagement(Resource):
     @membership_ns.marshal_with(membership_model, mask="*")
     @auth_validator()
     def get(self, community_id, user_id):
-        '''Retrieve membership, available to community managers'''
+        '''
+        Retrieve membership, available to community managers
+        
+        Permission scopes: any of "/seta/community/owner", "/seta/community/manager"
+        '''
         
         identity = get_jwt_identity()
         auth_id = identity["user_id"]
@@ -163,7 +167,12 @@ class MembershipManagement(Resource):
     @membership_ns.expect(update_membership_parser)
     @auth_validator()
     def put(self, community_id, user_id):
-        '''Update a community membership, available to community managers'''
+        '''
+        Update a community membership, available to community managers
+
+        Permission scopes: any of "/seta/community/owner", "/seta/community/manager"
+        Only an owner can edit the membership of another owner!
+        '''
         
         identity = get_jwt_identity()
         auth_id = identity["user_id"]
@@ -181,8 +190,14 @@ class MembershipManagement(Resource):
         
         membership_dict = update_membership_parser.parse_args()
         
-        try:   
-            #TODO: check the owner role?
+        try:
+             #verify owner scope for the target user_id
+            scopes = self.permissionsBroker.get_user_community_scopes_by_id(user_id=user_id, community_id=community_id)
+            if any(cs.scope == CommunityScopeConstants.Owner for cs in scopes):
+                #only an owner can edit another owner (including himself)
+                if not user.has_community_scope(id=community_id, scope=CommunityScopeConstants.Owner):
+                    abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
+
             model = MembershipModel(community_id=community_id, user_id=user_id, 
                                     role=membership_dict["role"], status=membership_dict["status"])
             
@@ -207,7 +222,12 @@ class MembershipManagement(Resource):
     security='CSRF')
     @auth_validator()
     def delete(self, community_id, user_id):
-        '''Remove a membership, available to community managers'''
+        '''
+        Remove a membership, available to community managers.
+
+        Permission scopes: any of "/seta/community/owner", "/seta/community/manager"
+        Only an owner can remove the membership of another owner!
+        '''
         
         identity = get_jwt_identity()
         auth_id = identity["user_id"]
@@ -230,10 +250,13 @@ class MembershipManagement(Resource):
             if not user.has_community_scope(id=community_id, scope=CommunityScopeConstants.Owner):
                 abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
 
+            '''
+            #!not necessary, sysadmin can manage orphan communities
             #check if it's not the only owner of this community
             community_scopes = self.permissionsBroker.get_all_community_scopes(community_id=community_id)
             if not any(cs.user_id != user_id and cs.scope == CommunityScopeConstants.Owner for cs in community_scopes):
                 abort(HTTPStatus.CONFLICT, "Cannot remove the only owner for this community.")
+            '''
                     
         try:                
             self.membershipsBroker.delete_membership(community_id=community_id, user_id=user_id)

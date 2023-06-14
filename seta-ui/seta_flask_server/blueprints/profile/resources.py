@@ -18,7 +18,7 @@ from .models.resources_dto import resource_model, resources_parser
 resources_ns = Namespace('Restricted resources', validate=True, description='Manage unsearchable resources')
 resources_ns.models[resource_model.name] = resource_model
 
-@resources_ns.route('/resources', endpoint="discover_community_list", methods=['GET','POST'])
+@resources_ns.route('/resources', endpoint="me_restricted_resources", methods=['GET','POST'])
 class Unsearchables(Resource):
     '''User unsearchables'''
 
@@ -60,13 +60,16 @@ class Unsearchables(Resource):
 
         return resources
     
-    @resources_ns.doc(description='Update restricted resources.',        
+    @resources_ns.doc(description='Manage restricted resources for the authenticated user.',        
     responses={int(HTTPStatus.OK): "Restricted resources updated."},
     security='CSRF')
     @resources_ns.expect(resources_parser)
     @jwt_required()
     def post(self):
-        '''Create an application'''
+        '''
+        Manage restricted resources for the authenticated user.
+        Send empty array for deletion.
+        '''
         
         identity = get_jwt_identity()
         user_id = identity["user_id"]

@@ -1,23 +1,27 @@
+from random import choices
 from flask_restx import Model, fields
 from flask_restx.reqparse import RequestParser
 
-from seta_flask_server.infrastructure.constants import CommunityStatusConstants, RequestStatusConstants
+from seta_flask_server.infrastructure.constants import CommunityStatusConstants, RequestStatusConstants, CommunityRoleConstants
 from .models_dto import (user_info_model)
 
 update_membership_parser = RequestParser(bundle_errors=True)
+
 update_membership_parser.add_argument("role", 
                                   location="form",
                                   required=True,
                                   nullable=False,
                                   case_sensitive=False,
+                                  choices=CommunityRoleConstants.List,
                                   help="Membership role")
+
 update_membership_parser.add_argument("status",
                                   location="form",
                                   required=True,
                                   nullable=False,
                                   case_sensitive=False,
                                   choices=CommunityStatusConstants.List,
-                                  help=f"Status, one of {CommunityStatusConstants.List}")
+                                  help=f"Mmembership status")
 
 
 membership_model = Model("Membership",
@@ -25,7 +29,7 @@ membership_model = Model("Membership",
             "community_id": fields.String(description="Community identifier"),
             "user_id": fields.String(description="User identifier"),
             "user_info": fields.Nested(model=user_info_model),
-            "role": fields.String(description="Membership role desription"),
+            "role": fields.String(description="Membership role description", enum=CommunityRoleConstants.List),
             "join_date": fields.DateTime(description="Community join date", attribute="join_date"),
             "status": fields.String(description="The membership status", enum=CommunityStatusConstants.List)
         })

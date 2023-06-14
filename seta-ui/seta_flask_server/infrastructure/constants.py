@@ -52,6 +52,8 @@ class CommunityRoleConstants:
     ResourceCreator = "ResourceCreator"
     Member = "CommunityMember"
     
+    List = [Owner, Manager, ResourceCreator, Member]
+    
 class CommunityRequestFieldConstants:
     Membership = "membership"
     List = [Membership] 

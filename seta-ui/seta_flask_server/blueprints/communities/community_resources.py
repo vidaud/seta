@@ -54,15 +54,19 @@ class CommunityResourceList(Resource):
 
         return resources
 
-    @community_resources_ns.doc(description='Create new resource.',        
+    @community_resources_ns.doc(description='Create resource.',        
         responses={int(HTTPStatus.CREATED): "Added resource.", 
                    int(HTTPStatus.NOT_FOUND): "Community not found",
-                   int(HTTPStatus.FORBIDDEN): "Insufficient rights, scope 'resource/create' required"},
+                   int(HTTPStatus.FORBIDDEN): "Insufficient rights"},
         security='CSRF')
     @community_resources_ns.expect(new_resource_parser)
     @auth_validator()
     def post(self, community_id):
-        '''Create resource, available to community members'''
+        '''
+        Create resource, available to community members.
+
+        Permission scope: "/seta/resource/create"
+        '''
         
         identity = get_jwt_identity()
         auth_id = identity["user_id"]
@@ -72,7 +76,7 @@ class CommunityResourceList(Resource):
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
 
         if not self.communitiesBroker.community_id_exists(community_id):
-            abort(HTTPStatus.NOT_FOUND)
+            abort(HTTPStatus.NOT_FOUND, "Community id not found!")
 
         if not user.has_community_scope(id=community_id, scope=CommunityScopeConstants.CreateResource):
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")        

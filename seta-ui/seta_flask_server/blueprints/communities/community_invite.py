@@ -39,7 +39,11 @@ class CommunityCreateInvites(Resource):
     @community_invite_ns.marshal_list_with(invite_model, mask="*")
     @auth_validator()    
     def get(self, community_id):
-        '''Retrieve pending invites, available to community managers'''
+        '''
+        Retrieve pending invites sent by any community manager, available to community managers
+
+        Permission scopes: any of "/seta/community/invite", "/seta/community/manager", "/seta/community/owner"
+        '''
         
         identity = get_jwt_identity()
         auth_id = identity["user_id"]
@@ -48,7 +52,7 @@ class CommunityCreateInvites(Resource):
         if user is None or user.is_not_active():
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
 
-        if not user.has_any_community_scope(id=community_id,scopes=[CommunityScopeConstants.SendInvite, CommunityScopeConstants.Manager]):
+        if not user.has_any_community_scope(id=community_id,scopes=[CommunityScopeConstants.SendInvite, CommunityScopeConstants.Manager, CommunityScopeConstants.Owner]):
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
             
         if not self.communitiesBroker.community_id_exists(community_id):
@@ -70,12 +74,16 @@ class CommunityCreateInvites(Resource):
     @community_invite_ns.doc(description='Create new invites.',        
         responses={int(HTTPStatus.CREATED): "Added invites.", 
                    int(HTTPStatus.NOT_FOUND): "Community not found",
-                   int(HTTPStatus.FORBIDDEN): "Insufficient rights, scope 'community/invite' required"},
+                   int(HTTPStatus.FORBIDDEN): "Insufficient rights"},
         security='CSRF')
     @community_invite_ns.expect(new_invite_parser)
     @auth_validator()
     def post(self, community_id):
-        '''Create invites, available to community managers'''
+        '''
+        Create invites, available to community managers.
+
+        Permission scope: "/seta/community/invite"
+        '''
         
         identity = get_jwt_identity()
         auth_id = identity["user_id"]
@@ -83,7 +91,7 @@ class CommunityCreateInvites(Resource):
         user = self.usersBroker.get_user_by_id(auth_id)
         if user is None or user.is_not_active():
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
-        if not user.has_any_community_scope(id=community_id,scopes=[CommunityScopeConstants.SendInvite, CommunityScopeConstants.Manager]):
+        if not user.has_community_scope(id=community_id,scope=CommunityScopeConstants.SendInvite):
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
             
         if not self.communitiesBroker.community_id_exists(community_id):

@@ -30,13 +30,13 @@ class UserResources(Resource):
         
         super().__init__(api, *args, **kwargs)
         
-    @resources_ns.doc(description='Retrieve list of accessible resources for this authorized user',        
+    @resources_ns.doc(description='Retrieve list of queryable resources for the authorized user',        
         responses={int(HTTPStatus.OK): "Retrieved resources."  },
         security='CSRF')
     @resources_ns.marshal_list_with(resource_model, mask="*")
     @auth_validator()
     def get(self):
-        '''Retrieve list of accessible resources, available to any user'''      
+        '''Retrieve list of queryable resources, available to any user'''      
         identity = get_jwt_identity()
         user_id = identity["user_id"]     
                   
@@ -83,12 +83,15 @@ class CommunityResource(Resource):
     @resources_ns.doc(description='Update resource fields',        
         responses={int(HTTPStatus.OK): "Resource updated.", 
                    int(HTTPStatus.NOT_FOUND): "Resource id not found.",
-                   int(HTTPStatus.FORBIDDEN): "Insufficient rights, scope 'resource/edit' required"},
+                   int(HTTPStatus.FORBIDDEN): "Insufficient rights"},
         security='CSRF')
     @resources_ns.expect(update_resource_parser)
     @auth_validator()
     def put(self, id):
-        '''Update a resource, available to resource editor and community managers'''
+        '''
+        Update a resource, available to resource editors
+        Permission scope: "/seta/resource/edit"
+        '''
         
         identity = get_jwt_identity()
         auth_id = identity["user_id"]
@@ -102,9 +105,7 @@ class CommunityResource(Resource):
         if resource is None:
             abort(HTTPStatus.NOT_FOUND)
 
-        community_scopes = [CommunityScopeConstants.Owner, CommunityScopeConstants.Manager]
-        if (not user.has_resource_scope(id=id, scope=ResourceScopeConstants.Edit) and 
-                not user.has_any_community_scope(id=resource.community_id, scopes=community_scopes)):
+        if not user.has_resource_scope(id=id, scope=ResourceScopeConstants.Edit):
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")      
         
         resource_dict = update_resource_parser.parse_args()
@@ -127,11 +128,14 @@ class CommunityResource(Resource):
     @resources_ns.doc(description='Delete all resource entries',
         responses={int(HTTPStatus.OK): "Resource deleted.", 
                     int(HTTPStatus.NOT_FOUND): "Resource id not found.",
-                   int(HTTPStatus.FORBIDDEN): "Insufficient rights, scope 'resource/edit' required"},
+                   int(HTTPStatus.FORBIDDEN): "Insufficient rights"},
         security='CSRF')
     @auth_validator()
     def delete(self, id):
-        '''Delete resource, available to resource editor and community managers'''
+        '''
+        Delete resource, available to resource editors
+        Permission scope: "/seta/resource/edit"
+        '''
         
         identity = get_jwt_identity()
         auth_id = identity["user_id"]
@@ -147,9 +151,7 @@ class CommunityResource(Resource):
         if resource is None:
             abort(HTTPStatus.NOT_FOUND)
 
-        community_scopes = [CommunityScopeConstants.Owner, CommunityScopeConstants.Manager]
-        if (not user.has_resource_scope(id=id, scope=ResourceScopeConstants.Edit) 
-                and not user.has_any_community_scope(id=resource.community_id, scopes=community_scopes)):
+        if not user.has_resource_scope(id=id, scope=ResourceScopeConstants.Edit):
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
         
         try:            

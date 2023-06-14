@@ -34,13 +34,17 @@ class MembersipRequestList(Resource):
         
     @membership_request_ns.doc(description='Retrieve pending request list for this community.',
         responses={int(HTTPStatus.OK): "'Retrieved request list.",
-                   int(HTTPStatus.FORBIDDEN): "Insufficient rights, scope '/seta/community/manager' required",
+                   int(HTTPStatus.FORBIDDEN): "Insufficient rights",
                    int(HTTPStatus.NOT_FOUND): "Community not found"},
         security='CSRF')
     @membership_request_ns.marshal_list_with(request_model, mask="*", skip_none = True)
     @auth_validator()    
     def get(self, community_id):
-        '''Retrieve pending community requests, available to community managers'''
+        '''
+        Retrieve pending community requests, available to community managers
+
+        Permission scopes: any of "/seta/community/owner", "/seta/community/manager" or "/seta/community/membership/approve"
+        '''
         
         identity = get_jwt_identity()
         auth_id = identity["user_id"]
@@ -78,7 +82,9 @@ class MembersipRequestList(Resource):
     @membership_request_ns.expect(new_request_parser)
     @auth_validator()
     def post(self, community_id):
-        '''Create a community membership request, available to any user'''
+        '''
+        Create a community membership request, available to any user
+        '''
         
         identity = get_jwt_identity()
         user_id = identity["user_id"]
@@ -123,7 +129,7 @@ class MembersipRequestList(Resource):
     
 @membership_request_ns.route('/<string:community_id>/requests/<string:user_id>', endpoint="request", methods=['GET', 'PUT'])
 @membership_request_ns.param("community_id", "Community identifier")
-@membership_request_ns.param("user_id", "User identifier")
+@membership_request_ns.param("user_id", "Requested by identifier")
 class MembershipRequest(Resource):
     """Handles HTTP requests to URL: /communities/{community_id}/requests/{user_id}."""
 
@@ -134,15 +140,19 @@ class MembershipRequest(Resource):
         
         super().__init__(api, *args, **kwargs)
         
-    @membership_request_ns.doc(description='Retrieve user request for the community.',
+    @membership_request_ns.doc(description='Retrieve a user request.',
     responses={int(HTTPStatus.OK): "'Retrieved user request.",
-               int(HTTPStatus.FORBIDDEN): "Insufficient rights, scope '/seta/community/manager' required",
+               int(HTTPStatus.FORBIDDEN): "Insufficient rights",
                int(HTTPStatus.NOT_FOUND): "Request not found."},
     security='CSRF')
     @membership_request_ns.marshal_with(request_model, mask="*", skip_none = True)
     @auth_validator()    
     def get(self, community_id, user_id):
-        '''Retrieve user request, available to community managers'''
+        '''
+        Retrieve a user request, available to community managers
+        
+        Permission scopes: any of "/seta/community/owner", "/seta/community/manager" or "/seta/community/membership/approve"
+        '''
                 
         if not self.membershipsBroker.request_exists(community_id=community_id, user_id=user_id):
             abort(HTTPStatus.NOT_FOUND)
@@ -175,7 +185,7 @@ class MembershipRequest(Resource):
     @membership_request_ns.doc(description='Approve/reject request',        
     responses={
                 int(HTTPStatus.OK): "Request updated.", 
-                int(HTTPStatus.FORBIDDEN): "Insufficient rights, scope 'membership/manager' required",
+                int(HTTPStatus.FORBIDDEN): "Insufficient rights",
                 int(HTTPStatus.NOT_FOUND): "Request not found.",
                 int(HTTPStatus.CONFLICT): "Request status already set"
                 },
@@ -183,7 +193,11 @@ class MembershipRequest(Resource):
     @membership_request_ns.expect(update_request_parser)
     @auth_validator()
     def put(self, community_id, user_id):
-        '''Approve/reject a membership request, available to community managers'''
+        '''
+        Approve/reject a membership request, available to community managers
+
+        Permission scopes: any of "/seta/community/owner", "/seta/community/manager" or "/seta/community/membership/approve"
+        '''
         
         identity = get_jwt_identity()
         auth_id = identity["user_id"]

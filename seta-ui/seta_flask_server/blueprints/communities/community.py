@@ -31,13 +31,13 @@ class CommunityList(Resource):
         
         super().__init__(api, *args, **kwargs)
     
-    @communities_ns.doc(description='Retrieve community list for this user.',        
+    @communities_ns.doc(description='Retrieve membersip communities for the authenticated user.',        
         responses={int(HTTPStatus.OK): "'Retrieved community list."},
         security='CSRF')
     @communities_ns.marshal_list_with(community_model, mask="*", skip_none=True)
     @auth_validator()    
     def get(self):
-        '''Retrive user communities, available for any user'''
+        '''Retrive the communities where this authenticated user is a member, available for any user'''
         
         identity = get_jwt_identity()
         user_id = identity["user_id"]        
@@ -60,7 +60,11 @@ class CommunityList(Resource):
     @communities_ns.expect(new_community_parser)
     @auth_validator()
     def post(self):
-        '''Create a community, available for any user'''
+        '''
+        Create a community, available for users with '/seta/community/create' scope.
+
+        Any new user added to the system have the '/seta/community/create' scope, but it can be revoked by the sysadmin.
+        '''
         
         identity = get_jwt_identity()
         user_id = identity["user_id"]
@@ -153,7 +157,11 @@ class Community(Resource):
     @communities_ns.expect(update_community_parser)
     @auth_validator()
     def put(self, id):
-        '''Update a community, available to community managers'''
+        '''
+            Update a community, available to community managers.
+
+            Permission scopes: either '/seta/community/owner' or '/seta/community/manager'
+        '''
         
         identity = get_jwt_identity()
         user_id = identity["user_id"]
@@ -194,7 +202,11 @@ class Community(Resource):
         security='CSRF')
     @auth_validator()
     def delete(self, id):
-        '''Delete community, available to community managers'''
+        '''
+        Delete community, available to community managers
+
+        Permission scope: '/seta/community/owner'
+        '''
         
         identity = get_jwt_identity()
         user_id = identity["user_id"]
