@@ -1,5 +1,16 @@
 import { useEffect, useState } from 'react'
-import { Button, Grid, Group, Text, Title, createStyles, Card, Table } from '@mantine/core'
+import {
+  Button,
+  Grid,
+  Group,
+  Text,
+  Title,
+  createStyles,
+  Card,
+  Table,
+  Notification
+} from '@mantine/core'
+import { IconX } from '@tabler/icons-react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 
 import Stats from './components/Stats/Stats'
@@ -34,6 +45,10 @@ const useStyles = createStyles(theme => ({
   },
   tdDisplay: {
     display: 'flex'
+  },
+  notification: {
+    width: 'fit-content',
+    float: 'right'
   }
 }))
 const ViewMyCommunity = () => {
@@ -45,6 +60,7 @@ const ViewMyCommunity = () => {
   const { community_scopes } = useCurrentUserPermissions()
   const [scopes, setScopes] = useState<string[] | undefined>([])
   const navigate = useNavigate()
+  const [message, setMessage] = useState('')
 
   useEffect(() => {
     if (data) {
@@ -60,9 +76,15 @@ const ViewMyCommunity = () => {
   }
 
   const deleteMembership = () => {
-    leaveCommunity(id).then(() => {
-      navigate(`/communities`)
-    })
+    leaveCommunity(id)
+      .then(() => {
+        navigate(`/communities`)
+      })
+      .catch(error => {
+        if (error.response.status === 409) {
+          setMessage(error.response.data.message)
+        }
+      })
   }
 
   return (
@@ -110,19 +132,35 @@ const ViewMyCommunity = () => {
             </Table>
             <Group spacing={30} position="right">
               {scopes?.includes('/seta/community/manager') ? (
-                <Link
-                  className={classes.link}
-                  to={`/my-communities/${row?.communities.community_id}/manage`}
-                  replace={true}
-                >
-                  <Button>Manage</Button>
-                </Link>
+                <>
+                  <Link
+                    className={classes.link}
+                    to={`/my-communities/${row?.communities.community_id}/manage`}
+                    replace={true}
+                  >
+                    <Button size="xs">Manage</Button>
+                  </Link>
+                  <Button variant="filled" size="xs" onClick={() => deleteMembership()} color="red">
+                    LEAVE
+                  </Button>
+                </>
               ) : (
                 <Button variant="filled" size="xs" onClick={() => deleteMembership()}>
                   LEAVE
                 </Button>
               )}
             </Group>
+            {message !== '' ? (
+              <Notification
+                icon={<IconX size="1.1rem" />}
+                color="red"
+                title="We notify you that"
+                onClose={() => setMessage('')}
+                className={classes.notification}
+              >
+                {message}
+              </Notification>
+            ) : null}
           </Card>
         </Grid.Col>
         <Grid.Col span={1}>
