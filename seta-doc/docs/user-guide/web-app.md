@@ -98,14 +98,20 @@ Once all the filters are selected, click in the button **Apply Filters** at the 
 </figure>
 
 
+### Results
+
+Once the search is finish, we can see in the results section all the related documents. By default they are order in percentage of accuracy with the searching input. A brief description of the document is display together with a path that describes the document type including the source and the date of publication.  A link to the document is also included.                 
+If we click in the expand option, it is possible to see the Taxonomy tree and the Text chunk. 
+
+
+<figure markdown>
+  ![Image title](../img/search_results.png)
+  <figcaption>Search results</figcaption>
+</figure>
+
 ### My Search           
 In this panel, we can see the user's search library.               
 
 
 ### My Documents         
 In this panel we can see the user's documents library.                 
-
-<!--<figure markdown>
-  ![Image title](../img/search_results_detail.png)
-  <figcaption>Detailed results</figcaption>
-</figure> -->
