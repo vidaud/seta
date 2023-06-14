@@ -13,3 +13,5 @@ from .resource import ResourceModel, ResourceLimitsModel, ResourceContributorMod
 from .user_session import UserSession, SessionToken
 from .application import SetaApplication
 from .user_profile import UserProfileResources
+from .catalogue_scope import CatalogueScope, ScopeCatalogues, ScopeCategory
+from .catalogue_role import CatalogueRole, RoleCatalogues, RoleCategory

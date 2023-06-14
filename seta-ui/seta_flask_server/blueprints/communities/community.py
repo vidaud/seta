@@ -11,8 +11,6 @@ from seta_flask_server.infrastructure.decorators import auth_validator
 from seta_flask_server.infrastructure.scope_constants import CommunityScopeConstants, SystemScopeConstants
 from seta_flask_server.infrastructure.constants import CommunityMembershipConstants, CommunityStatusConstants
 
-from seta_flask_server.infrastructure.clients.private_api_client import PrivateResourceClient
-
 from http import HTTPStatus
 from .models.community_dto import(new_community_parser, update_community_parser, community_model, user_info_model)
 

@@ -144,6 +144,7 @@ def register_blueprints(app):
     from .blueprints.auth_ecas import auth_ecas
     from .blueprints.auth_github import auth_github
     from .blueprints.profile import profile_bp_v1
+    from .blueprints.catalogue import catalogue_bp_v1
     
     API_ROOT="/seta-ui/api"
                     
@@ -154,6 +155,8 @@ def register_blueprints(app):
     app.register_blueprint(auth_github, url_prefix=f"{API_ROOT}/v1")
 
     app.register_blueprint(communities_bp_v1, url_prefix=f"{API_ROOT}/v1")
+
+    app.register_blueprint(catalogue_bp_v1, url_prefix=f"{API_ROOT}/v1")
     
 def register_extensions(app):    
     github.init_app(app)

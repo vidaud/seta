@@ -22,6 +22,7 @@ class MongoDbClientModule(injector.Module):
         binder.bind(interfaces.ISessionsBroker, to=implementation.SessionsBroker)
         binder.bind(interfaces.IAppsBroker, to=implementation.AppsBroker)
         binder.bind(interfaces.IUserProfile, to=implementation.UserProfile)
+        binder.bind(interfaces.ICatalogueBroker, to=implementation.CatalogueBroker)
                 
     def create_client(
             self
