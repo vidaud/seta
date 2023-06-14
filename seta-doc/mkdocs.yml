@@ -100,7 +100,12 @@ nav:
       - Search: 
         - Methodology: user-guide/methodology.md
         - Web Interface: user-guide/web-app.md
-      - Communities: user-guide/communities.md
+      - Communities: 
+        - SeTA Communities: user-guide/communities.md
+        - Community Change Request: user-guide/communityChangeReq.md
+        - Community Membership: user-guide/communityMembership.md
+        - Resources: user-guide/resources.md
+        - Users Permissions: user-guide/usersPermissions.md
     - APIs: 
       - SeTA API: apis/seta_api/seta_api.md
       - Communities API: apis/communities_api/seta_api_communities.md
