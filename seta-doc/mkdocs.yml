@@ -103,7 +103,7 @@ nav:
       - Communities: 
         - SeTA Communities: user-guide/communities.md
         - Community Change Request: user-guide/communityChangeReq.md
-        - Community Membership: user-guide/communityMembership.md
+        - Community Invites: user-guide/communityInvites.md
         - Resources: user-guide/resources.md
         - Users Permissions: user-guide/usersPermissions.md
     - APIs: 

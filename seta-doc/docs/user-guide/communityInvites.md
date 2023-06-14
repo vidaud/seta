@@ -1,9 +1,6 @@
-## Community Invites
-
 ### Invite to Join a Community
 
-**From My Communities list** 
-                        
+#### From My Communities list
 1. From the side menu click on ^^Manage^^ -> ^^My Communities^^.       
 2. You can either enter in the search bar the name of the Community you are looking for or select from the Community list.      
 3. Click on the button ^^Invite^^.       
@@ -15,8 +12,7 @@
   <figcaption>Invite to Join Community</figcaption>
 </figure>
 
-**From Manage Communities**        
-                  
+#### From Manage Communities                  
 1. From the side menu click on ^^Manage^^ -> ^^My Communities^^.       
 2. You can either enter in the search bar the name of the Community you are looking for or select from the Community list.      
 3. Click in the three dots at the right side of each Community and select the option ^^Manage^^.       
@@ -24,8 +20,7 @@
 5. In the pop-up window, write the emails of the users you want to invite and a message.    
 6. Click ^^Send^^.    
 
-**From View Details option**                    
-
+#### From View Details option
 1. From the side menu click on ^^Manage^^ -> ^^My Communities^^.  
 2. You can either enter in the search bar the name of the Community you are looking for or select from the Communities list.  
 3. Click in the three dots at the right side of each Community and select the option ^^View Details^^.  
@@ -62,7 +57,7 @@
 
 ### Retrieve my pending invites.
 
-**From Communities main page**            
+#### From Communities main page
 1. From the side menu on top you can see if you have pending invites.  
 2. Click in the number.  
 3. In the next window, you will see the list.
@@ -77,12 +72,9 @@
   <figcaption>List of Pending invites</figcaption>
 </figure>
 
-
-
 ### Accept invitation to Join a Community
 
-
-**From Communities main page**            
+#### From Communities main page
 1. From the side menu on top you can see if you have pending invites.                
 2. Click in the number.              
 3. In the next window, you will see the list.       
@@ -100,7 +92,7 @@
 </figure>
 
 
-**From Communities list**
+#### From Communities list
 1. From the side menu click on ^^Discovery^^ -> ^^Communities^^.       
 2. You can either enter in the search bar the name of the Community you are looking for or select from the Community list.      
 3. Click the button ^^Invited^^ in the Community row.                  
