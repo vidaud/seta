@@ -58,7 +58,7 @@ const MembersList = () => {
   }
 
   if (data) {
-    if (data?.invites.length === 0) {
+    if (data?.memberships.length === 0) {
       return <ComponentEmpty />
     }
   }
