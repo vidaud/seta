@@ -28,7 +28,7 @@ Within the search page the options to search are:
 2. A dropdown box appears automatically, with two sections: 
     1. one section with a list of *autocomplete* words (left side), 
     2. one section with a map of the *related terms* to search (right side). In this section, it is possible to choose for *Related Terms Clusters* or *Related Terms*.
-3. After selecting the term to search, click in button *search*
+3. After selecting the term to search, click in button :octicons-search-16: Search
 
 
 <figure markdown>
@@ -38,7 +38,7 @@ Within the search page the options to search are:
 
 ### Enrich query automatically
 
-In the search by terms or phrase it is possible to apply a wizard so the search is enriched automatically. Every term is expanded in the background to include all the related terms.
+In the search by terms or phrase it is possible to apply a wizard so the search is enriched automatically by clicking on the :fontawesome-solid-wand-magic-sparkles:.   Every term is expanded in the background to include all the related terms.
 
 <figure markdown>
   ![Image title](../img/search_enrich_terms.png)
@@ -49,11 +49,11 @@ In the search by terms or phrase it is possible to apply a wizard so the search 
 ### Search by document or text
 
 **Search by document**           
-1. Click in the cloud button ![Image title](../img/cloud-button.png){ width=30} and a pop-up window will appear.  
-2. In this window, there are two sections; the first one on top is to upload the document, we can either select the path where the document is located or we can drag and drop. Either uploading or by drag and drop it is always possible to cancel the upload of the file before the search, with the button ![Image title](../img/cancel-upload.png){ width=30}.
+1. Click in the :material-cloud-arrow-up-outline: and a pop-up window will appear.  
+2. In this window, there are two sections; the first one on top is to upload the document, we can either select the path where the document is located or we can drag and drop. Either uploading or by drag and drop it is always possible to cancel the upload of the file before the search, with the button :octicons-x-circle-16:.
 
 **Search by text**               
-1. Click in the cloud button ![Image title](../img/cloud-button.png){ width=30} and a pop-up window will appear.                    
+1. Click in the :material-cloud-arrow-up-outline: and a pop-up window will appear.                    
 2. In the lower section of the pop-up paste the text you want to search. 
 
 

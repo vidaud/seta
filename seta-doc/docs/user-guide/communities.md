@@ -174,7 +174,7 @@ On **Manage** panel it is possible to access to:
 3. Click in the three dots at the right side of button ^^Invite^^ and select the option ^^View Details^^.  
 4. In the next window, on section ^^Details^^, click on button ^^Manage^^ 
 5. In the next window, on section ^^Pending Changes Requests^^, you can see the pending requests.                     
-5. By clicking in the *pen* icon, under *actions* column you can change the status to: *approved*.
+5. By clicking in the ^^:octicons-pencil-24:^^, under *actions* column you can change the status to: *approved*.
 6. Click ^^Send^^.      
 
 ### Change community membership request 
@@ -186,7 +186,7 @@ On **Manage** panel it is possible to access to:
 3. Click in the three dots at the right side of button ^^Invite^^ and select the option ^^View Details^^.  
 4. In the next window, on section ^^Details^^, click on button ^^Manage^^ 
 5. In the next window, on section ^^Pending Changes Requests^^, you can see the pending requests.                     
-5. By clicking in the *pen* icon, under *actions* column you can change the status to: *approved*.
+5. By clicking in the ^^:octicons-pencil-24:^^, under *actions* column you can change the status to: *approved*.
 6. Click ^^Send^^.      
 
 ### Retrieve change requests for My communities
@@ -195,7 +195,7 @@ On **Manage** panel it is possible to access to:
 2. You can either enter in the search bar the name of the Community you are looking for or select from the Community list.      
 3. Click in the three dots at the right side of each Community and select the option ^^Manage^^.       
 4. In the next window, in section ^^Pending Join Requests^^ you can see the pending requests.                     
-5. By clicking in the *pen* icon, under *actions* column you can change the status to: *approved*.
+5. By clicking in the ^^:octicons-pencil-24:^^, under *actions* column you can change the status to: *approved*.
 6. Click ^^Send^^. 
 
 ### Update change requests for My communities
@@ -204,7 +204,7 @@ On **Manage** panel it is possible to access to:
 2. You can either enter in the search bar the name of the Community you are looking for or select from the Community list.      
 3. Click in the three dots at the right side of each Community and select the option ^^Manage^^.       
 4. In the next window, in section ^^Pending Join Requests^^ you can see the pending requests.                     
-5. By clicking in the *pen* icon, under *actions* column you can change the status to: *approved*.
+5. By clicking in the ^^:octicons-pencil-24:^^, under *actions* column you can change the status to: *approved*.
 6. Click ^^Send^^. 
 
 ## Community Memberships
@@ -216,7 +216,7 @@ On **Manage** panel it is possible to access to:
 2. You can either enter in the search bar the name of the Community you are looking for or select from the Community list.      
 3. Click in the three dots at the right side of each Community and select the option ^^Manage^^.       
 4. In the next window, in section ^^Members^^ click to see the list of the members.                     
-5. By clicking in the *pen* icon, under *actions* column you can change the status to: *remove*.
+5. By clicking in the ^^:octicons-pencil-24:^^, under *actions* column you can change the status to: *remove*.
 6. Click ^^Send^^.            
 
 ### Block a member of the Community
@@ -225,10 +225,10 @@ On **Manage** panel it is possible to access to:
 2. You can either enter in the search bar the name of the Community you are looking for or select from the Community list.      
 3. Click in the three dots at the right side of each Community and select the option ^^Manage^^.       
 4. In the next window, in section ^^Members^^ click to see the list of the members.                     
-5. By clicking in the *pen* icon, under *actions* column you can change the status to: *block*.
+5. By clicking in the ^^:octicons-pencil-24:^^, under *actions* column you can change the status to: *block*.
 6. Click ^^Send^^. 
 
-## Manage My Community Membership Requests
+## My Community Membership Requests
 
 ### Join a Community
 
@@ -261,7 +261,28 @@ On **Manage** panel it is possible to access to:
 </figure>
 
 
-### Request to Join My Community
+### Manage Request to Join My Community
+
+#### From Pending Membership Requests
+
+1. From the side menu on top you can see if you have Pending Membership Requests.  
+2. Click in the number.           
+3. In the next window, you will see the list.            
+4. Click in the ^^:octicons-pencil-24:^^ under column *Actions* to update the status.
+
+<figure markdown>
+  ![Image title](../img/pending_invites_from_main.png)
+  <figcaption>Pending Membership Requests</figcaption>
+</figure>
+
+
+<figure markdown>
+  ![Image title](../img/membership_request_from_main.png)
+  <figcaption>List of Pending Membership Requests to Join Community</figcaption>
+</figure>
+
+
+#### From My Communities 
 
 **Accept the request to Join My Community**        
                   
@@ -269,7 +290,7 @@ On **Manage** panel it is possible to access to:
 2. You can either enter in the search bar the name of the Community you are looking for or select from the Community list.      
 3. Click in the three dots at the right side of each Community and select the option ^^Manage^^.       
 4. In the next window, in section ^^Pending Join Requests^^ you can see the pending requests.                     
-5. By clicking in the *pen* icon, under *actions* column you can change the status to: *approved*.
+5. By clicking in the ^^:octicons-pencil-24:^^, under *actions* column you can change the status to: *approved*.
 6. Click ^^Send^^.      
 
  
@@ -289,7 +310,7 @@ On **Manage** panel it is possible to access to:
 2. You can either enter in the search bar the name of the Community you are looking for or select from the Community list.      
 3. Click in the three dots at the right side of each Community and select the option ^^Manage^^.       
 4. In the next window, in section ^^Pending Join Requests^^ you can see the pending requests.                     
-5. By clicking in the *pen* icon, under *actions* column you can change the status to: *rejected*.
+5. By clicking in the ^^:octicons-pencil-24:^^, under *actions* column you can change the status to: *rejected*.
 6. Click ^^Send^^.      
 
  
@@ -304,7 +325,7 @@ On **Manage** panel it is possible to access to:
 2. You can either enter in the search bar the name of the Community you are looking for or select from the Community list.      
 3. Click in the three dots at the right side of each Community and select the option ^^Manage^^.       
 4. In the next window, in section ^^Pending Join Requests^^ you can see the pending requests.                     
-5. By clicking in the *pen* icon, under *actions* column you can change the status to: *pending*.
+5. By clicking in the ^^:octicons-pencil-24:^^, under *actions* column you can change the status to: *pending*.
 6. Click ^^Send^^.      
 
  
@@ -363,7 +384,8 @@ On **Manage** panel it is possible to access to:
   <figcaption>Invite to Join Community</figcaption>
 </figure>
 
-### See the Pending Invites 
+### See the Pending Invites Sent
+
 1. From the side menu click on ^^Manage^^ -> ^^My Communities^^.  
 2. You can either enter in the search bar the name of the Community you are looking for or select from the Communities list.  
 3. Click in the three dots at the right side of each Community and select the option ^^View Details^^.  
@@ -417,18 +439,9 @@ On **Manage** panel it is possible to access to:
   <figcaption>New Resource in a Community</figcaption>
 </figure>
 
-### See the list of Resources
 
-1. From the side menu click on ^^Discover^^ -> ^^Resources^^.      
-2. You will see a list of the Resources in the page.                        
-3. You can either enter in the search bar the name of the Resource you are looking for.              
 
-<figure markdown>
-  ![Image title](../img/resource_list.png)
-  <figcaption>Resources</figcaption>
-</figure>
-
-### See the list of My Resources
+### See list of My Resources
 
 1. From the side menu click on ^^Manage^^ -> ^^My Resources^^.              
 2. You will see a list of the Resources in the page.                   
@@ -439,20 +452,70 @@ On **Manage** panel it is possible to access to:
   <figcaption>My Resources</figcaption>
 </figure>
 
+## Invites
+
+### Retrieve my pending invites.
+
+**From Communities main page**            
+1. From the side menu on top you can see if you have pending invites.  
+2. Click in the number.  
+3. In the next window, you will see the list.
+
+<figure markdown>
+  ![Image title](../img/pending_invites_from_main.png)
+  <figcaption>Pending invites</figcaption>
+</figure>
+
+<figure markdown>
+  ![Image title](../img/list_pending_invites_from_main.png)
+  <figcaption>List of Pending invites</figcaption>
+</figure>
+
 
 
 ### Accept invitation to Join a Community
 
+
+**From Communities main page**            
+1. From the side menu on top you can see if you have pending invites.                
+2. Click in the number.              
+3. In the next window, you will see the list.       
+4. Click in the button ^^Invited^^.             
+5.     
+
+<figure markdown>
+  ![Image title](../img/pending_invites_from_main.png)
+  <figcaption>Pending invites</figcaption>
+</figure>
+
+<figure markdown>
+  ![Image title](../img/list_pending_invites_from_main.png)
+  <figcaption>List of Pending invites</figcaption>
+</figure>
+
+
+**From Communities list**
 1. From the side menu click on ^^Discovery^^ -> ^^Communities^^.       
 2. You can either enter in the search bar the name of the Community you are looking for or select from the Community list.      
-3. In the Community row you will see at the right side the button ^^Invited^^.                  
+3. Click the button ^^Invited^^ in the Community row.                  
 
 <figure markdown>
   ![Image title](../img/seta_communities_accept_invitation_join.png)
   <figcaption>Invitation to Join Community</figcaption>
 </figure>
 
+## Resources
 
+### List of Resources
+
+1. From the side menu click on ^^Discover^^ -> ^^Resources^^.      
+2. You will see a list of the Resources in the page.                        
+3. You can either enter in the search bar the name of the Resource you are looking for.              
+
+<figure markdown>
+  ![Image title](../img/resource_list.png)
+  <figcaption>Resources</figcaption>
+</figure>
 
 ### Update details of a Resource                
 
@@ -488,7 +551,30 @@ On **Manage** panel it is possible to access to:
   <figcaption>Update a Resource</figcaption>
 </figure>
 
+### Delete a Resource    
 
+**From My Resources list**
+
+1. From the side menu click on ^^Manage^^ -> ^^My Resources^^.  
+2. You can either enter in the search bar the name of the Resource you are looking for or select from the Resources list.  
+3. After you select the Resource, click on button ^^Delete^^ on the left top of the Resource list.
+4. It is also possible to delete the Resource by clicking in the three dots at the right side of each Resource and select the option ^^Delete Resource^^.  
+
+**From View Details option**     
+1. From the side menu click on ^^Manage^^ -> ^^My Resources^^.  
+2. You can either enter in the search bar the name of the Resource you are looking for or select from the Resources list.  
+3. After you select the Resource, click in the three dots at the right side of each Resource and select the option ^^View Details^^.      
+4. In the next window, click on button ^^Delete^^ on the right bottom.  
+5. A confirm window will appear to delete the resource.    
+
+<figure markdown>
+  ![Image title](../img/delete_resource.png)
+  <figcaption>Delete a Resource</figcaption>
+</figure>
+
+## Resource Change Requests
+
+**TO DO**
 
 ### See the members of a Community
 
@@ -514,26 +600,7 @@ On **Manage** panel it is possible to access to:
 </figure>
 
       
-### Delete a Resource    
 
-**From My Resources list**
-
-1. From the side menu click on ^^Manage^^ -> ^^My Resources^^.  
-2. You can either enter in the search bar the name of the Resource you are looking for or select from the Resources list.  
-3. After you select the Resource, click on button ^^Delete^^ on the left top of the Resource list.
-4. It is also possible to delete the Resource by clicking in the three dots at the right side of each Resource and select the option ^^Delete Resource^^.  
-
-**From View Details option**     
-1. From the side menu click on ^^Manage^^ -> ^^My Resources^^.  
-2. You can either enter in the search bar the name of the Resource you are looking for or select from the Resources list.  
-3. After you select the Resource, click in the three dots at the right side of each Resource and select the option ^^View Details^^.      
-4. In the next window, click on button ^^Delete^^ on the right bottom.  
-5. A confirm window will appear to delete the resource.    
-
-<figure markdown>
-  ![Image title](../img/delete_resource.png)
-  <figcaption>Delete a Resource</figcaption>
-</figure>
 
 
 
