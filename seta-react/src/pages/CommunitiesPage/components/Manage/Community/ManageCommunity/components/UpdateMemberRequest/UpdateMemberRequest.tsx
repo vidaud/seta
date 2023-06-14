@@ -20,7 +20,7 @@ const statusOptions = [
   { label: 'rejected', value: 'rejected' }
 ]
 
-const UpdateInvite = ({ props }) => {
+const UpdateMemberRequest = ({ props }) => {
   const [opened, setOpened] = useState(false)
   const { classes, cx } = useStyles()
 
@@ -100,4 +100,4 @@ const UpdateInvite = ({ props }) => {
   )
 }
 
-export default UpdateInvite
+export default UpdateMemberRequest
