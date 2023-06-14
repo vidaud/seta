@@ -60,9 +60,6 @@ const apiConfig: AxiosRequestConfig = {
   baseURL: BASE_URL
 }
 
-export const useNotificationsRequests = () =>
-  useQuery({ queryKey: cacheKey(), queryFn: () => getNotifications() })
-
 export const getNotificationRequests = async (): Promise<Notifications> => {
   const permissions = await api.get<UserPermissions>(USER_INFO_API_PATH, apiConfig)
   const memberships: MembershipRequest[] = []
@@ -95,3 +92,6 @@ export const getNotificationRequests = async (): Promise<Notifications> => {
 
   return data
 }
+
+export const useNotificationsRequests = () =>
+  useQuery({ queryKey: cacheKey(), queryFn: () => getNotificationRequests() })

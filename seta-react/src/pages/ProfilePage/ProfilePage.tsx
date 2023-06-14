@@ -52,7 +52,7 @@ function ProfilePage(props) {
   }
 
   return (
-    <div className="page">
+    <div className="page" style={{ padding: '2%' }}>
       <div className="card">
         <div>
           <div className="p-fluid grid">

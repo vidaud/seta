@@ -1,4 +1,4 @@
-import { FaUser, FaWrench } from 'react-icons/fa'
+import { FaUser } from 'react-icons/fa'
 import { FiLogOut } from 'react-icons/fi'
 
 type MenuItem = {
@@ -47,11 +47,11 @@ export const getDropdownItems = ({ onLogout }: DropdownCallbacks): DropdownItem[
     icon: <FaUser size="1.1rem" />,
     url: '/profile'
   },
-  {
-    label: 'Dashboard',
-    icon: <FaWrench size="1.1rem" />,
-    url: '/dashboard'
-  },
+  // {
+  //   label: 'Dashboard',
+  //   icon: <FaWrench size="1.1rem" />,
+  //   url: '/dashboard'
+  // },
   {
     divider: true
   },

@@ -1,6 +1,8 @@
 import { useQuery } from '@tanstack/react-query'
 import { getCookie } from 'typescript-cookie'
 
+import type { InviteRequestValues } from '~/pages/CommunitiesPage/components/Manage/invite-request-context'
+
 import community_api from './api'
 
 import { environment } from '../../environments/environment'
@@ -47,3 +49,19 @@ export const pendingInvites = async (): Promise<InviteResponse[]> => {
 
 export const useAllPendingInvites = () =>
   useQuery({ queryKey: cacheNoIDKey(), queryFn: () => pendingInvites() })
+
+export const updateInviteRequest = async (id?: string, values?: InviteRequestValues) => {
+  await community_api
+    .put(`/invites/${id}`, values, {
+      headers: {
+        accept: 'application/json',
+        'X-CSRF-TOKEN': csrf_token,
+        'Content-Type': 'application/x-www-form-urlencoded'
+      }
+    })
+    .then(response => {
+      if (response.status === 200) {
+        window.location.reload()
+      }
+    })
+}

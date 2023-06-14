@@ -2,12 +2,9 @@ import { useEffect, useState } from 'react'
 import { Popover, Button, Group, createStyles, Tooltip, Select, ActionIcon } from '@mantine/core'
 import { IconPencil } from '@tabler/icons-react'
 
-import { updateMembershipRequest } from '../../../../../../../../api/communities/membership-requests'
-import type { MembershipRequestValues } from '../../../../membership-request-context'
-import {
-  MembershipRequestFormProvider,
-  useMembershipRequest
-} from '../../../../membership-request-context'
+import { updateInviteRequest } from '../../../../../../api/communities/invite'
+import type { InviteRequestValues } from '../../../Manage/invite-request-context'
+import { InviteRequestFormProvider, useInviteRequest } from '../../../Manage/invite-request-context'
 
 const useStyles = createStyles({
   form: {
@@ -15,31 +12,29 @@ const useStyles = createStyles({
   }
 })
 const statusOptions = [
-  { label: 'pending', value: 'pending' },
-  { label: 'approved', value: 'approved' },
+  { label: 'accepted', value: 'accepted' },
   { label: 'rejected', value: 'rejected' }
 ]
 
-const UpdateInvite = ({ props }) => {
+const UpdateInviteRequest = ({ props }) => {
   const [opened, setOpened] = useState(false)
   const { classes, cx } = useStyles()
 
-  const form = useMembershipRequest({
+  const form = useInviteRequest({
     initialValues: {
-      community_id: props.community_id,
-      user_id: props.requested_by,
-      status: ''
+      invite_id: props.invite_id,
+      status: props.status
     }
   })
 
   useEffect(() => {
     if (props) {
-      form.setValues(props)
+      // form.setValues(props)
     }
   }, [props])
 
-  const handleSubmit = (values: MembershipRequestValues) => {
-    updateMembershipRequest(props.community_id, values, props.requested_by)
+  const handleSubmit = (values: InviteRequestValues) => {
+    updateInviteRequest(props.invite_id, values)
     setOpened(o => !o)
   }
 
@@ -67,7 +62,7 @@ const UpdateInvite = ({ props }) => {
           background: theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.white
         })}
       >
-        <MembershipRequestFormProvider form={form}>
+        <InviteRequestFormProvider form={form}>
           <form onSubmit={form.onSubmit(handleSubmit)}>
             <Select
               {...form.getInputProps('status')}
@@ -94,10 +89,10 @@ const UpdateInvite = ({ props }) => {
               </Button>
             </Group>
           </form>
-        </MembershipRequestFormProvider>
+        </InviteRequestFormProvider>
       </Popover.Dropdown>
     </Popover>
   )
 }
 
-export default UpdateInvite
+export default UpdateInviteRequest
