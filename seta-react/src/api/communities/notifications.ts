@@ -13,8 +13,6 @@ import api from '../api'
 import type { InviteResponse } from '../types/invite-types'
 import type { MembershipRequest } from '../types/membership-types'
 
-export const cacheKey = () => ['']
-
 type Notifications = {
   memberships: MembershipRequest[]
   invites: InviteResponse[]
@@ -60,8 +58,7 @@ const apiConfig: AxiosRequestConfig = {
   baseURL: BASE_URL
 }
 
-export const useNotificationsRequests = () =>
-  useQuery({ queryKey: cacheKey(), queryFn: () => getNotifications() })
+export const cacheKey = () => ['membership-requests'] || ['invites']
 
 export const getNotificationRequests = async (): Promise<Notifications> => {
   const permissions = await api.get<UserPermissions>(USER_INFO_API_PATH, apiConfig)
@@ -95,3 +92,6 @@ export const getNotificationRequests = async (): Promise<Notifications> => {
 
   return data
 }
+
+export const useNotificationsRequests = () =>
+  useQuery({ queryKey: cacheKey(), queryFn: () => getNotificationRequests() })

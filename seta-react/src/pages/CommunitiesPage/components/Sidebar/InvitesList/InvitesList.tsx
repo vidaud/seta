@@ -1,9 +1,20 @@
 import { useEffect, useState } from 'react'
-import { createStyles, Table, ScrollArea, rem, Title, Badge, useMantineTheme } from '@mantine/core'
+import {
+  createStyles,
+  Table,
+  ScrollArea,
+  rem,
+  Title,
+  Badge,
+  useMantineTheme,
+  Group
+} from '@mantine/core'
 
-import { useNotificationsRequests } from '../../../../../../api/communities/notifications'
-import { ComponentEmpty, ComponentError, ComponentLoading } from '../../../common'
-import { statusColors } from '../../../types'
+import UpdateInviteRequest from './components/UpdateInvite'
+
+import { useNotificationsRequests } from '../../../../../api/communities/notifications'
+import { ComponentEmpty, ComponentError, ComponentLoading } from '../../common'
+import { statusColors } from '../../types'
 
 const useStyles = createStyles(theme => ({
   header: {
@@ -76,6 +87,11 @@ const InvitesList = () => {
       <td>{row.initiated_date.toString()}</td>
       <td>{row.initiated_by_info?.full_name}</td>
       <td>{row.expire_date?.toString()}</td>
+      <td>
+        <Group spacing={0}>
+          <UpdateInviteRequest props={row} />
+        </Group>
+      </td>
     </tr>
   ))
 
@@ -96,6 +112,7 @@ const InvitesList = () => {
               <th>Initiated Date</th>
               <th>Initiated By</th>
               <th>Expire Date</th>
+              <th>Actions</th>
             </tr>
           </thead>
           <tbody>{rows}</tbody>

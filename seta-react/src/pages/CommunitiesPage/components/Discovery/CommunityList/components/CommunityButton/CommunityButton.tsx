@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
-import { ActionIcon, Button, Group, createStyles, Tooltip } from '@mantine/core'
-import { IconEye } from '@tabler/icons-react'
+import { ActionIcon, Button, Group, createStyles, Tooltip, Notification } from '@mantine/core'
+import { IconEye, IconX } from '@tabler/icons-react'
 import { Link } from 'react-router-dom'
 
 import { leaveCommunity } from '../../../../../../../api/communities/my-membership'
@@ -17,6 +17,7 @@ const useStyles = createStyles({
 const CommunityButton = ({ props, onReload }) => {
   const { classes } = useStyles()
   const [data, setData] = useState(props)
+  const [message, setMessage] = useState('')
 
   useEffect(() => {
     if (props) {
@@ -25,11 +26,17 @@ const CommunityButton = ({ props, onReload }) => {
   }, [props, data])
 
   const deleteMembership = () => {
-    leaveCommunity(data.community_id).then(() =>
-      setTimeout(() => {
-        onReload()
-      }, 100)
-    )
+    leaveCommunity(data.community_id)
+      .then(() =>
+        setTimeout(() => {
+          onReload()
+        }, 100)
+      )
+      .catch(error => {
+        if (error.response.status === 409) {
+          setMessage(error.response.data.message)
+        }
+      })
   }
 
   return (
@@ -47,9 +54,22 @@ const CommunityButton = ({ props, onReload }) => {
           <ViewClosedCommunity community={data.community_id} onReload={onReload} />
         )}
         {data.status === 'membership' ? (
-          <Button variant="filled" size="xs" onClick={() => deleteMembership()}>
-            LEAVE
-          </Button>
+          <>
+            {' '}
+            <Button variant="filled" size="xs" onClick={() => deleteMembership()}>
+              LEAVE
+            </Button>
+            {message !== '' ? (
+              <Notification
+                title="We notify you that"
+                icon={<IconX size="1.1rem" />}
+                color="red"
+                onClose={() => setMessage('')}
+              >
+                {message}
+              </Notification>
+            ) : null}
+          </>
         ) : data.status === 'pending' ? (
           <Button variant="outline" size="xs">
             PENDING

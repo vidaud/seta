@@ -10,10 +10,8 @@ import {
   Group
 } from '@mantine/core'
 
-import type { MembershipRequest } from '~/api/types/membership-types'
-
-import { getNotificationRequests } from '../../../../../api/communities/notifications'
-import { ComponentEmpty } from '../../common'
+import { useNotificationsRequests } from '../../../../../api/communities/notifications'
+import { ComponentEmpty, ComponentError, ComponentLoading } from '../../common'
 import UpdateMemberRequest from '../../Manage/Community/ManageCommunity/components/UpdateMemberRequest/UpdateMemberRequest'
 import { statusColors } from '../../types'
 
@@ -47,19 +45,26 @@ const useStyles = createStyles(theme => ({
 const MembersList = () => {
   const { classes, cx } = useStyles()
   const [scrolled, setScrolled] = useState(false)
-  const [items, setItems] = useState<MembershipRequest[]>([])
   const theme = useMantineTheme()
+  const { data, isLoading, error, refetch } = useNotificationsRequests()
+  const [items, setItems] = useState(data?.memberships)
 
   useEffect(() => {
-    getNotificationRequests().then(response => {
-      setItems(response.memberships)
-    })
-  }, [])
+    setItems(data?.memberships)
+  }, [data, items])
 
-  if (items) {
-    if (items?.length === 0) {
+  if (error) {
+    return <ComponentError onTryAgain={refetch} />
+  }
+
+  if (data) {
+    if (data?.memberships.length === 0) {
       return <ComponentEmpty />
     }
+  }
+
+  if (isLoading || !data) {
+    return <ComponentLoading />
   }
 
   const rows =

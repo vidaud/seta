@@ -22,7 +22,7 @@ import NewResource from '../../pages/CommunitiesPage/components/Manage/Resource/
 import UpdateResource from '../../pages/CommunitiesPage/components/Manage/Resource/UpdateResource/UpdateResource'
 import ViewMyResource from '../../pages/CommunitiesPage/components/Manage/Resource/ViewMyResource/ViewMyResource'
 import { ScopeProvider } from '../../pages/CommunitiesPage/components/Manage/scope-context'
-import InvitesList from '../../pages/CommunitiesPage/components/Sidebar/Invites/InvitesList/InvitesList'
+import InvitesList from '../../pages/CommunitiesPage/components/Sidebar/InvitesList/InvitesList'
 import MembersList from '../../pages/CommunitiesPage/components/Sidebar/MembersList/MembersList'
 import CommunityUsersPermissions from '../../pages/CommunitiesPage/components/UserPermissions/Community/CommunityUserPermissions'
 import ResourceUsersPermissions from '../../pages/CommunitiesPage/components/UserPermissions/Resource/ResourceUserPermissions'
