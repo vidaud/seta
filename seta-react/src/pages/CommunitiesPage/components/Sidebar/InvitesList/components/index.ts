@@ -1,1 +1,1 @@
-export { default } from './UpdateInvite'
+export { default } from './UpdateInviteRequest'

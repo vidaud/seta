@@ -10,7 +10,7 @@ import {
   Group
 } from '@mantine/core'
 
-import UpdateInviteRequest from './components/UpdateInvite'
+import UpdateInviteRequest from './components/UpdateInviteRequest'
 
 import { useNotificationsRequests } from '../../../../../api/communities/notifications'
 import { ComponentEmpty, ComponentError, ComponentLoading } from '../../common'
@@ -89,7 +89,7 @@ const InvitesList = () => {
       <td>{row.expire_date?.toString()}</td>
       <td>
         <Group spacing={0}>
-          <UpdateInviteRequest props={row} />
+          <UpdateInviteRequest props={row} parent="InvitesList" />
         </Group>
       </td>
     </tr>

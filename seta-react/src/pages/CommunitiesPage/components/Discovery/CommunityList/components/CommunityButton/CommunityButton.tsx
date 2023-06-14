@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom'
 import { leaveCommunity } from '../../../../../../../api/communities/my-membership'
 import MembershipRequest from '../../../../Manage/Members/InviteMemberModal/InviteMemberModal'
 import OpenCommunityMember from '../../../../Manage/Members/OpenCommunityMember/OpenCommunityMember'
+import UpdateInviteRequest from '../../../../Sidebar/InvitesList/components/UpdateInviteRequest'
 import ViewClosedCommunity from '../ViewClosedCommunity'
 
 const useStyles = createStyles({
@@ -75,9 +76,10 @@ const CommunityButton = ({ props, onReload }) => {
             PENDING
           </Button>
         ) : data.status === 'invited' ? (
-          <Button variant="outline" size="xs" color="orange">
-            INVITED
-          </Button>
+          // <Button variant="outline" size="xs" color="orange">
+          //   INVITED
+          // </Button>
+          <UpdateInviteRequest props={data} parent="CommunityList" />
         ) : data.status === 'unknown' && data.membership === 'closed' ? (
           <MembershipRequest community_id={data.community_id} onReload={onReload} />
         ) : data.status === 'unknown' && data.membership === 'opened' ? (
