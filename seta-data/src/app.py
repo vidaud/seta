@@ -195,6 +195,22 @@ def copy_models_files():
     if os.path.exists(src):
         shutil.copyfile(src, dst)
 
+    dst = config.MODELS_PATH + config.ES_INIT_DATA_CONFIG_FILE
+    src = config.MODELS_DOCKER_PATH + config.ES_INIT_DATA_CONFIG_FILE
+    shutil.copyfile(src, dst)
+
+    dst = config.MODELS_PATH + config.CRC_ES_INIT_DATA_CONFIG_FILE
+    src = config.MODELS_DOCKER_PATH + config.CRC_ES_INIT_DATA_CONFIG_FILE
+    shutil.copyfile(src, dst)
+
+    dst = config.MODELS_PATH + config.ES_SUGGESTION_INIT_DATA_CONFIG_FILE
+    src = config.MODELS_DOCKER_PATH + config.ES_SUGGESTION_INIT_DATA_CONFIG_FILE
+    shutil.copyfile(src, dst)
+
+    dst = config.MODELS_PATH + config.CRC_ES_SUGGESTION_INIT_DATA_CONFIG_FILE
+    src = config.MODELS_DOCKER_PATH + config.CRC_ES_SUGGESTION_INIT_DATA_CONFIG_FILE
+    shutil.copyfile(src, dst)
+
     dst = config.MODELS_PATH + config.ES_SUGGESTION_INIT_DATA_CONFIG_FILE
     src = config.MODELS_DOCKER_PATH + config.ES_SUGGESTION_INIT_DATA_CONFIG_FILE
     shutil.copyfile(src, dst)
