@@ -55,49 +55,39 @@
 
 ## Invites
 
-### Retrieve my pending invites.
+### Retrieve my Pending Invites.
 
 #### From Communities main page
-1. From the side menu on top you can see if you have pending invites.  
-2. Click in the number.  
-3. In the next window, you will see the list.
+1. From the side menu on top you can see if you have *Pending Invites*.  
+2. Click in the number badge.  
+3. In the next window, you will see a List of Invites.
+4. Click in the ^^:octicons-pencil-24:^^, under *actions* column to change the status to: *accepted* or *rejected*.
+6. Click ^^Send^^.      
 
 <figure markdown>
   ![Image title](../img/pending_invites_from_main.png)
-  <figcaption>Pending invites</figcaption>
+  <figcaption>Pending Invites</figcaption>
 </figure>
 
 <figure markdown>
   ![Image title](../img/list_pending_invites_from_main.png)
-  <figcaption>List of Pending invites</figcaption>
-</figure>
-
-### Accept invitation to Join a Community
-
-#### From Communities main page
-1. From the side menu on top you can see if you have pending invites.                
-2. Click in the number.              
-3. In the next window, you will see the list.       
-4. Click in the button ^^Invited^^.             
-    
-
-<figure markdown>
-  ![Image title](../img/pending_invites_from_main.png)
-  <figcaption>Pending invites</figcaption>
+  <figcaption>List of Pending Invites</figcaption>
 </figure>
 
 <figure markdown>
-  ![Image title](../img/list_pending_invites_from_main.png)
-  <figcaption>List of Pending invites</figcaption>
+  ![Image title](../img/update_pending_invites_from_main.png)
+  <figcaption>Update Invite Status</figcaption>
 </figure>
 
 
 #### From Communities list
 1. From the side menu click on ^^Discovery^^ -> ^^Communities^^.       
 2. You can either enter in the search bar the name of the Community you are looking for or select from the Community list.      
-3. Click the button ^^Invited^^ in the Community row.                  
+3. Filter by Status *Invited* on top of the page.                  
+4. Click on button ^^Invited^^ to change the status to: *accepted* or *rejected*.       
+5. Click ^^Send^^.   
 
 <figure markdown>
-  ![Image title](../img/seta_communities_accept_invitation_join.png)
-  <figcaption>Invitation to Join Community</figcaption>
+  ![Image title](../img/update_pending_invites_from_communities.png)
+  <figcaption>Update Invite Status</figcaption>
 </figure>

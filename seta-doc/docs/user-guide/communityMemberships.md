@@ -1,8 +1,6 @@
-# Community Change Requests 
+<!-- (to update with UI implementation)-->
 
-<!-->> (to update with UI implementation)-->
-
-### Retrieve all pending change requests for communities
+<!--### Retrieve all pending change requests for communities
 
 > This option is only available to sysadmins 
 
@@ -44,28 +42,65 @@
 5. By clicking in the ^^:octicons-pencil-24:^^, under *actions* column you can change the status to: *approved*.
 6. Click ^^Send^^. 
 
-## Community Memberships
-
+-->
 ### Remove a member of the Community 
-> (*to update*)
 
+#### From Communities 
+1. From the side menu click on ^^Discovery^^ -> ^^Communities^^.       
+2. You can filter by ^^Status^^ (*member*) and either enter in the search bar the name of the Community you are looking for or select from the Community list.      
+3. Click on :octicons-eye-24: at the right side of the Community row.       
+4. On the Community page, on section ^^STATS^^, click on the badge with the number of members.
+5. On the List of Members page, under column ^^Actions^^ click on the :octicons-trash-24: to remove the member.
+6. Click ^^Confirm^^            
+
+<figure markdown>
+  ![Image title](../img/communities_list.png)
+  <figcaption>Communities</figcaption>
+</figure>
+
+#### From My Communities 
 1. From the side menu click on ^^Manage^^ -> ^^My Communities^^.       
 2. You can either enter in the search bar the name of the Community you are looking for or select from the Community list.      
-3. Click on :material-dots-horizontal: at the right side of each Community and select the option ^^Manage^^.       
-4. In the next window, in section ^^Members^^ click to see the list of the members.                     
-5. By clicking in the ^^:octicons-pencil-24:^^, under *actions* column you can change the status to: *remove*.
-6. Click ^^Send^^.            
+3. Click on :material-dots-horizontal: at the right side of each Community and select the option ^^:octicons-eye-24: View Details^^.       
+4. On the Community page, on section ^^STATS^^, click on the badge with the number of members.
+5. On the List of Members page, under column ^^Actions^^ click on the :octicons-trash-24: to remove the member.
+6. Click ^^Confirm^^            
+
+<figure markdown>
+  ![Image title](../img/remove_community_member.png)
+  <figcaption>Remove Community Member</figcaption>
+</figure>
 
 ### Block a member of the Community
 
+#### From Communities 
+1. From the side menu click on ^^Discovery^^ -> ^^Communities^^.       
+2. You can filter by ^^Status^^ (*member*) and either enter in the search bar the name of the Community you are looking for or select from the Community list.      
+3. Click on :octicons-eye-24: at the right side of the Community row.       
+4. On the Community page, on section ^^STATS^^, click on the badge with the number of members.
+5. On the List of Members page, under column ^^Actions^^ click on the :octicons-pencil-24: and change the status to *blocked*.
+6. Click ^^Send^^            
+
+<figure markdown>
+  ![Image title](../img/communities_list.png)
+  <figcaption>Communities</figcaption>
+</figure>
+
+#### From My Communities 
 1. From the side menu click on ^^Manage^^ -> ^^My Communities^^.       
 2. You can either enter in the search bar the name of the Community you are looking for or select from the Community list.      
-3. Click on :material-dots-horizontal: at the right side of each Community and select the option ^^Manage^^.       
-4. In the next window, in section ^^Members^^ click to see the list of the members.                     
-5. By clicking in the ^^:octicons-pencil-24:^^, under *actions* column you can change the status to: *block*.
-6. Click ^^Send^^. 
+3. Click on :material-dots-horizontal: at the right side of each Community and select the option ^^:octicons-eye-24: View Details^^.       
+4. On the Community page, on section ^^STATS^^, click on the badge with the number of members.
+5. On the List of Members page, under column ^^Actions^^ click on the :octicons-pencil-24: and change the status to *blocked*.
+6. Click ^^Send^^            
 
-## Community Membership Requests
+<figure markdown>
+  ![Image title](../img/block_member.png)
+  <figcaption>Block Community Member</figcaption>
+</figure>
+
+<!--### Display the available memberships 
+> (*to check*)-->
 
 ### Join a Community
 
@@ -97,7 +132,6 @@
   <figcaption>Join Community (*rejected*)</figcaption>
 </figure>
 
-
 ### Manage Request to Join My Community
 
 #### From Pending Membership Requests
@@ -112,12 +146,10 @@
   <figcaption>Pending Membership Requests</figcaption>
 </figure>
 
-
 <figure markdown>
   ![Image title](../img/membership_request_from_main.png)
   <figcaption>List of Pending Membership Requests to Join Community</figcaption>
 </figure>
-
 
 #### From My Communities 
 
@@ -171,12 +203,11 @@
   <figcaption>Keep Pending the request to Join Community</figcaption>
 </figure>
 
-
 #### Cancel a request to join a Community
 1. From the side menu click on ^^Discovery^^ -> ^^Communities^^.        
 2. You can either enter in the search bar the name of the Community you are looking for or select from the Community list.      
-3. Click in the botton ^^PENDING^^ and choose cancel to remove the request.              
+3. Click in the bottom ^^PENDING^^ and choose cancel to remove the request.              
 
-<!--### Display the available memberships 
-> (*to check*)-->
+
+
 
