@@ -1,5 +1,7 @@
 from pymongo import MongoClient
 from seta_flask_server.repository.models import SetaUser, RsaKey
+from migrations.catalogues.scopes_catalogue_builder import ScopesCatalogueBuilder
+from migrations.catalogues.roles_catalogue_builder import RolesCatalogueBuilder
 
 from pathlib import Path
 
@@ -36,12 +38,12 @@ class DbTestSetaApi:
         with open(users_full_path) as fp:
             data = json.load(fp)
       
-        collection = self.db["users"]
+        user_collection = self.db["users"]
       
         #save users
         for user in data["users"]:          
             su = SetaUser(user_id=user["user_id"], email=user["email"], user_type=user["user_type"], status=user["status"], created_at=created_at)
-            collection.insert_one(su.to_json())
+            user_collection.insert_one(su.to_json())
 
             #insert public key
             pub_path=f"../data/{su.user_id}.pub"        
@@ -50,13 +52,21 @@ class DbTestSetaApi:
             with open(full_path, encoding="utf-8") as fk:
                 key = fk.read()
                 rk = RsaKey(user_id=su.user_id, rsa_value=key, created_at=created_at)
-                collection.insert_one(rk.to_json())
+                user_collection.insert_one(rk.to_json())
 
             #current_app.logger.debug("Append user: " + su.user_id)            
         
         #save user claims
-        collection.insert_many(data["claims"])
+        user_collection.insert_many(data["claims"])
         #save user scopes
-        collection.insert_many(data["scopes"])
+        user_collection.insert_many(data["scopes"])
         #save user providers
-        collection.insert_many(data["providers"])
+        user_collection.insert_many(data["providers"])
+
+        catalogue_collection = self.db['catalogues']
+        
+        catalogue_collection.insert_many(ScopesCatalogueBuilder.build_system_scopes("system-scopes"))
+        catalogue_collection.insert_many(ScopesCatalogueBuilder.build_community_scopes("community-scopes"))
+        catalogue_collection.insert_many(ScopesCatalogueBuilder.build_resource_scopes("resource-scopes"))
+        catalogue_collection.insert_many(RolesCatalogueBuilder.build_app_roles("app-roles"))
+        catalogue_collection.insert_many(RolesCatalogueBuilder.build_community_roles("community-roles"))

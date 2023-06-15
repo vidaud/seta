@@ -1,5 +1,5 @@
 from interface import Interface
-from seta_flask_server.repository.models import CommunityModel, EntityScope
+from seta_flask_server.repository.models import CommunityModel
 
 class ICommunitiesBroker(Interface):
     def create(self, model: CommunityModel, scopes: list[dict]) -> None:
