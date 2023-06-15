@@ -72,7 +72,7 @@ const CommunityButton = ({ props, onReload }) => {
             ) : null}
           </>
         ) : data.status === 'pending' ? (
-          <Button variant="outline" size="xs">
+          <Button color="gray" variant="outline" size="xs">
             PENDING
           </Button>
         ) : data.status === 'invited' ? (

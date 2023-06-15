@@ -29,7 +29,7 @@ const OpenCommunityMember = ({ community_id, onReload }) => {
           <Tooltip label="Join Community">
             <Button
               variant="filled"
-              color="green"
+              color="orange"
               size="xs"
               onClick={() => {
                 setOpened(o => !o)

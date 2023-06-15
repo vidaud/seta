@@ -82,34 +82,36 @@ const CommunityList = () => {
             <td>{row.description.charAt(0).toUpperCase() + row.description.slice(1)}</td>
             {/* <td>{row.data_type}</td> */}
             <td>
-              {row.membership === 'opened' ? (
-                <Badge color="orange" fullWidth>
-                  {row.membership}
+              {row.membership === 'closed' ? (
+                <Badge className={classes.badge} variant="outline" color="orange">
+                  Restricted
                 </Badge>
               ) : (
-                <Badge color="green" fullWidth>
+                <Badge className={classes.badge} variant="outline" color="green">
                   {row.membership}
                 </Badge>
               )}
             </td>
             <td>
               {row.status === 'membership' ? (
-                <Badge fullWidth>{row.status}</Badge>
+                <Badge className={classes.badge} variant="outline" color="green">
+                  Member
+                </Badge>
               ) : row.status === 'invited' ? (
-                <Badge color="orange" fullWidth>
+                <Badge className={classes.badge} variant="outline" color="gray">
                   {row.status}
                 </Badge>
               ) : row.status === 'rejected' ? (
-                <Badge color="red" fullWidth>
+                <Badge className={classes.badge} variant="outline" color="red">
                   {row.status}
                 </Badge>
               ) : row.status === 'pending' ? (
-                <Badge color="gray" fullWidth>
+                <Badge className={classes.badge} variant="outline" color="gray">
                   {row.status}
                 </Badge>
               ) : row.status === 'unknown' ? (
-                <Badge color="green" fullWidth>
-                  {row.status}
+                <Badge className={classes.badge} variant="outline" color="orange">
+                  Not Member
                 </Badge>
               ) : null}
             </td>
