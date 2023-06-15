@@ -58,7 +58,7 @@ const ViewClosedCommunity = ({ community, onReload }) => {
               <td className={classes.td}>
                 <Text className={classes.text}>
                   Status:
-                  <Title order={6} color={data?.communities.status === 'active' ? 'green' : 'blue'}>
+                  <Title order={6} color={data?.communities.status === 'active' ? 'green' : 'gray'}>
                     {data?.communities.status.toUpperCase()}
                   </Title>
                 </Text>
@@ -68,7 +68,7 @@ const ViewClosedCommunity = ({ community, onReload }) => {
                   Membership:{' '}
                   <Title
                     order={6}
-                    color={data?.communities.membership === 'opened' ? 'orange' : 'green'}
+                    color={data?.communities.membership === 'opened' ? 'green' : 'orange'}
                   >
                     {data?.communities.membership.toUpperCase()}
                   </Title>

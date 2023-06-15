@@ -115,7 +115,7 @@ const ViewMyCommunity = () => {
                     <Title
                       order={6}
                       style={{ paddingLeft: '10px' }}
-                      color={row?.communities.status === 'active' ? 'green' : 'blue'}
+                      color={row?.communities.status === 'active' ? 'green' : 'gray'}
                     >
                       {data?.communities.status.toUpperCase()}
                     </Title>

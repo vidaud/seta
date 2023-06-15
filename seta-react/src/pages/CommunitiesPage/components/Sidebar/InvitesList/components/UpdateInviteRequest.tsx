@@ -78,7 +78,7 @@ const UpdateInviteRequest = ({ props, parent }) => {
                 <IconPencil size="1rem" stroke={1.5} onClick={() => setOpened(o => !o)} />
               </ActionIcon>
             ) : (
-              <Button variant="outline" size="xs" color="orange" onClick={() => setOpened(o => !o)}>
+              <Button variant="outline" size="xs" color="gray" onClick={() => setOpened(o => !o)}>
                 INVITED
               </Button>
             )}

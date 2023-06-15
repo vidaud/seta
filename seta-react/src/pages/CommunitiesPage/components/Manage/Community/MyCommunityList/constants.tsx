@@ -28,5 +28,8 @@ export const useStyles = createStyles(theme => ({
 
   scrolled: {
     boxShadow: theme.shadows.sm
+  },
+  badge: {
+    width: '50%'
   }
 }))

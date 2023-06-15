@@ -23,5 +23,8 @@ export const useStyles = createStyles(theme => ({
   },
   link: {
     color: 'black'
+  },
+  badge: {
+    width: '50%'
   }
 }))
