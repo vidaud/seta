@@ -1,6 +1,6 @@
 # Community Change Requests 
 
-> (to update with UI implementation)
+<!-->> (to update with UI implementation)-->
 
 ### Retrieve all pending change requests for communities
 
@@ -8,7 +8,7 @@
 
 1. From the side menu click on ^^Manage^^ -> ^^My Communities^^.  
 2. You can either enter in the search bar the name of the Community you are looking for or select from the Community list.  
-3. Click in the three dots at the right side of button ^^Invite^^ and select the option ^^View Details^^.  
+3. Click on :material-dots-horizontal: at the right side of button ^^Invite^^ and select the option ^^View Details^^.  
 4. In the next window, on section ^^Details^^, click on button ^^Manage^^ 
 5. In the next window, on section ^^Pending Changes Requests^^, you can see the pending requests.                     
 5. By clicking in the ^^:octicons-pencil-24:^^, under *actions* column you can change the status to: *approved*.
@@ -20,7 +20,7 @@
 
 1. From the side menu click on ^^Manage^^ -> ^^My Communities^^.  
 2. You can either enter in the search bar the name of the Community you are looking for or select from the Community list.  
-3. Click in the three dots at the right side of button ^^Invite^^ and select the option ^^View Details^^.  
+3. Click on :material-dots-horizontal: at the right side of button ^^Invite^^ and select the option ^^View Details^^.  
 4. In the next window, on section ^^Details^^, click on button ^^Manage^^ 
 5. In the next window, on section ^^Pending Changes Requests^^, you can see the pending requests.                     
 5. By clicking in the ^^:octicons-pencil-24:^^, under *actions* column you can change the status to: *approved*.
@@ -30,7 +30,7 @@
 
 1. From the side menu click on ^^Manage^^ -> ^^My Communities^^.       
 2. You can either enter in the search bar the name of the Community you are looking for or select from the Community list.      
-3. Click in the three dots at the right side of each Community and select the option ^^Manage^^.       
+3. Click on :material-dots-horizontal: at the right side of each Community and select the option ^^Manage^^.       
 4. In the next window, in section ^^Pending Join Requests^^ you can see the pending requests.                     
 5. By clicking in the ^^:octicons-pencil-24:^^, under *actions* column you can change the status to: *approved*.
 6. Click ^^Send^^. 
@@ -39,7 +39,7 @@
 
 1. From the side menu click on ^^Manage^^ -> ^^My Communities^^.       
 2. You can either enter in the search bar the name of the Community you are looking for or select from the Community list.      
-3. Click in the three dots at the right side of each Community and select the option ^^Manage^^.       
+3. Click on :material-dots-horizontal: at the right side of each Community and select the option ^^Manage^^.       
 4. In the next window, in section ^^Pending Join Requests^^ you can see the pending requests.                     
 5. By clicking in the ^^:octicons-pencil-24:^^, under *actions* column you can change the status to: *approved*.
 6. Click ^^Send^^. 
@@ -51,7 +51,7 @@
 
 1. From the side menu click on ^^Manage^^ -> ^^My Communities^^.       
 2. You can either enter in the search bar the name of the Community you are looking for or select from the Community list.      
-3. Click in the three dots at the right side of each Community and select the option ^^Manage^^.       
+3. Click on :material-dots-horizontal: at the right side of each Community and select the option ^^Manage^^.       
 4. In the next window, in section ^^Members^^ click to see the list of the members.                     
 5. By clicking in the ^^:octicons-pencil-24:^^, under *actions* column you can change the status to: *remove*.
 6. Click ^^Send^^.            
@@ -60,7 +60,7 @@
 
 1. From the side menu click on ^^Manage^^ -> ^^My Communities^^.       
 2. You can either enter in the search bar the name of the Community you are looking for or select from the Community list.      
-3. Click in the three dots at the right side of each Community and select the option ^^Manage^^.       
+3. Click on :material-dots-horizontal: at the right side of each Community and select the option ^^Manage^^.       
 4. In the next window, in section ^^Members^^ click to see the list of the members.                     
 5. By clicking in the ^^:octicons-pencil-24:^^, under *actions* column you can change the status to: *block*.
 6. Click ^^Send^^. 
@@ -125,7 +125,7 @@
                   
 1. From the side menu click on ^^Manage^^ -> ^^My Communities^^.       
 2. You can either enter in the search bar the name of the Community you are looking for or select from the Community list.      
-3. Click in the three dots at the right side of each Community and select the option ^^Manage^^.       
+3. Click on :material-dots-horizontal: at the right side of each Community and select the option ^^Manage^^.       
 4. In the next window, in section ^^Pending Join Requests^^ you can see the pending requests.                     
 5. By clicking in the ^^:octicons-pencil-24:^^, under *actions* column you can change the status to: *approved*.
 6. Click ^^Send^^.      
@@ -145,7 +145,7 @@
                   
 1. From the side menu click on ^^Manage^^ -> ^^My Communities^^.       
 2. You can either enter in the search bar the name of the Community you are looking for or select from the Community list.      
-3. Click in the three dots at the right side of each Community and select the option ^^Manage^^.       
+3. Click on :material-dots-horizontal: at the right side of each Community and select the option ^^Manage^^.       
 4. In the next window, in section ^^Pending Join Requests^^ you can see the pending requests.                     
 5. By clicking in the ^^:octicons-pencil-24:^^, under *actions* column you can change the status to: *rejected*.
 6. Click ^^Send^^.      
@@ -160,7 +160,7 @@
                   
 1. From the side menu click on ^^Manage^^ -> ^^My Communities^^.       
 2. You can either enter in the search bar the name of the Community you are looking for or select from the Community list.      
-3. Click in the three dots at the right side of each Community and select the option ^^Manage^^.       
+3. Click on :material-dots-horizontal: at the right side of each Community and select the option ^^Manage^^.       
 4. In the next window, in section ^^Pending Join Requests^^ you can see the pending requests.                     
 5. By clicking in the ^^:octicons-pencil-24:^^, under *actions* column you can change the status to: *pending*.
 6. Click ^^Send^^.      
@@ -177,6 +177,6 @@
 2. You can either enter in the search bar the name of the Community you are looking for or select from the Community list.      
 3. Click in the botton ^^PENDING^^ and choose cancel to remove the request.              
 
-### Display the available memberships 
-> (*to check*)
+<!--### Display the available memberships 
+> (*to check*)-->
 
