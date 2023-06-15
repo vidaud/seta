@@ -73,9 +73,9 @@ const InvitesList = () => {
   const rows = items?.map(row => (
     <tr key={row.invite_id}>
       <td>{row.invite_id}</td>
-      <td>{row.community_id}</td>
+      <td>{row.community_id.charAt(0).toUpperCase() + row?.community_id.slice(1)}</td>
       <td>{row.invited_user_info?.full_name}</td>
-      <td>{row.message}</td>
+      <td>{row.message.charAt(0).toUpperCase() + row?.message.slice(1)}</td>
       <td>
         <Badge
           color={statusColors[row.status.toLowerCase()]}

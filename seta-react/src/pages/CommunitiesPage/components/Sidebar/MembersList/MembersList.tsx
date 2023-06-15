@@ -71,16 +71,16 @@ const MembersList = () => {
     items && items?.length > 0
       ? items?.map(row => (
           <tr key={row.community_id}>
-            <td>{row.community_id}</td>
+            <td>{row.community_id.charAt(0).toUpperCase() + row?.community_id.slice(1)}</td>
             <td>
               <Badge
                 color={statusColors[row.status.toLowerCase()]}
                 variant={theme.colorScheme === 'dark' ? 'light' : 'outline'}
               >
-                {row.status}
+                {row.status.toUpperCase()}
               </Badge>
             </td>
-            <td>{row.message}</td>
+            <td>{row.message.charAt(0).toUpperCase() + row?.message.slice(1)}</td>
             <td>{new Date(row.initiated_date).toDateString()}</td>
             <td>{row.requested_by_info?.full_name}</td>
             <td>{row.review_date ? new Date(row.review_date).toDateString() : null}</td>

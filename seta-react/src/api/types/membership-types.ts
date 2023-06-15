@@ -5,6 +5,11 @@ export type Memberships = {
 export type MembershipResponse = {
   community_id: string
   user_id: string
+  user_info: {
+    user_id: string
+    full_name: string
+    email: string
+  }
   role: string
   join_date: Date
   status: string

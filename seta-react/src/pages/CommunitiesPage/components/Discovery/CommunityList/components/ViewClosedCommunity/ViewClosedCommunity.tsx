@@ -68,9 +68,9 @@ const ViewClosedCommunity = ({ community, onReload }) => {
                   Membership:{' '}
                   <Title
                     order={6}
-                    color={data?.communities.membership === 'opened' ? 'green' : 'blue'}
+                    color={data?.communities.membership === 'opened' ? 'orange' : 'green'}
                   >
-                    {data?.communities.membership}
+                    {data?.communities.membership.toUpperCase()}
                   </Title>
                 </Text>
               </td>

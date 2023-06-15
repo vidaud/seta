@@ -5,7 +5,9 @@ import { ScopeProvider } from '../../../components/Manage/scope-context'
 const MyCommunityListPage = () => {
   return (
     <>
-      <CreateCommunity />
+      <ScopeProvider>
+        <CreateCommunity />
+      </ScopeProvider>
       <ScopeProvider>
         <MyCommunityList />
       </ScopeProvider>

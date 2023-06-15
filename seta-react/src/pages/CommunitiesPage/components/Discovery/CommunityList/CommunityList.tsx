@@ -1,12 +1,15 @@
 import { useEffect, useState } from 'react'
-import { createStyles, Table, ScrollArea, Text, TextInput, rem } from '@mantine/core'
+import { Table, ScrollArea, Text, TextInput, Group, Badge } from '@mantine/core'
 import { IconSearch } from '@tabler/icons-react'
 
 import type { Community } from '~/models/communities/communities'
 
 import CommunityButton from './components/CommunityButton/CommunityButton'
+import Filters from './components/Filters/Filters'
+import { useStyles } from './components/style'
 
 import { useAllCommunities } from '../../../../../api/communities/discover/discover-communities'
+import { useCommunityListContext } from '../../../pages/Discovery/CommunityList/CommunityList.context'
 import { ComponentEmpty, ComponentError } from '../../common'
 import ComponentLoading from '../../common/ComponentLoading'
 import { Th, sortCommunityData } from '../../community-utils'
@@ -16,43 +19,28 @@ const CommunityList = () => {
   const [sortBy, setSortBy] = useState<keyof Community | null>(null)
   const [reverseSortDirection, setReverseSortDirection] = useState(false)
   const [scrolled, setScrolled] = useState(false)
+  const { membership, status } = useCommunityListContext()
 
   const { data, isLoading, error, refetch } = useAllCommunities()
   const [sortedData, setSortedData] = useState<Community[]>([])
 
-  const useStyles = createStyles(theme => ({
-    header: {
-      position: 'sticky',
-      top: 0,
-      backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.white,
-      transition: 'box-shadow 150ms ease',
-
-      '&::after': {
-        content: '""',
-        position: 'absolute',
-        left: 0,
-        right: 0,
-        bottom: 0,
-        borderBottom: `${rem(1)} solid ${
-          theme.colorScheme === 'dark' ? theme.colors.dark[3] : theme.colors.gray[2]
-        }`
-      }
-    },
-    scrolled: {
-      boxShadow: theme.shadows.sm
-    },
-    link: {
-      color: 'black'
-    }
-  }))
   const { classes, cx } = useStyles()
 
   useEffect(() => {
     if (data) {
-      setSortedData(data)
+      membership === 'all' && status === 'all'
+        ? setSortedData(data)
+        : membership === 'all' && status !== 'all'
+        ? setSortedData(data.filter(item => item.status === status))
+        : membership !== 'all' && status === 'all'
+        ? setSortedData(data.filter(item => item.membership === membership))
+        : setSortedData(
+            data.filter(item => item.membership === membership && item.status === status)
+          )
+
       refetch()
     }
-  }, [data])
+  }, [data, membership, status])
 
   if (error) {
     return <ComponentError onTryAgain={refetch} />
@@ -89,12 +77,42 @@ const CommunityList = () => {
     sortedData && sortedData.length > 0
       ? sortedData?.map(row => (
           <tr key={row.community_id}>
-            <td>{row.community_id}</td>
-            <td>{row.title}</td>
-            <td>{row.description}</td>
+            <td>{row.community_id.charAt(0).toUpperCase() + row.community_id.slice(1)}</td>
+            <td>{row.title.charAt(0).toUpperCase() + row.title.slice(1)}</td>
+            <td>{row.description.charAt(0).toUpperCase() + row.description.slice(1)}</td>
             {/* <td>{row.data_type}</td> */}
-            <td>{row.membership}</td>
-            <td>{row.status}</td>
+            <td>
+              {row.membership === 'opened' ? (
+                <Badge color="orange" fullWidth>
+                  {row.membership}
+                </Badge>
+              ) : (
+                <Badge color="green" fullWidth>
+                  {row.membership}
+                </Badge>
+              )}
+            </td>
+            <td>
+              {row.status === 'membership' ? (
+                <Badge fullWidth>{row.status}</Badge>
+              ) : row.status === 'invited' ? (
+                <Badge color="orange" fullWidth>
+                  {row.status}
+                </Badge>
+              ) : row.status === 'rejected' ? (
+                <Badge color="red" fullWidth>
+                  {row.status}
+                </Badge>
+              ) : row.status === 'pending' ? (
+                <Badge color="gray" fullWidth>
+                  {row.status}
+                </Badge>
+              ) : row.status === 'unknown' ? (
+                <Badge color="green" fullWidth>
+                  {row.status}
+                </Badge>
+              ) : null}
+            </td>
             <td>
               <CommunityButton props={row} onReload={refetch} />
             </td>
@@ -103,84 +121,86 @@ const CommunityList = () => {
       : []
 
   return (
-    <ScrollArea h={600} onScrollPositionChange={({ y }) => setScrolled(y !== 0)}>
-      <TextInput
-        placeholder="Search by any field"
-        mb="md"
-        icon={<IconSearch size="0.9rem" stroke={1.5} />}
-        value={search}
-        onChange={handleSearchChange}
-      />
-      <Table
-        horizontalSpacing="md"
-        verticalSpacing="xs"
-        fontSize="xs"
-        miw={700}
-        sx={{ tableLayout: 'fixed' }}
-        className={cx(classes.header, { [classes.scrolled]: scrolled })}
-      >
-        <thead>
-          <tr>
-            <Th
-              sorted={sortBy === 'community_id'}
-              reversed={reverseSortDirection}
-              onSort={() => setSorting('community_id')}
-            >
-              ID
-            </Th>
-            <Th
-              sorted={sortBy === 'title'}
-              reversed={reverseSortDirection}
-              onSort={() => setSorting('title')}
-            >
-              Title
-            </Th>
-            <Th
-              sorted={sortBy === 'description'}
-              reversed={reverseSortDirection}
-              onSort={() => setSorting('description')}
-            >
-              Description
-            </Th>
-            {/* <Th
-              sorted={sortBy === 'data_type'}
-              reversed={reverseSortDirection}
-              onSort={() => setSorting('data_type')}
-            >
-              Data Type
-            </Th> */}
-            <Th
-              sorted={sortBy === 'membership'}
-              reversed={reverseSortDirection}
-              onSort={() => setSorting('membership')}
-            >
-              Membership
-            </Th>
-            <Th
-              sorted={sortBy === 'status'}
-              reversed={reverseSortDirection}
-              onSort={() => setSorting('status')}
-            >
-              Status
-            </Th>
-            <th> </th>
-          </tr>
-        </thead>
-        <tbody>
-          {rows?.length > 0 ? (
-            rows
-          ) : (
-            <tr>
-              <td colSpan={data[0] ? Object.keys(data[0]).length : 1}>
-                <Text weight={500} align="center">
-                  Nothing found
-                </Text>
-              </td>
-            </tr>
-          )}
-        </tbody>
-      </Table>
-    </ScrollArea>
+    <>
+      <Group>
+        <ScrollArea h={600} onScrollPositionChange={({ y }) => setScrolled(y !== 0)}>
+          <Group>
+            <Filters />
+            <TextInput
+              style={{ width: '68%' }}
+              label="Search Field"
+              placeholder="Search by any field"
+              mb="md"
+              icon={<IconSearch size="0.9rem" stroke={1.5} />}
+              value={search}
+              onChange={handleSearchChange}
+            />
+          </Group>
+          <Table
+            horizontalSpacing="md"
+            verticalSpacing="xs"
+            fontSize="xs"
+            miw={700}
+            sx={{ tableLayout: 'fixed' }}
+            className={cx(classes.header, { [classes.scrolled]: scrolled })}
+          >
+            <thead>
+              <tr>
+                <Th
+                  sorted={sortBy === 'community_id'}
+                  reversed={reverseSortDirection}
+                  onSort={() => setSorting('community_id')}
+                >
+                  ID
+                </Th>
+                <Th
+                  sorted={sortBy === 'title'}
+                  reversed={reverseSortDirection}
+                  onSort={() => setSorting('title')}
+                >
+                  Title
+                </Th>
+                <Th
+                  sorted={sortBy === 'description'}
+                  reversed={reverseSortDirection}
+                  onSort={() => setSorting('description')}
+                >
+                  Description
+                </Th>
+                <Th
+                  sorted={sortBy === 'membership'}
+                  reversed={reverseSortDirection}
+                  onSort={() => setSorting('membership')}
+                >
+                  Membership
+                </Th>
+                <Th
+                  sorted={sortBy === 'status'}
+                  reversed={reverseSortDirection}
+                  onSort={() => setSorting('status')}
+                >
+                  Status
+                </Th>
+                <th> </th>
+              </tr>
+            </thead>
+            <tbody>
+              {rows?.length > 0 ? (
+                rows
+              ) : (
+                <tr>
+                  <td colSpan={data[0] ? Object.keys(data[0]).length : 1}>
+                    <Text weight={500} align="center">
+                      Nothing found
+                    </Text>
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </Table>
+        </ScrollArea>
+      </Group>
+    </>
   )
 }
 

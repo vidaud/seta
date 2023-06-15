@@ -53,17 +53,27 @@ const CommunityResources = resources => {
   const rows = items?.data?.map(item => {
     return (
       <tr key={item.resource_id} className={classes.rowSection}>
-        <Grid onClick={() => getResource(item)}>
-          <Grid.Col span={8}>
-            <Text className={classes.textSection}>Title: {item.title}</Text>
-            <Text className={classes.textSection}>Abstract: {item.abstract}</Text>
-          </Grid.Col>
-          <Grid.Col span={4}>
-            <Text className={classes.textSection}>Community: {item.community_id}</Text>
-            <Text className={classes.textSection}>{item.created_at}</Text>
-            <Text className={classes.textSection}>Status: {item.status}</Text>
-          </Grid.Col>
-        </Grid>
+        <td>
+          <Grid onClick={() => getResource(item)}>
+            <Grid.Col span={8}>
+              <Text className={classes.textSection}>
+                Title: {item.title.charAt(0).toUpperCase() + item.title.slice(1)}
+              </Text>
+              <Text className={classes.textSection}>
+                Abstract: {item.abstract.charAt(0).toUpperCase() + item.abstract.slice(1)}
+              </Text>
+            </Grid.Col>
+            <Grid.Col span={4}>
+              <Text className={classes.textSection}>
+                Community: {item.community_id.charAt(0).toUpperCase() + item.community_id.slice(1)}
+              </Text>
+              <Text className={classes.textSection}>
+                Created at: {new Date(item.created_at).toDateString()}
+              </Text>
+              <Text className={classes.textSection}>Status: {item.status.toUpperCase()}</Text>
+            </Grid.Col>
+          </Grid>
+        </td>
       </tr>
     )
   })
@@ -79,7 +89,9 @@ const CommunityResources = resources => {
             <tbody>{rows}</tbody>
           ) : (
             <tbody>
-              <tr className={classes.noResources}>No resources yet for this community</tr>
+              <tr className={classes.noResources}>
+                <td>No resources yet for this community</td>
+              </tr>
             </tbody>
           )}
         </Table>

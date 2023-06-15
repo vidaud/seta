@@ -80,13 +80,20 @@ const ManageCommunity = () => {
                 <Text size="md">Details</Text>
               </Card.Section>
               <Title order={5} className={classes.title}>
-                {row?.communities.title}
+                {row?.communities.title
+                  ? row?.communities.title.charAt(0).toUpperCase() + row?.communities.title.slice(1)
+                  : null}
               </Title>
-              <Text className={classes.text}>{row?.communities.description}</Text>
+              <Text className={classes.text}>
+                {row?.communities.description
+                  ? row?.communities.description.charAt(0).toUpperCase() +
+                    row?.communities.description.slice(1)
+                  : null}
+              </Text>
               <Table className={classes.table}>
                 <tbody>
                   <tr>
-                    <td>Membership: {row?.communities.membership}</td>
+                    <td>Membership: {row?.communities.membership.toUpperCase()}</td>
                     <td>
                       Created at:{' '}
                       {row?.communities?.created_at
@@ -96,7 +103,7 @@ const ManageCommunity = () => {
                   </tr>
                   <tr>{/* <td>Data Type: {row?.communities.data_type}</td> */}</tr>
                   <tr>
-                    <td>Status: {row?.communities.status}</td>
+                    <td>Status: {row?.communities.status.toUpperCase()}</td>
                     <td />
                   </tr>
                 </tbody>
