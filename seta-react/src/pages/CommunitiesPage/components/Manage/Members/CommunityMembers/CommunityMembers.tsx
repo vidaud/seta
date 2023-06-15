@@ -85,7 +85,7 @@ const CommunityMembers = () => {
     items && items?.members.length > 0
       ? items?.members.map(row => (
           <tr key={row.user_id}>
-            <td>{row.user_id}</td>
+            <td>{row?.user_info?.full_name}</td>
             <td>
               <Badge
                 color={jobColors[row.role.toLowerCase()]}
@@ -94,9 +94,9 @@ const CommunityMembers = () => {
                 {row.role}
               </Badge>
             </td>
-            <td>{row.community_id}</td>
-            <td>{row.join_date.toString()}</td>
-            <td>{row.status}</td>
+            <td>{row.community_id.charAt(0).toUpperCase() + row?.community_id.slice(1)}</td>
+            <td>{new Date(row.join_date).toDateString()}</td>
+            <td>{row.status.toUpperCase()}</td>
             <td>
               <Group spacing={0}>
                 {scopes?.includes('/seta/community/manager') ? (

@@ -70,24 +70,32 @@ const ViewMyResource = () => {
               <Text size="md">Details</Text>
             </Card.Section>
             <Title order={5} className={classes.title}>
-              {rows?.title}
+              {rows?.title ? rows?.title.charAt(0).toUpperCase() + rows?.title.slice(1) : null}
             </Title>
             <Text size="xs" className={classes.text}>
-              Abstract: {rows?.abstract}
+              Abstract:{' '}
+              {rows?.abstract
+                ? rows?.abstract.charAt(0).toUpperCase() + rows?.abstract.slice(1)
+                : null}
             </Text>
             <Table className={classes.table}>
               <tbody>
                 <tr>
                   <td className={classes.td}>
-                    <Text className={classes.text}>Community by: {rows?.community_id}</Text>
+                    <Text className={classes.text}>
+                      Community:{' '}
+                      {rows?.community_id
+                        ? rows?.community_id.charAt(0).toUpperCase() + rows?.community_id.slice(1)
+                        : null}
+                    </Text>
                   </td>
                   <td className={classes.td}>
-                    <Text className={classes.text}>Status: {rows?.status}</Text>
+                    <Text className={classes.text}>Status: {rows?.status.toUpperCase()}</Text>
                   </td>
                 </tr>
                 <tr>
                   <td className={classes.td}>
-                    <Text className={classes.text}>Created by: {rows?.creator_id}</Text>
+                    <Text className={classes.text}>Created by: {rows?.creator?.full_name}</Text>
                   </td>
                   <td className={classes.td}>
                     <Text className={classes.text}>

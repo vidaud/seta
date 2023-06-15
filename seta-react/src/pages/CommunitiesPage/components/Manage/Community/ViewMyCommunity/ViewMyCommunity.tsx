@@ -97,10 +97,15 @@ const ViewMyCommunity = () => {
             </Card.Section>
 
             <Title order={5} className={classes.title}>
-              {row?.communities.title}
+              {row?.communities.title
+                ? row?.communities.title.charAt(0).toUpperCase() + row?.communities.title.slice(1)
+                : null}
             </Title>
             <Text size="xs" className={classes.text}>
-              {row?.communities.description}
+              {row?.communities.description
+                ? row?.communities.description.charAt(0).toUpperCase() +
+                  row?.communities.description.slice(1)
+                : null}
             </Text>
             <Table className={classes.table}>
               <tbody>
@@ -115,7 +120,9 @@ const ViewMyCommunity = () => {
                       {data?.communities.status.toUpperCase()}
                     </Title>
                   </td>
-                  <td className={classes.td}>Membership: {row?.communities.membership}</td>
+                  <td className={classes.td}>
+                    Membership: {row?.communities.membership.toUpperCase()}
+                  </td>
                 </tr>
                 <tr>
                   <td className={classes.td}>

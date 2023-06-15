@@ -96,10 +96,10 @@ const ResourceList = () => {
     sortedData && sortedData.length > 0
       ? sortedData?.map(row => (
           <tr key={row.resource_id}>
-            <td>{row.resource_id}</td>
-            <td>{row.community_id}</td>
-            <td>{row.title}</td>
-            <td>{row.abstract}</td>
+            <td>{row.resource_id.charAt(0).toUpperCase() + row.resource_id.slice(1)}</td>
+            <td>{row.community_id.charAt(0).toUpperCase() + row.community_id.slice(1)}</td>
+            <td>{row.title.charAt(0).toUpperCase() + row.title.slice(1)}</td>
+            <td>{row.abstract.charAt(0).toUpperCase() + row.abstract.slice(1)}</td>
             <td>{new Date(row.created_at).toDateString()}</td>
             <td>
               <Group>

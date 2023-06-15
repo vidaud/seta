@@ -60,9 +60,9 @@ const ChangeRequests = () => {
 
   const rows = data?.map(row => (
     <tr key={row.community_id}>
-      <td>{row.requested_by}</td>
-      <td>{row.message}</td>
-      <td>{row.initiated_date.toString()}</td>
+      <td>{row.requested_by_info.full_name}</td>
+      <td>{row.message.charAt(0).toUpperCase() + row.message.slice(1)}</td>
+      <td>{new Date(row?.initiated_date).toDateString()}</td>
       <td>
         <Badge
           color={statusColors[row.status.toLowerCase()]}

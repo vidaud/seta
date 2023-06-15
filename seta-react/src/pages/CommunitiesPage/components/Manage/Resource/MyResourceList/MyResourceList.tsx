@@ -66,10 +66,10 @@ const MyResourceList = () => {
   const rows = sortedData?.map(item => {
     return (
       <tr key={item.resource_id}>
-        <td>{item.resource_id}</td>
-        <td>{item.community_id}</td>
-        <td>{item.title}</td>
-        <td>{item.abstract}</td>
+        <td>{item.resource_id.charAt(0).toUpperCase() + item.resource_id.slice(1)}</td>
+        <td>{item.community_id.charAt(0).toUpperCase() + item.community_id.slice(1)}</td>
+        <td>{item.title.charAt(0).toUpperCase() + item.title.slice(1)}</td>
+        <td>{item.abstract.charAt(0).toUpperCase() + item.abstract.slice(1)}</td>
         <td>{new Date(item.created_at).toDateString()}</td>
         <td>
           <ResourceButtons item={item} />

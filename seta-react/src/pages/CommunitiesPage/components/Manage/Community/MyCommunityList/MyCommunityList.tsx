@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Table, ScrollArea, TextInput } from '@mantine/core'
+import { Table, ScrollArea, TextInput, Badge } from '@mantine/core'
 import { IconSearch } from '@tabler/icons-react'
 
 import type { Community } from '~/models/communities/communities'
@@ -62,12 +62,29 @@ const MyCommunityList = () => {
   const rows = sortedData?.map(item => {
     return (
       <tr key={item.community_id}>
-        <td>{item.community_id}</td>
-        <td>{item.title}</td>
-        <td>{item.description}</td>
-        {/* <td>{item.data_type}</td> */}
-        <td>{item.membership}</td>
-        <td>{item.status}</td>
+        <td>{item.community_id.charAt(0).toUpperCase() + item.community_id.slice(1)}</td>
+        <td>{item.title.charAt(0).toUpperCase() + item.title.slice(1)}</td>
+        <td>{item.description.charAt(0).toUpperCase() + item.description.slice(1)}</td>
+        <td>
+          {item.membership === 'opened' ? (
+            <Badge color="orange" fullWidth>
+              {item.membership}
+            </Badge>
+          ) : (
+            <Badge color="green" fullWidth>
+              {item.membership}
+            </Badge>
+          )}
+        </td>
+        <td>
+          {item.status === 'active' ? (
+            <Badge fullWidth>{item.status}</Badge>
+          ) : (
+            <Badge color="gray" fullWidth>
+              {item.status}
+            </Badge>
+          )}
+        </td>
         <td>
           <CommunityButtons item={item} />
         </td>
