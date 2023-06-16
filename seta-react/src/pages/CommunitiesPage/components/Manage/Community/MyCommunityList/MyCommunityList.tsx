@@ -71,14 +71,14 @@ const MyCommunityList = () => {
               Restricted
             </Badge>
           ) : (
-            <Badge color="green" fullWidth>
+            <Badge color="green" variant="outline" className={classes.badge}>
               {item.membership}
             </Badge>
           )}
         </td>
         <td>
           {item.status === 'active' ? (
-            <Badge className={classes.badge} variant="outline" color="green" fullWidth>
+            <Badge className={classes.badge} variant="outline" color="green">
               {item.status}
             </Badge>
           ) : (

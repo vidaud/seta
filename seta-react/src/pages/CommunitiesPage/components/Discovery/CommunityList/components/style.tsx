@@ -25,6 +25,16 @@ export const useStyles = createStyles(theme => ({
     color: 'black'
   },
   badge: {
-    width: '50%'
+    [`@media (min-width: 90em)`]: {
+      width: '50%'
+    }
+  },
+  search: {
+    [`@media (max-width: 89em) and (min-width: 48em)`]: {
+      width: '58%'
+    },
+    [`@media (min-width: 90em)`]: {
+      width: '62%'
+    }
   }
 }))

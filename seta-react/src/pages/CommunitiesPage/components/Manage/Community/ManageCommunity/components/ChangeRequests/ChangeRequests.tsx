@@ -68,7 +68,7 @@ const ChangeRequests = () => {
           color={statusColors[row.status.toLowerCase()]}
           variant={theme.colorScheme === 'dark' ? 'light' : 'outline'}
         >
-          {row.status.toString()}
+          {row.status.toUpperCase()}
         </Badge>
       </td>
       <td>

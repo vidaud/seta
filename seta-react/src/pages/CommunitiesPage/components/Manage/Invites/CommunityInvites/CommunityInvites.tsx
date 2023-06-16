@@ -66,7 +66,7 @@ const CommunityInvites = () => {
       <td>{row.invited_user_info.full_name}</td>
       <td>{row.message.charAt(0).toUpperCase() + row?.message.slice(1)}</td>
       <td>{row.status.toUpperCase()}</td>
-      <td>{row.initiated_date.toString()}</td>
+      <td>{new Date(row.initiated_date).toLocaleDateString()}</td>
       <td>{row.initiated_by_info.full_name}</td>
     </tr>
   ))

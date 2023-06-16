@@ -1,10 +1,26 @@
-import { Group, Select } from '@mantine/core'
+import { Group, Select, createStyles } from '@mantine/core'
 
 import { useCommunityListContext } from '../../../../../pages/Discovery/CommunityList/CommunityList.context'
+
+const useStyles = createStyles({
+  filters: {
+    marginBottom: '1rem',
+    [`@media (max-width: 89em) and (min-width: 48em)`]: {
+      width: '40%'
+    }
+  },
+  select: {
+    [`@media (max-width: 89em) and (min-width: 48em)`]: {
+      width: '45%'
+    }
+  }
+})
 
 const Filters = () => {
   const { membership, status, handleMembershipChange, handleStatusChange } =
     useCommunityListContext()
+  const { classes } = useStyles()
+
   const membershipOptions = [
     { label: 'All', value: 'all' },
     { label: 'Closed', value: 'closed' },
@@ -21,9 +37,10 @@ const Filters = () => {
 
   return (
     <>
-      <Group style={{ marginBottom: '1rem' }}>
+      <Group className={classes.filters}>
         <Select
           label="Select Membership"
+          className={classes.select}
           name="membership"
           value={membership}
           data={membershipOptions}
@@ -31,6 +48,7 @@ const Filters = () => {
         />
         <Select
           label="Select Status"
+          className={classes.select}
           name="status"
           value={status}
           data={statusOptions}

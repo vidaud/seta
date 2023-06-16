@@ -28,7 +28,7 @@ const CommunityButtons = ({ item }) => {
         scope => scope.community_id === item.community_id
       )
 
-      findCommunity ? setScopes(findCommunity[0].scopes) : setScopes([])
+      findCommunity ? setScopes(findCommunity[0]?.scopes) : setScopes([])
     }
   }, [data, row, community_scopes, item])
 

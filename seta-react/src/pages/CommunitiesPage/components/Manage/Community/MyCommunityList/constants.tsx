@@ -30,6 +30,8 @@ export const useStyles = createStyles(theme => ({
     boxShadow: theme.shadows.sm
   },
   badge: {
-    width: '50%'
+    [`@media (min-width: 90em)`]: {
+      width: '50%'
+    }
   }
 }))
