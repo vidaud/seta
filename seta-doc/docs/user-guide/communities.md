@@ -80,7 +80,7 @@ On **Manage** panel it is possible to access to:
 
 1. From the side menu click on ^^Manage^^ -> ^^My Communities^^.  
 2. You can either enter in the search bar the name of the Community you are looking for or select from the Community list.  
-3. Click on :material-dots-horizontal: at the right side of button ^^Invite^^ and select the option ^^View Details^^.  
+3. Click on :material-dots-horizontal: at the right side of button ^^Invite^^ and select the option ^^:octicons-eye-24: View Details^^.  
 4. In the next window, you will see the Details page of the Community.        
 
 <figure markdown>
@@ -103,7 +103,7 @@ On **Manage** panel it is possible to access to:
 1. From the side menu click on ^^Manage^^ -> ^^My Communities^^.  
 2. You can either enter in the search bar the name of the Community you are looking for or select from the Communities list.  
 3. After you select the Community, click on button ^^Delete^^ on the left top of the Communities list.
-4. It is also possible to delete the Community by clicking :material-dots-horizontal: at the right side of each Community and select the option ^^Delete Community^^. 
+4. It is also possible to delete the Community by clicking :material-dots-horizontal: at the right side of each Community and select the option ^^:octicons-trash-24: Delete Community^^. 
 5. A confirm window will appear to delete the Community.
 
 > Please consider that before you can delete a Community, it is necessary to delete the Resources related.
@@ -125,7 +125,7 @@ On **Manage** panel it is possible to access to:
 
 1. From the side menu click on ^^Manage^^ -> ^^My Communities^^.  
 2. You can either enter in the search bar the name of the Community you are looking for or select from the Community list.  
-3. Click  :material-dots-horizontal: at the right side of button ^^Invite^^ and select the option ^^Update^^.  
+3. Click  :material-dots-horizontal: at the right side of button ^^Invite^^ and select the option ^^:octicons-pencil-24: Update^^.  
 4. In the next window, you can update the *Title* and *Description*.  
 5. Click ^^Update^^
 
@@ -133,7 +133,7 @@ On **Manage** panel it is possible to access to:
 
 1. From the side menu click on ^^Manage^^ -> ^^My Communities^^.  
 2. You can either enter in the search bar the name of the Community you are looking for or select from the Community list.  
-3. Click on :material-dots-horizontal: at the right side of button ^^Invite^^ and select the option ^^Manage^^.  
+3. Click on :material-dots-horizontal: at the right side of button ^^Invite^^ and select the option ^^:octicons-gear-24: Manage^^.  
 4. In the next window, on section ^^Details^^, click on button ^^Update^^ 
 5. You can update the *Title* and *Description*.  
 6. Click ^^Update^^
@@ -142,7 +142,7 @@ On **Manage** panel it is possible to access to:
 
 1. From the side menu click on ^^Manage^^ -> ^^My Communities^^.  
 2. You can either enter in the search bar the name of the Community you are looking for or select from the Community list.  
-3. Click on :material-dots-horizontal: at the right side of button ^^Invite^^ and select the option ^^View Details^^.  
+3. Click on :material-dots-horizontal: at the right side of button ^^Invite^^ and select the option ^^:octicons-eye-24: View Details^^.  
 4. In the next window, on section ^^Details^^, click on button ^^Manage^^ 
 5. In the next window, on section ^^Details^^, click on button ^^Update^^ 
 6. You can update the *Title* and *Description*.  

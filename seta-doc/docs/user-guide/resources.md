@@ -18,7 +18,7 @@
 **Create a Resource in a Community from View Details**   
 1. From the side menu click on ^^Manage^^ -> ^^My Communities^^.  
 2. You can either enter in the search bar the name of the Community you are looking for or select from the Community list.      
-3. Click on :material-dots-horizontal: at the right side of button ^^Invite^^ and select the option ^^View Details^^.       
+3. Click on :material-dots-horizontal: at the right side of button ^^Invite^^ and select the option ^^:octicons-eye-24: View Details^^.       
 4. In the next window, you can either go to section ^^Details^^ or section ^^STATS^^.    
 5. On section ^^Details^^, click on button ^^Manage^^ or and click on button ^^New Resource^^ on the top right.  
 5. On section ^^STATS^^, click on button ^^New Resource^^ at the button.  
@@ -79,7 +79,7 @@
 
 1. From the side menu click on ^^Manage^^ -> ^^My Resources^^.  
 2. You can either enter in the search bar the name of the Resource you are looking for or select from the Resources list.  
-3. Click on :material-dots-horizontal: at the right side of each Resource and select the option ^^View Details^^.  
+3. Click on :material-dots-horizontal: at the right side of each Resource and select the option ^^:octicons-eye-24: View Details^^.  
 4. In the next window, click on button ^^Update^^ at the button.  
 5. You can update the *Title* and *Abstract*.  
 6. Click ^^Update^^.
@@ -106,7 +106,7 @@
 **From View Details option**     
 1. From the side menu click on ^^Manage^^ -> ^^My Resources^^.  
 2. You can either enter in the search bar the name of the Resource you are looking for or select from the Resources list.  
-3. After you select the Resource, click on :material-dots-horizontal: at the right side of each Resource and select the option ^^View Details^^.      
+3. After you select the Resource, click on :material-dots-horizontal: at the right side of each Resource and select the option ^^:octicons-eye-24: View Details^^.      
 4. In the next window, click on button ^^Delete^^ on the right bottom.  
 5. A confirm window will appear to delete the resource.    
 
