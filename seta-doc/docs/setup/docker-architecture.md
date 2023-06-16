@@ -76,16 +76,17 @@ For SeTA we are using two types of containers:
 
     a) **seta-api**: service that communicates with the docker client in order to elaborate the queries to the Elasticsearch  engine that come from the web app.   It includes the functions by which this raw data is parsed, normalized, and enriched before it is indexed in Elasticsearch .   The process of index in Elasticsearch  is also included in this container. 
 
-    b) **seta-auth**: it hosts the web service for authentication for register users. Also, for the external as well internal applications. This service is intended for the communication from the web service that has authorization through a public driver key defined by register users and also a second part used for internal communication. 
-    - **seta-doc**: contains the documentation files and is not a dynamic container.
+    b) **seta-auth**: it hosts the web service for authentication for register users. Also, for the external as well internal applications. This service is intended for the communication from the web service that has authorization through a public driver key defined by register users and also a second part used for internal communication.                   
 
-    c) **seta-es**: contains the image where the Elasticsearch  engine is stored.  The Elasticsearch  engine is fast, and with its logic of placing documents distributed across different containers, it provides redundant copies of the data in case of hardware failure. It has a number of powerful built-in features that make storing and searching data even more efficient, such as data rollups and index lifecycle management.
+    c)  **seta-doc**: contains the documentation files, is not a dynamic container.                   
 
-    d) **seta-nginx**: contains the proxy server configurations for all the endpoints to be reachable outside, in particular for web services.
+    d) **seta-es**: contains the image where the Elasticsearch  engine is stored.  The Elasticsearch  engine is fast, and with its logic of placing documents distributed across different containers, it provides redundant copies of the data in case of hardware failure. It has a number of powerful built-in features that make storing and searching data even more efficient, such as data rollups and index lifecycle management.
 
-    e) **seta-ui**: contains the configuration that enables the access to the web app. In this folder the code to support the seta-api container and the code to support the seta-api to validate the authentication token are included.
+    e) **seta-nginx**: contains the proxy server configurations for all the endpoints to be reachable outside, in particular for web services.
 
-    f) **seta-react**: contains the react code of the web app interface.
+    f) **seta-ui**: contains the configuration that enables the access to the web app. In this folder the code to support the seta-api container and the code to support the seta-api to validate the authentication token are included.
+
+    g) **seta-react**: contains the react code of the web app interface.
 
 - **Stateful Containers**: These types of containers persist data and are typically used to run stateful applications such as databases, message queues, and file servers. The data stored inside the container is persistent even if the container is stopped or recreated.  In SeTA the containers are:    
 

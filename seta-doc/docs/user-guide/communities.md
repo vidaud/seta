@@ -32,8 +32,7 @@ On **Manage** panel it is possible to access to:
 1. From the side panel click on ^^Manage^^ -> ^^My Communities^^.  
 2. Click on the top right bottom ^^New Community^^.  
 3. Enter the Community id, Title and Description.  
-4. Click Save. Once you create your Community you will be sent back to your communities list. 
-5. From your Community list you can invite new members.
+4. Click Save.         
 
 <figure markdown>
   ![Image title](../img/my_communities.png)
@@ -45,10 +44,6 @@ On **Manage** panel it is possible to access to:
   <figcaption>New Community</figcaption>
 </figure>
 
-<figure markdown>
-  ![Image title](../img/my_communities_list.png)
-  <figcaption>My Communities</figcaption>
-</figure>
 
 ### See the list of Communities
 
@@ -56,7 +51,7 @@ On **Manage** panel it is possible to access to:
 2. You will see a list of the Communities in the page.
 3. You can enter in the search bar the name of the Community you are looking for.                 
 <figure markdown>
-  ![Image title](../img/the_communities_list.png)
+  ![Image title](../img/communities_list.png)
   <figcaption>Communities</figcaption>
 </figure>
 
@@ -67,7 +62,7 @@ On **Manage** panel it is possible to access to:
 3. You can enter in the search bar the name of the Community you are looking for.                  
 
 <figure markdown>
-  ![Image title](../img/my_communities_list.png)
+  ![Image title](../img/my_communities.png)
   <figcaption>My Communities</figcaption>
 </figure>
 
@@ -79,17 +74,7 @@ On **Manage** panel it is possible to access to:
 2. You can either enter in the search bar the name of the Community you are looking for or select from the Community list.  
 3. Click on :octicons-eye-24: at the right side of the Community row.  
 4. If you are a member or the community, you will be redirect to the Community Details page.  
-5. If you are not a member of the Community you will only see a pop-up window with a brief information about the community.
-
-<figure markdown>
-  ![Image title](../img/communities_details.png)
-  <figcaption>Community Details</figcaption>
-</figure>
-
-<figure markdown>
-  ![Image title](../img/communities_details_noMember.png)
-  <figcaption>Community details for no Members</figcaption>
-</figure>
+5. If you are not a member of the Community you will only see a pop-up window with a brief information about the community.          
 
 #### From My Communities list
 
@@ -99,8 +84,18 @@ On **Manage** panel it is possible to access to:
 4. In the next window, you will see the Details page of the Community.        
 
 <figure markdown>
+  ![Image title](../img/seta_communities.png)
+  <figcaption>Community Details</figcaption>
+</figure>
+
+<figure markdown>
   ![Image title](../img/communities_details_page.png)
   <figcaption>Community Details for Members</figcaption>
+</figure>
+
+<figure markdown>
+  ![Image title](../img/communities_details_noMember.png)
+  <figcaption>Community details for no Members</figcaption>
 </figure>
 
 ### Delete a Community

@@ -35,7 +35,6 @@ theme:
         example: octicons/beaker-16
         quote: octicons/quote-16
     logo: material/book-open-variant
-    #logo: material/home
     favicon: img/favicon.png
   palette:
     - scheme: seta
@@ -93,7 +92,6 @@ extra_css:
   - stylesheets/extra.css
  
 nav:
-  #- SeTA: /
   - What is SeTA: index.md
   - Who should use it and why: general/who_use_it_and_why.md   
   - Using SeTA:
@@ -113,6 +111,7 @@ nav:
       - Communities API: apis/communities_api/seta_api_communities.md
   - Install SeTA:
     - Docker: setup/docker-architecture.md
+    # -Migration: To do
     - Deployment: setup/deployment.md 
     - Release: setup/release-notes.md
   - License: license/license_v1.md
