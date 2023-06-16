@@ -1,12 +1,8 @@
-import { useEffect, useState } from 'react'
 import { Badge, Navbar, ScrollArea, createStyles, rem, UnstyledButton } from '@mantine/core'
 import { IconNotes, IconCalendarStats, IconMessage, IconUsersGroup } from '@tabler/icons-react'
 import { Link } from 'react-router-dom'
 
-import type { InviteResponse } from '~/api/types/invite-types'
-import type { MembershipRequest } from '~/api/types/membership-types'
-
-import { getNotificationRequests } from '../../api/communities/notifications'
+import { useNotificationsRequests } from '../../api/communities/notifications'
 import { LinksGroup } from '../NavbarLinksGroup/NavbarLinksGroup'
 
 const mockdata = [
@@ -126,34 +122,21 @@ const useStyles = createStyles(theme => ({
   }
 }))
 
-type Notifications = {
-  memberships: MembershipRequest[]
-  invites: InviteResponse[]
-}
-
 const NavbarNested = () => {
-  // const { data } = useNotificationsRequests()
   const { classes } = useStyles()
-  const [notifications, setNotifications] = useState<Notifications>()
-
-  useEffect(() => {
-    getNotificationRequests().then(response => {
-      setNotifications(response)
-    })
-  }, [])
+  const { data } = useNotificationsRequests()
 
   const notification_links = [
     {
       icon: IconMessage,
       label: 'Pending Invites',
-      notifications: notifications?.invites?.filter(invite => invite.status === 'pending').length,
+      notifications: data?.invites?.filter(invite => invite.status === 'pending').length,
       link: '/invites'
     },
     {
       icon: IconUsersGroup,
       label: 'Pending Membership Requests',
-      notifications: notifications?.memberships?.filter(member => member.status === 'pending')
-        .length,
+      notifications: data?.memberships?.filter(member => member.status === 'pending').length,
       link: '/membership-requests'
     }
   ]
@@ -180,8 +163,8 @@ const NavbarNested = () => {
 
   return (
     <Navbar height={800} width={{ sm: 300 }} p="md" className={classes.navbar}>
-      {(notifications?.invites && notifications?.invites?.length > 0) ||
-      (notifications?.memberships && notifications?.memberships?.length > 0) ? (
+      {(data?.invites && data?.invites?.length > 0) ||
+      (data?.memberships && data?.memberships?.length > 0) ? (
         <Navbar.Section className={classes.section}>
           <div className={classes.mainLinks}>{mainLinks}</div>
         </Navbar.Section>

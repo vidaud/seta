@@ -31,7 +31,7 @@ const useStyles = createStyles(theme => ({
   }
 }))
 
-const ChangeRequests = () => {
+const MembershipRequests = () => {
   const { classes, cx } = useStyles()
   const [scrolled, setScrolled] = useState(false)
   const { id } = useParams()
@@ -100,4 +100,4 @@ const ChangeRequests = () => {
   )
 }
 
-export default ChangeRequests
+export default MembershipRequests
