@@ -102,10 +102,11 @@ nav:
         - Web Interface: user-guide/web-app.md
       - Communities: 
         - SeTA Communities: user-guide/communities.md
+      # - Communities ChangeRequest: user-guide/communitiesChangeRequest.md
         - Community Memberships: user-guide/communityMemberships.md
         - Community Invites: user-guide/communityInvites.md
         - Resources: user-guide/resources.md
-        - Users Permissions: user-guide/usersPermissions.md
+      #  - Users Permissions: user-guide/usersPermissions.md
     - APIs: 
       - SeTA API: apis/seta_api/seta_api.md
       - Communities API: apis/communities_api/seta_api_communities.md

@@ -1,6 +1,6 @@
-### Invite to Join a Community
+## Invite to Join a Community
 
-#### From My Communities list
+### From My Communities
 1. From the side menu click on ^^Manage^^ -> ^^My Communities^^.       
 2. You can either enter in the search bar the name of the Community you are looking for or select from the Community list.      
 3. Click on the button ^^Invite^^.       
@@ -12,15 +12,15 @@
   <figcaption>Invite to Join Community</figcaption>
 </figure>
 
-#### From Manage Communities                  
+### From Manage Communities                  
 1. From the side menu click on ^^Manage^^ -> ^^My Communities^^.       
 2. You can either enter in the search bar the name of the Community you are looking for or select from the Community list.      
-3. Click on :material-dots-horizontal: at the right side of each Community and select the option ^^Manage^^.       
+3. Click on :material-dots-horizontal: at the right side of each Community and select the option  ^^:octicons-gear-24: Manage^^.       
 4. In the next window, click on button ^^Invite^^ at the top right.
 5. In the pop-up window, write the emails of the users you want to invite and a message.    
 6. Click ^^Send^^.    
 
-#### From View Details option
+### From View Details
 1. From the side menu click on ^^Manage^^ -> ^^My Communities^^.  
 2. You can either enter in the search bar the name of the Community you are looking for or select from the Communities list.  
 3. Click on :material-dots-horizontal: at the right side of each Community and select the option ^^:octicons-eye-24: View Details^^.  
@@ -34,7 +34,7 @@
   <figcaption>Invite to Join Community</figcaption>
 </figure>
 
-### See the Pending Invites Sent
+## See the Pending Invites Sent
 
 1. From the side menu click on ^^Manage^^ -> ^^My Communities^^.  
 2. You can either enter in the search bar the name of the Community you are looking for or select from the Communities list.  
@@ -53,11 +53,9 @@
 </figure>
 
 
-## Invites
+## Retrieve My Pending Invites.
 
-### Retrieve my Pending Invites.
-
-#### From Communities main page
+### From Side Menu
 1. From the side menu on top you can see if you have *Pending Invites*.  
 2. Click in the number badge.  
 3. In the next window, you will see a List of Invites.
@@ -80,7 +78,7 @@
 </figure>
 
 
-#### From Communities list
+### From Communities
 1. From the side menu click on ^^Discovery^^ -> ^^Communities^^.       
 2. You can either enter in the search bar the name of the Community you are looking for or select from the Community list.      
 3. Filter by Status *Invited* on top of the page.                  

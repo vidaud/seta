@@ -27,7 +27,7 @@ On **Manage** panel it is possible to access to:
 </figure>
 
    
-### Create a Community
+## Create a Community
                      
 1. From the side panel click on ^^Manage^^ -> ^^My Communities^^.  
 2. Click on the top right bottom ^^New Community^^.  
@@ -45,7 +45,7 @@ On **Manage** panel it is possible to access to:
 </figure>
 
 
-### See the list of Communities
+## List of Communities
 
 1. From the side menu click on ^^Manage^^ -> ^^My Communities^^.   
 2. You will see a list of the Communities in the page.
@@ -55,7 +55,7 @@ On **Manage** panel it is possible to access to:
   <figcaption>Communities</figcaption>
 </figure>
 
-### See the list of My Communities
+## List of My Communities
 
 1. From the side menu click on ^^Manage^^ -> ^^My Communities^^.   
 2. You will see a list of the Communities in the page.
@@ -66,9 +66,9 @@ On **Manage** panel it is possible to access to:
   <figcaption>My Communities</figcaption>
 </figure>
 
-### See details of a Community                
+## Details of a Community                
                         
-#### From Communities list
+### From Communities
 
 1. From the side menu click on ^^Discovery^^ -> ^^Communities^^.  
 2. You can either enter in the search bar the name of the Community you are looking for or select from the Community list.  
@@ -76,7 +76,7 @@ On **Manage** panel it is possible to access to:
 4. If you are a member or the community, you will be redirect to the Community Details page.  
 5. If you are not a member of the Community you will only see a pop-up window with a brief information about the community.          
 
-#### From My Communities list
+### From My Communities
 
 1. From the side menu click on ^^Manage^^ -> ^^My Communities^^.  
 2. You can either enter in the search bar the name of the Community you are looking for or select from the Community list.  
@@ -98,7 +98,7 @@ On **Manage** panel it is possible to access to:
   <figcaption>Community details for no Members</figcaption>
 </figure>
 
-### Delete a Community
+## Delete a Community
 
 1. From the side menu click on ^^Manage^^ -> ^^My Communities^^.  
 2. You can either enter in the search bar the name of the Community you are looking for or select from the Communities list.  
@@ -119,9 +119,9 @@ On **Manage** panel it is possible to access to:
   <figcaption>Delete a Community</figcaption>
 </figure>
 
-### Update details of a Community                
+## Update Details of a Community                
                         
-#### From My Communities list
+### From My Communities
 
 1. From the side menu click on ^^Manage^^ -> ^^My Communities^^.  
 2. You can either enter in the search bar the name of the Community you are looking for or select from the Community list.  
@@ -129,7 +129,7 @@ On **Manage** panel it is possible to access to:
 4. In the next window, you can update the *Title* and *Description*.  
 5. Click ^^Update^^
 
-#### From Manage option
+### From Manage
 
 1. From the side menu click on ^^Manage^^ -> ^^My Communities^^.  
 2. You can either enter in the search bar the name of the Community you are looking for or select from the Community list.  
@@ -138,7 +138,7 @@ On **Manage** panel it is possible to access to:
 5. You can update the *Title* and *Description*.  
 6. Click ^^Update^^
 
-#### From View Details option
+### From View Details
 
 1. From the side menu click on ^^Manage^^ -> ^^My Communities^^.  
 2. You can either enter in the search bar the name of the Community you are looking for or select from the Community list.  
