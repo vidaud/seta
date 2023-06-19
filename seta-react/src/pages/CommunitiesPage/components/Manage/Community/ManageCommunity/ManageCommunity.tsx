@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { Button, Group, Text, Grid, Title, createStyles, Table, Tooltip, Card } from '@mantine/core'
 import { Link, useParams } from 'react-router-dom'
 
+import ChangeCommunityRequests from './components/ChangeRequests/ChangeRequests'
 import MembershipRequests from './components/MembershipRequests/MembershipRequests'
 
 import { useMyCommunityID } from '../../../../../../api/communities/manage/my-community'
@@ -127,14 +128,24 @@ const ManageCommunity = () => {
             <CommunityResources data={row?.resources} />
           </Grid.Col>
           {scopes?.includes('/seta/community/manager') ? (
-            <Grid.Col span={6}>
-              <Card withBorder radius="md">
-                <Card.Section className={classes.imageSection}>
-                  <Text size="md">Pending Join Requests</Text>
-                </Card.Section>
-                <MembershipRequests />
-              </Card>
-            </Grid.Col>
+            <>
+              <Grid.Col span={4}>
+                <Card withBorder radius="md">
+                  <Card.Section className={classes.imageSection}>
+                    <Text size="md">Pending Join Requests</Text>
+                  </Card.Section>
+                  <MembershipRequests />
+                </Card>
+              </Grid.Col>
+              <Grid.Col span={6}>
+                <Card withBorder radius="md">
+                  <Card.Section className={classes.imageSection}>
+                    <Text size="md">Community Change Requests</Text>
+                  </Card.Section>
+                  <ChangeCommunityRequests />
+                </Card>
+              </Grid.Col>
+            </>
           ) : null}
           <Grid.Col span={6} />
         </Grid>

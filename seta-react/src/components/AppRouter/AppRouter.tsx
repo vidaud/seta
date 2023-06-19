@@ -175,7 +175,9 @@ const routes = createRoutesFromElements(
         path=":id/:resourceId/update"
         element={
           <RequireAuth>
-            <UpdateResource />
+            <ScopeProvider>
+              <UpdateResource />
+            </ScopeProvider>
           </RequireAuth>
         }
       />
