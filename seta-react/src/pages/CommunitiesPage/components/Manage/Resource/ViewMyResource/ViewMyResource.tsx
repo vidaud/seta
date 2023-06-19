@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react'
 import { Button, Grid, Group, Text, Title, createStyles, Card, Table } from '@mantine/core'
 import { Link, useParams } from 'react-router-dom'
 
+import ChangeResourceRequests from './components/ChangeResourceRequests/ChangeResourceRequests'
+
 import {
   deleteResourceByID,
   useResourceID
@@ -124,21 +126,51 @@ const ViewMyResource = () => {
             </Group>
           </Card>
         </Grid.Col>
-        {/* <Grid.Col span={12}>
-          <Paper shadow="xs" p="md">
-            <Group spacing={30} position="right">
-              <Link
-                className={classes.link}
-                to={`/my-resources/${rows?.resource_id}/contribution/new`}
-                replace={true}
-              >
-                <Button className={classes.button}>
-                  Upload
-                </Button>
-              </Link>        
-            </Group>
-          </Paper>
-        </Grid.Col> */}
+        <Grid.Col span={3}>
+          <Card withBorder radius="md">
+            <Card.Section className={classes.imageSection}>
+              <Text size="md">Limits</Text>
+            </Card.Section>
+            <Table className={classes.table}>
+              <tbody>
+                <tr>
+                  <td className={classes.td}>
+                    <Text className={classes.text}>
+                      Total Files No: {rows?.community_id ? rows?.limits.total_files_no : null}
+                    </Text>
+                  </td>
+                </tr>
+                <tr>
+                  <td className={classes.td}>
+                    <Text className={classes.text}>
+                      Total Storage Mb: {rows?.limits.total_storage_mb}
+                    </Text>
+                  </td>
+                </tr>
+                <tr>
+                  <td className={classes.td}>
+                    <Text className={classes.text}>File Size Mb: {rows?.limits.file_size_mb}</Text>
+                  </td>
+                </tr>
+              </tbody>
+            </Table>
+            {/* {scopes?.includes('/seta/resource/edit') ? (
+              <Group position="right">
+                <Button>Update Limits</Button>
+              </Group>
+            ) : null} */}
+          </Card>
+        </Grid.Col>
+        {scopes?.includes('/seta/resource/edit') ? (
+          <Grid.Col span={5}>
+            <Card withBorder radius="md">
+              <Card.Section className={classes.imageSection}>
+                <Text size="md">Resource Change Requests</Text>
+              </Card.Section>
+              <ChangeResourceRequests />
+            </Card>
+          </Grid.Col>
+        ) : null}
       </Grid>
     </>
   )

@@ -6,6 +6,11 @@ export type ResourceValues = {
   title: string
   abstract: string
   status?: string
+  limits?: {
+    total_files_no?: number
+    total_storage_mb?: number
+    file_size_mb?: number
+  }
 }
 
 export const cacheKey = () => ['my-resources']
