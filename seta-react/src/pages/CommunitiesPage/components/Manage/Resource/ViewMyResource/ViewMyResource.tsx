@@ -3,6 +3,7 @@ import { Button, Grid, Group, Text, Title, createStyles, Card, Table } from '@ma
 import { Link, useParams } from 'react-router-dom'
 
 import ChangeResourceRequests from './components/ChangeResourceRequests/ChangeResourceRequests'
+import LimitsDetails from './components/LimitsDetails/LimitsDetails'
 
 import {
   deleteResourceByID,
@@ -114,7 +115,9 @@ const ViewMyResource = () => {
                   Delete
                 </Button>
               ) : null}
-              {scopes?.includes('/seta/resource/edit') ? (
+              {scopes?.includes('/seta/resource/edit') ||
+              scopes?.includes('/seta/community/manager') ||
+              scopes?.includes('/seta/community/owner') ? (
                 <Link
                   className={classes.link}
                   to={`/my-communities/${rows?.community_id}/${rows?.resource_id}/update`}
@@ -131,41 +134,16 @@ const ViewMyResource = () => {
             <Card.Section className={classes.imageSection}>
               <Text size="md">Limits</Text>
             </Card.Section>
-            <Table className={classes.table}>
-              <tbody>
-                <tr>
-                  <td className={classes.td}>
-                    <Text className={classes.text}>
-                      Total Files No: {rows?.community_id ? rows?.limits.total_files_no : null}
-                    </Text>
-                  </td>
-                </tr>
-                <tr>
-                  <td className={classes.td}>
-                    <Text className={classes.text}>
-                      Total Storage Mb: {rows?.limits.total_storage_mb}
-                    </Text>
-                  </td>
-                </tr>
-                <tr>
-                  <td className={classes.td}>
-                    <Text className={classes.text}>File Size Mb: {rows?.limits.file_size_mb}</Text>
-                  </td>
-                </tr>
-              </tbody>
-            </Table>
-            {/* {scopes?.includes('/seta/resource/edit') ? (
-              <Group position="right">
-                <Button>Update Limits</Button>
-              </Group>
-            ) : null} */}
+            <LimitsDetails />
           </Card>
         </Grid.Col>
-        {scopes?.includes('/seta/resource/edit') ? (
+        {scopes?.includes('/seta/resource/edit') ||
+        scopes?.includes('/seta/community/manager') ||
+        scopes?.includes('seta/community/owner') ? (
           <Grid.Col span={5}>
             <Card withBorder radius="md">
               <Card.Section className={classes.imageSection}>
-                <Text size="md">Resource Change Requests</Text>
+                <Text size="md"> My Pending Resource Change Requests</Text>
               </Card.Section>
               <ChangeResourceRequests />
             </Card>

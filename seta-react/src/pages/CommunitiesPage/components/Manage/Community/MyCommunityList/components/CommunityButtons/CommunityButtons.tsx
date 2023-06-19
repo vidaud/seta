@@ -34,7 +34,7 @@ const CommunityButtons = ({ item }) => {
 
   return (
     <Group spacing={0} position="right">
-      {scopes?.includes('/seta/community/manager') ? <InviteMember id={item.community_id} /> : null}
+      {scopes?.includes('/seta/community/invite') ? <InviteMember id={item.community_id} /> : null}
 
       <Menu transitionProps={{ transition: 'pop' }} withArrow position="bottom-end" withinPortal>
         <Menu.Target>
@@ -66,7 +66,7 @@ const CommunityButtons = ({ item }) => {
           <Link className={classes.link} to={`/my-communities/${item.community_id}`} replace={true}>
             <Menu.Item icon={<IconEye size="1rem" stroke={1.5} />}>View Details</Menu.Item>
           </Link>
-          {scopes?.includes('/seta/community/manager') ? <DeleteCommunity props={row} /> : null}
+          {scopes?.includes('/seta/community/owner') ? <DeleteCommunity props={row} /> : null}
         </Menu.Dropdown>
       </Menu>
     </Group>

@@ -53,7 +53,7 @@ const ResourceButtons = item => {
           >
             <Menu.Item icon={<IconEye size="1rem" stroke={1.5} />}>View Details</Menu.Item>
           </Link>
-          {scopes?.includes('/seta/resource/data/delete') ? <DeleteResource props={item} /> : null}
+          {scopes?.includes('/seta/resource/edit') ? <DeleteResource props={item} /> : null}
         </Menu.Dropdown>
       </Menu>
     </Group>

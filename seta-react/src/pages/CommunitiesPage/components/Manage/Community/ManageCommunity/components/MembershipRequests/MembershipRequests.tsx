@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react'
 import { createStyles, Table, ScrollArea, rem, Badge, useMantineTheme, Group } from '@mantine/core'
 import { useParams } from 'react-router-dom'
 
+import type { MembershipRequest } from '~/api/types/membership-types'
+
 import { useMembershipRequestsID } from '../../../../../../../../api/communities/membership-requests'
 import { ComponentEmpty, ComponentError, ComponentLoading } from '../../../../../common'
 import { statusColors } from '../../../../../types'
@@ -36,13 +38,14 @@ const MembershipRequests = () => {
   const [scrolled, setScrolled] = useState(false)
   const { id } = useParams()
   const { data, isLoading, error, refetch } = useMembershipRequestsID(id)
+  const [items, setItems] = useState<MembershipRequest[] | undefined[]>([])
   const theme = useMantineTheme()
 
   useEffect(() => {
     if (data) {
-      console.log(data)
+      setItems(data)
     }
-  }, [data])
+  }, [data, items])
 
   if (error) {
     return <ComponentError onTryAgain={refetch} />
@@ -58,7 +61,7 @@ const MembershipRequests = () => {
     return <ComponentLoading />
   }
 
-  const rows = data?.map(row => (
+  const rows = items?.map(row => (
     <tr key={row.community_id}>
       <td>{row.requested_by_info.full_name}</td>
       <td>{row.message.charAt(0).toUpperCase() + row.message.slice(1)}</td>

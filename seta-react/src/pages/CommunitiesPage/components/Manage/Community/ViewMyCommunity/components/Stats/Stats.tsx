@@ -90,7 +90,9 @@ const Stats = ({ resourceNumber }) => {
         </Container>
       </Group>
 
-      {scopes?.includes('/seta/community/manager') ? (
+      {scopes?.includes('/seta/community/manager') ||
+      scopes?.includes('/seta/community/invite') ||
+      scopes?.includes('/seta/community/owner') ? (
         <Group position="apart" mt="md">
           <Container size="xs" px="xs" className={classes.container}>
             <Text className={classes.text}>Pending Invites</Text>

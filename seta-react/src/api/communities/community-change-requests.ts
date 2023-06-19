@@ -1,10 +1,12 @@
 import { useQuery } from '@tanstack/react-query'
 import { getCookie } from 'typescript-cookie'
 
+import type { ChangeRequestValues } from '~/pages/CommunitiesPage/components/Manage/change-request-context'
+
 import community_api from './api'
 
 import { environment } from '../../environments/environment'
-import type { CommunityChangeRequests, ChangeRequestResponse } from '../types/change-request-types'
+import type { ChangeRequestResponse } from '../types/change-request-types'
 
 export const cacheKey = (id?: string) => ['change-requests', id]
 
@@ -12,8 +14,6 @@ export const getCommunityChangeRequests = async (id?: string): Promise<ChangeReq
   const { data } = await community_api.get<ChangeRequestResponse>(
     `/communities/${id}/change-requests`
   )
-
-  console.log(data)
 
   return data
 }
@@ -23,7 +23,7 @@ export const useCommunityChangeRequests = (id?: string) =>
 
 const csrf_token = getCookie('csrf_access_token')
 
-export const createChangeRequest = async (id?: string, values?: CommunityChangeRequests) => {
+export const createCommunityChangeRequest = async (id?: string, values?: ChangeRequestValues) => {
   await community_api
     .post(`${environment.COMMUNITIES_API_PATH}/${id}/change-requests`, values, {
       headers: {
@@ -34,7 +34,7 @@ export const createChangeRequest = async (id?: string, values?: CommunityChangeR
     })
     .then(response => {
       if (response.status === 200) {
-        // window.location.reload()
+        window.location.reload()
       }
     })
 }

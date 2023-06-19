@@ -99,7 +99,8 @@ const CommunityMembers = () => {
             <td>{row.status.toUpperCase()}</td>
             <td>
               <Group spacing={0}>
-                {scopes?.includes('/seta/community/manager') ? (
+                {scopes?.includes('/seta/community/manager') ||
+                scopes?.includes('/seta/community/owner') ? (
                   <>
                     <UpdateMembership props={row} />
                     <DeleteMembership props={row} />

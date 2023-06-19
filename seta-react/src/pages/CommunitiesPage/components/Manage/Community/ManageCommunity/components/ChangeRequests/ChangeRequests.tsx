@@ -43,7 +43,6 @@ const ChangeCommunityRequests = () => {
   useEffect(() => {
     if (data) {
       setItems(data.community_change_requests)
-      console.log(data.community_change_requests)
     }
   }, [data, items])
 
