@@ -69,10 +69,10 @@ If we don't want to search with this option, it is always possible to cancel the
 There are some filters that can be applied to refine the search of the results:
 
 `Text chunk`   
-: Chunking is a process of extracting phrases from unstructured text, in our case, it is possible to filter the results by: 
-    1. First chunk of the text
-    2. Single chunk only
-    3. Any chunks
+: Chunking is a process of extracting phrases from unstructured text, in our case, it is possible to filter the results by:                
+  1. First chunk of the text                  
+  2. Single chunk only                     
+  3. Any chunks              
 
 `Filter by date range`
 : If this option is switched on, then the time range bar below, can be adjust to the custom year range.        
@@ -100,7 +100,7 @@ Once all the filters are selected, click in the button **Apply Filters** at the 
 
 ### Results
 
-Once the search is finish, we can see in the results section all the related documents. By default they are order in percentage of accuracy with the searching input. A brief description of the document is display together with a path that describes the document type including the source and the date of publication.  A link to the document is also included.                 
+Once the search is finish, we can see in the results section all the related documents. By default they are order in percentage of similarity with the searching input. A brief description of the document is display together with a path that describes the document type including the source and the date of publication.  A link to the document is also included.                 
 If we click in the expand option, it is possible to see the Taxonomy tree and the Text chunk. 
 
 

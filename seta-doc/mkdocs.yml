@@ -35,7 +35,6 @@ theme:
         example: octicons/beaker-16
         quote: octicons/quote-16
     logo: material/book-open-variant
-    #logo: material/home
     favicon: img/favicon.png
   palette:
     - scheme: seta
@@ -43,6 +42,8 @@ plugins:
   - search
   - render_swagger
   - markdownextradata
+  - glightbox:
+      zoomable: true
     
 markdown_extensions:
     - toc :
@@ -91,7 +92,6 @@ extra_css:
   - stylesheets/extra.css
  
 nav:
-  #- SeTA: /
   - What is SeTA: index.md
   - Who should use it and why: general/who_use_it_and_why.md   
   - Using SeTA:
@@ -102,15 +102,17 @@ nav:
         - Web Interface: user-guide/web-app.md
       - Communities: 
         - SeTA Communities: user-guide/communities.md
-        - Community Change Request: user-guide/communityChangeReq.md
+      # - Communities ChangeRequest: user-guide/communitiesChangeRequest.md
+        - Community Memberships: user-guide/communityMemberships.md
         - Community Invites: user-guide/communityInvites.md
         - Resources: user-guide/resources.md
-        - Users Permissions: user-guide/usersPermissions.md
+      #  - Users Permissions: user-guide/usersPermissions.md
     - APIs: 
       - SeTA API: apis/seta_api/seta_api.md
       - Communities API: apis/communities_api/seta_api_communities.md
   - Install SeTA:
     - Docker: setup/docker-architecture.md
+    # -Migration: To do
     - Deployment: setup/deployment.md 
     - Release: setup/release-notes.md
   - License: license/license_v1.md
