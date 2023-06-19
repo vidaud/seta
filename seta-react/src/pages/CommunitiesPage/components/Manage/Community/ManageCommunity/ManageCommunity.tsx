@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { Button, Group, Text, Grid, Title, createStyles, Table, Tooltip, Card } from '@mantine/core'
 import { Link, useParams } from 'react-router-dom'
 
+import ChangePrivacy from './components/ChangePrivacy/ChangePrivacy'
 import ChangeCommunityRequests from './components/ChangeRequests/ChangeRequests'
 import MembershipRequests from './components/MembershipRequests/MembershipRequests'
 
@@ -109,8 +110,9 @@ const ManageCommunity = () => {
                   </tr>
                 </tbody>
               </Table>
-              {scopes?.includes('/seta/community/manager') ? (
-                <Group spacing={30} position="right">
+              {scopes?.includes('/seta/community/manager') ||
+              scopes?.includes('/seta/community/owner') ? (
+                <Group position="right">
                   <Tooltip label="Update community details">
                     <Link
                       className={classes.link}
@@ -120,6 +122,9 @@ const ManageCommunity = () => {
                       <Button color="green">Update</Button>
                     </Link>
                   </Tooltip>
+                  <Tooltip label="Change community privacy">
+                    <ChangePrivacy props={row?.communities} />
+                  </Tooltip>
                 </Group>
               ) : null}
             </Card>
@@ -127,7 +132,9 @@ const ManageCommunity = () => {
           <Grid.Col span={12}>
             <CommunityResources data={row?.resources} />
           </Grid.Col>
-          {scopes?.includes('/seta/community/manager') ? (
+          {scopes?.includes('/seta/community/manager') ||
+          scopes?.includes('/seta/community/manager') ||
+          scopes?.includes('seta/community/membership/approve') ? (
             <>
               <Grid.Col span={4}>
                 <Card withBorder radius="md">
@@ -140,7 +147,7 @@ const ManageCommunity = () => {
               <Grid.Col span={6}>
                 <Card withBorder radius="md">
                   <Card.Section className={classes.imageSection}>
-                    <Text size="md">Community Change Requests</Text>
+                    <Text size="md">My Pending Community Change Requests</Text>
                   </Card.Section>
                   <ChangeCommunityRequests />
                 </Card>

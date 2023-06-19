@@ -43,7 +43,6 @@ const ChangeResourceRequests = () => {
   useEffect(() => {
     if (data) {
       setItems(data)
-      console.log(data)
     }
   }, [data, items])
 
