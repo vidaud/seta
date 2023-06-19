@@ -140,6 +140,12 @@ def verify_data_mapping(host, index, es_session, data_format, headers, mapping_c
 
     crc_value, crc_id = get_crc_from_es(es, index, "crc_data_mapping")
 
+    if crc_value is None:
+        crc_mapping = {"crc_data_mapping": crc}
+        print("adding crc mapping document", flush=True)
+        es.index(index=index, document=crc_mapping)
+        return
+
     if crc != crc_value:
         print("New mapping found!", flush=True)
         if config.DELETE_INDEX_ON_CRC_CHECK:

@@ -88,8 +88,6 @@ In the ***.env*** file change the necessary information, where is required, for 
 
 ```
 
-
-
 ### Models
 
 Another important setup is the models file, they keep the necessary information to create the related suggestions and the related terms of the words in the text provided. In SeTA this file is called  **json_suggestion.json** and is located in folder **./seta-data/models/**

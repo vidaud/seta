@@ -1,12 +1,12 @@
 
 # Community Resources
 
-### Create a Resource in a Community
+## Create a Resource in a Community
 
-**Create a Resource in a Community from Manage**   
+### From Manage   
 1. From the side menu click on ^^Manage^^ -> ^^My Communities^^.  
 2. You can either enter in the search bar the name of the Community you are looking for or select from the Community list.   
-3. Click on :material-dots-horizontal: at the right side of button ^^Invite^^ and select the option ^^Manage^^.    
+3. Click on :material-dots-horizontal: at the right side of button ^^Invite^^ and select the option  ^^:octicons-gear-24: Manage^^.    
 4. In the next window, click on button ^^New Resource^^ on the top right.  
 5. Setup the *Resource ID, Title, Abstract* and click *Save*
 
@@ -15,10 +15,10 @@
   <figcaption>New Resource in a Community</figcaption>
 </figure>
 
-**Create a Resource in a Community from View Details**   
+### From View Details   
 1. From the side menu click on ^^Manage^^ -> ^^My Communities^^.  
 2. You can either enter in the search bar the name of the Community you are looking for or select from the Community list.      
-3. Click on :material-dots-horizontal: at the right side of button ^^Invite^^ and select the option ^^View Details^^.       
+3. Click on :material-dots-horizontal: at the right side of button ^^Invite^^ and select the option ^^:octicons-eye-24: View Details^^.       
 4. In the next window, you can either go to section ^^Details^^ or section ^^STATS^^.    
 5. On section ^^Details^^, click on button ^^Manage^^ or and click on button ^^New Resource^^ on the top right.  
 5. On section ^^STATS^^, click on button ^^New Resource^^ at the button.  
@@ -34,7 +34,7 @@
   <figcaption>New Resource in a Community</figcaption>
 </figure>
 
-### See list of My Resources
+## See My Resources
 
 1. From the side menu click on ^^Manage^^ -> ^^My Resources^^.              
 2. You will see a list of the Resources in the page.                   
@@ -46,10 +46,7 @@
 </figure>
 
 
-
-## Resources
-
-### List of Resources
+## List of Resources
 
 1. From the side menu click on ^^Discover^^ -> ^^Resources^^.      
 2. You will see a list of the Resources in the page.                        
@@ -60,9 +57,9 @@
   <figcaption>Resources</figcaption>
 </figure>
 
-### Update details of a Resource                
+## Update Details of Resource                
 
-**From Update option**
+### From Update
 
 1. From the side menu click on ^^Manage^^ -> ^^My Resources^^.  
 2. You can either enter in the search bar the name of the Resource you are looking for or select from the Resources list.  
@@ -75,11 +72,11 @@
   <figcaption>Update a Resource from My Resources</figcaption>
 </figure>
 
-**From View Details option**                    
+### From View Details
 
 1. From the side menu click on ^^Manage^^ -> ^^My Resources^^.  
 2. You can either enter in the search bar the name of the Resource you are looking for or select from the Resources list.  
-3. Click on :material-dots-horizontal: at the right side of each Resource and select the option ^^View Details^^.  
+3. Click on :material-dots-horizontal: at the right side of each Resource and select the option ^^:octicons-eye-24: View Details^^.  
 4. In the next window, click on button ^^Update^^ at the button.  
 5. You can update the *Title* and *Abstract*.  
 6. Click ^^Update^^.
@@ -94,19 +91,19 @@
   <figcaption>Update a Resource</figcaption>
 </figure>
 
-### Delete a Resource    
+## Delete a Resource    
 
-**From My Resources list**
+### From My Resources
 
 1. From the side menu click on ^^Manage^^ -> ^^My Resources^^.  
 2. You can either enter in the search bar the name of the Resource you are looking for or select from the Resources list.  
 3. After you select the Resource, click on button ^^Delete^^ on the left top of the Resource list.
 4. It is also possible to delete the Resource by clicking on :material-dots-horizontal: at the right side of each Resource and select the option ^^Delete Resource^^.  
 
-**From View Details option**     
+### From View Details
 1. From the side menu click on ^^Manage^^ -> ^^My Resources^^.  
 2. You can either enter in the search bar the name of the Resource you are looking for or select from the Resources list.  
-3. After you select the Resource, click on :material-dots-horizontal: at the right side of each Resource and select the option ^^View Details^^.      
+3. After you select the Resource, click on :material-dots-horizontal: at the right side of each Resource and select the option ^^:octicons-eye-24: View Details^^.      
 4. In the next window, click on button ^^Delete^^ on the right bottom.  
 5. A confirm window will appear to delete the resource.    
 

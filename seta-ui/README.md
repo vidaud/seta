@@ -4,6 +4,7 @@
 The **seta-ui**  folder contains the configuration that enables the access to the web app.        
 In the files **seta-flask-server** it is possible to replicate the application across different servers with minimal reconfiguration.     
 In this folder it is included the code to support the seta-api to validate the authentication token.
+There is also the subfolder migrations, it contains the configuration file for the MongoDB migration tool, necessary to support the update of the existing data.
 
 
 ## Build

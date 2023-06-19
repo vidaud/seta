@@ -12,3 +12,6 @@ mike==1.1.2
 
 # markdownextradata
 mkdocs-markdownextradata-plugin==0.2.5
+
+# mkdocs-glightbox
+mkdocs-glightbox==0.3.4
