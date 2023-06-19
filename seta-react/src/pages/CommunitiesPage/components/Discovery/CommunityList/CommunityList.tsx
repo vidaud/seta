@@ -129,7 +129,7 @@ const CommunityList = () => {
           <Group>
             <Filters />
             <TextInput
-              style={{ width: '68%' }}
+              className={classes.search}
               label="Search Field"
               placeholder="Search by any field"
               mb="md"

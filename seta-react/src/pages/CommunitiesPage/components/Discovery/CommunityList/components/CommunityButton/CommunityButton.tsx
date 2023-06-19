@@ -3,10 +3,10 @@ import { ActionIcon, Button, Group, createStyles, Tooltip, Notification } from '
 import { IconEye, IconX } from '@tabler/icons-react'
 import { Link } from 'react-router-dom'
 
-import { leaveCommunity } from '../../../../../../../api/communities/my-membership'
 import MembershipRequest from '../../../../Manage/Members/InviteMemberModal/InviteMemberModal'
 import OpenCommunityMember from '../../../../Manage/Members/OpenCommunityMember/OpenCommunityMember'
 import UpdateInviteRequest from '../../../../Sidebar/InvitesList/components/UpdateInviteRequest'
+import LeaveCommunity from '../LeaveCommunity/LeaveCommunity'
 import ViewClosedCommunity from '../ViewClosedCommunity'
 
 const useStyles = createStyles({
@@ -26,23 +26,9 @@ const CommunityButton = ({ props, onReload }) => {
     }
   }, [props, data])
 
-  const deleteMembership = () => {
-    leaveCommunity(data.community_id)
-      .then(() =>
-        setTimeout(() => {
-          onReload()
-        }, 100)
-      )
-      .catch(error => {
-        if (error.response.status === 409) {
-          setMessage(error.response.data.message)
-        }
-      })
-  }
-
   return (
     <>
-      <Group>
+      <Group style={{ width: 'max-content' }}>
         {data.status === 'membership' || data.status === 'invited' ? (
           <Tooltip label="View Details">
             <Link className={classes.link} to={`/communities/${data.community_id}`} replace={true}>
@@ -57,9 +43,7 @@ const CommunityButton = ({ props, onReload }) => {
         {data.status === 'membership' ? (
           <>
             {' '}
-            <Button variant="filled" size="xs" onClick={() => deleteMembership()}>
-              LEAVE
-            </Button>
+            <LeaveCommunity props={data} onChangeMessage={setMessage} onReload={onReload} />
             {message !== '' ? (
               <Notification
                 title="We notify you that"

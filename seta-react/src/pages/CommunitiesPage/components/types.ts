@@ -31,9 +31,9 @@ export interface ThProps {
 }
 
 export const jobColors: Record<string, string> = {
-  communityOwner: 'blue',
-  communityMember: 'green',
-  communityManager: 'cyan',
+  CommunityOwner: 'blue',
+  CommunityMember: 'green',
+  CommunityManager: 'cyan',
   viewer: 'pink',
   contributor: 'yellow'
 }

@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { Button, Group, Text, Grid, Title, createStyles, Table, Tooltip, Card } from '@mantine/core'
 import { Link, useParams } from 'react-router-dom'
 
-import ChangeRequests from './components/ChangeRequests/ChangeRequests'
+import MembershipRequests from './components/MembershipRequests/MembershipRequests'
 
 import { useMyCommunityID } from '../../../../../../api/communities/manage/my-community'
 import ComponentLoading from '../../../common/ComponentLoading'
@@ -132,7 +132,7 @@ const ManageCommunity = () => {
                 <Card.Section className={classes.imageSection}>
                   <Text size="md">Pending Join Requests</Text>
                 </Card.Section>
-                <ChangeRequests />
+                <MembershipRequests />
               </Card>
             </Grid.Col>
           ) : null}

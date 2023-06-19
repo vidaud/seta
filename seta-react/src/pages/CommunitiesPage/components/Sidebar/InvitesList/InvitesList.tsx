@@ -34,7 +34,6 @@ const useStyles = createStyles(theme => ({
       }`
     }
   },
-
   scrolled: {
     boxShadow: theme.shadows.sm
   },
@@ -84,9 +83,9 @@ const InvitesList = () => {
           {row.status}
         </Badge>
       </td>
-      <td>{row.initiated_date.toString()}</td>
+      <td>{new Date(row.initiated_date).toLocaleDateString()}</td>
       <td>{row.initiated_by_info?.full_name}</td>
-      <td>{row.expire_date?.toString()}</td>
+      <td>{new Date(row.expire_date).toLocaleDateString()}</td>
       <td>
         <Group spacing={0}>
           <UpdateInviteRequest props={row} parent="InvitesList" />

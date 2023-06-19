@@ -11,12 +11,11 @@ import {
   Notification
 } from '@mantine/core'
 import { IconX } from '@tabler/icons-react'
-import { Link, useNavigate, useParams } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 
 import Stats from './components/Stats/Stats'
 
 import { useMyCommunityID } from '../../../../../../api/communities/manage/my-community'
-import { leaveCommunity } from '../../../../../../api/communities/my-membership'
 import ComponentLoading from '../../../common/ComponentLoading'
 import CommunityResources from '../../Resource/CommunityResources/CommunityResources'
 import { useCurrentUserPermissions } from '../../scope-context'
@@ -49,6 +48,9 @@ const useStyles = createStyles(theme => ({
   notification: {
     width: 'fit-content',
     float: 'right'
+  },
+  form: {
+    marginTop: '20px'
   }
 }))
 const ViewMyCommunity = () => {
@@ -59,7 +61,6 @@ const ViewMyCommunity = () => {
   const [row, setRow] = useState(data)
   const { community_scopes } = useCurrentUserPermissions()
   const [scopes, setScopes] = useState<string[] | undefined>([])
-  const navigate = useNavigate()
   const [message, setMessage] = useState('')
 
   useEffect(() => {
@@ -67,7 +68,7 @@ const ViewMyCommunity = () => {
       setRow(data)
       const findCommunity = community_scopes?.filter(scope => scope.community_id === id)
 
-      findCommunity ? setScopes(findCommunity[0].scopes) : setScopes([])
+      findCommunity ? setScopes(findCommunity[0]?.scopes) : setScopes([])
     }
   }, [data, row, community_scopes, id])
 
@@ -75,28 +76,16 @@ const ViewMyCommunity = () => {
     return <ComponentLoading />
   }
 
-  const deleteMembership = () => {
-    leaveCommunity(id)
-      .then(() => {
-        navigate(`/communities`)
-      })
-      .catch(error => {
-        if (error.response.status === 409) {
-          setMessage(error.response.data.message)
-        }
-      })
-  }
-
   return (
     <>
       <Grid grow>
         <Grid.Col span={12}>
-          <Card withBorder radius="md">
+          <Card withBorder radius="md" h={280}>
             <Card.Section className={classes.imageSection}>
               <Text size="md">Details</Text>
             </Card.Section>
 
-            <Title order={5} className={classes.title}>
+            <Title order={5} className={(classes.title, classes.form)}>
               {row?.communities.title
                 ? row?.communities.title.charAt(0).toUpperCase() + row?.communities.title.slice(1)
                 : null}
@@ -107,7 +96,7 @@ const ViewMyCommunity = () => {
                   row?.communities.description.slice(1)
                 : null}
             </Text>
-            <Table className={classes.table}>
+            <Table className={(classes.table, classes.form)}>
               <tbody>
                 <tr>
                   <td className={(classes.td, classes.tdDisplay)}>
@@ -147,15 +136,10 @@ const ViewMyCommunity = () => {
                   >
                     <Button size="xs">Manage</Button>
                   </Link>
-                  <Button variant="filled" size="xs" onClick={() => deleteMembership()} color="red">
-                    LEAVE
-                  </Button>
+                  {/* <LeaveCommunity props={row?.communities} onChangeMessage={setMessage} onReload={onReload}/> */}
                 </>
-              ) : (
-                <Button variant="filled" size="xs" onClick={() => deleteMembership()}>
-                  LEAVE
-                </Button>
-              )}
+              ) : // <LeaveCommunity props={row?.communities} onChangeMessage={setMessage} onReload={onReload}/>
+              null}
             </Group>
             {message !== '' ? (
               <Notification

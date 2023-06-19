@@ -67,18 +67,18 @@ const MyCommunityList = () => {
         <td>{item.description.charAt(0).toUpperCase() + item.description.slice(1)}</td>
         <td>
           {item.membership === 'closed' ? (
-            <Badge className={classes.badge} variant="outline" color="orange" fullWidth>
+            <Badge className={classes.badge} variant="outline" color="orange">
               Restricted
             </Badge>
           ) : (
-            <Badge color="green" fullWidth>
+            <Badge color="green" variant="outline" className={classes.badge}>
               {item.membership}
             </Badge>
           )}
         </td>
         <td>
           {item.status === 'active' ? (
-            <Badge className={classes.badge} variant="outline" color="green" fullWidth>
+            <Badge className={classes.badge} variant="outline" color="green">
               {item.status}
             </Badge>
           ) : (
