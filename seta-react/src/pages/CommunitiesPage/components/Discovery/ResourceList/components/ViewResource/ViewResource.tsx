@@ -48,7 +48,7 @@ const ViewResource = () => {
 
   return (
     <>
-      <Grid grow>
+      <Grid>
         <Grid.Col span={12}>
           <Card withBorder radius="md">
             <Card.Section className={classes.imageSection}>

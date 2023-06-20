@@ -47,6 +47,7 @@ const LeaveCommunity = ({ props, onChangeMessage, onReload }) => {
   return (
     <Popover
       width={400}
+      withinPortal={true}
       trapFocus
       position="left"
       withArrow

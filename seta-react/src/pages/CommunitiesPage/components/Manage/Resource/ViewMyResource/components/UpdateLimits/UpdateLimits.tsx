@@ -51,8 +51,9 @@ const UpdateLimits = ({ props }) => {
 
   return (
     <Popover
-      width={300}
+      withinPortal={true}
       trapFocus
+      width={300}
       position="left"
       withArrow
       shadow="md"

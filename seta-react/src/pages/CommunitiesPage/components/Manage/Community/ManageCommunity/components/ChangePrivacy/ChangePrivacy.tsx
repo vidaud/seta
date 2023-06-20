@@ -48,8 +48,9 @@ const ChangePrivacy = ({ props }) => {
   return (
     <Popover
       width={300}
+      withinPortal={true}
       trapFocus
-      position="left"
+      position="bottom"
       withArrow
       shadow="md"
       opened={opened}

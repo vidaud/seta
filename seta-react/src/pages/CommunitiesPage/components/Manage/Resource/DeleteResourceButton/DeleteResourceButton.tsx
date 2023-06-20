@@ -22,6 +22,7 @@ const DeleteResource = ({ props }) => {
   return (
     <Popover
       width={300}
+      withinPortal={true}
       trapFocus
       position="bottom"
       withArrow

@@ -46,6 +46,7 @@ const UpdateMemberRequest = ({ props }) => {
   return (
     <Popover
       width={200}
+      withinPortal={true}
       trapFocus
       position="left"
       withArrow

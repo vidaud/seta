@@ -78,7 +78,7 @@ const ViewMyCommunity = () => {
 
   return (
     <>
-      <Grid grow>
+      <Grid>
         <Grid.Col span={12}>
           <Card withBorder radius="md" h={280}>
             <Card.Section className={classes.imageSection}>
@@ -154,14 +154,10 @@ const ViewMyCommunity = () => {
             ) : null}
           </Card>
         </Grid.Col>
-        <Grid.Col span={1}>
-          <Stats
-            resourceNumber={row?.resources}
-            // inviteNumber={row?.invites}
-            // memberNumber={row?.members}
-          />
+        <Grid.Col span={4}>
+          <Stats resourceNumber={row?.resources} />
         </Grid.Col>
-        <Grid.Col span={5}>
+        <Grid.Col span={8}>
           <CommunityResources data={row?.resources} />
         </Grid.Col>
       </Grid>

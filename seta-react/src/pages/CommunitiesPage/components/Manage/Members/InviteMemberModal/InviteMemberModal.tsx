@@ -39,6 +39,7 @@ const MembershipRequest = ({ community_id, onReload }) => {
       width={300}
       trapFocus
       position="top"
+      withinPortal={true}
       withArrow
       shadow="md"
       opened={opened}

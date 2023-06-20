@@ -33,6 +33,7 @@ const InviteMember = communityId => {
   return (
     <Popover
       width={300}
+      withinPortal={true}
       trapFocus
       position="bottom"
       withArrow

@@ -8,6 +8,7 @@ import MembershipRequests from './components/MembershipRequests/MembershipReques
 
 import { useMyCommunityID } from '../../../../../../api/communities/manage/my-community'
 import ComponentLoading from '../../../common/ComponentLoading'
+import CommunityUsersPermissions from '../../../UserPermissions/Community/CommunityUserPermissions'
 import CommunityResources from '../../Resource/CommunityResources/CommunityResources'
 import { useCurrentUserPermissions } from '../../scope-context'
 import InviteMember from '../InviteMemberModal/InviteMemberModal'
@@ -75,7 +76,7 @@ const ManageCommunity = () => {
             </Tooltip>
           ) : null}
         </Group>
-        <Grid grow>
+        <Grid>
           <Grid.Col span={12}>
             <Card withBorder radius="md">
               <Card.Section className={classes.imageSection}>
@@ -129,22 +130,11 @@ const ManageCommunity = () => {
               ) : null}
             </Card>
           </Grid.Col>
-          <Grid.Col span={12}>
-            <CommunityResources data={row?.resources} />
-          </Grid.Col>
           {scopes?.includes('/seta/community/manager') ||
           scopes?.includes('/seta/community/manager') ||
           scopes?.includes('seta/community/membership/approve') ? (
             <>
-              <Grid.Col span={4}>
-                <Card withBorder radius="md">
-                  <Card.Section className={classes.imageSection}>
-                    <Text size="md">Pending Join Requests</Text>
-                  </Card.Section>
-                  <MembershipRequests />
-                </Card>
-              </Grid.Col>
-              <Grid.Col span={6}>
+              <Grid.Col span={7}>
                 <Card withBorder radius="md">
                   <Card.Section className={classes.imageSection}>
                     <Text size="md">My Pending Community Change Requests</Text>
@@ -152,9 +142,30 @@ const ManageCommunity = () => {
                   <ChangeCommunityRequests />
                 </Card>
               </Grid.Col>
+              <Grid.Col span={5}>
+                <Card withBorder radius="md">
+                  <Card.Section className={classes.imageSection}>
+                    <Text size="md">Pending Join Requests</Text>
+                  </Card.Section>
+                  <MembershipRequests />
+                </Card>
+              </Grid.Col>
             </>
           ) : null}
-          <Grid.Col span={6} />
+          <Grid.Col span={7}>
+            <CommunityResources data={row?.resources} />
+          </Grid.Col>
+          {scopes?.includes('/seta/community/manager') ||
+          scopes?.includes('/seta/community/owner') ? (
+            <Grid.Col span={5}>
+              <Card withBorder radius="md">
+                <Card.Section className={classes.imageSection}>
+                  <Text size="md">User Permissions</Text>
+                </Card.Section>
+                <CommunityUsersPermissions />
+              </Card>
+            </Grid.Col>
+          ) : null}
         </Grid>
       </div>
     </>
