@@ -3,8 +3,8 @@ import { Group, Text, createStyles, Table } from '@mantine/core'
 import { useParams } from 'react-router-dom'
 
 import { useResourceID } from '../../../../../../../../api/resources/manage/my-resource'
+import { useCurrentUserPermissions } from '../../../../../../contexts/scope-context'
 import { ComponentLoading } from '../../../../../common'
-import { useCurrentUserPermissions } from '../../../../scope-context'
 import UpdateLimits from '../UpdateLimits/UpdateLimits'
 
 const useStyles = createStyles(theme => ({

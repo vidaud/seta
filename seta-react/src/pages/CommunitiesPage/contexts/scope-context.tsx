@@ -1,9 +1,8 @@
 import { createContext, useContext, useEffect, useState } from 'react'
 
-import type { MembershipRequest } from '~/api/types/membership-types'
 import type { ChildrenProp } from '~/types/children-props'
 
-import { useUserPermissions } from '../../../../api/communities/user-scopes'
+import { useUserPermissions } from '../../../api/communities/user-scopes'
 
 export type SystemScopes = {
   area: string
@@ -32,7 +31,7 @@ export const ScopeProvider = ({ children }: ChildrenProp) => {
   const [systemScopes, setSystemScopes] = useState<SystemScopes[] | undefined>(undefined)
   const [communityScopes, setCommunityScopes] = useState<CommunityScopes[] | undefined>(undefined)
   const [resourceScopes, setResourceScopes] = useState<ResourceScopes[] | undefined>(undefined)
-  const [notifications, setNotifications] = useState<MembershipRequest[] | undefined>(undefined)
+  // const [notifications, setNotifications] = useState<MembershipRequest[] | undefined>(undefined)
   const { data } = useUserPermissions()
 
   useEffect(() => {

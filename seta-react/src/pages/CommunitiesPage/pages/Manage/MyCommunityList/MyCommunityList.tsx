@@ -1,6 +1,6 @@
-import CreateCommunity from '../../../components/Manage/Community/CreateCommunityButton/CreateCommunityButton'
+import CreateCommunity from '../../../components/Manage/Community/CreateCommunity/CreateCommunity'
 import MyCommunityList from '../../../components/Manage/Community/MyCommunityList/MyCommunityList'
-import { ScopeProvider } from '../../../components/Manage/scope-context'
+import { ScopeProvider } from '../../../contexts/scope-context'
 
 const MyCommunityListPage = () => {
   return (

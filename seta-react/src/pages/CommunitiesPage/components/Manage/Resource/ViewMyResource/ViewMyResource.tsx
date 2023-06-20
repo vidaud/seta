@@ -10,9 +10,9 @@ import {
   deleteResourceByID,
   useResourceID
 } from '../../../../../../api/resources/manage/my-resource'
+import { useCurrentUserPermissions } from '../../../../contexts/scope-context'
 import ComponentLoading from '../../../common/ComponentLoading'
 import ResourceUsersPermissions from '../../../UserPermissions/Resource/ResourceUserPermissions'
-import { useCurrentUserPermissions } from '../../scope-context'
 
 const useStyles = createStyles(theme => ({
   title: {

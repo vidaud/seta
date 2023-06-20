@@ -3,8 +3,8 @@ import { Group, ActionIcon, Menu, createStyles, Tooltip } from '@mantine/core'
 import { IconDots, IconPencil, IconEye } from '@tabler/icons-react'
 import { Link } from 'react-router-dom'
 
-import { useCurrentUserPermissions } from '../../../../scope-context'
-import DeleteResource from '../../../DeleteResourceButton/DeleteResourceButton'
+import { useCurrentUserPermissions } from '../../../../../../contexts/scope-context'
+import DeleteResource from '../../../DeleteResource/DeleteResource'
 
 const useStyles = createStyles({
   link: {

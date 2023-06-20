@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import { getCookie } from 'typescript-cookie'
 
-import type { ResourcePermissions } from '~/pages/CommunitiesPage/components/Manage/resource-user-permissions'
+import type { ResourcePermissions } from '~/pages/CommunitiesPage/contexts/resource-user-permissions'
 
 import community_api from './api'
 

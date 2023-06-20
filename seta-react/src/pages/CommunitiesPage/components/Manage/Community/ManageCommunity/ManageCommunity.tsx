@@ -7,10 +7,10 @@ import ChangeCommunityRequests from './components/ChangeRequests/ChangeRequests'
 import MembershipRequests from './components/MembershipRequests/MembershipRequests'
 
 import { useMyCommunityID } from '../../../../../../api/communities/manage/my-community'
+import { useCurrentUserPermissions } from '../../../../contexts/scope-context'
 import ComponentLoading from '../../../common/ComponentLoading'
 import CommunityUsersPermissions from '../../../UserPermissions/Community/CommunityUserPermissions'
 import CommunityResources from '../../Resource/CommunityResources/CommunityResources'
-import { useCurrentUserPermissions } from '../../scope-context'
 import InviteMember from '../InviteMemberModal/InviteMemberModal'
 
 const useStyles = createStyles(theme => ({
@@ -123,9 +123,7 @@ const ManageCommunity = () => {
                       <Button color="green">Update</Button>
                     </Link>
                   </Tooltip>
-                  <Tooltip label="Change community privacy">
-                    <ChangePrivacy props={row?.communities} />
-                  </Tooltip>
+                  <ChangePrivacy props={row?.communities} />
                 </Group>
               ) : null}
             </Card>

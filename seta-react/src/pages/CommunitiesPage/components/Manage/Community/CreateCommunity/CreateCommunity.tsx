@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 
 import * as S from './styles'
 
-import { useCurrentUserPermissions } from '../../scope-context'
+import { useCurrentUserPermissions } from '../../../../contexts/scope-context'
 
 const useStyles = createStyles({
   link: {

@@ -3,9 +3,9 @@ import { Paper, TextInput, Divider, Group, createStyles, Button, Textarea } from
 import { useNavigate, useParams } from 'react-router-dom'
 
 import { updateResource, useResourceID } from '../../../../../../api/resources/manage/my-resource'
+import type { ResourceValues } from '../../../../contexts/resource-context'
+import { ResourceFormProvider, useResource } from '../../../../contexts/resource-context'
 import ComponentLoading from '../../../common/ComponentLoading'
-import type { ResourceValues } from '../../resource-context'
-import { ResourceFormProvider, useResource } from '../../resource-context'
 
 const useStyles = createStyles({
   input: {

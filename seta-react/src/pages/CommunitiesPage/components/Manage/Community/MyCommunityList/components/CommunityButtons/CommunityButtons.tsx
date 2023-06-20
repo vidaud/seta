@@ -4,8 +4,8 @@ import { IconDots, IconPencil, IconEye, IconSettings } from '@tabler/icons-react
 import { Link } from 'react-router-dom'
 
 import { useMyCommunityID } from '../../../../../../../../api/communities/manage/my-community'
-import { useCurrentUserPermissions } from '../../../../scope-context'
-import DeleteCommunity from '../../../DeleteCommunityButton/DeleteCommunityButton'
+import { useCurrentUserPermissions } from '../../../../../../contexts/scope-context'
+import DeleteCommunity from '../../../DeleteCommunity/DeleteCommunity'
 import InviteMember from '../../../InviteMemberModal/InviteMemberModal'
 
 const useStyles = createStyles({

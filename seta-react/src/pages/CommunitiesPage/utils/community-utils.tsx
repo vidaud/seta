@@ -2,9 +2,9 @@ import { createStyles, Text, rem, UnstyledButton, Group, Center } from '@mantine
 import { keys } from '@mantine/utils'
 import { IconSelector, IconChevronDown, IconChevronUp } from '@tabler/icons-react'
 
-import type { Resource } from '~/models/communities/resources'
+import type { Community } from '~/models/communities/communities'
 
-import type { ThProps } from './types'
+import type { ThProps } from '../components/types'
 
 const useStyles = createStyles(theme => ({
   th: {
@@ -47,7 +47,7 @@ export const Th = ({ children, reversed, sorted, onSort }: ThProps) => {
   )
 }
 
-export const filterResourceData = (data: Resource[], search: string) => {
+export const filterCommunityData = (data: Community[], search: string) => {
   const query = search.toLowerCase().trim()
 
   return data.filter(item =>
@@ -55,17 +55,17 @@ export const filterResourceData = (data: Resource[], search: string) => {
   )
 }
 
-export const sortResourceData = (
-  data: Resource[],
-  payload: { sortBy: keyof Resource | null; reversed: boolean; search: string }
+export const sortCommunityData = (
+  data: Community[],
+  payload: { sortBy: keyof Community | null; reversed: boolean; search: string }
 ) => {
   const { sortBy } = payload
 
   if (!sortBy) {
-    return filterResourceData(data, payload.search)
+    return filterCommunityData(data, payload.search)
   }
 
-  return filterResourceData(
+  return filterCommunityData(
     [...data].sort((a, b) => {
       if (payload.reversed) {
         return b[sortBy.toString()].localeCompare(a[sortBy.toString()])

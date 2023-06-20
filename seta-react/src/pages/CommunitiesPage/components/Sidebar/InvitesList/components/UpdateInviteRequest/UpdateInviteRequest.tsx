@@ -13,11 +13,11 @@ import {
 import { IconPencil } from '@tabler/icons-react'
 
 import { updateInviteRequest } from '../../../../../../../api/communities/invite'
-import type { InviteRequestValues } from '../../../../Manage/invite-request-context'
+import type { InviteRequestValues } from '../../../../../contexts/invite-request-context'
 import {
   InviteRequestFormProvider,
   useInviteRequest
-} from '../../../../Manage/invite-request-context'
+} from '../../../../../contexts/invite-request-context'
 
 const useStyles = createStyles(theme => ({
   form: {

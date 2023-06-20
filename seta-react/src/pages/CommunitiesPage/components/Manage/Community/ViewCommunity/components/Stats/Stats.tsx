@@ -7,7 +7,7 @@ import type { MembershipResponse } from '~/api/types/membership-types'
 
 import { getInvite } from '../../../../../../../../api/communities/invite'
 import { getMembership } from '../../../../../../../../api/communities/membership'
-import { useCurrentUserPermissions } from '../../../../scope-context'
+import { useCurrentUserPermissions } from '../../../../../../contexts/scope-context'
 
 const useStyles = createStyles(theme => ({
   card: {
