@@ -16,10 +16,9 @@ import { Link } from 'react-router-dom'
 import type { Resource } from '~/models/communities/resources'
 
 import { useAllResources } from '../../../../../api/resources/discover/discover-resources'
+import { Th, sortResourceData } from '../../../utils/resource-utils'
 import { ComponentEmpty, ComponentError } from '../../common'
 import ComponentLoading from '../../common/ComponentLoading'
-import { Th } from '../../community-utils'
-import { sortResourceData } from '../../resource-utils'
 
 const ResourceList = () => {
   const [search, setSearch] = useState('')

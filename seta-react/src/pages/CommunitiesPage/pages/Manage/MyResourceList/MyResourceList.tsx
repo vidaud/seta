@@ -1,5 +1,5 @@
 import MyResourceList from '../../../components/Manage/Resource/MyResourceList/MyResourceList'
-import { ScopeProvider } from '../../../components/Manage/scope-context'
+import { ScopeProvider } from '../../../contexts/scope-context'
 
 const MyResourceListPage = () => {
   return (

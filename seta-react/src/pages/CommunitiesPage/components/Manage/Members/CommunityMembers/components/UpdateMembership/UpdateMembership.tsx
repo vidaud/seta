@@ -12,8 +12,11 @@ import {
 import { IconPencil } from '@tabler/icons-react'
 
 import { updateCommunityMembership } from '../../../../../../../../api/communities/membership'
-import type { MembershipValues } from '../../../../membership-context'
-import { MembershipFormProvider, useMembership } from '../../../../membership-context'
+import type { MembershipValues } from '../../../../../../contexts/membership-context'
+import {
+  MembershipFormProvider,
+  useMembership
+} from '../../../../../../contexts/membership-context'
 
 const useStyles = createStyles({
   form: {
@@ -52,6 +55,7 @@ const UpdateMembership = ({ props }) => {
   return (
     <Popover
       width={300}
+      withinPortal={true}
       trapFocus
       position="left"
       withArrow

@@ -2,8 +2,8 @@ import { useState } from 'react'
 import { Popover, Button, Group, Textarea, createStyles, Tooltip } from '@mantine/core'
 
 import { createMembershipRequest } from '../../../../../../api/communities/membership'
-import type { MembershipValues } from '../../membership-context'
-import { MembershipFormProvider, useMembership } from '../../membership-context'
+import type { MembershipValues } from '../../../../contexts/membership-context'
+import { MembershipFormProvider, useMembership } from '../../../../contexts/membership-context'
 
 const useStyles = createStyles({
   form: {
@@ -39,6 +39,7 @@ const MembershipRequest = ({ community_id, onReload }) => {
       width={300}
       trapFocus
       position="top"
+      withinPortal={true}
       withArrow
       shadow="md"
       opened={opened}

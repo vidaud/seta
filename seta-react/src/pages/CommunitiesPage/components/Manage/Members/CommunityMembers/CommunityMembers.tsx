@@ -15,10 +15,10 @@ import DeleteMembership from './components/DeleteMembership/DeleteMembership'
 import UpdateMembership from './components/UpdateMembership/UpdateMembership'
 
 import { useMembershipID } from '../../../../../../api/communities/membership'
+import { useCurrentUserPermissions } from '../../../../contexts/scope-context'
 import { ComponentEmpty, ComponentError } from '../../../common'
 import ComponentLoading from '../../../common/ComponentLoading'
 import { jobColors } from '../../../types'
-import { useCurrentUserPermissions } from '../../scope-context'
 
 const useStyles = createStyles(theme => ({
   header: {

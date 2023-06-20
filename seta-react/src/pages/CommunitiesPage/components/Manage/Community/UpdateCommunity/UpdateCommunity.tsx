@@ -6,9 +6,9 @@ import {
   updateCommunity,
   useMyCommunityID
 } from '../../../../../../api/communities/manage/my-community'
+import type { CommunityValues } from '../../../../contexts/community-context'
+import { CommunityFormProvider, useCommunity } from '../../../../contexts/community-context'
 import ComponentLoading from '../../../common/ComponentLoading'
-import type { CommunityValues } from '../../community-context'
-import { CommunityFormProvider, useCommunity } from '../../community-context'
 
 const useStyles = createStyles({
   input: {

@@ -16,9 +16,9 @@ import { Link, useParams } from 'react-router-dom'
 import Stats from './components/Stats/Stats'
 
 import { useMyCommunityID } from '../../../../../../api/communities/manage/my-community'
+import { useCurrentUserPermissions } from '../../../../contexts/scope-context'
 import ComponentLoading from '../../../common/ComponentLoading'
 import CommunityResources from '../../Resource/CommunityResources/CommunityResources'
-import { useCurrentUserPermissions } from '../../scope-context'
 
 const useStyles = createStyles(theme => ({
   title: {
@@ -53,7 +53,7 @@ const useStyles = createStyles(theme => ({
     marginTop: '20px'
   }
 }))
-const ViewMyCommunity = () => {
+const ViewCommunity = () => {
   const { classes } = useStyles()
   const { id } = useParams()
 
@@ -78,7 +78,7 @@ const ViewMyCommunity = () => {
 
   return (
     <>
-      <Grid grow>
+      <Grid>
         <Grid.Col span={12}>
           <Card withBorder radius="md" h={280}>
             <Card.Section className={classes.imageSection}>
@@ -154,14 +154,10 @@ const ViewMyCommunity = () => {
             ) : null}
           </Card>
         </Grid.Col>
-        <Grid.Col span={1}>
-          <Stats
-            resourceNumber={row?.resources}
-            // inviteNumber={row?.invites}
-            // memberNumber={row?.members}
-          />
+        <Grid.Col span={4}>
+          <Stats resourceNumber={row?.resources} />
         </Grid.Col>
-        <Grid.Col span={5}>
+        <Grid.Col span={8}>
           <CommunityResources data={row?.resources} />
         </Grid.Col>
       </Grid>
@@ -169,4 +165,4 @@ const ViewMyCommunity = () => {
   )
 }
 
-export default ViewMyCommunity
+export default ViewCommunity

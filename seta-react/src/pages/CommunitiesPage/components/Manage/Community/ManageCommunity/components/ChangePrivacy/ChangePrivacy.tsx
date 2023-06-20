@@ -2,8 +2,11 @@ import { useEffect, useState } from 'react'
 import { Popover, Button, Group, createStyles, Tooltip, Select } from '@mantine/core'
 
 import { createCommunityChangeRequest } from '../../../../../../../../api/communities/community-change-requests'
-import type { NewValueValues } from '../../../../change-request-context'
-import { ChangeRequestFormProvider, useChangeRequest } from '../../../../change-request-context'
+import type { NewValueValues } from '../../../../../../contexts/change-request-context'
+import {
+  ChangeRequestFormProvider,
+  useChangeRequest
+} from '../../../../../../contexts/change-request-context'
 
 const useStyles = createStyles({
   form: {
@@ -48,15 +51,16 @@ const ChangePrivacy = ({ props }) => {
   return (
     <Popover
       width={300}
+      withinPortal={true}
       trapFocus
-      position="left"
+      position="bottom"
       withArrow
       shadow="md"
       opened={opened}
       onChange={setOpened}
     >
       <Popover.Target>
-        <Tooltip label="Update Membership">
+        <Tooltip label="Change community privacy">
           <Button onClick={() => setOpened(o => !o)}>Update Privacy</Button>
         </Tooltip>
       </Popover.Target>

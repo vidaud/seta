@@ -1,16 +1,18 @@
 import { useEffect, useState } from 'react'
-import { Button, Grid, Group, Text, Title, createStyles, Card, Table } from '@mantine/core'
+import { Button, Grid, Group, Text, createStyles, Card } from '@mantine/core'
 import { Link, useParams } from 'react-router-dom'
 
 import ChangeResourceRequests from './components/ChangeResourceRequests/ChangeResourceRequests'
 import LimitsDetails from './components/LimitsDetails/LimitsDetails'
+import ResourceData from './components/ResourceDetails/ResourceDetails'
 
 import {
   deleteResourceByID,
   useResourceID
 } from '../../../../../../api/resources/manage/my-resource'
+import { useCurrentUserPermissions } from '../../../../contexts/scope-context'
 import ComponentLoading from '../../../common/ComponentLoading'
-import { useCurrentUserPermissions } from '../../scope-context'
+import ResourceUsersPermissions from '../../../UserPermissions/Resource/ResourceUserPermissions'
 
 const useStyles = createStyles(theme => ({
   title: {
@@ -66,51 +68,15 @@ const ViewMyResource = () => {
 
   return (
     <>
-      <Grid grow>
+      <Grid>
         <Grid.Col span={12}>
           <Card withBorder radius="md">
             <Card.Section className={classes.imageSection}>
               <Text size="md">Details</Text>
             </Card.Section>
-            <Title order={5} className={classes.title}>
-              {rows?.title ? rows?.title.charAt(0).toUpperCase() + rows?.title.slice(1) : null}
-            </Title>
-            <Text size="xs" className={classes.text}>
-              Abstract:{' '}
-              {rows?.abstract
-                ? rows?.abstract.charAt(0).toUpperCase() + rows?.abstract.slice(1)
-                : null}
-            </Text>
-            <Table className={classes.table}>
-              <tbody>
-                <tr>
-                  <td className={classes.td}>
-                    <Text className={classes.text}>
-                      Community:{' '}
-                      {rows?.community_id
-                        ? rows?.community_id.charAt(0).toUpperCase() + rows?.community_id.slice(1)
-                        : null}
-                    </Text>
-                  </td>
-                  <td className={classes.td}>
-                    <Text className={classes.text}>Status: {rows?.status.toUpperCase()}</Text>
-                  </td>
-                </tr>
-                <tr>
-                  <td className={classes.td}>
-                    <Text className={classes.text}>Created by: {rows?.creator?.full_name}</Text>
-                  </td>
-                  <td className={classes.td}>
-                    <Text className={classes.text}>
-                      Created at:{' '}
-                      {rows?.created_at ? new Date(rows?.created_at).toDateString() : null}
-                    </Text>
-                  </td>
-                </tr>
-              </tbody>
-            </Table>
+            <ResourceData resourceId={rows?.resource_id} />
             <Group spacing={30} position="right">
-              {scopes?.includes('/seta/resource/data/delete') ? (
+              {scopes?.includes('/seta/resource/edit') ? (
                 <Button color="red" onClick={deleteResource}>
                   Delete
                 </Button>
@@ -129,7 +95,7 @@ const ViewMyResource = () => {
             </Group>
           </Card>
         </Grid.Col>
-        <Grid.Col span={3}>
+        <Grid.Col span={6}>
           <Card withBorder radius="md">
             <Card.Section className={classes.imageSection}>
               <Text size="md">Limits</Text>
@@ -137,10 +103,20 @@ const ViewMyResource = () => {
             <LimitsDetails />
           </Card>
         </Grid.Col>
+        {scopes?.includes('/seta/resource/edit') ? (
+          <Grid.Col span={6}>
+            <Card withBorder radius="md">
+              <Card.Section className={classes.imageSection}>
+                <Text size="md"> User Permissions</Text>
+              </Card.Section>
+              <ResourceUsersPermissions />
+            </Card>
+          </Grid.Col>
+        ) : null}
         {scopes?.includes('/seta/resource/edit') ||
         scopes?.includes('/seta/community/manager') ||
         scopes?.includes('seta/community/owner') ? (
-          <Grid.Col span={5}>
+          <Grid.Col span={12}>
             <Card withBorder radius="md">
               <Card.Section className={classes.imageSection}>
                 <Text size="md"> My Pending Resource Change Requests</Text>

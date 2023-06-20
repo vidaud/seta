@@ -12,9 +12,12 @@ import {
 } from '@mantine/core'
 import { IconPencil } from '@tabler/icons-react'
 
-import { updateInviteRequest } from '../../../../../../api/communities/invite'
-import type { InviteRequestValues } from '../../../Manage/invite-request-context'
-import { InviteRequestFormProvider, useInviteRequest } from '../../../Manage/invite-request-context'
+import { updateInviteRequest } from '../../../../../../../api/communities/invite'
+import type { InviteRequestValues } from '../../../../../contexts/invite-request-context'
+import {
+  InviteRequestFormProvider,
+  useInviteRequest
+} from '../../../../../contexts/invite-request-context'
 
 const useStyles = createStyles(theme => ({
   form: {
@@ -63,6 +66,7 @@ const UpdateInviteRequest = ({ props, parent }) => {
   return (
     <Popover
       width={200}
+      withinPortal={true}
       trapFocus
       position="left"
       withArrow

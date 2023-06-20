@@ -23,16 +23,17 @@ const Filters = () => {
 
   const membershipOptions = [
     { label: 'All', value: 'all' },
-    { label: 'Closed', value: 'closed' },
+    { label: 'Restricted', value: 'closed' },
     { label: 'Opened', value: 'opened' }
   ]
 
   const statusOptions = [
     { label: 'All', value: 'all' },
     { label: 'Member', value: 'membership' },
-    { label: 'Unknown', value: 'unknown' },
+    { label: 'Not Member', value: 'unknown' },
     { label: 'Pending', value: 'pending' },
-    { label: 'Invited', value: 'invited' }
+    { label: 'Invited', value: 'invited' },
+    { label: 'Rejected', value: 'rejected' }
   ]
 
   return (

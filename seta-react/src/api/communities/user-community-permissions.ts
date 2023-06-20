@@ -1,4 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
+import { getCookie } from 'typescript-cookie'
+
+import type { CommunityPermissions } from '~/pages/CommunitiesPage/contexts/community-user-permissions'
 
 import community_api from './api'
 
@@ -18,3 +21,25 @@ export const getCommunityPermissions = async (id?: string): Promise<UserPermissi
 
 export const useCommunityPermissionsID = (id?: string) =>
   useQuery({ queryKey: cacheKey(id), queryFn: () => getCommunityPermissions(id) })
+
+const csrf_token = getCookie('csrf_access_token')
+
+export const manageCommunityScopes = async (
+  id?: string,
+  userId?: string,
+  values?: CommunityPermissions
+) => {
+  await community_api
+    .post(`/permissions/community/${id}/user/${userId}`, values, {
+      headers: {
+        accept: 'application/json',
+        'X-CSRF-TOKEN': csrf_token,
+        'Content-Type': 'application/x-www-form-urlencoded'
+      }
+    })
+    .then(response => {
+      if (response.status === 200) {
+        // window.location.reload()
+      }
+    })
+}

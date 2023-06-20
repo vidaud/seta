@@ -10,9 +10,9 @@ import { useStyles } from './components/style'
 
 import { useAllCommunities } from '../../../../../api/communities/discover/discover-communities'
 import { useCommunityListContext } from '../../../pages/Discovery/CommunityList/CommunityList.context'
+import { Th, sortCommunityData } from '../../../utils/community-utils'
 import { ComponentEmpty, ComponentError } from '../../common'
 import ComponentLoading from '../../common/ComponentLoading'
-import { Th, sortCommunityData } from '../../community-utils'
 
 const CommunityList = () => {
   const [search, setSearch] = useState('')

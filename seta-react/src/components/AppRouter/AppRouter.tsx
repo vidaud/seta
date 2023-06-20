@@ -11,21 +11,19 @@ import RequireAuth from './components/RequireAuth'
 import AppLayout from '../../layouts/AppLayout'
 import CommunityLayout from '../../layouts/CommunityLayout/CommunityLayout'
 import ViewResource from '../../pages/CommunitiesPage/components/Discovery/ResourceList/components/ViewResource/ViewResource'
-import NewCommunity from '../../pages/CommunitiesPage/components/Manage/Community/CreateCommunityButton/components/NewCommunity/NewCommunity'
+import NewCommunity from '../../pages/CommunitiesPage/components/Manage/Community/CreateCommunity/components/NewCommunity/NewCommunity'
 import ManageCommunity from '../../pages/CommunitiesPage/components/Manage/Community/ManageCommunity/ManageCommunity'
 import UpdateCommunity from '../../pages/CommunitiesPage/components/Manage/Community/UpdateCommunity/UpdateCommunity'
-import ViewMyCommunity from '../../pages/CommunitiesPage/components/Manage/Community/ViewMyCommunity/ViewMyCommunity'
+import ViewCommunity from '../../pages/CommunitiesPage/components/Manage/Community/ViewCommunity/ViewCommunity'
 import CreateContribution from '../../pages/CommunitiesPage/components/Manage/Contribution/NewContribution/NewContribution'
 import CommunityInvites from '../../pages/CommunitiesPage/components/Manage/Invites/CommunityInvites/CommunityInvites'
 import CommunityMembers from '../../pages/CommunitiesPage/components/Manage/Members/CommunityMembers/CommunityMembers'
 import NewResource from '../../pages/CommunitiesPage/components/Manage/Resource/NewResource/NewResource'
 import UpdateResource from '../../pages/CommunitiesPage/components/Manage/Resource/UpdateResource/UpdateResource'
 import ViewMyResource from '../../pages/CommunitiesPage/components/Manage/Resource/ViewMyResource/ViewMyResource'
-import { ScopeProvider } from '../../pages/CommunitiesPage/components/Manage/scope-context'
 import InvitesList from '../../pages/CommunitiesPage/components/Sidebar/InvitesList/InvitesList'
 import MembersList from '../../pages/CommunitiesPage/components/Sidebar/MembersList/MembersList'
-import CommunityUsersPermissions from '../../pages/CommunitiesPage/components/UserPermissions/Community/CommunityUserPermissions'
-import ResourceUsersPermissions from '../../pages/CommunitiesPage/components/UserPermissions/Resource/ResourceUserPermissions'
+import { ScopeProvider } from '../../pages/CommunitiesPage/contexts/scope-context'
 import DashboardsPage from '../../pages/CommunitiesPage/pages/DashboardPage'
 import CommunityListPage from '../../pages/CommunitiesPage/pages/Discovery/CommunityList/CommunityList'
 import ResourceListPage from '../../pages/CommunitiesPage/pages/Discovery/ResourceList/ResourceList'
@@ -156,7 +154,7 @@ const routes = createRoutesFromElements(
         element={
           <RequireAuth>
             <ScopeProvider>
-              <ViewMyCommunity />
+              <ViewCommunity />
             </ScopeProvider>
           </RequireAuth>
         }
@@ -199,14 +197,6 @@ const routes = createRoutesFromElements(
           </RequireAuth>
         }
       />
-      <Route
-        path=":id/permissions"
-        element={
-          <RequireAuth>
-            <CommunityUsersPermissions />
-          </RequireAuth>
-        }
-      />
     </Route>
     <Route path={MANAGE_RESOURCE_PATH} element={<CommunityLayout />}>
       <Route
@@ -243,14 +233,6 @@ const routes = createRoutesFromElements(
           </RequireAuth>
         }
       />
-      <Route
-        path=":resourceId/permissions"
-        element={
-          <RequireAuth>
-            <ResourceUsersPermissions />
-          </RequireAuth>
-        }
-      />
     </Route>
 
     <Route path={DISCOVER_COMMUNITY_PATH} element={<CommunityLayout />}>
@@ -267,7 +249,7 @@ const routes = createRoutesFromElements(
         element={
           <RequireAuth>
             <ScopeProvider>
-              <ViewMyCommunity />
+              <ViewCommunity />
             </ScopeProvider>
           </RequireAuth>
         }

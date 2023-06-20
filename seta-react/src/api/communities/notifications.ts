@@ -4,7 +4,7 @@ import type { AxiosRequestConfig } from 'axios'
 import type {
   CommunityScopes,
   UserPermissions
-} from '~/pages/CommunitiesPage/components/Manage/scope-context'
+} from '~/pages/CommunitiesPage/contexts/scope-context'
 
 import community_api from './api'
 

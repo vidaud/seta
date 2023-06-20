@@ -8,10 +8,10 @@ import ResourceButtons from './components/ResourceButtons/ResourceButtons'
 import { useStyles } from './constants'
 
 import { useMyResources } from '../../../../../../api/resources/manage/my-resources'
+import { useCurrentUserPermissions } from '../../../../contexts/scope-context'
+import { Th, sortResourceData } from '../../../../utils/resource-utils'
 import { ComponentEmpty, ComponentError } from '../../../common'
 import ComponentLoading from '../../../common/ComponentLoading'
-import { Th, sortResourceData } from '../../../resource-utils'
-import { useCurrentUserPermissions } from '../../scope-context'
 
 const MyResourceList = () => {
   const { classes, cx } = useStyles()

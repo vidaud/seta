@@ -5,6 +5,7 @@ import { useParams } from 'react-router-dom'
 import { useResourcePermissionsID } from '../../../../../api/communities/user-resource-permissions'
 import { ComponentEmpty, ComponentError } from '../../common'
 import ComponentLoading from '../../common/ComponentLoading'
+import ManageResourcePermissions from '../../Manage/Resource/ViewMyResource/components/ManageResourcePermissions/ManageResourcePermissions'
 
 const ResourceUsersPermissions = () => {
   const { resourceId } = useParams()
@@ -33,29 +34,39 @@ const ResourceUsersPermissions = () => {
   }
 
   const rows = items?.map(item => (
-    <tr key={item.scope}>
+    <tr key={item.user_id}>
       <td>
         <Group spacing="sm">
-          <Text fz="sm" fw={500}>
-            {item.user_id}
-          </Text>
+          <Text fz="sm">{item.user_info.full_name}</Text>
         </Group>
       </td>
       <td>
-        <Text fz="sm" c="dimmed">
-          {item.scope}
-        </Text>
+        {item.scopes
+          .filter((element, index) => {
+            return item.scopes.indexOf(element) === index
+          })
+          .map(scope => (
+            <Text key={scope} fz="sm" c="dimmed">
+              {scope}
+            </Text>
+          ))}
+      </td>
+      <td>
+        <td>
+          <ManageResourcePermissions props={item} />
+        </td>
       </td>
     </tr>
   ))
 
   return (
     <ScrollArea>
-      <Table sx={{ minWidth: 800 }} verticalSpacing="sm">
+      <Table verticalSpacing="sm">
         <thead>
           <tr>
             <th>User</th>
-            <th>Scope</th>
+            <th>Scopes</th>
+            <th>Manage</th>
           </tr>
         </thead>
         <tbody>{rows}</tbody>

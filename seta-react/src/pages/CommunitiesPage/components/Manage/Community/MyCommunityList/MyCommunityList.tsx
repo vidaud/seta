@@ -8,9 +8,9 @@ import CommunityButtons from './components/CommunityButtons/CommunityButtons'
 import { useStyles } from './constants'
 
 import { useCommunities } from '../../../../../../api/communities/manage/my-communities'
+import { Th, sortCommunityData } from '../../../../utils/community-utils'
 import { ComponentEmpty, ComponentError } from '../../../common'
 import ComponentLoading from '../../../common/ComponentLoading'
-import { Th, sortCommunityData } from '../../../community-utils'
 
 const MyCommunityList = () => {
   const { classes, cx } = useStyles()
