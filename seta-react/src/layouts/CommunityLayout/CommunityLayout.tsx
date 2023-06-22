@@ -2,14 +2,18 @@ import { Box, Flex } from '@mantine/core'
 import { Outlet } from 'react-router-dom'
 
 import Breadcrumbs from '../../components/Breadcrumbs'
-import NavbarNested from '../../components/NavbarNested'
+import NavbarNestedWithNotifications from '../../components/NavbarNestedWithNotifications/NavbarNestedWithNotifications'
 import { ScopeProvider } from '../../pages/CommunitiesPage/contexts/scope-context'
 
 const CommunityLayout = () => {
   return (
-    <Flex direction="column" className="communities min-h-screen">
+    <Flex
+      direction="column"
+      className="communities min-h-screen"
+      sx={{ display: '-webkit-inline-box' }}
+    >
       <ScopeProvider>
-        <NavbarNested />
+        <NavbarNestedWithNotifications />
       </ScopeProvider>
       <Box sx={{ flexGrow: 1, padding: '2rem' }}>
         <Breadcrumbs readFromPath />
