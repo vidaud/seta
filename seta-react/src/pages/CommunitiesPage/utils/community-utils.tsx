@@ -2,7 +2,7 @@ import { createStyles, Text, rem, UnstyledButton, Group, Center } from '@mantine
 import { keys } from '@mantine/utils'
 import { IconSelector, IconChevronDown, IconChevronUp } from '@tabler/icons-react'
 
-import type { Community } from '~/models/communities/communities'
+import type { CommunityResponse } from '~/api/types/community-types'
 
 import type { ThProps } from '../components/types'
 
@@ -47,17 +47,17 @@ export const Th = ({ children, reversed, sorted, onSort }: ThProps) => {
   )
 }
 
-export const filterCommunityData = (data: Community[], search: string) => {
+export const filterCommunityData = (data: CommunityResponse[], search: string) => {
   const query = search.toLowerCase().trim()
 
-  return data.filter(item =>
+  return data?.filter(item =>
     keys(data[0]).some(key => item[key].toString().toLowerCase().includes(query))
   )
 }
 
 export const sortCommunityData = (
-  data: Community[],
-  payload: { sortBy: keyof Community | null; reversed: boolean; search: string }
+  data: CommunityResponse[],
+  payload: { sortBy?: keyof CommunityResponse | null; reversed?: boolean; search: string }
 ) => {
   const { sortBy } = payload
 
@@ -66,7 +66,7 @@ export const sortCommunityData = (
   }
 
   return filterCommunityData(
-    [...data].sort((a, b) => {
+    [...(data || [])].sort((a, b) => {
       if (payload.reversed) {
         return b[sortBy.toString()].localeCompare(a[sortBy.toString()])
       }

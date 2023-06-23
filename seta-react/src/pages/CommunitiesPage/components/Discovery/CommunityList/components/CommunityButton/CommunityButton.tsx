@@ -15,7 +15,7 @@ const useStyles = createStyles({
   }
 })
 
-const CommunityButton = ({ props, onReload }) => {
+const CommunityButton = ({ props }) => {
   const { classes } = useStyles()
   const [data, setData] = useState(props)
   const [message, setMessage] = useState('')
@@ -38,12 +38,12 @@ const CommunityButton = ({ props, onReload }) => {
             </Link>
           </Tooltip>
         ) : (
-          <ViewClosedCommunity community={data.community_id} onReload={onReload} />
+          <ViewClosedCommunity community={data.community_id} />
         )}
         {data.status === 'membership' ? (
           <>
             {' '}
-            <LeaveCommunity props={data} onChangeMessage={setMessage} onReload={onReload} />
+            <LeaveCommunity props={data} onChangeMessage={setMessage} />
             {message !== '' ? (
               <Notification
                 title="We notify you that"
@@ -65,9 +65,9 @@ const CommunityButton = ({ props, onReload }) => {
           // </Button>
           <UpdateInviteRequest props={data} parent="CommunityList" />
         ) : data.status === 'unknown' && data.membership === 'closed' ? (
-          <MembershipRequest community_id={data.community_id} onReload={onReload} />
+          <MembershipRequest community_id={data.community_id} />
         ) : data.status === 'unknown' && data.membership === 'opened' ? (
-          <OpenCommunityMember community_id={data.community_id} onReload={onReload} />
+          <OpenCommunityMember community_id={data.community_id} />
         ) : data.status === 'rejected' ? (
           <Button variant="filled" size="xs" color="red">
             REJECTED

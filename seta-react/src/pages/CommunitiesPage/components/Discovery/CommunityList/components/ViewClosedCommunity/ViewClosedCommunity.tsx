@@ -33,7 +33,7 @@ const useStyles = createStyles(theme => ({
   }
 }))
 
-const ViewClosedCommunity = ({ community, onReload }) => {
+const ViewClosedCommunity = ({ community }) => {
   const { classes } = useStyles()
   const [opened, { open, close }] = useDisclosure(false)
   const { data } = useMyCommunityID(community)
@@ -89,15 +89,9 @@ const ViewClosedCommunity = ({ community, onReload }) => {
               <td className={classes.td} />
               <td className={classes.td}>
                 {data?.communities.membership === 'closed' ? (
-                  <MembershipRequest
-                    community_id={data?.communities.community_id}
-                    onReload={onReload}
-                  />
+                  <MembershipRequest community_id={data?.communities.community_id} />
                 ) : data?.communities.membership === 'opened' ? (
-                  <OpenCommunityMember
-                    community_id={data?.communities.community_id}
-                    onReload={onReload}
-                  />
+                  <OpenCommunityMember community_id={data?.communities.community_id} />
                 ) : null}
               </td>
             </tr>

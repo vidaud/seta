@@ -64,6 +64,17 @@ const getMyCommunity = async (id?: string): Promise<MyCommunity> => {
 export const useMyCommunityID = (id?: string) =>
   useQuery({ queryKey: cacheKey(id), queryFn: () => getMyCommunity(id) })
 
+const getMyCommunityResources = async (id?: string): Promise<ResourceResponse[]> => {
+  const { data } = await community_api.get<ResourceResponse[]>(
+    `${environment.COMMUNITIES_API_PATH}/${id}/resources`
+  )
+
+  return data
+}
+
+export const useMyCommunityResources = (id?: string) =>
+  useQuery({ queryKey: cacheKey(id), queryFn: () => getMyCommunityResources(id) })
+
 const getCommunityManage = async (id?: string): Promise<ManageCommunityAPI> => {
   const { data } = await community_api.get<ManageCommunityAPI>(
     `${environment.COMMUNITIES_API_PATH}/${id}`

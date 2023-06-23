@@ -11,7 +11,7 @@ const useStyles = createStyles({
   }
 })
 
-const MembershipRequest = ({ community_id, onReload }) => {
+const MembershipRequest = ({ community_id }) => {
   const [opened, setOpened] = useState(false)
   const { classes, cx } = useStyles()
 
@@ -28,7 +28,6 @@ const MembershipRequest = ({ community_id, onReload }) => {
   const handleSubmit = (values: MembershipValues) => {
     createMembershipRequest(community_id, values).then(() =>
       setTimeout(() => {
-        onReload()
         setOpened(o => !o)
       }, 100)
     )

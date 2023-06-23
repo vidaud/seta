@@ -1,7 +1,6 @@
 import { CommunityListProvider } from './CommunityList.context'
 
-import CommunityList from '../../../components/Discovery/CommunityList/CommunityList'
-import './style.css'
+import CommunityList from '../../communities/CommunityList/CommunityList'
 
 const CommunityListPage = () => {
   return (
