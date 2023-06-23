@@ -2,6 +2,9 @@ import { useEffect, useState } from 'react'
 import { Card, Grid, Table, Text, createStyles } from '@mantine/core'
 import { useLocation, useNavigate } from 'react-router-dom'
 
+import { useMyCommunityResources } from '../../../../../../api/communities/manage/my-community'
+import { ComponentEmpty, ComponentError, ComponentLoading } from '../../../common'
+
 const useStyles = createStyles(theme => ({
   card: {
     backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.white
@@ -30,17 +33,32 @@ const useStyles = createStyles(theme => ({
   }
 }))
 
-const CommunityResources = resources => {
+const CommunityResources = ({ id }) => {
   const { classes } = useStyles()
   const navigate = useNavigate()
-  const [items, setItems] = useState(resources)
+  const { data, isLoading, error, refetch } = useMyCommunityResources(id)
+  const [items, setItems] = useState(data)
   const location = useLocation()
 
   useEffect(() => {
-    if (resources) {
-      setItems(resources)
+    if (data) {
+      setItems(data)
     }
-  }, [resources, items])
+  }, [data, items])
+
+  if (error) {
+    return <ComponentError onTryAgain={refetch} />
+  }
+
+  if (data) {
+    if (data.length === 0) {
+      return <ComponentEmpty />
+    }
+  }
+
+  if (isLoading || !data) {
+    return <ComponentLoading />
+  }
 
   const getResource = item => {
     if (item.community_id && location.pathname.includes('/my-communities')) {
@@ -50,7 +68,7 @@ const CommunityResources = resources => {
     }
   }
 
-  const rows = items?.data?.map(item => {
+  const rows = data?.map(item => {
     return (
       <tr key={item.resource_id} className={classes.rowSection}>
         <td>
@@ -85,7 +103,7 @@ const CommunityResources = resources => {
       </Card.Section>
       <Card.Section>
         <Table>
-          {rows?.length > 0 ? (
+          {data && data?.length > 0 ? (
             <tbody>{rows}</tbody>
           ) : (
             <tbody>

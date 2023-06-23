@@ -116,7 +116,7 @@ const CommunityList = () => {
               ) : null}
             </td>
             <td>
-              <CommunityButton props={row} onReload={refetch} />
+              <CommunityButton props={row} />
             </td>
           </tr>
         ))

@@ -266,7 +266,9 @@ const routes = createRoutesFromElements(
         path=""
         element={
           <RequireAuth>
-            <CommunityListPage />
+            <ScopeProvider>
+              <CommunityListPage />
+            </ScopeProvider>
           </RequireAuth>
         }
       />

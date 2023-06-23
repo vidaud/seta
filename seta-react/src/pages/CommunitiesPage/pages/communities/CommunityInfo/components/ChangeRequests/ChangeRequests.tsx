@@ -1,13 +1,11 @@
 import { useEffect, useState } from 'react'
-import { createStyles, Table, ScrollArea, rem, Badge, useMantineTheme, Group } from '@mantine/core'
-import { useParams } from 'react-router-dom'
+import { createStyles, Table, ScrollArea, rem, useMantineTheme, Badge } from '@mantine/core'
 
-import type { MembershipRequest } from '~/api/types/membership-types'
+import type { CommunityChangeRequests } from '~/api/types/change-request-types'
 
-import { useMembershipRequestsID } from '../../../../../../../../api/communities/membership-requests'
-import { ComponentEmpty, ComponentError, ComponentLoading } from '../../../../../common'
-import { statusColors } from '../../../../../types'
-import UpdateMemberRequest from '../UpdateMemberRequest/UpdateMemberRequest'
+import { useCommunityChangeRequests } from '../../../../../../../api/communities/community-change-requests'
+import { ComponentEmpty, ComponentError, ComponentLoading } from '../../../../../components/common'
+import { statusColors } from '../../../../../components/types'
 
 const useStyles = createStyles(theme => ({
   header: {
@@ -33,17 +31,16 @@ const useStyles = createStyles(theme => ({
   }
 }))
 
-const MembershipRequests = () => {
+const ChangeCommunityRequests = ({ id }) => {
   const { classes, cx } = useStyles()
   const [scrolled, setScrolled] = useState(false)
-  const { id } = useParams()
-  const { data, isLoading, error, refetch } = useMembershipRequestsID(id)
-  const [items, setItems] = useState<MembershipRequest[] | undefined[]>([])
+  const { data, isLoading, error, refetch } = useCommunityChangeRequests(id)
   const theme = useMantineTheme()
+  const [items, setItems] = useState<CommunityChangeRequests[]>()
 
   useEffect(() => {
     if (data) {
-      setItems(data)
+      setItems(data.community_change_requests)
     }
   }, [data, items])
 
@@ -52,7 +49,7 @@ const MembershipRequests = () => {
   }
 
   if (data) {
-    if (data.length === 0) {
+    if (items?.length === 0) {
       return <ComponentEmpty />
     }
   }
@@ -62,26 +59,28 @@ const MembershipRequests = () => {
   }
 
   const rows = items?.map(row => (
-    <tr key={row.community_id}>
-      <td>{row.requested_by_info.full_name}</td>
-      <td>{row.message.charAt(0).toUpperCase() + row.message.slice(1)}</td>
+    <tr key={row?.request_id}>
+      <td>{row?.community_id.charAt(0).toUpperCase() + row?.community_id.slice(1)}</td>
+      <td>{row?.field_name.charAt(0).toUpperCase() + row?.field_name.slice(1)}</td>
+      <td>{row?.old_value.charAt(0).toUpperCase() + row?.old_value.slice(1)}</td>
+      <td>{row?.new_value.charAt(0).toUpperCase() + row?.new_value.slice(1)}</td>
+      <td>{row?.requested_by_info?.full_name}</td>
       <td>{new Date(row?.initiated_date).toDateString()}</td>
       <td>
         <Badge
-          color={statusColors[row.status.toLowerCase()]}
+          color={statusColors[row?.status.toLowerCase()]}
           variant={theme.colorScheme === 'dark' ? 'light' : 'outline'}
         >
-          {row.status.toUpperCase()}
+          {row?.status.toUpperCase()}
         </Badge>
       </td>
-      <td>
+      {/* <td>
         <Group spacing={0}>
-          <UpdateMemberRequest props={row} />
-          {/* <ActionIcon color="red">
+          <ActionIcon color="red">
             <IconTrash size="1rem" stroke={1.5} />
-          </ActionIcon> */}
+          </ActionIcon>
         </Group>
-      </td>
+      </td> */}
     </tr>
   ))
 
@@ -90,11 +89,15 @@ const MembershipRequests = () => {
       <Table miw={500}>
         <thead className={cx(classes.header, { [classes.scrolled]: scrolled })}>
           <tr>
-            <th>Requested By</th>
-            <th>Message</th>
+            <th>Community</th>
+            <th>Field</th>
+            <th>Old value</th>
+            <th>New value</th>
+            <th>Requested by</th>
             <th>Initiated Date</th>
             <th>Status</th>
-            <th>Actions</th>
+            {/* <th>Reviewed Date</th> */}
+            {/* <th>Actions</th> */}
           </tr>
         </thead>
         <tbody>{rows}</tbody>
@@ -103,4 +106,4 @@ const MembershipRequests = () => {
   )
 }
 
-export default MembershipRequests
+export default ChangeCommunityRequests

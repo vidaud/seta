@@ -3,13 +3,13 @@ import { Button, Group, Text, Grid, Title, createStyles, Table, Tooltip, Card } 
 import { Link, useParams } from 'react-router-dom'
 
 import ChangePrivacy from './components/ChangePrivacy/ChangePrivacy'
-import ChangeCommunityRequests from './components/ChangeRequests/ChangeRequests'
-import MembershipRequests from './components/MembershipRequests/MembershipRequests'
 
 import { useMyCommunityID } from '../../../../../../api/communities/manage/my-community'
 import { useCurrentUserPermissions } from '../../../../contexts/scope-context'
+import ChangeCommunityRequests from '../../../../pages/communities/CommunityInfo/components/ChangeRequests/ChangeRequests'
+import CommunityUsersPermissions from '../../../../pages/communities/CommunityInfo/components/CommunityUserPermissions/CommunityUserPermissions'
+import MembershipRequests from '../../../../pages/communities/CommunityInfo/components/MembershipRequests/MembershipRequests'
 import ComponentLoading from '../../../common/ComponentLoading'
-import CommunityUsersPermissions from '../../../UserPermissions/Community/CommunityUserPermissions'
 import CommunityResources from '../../Resource/CommunityResources/CommunityResources'
 import InviteMember from '../InviteMemberModal/InviteMemberModal'
 

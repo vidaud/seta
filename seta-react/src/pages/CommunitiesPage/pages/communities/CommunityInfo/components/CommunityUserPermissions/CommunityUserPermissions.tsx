@@ -1,15 +1,12 @@
 import { useEffect, useState } from 'react'
 import { Table, Group, Text, ScrollArea } from '@mantine/core'
-import { useParams } from 'react-router-dom'
 
-import { useCommunityPermissionsID } from '../../../../../api/communities/user-community-permissions'
-import { ComponentEmpty, ComponentError } from '../../common'
-import ComponentLoading from '../../common/ComponentLoading'
-import ManagePermissions from '../../Manage/Community/ManageCommunity/components/ManagePermissions/ManagePermissions'
+import { useCommunityPermissionsID } from '../../../../../../../api/communities/user-community-permissions'
+import { ComponentEmpty, ComponentError } from '../../../../../components/common'
+import ComponentLoading from '../../../../../components/common/ComponentLoading'
+import ManagePermissions from '../../../../../components/Manage/Community/ManageCommunity/components/ManagePermissions/ManagePermissions'
 
-const CommunityUsersPermissions = () => {
-  const { id } = useParams()
-
+const CommunityUsersPermissions = ({ id }) => {
   const { data, isLoading, error, refetch } = useCommunityPermissionsID(id)
   const [items, setItems] = useState(data)
 
