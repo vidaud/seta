@@ -16,13 +16,13 @@ export type CommunityChangeRequests = {
   }
   status: string
   initiated_date: Date
-  reviewed_by: string
+  reviewed_by?: string
   reviewed_by_info: {
     user_id: string
     full_name: string
     email: string
   }
-  review_date: Date
+  review_date?: Date
 }
 
 export type ResourceChangeRequests = {

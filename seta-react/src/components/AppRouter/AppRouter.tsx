@@ -10,6 +10,7 @@ import RequireAuth from './components/RequireAuth'
 
 import AppLayout from '../../layouts/AppLayout'
 import CommunityLayout from '../../layouts/CommunityLayout/CommunityLayout'
+import SysAdminLayout from '../../layouts/SysAdminLayout/SysAdminLayout'
 import ViewResource from '../../pages/CommunitiesPage/components/Discovery/ResourceList/components/ViewResource/ViewResource'
 import NewCommunity from '../../pages/CommunitiesPage/components/Manage/Community/CreateCommunity/components/NewCommunity/NewCommunity'
 import ManageCommunity from '../../pages/CommunitiesPage/components/Manage/Community/ManageCommunity/ManageCommunity'
@@ -24,7 +25,6 @@ import ViewMyResource from '../../pages/CommunitiesPage/components/Manage/Resour
 import InvitesList from '../../pages/CommunitiesPage/components/Sidebar/InvitesList/InvitesList'
 import MembersList from '../../pages/CommunitiesPage/components/Sidebar/MembersList/MembersList'
 import { ScopeProvider } from '../../pages/CommunitiesPage/contexts/scope-context'
-import DashboardsPage from '../../pages/CommunitiesPage/pages/DashboardPage'
 import CommunityListPage from '../../pages/CommunitiesPage/pages/Discovery/CommunityList/CommunityList'
 import ResourceListPage from '../../pages/CommunitiesPage/pages/Discovery/ResourceList/ResourceList'
 import MyCommunityListPage from '../../pages/CommunitiesPage/pages/Manage/MyCommunityList/MyCommunityList'
@@ -36,8 +36,14 @@ import LoginPage from '../../pages/LoginPage'
 import NotFoundPage from '../../pages/NotFoundPage'
 import ProfilePage from '../../pages/ProfilePage'
 import SearchPageNew from '../../pages/SearchPageNew'
+import CommunityChangeRequestsPage from '../../pages/SysAdminPage/pages/ChangeRequests/Community/CommunityChangeRequestsPage'
+import ResourceChangeRequestsPage from '../../pages/SysAdminPage/pages/ChangeRequests/Resource/ResourceChangeRequestsPage'
+import AdminPanelPage from '../../pages/SysAdminPage/pages/Panel/AdminPanelPage'
 
 const ROOT_PATH = '/'
+const PANEL_PATH = '/panel/'
+const COMMUNITY_PENDING_REQUESTS_PATH = '/communities-requests/'
+const RESOURCE_PENDING_REQUESTS_PATH = '/resources-requests/'
 const MANAGE_COMMUNITY_PATH = '/my-communities/'
 const MANAGE_RESOURCE_PATH = '/my-resources/'
 const DISCOVER_COMMUNITY_PATH = '/communities/'
@@ -76,12 +82,32 @@ const routes = createRoutesFromElements(
     <Route path="faqs" element={<FaqsPage />} />
     <Route path="contact" element={<ContactPage />} />
     <Route path="login" element={<LoginPage />} />
-    <Route path="dashboard" element={<CommunityLayout />}>
+    <Route path={COMMUNITY_PENDING_REQUESTS_PATH} element={<SysAdminLayout />}>
       <Route
         path=""
         element={
           <RequireAuth>
-            <DashboardsPage />
+            <CommunityChangeRequestsPage />
+          </RequireAuth>
+        }
+      />
+    </Route>
+    <Route path={RESOURCE_PENDING_REQUESTS_PATH} element={<SysAdminLayout />}>
+      <Route
+        path=""
+        element={
+          <RequireAuth>
+            <ResourceChangeRequestsPage />
+          </RequireAuth>
+        }
+      />
+    </Route>
+    <Route path={PANEL_PATH} element={<SysAdminLayout />}>
+      <Route
+        path=""
+        element={
+          <RequireAuth>
+            <AdminPanelPage />
           </RequireAuth>
         }
       />
