@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Button, Collapse, Group, Tabs, Text, Tooltip } from '@mantine/core'
-import { Link } from 'react-router-dom'
+import { Collapse, Group, Tabs, Text, Tooltip } from '@mantine/core'
 
 import type { CommunityResponse } from '~/api/types/community-types'
 import type { ClassNameProp } from '~/types/children-props'
@@ -10,6 +9,7 @@ import type {
   ResourceScopes,
   SystemScopes
 } from '../../../../contexts/scope-context'
+import CreateResource from '../../../../resources/ResourceInfo/components/CreateResource/CreateResource'
 import ChangePrivacy from '../ChangePrivacy/ChangePrivacy'
 import ChangeCommunityRequests from '../ChangeRequests/ChangeRequests'
 import CommunityInvites from '../CommunityInvites/CommunityInvites'
@@ -88,18 +88,7 @@ const CommunityDetails = ({ className, open, id, community, community_scopes }: 
           {scopes?.includes('/seta/resource/create') ? (
             <Group position="right">
               <Tooltip label="Add new resource to this community">
-                <Link to={`/my-communities/${id}/new`} replace={true}>
-                  <Button
-                    size="xs"
-                    color="blue"
-                    variant="outline"
-                    sx={theme => ({
-                      marginBottom: theme.spacing.xs
-                    })}
-                  >
-                    + Resource
-                  </Button>
-                </Link>
+                <CreateResource id={id} />
               </Tooltip>
             </Group>
           ) : null}

@@ -106,7 +106,7 @@ export const deleteMembershipByID = async (id?: string, userId?: string) => {
     })
     .then(response => {
       if (response.status === 200) {
-        window.location.href = `/my-communities/${id}/members`
+        window.location.href = `/communities/${id}/members`
       }
     })
 }

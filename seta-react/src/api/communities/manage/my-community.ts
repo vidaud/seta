@@ -14,7 +14,7 @@ import type { ResourceResponse } from '~/api/types/resource-types'
 import { environment } from '../../../environments/environment'
 import community_api from '../api'
 
-export const cacheKey = (id?: string) => ['my-communities', id]
+export const cacheKey = (id?: string) => ['communities', id]
 export const cacheKeyRes = (id?: string) => ['communities', id]
 
 const getCommunity = async (id?: string): Promise<Community> => {

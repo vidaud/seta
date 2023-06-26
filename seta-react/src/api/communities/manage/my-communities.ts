@@ -5,7 +5,7 @@ import type { CommunityResponse } from '~/api/types/community-types'
 import { environment } from '../../../environments/environment'
 import community_api from '../api'
 
-export const cacheKey = () => ['my-communities']
+export const cacheKey = () => ['communities']
 
 const getCommunities = async (): Promise<CommunityResponse[]> => {
   const { data } = await community_api.get<CommunityResponse[]>(
