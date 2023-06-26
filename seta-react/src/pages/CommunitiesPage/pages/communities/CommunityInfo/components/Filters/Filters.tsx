@@ -1,6 +1,6 @@
 import { Group, Select, createStyles } from '@mantine/core'
 
-import { useCommunityListContext } from '../../../../Discovery/CommunityList/CommunityList.context'
+import { useCommunityListContext } from '../../../../contexts/community-list.context'
 
 const useStyles = createStyles({
   filters: {

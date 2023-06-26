@@ -3,11 +3,11 @@ import { Popover, Button, Group, createStyles, Tooltip, Select, ActionIcon } fro
 import { IconPencil } from '@tabler/icons-react'
 
 import { updateMembershipRequest } from '../../../../../../../api/communities/membership-requests'
-import type { MembershipRequestValues } from '../../../../../contexts/membership-request-context'
+import type { MembershipRequestValues } from '../../../../contexts/membership-request-context'
 import {
   MembershipRequestFormProvider,
   useMembershipRequest
-} from '../../../../../contexts/membership-request-context'
+} from '../../../../contexts/membership-request-context'
 
 const useStyles = createStyles({
   form: {

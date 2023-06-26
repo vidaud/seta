@@ -8,7 +8,7 @@ import type {
   CommunityScopes,
   ResourceScopes,
   SystemScopes
-} from '~/pages/CommunitiesPage/contexts/scope-context'
+} from '~/pages/CommunitiesPage/pages/contexts/scope-context'
 
 import CommunityButton from './components/CommunityButton/CommunityButton'
 import CommunityDetails from './components/CommunityDetails/CommunityDetails'

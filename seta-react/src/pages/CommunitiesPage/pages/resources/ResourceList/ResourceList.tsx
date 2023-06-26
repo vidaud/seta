@@ -8,9 +8,9 @@ import ResourceListContent from './ResourceListContent'
 
 import { useAllResources } from '../../../../../api/resources/discover/discover-resources'
 import usePaginator from '../../../../../hooks/use-paginator'
-import { useCurrentUserPermissions } from '../../../contexts/scope-context'
-import { sortResourceData } from '../../communities/CommunityInfo/utils/resource-utils'
-import { useCommunityListContext } from '../../Discovery/CommunityList/CommunityList.context'
+import { useCommunityListContext } from '../../contexts/community-list.context'
+import { useCurrentUserPermissions } from '../../contexts/scope-context'
+import { sortResourceData } from '../ResourceInfo/utils/resource-utils'
 
 const PER_PAGE = 10
 

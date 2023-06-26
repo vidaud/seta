@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import { getCookie } from 'typescript-cookie'
 
-import type { MembershipValues } from '~/pages/CommunitiesPage/contexts/membership-context'
+import type { MembershipValues } from '~/pages/CommunitiesPage/pages/contexts/membership-context'
 
 import community_api from './api'
 

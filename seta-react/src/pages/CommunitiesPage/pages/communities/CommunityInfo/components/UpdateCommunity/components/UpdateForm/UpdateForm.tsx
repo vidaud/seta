@@ -7,11 +7,8 @@ import {
   useMyCommunityID
 } from '../../../../../../../../../api/communities/manage/my-community'
 import { ComponentLoading } from '../../../../../../../components/common'
-import type { CommunityValues } from '../../../../../../../contexts/community-context'
-import {
-  CommunityFormProvider,
-  useCommunity
-} from '../../../../../../../contexts/community-context'
+import type { CommunityValues } from '../../../../../../contexts/community-context'
+import { CommunityFormProvider, useCommunity } from '../../../../../../contexts/community-context'
 
 const useStyles = createStyles({
   input: {

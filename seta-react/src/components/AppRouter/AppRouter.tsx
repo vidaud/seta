@@ -14,9 +14,10 @@ import SysAdminLayout from '../../layouts/SysAdminLayout/SysAdminLayout'
 import CreateContribution from '../../pages/CommunitiesPage/components/Manage/Contribution/NewContribution/NewContribution'
 import InvitesList from '../../pages/CommunitiesPage/components/Sidebar/InvitesList/InvitesList'
 import MembersList from '../../pages/CommunitiesPage/components/Sidebar/MembersList/MembersList'
-import { ScopeProvider } from '../../pages/CommunitiesPage/contexts/scope-context'
-import CommunityListPage from '../../pages/CommunitiesPage/pages/Discovery/CommunityList/CommunityList'
-import ResourceListPage from '../../pages/CommunitiesPage/pages/Discovery/ResourceList/ResourceList'
+import CommunityList from '../../pages/CommunitiesPage/pages/communities/CommunityList/CommunityList'
+import { CommunityListProvider } from '../../pages/CommunitiesPage/pages/contexts/community-list.context'
+import { ScopeProvider } from '../../pages/CommunitiesPage/pages/contexts/scope-context'
+import ResourceList from '../../pages/CommunitiesPage/pages/resources/ResourceList/ResourceList'
 import ContactPage from '../../pages/ContactPage'
 import FaqsPage from '../../pages/FaqsPage'
 import HomePage from '../../pages/HomePage'
@@ -124,9 +125,11 @@ const routes = createRoutesFromElements(
         path=""
         element={
           <RequireAuth>
-            <ScopeProvider>
-              <CommunityListPage />
-            </ScopeProvider>
+            <CommunityListProvider>
+              <ScopeProvider>
+                <CommunityList />
+              </ScopeProvider>
+            </CommunityListProvider>
           </RequireAuth>
         }
       />
@@ -136,9 +139,11 @@ const routes = createRoutesFromElements(
         path=""
         element={
           <RequireAuth>
-            <ScopeProvider>
-              <ResourceListPage />
-            </ScopeProvider>
+            <CommunityListProvider>
+              <ScopeProvider>
+                <ResourceList />
+              </ScopeProvider>
+            </CommunityListProvider>
           </RequireAuth>
         }
       />

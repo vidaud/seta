@@ -11,7 +11,7 @@ import {
   ComponentError,
   ComponentLoading
 } from '../../../../CommunitiesPage/components/common'
-import { statusColors } from '../../../../CommunitiesPage/components/types'
+import { statusColors } from '../../../../CommunitiesPage/pages/types'
 
 const useStyles = createStyles(theme => ({
   header: {

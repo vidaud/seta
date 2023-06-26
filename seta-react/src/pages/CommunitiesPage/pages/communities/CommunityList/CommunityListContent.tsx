@@ -12,7 +12,7 @@ import {
   SuggestionsError,
   SuggestionsLoading
 } from '../../../../SearchPageNew/components/common'
-import type { CommunityScopes, ResourceScopes, SystemScopes } from '../../../contexts/scope-context'
+import type { CommunityScopes, ResourceScopes, SystemScopes } from '../../contexts/scope-context'
 import CommunityInfo from '../CommunityInfo/CommunityInfo'
 import CreateCommunity from '../CommunityInfo/components/CreateCommunity/CreateCommunity'
 

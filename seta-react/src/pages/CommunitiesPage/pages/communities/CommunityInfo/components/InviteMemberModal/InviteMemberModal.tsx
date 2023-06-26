@@ -12,8 +12,8 @@ import {
 import { FcInvite } from 'react-icons/fc'
 
 import { createCommunityInvite } from '../../../../../../../api/communities/invite'
-import { InvitationFormProvider, useInvitation } from '../../../../../contexts/invite-context'
-import type { InvitationValues } from '../../../../../contexts/invite-context'
+import { InvitationFormProvider, useInvitation } from '../../../../contexts/invite-context'
+import type { InvitationValues } from '../../../../contexts/invite-context'
 
 const useStyles = createStyles({
   form: {

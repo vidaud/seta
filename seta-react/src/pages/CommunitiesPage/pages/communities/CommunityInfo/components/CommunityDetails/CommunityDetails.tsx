@@ -9,7 +9,7 @@ import type {
   CommunityScopes,
   ResourceScopes,
   SystemScopes
-} from '../../../../../contexts/scope-context'
+} from '../../../../contexts/scope-context'
 import ChangePrivacy from '../ChangePrivacy/ChangePrivacy'
 import ChangeCommunityRequests from '../ChangeRequests/ChangeRequests'
 import CommunityInvites from '../CommunityInvites/CommunityInvites'
@@ -103,7 +103,7 @@ const CommunityDetails = ({ className, open, id, community, community_scopes }: 
               </Tooltip>
             </Group>
           ) : null}
-          <CommunityResources id={id} scopes={scopes} nrResources={onChangeNrResources} />
+          <CommunityResources id={id} nrResources={onChangeNrResources} />
         </Tabs.Panel>
         {scopes?.includes('/seta/community/manager') ||
         scopes?.includes('/seta/community/manager') ||

@@ -25,7 +25,7 @@ const useStyles = createStyles(theme => ({
   }
 }))
 
-const CommunityResources = ({ id, scopes, nrResources }) => {
+const CommunityResources = ({ id, nrResources }) => {
   const { data, isLoading, error, refetch } = useMyCommunityResources(id)
   const [items, setItems] = useState<ResourceResponse[]>()
   const { classes } = useStyles()

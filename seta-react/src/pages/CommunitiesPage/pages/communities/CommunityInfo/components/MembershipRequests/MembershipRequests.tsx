@@ -5,7 +5,7 @@ import type { MembershipRequest } from '~/api/types/membership-types'
 
 import { useMembershipRequestsID } from '../../../../../../../api/communities/membership-requests'
 import { ComponentEmpty, ComponentError, ComponentLoading } from '../../../../../components/common'
-import { statusColors } from '../../../../../components/types'
+import { statusColors } from '../../../../types'
 import UpdateMemberRequest from '../UpdateMemberRequest/UpdateMemberRequest'
 
 const useStyles = createStyles(theme => ({

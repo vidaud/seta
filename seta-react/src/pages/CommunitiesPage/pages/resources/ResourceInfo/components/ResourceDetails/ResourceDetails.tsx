@@ -8,7 +8,7 @@ import type {
   CommunityScopes,
   ResourceScopes,
   SystemScopes
-} from '../../../../../contexts/scope-context'
+} from '../../../../contexts/scope-context'
 import ChangeResourceRequests from '../ChangeResourceRequests/ChangeResourceRequests'
 import LimitsDetails from '../LimitsDetails/LimitsDetails'
 import ResourceUsersPermissions from '../ResourcePermissions/ResourceUserPermissions'

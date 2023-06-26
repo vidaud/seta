@@ -4,7 +4,7 @@ import { IconSelector, IconChevronDown, IconChevronUp } from '@tabler/icons-reac
 
 import type { ResourceResponse } from '~/api/types/resource-types'
 
-import type { ThProps } from '../../../../components/types'
+import type { ThProps } from '../../../types'
 
 const useStyles = createStyles(theme => ({
   th: {

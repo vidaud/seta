@@ -11,7 +11,7 @@ import ResourceDetails from './components/ResourceDetails/ResourceDetails'
 import UpdateResource from './components/UpdateResource/UpdateResource'
 import * as S from './styles'
 
-import type { CommunityScopes, ResourceScopes, SystemScopes } from '../../../contexts/scope-context'
+import type { CommunityScopes, ResourceScopes, SystemScopes } from '../../contexts/scope-context'
 
 type Props = {
   queryTerms: string

@@ -2,11 +2,8 @@ import { TextInput, Group, createStyles, Button, Textarea } from '@mantine/core'
 import { useNavigate } from 'react-router-dom'
 
 import { createCommunity } from '../../../../../../../../../api/communities/manage/my-community'
-import type { CommunityValues } from '../../../../../../../contexts/community-context'
-import {
-  useCommunity,
-  CommunityFormProvider
-} from '../../../../../../../contexts/community-context'
+import type { CommunityValues } from '../../../../../../contexts/community-context'
+import { useCommunity, CommunityFormProvider } from '../../../../../../contexts/community-context'
 
 const useStyles = createStyles({
   input: {

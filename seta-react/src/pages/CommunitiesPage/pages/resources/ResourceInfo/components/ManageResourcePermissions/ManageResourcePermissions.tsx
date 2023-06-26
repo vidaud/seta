@@ -12,11 +12,11 @@ import { IconPencil } from '@tabler/icons-react'
 import { useParams } from 'react-router-dom'
 
 import { manageResourceScopes } from '../../../../../../../api/communities/user-resource-permissions'
-import type { ResourcePermissions } from '../../../../../contexts/resource-user-permissions'
+import type { ResourcePermissions } from '../../../../contexts/resource-user-permissions'
 import {
   ResourcePermissionsFormProvider,
   useResourcePermissions
-} from '../../../../../contexts/resource-user-permissions'
+} from '../../../../contexts/resource-user-permissions'
 
 const useStyles = createStyles(theme => ({
   form: {

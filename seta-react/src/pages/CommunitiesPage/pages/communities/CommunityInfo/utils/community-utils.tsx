@@ -4,7 +4,7 @@ import { IconSelector, IconChevronDown, IconChevronUp } from '@tabler/icons-reac
 
 import type { CommunityResponse } from '~/api/types/community-types'
 
-import type { ThProps } from '../../../../components/types'
+import type { ThProps } from '../../../types'
 
 const useStyles = createStyles(theme => ({
   th: {

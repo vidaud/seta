@@ -5,7 +5,7 @@ import { Outlet } from 'react-router-dom'
 import Breadcrumbs from '../../components/Breadcrumbs'
 import { LinksGroup } from '../../components/NavbarLinksGroup/NavbarLinksGroup'
 import NavbarNested from '../../components/NavbarNested/NavbarNested'
-import { ScopeProvider } from '../../pages/CommunitiesPage/contexts/scope-context'
+import { ScopeProvider } from '../../pages/CommunitiesPage/pages/contexts/scope-context'
 
 const mockdata = [
   {

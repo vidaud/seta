@@ -8,8 +8,8 @@ import CommunityListContent from './CommunityListContent'
 
 import { useAllCommunities } from '../../../../../api/communities/discover/discover-communities'
 import usePaginator from '../../../../../hooks/use-paginator'
-import { useCurrentUserPermissions } from '../../../contexts/scope-context'
-import { useCommunityListContext } from '../../Discovery/CommunityList/CommunityList.context'
+import { useCommunityListContext } from '../../contexts/community-list.context'
+import { useCurrentUserPermissions } from '../../contexts/scope-context'
 import Filters from '../CommunityInfo/components/Filters/Filters'
 import { sortCommunityData } from '../CommunityInfo/utils/community-utils'
 

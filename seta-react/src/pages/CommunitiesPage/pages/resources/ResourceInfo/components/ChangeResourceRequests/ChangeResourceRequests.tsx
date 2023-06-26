@@ -5,7 +5,7 @@ import type { ResourceChangeRequests } from '~/api/types/change-request-types'
 
 import { useResourcesChangeRequests } from '../../../../../../../api/communities/resource-change-requests'
 import { ComponentEmpty, ComponentError, ComponentLoading } from '../../../../../components/common'
-import { statusColors } from '../../../../../components/types'
+import { statusColors } from '../../../../types'
 
 const useStyles = createStyles(theme => ({
   header: {
