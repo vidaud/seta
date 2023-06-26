@@ -24,10 +24,7 @@ const mockdata = [
   {
     label: 'Manage',
     icon: IconCalendarStats,
-    links: [
-      { label: 'My Communities', link: '/my-communities/' },
-      { label: 'My Resources', link: '/my-resources/' }
-    ]
+    links: [{ label: 'My Resources', link: '/my-resources/' }]
   }
 ]
 

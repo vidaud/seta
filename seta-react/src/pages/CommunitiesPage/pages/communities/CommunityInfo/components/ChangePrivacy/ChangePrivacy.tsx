@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react'
 import { Popover, Button, Group, createStyles, Tooltip, Select } from '@mantine/core'
 
-import { createCommunityChangeRequest } from '../../../../../../../../api/communities/community-change-requests'
-import type { NewValueValues } from '../../../../../../contexts/change-request-context'
+import { createCommunityChangeRequest } from '../../../../../../../api/communities/community-change-requests'
+import type { NewValueValues } from '../../../../../contexts/change-request-context'
 import {
   ChangeRequestFormProvider,
   useChangeRequest
-} from '../../../../../../contexts/change-request-context'
+} from '../../../../../contexts/change-request-context'
 
 const useStyles = createStyles({
   form: {
@@ -16,7 +16,7 @@ const useStyles = createStyles({
 
 const membershipOptions = [
   { label: 'Restricted', value: 'closed' },
-  { label: 'Member', value: 'opened' }
+  { label: 'Opened', value: 'opened' }
 ]
 
 const ChangePrivacy = ({ props }) => {
@@ -61,7 +61,9 @@ const ChangePrivacy = ({ props }) => {
     >
       <Popover.Target>
         <Tooltip label="Change community privacy">
-          <Button onClick={() => setOpened(o => !o)}>Update Privacy</Button>
+          <Button size="xs" onClick={() => setOpened(o => !o)}>
+            Update Privacy
+          </Button>
         </Tooltip>
       </Popover.Target>
       <Popover.Dropdown

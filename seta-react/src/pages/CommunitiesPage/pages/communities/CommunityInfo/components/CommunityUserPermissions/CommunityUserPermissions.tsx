@@ -4,7 +4,7 @@ import { Table, Group, Text, ScrollArea } from '@mantine/core'
 import { useCommunityPermissionsID } from '../../../../../../../api/communities/user-community-permissions'
 import { ComponentEmpty, ComponentError } from '../../../../../components/common'
 import ComponentLoading from '../../../../../components/common/ComponentLoading'
-import ManagePermissions from '../../../../../components/Manage/Community/ManageCommunity/components/ManagePermissions/ManagePermissions'
+import ManagePermissions from '../ManagePermissions/ManagePermissions'
 
 const CommunityUsersPermissions = ({ id }) => {
   const { data, isLoading, error, refetch } = useCommunityPermissionsID(id)

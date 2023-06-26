@@ -12,9 +12,9 @@ import {
   SuggestionsError,
   SuggestionsLoading
 } from '../../../../SearchPageNew/components/common'
-import CreateCommunity from '../../../components/Manage/Community/CreateCommunity/CreateCommunity'
 import type { CommunityScopes, ResourceScopes, SystemScopes } from '../../../contexts/scope-context'
 import CommunityInfo from '../CommunityInfo/CommunityInfo'
+import CreateCommunity from '../CommunityInfo/components/CreateCommunity/CreateCommunity'
 
 const MARGIN_TOP = '4rem'
 
@@ -63,13 +63,18 @@ const CommunityListContent = forwardRef<HTMLDivElement, Props>(
 
     if (!communities.length) {
       return (
-        <SuggestionsEmpty
-          size="md"
-          mt={MARGIN_TOP}
-          withIcon
-          message="No communities found."
-          secondary="Please refine your search and try again."
-        />
+        <>
+          <SuggestionsEmpty
+            size="md"
+            mt={MARGIN_TOP}
+            withIcon
+            message="No communities found."
+            secondary="Please create your own community"
+          />
+          <Group position="center">
+            <CreateCommunity system_scopes={system_scopes} />
+          </Group>
+        </>
       )
     }
 

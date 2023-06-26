@@ -11,7 +11,7 @@ const useStyles = createStyles(theme => ({
   text: { paddingBottom: theme.spacing.md }
 }))
 
-const DeleteCommunity = ({ props }) => {
+const DeleteCommunity = ({ props, totalResources }) => {
   const { classes, cx } = useStyles()
   const [opened, setOpened] = useState(false)
 
@@ -42,7 +42,7 @@ const DeleteCommunity = ({ props }) => {
           Delete Community
         </Button>
       </Popover.Target>
-      {props?.resources?.length === 0 ? (
+      {totalResources === 0 ? (
         <Popover.Dropdown
           sx={theme => ({
             background: theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.white
@@ -73,8 +73,8 @@ const DeleteCommunity = ({ props }) => {
             Warning!
           </Title>
           <Text size="sm" className={cx(classes.form)}>
-            {props?.community_id} community has {props?.resources?.length} remaining resources which
-            should be deleted first to allow the community to be deleted.
+            {props?.community_id} community has {totalResources} remaining resources which should be
+            deleted first to allow the community to be deleted.
           </Text>
 
           <Group className={cx(classes.form)} position="right">

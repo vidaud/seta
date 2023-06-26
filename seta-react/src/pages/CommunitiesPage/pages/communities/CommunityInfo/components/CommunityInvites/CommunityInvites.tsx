@@ -1,9 +1,8 @@
 import { useEffect, useState } from 'react'
-import { createStyles, Table, ScrollArea, rem, Title, Group } from '@mantine/core'
+import { createStyles, Table, ScrollArea, rem, Title } from '@mantine/core'
 
 import { useInviteID } from '../../../../../../../api/communities/invite'
 import { ComponentEmpty, ComponentError, ComponentLoading } from '../../../../../components/common'
-import UpdateInviteRequest from '../../../../../components/Sidebar/InvitesList/components/UpdateInviteRequest/UpdateInviteRequest'
 
 const useStyles = createStyles(theme => ({
   header: {
@@ -66,11 +65,11 @@ const CommunityInvites = ({ id }) => {
       <td>{row.status.toUpperCase()}</td>
       <td>{new Date(row.initiated_date).toLocaleDateString()}</td>
       <td>{row.initiated_by_info.full_name}</td>
-      <td>
+      {/* <td>
         <Group spacing={0}>
           <UpdateInviteRequest props={row} parent="InvitesList" />
         </Group>
-      </td>
+      </td> */}
     </tr>
   ))
 
@@ -89,7 +88,7 @@ const CommunityInvites = ({ id }) => {
               <th>Status</th>
               <th>Initiated Date</th>
               <th>Initiated By</th>
-              <th>Actions</th>
+              {/* <th>Actions</th> */}
             </tr>
           </thead>
           <tbody>{rows}</tbody>

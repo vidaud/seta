@@ -9,6 +9,7 @@ import type {
   ResourceScopes,
   SystemScopes
 } from '../../../../../contexts/scope-context'
+import ChangePrivacy from '../ChangePrivacy/ChangePrivacy'
 import ChangeCommunityRequests from '../ChangeRequests/ChangeRequests'
 import CommunityInvites from '../CommunityInvites/CommunityInvites'
 import CommunityResources from '../CommunityResources/CommunityResources'
@@ -28,6 +29,7 @@ type Props = ClassNameProp & {
 const CommunityDetails = ({ className, open, id, community, community_scopes }: Props) => {
   const [activeTab, setActiveTab] = useState<string | null>('resources')
   const [scopes, setScopes] = useState<string[] | undefined>([])
+  const [totalResources, setTotalResources] = useState<number | undefined>()
   const { community_id, created_at } = community
 
   useEffect(() => {
@@ -35,6 +37,10 @@ const CommunityDetails = ({ className, open, id, community, community_scopes }: 
 
     findCommunity ? setScopes(findCommunity[0]?.scopes) : setScopes([])
   }, [community_scopes, id])
+
+  const onChangeNrResources = (total: number) => {
+    setTotalResources(total)
+  }
 
   return (
     <Collapse className={className} in={open}>
@@ -47,7 +53,12 @@ const CommunityDetails = ({ className, open, id, community, community_scopes }: 
         </Text>
       </Group>
       <Group position="right">
-        {scopes?.includes('/seta/community/owner') ? <DeleteCommunity props={community} /> : null}
+        {scopes?.includes('/seta/community/owner') ? (
+          <>
+            <ChangePrivacy props={community} />
+            <DeleteCommunity props={community} totalResources={totalResources} />
+          </>
+        ) : null}
       </Group>
       <Tabs value={activeTab} onTabChange={setActiveTab} orientation="horizontal">
         <Tabs.List
@@ -73,7 +84,7 @@ const CommunityDetails = ({ className, open, id, community, community_scopes }: 
         </Tabs.List>
 
         <Tabs.Panel value="resources" sx={{ paddingLeft: '2%' }}>
-          <CommunityResources id={id} scopes={scopes} />
+          <CommunityResources id={id} scopes={scopes} nrResources={onChangeNrResources} />
         </Tabs.Panel>
         {scopes?.includes('/seta/community/manager') ||
         scopes?.includes('/seta/community/manager') ||

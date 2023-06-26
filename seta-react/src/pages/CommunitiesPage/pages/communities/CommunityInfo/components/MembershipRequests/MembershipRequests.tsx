@@ -5,8 +5,8 @@ import type { MembershipRequest } from '~/api/types/membership-types'
 
 import { useMembershipRequestsID } from '../../../../../../../api/communities/membership-requests'
 import { ComponentEmpty, ComponentError, ComponentLoading } from '../../../../../components/common'
-import UpdateMemberRequest from '../../../../../components/Manage/Community/ManageCommunity/components/UpdateMemberRequest/UpdateMemberRequest'
 import { statusColors } from '../../../../../components/types'
+import UpdateMemberRequest from '../UpdateMemberRequest/UpdateMemberRequest'
 
 const useStyles = createStyles(theme => ({
   header: {

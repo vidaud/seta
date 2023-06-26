@@ -11,12 +11,12 @@ import {
 import { IconPencil } from '@tabler/icons-react'
 import { useParams } from 'react-router-dom'
 
-import { manageCommunityScopes } from '../../../../../../../../api/communities/user-community-permissions'
-import type { CommunityPermissions } from '../../../../../../contexts/community-user-permissions'
+import { manageCommunityScopes } from '../../../../../../../api/communities/user-community-permissions'
+import type { CommunityPermissions } from '../../../../../contexts/community-user-permissions'
 import {
   CommunityPermissionsFormProvider,
   useCommunityPermissions
-} from '../../../../../../contexts/community-user-permissions'
+} from '../../../../../contexts/community-user-permissions'
 
 const useStyles = createStyles(theme => ({
   form: {

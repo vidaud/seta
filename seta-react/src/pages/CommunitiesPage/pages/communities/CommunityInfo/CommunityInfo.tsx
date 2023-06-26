@@ -25,6 +25,11 @@ type Props = {
   system_scopes?: SystemScopes[]
 }
 
+const membershipColors: Record<string, string> = {
+  closed: 'orange',
+  opened: 'green'
+}
+
 const CommunityInfo = ({ community, community_scopes }: Props) => {
   const { title, community_id, description, membership, status } = community
 
@@ -45,14 +50,22 @@ const CommunityInfo = ({ community, community_scopes }: Props) => {
     <div css={S.root} className={openClass}>
       <div css={S.header} data-details={hasDetails} data-open={detailsOpen} onClick={toggle}>
         {membership === 'closed' ? (
-          <Tooltip label="Restricted Community" position="bottom" color="orange">
-            <Badge variant="outline" color="orange">
+          <Tooltip
+            label="Restricted Community"
+            position="bottom"
+            color={membershipColors[membership.toLowerCase()]}
+          >
+            <Badge variant="outline" color={membershipColors[membership.toLowerCase()]}>
               <FaUsersSlash />
             </Badge>
           </Tooltip>
         ) : (
-          <Tooltip label="Opened Community" position="bottom" color="green">
-            <Badge variant="outline" color="green">
+          <Tooltip
+            label="Opened Community"
+            position="bottom"
+            color={membershipColors[membership.toLowerCase()]}
+          >
+            <Badge variant="outline" color={membershipColors[membership.toLowerCase()]}>
               <FaUsers />
             </Badge>
           </Tooltip>

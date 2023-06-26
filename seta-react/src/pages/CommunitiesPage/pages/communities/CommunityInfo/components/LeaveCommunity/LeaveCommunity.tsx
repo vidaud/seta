@@ -31,7 +31,7 @@ const LeaveCommunity = ({ props, onChangeMessage }) => {
   const deleteMembership = () => {
     leaveCommunity(props.community_id)
       .then(() => {
-        navigate(`/communities`)
+        window.location.reload()
       })
       .catch(error => {
         if (error.response.status === 409) {
