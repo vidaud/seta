@@ -2,7 +2,7 @@ import { createStyles, Text, rem, UnstyledButton, Group, Center } from '@mantine
 import { keys } from '@mantine/utils'
 import { IconSelector, IconChevronDown, IconChevronUp } from '@tabler/icons-react'
 
-import type { Resource } from '~/models/communities/resources'
+import type { ResourceResponse } from '~/api/types/resource-types'
 
 import type { ThProps } from '../../../../components/types'
 
@@ -47,17 +47,17 @@ export const Th = ({ children, reversed, sorted, onSort }: ThProps) => {
   )
 }
 
-export const filterResourceData = (data: Resource[], search: string) => {
+export const filterResourceData = (data: ResourceResponse[], search: string) => {
   const query = search.toLowerCase().trim()
 
-  return data.filter(item =>
-    keys(data[0]).some(key => item[key].toString().toLowerCase().includes(query))
+  return data?.filter(item =>
+    keys(data[0]).some(key => item[key]?.toString().toLowerCase().includes(query))
   )
 }
 
 export const sortResourceData = (
-  data: Resource[],
-  payload: { sortBy: keyof Resource | null; reversed: boolean; search: string }
+  data: ResourceResponse[],
+  payload: { sortBy?: keyof ResourceResponse | null; reversed?: boolean; search: string }
 ) => {
   const { sortBy } = payload
 
@@ -66,12 +66,12 @@ export const sortResourceData = (
   }
 
   return filterResourceData(
-    [...data].sort((a, b) => {
+    [...(data || [])].sort((a, b) => {
       if (payload.reversed) {
         return b[sortBy.toString()].localeCompare(a[sortBy.toString()])
       }
 
-      return a[sortBy.toString()].localeCompare(b[sortBy].toString())
+      return a[sortBy.toString()].localeCompare(b[sortBy]?.toString())
     }),
     payload.search
   )

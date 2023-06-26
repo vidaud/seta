@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
 import { Text, Popover, Button, Group, createStyles } from '@mantine/core'
-import { useNavigate } from 'react-router-dom'
 
 import { getMembership } from '../../../../../../../api/communities/membership'
 import { leaveCommunity } from '../../../../../../../api/communities/my-membership'
@@ -15,7 +14,6 @@ const useStyles = createStyles(theme => ({
 const LeaveCommunity = ({ props, onChangeMessage }) => {
   const { classes } = useStyles()
   const [opened, setOpened] = useState(false)
-  const navigate = useNavigate()
   const [memberNumber, setMemberNumber] = useState<number | undefined>()
 
   useEffect(() => {

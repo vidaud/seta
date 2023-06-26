@@ -1,18 +1,7 @@
 import { useEffect, useState } from 'react'
-import {
-  ScrollArea,
-  Badge,
-  Text,
-  Grid,
-  Paper,
-  Group,
-  Tooltip,
-  createStyles,
-  Button
-} from '@mantine/core'
+import { ScrollArea, Badge, Text, Grid, Paper, Group, Tooltip, createStyles } from '@mantine/core'
 import { ImBlocked } from 'react-icons/im'
 import { VscLayersActive } from 'react-icons/vsc'
-import { Link } from 'react-router-dom'
 
 import type { ResourceResponse } from '~/api/types/resource-types'
 
@@ -46,7 +35,7 @@ const CommunityResources = ({ id, scopes, nrResources }) => {
       setItems(data)
       nrResources(data?.length)
     }
-  }, [data, items])
+  }, [data, items, nrResources])
 
   if (error) {
     return <ComponentError onTryAgain={refetch} />
@@ -93,17 +82,6 @@ const CommunityResources = ({ id, scopes, nrResources }) => {
 
   return (
     <ScrollArea w="content">
-      {scopes?.includes('/seta/resource/create') ? (
-        <Group position="right">
-          <Tooltip label="Add new resource to this community">
-            <Link to={`/my-communities/${id}/new`} replace={true}>
-              <Button className={classes.button} size="xs" color="blue" variant="outline">
-                + Resource
-              </Button>
-            </Link>
-          </Tooltip>
-        </Group>
-      ) : null}
       <Grid>{rows}</Grid>
     </ScrollArea>
   )

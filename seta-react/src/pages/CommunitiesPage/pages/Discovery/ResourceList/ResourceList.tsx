@@ -1,10 +1,17 @@
-import ResourceList from '../../../components/Discovery/ResourceList/ResourceList'
+import ResourceList from '../../resources/ResourceList/ResourceList'
+import { CommunityListProvider } from '../CommunityList/CommunityList.context'
 import './style.css'
 
 const ResourceListPage = () => {
   // const data = useCommunities()
 
-  return <ResourceList />
+  return (
+    <>
+      <CommunityListProvider>
+        <ResourceList />
+      </CommunityListProvider>
+    </>
+  )
 }
 
 export default ResourceListPage

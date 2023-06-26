@@ -96,7 +96,7 @@ const UpdateForm = ({ id }) => {
               </Radio.Group>
             </Group> */}
           <Group position="right">
-            <Link className={classes.link} to={`/my-communities/${id}`} replace={true}>
+            <Link className={classes.link} to={`communities/${id}`} replace={true}>
               <Button
                 variant="outline"
                 size="xs"

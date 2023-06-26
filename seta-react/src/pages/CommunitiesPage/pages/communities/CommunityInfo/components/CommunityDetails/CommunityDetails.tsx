@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
-import { Collapse, Group, Tabs, Text } from '@mantine/core'
+import { Button, Collapse, Group, Tabs, Text, Tooltip } from '@mantine/core'
+import { Link } from 'react-router-dom'
 
 import type { CommunityResponse } from '~/api/types/community-types'
 import type { ClassNameProp } from '~/types/children-props'
@@ -84,6 +85,24 @@ const CommunityDetails = ({ className, open, id, community, community_scopes }: 
         </Tabs.List>
 
         <Tabs.Panel value="resources" sx={{ paddingLeft: '2%' }}>
+          {scopes?.includes('/seta/resource/create') ? (
+            <Group position="right">
+              <Tooltip label="Add new resource to this community">
+                <Link to={`/my-communities/${id}/new`} replace={true}>
+                  <Button
+                    size="xs"
+                    color="blue"
+                    variant="outline"
+                    sx={theme => ({
+                      marginBottom: theme.spacing.xs
+                    })}
+                  >
+                    + Resource
+                  </Button>
+                </Link>
+              </Tooltip>
+            </Group>
+          ) : null}
           <CommunityResources id={id} scopes={scopes} nrResources={onChangeNrResources} />
         </Tabs.Panel>
         {scopes?.includes('/seta/community/manager') ||

@@ -11,16 +11,12 @@ import RequireAuth from './components/RequireAuth'
 import AppLayout from '../../layouts/AppLayout'
 import CommunityLayout from '../../layouts/CommunityLayout/CommunityLayout'
 import SysAdminLayout from '../../layouts/SysAdminLayout/SysAdminLayout'
-import ViewResource from '../../pages/CommunitiesPage/components/Discovery/ResourceList/components/ViewResource/ViewResource'
 import CreateContribution from '../../pages/CommunitiesPage/components/Manage/Contribution/NewContribution/NewContribution'
-import UpdateResource from '../../pages/CommunitiesPage/components/Manage/Resource/UpdateResource/UpdateResource'
-import ViewMyResource from '../../pages/CommunitiesPage/components/Manage/Resource/ViewMyResource/ViewMyResource'
 import InvitesList from '../../pages/CommunitiesPage/components/Sidebar/InvitesList/InvitesList'
 import MembersList from '../../pages/CommunitiesPage/components/Sidebar/MembersList/MembersList'
 import { ScopeProvider } from '../../pages/CommunitiesPage/contexts/scope-context'
 import CommunityListPage from '../../pages/CommunitiesPage/pages/Discovery/CommunityList/CommunityList'
 import ResourceListPage from '../../pages/CommunitiesPage/pages/Discovery/ResourceList/ResourceList'
-import MyResourceListPage from '../../pages/CommunitiesPage/pages/Manage/MyResourceList/MyResourceList'
 import ContactPage from '../../pages/ContactPage'
 import FaqsPage from '../../pages/FaqsPage'
 import HomePage from '../../pages/HomePage'
@@ -36,7 +32,6 @@ const ROOT_PATH = '/'
 const PANEL_PATH = '/panel/'
 const COMMUNITY_PENDING_REQUESTS_PATH = '/communities-requests/'
 const RESOURCE_PENDING_REQUESTS_PATH = '/resources-requests/'
-const MANAGE_RESOURCE_PATH = '/my-resources/'
 const DISCOVER_COMMUNITY_PATH = '/communities/'
 const DISCOVER_RESOURCE_PATH = '/resources/'
 
@@ -123,42 +118,6 @@ const routes = createRoutesFromElements(
         }
       />
     </Route>
-    <Route path={MANAGE_RESOURCE_PATH} element={<CommunityLayout />}>
-      <Route
-        path=""
-        element={
-          <RequireAuth>
-            <MyResourceListPage />
-          </RequireAuth>
-        }
-      />
-      <Route
-        path=":resourceId"
-        element={
-          <RequireAuth>
-            <ScopeProvider>
-              <ViewMyResource />
-            </ScopeProvider>
-          </RequireAuth>
-        }
-      />
-      <Route
-        path=":resourceId/contribution/new"
-        element={
-          <RequireAuth>
-            <CreateContribution />
-          </RequireAuth>
-        }
-      />
-      <Route
-        path=":resourceId/update"
-        element={
-          <RequireAuth>
-            <UpdateResource />
-          </RequireAuth>
-        }
-      />
-    </Route>
 
     <Route path={DISCOVER_COMMUNITY_PATH} element={<CommunityLayout />}>
       <Route
@@ -177,15 +136,17 @@ const routes = createRoutesFromElements(
         path=""
         element={
           <RequireAuth>
-            <ResourceListPage />
+            <ScopeProvider>
+              <ResourceListPage />
+            </ScopeProvider>
           </RequireAuth>
         }
       />
       <Route
-        path=":id"
+        path=":resourceId/contribution/new"
         element={
           <RequireAuth>
-            <ViewResource />
+            <CreateContribution />
           </RequireAuth>
         }
       />

@@ -37,7 +37,7 @@ export const createResource = async (id?: string, values?: CreateResourceAPI) =>
     })
     .then(response => {
       if (response.status === 201) {
-        window.location.href = `/my-communities/${id}`
+        window.location.href = `/communities/${id}`
       }
     })
 }
@@ -57,7 +57,7 @@ export const updateResource = async (
     })
     .then(response => {
       if (response.status === 200) {
-        window.location.href = `/my-resources/${resource_id}`
+        window.location.href = `/resources/${resource_id}`
       }
     })
 }
