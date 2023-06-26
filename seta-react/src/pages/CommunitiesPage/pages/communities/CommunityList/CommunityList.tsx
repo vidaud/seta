@@ -8,9 +8,10 @@ import CommunityListContent from './CommunityListContent'
 
 import { useAllCommunities } from '../../../../../api/communities/discover/discover-communities'
 import usePaginator from '../../../../../hooks/use-paginator'
-import Filters from '../../../components/Discovery/CommunityList/components/Filters/Filters'
-import { sortCommunityData } from '../../../utils/community-utils'
+import { useCurrentUserPermissions } from '../../../contexts/scope-context'
 import { useCommunityListContext } from '../../Discovery/CommunityList/CommunityList.context'
+import Filters from '../CommunityInfo/components/Filters/Filters'
+import { sortCommunityData } from '../CommunityInfo/utils/community-utils'
 
 const PER_PAGE = 10
 
@@ -33,6 +34,7 @@ const CommunityList = () => {
 
   const { data, isLoading, error, refetch } = useAllCommunities()
   const { membership, status } = useCommunityListContext()
+  const { community_scopes, system_scopes, resource_scopes } = useCurrentUserPermissions()
 
   useEffect(() => {
     if (data) {
@@ -51,7 +53,7 @@ const CommunityList = () => {
   }, [data, membership, status])
 
   const total_docs = data?.length
-  const documents = data
+  const communities = data
 
   const { scrollTargetRef, paginator, info } = usePaginator({
     total: total_docs ?? 0,
@@ -59,7 +61,7 @@ const CommunityList = () => {
     page,
     info: {
       singular: 'result',
-      currentPageItems: documents?.length ?? 0
+      currentPageItems: communities?.length ?? 0
     },
     scrollDependencies: [data],
     onPageChange: setPage
@@ -98,6 +100,9 @@ const CommunityList = () => {
         onTryAgain={refetch}
         paginator={paginator}
         info={info}
+        community_scopes={community_scopes}
+        resource_scopes={resource_scopes}
+        system_scopes={system_scopes}
       />
     </>
   )

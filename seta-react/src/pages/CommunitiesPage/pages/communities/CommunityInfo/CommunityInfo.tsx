@@ -1,22 +1,32 @@
-import { Flex, Text, clsx, Badge, Tooltip, Group } from '@mantine/core'
+import { Flex, Text, clsx, Badge, Tooltip } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 import { FaChevronDown, FaUser, FaUserSlash, FaUsers, FaUsersSlash } from 'react-icons/fa'
 import { FcInvite, FcCancel } from 'react-icons/fc'
 import { TbLoader } from 'react-icons/tb'
 
+import type {
+  CommunityScopes,
+  ResourceScopes,
+  SystemScopes
+} from '~/pages/CommunitiesPage/contexts/scope-context'
+
+import CommunityButton from './components/CommunityButton/CommunityButton'
 import CommunityDetails from './components/CommunityDetails/CommunityDetails'
+import UpdateCommunity from './components/UpdateCommunity/UpdateCommunity'
 import * as S from './styles'
 
 import type { CommunityResponse } from '../../../../../api/types/community-types'
-import CommunityButton from '../../../components/Discovery/CommunityList/components/CommunityButton/CommunityButton'
 
 type Props = {
   queryTerms: string
-  document: CommunityResponse
+  community: CommunityResponse
+  community_scopes?: CommunityScopes[]
+  resource_scopes?: ResourceScopes[]
+  system_scopes?: SystemScopes[]
 }
 
-const CommunityInfo = ({ document, queryTerms }: Props) => {
-  const { title, community_id, description, created_at, membership, status } = document
+const CommunityInfo = ({ community, community_scopes }: Props) => {
+  const { title, community_id, description, membership, status } = community
 
   const [detailsOpen, { toggle }] = useDisclosure()
 
@@ -47,59 +57,60 @@ const CommunityInfo = ({ document, queryTerms }: Props) => {
             </Badge>
           </Tooltip>
         )}
-        <div css={S.title}>
+        {status === 'membership' ? (
+          <Tooltip label="Member" position="bottom" color="green">
+            <Badge variant="outline" color="green" w="min-content">
+              <FaUser />
+            </Badge>
+          </Tooltip>
+        ) : status === 'invited' ? (
+          <Tooltip label="Invited" position="bottom" color="gray">
+            <Badge variant="outline" color="gray" w="min-content">
+              <FcInvite />
+            </Badge>
+          </Tooltip>
+        ) : status === 'rejected' ? (
+          <Tooltip label="Rejected" position="bottom" color="red">
+            <Badge variant="outline" color="red" w="min-content">
+              <FcCancel />
+            </Badge>
+          </Tooltip>
+        ) : status === 'pending' ? (
+          <Tooltip label="Rejected" position="bottom" color="gray">
+            <Badge variant="outline" color="gray" w="min-content">
+              <TbLoader />
+            </Badge>
+          </Tooltip>
+        ) : status === 'unknown' ? (
+          <Tooltip label="Not Member" position="bottom" color="orange">
+            <Badge variant="outline" color="orange" w="min-content">
+              <FaUserSlash />
+            </Badge>
+          </Tooltip>
+        ) : null}
+        <div css={(S.title, S.titleGroup)}>
           <Text fz="md" fw={600} truncate={detailsOpen ? undefined : 'end'}>
             {title.charAt(0).toUpperCase() + title.slice(1)}
           </Text>
+          <UpdateCommunity id={community_id} community_scopes={community_scopes} />
         </div>
+        <CommunityButton props={community} community_scopes={community_scopes} />
         {toggleIcon}
       </div>
 
       <Flex direction="column" gap="xs" data-info css={S.info}>
         <Text size="xs">{description.charAt(0).toUpperCase() + description.slice(1)}</Text>
-        <Text size="xs">{community_id.charAt(0).toUpperCase() + community_id.slice(1)}</Text>
-        <Text size="sm">{new Date(created_at).toDateString()}</Text>
-        <Group>
-          <Group position="left" style={{ width: '65%' }}>
-            {status === 'membership' ? (
-              <Tooltip label="Member" position="bottom" color="green">
-                <Badge variant="outline" color="green" w="min-content">
-                  <FaUser />
-                </Badge>
-              </Tooltip>
-            ) : status === 'invited' ? (
-              <Tooltip label="Invited" position="bottom" color="gray">
-                <Badge variant="outline" color="gray" w="min-content">
-                  <FcInvite />
-                </Badge>
-              </Tooltip>
-            ) : status === 'rejected' ? (
-              <Tooltip label="Rejected" position="bottom" color="red">
-                <Badge variant="outline" color="red" w="min-content">
-                  <FcCancel />
-                </Badge>
-              </Tooltip>
-            ) : status === 'pending' ? (
-              <Tooltip label="Rejected" position="bottom" color="gray">
-                <Badge variant="outline" color="gray" w="min-content">
-                  <TbLoader />
-                </Badge>
-              </Tooltip>
-            ) : status === 'unknown' ? (
-              <Tooltip label="Not Member" position="bottom" color="orange">
-                <Badge variant="outline" color="orange" w="min-content">
-                  <FaUserSlash />
-                </Badge>
-              </Tooltip>
-            ) : null}
-          </Group>
-          <Group position="right" style={{ width: '33%' }}>
-            <CommunityButton props={document} />
-          </Group>
-        </Group>
       </Flex>
 
-      {hasDetails && <CommunityDetails css={S.details} open={detailsOpen} id={community_id} />}
+      {hasDetails && (
+        <CommunityDetails
+          css={S.details}
+          open={detailsOpen}
+          id={community_id}
+          community={community}
+          community_scopes={community_scopes}
+        />
+      )}
     </div>
   )
 }

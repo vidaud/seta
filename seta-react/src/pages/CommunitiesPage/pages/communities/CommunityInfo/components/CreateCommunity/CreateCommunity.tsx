@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { Group, Button, useMantineTheme, Modal, Divider } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 
-import NewCommunity from './components/NewCommunity/NewCommunity'
+import CreateForm from './components/CreateForm/CreateForm'
 import * as S from './styles'
 
 const CreateCommunity = ({ system_scopes }) => {
@@ -29,7 +29,7 @@ const CreateCommunity = ({ system_scopes }) => {
             }}
           >
             <Divider my="xs" label="Add New Community" labelPosition="center" />
-            <NewCommunity />
+            <CreateForm />
           </Modal>
           <Group position="right" css={S.root}>
             <Button color="green" onClick={open}>

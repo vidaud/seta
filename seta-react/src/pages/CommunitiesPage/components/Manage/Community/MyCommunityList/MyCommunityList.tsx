@@ -8,7 +8,10 @@ import CommunityButtons from './components/CommunityButtons/CommunityButtons'
 import { useStyles } from './constants'
 
 import { useCommunities } from '../../../../../../api/communities/manage/my-communities'
-import { Th, sortCommunityData } from '../../../../utils/community-utils'
+import {
+  Th,
+  sortCommunityData
+} from '../../../../pages/communities/CommunityInfo/utils/community-utils'
 import { ComponentEmpty, ComponentError } from '../../../common'
 import ComponentLoading from '../../../common/ComponentLoading'
 

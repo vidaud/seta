@@ -1,9 +1,17 @@
+import { useEffect } from 'react'
 import { TextInput, Group, createStyles, Button, Textarea } from '@mantine/core'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
-import { createCommunity } from '../../../../../../../../api/communities/manage/my-community'
-import type { CommunityValues } from '../../../../../../contexts/community-context'
-import { useCommunity, CommunityFormProvider } from '../../../../../../contexts/community-context'
+import {
+  updateCommunity,
+  useMyCommunityID
+} from '../../../../../../../../../api/communities/manage/my-community'
+import { ComponentLoading } from '../../../../../../../components/common'
+import type { CommunityValues } from '../../../../../../../contexts/community-context'
+import {
+  CommunityFormProvider,
+  useCommunity
+} from '../../../../../../../contexts/community-context'
 
 const useStyles = createStyles({
   input: {
@@ -12,14 +20,19 @@ const useStyles = createStyles({
   sized: {
     width: '30%'
   },
+  link: {
+    color: '#228be6'
+  },
   form: {
     textAlign: 'left'
   }
 })
 
-const NewCommunity = () => {
+const UpdateForm = ({ id }) => {
   const { classes, cx } = useStyles()
   const navigate = useNavigate()
+
+  const { data, isLoading } = useMyCommunityID(id)
 
   const form = useCommunity({
     initialValues: {
@@ -37,8 +50,18 @@ const NewCommunity = () => {
     })
   })
 
+  useEffect(() => {
+    if (data) {
+      form.setValues(data.communities)
+    }
+  }, [data])
+
+  if (isLoading || !data) {
+    return <ComponentLoading />
+  }
+
   const handleSubmit = (values: CommunityValues) => {
-    createCommunity(values)
+    updateCommunity(values.community_id, values)
   }
 
   return (
@@ -49,6 +72,7 @@ const NewCommunity = () => {
             label="ID"
             {...form.getInputProps('community_id')}
             className={cx(classes.input, classes.sized)}
+            disabled={true}
             withAsterisk
           />
           <TextInput
@@ -72,19 +96,21 @@ const NewCommunity = () => {
               </Radio.Group>
             </Group> */}
           <Group position="right">
-            <Button
-              variant="outline"
-              size="xs"
-              color="blue"
-              onClick={() => {
-                form.reset()
-                navigate(-1)
-              }}
-            >
-              Cancel
-            </Button>
-            <Button type="submit" size="xs">
-              Save
+            <Link className={classes.link} to={`/my-communities/${id}`} replace={true}>
+              <Button
+                variant="outline"
+                size="xs"
+                color="blue"
+                onClick={() => {
+                  navigate(-1)
+                }}
+              >
+                Cancel
+              </Button>
+            </Link>
+
+            <Button size="xs" type="submit">
+              Update
             </Button>
           </Group>
         </form>
@@ -93,4 +119,4 @@ const NewCommunity = () => {
   )
 }
 
-export default NewCommunity
+export default UpdateForm

@@ -6,12 +6,8 @@ import ChangePrivacy from './components/ChangePrivacy/ChangePrivacy'
 
 import { useMyCommunityID } from '../../../../../../api/communities/manage/my-community'
 import { useCurrentUserPermissions } from '../../../../contexts/scope-context'
-import ChangeCommunityRequests from '../../../../pages/communities/CommunityInfo/components/ChangeRequests/ChangeRequests'
-import CommunityUsersPermissions from '../../../../pages/communities/CommunityInfo/components/CommunityUserPermissions/CommunityUserPermissions'
-import MembershipRequests from '../../../../pages/communities/CommunityInfo/components/MembershipRequests/MembershipRequests'
+import InviteMember from '../../../../pages/communities/CommunityInfo/components/InviteMemberModal/InviteMemberModal'
 import ComponentLoading from '../../../common/ComponentLoading'
-import CommunityResources from '../../Resource/CommunityResources/CommunityResources'
-import InviteMember from '../InviteMemberModal/InviteMemberModal'
 
 const useStyles = createStyles(theme => ({
   page: {
@@ -137,7 +133,7 @@ const ManageCommunity = () => {
                   <Card.Section className={classes.imageSection}>
                     <Text size="md">My Pending Community Change Requests</Text>
                   </Card.Section>
-                  <ChangeCommunityRequests />
+                  {/* <ChangeCommunityRequests /> */}
                 </Card>
               </Grid.Col>
               <Grid.Col span={5}>
@@ -145,14 +141,12 @@ const ManageCommunity = () => {
                   <Card.Section className={classes.imageSection}>
                     <Text size="md">Pending Join Requests</Text>
                   </Card.Section>
-                  <MembershipRequests />
+                  {/* <MembershipRequests /> */}
                 </Card>
               </Grid.Col>
             </>
           ) : null}
-          <Grid.Col span={7}>
-            <CommunityResources data={row?.resources} />
-          </Grid.Col>
+          <Grid.Col span={7}>{/* <CommunityResources data={row?.resources} /> */}</Grid.Col>
           {scopes?.includes('/seta/community/manager') ||
           scopes?.includes('/seta/community/owner') ? (
             <Grid.Col span={5}>
@@ -160,7 +154,7 @@ const ManageCommunity = () => {
                 <Card.Section className={classes.imageSection}>
                   <Text size="md">User Permissions</Text>
                 </Card.Section>
-                <CommunityUsersPermissions />
+                {/* <CommunityUsersPermissions /> */}
               </Card>
             </Grid.Col>
           ) : null}

@@ -1,9 +1,19 @@
 import { useState } from 'react'
-import { Popover, Button, Group, Textarea, createStyles, Input, Tooltip } from '@mantine/core'
+import {
+  Popover,
+  Button,
+  Group,
+  Textarea,
+  createStyles,
+  Input,
+  Tooltip,
+  Badge
+} from '@mantine/core'
+import { FcInvite } from 'react-icons/fc'
 
-import { createCommunityInvite } from '../../../../../../api/communities/invite'
-import { InvitationFormProvider, useInvitation } from '../../../../contexts/invite-context'
-import type { InvitationValues } from '../../../../contexts/invite-context'
+import { createCommunityInvite } from '../../../../../../../api/communities/invite'
+import { InvitationFormProvider, useInvitation } from '../../../../../contexts/invite-context'
+import type { InvitationValues } from '../../../../../contexts/invite-context'
 
 const useStyles = createStyles({
   form: {
@@ -44,9 +54,16 @@ const InviteMember = communityId => {
       <Popover.Target>
         <Group position="right">
           <Tooltip label="Invite friends to this community">
-            <Button variant="outline" size="xs" color="orange" onClick={() => setOpened(o => !o)}>
-              + Invite
-            </Button>
+            <Tooltip
+              label="Invite "
+              position="bottom"
+              color="orange"
+              onClick={() => setOpened(o => !o)}
+            >
+              <Badge variant="outline" color="gray" w="min-content">
+                <FcInvite />
+              </Badge>
+            </Tooltip>
           </Tooltip>
         </Group>
       </Popover.Target>

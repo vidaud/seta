@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Text, Popover, Button, Group, createStyles, Title } from '@mantine/core'
 import { IconTrash } from '@tabler/icons-react'
 
-import { deleteCommunityByID } from '../../../../../../api/communities/manage/my-community'
+import { deleteCommunityByID } from '../../../../../../../api/communities/manage/my-community'
 
 const useStyles = createStyles(theme => ({
   form: {
@@ -16,7 +16,7 @@ const DeleteCommunity = ({ props }) => {
   const [opened, setOpened] = useState(false)
 
   const deleteCommunity = () => {
-    deleteCommunityByID(props?.communities?.community_id)
+    deleteCommunityByID(props?.community_id)
   }
 
   return (
@@ -31,17 +31,16 @@ const DeleteCommunity = ({ props }) => {
       onChange={setOpened}
     >
       <Popover.Target>
-        <Group position="left">
-          <Button
-            className="deleteCommunity"
-            variant="outline"
-            color="red"
-            leftIcon={<IconTrash size="1rem" stroke={1.5} />}
-            onClick={() => setOpened(o => !o)}
-          >
-            Delete Community
-          </Button>
-        </Group>
+        <Button
+          className="deleteCommunity"
+          variant="outline"
+          color="red"
+          size="xs"
+          leftIcon={<IconTrash size="1rem" stroke={1.5} />}
+          onClick={() => setOpened(o => !o)}
+        >
+          Delete Community
+        </Button>
       </Popover.Target>
       {props?.resources?.length === 0 ? (
         <Popover.Dropdown
@@ -50,7 +49,7 @@ const DeleteCommunity = ({ props }) => {
           })}
         >
           <Text weight={500} className={cx(classes.form)}>
-            Are you sure you want to delete {props?.communities?.community_id} community?
+            Are you sure you want to delete {props?.community_id} community?
           </Text>
           <Text size="sm" className={cx(classes.form)}>
             Press Confirm to proceed with the deletion or press Cancel to abort
@@ -74,8 +73,8 @@ const DeleteCommunity = ({ props }) => {
             Warning!
           </Title>
           <Text size="sm" className={cx(classes.form)}>
-            {props?.communities.community_id} community has {props?.resources?.length} remaining
-            resources which should be deleted first to allow the community to be deleted.
+            {props?.community_id} community has {props?.resources?.length} remaining resources which
+            should be deleted first to allow the community to be deleted.
           </Text>
 
           <Group className={cx(classes.form)} position="right">

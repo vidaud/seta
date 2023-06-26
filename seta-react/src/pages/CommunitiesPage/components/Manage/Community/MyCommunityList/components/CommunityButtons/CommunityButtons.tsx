@@ -5,8 +5,8 @@ import { Link } from 'react-router-dom'
 
 import { useMyCommunityID } from '../../../../../../../../api/communities/manage/my-community'
 import { useCurrentUserPermissions } from '../../../../../../contexts/scope-context'
-import DeleteCommunity from '../../../DeleteCommunity/DeleteCommunity'
-import InviteMember from '../../../InviteMemberModal/InviteMemberModal'
+import DeleteCommunity from '../../../../../../pages/communities/CommunityInfo/components/DeleteCommunity/DeleteCommunity'
+import InviteMember from '../../../../../../pages/communities/CommunityInfo/components/InviteMemberModal/InviteMemberModal'
 
 const useStyles = createStyles({
   link: {

@@ -1,6 +1,6 @@
 import type { ReactElement } from 'react'
 import { forwardRef } from 'react'
-import { Flex } from '@mantine/core'
+import { Flex, Group } from '@mantine/core'
 
 import type { CommunityResponse } from '~/api/types/community-types'
 import type { DataProps } from '~/types/data-props'
@@ -12,6 +12,8 @@ import {
   SuggestionsError,
   SuggestionsLoading
 } from '../../../../SearchPageNew/components/common'
+import CreateCommunity from '../../../components/Manage/Community/CreateCommunity/CreateCommunity'
+import type { CommunityScopes, ResourceScopes, SystemScopes } from '../../../contexts/scope-context'
 import CommunityInfo from '../CommunityInfo/CommunityInfo'
 
 const MARGIN_TOP = '4rem'
@@ -20,16 +22,33 @@ type Props = DataProps<CommunityResponse[]> & {
   queryTerms: string
   paginator?: ReactElement | false | null
   info?: ReactElement | false | null
+  community_scopes?: CommunityScopes[]
+  resource_scopes?: ResourceScopes[]
+  system_scopes?: SystemScopes[]
 }
 
 const CommunityListContent = forwardRef<HTMLDivElement, Props>(
-  ({ data, error, queryTerms, isLoading, onTryAgain, paginator, info }, ref) => {
+  (
+    {
+      data,
+      error,
+      queryTerms,
+      isLoading,
+      onTryAgain,
+      paginator,
+      info,
+      community_scopes,
+      resource_scopes,
+      system_scopes
+    },
+    ref
+  ) => {
     if (error) {
       return (
         <SuggestionsError
           size="md"
           mt={MARGIN_TOP}
-          subject="documents"
+          subject="communities"
           withIcon
           onTryAgain={onTryAgain}
         />
@@ -40,15 +59,15 @@ const CommunityListContent = forwardRef<HTMLDivElement, Props>(
       return <SuggestionsLoading size="lg" mt={MARGIN_TOP} color="blue" variant="bars" />
     }
 
-    const documents = data
+    const communities = data
 
-    if (!documents.length) {
+    if (!communities.length) {
       return (
         <SuggestionsEmpty
           size="md"
           mt={MARGIN_TOP}
           withIcon
-          message="No documents found."
+          message="No communities found."
           secondary="Please refine your search and try again."
         />
       )
@@ -56,10 +75,22 @@ const CommunityListContent = forwardRef<HTMLDivElement, Props>(
 
     return (
       <Flex ref={ref} direction="column" css={S.root}>
-        {info}
+        <div>
+          {info}
+          <Group position="right">
+            <CreateCommunity system_scopes={system_scopes} />
+          </Group>
+        </div>
 
-        {documents.map(document => (
-          <CommunityInfo key={document.community_id} document={document} queryTerms={queryTerms} />
+        {communities.map(community => (
+          <CommunityInfo
+            key={community.community_id}
+            community={community}
+            queryTerms={queryTerms}
+            community_scopes={community_scopes}
+            resource_scopes={resource_scopes}
+            system_scopes={system_scopes}
+          />
         ))}
 
         {paginator}

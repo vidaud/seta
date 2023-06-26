@@ -14,7 +14,6 @@ import SysAdminLayout from '../../layouts/SysAdminLayout/SysAdminLayout'
 import ViewResource from '../../pages/CommunitiesPage/components/Discovery/ResourceList/components/ViewResource/ViewResource'
 import NewCommunity from '../../pages/CommunitiesPage/components/Manage/Community/CreateCommunity/components/NewCommunity/NewCommunity'
 import ManageCommunity from '../../pages/CommunitiesPage/components/Manage/Community/ManageCommunity/ManageCommunity'
-import UpdateCommunity from '../../pages/CommunitiesPage/components/Manage/Community/UpdateCommunity/UpdateCommunity'
 import ViewCommunity from '../../pages/CommunitiesPage/components/Manage/Community/ViewCommunity/ViewCommunity'
 import CreateContribution from '../../pages/CommunitiesPage/components/Manage/Contribution/NewContribution/NewContribution'
 import CommunityInvites from '../../pages/CommunitiesPage/components/Manage/Invites/CommunityInvites/CommunityInvites'
@@ -149,14 +148,14 @@ const routes = createRoutesFromElements(
           </RequireAuth>
         }
       />
-      <Route
+      {/* <Route
         path=":id/update"
         element={
           <RequireAuth>
             <UpdateCommunity />
           </RequireAuth>
         }
-      />
+      /> */}
       <Route
         path=":id/members"
         element={

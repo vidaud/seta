@@ -4,13 +4,16 @@ import { IconSearch } from '@tabler/icons-react'
 
 import type { Community } from '~/models/communities/communities'
 
-import CommunityButton from './components/CommunityButton/CommunityButton'
-import Filters from './components/Filters/Filters'
 import { useStyles } from './components/style'
 
 import { useAllCommunities } from '../../../../../api/communities/discover/discover-communities'
+import CommunityButton from '../../../pages/communities/CommunityInfo/components/CommunityButton/CommunityButton'
+import Filters from '../../../pages/communities/CommunityInfo/components/Filters/Filters'
+import {
+  Th,
+  sortCommunityData
+} from '../../../pages/communities/CommunityInfo/utils/community-utils'
 import { useCommunityListContext } from '../../../pages/Discovery/CommunityList/CommunityList.context'
-import { Th, sortCommunityData } from '../../../utils/community-utils'
 import { ComponentEmpty, ComponentError } from '../../common'
 import ComponentLoading from '../../common/ComponentLoading'
 

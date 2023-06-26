@@ -9,7 +9,10 @@ import { useStyles } from './constants'
 
 import { useMyResources } from '../../../../../../api/resources/manage/my-resources'
 import { useCurrentUserPermissions } from '../../../../contexts/scope-context'
-import { Th, sortResourceData } from '../../../../utils/resource-utils'
+import {
+  Th,
+  sortResourceData
+} from '../../../../pages/communities/CommunityInfo/utils/resource-utils'
 import { ComponentEmpty, ComponentError } from '../../../common'
 import ComponentLoading from '../../../common/ComponentLoading'
 

@@ -2,7 +2,7 @@ import { css } from '@emotion/react'
 import styled from '@emotion/styled'
 import { keyframes } from '@mantine/core'
 
-const PROGRESS_WIDTH = '60px'
+const PROGRESS_WIDTH = '40px'
 
 const fill = keyframes({
   from: {
@@ -33,9 +33,9 @@ export const root: ThemedCSS = theme => css`
 
 export const header: ThemedCSS = theme => css`
   display: grid;
-  grid-template-columns: ${PROGRESS_WIDTH} 1fr auto;
+  grid-template-columns: ${PROGRESS_WIDTH} ${PROGRESS_WIDTH} 1fr auto auto;
   align-items: center;
-  gap: ${theme.spacing.lg};
+  gap: ${theme.spacing.md};
   position: relative;
 
   & .seta-Progress-bar {
@@ -48,7 +48,6 @@ export const header: ThemedCSS = theme => css`
     visibility: hidden;
     left: ${theme.spacing.sm};
     margin-top: 0;
-    width: ${PROGRESS_WIDTH};
     text-align: center;
     font-size: 0.65rem;
     color: ${theme.colors.gray[5]};
@@ -103,9 +102,13 @@ export const title: ThemedCSS = theme => css`
   overflow: hidden;
   color: ${theme.colors.dark[5]};
 `
+export const titleGroup: ThemedCSS = () => css`
+  display: flex;
+`
 
 const contentMarginLeft: ThemedCSS = theme => css`
-  margin-left: calc(${PROGRESS_WIDTH} + ${theme.spacing.lg});
+  margin-left: calc(2 * ${PROGRESS_WIDTH} + ${theme.spacing.lg});
+  // margin-left: ${theme.spacing.lg};
 `
 
 export const info: ThemedCSS = theme => css`

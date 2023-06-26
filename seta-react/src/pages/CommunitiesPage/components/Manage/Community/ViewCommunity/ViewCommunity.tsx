@@ -18,7 +18,6 @@ import Stats from './components/Stats/Stats'
 import { useMyCommunityID } from '../../../../../../api/communities/manage/my-community'
 import { useCurrentUserPermissions } from '../../../../contexts/scope-context'
 import ComponentLoading from '../../../common/ComponentLoading'
-import CommunityResources from '../../Resource/CommunityResources/CommunityResources'
 
 const useStyles = createStyles(theme => ({
   title: {
@@ -157,9 +156,7 @@ const ViewCommunity = () => {
         <Grid.Col span={4}>
           <Stats resourceNumber={row?.resources} />
         </Grid.Col>
-        <Grid.Col span={8}>
-          <CommunityResources data={row?.resources} />
-        </Grid.Col>
+        <Grid.Col span={8}>{/* <CommunityResources data={row?.resources} /> */}</Grid.Col>
       </Grid>
     </>
   )

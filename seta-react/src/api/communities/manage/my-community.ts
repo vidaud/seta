@@ -15,6 +15,7 @@ import { environment } from '../../../environments/environment'
 import community_api from '../api'
 
 export const cacheKey = (id?: string) => ['my-communities', id]
+export const cacheKeyRes = (id?: string) => ['communities', id]
 
 const getCommunity = async (id?: string): Promise<Community> => {
   const communities = await community_api.get<CommunityResponse>(
@@ -73,7 +74,7 @@ const getMyCommunityResources = async (id?: string): Promise<ResourceResponse[]>
 }
 
 export const useMyCommunityResources = (id?: string) =>
-  useQuery({ queryKey: cacheKey(id), queryFn: () => getMyCommunityResources(id) })
+  useQuery({ queryKey: cacheKeyRes(id), queryFn: () => getMyCommunityResources(id) })
 
 const getCommunityManage = async (id?: string): Promise<ManageCommunityAPI> => {
   const { data } = await community_api.get<ManageCommunityAPI>(
@@ -99,7 +100,7 @@ export const createCommunity = async (values?: CreateCommunityAPI) => {
     })
     .then(response => {
       if (response.status === 201) {
-        window.location.href = `/my-communities`
+        window.location.href = `/communities`
       }
     })
 }
@@ -115,7 +116,7 @@ export const updateCommunity = async (id?: string, values?: UpdateCommunityAPI) 
     })
     .then(response => {
       if (response.status === 200) {
-        window.location.href = `/my-communities`
+        window.location.href = `/communities`
       }
     })
 }
@@ -131,7 +132,7 @@ export const deleteCommunityByID = async (id?: string) => {
     })
     .then(response => {
       if (response.status === 200) {
-        window.location.href = `/my-communities`
+        window.location.href = `/communities`
       }
     })
 }
