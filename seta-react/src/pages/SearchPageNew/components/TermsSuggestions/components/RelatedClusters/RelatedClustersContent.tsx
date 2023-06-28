@@ -34,7 +34,7 @@ const RelatedClustersContent = ({ data, isLoading, error, onTryAgain, ...props }
   const { nodes } = data
 
   return (
-    <ScrollArea.Autosize mah={330} type="scroll" mt="md">
+    <ScrollArea mt="md">
       {nodes.map((terms, index) => (
         <TermsCluster
           // The API returns an array of arrays of terms, so we need to use the index as the key
@@ -45,7 +45,7 @@ const RelatedClustersContent = ({ data, isLoading, error, onTryAgain, ...props }
           {...props}
         />
       ))}
-    </ScrollArea.Autosize>
+    </ScrollArea>
   )
 }
 

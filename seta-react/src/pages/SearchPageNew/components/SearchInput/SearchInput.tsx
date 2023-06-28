@@ -1,52 +1,91 @@
-import { forwardRef } from 'react'
-import { ActionIcon, Button, Flex, Tooltip } from '@mantine/core'
-import { IconCloudUp, IconSearch } from '@tabler/icons-react'
+import { forwardRef, useEffect, useRef } from 'react'
+import { Button, Flex, Tooltip } from '@mantine/core'
+import { IconSearch } from '@tabler/icons-react'
 
 import { useEnrichLoading } from '~/pages/SearchPageNew/contexts/enrich-loading-context'
 
+import useIsMounted from '~/hooks/use-is-mounted'
+
 import * as S from './styles'
+import UploadButton from './UploadButton'
 
 import TokensInput from '../TokensInput'
 
 type Props = {
   className?: string
   value?: string
+  allowSearching?: boolean
+  enrichQuery?: boolean
   onDeferredChange?: (value: string) => void
   onClick?: () => void
   onSearch?: () => void
+  onUploadClick?: () => void
 }
 
 const SearchInput = forwardRef<HTMLDivElement, Props>(
-  ({ className, value, onDeferredChange, onClick, onSearch }, ref) => {
+  (
+    {
+      className,
+      value,
+      allowSearching,
+      enrichQuery,
+      onDeferredChange,
+      onClick,
+      onSearch,
+      onUploadClick
+    },
+    ref
+  ) => {
+    const isMounted = useIsMounted()
+    const wasMountedHandled = useRef(false)
+
     const { loading } = useEnrichLoading()
 
-    const allowSearch = (value?.trim().length ?? 0) > 1
+    useEffect(() => {
+      let timeout: number | null = null
+
+      if (isMounted()) {
+        // After a short delay, we ignore subsequent calls to onSearch
+        // to prevent it from triggering when allowSearching changes based on user interaction
+        timeout = setTimeout(() => {
+          if (allowSearching && !wasMountedHandled.current) {
+            onSearch?.()
+          }
+
+          wasMountedHandled.current = true
+        }, 200)
+      }
+
+      return () => {
+        if (timeout) {
+          clearTimeout(timeout)
+        }
+      }
+    }, [isMounted, onSearch, allowSearching])
 
     return (
       <Flex ref={ref} className={className}>
-        <ActionIcon css={S.leftButton} color="blue" size="xl" variant="filled">
-          <IconCloudUp />
-        </ActionIcon>
+        <UploadButton onClick={onUploadClick} />
 
         <TokensInput
           className="flex-1"
           css={S.input}
           size="md"
           placeholder="Start typing a search term"
-          autoFocus
           value={value}
+          enrichQuery={enrichQuery}
           onClick={onClick}
           onChange={onDeferredChange}
         />
 
-        <Tooltip label="Type at least two characters to enable searching" disabled={allowSearch}>
-          <div css={S.searchButtonWrapper} data-disabled={!allowSearch}>
+        <Tooltip label="Type a keyword to enable searching" disabled={allowSearching}>
+          <div css={S.searchButtonWrapper} data-disabled={!allowSearching}>
             <Button
               css={S.searchButton}
               size="md"
               leftIcon={<IconSearch />}
               onClick={onSearch}
-              disabled={!allowSearch}
+              disabled={!allowSearching}
               loading={loading}
             >
               Search

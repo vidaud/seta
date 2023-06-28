@@ -1,5 +1,6 @@
 import { useMemo, useRef } from 'react'
-import { Flex, clsx } from '@mantine/core'
+import { Center, Flex } from '@mantine/core'
+import { IconWand } from '@tabler/icons-react'
 
 import type { Token } from '~/pages/SearchPageNew/types/token'
 
@@ -7,12 +8,11 @@ import * as S from './styles'
 
 type Props = {
   tokens: Token[]
+  enrichQuery?: boolean
 }
 
-const TokensInfo = ({ tokens }: Props) => {
+const TokensInfo = ({ tokens, enrichQuery }: Props) => {
   const lastCountRef = useRef(tokens.length)
-
-  const cls = clsx({ 'has-tokens': tokens.length > 1 })
 
   // Memoize the count so that we can hide it before it changes back to 1 or 0
   const count = useMemo(() => {
@@ -28,10 +28,16 @@ const TokensInfo = ({ tokens }: Props) => {
   }, [tokens.length])
 
   return (
-    <Flex align="center" className={cls} css={S.root}>
-      <div css={S.tokens}>{count}</div>
-      <div>tokens</div>
-    </Flex>
+    <>
+      <Center css={S.item} data-visible={enrichQuery && tokens.length > 0}>
+        <IconWand css={S.enrichedIcon} />
+      </Center>
+
+      <Flex align="center" css={S.item} data-visible={tokens.length > 1}>
+        <div css={S.tokens}>{count}</div>
+        <div>keywords</div>
+      </Flex>
+    </>
   )
 }
 

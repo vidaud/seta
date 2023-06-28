@@ -21,7 +21,6 @@ const getFileToText = async (
 
   const { data } = await api.post<FileToTextResponse>(`${FILE_TO_TEXT_API_PATH}`, file, config)
 
-  // Remove duplicates
   return {
     text: data.text
   }
@@ -29,3 +28,55 @@ const getFileToText = async (
 
 export const useFileToText = (file?: FormData) =>
   useQuery({ queryKey: queryKey.file(file), queryFn: () => getFileToText(file) })
+
+const retrieveText = async (file: File, config?: AxiosRequestConfig) => {
+  const formData = new FormData()
+
+  formData.append('file', file)
+
+  const { data } = await api.post<FileToTextResponse>(`${FILE_TO_TEXT_API_PATH}`, formData, {
+    ...config,
+    headers: {
+      ...config?.headers,
+      'Content-Type': 'multipart/form-data'
+    }
+  })
+
+  return data.text
+}
+
+export const getTextFromFile = async (file?: File, config?: AxiosRequestConfig) => {
+  if (!file) {
+    return { text: '' }
+  }
+
+  const text = await retrieveText(file, config)
+
+  return {
+    text
+  }
+}
+
+export const getTextFromFiles = async (files?: File[], config?: AxiosRequestConfig) => {
+  if (!files) {
+    return { text: '' }
+  }
+
+  const textValues: string[] = []
+
+  for (const file of files) {
+    const text = await retrieveText(file, config)
+
+    textValues.push(
+      text
+        .split('\n')
+        .filter(Boolean)
+        .map(value => `"${value}"`)
+        .join(' ')
+    )
+  }
+
+  return {
+    text: textValues.join(' ')
+  }
+}

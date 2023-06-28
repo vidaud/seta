@@ -1,15 +1,24 @@
 import { css } from '@emotion/react'
 
+const POPUP_HEIGHT = '500px'
+
 export const popup: ThemedCSS = theme => css`
   border-color: ${theme.colors.gray[4]};
-  min-height: 400px;
+  height: ${POPUP_HEIGHT};
   padding: ${theme.spacing.sm};
 
   .seta-Popover-arrow {
     border-color: inherit;
+    transition: left 0.2s ease;
 
     // Must override the inline style
     left: 68px !important;
+  }
+
+  &[data-target='upload'] {
+    .seta-Popover-arrow {
+      left: 15px !important;
+    }
   }
 `
 

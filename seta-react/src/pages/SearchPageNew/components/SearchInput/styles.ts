@@ -1,10 +1,14 @@
 import { css } from '@emotion/react'
 
-const INPUT_HEIGHT = '44px'
+const INPUT_HEIGHT = '45px'
 
-export const leftButton = css`
+export const uploadButton = css`
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
+  min-height: ${INPUT_HEIGHT};
+  min-width: ${INPUT_HEIGHT};
+  height: ${INPUT_HEIGHT};
+  width: ${INPUT_HEIGHT};
   z-index: 1;
 `
 
@@ -13,6 +17,7 @@ export const input = css`
   margin-right: -1px;
 
   .seta-Input-input {
+    min-height: ${INPUT_HEIGHT};
     height: ${INPUT_HEIGHT};
     border-radius: 0;
   }

@@ -1,6 +1,7 @@
 import { createContext, useContext } from 'react'
 
 import type { ChildrenProp } from '~/types/children-props'
+import type { EmbeddingInfo } from '~/types/embeddings'
 
 import type { Token, TokenMatch } from '../types/token'
 
@@ -12,7 +13,7 @@ type SearchProviderProps = {
   setCurrentToken: (token: TokenMatch | null) => void
   onSelectedTermsAdd: (terms: string[], input?: HTMLInputElement | null) => void
   onSelectedTermsRemove: (terms: string[], input?: HTMLInputElement | null) => void
-  onSearch: () => void
+  onSearch: (embeddings?: EmbeddingInfo[]) => void
 }
 
 type SearchContextProps = SearchProviderProps

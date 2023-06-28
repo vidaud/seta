@@ -3,6 +3,7 @@ import { EnrichType } from '~/pages/SearchPageNew/types/search'
 import type { Token } from '~/pages/SearchPageNew/types/token'
 
 import { getEnrichedTerms } from '~/api/search/query'
+import type { EmbeddingInfo } from '~/types/embeddings'
 
 export const buildSearchQueryFromTerms = (terms: string[]): string =>
   terms.map(term => (term.match(/\s/) ? `"${term}"` : term)).join(' OR ')
@@ -23,3 +24,12 @@ export const getSearchQueryAndTerms = async (
 
   return { query, terms }
 }
+
+export const getEmbeddingsVectors = (
+  embeddings: EmbeddingInfo[] | undefined
+): number[][] | undefined =>
+  embeddings?.reduce<number[][]>((acc, { chunks }) => {
+    const chunkVectors = chunks?.map(({ vector }) => vector) ?? []
+
+    return [...acc, ...chunkVectors]
+  }, [])

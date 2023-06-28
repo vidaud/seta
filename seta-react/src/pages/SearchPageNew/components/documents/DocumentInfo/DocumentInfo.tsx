@@ -12,7 +12,7 @@ import * as S from './styles'
 
 type Props = {
   document: Document
-  queryTerms: string[]
+  queryTerms?: string[]
 }
 
 const DocumentInfo = ({ document, queryTerms }: Props) => {
