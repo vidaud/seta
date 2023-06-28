@@ -67,7 +67,7 @@ const ResourceList = () => {
 
   return (
     <>
-      <Group>
+      <Group sx={{ width: '100%' }}>
         <TextInput
           className={classes.search}
           label="Search Field"
