@@ -13,11 +13,11 @@ import {
 import { IconPencil } from '@tabler/icons-react'
 
 import { updateInviteRequest } from '../../../../../../../api/communities/invite'
-import type { InviteRequestValues } from '../../../../../contexts/invite-request-context'
+import type { InviteRequestValues } from '../../../../../pages/contexts/invite-request-context'
 import {
   InviteRequestFormProvider,
   useInviteRequest
-} from '../../../../../contexts/invite-request-context'
+} from '../../../../../pages/contexts/invite-request-context'
 
 const useStyles = createStyles(theme => ({
   form: {
@@ -38,13 +38,12 @@ const statusOptions = [
   { label: 'rejected', value: 'rejected' }
 ]
 
-const UpdateInviteRequest = ({ props, parent }) => {
+const UpdateInviteRequest = ({ props, parent, reload }) => {
   const [opened, setOpened] = useState(false)
   const { classes, cx } = useStyles()
 
   const form = useInviteRequest({
     initialValues: {
-      invite_id: props.invite_id,
       status: props.status
     }
   })
@@ -61,6 +60,7 @@ const UpdateInviteRequest = ({ props, parent }) => {
       : updateInviteRequest(props.pending_invite.invite_id, values)
 
     setOpened(o => !o)
+    reload()
   }
 
   return (

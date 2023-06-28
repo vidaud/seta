@@ -1,5 +1,5 @@
 import { Badge, Navbar, createStyles, rem, UnstyledButton } from '@mantine/core'
-import { IconNotes, IconCalendarStats, IconMessage, IconUsersGroup } from '@tabler/icons-react'
+import { IconNotes, IconMessage, IconUsersGroup } from '@tabler/icons-react'
 import { Link } from 'react-router-dom'
 
 import { useNotificationsRequests } from '../../api/communities/notifications'
@@ -19,14 +19,6 @@ const mockdata = [
     links: [
       { label: 'Communities', link: '/communities/' },
       { label: 'Resources', link: '/resources/' }
-    ]
-  },
-  {
-    label: 'Manage',
-    icon: IconCalendarStats,
-    links: [
-      { label: 'My Communities', link: '/my-communities/' },
-      { label: 'My Resources', link: '/my-resources/' }
     ]
   }
 ]

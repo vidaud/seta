@@ -3,7 +3,7 @@ import { Outlet } from 'react-router-dom'
 
 import Breadcrumbs from '../../components/Breadcrumbs'
 import NavbarNestedWithNotifications from '../../components/NavbarNestedWithNotifications/NavbarNestedWithNotifications'
-import { ScopeProvider } from '../../pages/CommunitiesPage/contexts/scope-context'
+import { ScopeProvider } from '../../pages/CommunitiesPage/pages/contexts/scope-context'
 
 const CommunityLayout = () => {
   return (

@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import { getCookie } from 'typescript-cookie'
 
-import type { MembershipValues } from '~/pages/CommunitiesPage/contexts/membership-context'
+import type { MembershipValues } from '~/pages/CommunitiesPage/pages/contexts/membership-context'
 
 import community_api from './api'
 
@@ -106,7 +106,7 @@ export const deleteMembershipByID = async (id?: string, userId?: string) => {
     })
     .then(response => {
       if (response.status === 200) {
-        window.location.href = `/my-communities/${id}/members`
+        window.location.href = `/communities/${id}/members`
       }
     })
 }

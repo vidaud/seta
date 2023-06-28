@@ -1,8 +1,8 @@
 import { useQuery } from '@tanstack/react-query'
 import { getCookie } from 'typescript-cookie'
 
-import type { ChangeRequestValues } from '~/pages/CommunitiesPage/contexts/change-request-context'
-import type { ResourceChangeRequestValues } from '~/pages/CommunitiesPage/contexts/resource-change-request-context'
+import type { ChangeRequestValues } from '~/pages/CommunitiesPage/pages/contexts/change-request-context'
+import type { ResourceChangeRequestValues } from '~/pages/CommunitiesPage/pages/contexts/resource-change-request-context'
 
 import community_api from './api'
 

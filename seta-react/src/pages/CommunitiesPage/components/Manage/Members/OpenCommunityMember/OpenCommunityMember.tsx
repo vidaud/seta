@@ -3,13 +3,14 @@ import { Popover, Button, Group, Tooltip, Text } from '@mantine/core'
 
 import { createOpenMembership } from '../../../../../../api/communities/membership'
 
-const OpenCommunityMember = ({ community_id, onReload }) => {
+const OpenCommunityMember = ({ community_id, reload }) => {
   const [opened, setOpened] = useState(false)
 
   const createMember = () => {
     createOpenMembership(community_id).then(() =>
       setTimeout(() => {
-        onReload()
+        reload()
+        setOpened(o => !o)
       }, 100)
     )
   }
@@ -27,13 +28,12 @@ const OpenCommunityMember = ({ community_id, onReload }) => {
     >
       <Popover.Target>
         <Group position="right">
-          <Tooltip label="Join Community">
+          <Tooltip label="Join Community" color="orange">
             <Button
               variant="filled"
               color="orange"
               size="xs"
               onClick={() => {
-                setOpened(o => !o)
                 createMember()
               }}
             >

@@ -13,8 +13,8 @@ import {
 import UpdateInviteRequest from './components/UpdateInviteRequest'
 
 import { useNotificationsRequests } from '../../../../../api/communities/notifications'
+import { statusColors } from '../../../pages/types'
 import { ComponentEmpty, ComponentError, ComponentLoading } from '../../common'
-import { statusColors } from '../../types'
 
 const useStyles = createStyles(theme => ({
   header: {

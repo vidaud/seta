@@ -2,6 +2,11 @@ import type { InviteResponse } from './invite-types'
 import type { MembershipResponse } from './membership-types'
 import type { ResourceResponse } from './resource-types'
 
+export type CommunitiesResponse = {
+  total_com: number
+  communities: CommunityResponse[]
+}
+
 export type CommunityResponse = {
   community_id: string
   title: string
@@ -29,18 +34,17 @@ export type Community = {
 }
 
 export type CreateCommunityAPI = {
-  community_id: string
+  community_id?: string
   title: string
   description?: string
-  data_type: string
+  status?: string
 }
 
 export type UpdateCommunityAPI = {
-  community_id: string
+  community_id?: string
   title: string
-  description: string
-  data_type: string
-  status: string
+  description?: string
+  status?: string
 }
 
 export type ManageCommunityAPI = {
