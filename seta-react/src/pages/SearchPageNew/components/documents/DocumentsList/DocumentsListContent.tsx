@@ -15,10 +15,10 @@ import * as S from './styles'
 
 import DocumentInfo from '../DocumentInfo'
 
-const MARGIN_TOP = '4rem'
+export const MARGIN_TOP = '5rem'
 
 type Props = DataProps<DocumentsResponse> & {
-  queryTerms: string[]
+  queryTerms?: string[]
   paginator?: ReactElement | false | null
   info?: ReactElement | false | null
 }

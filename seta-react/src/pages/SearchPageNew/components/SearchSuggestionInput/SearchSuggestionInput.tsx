@@ -1,14 +1,18 @@
-import { useState } from 'react'
+import { useCallback, useLayoutEffect, useState } from 'react'
 import { Box } from '@mantine/core'
+import { useLocalStorage } from '@mantine/hooks'
 
 import SuggestionsPopup from '~/pages/SearchPageNew/components/SuggestionsPopup'
 import { SearchProvider } from '~/pages/SearchPageNew/contexts/search-context'
 import { SearchInputProvider } from '~/pages/SearchPageNew/contexts/search-input-context'
-import type { EnrichedStatus, SearchValue } from '~/pages/SearchPageNew/types/search'
+import { UploadDocumentsProvider } from '~/pages/SearchPageNew/contexts/upload-documents-context'
+import type { SearchValue } from '~/pages/SearchPageNew/types/search'
 import { EnrichType } from '~/pages/SearchPageNew/types/search'
 import type { Token, TokenMatch } from '~/pages/SearchPageNew/types/token'
+import { STORAGE_KEY } from '~/pages/SearchPageNew/utils/constants'
 
 import type { ClassNameProp } from '~/types/children-props'
+import type { EmbeddingInfo } from '~/types/embeddings'
 
 const getCursorPosition = (input: HTMLInputElement | null | undefined) => {
   if (!input) {
@@ -33,14 +37,28 @@ type Props = {
 } & ClassNameProp
 
 const SearchSuggestionInput = ({ className, onSearch }: Props) => {
+  const [savedValue, setSavedValue] = useLocalStorage({
+    key: STORAGE_KEY.SEARCH,
+    defaultValue: '',
+    getInitialValueInEffect: true
+  })
+
+  const [enrichedStatus, setEnrichedStatus] = useLocalStorage({
+    key: STORAGE_KEY.ENRICH,
+    defaultValue: {
+      enriched: false,
+      type: EnrichType.Similar
+    },
+    getInitialValueInEffect: true
+  })
+
   const [value, setValue] = useState('')
   const [tokens, setTokens] = useState<Token[]>([])
   const [currentToken, setCurrentToken] = useState<TokenMatch | null>(null)
 
-  const [enrichedStatus, setEnrichedStatus] = useState<EnrichedStatus>({
-    enriched: false,
-    type: EnrichType.Similar
-  })
+  useLayoutEffect(() => {
+    setValue(savedValue)
+  }, [savedValue])
 
   const handleSuggestionSelected = (suggestion: string) => {
     const replaceWith = suggestion.match(/\s/g) ? `"${suggestion}"` : suggestion
@@ -50,8 +68,10 @@ const SearchSuggestionInput = ({ className, onSearch }: Props) => {
       const newValue = value.slice(0, index) + replaceWith + value.slice(index + token.length)
 
       setValue(newValue)
+      setSavedValue(newValue)
     } else {
       setValue(replaceWith)
+      setSavedValue(replaceWith)
     }
   }
 
@@ -63,6 +83,8 @@ const SearchSuggestionInput = ({ className, onSearch }: Props) => {
 
     setValue(newValue)
     setCursorPosition(input, pos)
+
+    setSavedValue(newValue)
   }
 
   const handleTermsRemoved = (terms: string[], input?: HTMLInputElement | null) => {
@@ -75,10 +97,19 @@ const SearchSuggestionInput = ({ className, onSearch }: Props) => {
 
     setValue(newValue)
     setCursorPosition(input, pos)
+
+    setSavedValue(newValue)
   }
 
-  const handleSearch = () => {
-    onSearch({ value, tokens, enrichedStatus })
+  const handleSearch = useCallback(
+    (embeddings?: EmbeddingInfo[]) => {
+      onSearch({ value, tokens, enrichedStatus, embeddings })
+    },
+    [onSearch, value, tokens, enrichedStatus]
+  )
+
+  const handleInputBlur = () => {
+    setSavedValue(value)
   }
 
   return (
@@ -93,12 +124,14 @@ const SearchSuggestionInput = ({ className, onSearch }: Props) => {
         onSelectedTermsRemove={handleTermsRemoved}
         onSearch={handleSearch}
       >
-        <SearchInputProvider inputValue={value} setInputValue={setValue}>
-          <SuggestionsPopup
-            enrichQuery={enrichedStatus.enriched}
-            onEnrichToggle={setEnrichedStatus}
-          />
-        </SearchInputProvider>
+        <UploadDocumentsProvider>
+          <SearchInputProvider inputValue={value} setInputValue={setValue} onBlur={handleInputBlur}>
+            <SuggestionsPopup
+              enrichQuery={enrichedStatus.enriched}
+              onEnrichToggle={setEnrichedStatus}
+            />
+          </SearchInputProvider>
+        </UploadDocumentsProvider>
       </SearchProvider>
     </Box>
   )

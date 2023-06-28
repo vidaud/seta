@@ -6,6 +6,7 @@ import type { ChildrenProp } from '~/types/children-props'
 type SearchInputProviderProps = {
   inputValue: string
   setInputValue: (value: string) => void
+  onBlur?: () => void
 }
 
 type SearchInputContextProps = SearchInputProviderProps & {
@@ -21,7 +22,8 @@ const SearchInputContext = createContext<SearchInputContextProps | undefined>(un
 export const SearchInputProvider = ({
   children,
   inputValue,
-  setInputValue
+  setInputValue,
+  onBlur
 }: SearchInputProviderProps & ChildrenProp) => {
   const inputRef = useRef<HTMLInputElement | null>(null)
 
@@ -49,7 +51,8 @@ export const SearchInputProvider = ({
     input: inputRef.current,
     setInputRef,
     setPosition,
-    setPositionDelayed
+    setPositionDelayed,
+    onBlur
   }
 
   return <SearchInputContext.Provider value={value}>{children}</SearchInputContext.Provider>

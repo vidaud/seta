@@ -6,10 +6,9 @@ export const root = css`
 
 export const container: ThemedCSS = theme => css`
   gap: ${theme.spacing.lg};
-  padding: ${theme.spacing.lg};
+  padding: ${theme.spacing.xl} ${theme.spacing.lg};
   border-radius: ${theme.radius.md};
   background-color: ${theme.colors.gray[1]};
-  border: 1px solid ${theme.colors.gray[3]};
 `
 
 export const icon: ThemedCSS = theme => css`

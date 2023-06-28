@@ -5,26 +5,28 @@ import { useEnrichLoading } from '~/pages/SearchPageNew/contexts/enrich-loading-
 import type { DocumentsOptions, DocumentsResponse } from '~/api/search/documents'
 import { useDocuments } from '~/api/search/documents'
 import usePaginator from '~/hooks/use-paginator'
+import type { EmbeddingInfo } from '~/types/embeddings'
 
 import DocumentsListContent from './DocumentsListContent'
 
 const PER_PAGE = 10
 
 type Props = {
-  query: string
+  query: string | undefined
   terms: string[]
+  embeddings?: EmbeddingInfo[]
   searchOptions?: DocumentsOptions
   onDocumentsChanged?: (documents: DocumentsResponse) => void
 }
 
-const DocumentsList = ({ query, terms, searchOptions, onDocumentsChanged }: Props) => {
+const DocumentsList = ({ query, terms, embeddings, searchOptions, onDocumentsChanged }: Props) => {
   const documentsChangedRef = useRef(onDocumentsChanged)
 
   const [page, setPage] = useState(1)
 
   const { loading: enrichLoading } = useEnrichLoading()
 
-  const { data, isLoading, error, refetch } = useDocuments(query, {
+  const { data, isLoading, error, refetch } = useDocuments(query, embeddings, {
     page,
     perPage: PER_PAGE,
     searchOptions
@@ -47,7 +49,6 @@ const DocumentsList = ({ query, terms, searchOptions, onDocumentsChanged }: Prop
       currentPageItems: documents?.length ?? 0
     },
     resetPageDependencies: [query, searchOptions],
-    scrollDependencies: [data],
     onPageChange: setPage
   })
 

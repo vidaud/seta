@@ -41,4 +41,7 @@ const getRelatedTerms = async (
 }
 
 export const useRelatedTerms = (words?: string) =>
-  useQuery({ queryKey: queryKey.words(words), queryFn: () => getRelatedTerms(words) })
+  useQuery({
+    queryKey: queryKey.words(words),
+    queryFn: ({ signal }) => getRelatedTerms(words, { signal })
+  })

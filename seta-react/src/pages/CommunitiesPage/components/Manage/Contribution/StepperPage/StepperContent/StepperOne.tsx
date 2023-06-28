@@ -4,7 +4,7 @@ import { Box, Group, Paper, Stack, Text, Title, Tabs, createStyles } from '@mant
 import { UploadFile } from './UploadFile'
 import { UploadText } from './UploadText'
 
-import { useEmbedding } from '../../../../../../../api/embeddings/embedding'
+import { useEmbeddings } from '../../../../../../../api/embeddings/embedding'
 import { Context } from '../context/Context'
 
 const useStyles = createStyles({
@@ -37,7 +37,7 @@ export const StepperOne = () => {
   const { textUpload, handleTextInput, setEmbeddings } = useContext(Context)
   const [activeTab, setActiveTab] = useState<string | null>('file')
   const { classes } = useStyles()
-  const { data } = useEmbedding(textUpload)
+  const { data } = useEmbeddings(textUpload)
 
   useEffect(() => {
     if (data) {
