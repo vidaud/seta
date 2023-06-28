@@ -51,34 +51,36 @@ const CommunityResources = ({ id, nrResources }) => {
     return <ComponentLoading />
   }
 
-  const rows = items?.map(row => (
-    <Grid.Col key={row?.resource_id}>
-      <Paper withBorder p="md" radius="md" className={classes.row}>
-        <Group>
-          <Text sx={{ width: '73%' }}>
-            <Text size="md">{row?.title.charAt(0).toUpperCase() + row?.title.slice(1)}</Text>
-          </Text>
+  const rows =
+    items &&
+    items?.map(row => (
+      <Grid.Col key={row?.resource_id}>
+        <Paper withBorder p="md" radius="md" className={classes.row}>
           <Group>
-            <Text size="xs">{new Date(row?.created_at).toDateString()}</Text>
-            {row.status === 'active' ? (
-              <Tooltip label="Active" color="green">
-                <Badge variant="outline" color="green" w="min-content" className={classes.badge}>
-                  <VscLayersActive />
-                </Badge>
-              </Tooltip>
-            ) : (
-              <Tooltip label="Blocked" color="red">
-                <Badge variant="outline" color="red" w="min-content" className={classes.badge}>
-                  <ImBlocked />
-                </Badge>
-              </Tooltip>
-            )}
+            <Text sx={{ width: '73%' }}>
+              <Text size="md">{row?.title.charAt(0).toUpperCase() + row?.title.slice(1)}</Text>
+            </Text>
+            <Group>
+              <Text size="xs">{new Date(row?.created_at).toDateString()}</Text>
+              {row.status === 'active' ? (
+                <Tooltip label="Active" color="green">
+                  <Badge variant="outline" color="green" w="min-content" className={classes.badge}>
+                    <VscLayersActive />
+                  </Badge>
+                </Tooltip>
+              ) : (
+                <Tooltip label="Blocked" color="red">
+                  <Badge variant="outline" color="red" w="min-content" className={classes.badge}>
+                    <ImBlocked />
+                  </Badge>
+                </Tooltip>
+              )}
+            </Group>
           </Group>
-        </Group>
-        <Text size="sm">{row?.abstract.charAt(0).toUpperCase() + row?.abstract.slice(1)}</Text>
-      </Paper>
-    </Grid.Col>
-  ))
+          <Text size="sm">{row?.abstract.charAt(0).toUpperCase() + row?.abstract.slice(1)}</Text>
+        </Paper>
+      </Grid.Col>
+    ))
 
   return (
     <ScrollArea w="content">

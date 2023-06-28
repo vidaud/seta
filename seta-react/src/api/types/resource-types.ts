@@ -21,15 +21,16 @@ export type ResourceResponse = {
 }
 
 export type CreateResourceAPI = {
-  community_id: string
-  resource_id: string
+  community_id?: string
+  resource_id?: string
   title: string
   abstract: string
 }
 
 export type UpdateResourceAPI = {
-  community_id: string
-  resource_id: string
+  community_id?: string
+  resource_id?: string
   title: string
   abstract: string
+  status?: string
 }

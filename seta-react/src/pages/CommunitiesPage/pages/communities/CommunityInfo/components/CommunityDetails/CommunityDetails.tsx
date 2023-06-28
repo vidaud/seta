@@ -92,7 +92,7 @@ const CommunityDetails = ({ className, open, id, community, community_scopes }: 
           ) : null}
           <CommunityResources id={id} nrResources={onChangeNrResources} />
         </Tabs.Panel>
-        {scopes?.includes('/seta/community/manager') ||
+        {scopes?.includes('/seta/community/owner') ||
         scopes?.includes('/seta/community/manager') ||
         scopes?.includes('/seta/community/invite') ? (
           <Tabs.Panel value="invites" sx={{ paddingLeft: '2%' }}>

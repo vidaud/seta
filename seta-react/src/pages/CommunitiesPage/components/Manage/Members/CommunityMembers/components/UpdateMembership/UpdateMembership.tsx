@@ -34,8 +34,6 @@ const UpdateMembership = ({ props }) => {
 
   const form = useMembership({
     initialValues: {
-      community_id: props.community_id,
-      user_id: props.user_id,
       status: '',
       role: ''
     }

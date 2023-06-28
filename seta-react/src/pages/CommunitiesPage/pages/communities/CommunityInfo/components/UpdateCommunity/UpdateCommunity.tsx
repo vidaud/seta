@@ -5,16 +5,18 @@ import { IconPencil } from '@tabler/icons-react'
 
 import UpdateForm from './components/UpdateForm/UpdateForm'
 
-const UpdateCommunity = ({ id, community_scopes }) => {
+const UpdateCommunity = ({ community, community_scopes }) => {
   const [scopes, setScopes] = useState<string[] | undefined>([])
   const [opened, { open, close }] = useDisclosure(false)
   const theme = useMantineTheme()
 
   useEffect(() => {
-    const findCommunity = community_scopes?.filter(scope => scope.community_id === id)
+    const findCommunity = community_scopes?.filter(
+      scope => scope.community_id === community.community_id
+    )
 
     findCommunity ? setScopes(findCommunity[0]?.scopes) : setScopes([])
-  }, [community_scopes, id])
+  }, [community_scopes, community])
 
   return (
     <>
@@ -31,7 +33,7 @@ const UpdateCommunity = ({ id, community_scopes }) => {
             }}
           >
             <Divider my="xs" label="Update Community" labelPosition="center" />
-            <UpdateForm id={id} />
+            <UpdateForm community={community} />
           </Modal>
           <Tooltip label="Update Community" color="gray">
             <ActionIcon>

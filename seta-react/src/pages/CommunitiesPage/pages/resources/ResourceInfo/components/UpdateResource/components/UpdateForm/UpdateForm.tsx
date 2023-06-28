@@ -25,22 +25,19 @@ const useStyles = createStyles({
   }
 })
 
-const UpdateResource = ({ id }) => {
+const UpdateForm = ({ resource }) => {
   const { classes, cx } = useStyles()
   const navigate = useNavigate()
 
-  const { data, isLoading } = useResourceID(id)
+  const { data, isLoading } = useResourceID(resource.resource_id)
 
   const form = useResource({
     initialValues: {
-      community_id: '',
-      resource_id: '',
       title: '',
       abstract: '',
       status: 'active'
     },
     validate: values => ({
-      resource_id: values.resource_id.length < 2 ? 'ID must have at least 2 letters' : null,
       title: values.title.length < 2 ? 'Too short title' : null,
       abstract: values.abstract.length < 2 ? 'Too short abstract' : null
     })
@@ -57,7 +54,7 @@ const UpdateResource = ({ id }) => {
   }
 
   const handleSubmit = (values: ResourceValues) => {
-    updateResource(id, values.resource_id, values)
+    updateResource(resource.resource_id, values.resource_id, values)
   }
 
   return (
@@ -105,4 +102,4 @@ const UpdateResource = ({ id }) => {
   )
 }
 
-export default UpdateResource
+export default UpdateForm

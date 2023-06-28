@@ -3,11 +3,16 @@ import { Popover, Button, Group, Tooltip, Text } from '@mantine/core'
 
 import { createOpenMembership } from '../../../../../../api/communities/membership'
 
-const OpenCommunityMember = ({ community_id }) => {
+const OpenCommunityMember = ({ community_id, reload }) => {
   const [opened, setOpened] = useState(false)
 
   const createMember = () => {
-    createOpenMembership(community_id)
+    createOpenMembership(community_id).then(() =>
+      setTimeout(() => {
+        reload()
+        setOpened(o => !o)
+      }, 100)
+    )
   }
 
   return (
@@ -29,7 +34,6 @@ const OpenCommunityMember = ({ community_id }) => {
               color="orange"
               size="xs"
               onClick={() => {
-                setOpened(o => !o)
                 createMember()
               }}
             >

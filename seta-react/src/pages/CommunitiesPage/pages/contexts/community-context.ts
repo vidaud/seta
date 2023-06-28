@@ -1,11 +1,10 @@
 import { createFormContext } from '@mantine/form'
 
 export type CommunityValues = {
-  community_id: string
+  community_id?: string
   title: string
   description: string
-  data_type: string
-  status: string
+  status?: string
 }
 
 export const cacheKey = () => ['communities']

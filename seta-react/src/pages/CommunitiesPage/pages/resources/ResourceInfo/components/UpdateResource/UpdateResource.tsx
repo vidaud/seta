@@ -5,16 +5,18 @@ import { IconPencil } from '@tabler/icons-react'
 
 import UpdateForm from './components/UpdateForm/UpdateForm'
 
-const UpdateResource = ({ id, resource_scopes }) => {
+const UpdateResource = ({ resource, resource_scopes }) => {
   const [scopes, setScopes] = useState<string[] | undefined>([])
   const [opened, { open, close }] = useDisclosure(false)
   const theme = useMantineTheme()
 
   useEffect(() => {
-    const findResource = resource_scopes?.filter(scope => scope.resource_id === id)
+    const findResource = resource_scopes?.filter(
+      scope => scope.resource_id === resource.resource_id
+    )
 
     findResource ? setScopes(findResource[0]?.scopes) : setScopes([])
-  }, [resource_scopes, id])
+  }, [resource_scopes, resource])
 
   return (
     <>
@@ -31,7 +33,7 @@ const UpdateResource = ({ id, resource_scopes }) => {
             }}
           >
             <Divider my="xs" label="Update Resource" labelPosition="center" />
-            <UpdateForm id={id} />
+            <UpdateForm resource={resource} />
           </Modal>
           <Tooltip label="Update Resource" color="gray">
             <ActionIcon>

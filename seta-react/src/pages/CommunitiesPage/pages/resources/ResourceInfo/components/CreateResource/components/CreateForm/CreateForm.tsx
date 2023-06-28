@@ -24,20 +24,22 @@ const CreateForm = ({ id }) => {
 
   const form = useResource({
     initialValues: {
-      community_id: id ? id : '',
       resource_id: '',
       title: '',
       abstract: ''
     },
     validate: values => ({
-      resource_id: values.resource_id.length < 2 ? 'ID must have at least 2 letters' : null,
+      resource_id:
+        values.resource_id && values.resource_id.length < 2
+          ? 'ID must have at least 2 letters'
+          : null,
       title: values.title.length < 2 ? 'Too short title' : null,
       abstract: values.abstract.length < 2 ? 'Too short abstract' : null
     })
   })
 
   const handleSubmit = (values: ResourceValues) => {
-    createResource(values.community_id, values)
+    createResource(id, values)
   }
 
   return (
@@ -46,7 +48,7 @@ const CreateForm = ({ id }) => {
         <form className={cx(classes.form)} onSubmit={form.onSubmit(handleSubmit)}>
           <TextInput
             label="Community ID"
-            {...form.getInputProps('community_id')}
+            value={id}
             className={cx(classes.input, classes.sized)}
             disabled={true}
           />

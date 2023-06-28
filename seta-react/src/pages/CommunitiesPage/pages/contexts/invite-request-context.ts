@@ -1,7 +1,7 @@
 import { createFormContext } from '@mantine/form'
 
 export type InviteRequestValues = {
-  invite_id: string
+  invite_id?: string
   status: string
 }
 

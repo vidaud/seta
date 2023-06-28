@@ -1,10 +1,10 @@
 import { useEffect } from 'react'
 import { TextInput, Group, createStyles, Button, Textarea } from '@mantine/core'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 import {
   updateCommunity,
-  useMyCommunityID
+  useCommunityID
 } from '../../../../../../../../../api/communities/manage/my-community'
 import { ComponentLoading } from '../../../../../../../components/common'
 import type { CommunityValues } from '../../../../../../contexts/community-context'
@@ -25,40 +25,39 @@ const useStyles = createStyles({
   }
 })
 
-const UpdateForm = ({ id }) => {
+const UpdateForm = ({ community }) => {
   const { classes, cx } = useStyles()
   const navigate = useNavigate()
 
-  const { data, isLoading } = useMyCommunityID(id)
+  const { data, isLoading } = useCommunityID(community.community_id)
 
   const form = useCommunity({
     initialValues: {
-      community_id: '',
       title: '',
       description: '',
-      data_type: 'evidence',
       status: 'active'
     },
     validate: values => ({
-      community_id: values.community_id.length < 2 ? 'ID must have at least 2 letters' : null,
       title: values.title.length < 2 ? 'Too short title' : null,
-      description: values.description.length < 2 ? 'Too short description' : null,
-      data_type: values.data_type.length < 1 ? 'Please select data type' : null
+      description: values.description.length < 2 ? 'Too short description' : null
     })
   })
 
   useEffect(() => {
-    if (data) {
-      form.setValues(data.communities)
+    if (community) {
+      form.setValues({
+        title: community.title,
+        description: community.description
+      })
     }
-  }, [data])
+  }, [community])
 
   if (isLoading || !data) {
     return <ComponentLoading />
   }
 
   const handleSubmit = (values: CommunityValues) => {
-    updateCommunity(values.community_id, values)
+    updateCommunity(community.community_id, values)
   }
 
   return (
@@ -67,7 +66,7 @@ const UpdateForm = ({ id }) => {
         <form className={cx(classes.form)} onSubmit={form.onSubmit(handleSubmit)}>
           <TextInput
             label="ID"
-            {...form.getInputProps('community_id')}
+            value={community.community_id}
             className={cx(classes.input, classes.sized)}
             disabled={true}
             withAsterisk
@@ -93,18 +92,16 @@ const UpdateForm = ({ id }) => {
               </Radio.Group>
             </Group> */}
           <Group position="right">
-            <Link className={classes.link} to={`communities/${id}`} replace={true}>
-              <Button
-                variant="outline"
-                size="xs"
-                color="blue"
-                onClick={() => {
-                  navigate(-1)
-                }}
-              >
-                Cancel
-              </Button>
-            </Link>
+            <Button
+              variant="outline"
+              size="xs"
+              color="blue"
+              onClick={() => {
+                navigate(-1)
+              }}
+            >
+              Cancel
+            </Button>
 
             <Button size="xs" type="submit">
               Update

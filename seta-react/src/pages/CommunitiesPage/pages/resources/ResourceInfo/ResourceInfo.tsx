@@ -57,7 +57,7 @@ const ResourceInfo = ({ resource, resource_scopes }: Props) => {
           <Text fz="md" fw={600} truncate={detailsOpen ? undefined : 'end'}>
             {title.charAt(0).toUpperCase() + title.slice(1)}
           </Text>
-          <UpdateResource id={resource_id} resource_scopes={resource_scopes} />
+          <UpdateResource resource={resource} resource_scopes={resource_scopes} />
         </div>
         <DeleteResource id={resource_id} resource_scopes={resource_scopes} />
         {toggleIcon}

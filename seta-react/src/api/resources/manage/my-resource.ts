@@ -57,7 +57,7 @@ export const updateResource = async (
     })
     .then(response => {
       if (response.status === 200) {
-        window.location.href = `/resources/${resource_id}`
+        window.location.href = `/resources/`
       }
     })
 }

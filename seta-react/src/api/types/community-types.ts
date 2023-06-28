@@ -34,18 +34,17 @@ export type Community = {
 }
 
 export type CreateCommunityAPI = {
-  community_id: string
+  community_id?: string
   title: string
   description?: string
-  data_type: string
+  status?: string
 }
 
 export type UpdateCommunityAPI = {
-  community_id: string
+  community_id?: string
   title: string
-  description: string
-  data_type: string
-  status: string
+  description?: string
+  status?: string
 }
 
 export type ManageCommunityAPI = {

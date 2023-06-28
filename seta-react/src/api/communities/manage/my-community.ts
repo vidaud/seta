@@ -2,7 +2,6 @@ import { useQuery } from '@tanstack/react-query'
 import { getCookie } from 'typescript-cookie'
 
 import type {
-  Community,
   MyCommunity,
   CommunityResponse,
   CreateCommunityAPI,
@@ -15,20 +14,11 @@ import { environment } from '../../../environments/environment'
 import community_api from '../api'
 
 export const cacheKey = (id?: string) => ['communities', id]
-export const cacheKeyRes = (id?: string) => ['communities', id]
 
-const getCommunity = async (id?: string): Promise<Community> => {
-  const communities = await community_api.get<CommunityResponse>(
+const getCommunity = async (id?: string): Promise<CommunityResponse> => {
+  const { data } = await community_api.get<CommunityResponse>(
     `${environment.COMMUNITIES_API_PATH}/${id}`
   )
-  const resources = await community_api.get<ResourceResponse[]>(
-    `${environment.COMMUNITIES_API_PATH}/${id}/resources`
-  )
-
-  const data = {
-    communities: communities.data,
-    resources: resources.data
-  }
 
   return data
 }
@@ -74,7 +64,7 @@ const getMyCommunityResources = async (id?: string): Promise<ResourceResponse[]>
 }
 
 export const useMyCommunityResources = (id?: string) =>
-  useQuery({ queryKey: cacheKeyRes(id), queryFn: () => getMyCommunityResources(id) })
+  useQuery({ queryKey: cacheKey(id), queryFn: () => getMyCommunityResources(id) })
 
 const getCommunityManage = async (id?: string): Promise<ManageCommunityAPI> => {
   const { data } = await community_api.get<ManageCommunityAPI>(

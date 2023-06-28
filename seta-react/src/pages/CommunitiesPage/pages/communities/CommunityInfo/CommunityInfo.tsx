@@ -97,7 +97,7 @@ const CommunityInfo = ({ community, community_scopes }: Props) => {
           <Text fz="md" fw={600} truncate={detailsOpen ? undefined : 'end'}>
             {title.charAt(0).toUpperCase() + title.slice(1)}
           </Text>
-          <UpdateCommunity id={community_id} community_scopes={community_scopes} />
+          <UpdateCommunity community={community} community_scopes={community_scopes} />
         </div>
         <CommunityButton props={community} community_scopes={community_scopes} />
         {toggleIcon}

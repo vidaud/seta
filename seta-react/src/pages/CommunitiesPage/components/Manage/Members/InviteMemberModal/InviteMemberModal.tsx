@@ -14,13 +14,12 @@ const useStyles = createStyles({
   }
 })
 
-const MembershipRequest = ({ community_id }) => {
+const MembershipRequest = ({ community_id, reload }) => {
   const [opened, setOpened] = useState(false)
   const { classes, cx } = useStyles()
 
   const form = useMembership({
     initialValues: {
-      community_id: community_id,
       message: ''
     },
     validate: values => ({
@@ -31,6 +30,7 @@ const MembershipRequest = ({ community_id }) => {
   const handleSubmit = (values: MembershipValues) => {
     createMembershipRequest(community_id, values).then(() =>
       setTimeout(() => {
+        reload()
         setOpened(o => !o)
       }, 100)
     )

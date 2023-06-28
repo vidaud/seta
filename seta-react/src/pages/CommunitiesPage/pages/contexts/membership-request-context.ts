@@ -1,7 +1,7 @@
 import { createFormContext } from '@mantine/form'
 
 export type MembershipRequestValues = {
-  community_id: string
+  community_id?: string
   user_id?: string
   status: string
 }

@@ -25,15 +25,15 @@ const CreateForm = () => {
     initialValues: {
       community_id: '',
       title: '',
-      description: '',
-      data_type: 'evidence',
-      status: 'active'
+      description: ''
     },
     validate: values => ({
-      community_id: values.community_id.length < 2 ? 'ID must have at least 2 letters' : null,
+      community_id:
+        values.community_id && values.community_id.length < 2
+          ? 'ID must have at least 2 letters'
+          : null,
       title: values.title.length < 2 ? 'Too short title' : null,
-      description: values.description.length < 2 ? 'Too short description' : null,
-      data_type: values.data_type.length < 1 ? 'Please select data type' : null
+      description: values.description.length < 2 ? 'Too short description' : null
     })
   })
 

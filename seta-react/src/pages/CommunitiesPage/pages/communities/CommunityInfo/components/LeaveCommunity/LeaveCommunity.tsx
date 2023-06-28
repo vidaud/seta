@@ -11,7 +11,7 @@ const useStyles = createStyles(theme => ({
   text: { paddingBottom: theme.spacing.md }
 }))
 
-const LeaveCommunity = ({ props, onChangeMessage }) => {
+const LeaveCommunity = ({ props, onChangeMessage, reload }) => {
   const { classes } = useStyles()
   const [opened, setOpened] = useState(false)
   const [memberNumber, setMemberNumber] = useState<number | undefined>()
@@ -29,7 +29,8 @@ const LeaveCommunity = ({ props, onChangeMessage }) => {
   const deleteMembership = () => {
     leaveCommunity(props.community_id)
       .then(() => {
-        window.location.reload()
+        reload()
+        // window.location.reload()
       })
       .catch(error => {
         if (error.response.status === 409) {

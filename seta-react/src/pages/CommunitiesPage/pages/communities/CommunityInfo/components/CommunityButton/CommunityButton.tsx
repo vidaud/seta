@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { Button, Group, Notification } from '@mantine/core'
 import { IconX } from '@tabler/icons-react'
 
+import { useAllCommunities } from '../../../../../../../api/communities/discover/discover-communities'
 import MembershipRequest from '../../../../../components/Manage/Members/InviteMemberModal/InviteMemberModal'
 import OpenCommunityMember from '../../../../../components/Manage/Members/OpenCommunityMember/OpenCommunityMember'
 import UpdateInviteRequest from '../../../../../components/Sidebar/InvitesList/components/UpdateInviteRequest'
@@ -9,6 +10,7 @@ import InviteMember from '../InviteMemberModal/InviteMemberModal'
 import LeaveCommunity from '../LeaveCommunity/LeaveCommunity'
 
 const CommunityButton = ({ props, community_scopes }) => {
+  const { refetch } = useAllCommunities()
   const [data, setData] = useState(props)
   const [message, setMessage] = useState('')
   const [scopes, setScopes] = useState<string[] | undefined>([])
@@ -35,7 +37,7 @@ const CommunityButton = ({ props, community_scopes }) => {
         {data.status === 'membership' ? (
           <>
             {' '}
-            <LeaveCommunity props={data} onChangeMessage={setMessage} />
+            <LeaveCommunity props={data} onChangeMessage={setMessage} reload={refetch} />
             {message !== '' ? (
               <Notification
                 title="We notify you that"
@@ -55,11 +57,11 @@ const CommunityButton = ({ props, community_scopes }) => {
           // <Button variant="outline" size="xs" color="orange">
           //   INVITED
           // </Button>
-          <UpdateInviteRequest props={data} parent="CommunityList" />
+          <UpdateInviteRequest props={data} parent="CommunityList" reload={refetch} />
         ) : data.status === 'unknown' && data.membership === 'closed' ? (
-          <MembershipRequest community_id={data.community_id} />
+          <MembershipRequest community_id={data.community_id} reload={refetch} />
         ) : data.status === 'unknown' && data.membership === 'opened' ? (
-          <OpenCommunityMember community_id={data.community_id} />
+          <OpenCommunityMember community_id={data.community_id} reload={refetch} />
         ) : data.status === 'rejected' ? (
           <Button variant="filled" size="xs" color="red">
             REJECTED
