@@ -79,7 +79,7 @@ const CommunityListContent = forwardRef<HTMLDivElement, Props>(
     }
 
     return (
-      <Flex ref={ref} direction="column" css={S.root}>
+      <Flex ref={ref} direction="column" css={S.root} sx={{ width: '100%' }}>
         <div>
           {info}
           <Group position="right">
