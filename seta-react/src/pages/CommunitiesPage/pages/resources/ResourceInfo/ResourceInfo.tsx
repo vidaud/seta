@@ -41,13 +41,13 @@ const ResourceInfo = ({ resource, resource_scopes }: Props) => {
     <div css={S.root} className={openClass}>
       <div css={S.header} data-details={hasDetails} data-open={detailsOpen} onClick={toggle}>
         {searchable === 'true' ? (
-          <Tooltip label="Searchable Resource" position="bottom" color="green">
+          <Tooltip label="Searchable Resource" color="green">
             <Badge variant="outline" color="green">
               <CgSearchFound />
             </Badge>
           </Tooltip>
         ) : (
-          <Tooltip label="Not Searchable Resource" position="bottom" color="blue">
+          <Tooltip label="Not Searchable Resource" color="blue">
             <Badge variant="outline" color="blue">
               <MdOutlineSearchOff />
             </Badge>

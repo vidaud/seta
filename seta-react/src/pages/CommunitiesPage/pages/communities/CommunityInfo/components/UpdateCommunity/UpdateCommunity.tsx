@@ -33,7 +33,7 @@ const UpdateCommunity = ({ id, community_scopes }) => {
             <Divider my="xs" label="Update Community" labelPosition="center" />
             <UpdateForm id={id} />
           </Modal>
-          <Tooltip label="Update Community">
+          <Tooltip label="Update Community" color="gray">
             <ActionIcon>
               <IconPencil size="1rem" stroke={1.5} onClick={open} />
             </ActionIcon>

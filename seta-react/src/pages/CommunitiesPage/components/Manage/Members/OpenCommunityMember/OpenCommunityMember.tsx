@@ -23,7 +23,7 @@ const OpenCommunityMember = ({ community_id }) => {
     >
       <Popover.Target>
         <Group position="right">
-          <Tooltip label="Join Community">
+          <Tooltip label="Join Community" color="orange">
             <Button
               variant="filled"
               color="orange"

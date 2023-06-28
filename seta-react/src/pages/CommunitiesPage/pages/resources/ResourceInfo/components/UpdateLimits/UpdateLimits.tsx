@@ -65,7 +65,7 @@ const UpdateLimits = ({ props }) => {
     >
       <Popover.Target>
         <Group position="right">
-          <Tooltip label="Update Limits">
+          <Tooltip label="Update Limits" color="blue">
             <Button size="sm" onClick={() => setOpened(o => !o)}>
               Update Limits
             </Button>

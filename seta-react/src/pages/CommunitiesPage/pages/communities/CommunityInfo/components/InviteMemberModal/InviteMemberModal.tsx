@@ -53,17 +53,15 @@ const InviteMember = communityId => {
     >
       <Popover.Target>
         <Group position="right">
-          <Tooltip label="Invite friends to this community">
-            <Tooltip
-              label="Invite "
-              position="bottom"
-              color="orange"
+          <Tooltip label="Invite friends to this community" color="orange">
+            <Badge
+              variant="outline"
+              color="gray"
+              w="min-content"
               onClick={() => setOpened(o => !o)}
             >
-              <Badge variant="outline" color="gray" w="min-content">
-                <FcInvite />
-              </Badge>
-            </Tooltip>
+              <FcInvite />
+            </Badge>
           </Tooltip>
         </Group>
       </Popover.Target>

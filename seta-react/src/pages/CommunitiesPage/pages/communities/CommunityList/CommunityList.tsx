@@ -35,25 +35,29 @@ const CommunityList = () => {
   const { data, isLoading, error, refetch } = useAllCommunities()
   const { membership, status } = useCommunityListContext()
   const { community_scopes, system_scopes, resource_scopes } = useCurrentUserPermissions()
+  const from = (page - 1) * PER_PAGE
+  const to = from + PER_PAGE
 
   useEffect(() => {
     if (data) {
       membership === 'all' && status === 'all'
-        ? setSortedData(data)
+        ? setSortedData(data.slice(from, to))
         : membership === 'all' && status !== 'all'
-        ? setSortedData(data.filter(item => item.status === status))
+        ? setSortedData(data.slice(from, to).filter(item => item.status === status))
         : membership !== 'all' && status === 'all'
-        ? setSortedData(data.filter(item => item.membership === membership))
+        ? setSortedData(data.slice(from, to).filter(item => item.membership === membership))
         : setSortedData(
-            data.filter(item => item.membership === membership && item.status === status)
+            data
+              .slice(from, to)
+              .filter(item => item.membership === membership && item.status === status)
           )
 
       // refetch()
     }
-  }, [data, membership, status])
+  }, [data, membership, status, from, to])
 
   const total_docs = data?.length
-  const communities = data
+  const communities = data?.slice(from, to)
 
   const { scrollTargetRef, paginator, info } = usePaginator({
     total: total_docs ?? 0,

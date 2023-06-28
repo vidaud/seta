@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Text, Popover, Button, Group, createStyles } from '@mantine/core'
+import { Text, Popover, Button, Group, createStyles, Tooltip } from '@mantine/core'
 
 import { getMembership } from '../../../../../../../api/communities/membership'
 import { leaveCommunity } from '../../../../../../../api/communities/my-membership'
@@ -50,16 +50,18 @@ const LeaveCommunity = ({ props, onChangeMessage }) => {
       onChange={setOpened}
     >
       <Popover.Target>
-        <Button
-          variant="filled"
-          size="xs"
-          onClick={() => {
-            memberNumber === 1 ? setOpened(o => !o) : deleteMembership()
-          }}
-          // onClick={() => deleteMembership()}
-        >
-          LEAVE
-        </Button>
+        <Tooltip label="Remove Community Membership" color="blue">
+          <Button
+            variant="filled"
+            size="xs"
+            onClick={() => {
+              memberNumber === 1 ? setOpened(o => !o) : deleteMembership()
+            }}
+            // onClick={() => deleteMembership()}
+          >
+            LEAVE
+          </Button>
+        </Tooltip>
       </Popover.Target>
       <Popover.Dropdown>
         <Text weight={500} className={classes.form}>

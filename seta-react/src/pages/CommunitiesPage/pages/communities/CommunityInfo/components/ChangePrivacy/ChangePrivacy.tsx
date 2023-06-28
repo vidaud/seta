@@ -60,7 +60,7 @@ const ChangePrivacy = ({ props }) => {
       onChange={setOpened}
     >
       <Popover.Target>
-        <Tooltip label="Change community privacy">
+        <Tooltip label="Change community privacy" color="blue">
           <Button size="xs" onClick={() => setOpened(o => !o)}>
             Update Privacy
           </Button>

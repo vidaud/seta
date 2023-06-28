@@ -61,13 +61,13 @@ const CommunityResources = ({ id, nrResources }) => {
           <Group>
             <Text size="xs">{new Date(row?.created_at).toDateString()}</Text>
             {row.status === 'active' ? (
-              <Tooltip label="Active" position="bottom" color="green">
+              <Tooltip label="Active" color="green">
                 <Badge variant="outline" color="green" w="min-content" className={classes.badge}>
                   <VscLayersActive />
                 </Badge>
               </Tooltip>
             ) : (
-              <Tooltip label="Blocked" position="bottom" color="red">
+              <Tooltip label="Blocked" color="red">
                 <Badge variant="outline" color="red" w="min-content" className={classes.badge}>
                   <ImBlocked />
                 </Badge>

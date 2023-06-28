@@ -50,52 +50,44 @@ const CommunityInfo = ({ community, community_scopes }: Props) => {
     <div css={S.root} className={openClass}>
       <div css={S.header} data-details={hasDetails} data-open={detailsOpen} onClick={toggle}>
         {membership === 'closed' ? (
-          <Tooltip
-            label="Restricted Community"
-            position="bottom"
-            color={membershipColors[membership.toLowerCase()]}
-          >
+          <Tooltip label="Restricted Community" color={membershipColors[membership.toLowerCase()]}>
             <Badge variant="outline" color={membershipColors[membership.toLowerCase()]}>
               <FaUsersSlash />
             </Badge>
           </Tooltip>
         ) : (
-          <Tooltip
-            label="Opened Community"
-            position="bottom"
-            color={membershipColors[membership.toLowerCase()]}
-          >
+          <Tooltip label="Opened Community" color={membershipColors[membership.toLowerCase()]}>
             <Badge variant="outline" color={membershipColors[membership.toLowerCase()]}>
               <FaUsers />
             </Badge>
           </Tooltip>
         )}
         {status === 'membership' ? (
-          <Tooltip label="Member" position="bottom" color="green">
+          <Tooltip label="Member" color="green">
             <Badge variant="outline" color="green" w="min-content">
               <FaUser />
             </Badge>
           </Tooltip>
         ) : status === 'invited' ? (
-          <Tooltip label="Invited" position="bottom" color="gray">
+          <Tooltip label="Invited" color="gray">
             <Badge variant="outline" color="gray" w="min-content">
               <FcInvite />
             </Badge>
           </Tooltip>
         ) : status === 'rejected' ? (
-          <Tooltip label="Rejected" position="bottom" color="red">
+          <Tooltip label="Rejected" color="red">
             <Badge variant="outline" color="red" w="min-content">
               <FcCancel />
             </Badge>
           </Tooltip>
         ) : status === 'pending' ? (
-          <Tooltip label="Rejected" position="bottom" color="gray">
+          <Tooltip label="Rejected" color="gray">
             <Badge variant="outline" color="gray" w="min-content">
               <TbLoader />
             </Badge>
           </Tooltip>
         ) : status === 'unknown' ? (
-          <Tooltip label="Not Member" position="bottom" color="orange">
+          <Tooltip label="Not Member" color="orange">
             <Badge variant="outline" color="orange" w="min-content">
               <FaUserSlash />
             </Badge>

@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Text, Popover, Button, Group, createStyles, Title } from '@mantine/core'
+import { Text, Popover, Button, Group, createStyles, Title, Tooltip } from '@mantine/core'
 import { IconTrash } from '@tabler/icons-react'
 
 import { deleteCommunityByID } from '../../../../../../../api/communities/manage/my-community'
@@ -31,16 +31,18 @@ const DeleteCommunity = ({ props, totalResources }) => {
       onChange={setOpened}
     >
       <Popover.Target>
-        <Button
-          className="deleteCommunity"
-          variant="outline"
-          color="red"
-          size="xs"
-          leftIcon={<IconTrash size="1rem" stroke={1.5} />}
-          onClick={() => setOpened(o => !o)}
-        >
-          Delete Community
-        </Button>
+        <Tooltip label="Delete Community" color="red">
+          <Button
+            className="deleteCommunity"
+            variant="outline"
+            color="red"
+            size="xs"
+            leftIcon={<IconTrash size="1rem" stroke={1.5} />}
+            onClick={() => setOpened(o => !o)}
+          >
+            Delete Community
+          </Button>
+        </Tooltip>
       </Popover.Target>
       {totalResources === 0 ? (
         <Popover.Dropdown

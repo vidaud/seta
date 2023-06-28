@@ -33,7 +33,7 @@ const UpdateResource = ({ id, resource_scopes }) => {
             <Divider my="xs" label="Update Resource" labelPosition="center" />
             <UpdateForm id={id} />
           </Modal>
-          <Tooltip label="Update Resource">
+          <Tooltip label="Update Resource" color="gray">
             <ActionIcon>
               <IconPencil size="1rem" stroke={1.5} onClick={open} />
             </ActionIcon>

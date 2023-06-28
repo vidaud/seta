@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Collapse, Group, Tabs, Text, Tooltip } from '@mantine/core'
+import { Collapse, Group, Tabs, Text } from '@mantine/core'
 
 import type { CommunityResponse } from '~/api/types/community-types'
 import type { ClassNameProp } from '~/types/children-props'
@@ -87,9 +87,7 @@ const CommunityDetails = ({ className, open, id, community, community_scopes }: 
         <Tabs.Panel value="resources" sx={{ paddingLeft: '2%' }}>
           {scopes?.includes('/seta/resource/create') ? (
             <Group position="right">
-              <Tooltip label="Add new resource to this community">
-                <CreateResource id={id} />
-              </Tooltip>
+              <CreateResource id={id} />
             </Group>
           ) : null}
           <CommunityResources id={id} nrResources={onChangeNrResources} />

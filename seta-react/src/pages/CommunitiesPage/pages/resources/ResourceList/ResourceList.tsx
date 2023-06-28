@@ -29,17 +29,19 @@ const ResourceList = () => {
   const { data, isLoading, error, refetch } = useAllResources()
   const { membership, status } = useCommunityListContext()
   const { community_scopes, system_scopes, resource_scopes } = useCurrentUserPermissions()
+  const from = (page - 1) * PER_PAGE
+  const to = from + PER_PAGE
 
   useEffect(() => {
     if (data) {
-      setSortedData(data)
+      setSortedData(data.slice(from, to))
 
       // refetch()
     }
-  }, [data, membership, status])
+  }, [data, membership, status, from, to])
 
   const total_docs = data?.length
-  const communities = data
+  const communities = data?.slice(from, to)
 
   const { scrollTargetRef, paginator, info } = usePaginator({
     total: total_docs ?? 0,

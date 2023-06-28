@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Text, Popover, Button, Group, createStyles } from '@mantine/core'
+import { Text, Popover, Button, Group, createStyles, ActionIcon, Tooltip } from '@mantine/core'
 import { IconTrash } from '@tabler/icons-react'
 
 import { deleteResourceByID } from '../../../../../../../api/resources/manage/my-resource'
@@ -40,15 +40,11 @@ const DeleteResource = ({ id, resource_scopes }) => {
       {scopes?.includes('/seta/resource/edit') ? (
         <Popover.Target>
           <Group position="left">
-            <Button
-              className="deleteResource"
-              variant="outline"
-              color="red"
-              leftIcon={<IconTrash size="1rem" stroke={1.5} />}
-              onClick={() => setOpened(o => !o)}
-            >
-              Delete Resource
-            </Button>
+            <Tooltip label="Delete Resource" color="red">
+              <ActionIcon onClick={() => setOpened(o => !o)}>
+                <IconTrash size="1rem" color="red" stroke={1.5} />{' '}
+              </ActionIcon>
+            </Tooltip>
           </Group>
         </Popover.Target>
       ) : null}

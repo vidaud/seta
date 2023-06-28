@@ -73,7 +73,7 @@ const ManageResourcePermissions = ({ props }) => {
     >
       <Popover.Target>
         <Group position="right">
-          <Tooltip label="Manage Permissions">
+          <Tooltip label="Manage Permissions" color="gray">
             <ActionIcon>
               <IconPencil size="1rem" stroke={1.5} onClick={() => setOpened(o => !o)} />
             </ActionIcon>

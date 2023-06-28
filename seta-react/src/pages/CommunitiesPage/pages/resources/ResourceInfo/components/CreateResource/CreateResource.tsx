@@ -1,4 +1,4 @@
-import { Group, Button, useMantineTheme, Modal, Divider } from '@mantine/core'
+import { Group, Button, useMantineTheme, Modal, Divider, Tooltip } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 
 import CreateForm from './components/CreateForm/CreateForm'
@@ -24,17 +24,19 @@ const CreateResource = ({ id }) => {
         <CreateForm id={id} />
       </Modal>
       <Group position="right" css={S.root}>
-        <Button
-          size="xs"
-          color="blue"
-          variant="outline"
-          sx={{
-            marginBottom: theme.spacing.xs
-          }}
-          onClick={open}
-        >
-          + New Resource
-        </Button>
+        <Tooltip label="Add resource to community" color="blue">
+          <Button
+            size="xs"
+            color="blue"
+            variant="outline"
+            sx={{
+              marginBottom: theme.spacing.xs
+            }}
+            onClick={open}
+          >
+            + New Resource
+          </Button>
+        </Tooltip>
       </Group>
     </>
   )

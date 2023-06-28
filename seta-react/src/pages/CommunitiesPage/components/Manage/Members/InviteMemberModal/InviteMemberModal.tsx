@@ -49,7 +49,7 @@ const MembershipRequest = ({ community_id }) => {
     >
       <Popover.Target>
         <Group position="right">
-          <Tooltip label="Join Community">
+          <Tooltip label="Join Community" color="orange">
             <Button variant="filled" color="orange" size="xs" onClick={() => setOpened(o => !o)}>
               + JOIN
             </Button>
