@@ -6,6 +6,7 @@ import { HiUpload } from 'react-icons/hi'
 
 import { useUploadDocuments } from '~/pages/SearchPageNew/contexts/upload-documents-context'
 
+import useSpacebarAction from '~/hooks/use-spacebar-action'
 import type { ClassNameProp } from '~/types/children-props'
 
 import * as S from './styles'
@@ -55,6 +56,8 @@ const TextUpload = ({ className, editing, onEdit, onCancel }: Props) => {
     onCancel?.()
   }
 
+  const { handleKeyUp, preventKeyDownScroll } = useSpacebarAction(handleRootClick)
+
   if (editing) {
     return (
       <Stack className={className}>
@@ -97,7 +100,10 @@ const TextUpload = ({ className, editing, onEdit, onCancel }: Props) => {
       align="center"
       justify="center"
       ta="center"
+      tabIndex={0}
       onClick={handleRootClick}
+      onKeyUp={handleKeyUp}
+      onKeyDown={preventKeyDownScroll}
     >
       <GrTextAlignLeft css={CS.icon} preserveAspectRatio="none" style={{ width: '42px' }} />
 

@@ -1,5 +1,7 @@
 import { css } from '@emotion/react'
 
+import { outlineTransition, rowFocusStyles } from '~/styles'
+
 const ID_WIDTH = '80px'
 const HEADER_GAP = '1rem'
 
@@ -14,6 +16,10 @@ export const root: ThemedCSS = theme => css`
   & + &[data-open='true'] {
     margin-top: ${theme.spacing.md};
   }
+
+  &:first-of-type {
+    margin-top: ${theme.spacing.md};
+  }
 `
 
 export const header: ThemedCSS = theme => css`
@@ -24,6 +30,7 @@ export const header: ThemedCSS = theme => css`
   padding: ${theme.spacing.xs} ${theme.spacing.sm};
   border-radius: ${theme.radius.sm};
   cursor: pointer;
+  transition: ${outlineTransition};
 
   .remove-button {
     visibility: hidden;
@@ -35,7 +42,9 @@ export const header: ThemedCSS = theme => css`
     }
   }
 
-  &:hover {
+  &:hover,
+  &:focus:focus-visible,
+  &:focus-within {
     background-color: ${theme.colors.gray[1]};
 
     .remove-button {
@@ -47,6 +56,8 @@ export const header: ThemedCSS = theme => css`
     transform: translateY(1px);
   }
 
+  ${rowFocusStyles(theme)}
+
   &[data-open='true'] {
     transition: background-color 0.2s ${theme.transitionTimingFunction};
     background-color: ${theme.colors.gray[1]};
@@ -57,6 +68,12 @@ export const header: ThemedCSS = theme => css`
 
     .remove-button {
       visibility: visible;
+    }
+  }
+
+  &[data-open='false'] {
+    &:focus:focus-visible .remove-button {
+      visibility: hidden;
     }
   }
 `

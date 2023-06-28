@@ -17,7 +17,8 @@ export const root: ThemedCSS = theme => css`
     font-size: 1.2em;
   }
 
-  &:hover {
+  &:hover,
+  &:focus-within {
     background-color: ${theme.colors.gray[1]};
     border-left-color: ${theme.colors.gray[4]};
 

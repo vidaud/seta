@@ -52,9 +52,13 @@ const UploadedDocs = ({ className, onAddText }: Props) => {
   const [chunkModalState, setChunkModalState] = useState<ChunkModalState>({ open: false })
   const [removeModalState, setRemoveModalState] = useState<RemoveModalState>({ open: false })
 
+  const [scrolled, setScrolled] = useState(false)
+
   const { documents, removeChunk, removeDocument, removeAll } = useUploadDocuments()
 
   const [animateRef] = useAutoAnimate<HTMLDivElement>({ duration: 200 })
+
+  const headerStyle = [S.actions, scrolled && S.withShadow]
 
   const openChunkModal = (chunk: ChunkInfo) => setChunkModalState({ open: true, chunk })
   const handleChunkModalClose = () => setChunkModalState(prev => ({ ...prev, open: false }))
@@ -100,9 +104,9 @@ const UploadedDocs = ({ className, onAddText }: Props) => {
   return (
     <>
       <Stack spacing={0} className={className} mah="100%">
-        <UploadActions onAddText={onAddText} onRemoveAll={handleRemoveAll} />
+        <UploadActions css={headerStyle} onAddText={onAddText} onRemoveAll={handleRemoveAll} />
 
-        <ScrollArea>
+        <ScrollArea css={S.scrollArea} onScrollPositionChange={({ y }) => setScrolled(y > 10)}>
           <div ref={animateRef}>
             {documents.map(doc => (
               <DocumentInfo

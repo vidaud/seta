@@ -1,4 +1,4 @@
-import type { MouseEventHandler, ReactElement } from 'react'
+import { useRef, type MouseEventHandler, type ReactElement } from 'react'
 import { useAutoAnimate } from '@formkit/auto-animate/react'
 import { ActionIcon, Collapse, Group, Text } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
@@ -8,6 +8,7 @@ import { MdClose } from 'react-icons/md'
 
 import ChevronToggleIcon from '~/components/ChevronToggleIcon'
 
+import useSpacebarAction from '~/hooks/use-spacebar-action'
 import type { ChunkInfo, EmbeddingInfo, EmbeddingType } from '~/types/embeddings'
 
 import * as S from './styles'
@@ -36,18 +37,41 @@ const DocumentInfo = ({ document, onViewChunkDetails, onRemoveChunk, onRemoveDoc
   const [open, { toggle }] = useDisclosure()
   const [animateRef] = useAutoAnimate<HTMLDivElement>({ duration: 200 })
 
+  const headerRef = useRef<HTMLDivElement>(null)
+
+  const { preventKeyDownScroll, handleKeyUp } = useSpacebarAction(toggle)
+
   const { id, type, name, chunks } = document
+
+  const handleHeaderClick = () => {
+    // Prevent the header from staying focused when the user toggles it off
+    if (open) {
+      headerRef.current?.blur()
+    }
+
+    toggle()
+  }
 
   const handleRemoveClick: MouseEventHandler<HTMLButtonElement> = event => {
     event.stopPropagation()
     onRemoveDocument?.()
   }
 
+  const { handleKeyUp: handleRemoveKeyUp } = useSpacebarAction(handleRemoveClick)
+
   const chunksCount = chunks?.length === 1 ? '1 chunk' : `${chunks?.length} chunks`
 
   return (
     <div css={S.root} data-open={open}>
-      <div css={S.header} onClick={toggle} data-open={open}>
+      <div
+        css={S.header}
+        ref={headerRef}
+        onClick={handleHeaderClick}
+        onKeyDown={preventKeyDownScroll}
+        onKeyUp={handleKeyUp}
+        data-open={open}
+        tabIndex={0}
+      >
         <Group spacing="xs">
           {icon[type]}
 
@@ -75,6 +99,7 @@ const DocumentInfo = ({ document, onViewChunkDetails, onRemoveChunk, onRemoveDoc
           color="gray"
           className="remove-button"
           onClick={handleRemoveClick}
+          onKeyUp={handleRemoveKeyUp}
         >
           <MdClose />
         </ActionIcon>

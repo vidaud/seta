@@ -65,7 +65,7 @@ const FileUpload = ({ className, dropMessage, onAfterDrop }: Props) => {
           align="center"
           justify="center"
           ta="center"
-          spacing="1.8rem"
+          spacing="3rem"
           css={S.progress}
           style={styles}
         >

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Flex, Divider } from '@mantine/core'
 
 import { TermsSelectionProvider } from '~/pages/SearchPageNew/contexts/terms-selection-context'
@@ -8,6 +8,7 @@ import EnrichInfo from './components/EnrichInfo'
 import OntologyHeader from './components/OntologyHeader'
 import RelatedClusters from './components/RelatedClusters'
 import RelatedTerms from './components/RelatedTerms'
+import * as S from './styles'
 
 type Props = {
   className?: string
@@ -25,6 +26,14 @@ const TermsSuggestions = ({
   onEnrichToggle
 }: Props) => {
   const [loading, setLoading] = useState(false)
+  const [scrolled, setScrolled] = useState(false)
+
+  const dividerStyle = [S.divider, scrolled && S.withShadow]
+  const dividerColor = scrolled ? 'gray.3' : 'gray.2'
+
+  useEffect(() => {
+    setScrolled(false)
+  }, [currentView, enrichQuery, loading])
 
   const handleLoadingChange = (value: boolean) => {
     setLoading(value)
@@ -33,7 +42,10 @@ const TermsSuggestions = ({
   const termsView = enrichQuery ? (
     <EnrichInfo type={currentView} />
   ) : currentView === TermsView.TermsClusters ? (
-    <RelatedClusters onLoadingChange={handleLoadingChange} />
+    <RelatedClusters
+      onLoadingChange={handleLoadingChange}
+      onScrollPositionChange={({ y }) => setScrolled(y > 16)}
+    />
   ) : (
     <RelatedTerms onLoadingChange={handleLoadingChange} />
   )
@@ -49,7 +61,7 @@ const TermsSuggestions = ({
           onEnrichToggle={onEnrichToggle}
         />
 
-        <Divider color="gray.2" />
+        <Divider color={dividerColor} css={dividerStyle} />
 
         {termsView}
       </Flex>

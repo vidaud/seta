@@ -3,7 +3,7 @@ import { css } from '@emotion/react'
 export const root: ThemedCSS = theme => css`
   height: 4rem;
   padding-bottom: ${theme.spacing.sm};
-  margin-bottom: ${theme.spacing.md};
+  /* margin-bottom: ${theme.spacing.md}; */
   border-bottom: 1px solid ${theme.colors.gray[3]};
 `
 

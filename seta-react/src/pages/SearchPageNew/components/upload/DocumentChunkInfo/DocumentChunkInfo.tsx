@@ -1,4 +1,4 @@
-import type { MouseEventHandler } from 'react'
+import { useRef, type MouseEventHandler } from 'react'
 import { ActionIcon, Flex, Group, Text } from '@mantine/core'
 import { FiEye } from 'react-icons/fi'
 import { ImEmbed } from 'react-icons/im'
@@ -15,6 +15,8 @@ type Props = {
 }
 
 const DocumentChunkInfo = ({ chunk: { id, brief }, onViewDetails, onRemove }: Props) => {
+  const rootRef = useRef<HTMLDivElement>(null)
+
   const handleInfoClick: MouseEventHandler<HTMLButtonElement> = event => {
     event.stopPropagation()
     onViewDetails?.()
@@ -26,7 +28,7 @@ const DocumentChunkInfo = ({ chunk: { id, brief }, onViewDetails, onRemove }: Pr
   }
 
   return (
-    <div css={S.root} onClick={onViewDetails}>
+    <div css={S.root} ref={rootRef} onClick={onViewDetails}>
       <Group spacing="xs">
         <ImEmbed css={S.icon} />
 

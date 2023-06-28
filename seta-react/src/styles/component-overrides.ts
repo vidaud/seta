@@ -1,5 +1,7 @@
 import type { MantineThemeOverride } from '@mantine/core'
 
+import { focusStylesObject, outlineTransition, unfocusedOutlineStylesObject } from '~/styles/global'
+
 const componentOverrides: MantineThemeOverride['components'] = {
   Chip: {
     styles: {
@@ -7,6 +9,21 @@ const componentOverrides: MantineThemeOverride['components'] = {
         '&:active': {
           transform: 'translateY(0.0625rem)'
         }
+      },
+
+      input: {
+        '&:focus + .seta-Chip-label': {
+          transition: outlineTransition
+        },
+
+        '&:focus:focus:not(:focus-visible) + .seta-Chip-label': {
+          // Override the default Mantine style
+          ...unfocusedOutlineStylesObject
+        }
+      },
+
+      label: {
+        ...unfocusedOutlineStylesObject
       }
     }
   },
@@ -65,6 +82,22 @@ const componentOverrides: MantineThemeOverride['components'] = {
   Tooltip: {
     defaultProps: {
       openDelay: 200
+    }
+  },
+
+  UnstyledButton: {
+    styles: {
+      root: {
+        ...focusStylesObject
+      }
+    }
+  },
+
+  Dropzone: {
+    styles: {
+      root: {
+        ...focusStylesObject
+      }
     }
   }
 }

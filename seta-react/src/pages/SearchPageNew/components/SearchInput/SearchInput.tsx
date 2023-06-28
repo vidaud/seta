@@ -1,3 +1,4 @@
+import type { KeyboardEvent } from 'react'
 import { forwardRef, useEffect, useRef } from 'react'
 import { Button, Flex, Tooltip } from '@mantine/core'
 import { IconSearch } from '@tabler/icons-react'
@@ -18,6 +19,7 @@ type Props = {
   enrichQuery?: boolean
   onDeferredChange?: (value: string) => void
   onClick?: () => void
+  onKeyDown?: (event: KeyboardEvent<HTMLInputElement>) => void
   onSearch?: () => void
   onUploadClick?: () => void
 }
@@ -31,6 +33,7 @@ const SearchInput = forwardRef<HTMLDivElement, Props>(
       enrichQuery,
       onDeferredChange,
       onClick,
+      onKeyDown,
       onSearch,
       onUploadClick
     },
@@ -75,6 +78,7 @@ const SearchInput = forwardRef<HTMLDivElement, Props>(
           value={value}
           enrichQuery={enrichQuery}
           onClick={onClick}
+          onKeyDown={onKeyDown}
           onChange={onDeferredChange}
         />
 

@@ -7,18 +7,19 @@ import { MdClose } from 'react-icons/md'
 
 import { useUploadDocuments } from '~/pages/SearchPageNew/contexts/upload-documents-context'
 
+import type { ClassNameProp } from '~/types/children-props'
 import { EmbeddingType } from '~/types/embeddings'
 
 import * as S from './styles'
 
 import { ACCEPTED_MIME_TYPES, MAX_FILE_SIZE } from '../common/constants'
 
-type Props = {
+type Props = ClassNameProp & {
   onAddText?: () => void
   onRemoveAll?: () => void
 }
 
-const UploadActions = ({ onAddText, onRemoveAll }: Props) => {
+const UploadActions = ({ className, onAddText, onRemoveAll }: Props) => {
   const { uploadFiles, documents } = useUploadDocuments()
 
   const hasDocs = useMemo(
@@ -38,7 +39,7 @@ const UploadActions = ({ onAddText, onRemoveAll }: Props) => {
   }
 
   return (
-    <Group css={S.root} position="apart" align="center">
+    <Group className={className} css={S.root} position="apart" align="center">
       <Tooltip.Group openDelay={300} closeDelay={200}>
         <Group spacing="xs">
           <FileButton onChange={handleUpload} multiple accept={ACCEPTED_MIME_TYPES.join(',')}>
