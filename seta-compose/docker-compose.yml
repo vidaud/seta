@@ -19,7 +19,7 @@ services:
       - "9200"
       - "9300"
     volumes:
-      - seta-es:/usr/share/elasticsearch/data
+      - seta-es01:/usr/share/elasticsearch/data
     environment:
       - node.name=seta-es
       - cluster.initial_master_nodes=seta-es,seta-es02,seta-es03
@@ -115,6 +115,8 @@ services:
       service: data
     depends_on:
       - "seta-es"
+      - "seta-es02"
+      - "seta-es03"
     volumes:
       - seta-models3:/home/seta/models
     networks:
@@ -147,7 +149,7 @@ networks:
 
 volumes:
   seta-mongo:
-  seta-es:
+  seta-es01:
   seta-es02:
   seta-es03:
   seta-models3:
