@@ -11,12 +11,52 @@ services:
       - seta-mongo:/data/db
       
   seta-es:
-    container_name: es
-    extends:      
+    container_name: seta-es
+    extends:
       file: common.yml
       service: es
+    expose:
+      - "9200"
+      - "9300"
     volumes:
-      - seta-es3:/usr/share/elasticsearch/data
+      - seta-es:/usr/share/elasticsearch/data
+    environment:
+      - node.name=seta-es
+      - cluster.initial_master_nodes=seta-es,seta-es02,seta-es03
+      - discovery.seed_hosts=seta-es02,seta-es03
+    networks:
+      - seta-network
+
+  seta-es02:
+    depends_on:
+      - seta-es
+    extends:
+      file: common.yml
+      service: es
+    container_name: seta-es02
+    volumes:
+      - seta-es02:/usr/share/elasticsearch/data
+    environment:
+      - node.name=seta-es02
+      - cluster.initial_master_nodes=seta-es,seta-es02,seta-es03
+      - discovery.seed_hosts=seta-es,seta-es03
+    networks:
+      - seta-network
+
+  seta-es03:
+    depends_on:
+      - seta-es02
+    extends:
+      file: common.yml
+      service: es
+    container_name: seta-es03
+    volumes:
+      - seta-es03:/usr/share/elasticsearch/data
+    environment:
+      - node.name=seta-es03
+      - cluster.initial_master_nodes=seta-es,seta-es02,seta-es03
+      - discovery.seed_hosts=seta-es,seta-es02
+      - cluster.name=docker-cluster
     networks:
       - seta-network
 
@@ -107,5 +147,7 @@ networks:
 
 volumes:
   seta-mongo:
-  seta-es3:
+  seta-es:
+  seta-es02:
+  seta-es03:
   seta-models3:
