@@ -7,13 +7,10 @@ import type { CommunityResponse } from '~/api/types/community-types'
 import CommunityListContent from './CommunityListContent'
 
 import { useAllCommunities } from '../../../../../api/communities/discover/discover-communities'
-import usePaginator from '../../../../../hooks/use-paginator'
 import { useCommunityListContext } from '../../contexts/community-list.context'
 import { useCurrentUserPermissions } from '../../contexts/scope-context'
 import Filters from '../CommunityInfo/components/Filters/Filters'
 import { sortCommunityData } from '../CommunityInfo/utils/community-utils'
-
-const PER_PAGE = 10
 
 const useStyles = createStyles({
   search: {
@@ -27,7 +24,6 @@ const useStyles = createStyles({
 })
 
 const CommunityList = () => {
-  const [page, setPage] = useState(1)
   const [search, setSearch] = useState('')
   const { classes } = useStyles()
   const [sortedData, setSortedData] = useState<CommunityResponse[]>([])
@@ -35,41 +31,22 @@ const CommunityList = () => {
   const { data, isLoading, error, refetch } = useAllCommunities()
   const { membership, status } = useCommunityListContext()
   const { community_scopes, system_scopes, resource_scopes } = useCurrentUserPermissions()
-  const from = (page - 1) * PER_PAGE
-  const to = from + PER_PAGE
 
   useEffect(() => {
     if (data) {
       membership === 'all' && status === 'all'
-        ? setSortedData(data.slice(from, to))
+        ? setSortedData(data)
         : membership === 'all' && status !== 'all'
-        ? setSortedData(data.slice(from, to).filter(item => item.status === status))
+        ? setSortedData(data.filter(item => item.status === status))
         : membership !== 'all' && status === 'all'
-        ? setSortedData(data.slice(from, to).filter(item => item.membership === membership))
+        ? setSortedData(data.filter(item => item.membership === membership))
         : setSortedData(
-            data
-              .slice(from, to)
-              .filter(item => item.membership === membership && item.status === status)
+            data.filter(item => item.membership === membership && item.status === status)
           )
 
       // refetch()
     }
-  }, [data, membership, status, from, to])
-
-  const total_docs = data?.length
-  const communities = data?.slice(from, to)
-
-  const { scrollTargetRef, paginator, info } = usePaginator({
-    total: total_docs ?? 0,
-    perPage: PER_PAGE,
-    page,
-    info: {
-      singular: 'result',
-      currentPageItems: communities?.length ?? 0
-    },
-    scrollDependencies: [data],
-    onPageChange: setPage
-  })
+  }, [data, membership, status])
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = event.currentTarget
@@ -95,15 +72,13 @@ const CommunityList = () => {
           onChange={handleSearchChange}
         />
       </Group>
+
       <CommunityListContent
-        ref={scrollTargetRef}
         queryTerms={search}
         isLoading={isLoading}
         data={sortedData}
         error={error}
         onTryAgain={refetch}
-        paginator={paginator}
-        info={info}
         community_scopes={community_scopes}
         resource_scopes={resource_scopes}
         system_scopes={system_scopes}

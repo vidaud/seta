@@ -1,6 +1,5 @@
-import type { ReactElement } from 'react'
 import { forwardRef } from 'react'
-import { Flex } from '@mantine/core'
+import { Flex, Text } from '@mantine/core'
 
 import type { ResourceResponse } from '~/api/types/resource-types'
 import type { DataProps } from '~/types/data-props'
@@ -19,8 +18,6 @@ const MARGIN_TOP = '4rem'
 
 type Props = DataProps<ResourceResponse[]> & {
   queryTerms: string
-  paginator?: ReactElement | false | null
-  info?: ReactElement | false | null
   community_scopes?: CommunityScopes[]
   resource_scopes?: ResourceScopes[]
   system_scopes?: SystemScopes[]
@@ -34,8 +31,6 @@ const ResourceListContent = forwardRef<HTMLDivElement, Props>(
       queryTerms,
       isLoading,
       onTryAgain,
-      paginator,
-      info,
       community_scopes,
       resource_scopes,
       system_scopes
@@ -76,7 +71,11 @@ const ResourceListContent = forwardRef<HTMLDivElement, Props>(
 
     return (
       <Flex ref={ref} direction="column" css={S.root} sx={{ width: '100%' }}>
-        <div>{info}</div>
+        <div>
+          <Text fz="md" color="gray.7">
+            Showing {data?.length} results
+          </Text>
+        </div>
 
         {communities.map(resource => (
           <ResourceInfo
@@ -88,8 +87,6 @@ const ResourceListContent = forwardRef<HTMLDivElement, Props>(
             system_scopes={system_scopes}
           />
         ))}
-
-        {paginator}
       </Flex>
     )
   }

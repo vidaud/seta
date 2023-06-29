@@ -32,7 +32,7 @@ const useStyles = createStyles(theme => ({
   }
 }))
 
-const MembershipRequests = ({ id }) => {
+const MembershipRequests = ({ id, onChange }) => {
   const { classes, cx } = useStyles()
   const [scrolled, setScrolled] = useState(false)
   const { data, isLoading, error, refetch } = useMembershipRequestsID(id)
@@ -42,8 +42,9 @@ const MembershipRequests = ({ id }) => {
   useEffect(() => {
     if (data) {
       setItems(data)
+      onChange(data.length)
     }
-  }, [data, items])
+  }, [data, items, onChange, id])
 
   if (error) {
     return <ComponentError onTryAgain={refetch} />

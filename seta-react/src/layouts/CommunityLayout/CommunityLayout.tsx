@@ -24,7 +24,7 @@ const CommunityLayout = () => {
       <Flex direction="column" className="communities min-h-screen">
         <Breadcrumbs readFromPath includeCom />
 
-        <Flex sx={{ marginTop: '-3rem' }}>
+        <Flex sx={{ marginTop: '-3rem', zIndex: 100 }}>
           <ScopeProvider>
             <NavbarNestedWithNotifications />
           </ScopeProvider>

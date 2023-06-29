@@ -31,7 +31,7 @@ const useStyles = createStyles(theme => ({
   }
 }))
 
-const CommunityInvites = ({ id }) => {
+const CommunityInvites = ({ id, onChange }) => {
   const { classes, cx } = useStyles()
   const [scrolled, setScrolled] = useState(false)
   const { data, isLoading, error, refetch } = useInviteID(id)
@@ -40,8 +40,9 @@ const CommunityInvites = ({ id }) => {
   useEffect(() => {
     if (data) {
       setItems(data)
+      onChange(data.length)
     }
-  }, [data, items])
+  }, [data, items, onChange, id])
 
   if (error) {
     return <ComponentError onTryAgain={refetch} />

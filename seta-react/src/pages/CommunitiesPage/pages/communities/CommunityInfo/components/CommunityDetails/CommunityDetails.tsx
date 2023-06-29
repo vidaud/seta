@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Collapse, Group, Tabs, Text } from '@mantine/core'
+import { Badge, Collapse, Group, Tabs, Text } from '@mantine/core'
 
 import type { CommunityResponse } from '~/api/types/community-types'
 import type { ClassNameProp } from '~/types/children-props'
@@ -31,6 +31,9 @@ const CommunityDetails = ({ className, open, id, community, community_scopes }: 
   const [activeTab, setActiveTab] = useState<string | null>('resources')
   const [scopes, setScopes] = useState<string[] | undefined>([])
   const [totalResources, setTotalResources] = useState<number | undefined>()
+  const [nrInvites, setNrInvites] = useState<number>(0)
+  const [nrChangeRequests, setNrChangeRequests] = useState<number>(0)
+  const [nrMembershipRequests, setNrMembershipRequests] = useState<number>(0)
   const { community_id, created_at } = community
 
   useEffect(() => {
@@ -42,6 +45,23 @@ const CommunityDetails = ({ className, open, id, community, community_scopes }: 
   const onChangeNrResources = (total: number) => {
     setTotalResources(total)
   }
+
+  const handleNrInvitesChange = (value: number) => {
+    setNrInvites(value)
+  }
+
+  const handleNrChangeRequestsChange = (value: number) => {
+    setNrChangeRequests(value)
+  }
+
+  const handleNrMembershipRequestsChange = (value: number) => {
+    setNrMembershipRequests(value)
+  }
+
+  const isManager =
+    scopes?.includes('/seta/community/owner') || scopes?.includes('/seta/community/manager')
+  const invite = scopes?.includes('/seta/community/invite')
+  const approve = scopes?.includes('seta/community/membership/approve')
 
   return (
     <Collapse className={className} in={open}>
@@ -68,46 +88,46 @@ const CommunityDetails = ({ className, open, id, community, community_scopes }: 
           })}
         >
           <Tabs.Tab value="resources">Resource List</Tabs.Tab>
-          {scopes?.includes('/seta/community/manager') ||
-          scopes?.includes('/seta/community/manager') ||
-          scopes?.includes('/seta/community/invite') ? (
-            <Tabs.Tab value="invites">My Pending Invites</Tabs.Tab>
+          {isManager || invite ? (
+            <Tabs.Tab value="invites">
+              My Pending Invites
+              <Badge>{nrInvites}</Badge>
+            </Tabs.Tab>
           ) : null}
-          {scopes?.includes('/seta/community/owner') ||
-          scopes?.includes('/seta/community/manager') ||
-          scopes?.includes('seta/community/membership/approve') ? (
+          {isManager || approve ? (
             <>
-              <Tabs.Tab value="change_requests">Change Requests</Tabs.Tab>
-              <Tabs.Tab value="membership_requests">Membership Requests</Tabs.Tab>
+              <Tabs.Tab value="change_requests">
+                Change Requests <Badge>{nrChangeRequests}</Badge>
+              </Tabs.Tab>
+              <Tabs.Tab value="membership_requests">
+                Membership Requests <Badge>{nrMembershipRequests}</Badge>
+              </Tabs.Tab>
               <Tabs.Tab value="permissions">Permission</Tabs.Tab>
             </>
           ) : null}
         </Tabs.List>
 
         <Tabs.Panel value="resources" sx={{ paddingLeft: '2%' }}>
-          {scopes?.includes('/seta/resource/create') ? (
+          {/* {scopes?.includes('/seta/resource/create') ? ( */}
+          {isManager ? (
             <Group position="right">
               <CreateResource id={id} />
             </Group>
           ) : null}
           <CommunityResources id={id} nrResources={onChangeNrResources} />
         </Tabs.Panel>
-        {scopes?.includes('/seta/community/owner') ||
-        scopes?.includes('/seta/community/manager') ||
-        scopes?.includes('/seta/community/invite') ? (
+        {isManager || invite ? (
           <Tabs.Panel value="invites" sx={{ paddingLeft: '2%' }}>
-            <CommunityInvites id={id} />
+            <CommunityInvites id={id} onChange={handleNrInvitesChange} />
           </Tabs.Panel>
         ) : null}
-        {scopes?.includes('/seta/community/owner') ||
-        scopes?.includes('/seta/community/manager') ||
-        scopes?.includes('seta/community/membership/approve') ? (
+        {isManager || approve ? (
           <>
             <Tabs.Panel value="change_requests" sx={{ paddingLeft: '2%' }}>
-              <ChangeCommunityRequests id={id} />
+              <ChangeCommunityRequests id={id} onChange={handleNrChangeRequestsChange} />
             </Tabs.Panel>
             <Tabs.Panel value="membership_requests" sx={{ paddingLeft: '2%' }}>
-              <MembershipRequests id={id} />
+              <MembershipRequests id={id} onChange={handleNrMembershipRequestsChange} />
             </Tabs.Panel>
             <Tabs.Panel value="permissions" sx={{ paddingLeft: '2%' }}>
               <CommunityUsersPermissions id={id} />
