@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { MantineProvider } from '@mantine/core'
+import { ModalsProvider } from '@mantine/modals'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 
@@ -14,13 +15,15 @@ const App = () => {
 
   return (
     <MantineProvider withGlobalStyles withNormalizeCSS emotionCache={emotionCache} theme={theme}>
-      <QueryClientProvider client={queryClient}>
-        <UserProvider>
-          <AppRouter />
-        </UserProvider>
+      <ModalsProvider>
+        <QueryClientProvider client={queryClient}>
+          <UserProvider>
+            <AppRouter />
+          </UserProvider>
 
-        <ReactQueryDevtools initialIsOpen={false} />
-      </QueryClientProvider>
+          <ReactQueryDevtools initialIsOpen={false} />
+        </QueryClientProvider>
+      </ModalsProvider>
     </MantineProvider>
   )
 }
