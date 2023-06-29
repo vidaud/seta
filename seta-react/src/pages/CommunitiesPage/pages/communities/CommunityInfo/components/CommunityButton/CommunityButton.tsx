@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react'
 import { Button, Group, Notification } from '@mantine/core'
 import { IconX } from '@tabler/icons-react'
 
+import type { CommunityResponse } from '~/api/types/community-types'
+
 import { useAllCommunities } from '../../../../../../../api/communities/discover/discover-communities'
 import MembershipRequest from '../../../../../components/Manage/Members/InviteMemberModal/InviteMemberModal'
 import OpenCommunityMember from '../../../../../components/Manage/Members/OpenCommunityMember/OpenCommunityMember'
@@ -11,7 +13,7 @@ import LeaveCommunity from '../LeaveCommunity/LeaveCommunity'
 
 const CommunityButton = ({ props, community_scopes }) => {
   const { refetch } = useAllCommunities()
-  const [data, setData] = useState(props)
+  const [data, setData] = useState<CommunityResponse>(props)
   const [message, setMessage] = useState('')
   const [scopes, setScopes] = useState<string[] | undefined>([])
 
@@ -57,7 +59,7 @@ const CommunityButton = ({ props, community_scopes }) => {
           // <Button variant="outline" size="xs" color="orange">
           //   INVITED
           // </Button>
-          <UpdateInviteRequest props={data} parent="CommunityList" reload={refetch} />
+          <UpdateInviteRequest props={data} parent="CommunityList" />
         ) : data.status === 'unknown' && data.membership === 'closed' ? (
           <MembershipRequest community_id={data.community_id} reload={refetch} />
         ) : data.status === 'unknown' && data.membership === 'opened' ? (

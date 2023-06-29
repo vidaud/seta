@@ -38,7 +38,7 @@ const statusOptions = [
   { label: 'rejected', value: 'rejected' }
 ]
 
-const UpdateInviteRequest = ({ props, parent, reload }) => {
+const UpdateInviteRequest = ({ props, parent }) => {
   const [opened, setOpened] = useState(false)
   const { classes, cx } = useStyles()
 
@@ -60,7 +60,6 @@ const UpdateInviteRequest = ({ props, parent, reload }) => {
       : updateInviteRequest(props.pending_invite.invite_id, values)
 
     setOpened(o => !o)
-    reload()
   }
 
   return (

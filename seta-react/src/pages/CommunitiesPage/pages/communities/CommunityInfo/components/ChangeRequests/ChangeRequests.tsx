@@ -31,7 +31,7 @@ const useStyles = createStyles(theme => ({
   }
 }))
 
-const ChangeCommunityRequests = ({ id }) => {
+const ChangeCommunityRequests = ({ id, onChange }) => {
   const { classes, cx } = useStyles()
   const [scrolled, setScrolled] = useState(false)
   const { data, isLoading, error, refetch } = useCommunityChangeRequests(id)
@@ -41,8 +41,9 @@ const ChangeCommunityRequests = ({ id }) => {
   useEffect(() => {
     if (data) {
       setItems(data.community_change_requests)
+      onChange(data.community_change_requests.length)
     }
-  }, [data, items])
+  }, [data, items, onChange, id])
 
   if (error) {
     return <ComponentError onTryAgain={refetch} />

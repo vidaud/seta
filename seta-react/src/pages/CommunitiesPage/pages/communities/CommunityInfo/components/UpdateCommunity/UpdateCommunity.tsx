@@ -18,9 +18,12 @@ const UpdateCommunity = ({ community, community_scopes }) => {
     findCommunity ? setScopes(findCommunity[0]?.scopes) : setScopes([])
   }, [community_scopes, community])
 
+  const isManager =
+    scopes?.includes('/seta/community/owner') || scopes?.includes('/seta/community/manager')
+
   return (
     <>
-      {scopes?.includes('/seta/community/manager') || scopes?.includes('/seta/community/owner') ? (
+      {isManager ? (
         <>
           <Modal
             opened={opened}

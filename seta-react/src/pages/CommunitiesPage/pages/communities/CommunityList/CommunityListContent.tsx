@@ -1,6 +1,5 @@
-import type { ReactElement } from 'react'
 import { forwardRef } from 'react'
-import { Flex, Group } from '@mantine/core'
+import { Flex, Group, Text } from '@mantine/core'
 
 import type { CommunityResponse } from '~/api/types/community-types'
 import type { DataProps } from '~/types/data-props'
@@ -20,8 +19,6 @@ const MARGIN_TOP = '4rem'
 
 type Props = DataProps<CommunityResponse[]> & {
   queryTerms: string
-  paginator?: ReactElement | false | null
-  info?: ReactElement | false | null
   community_scopes?: CommunityScopes[]
   resource_scopes?: ResourceScopes[]
   system_scopes?: SystemScopes[]
@@ -35,8 +32,6 @@ const CommunityListContent = forwardRef<HTMLDivElement, Props>(
       queryTerms,
       isLoading,
       onTryAgain,
-      paginator,
-      info,
       community_scopes,
       resource_scopes,
       system_scopes
@@ -81,7 +76,9 @@ const CommunityListContent = forwardRef<HTMLDivElement, Props>(
     return (
       <Flex ref={ref} direction="column" css={S.root} sx={{ width: '100%' }}>
         <div>
-          {info}
+          <Text fz="md" color="gray.7">
+            Showing {data?.length} results
+          </Text>
           <Group position="right">
             <CreateCommunity system_scopes={system_scopes} />
           </Group>
@@ -97,8 +94,6 @@ const CommunityListContent = forwardRef<HTMLDivElement, Props>(
             system_scopes={system_scopes}
           />
         ))}
-
-        {paginator}
       </Flex>
     )
   }

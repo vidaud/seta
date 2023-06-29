@@ -67,6 +67,9 @@ const CommunityMembers = () => {
     findCommunity ? setScopes(findCommunity[0]?.scopes) : setScopes([])
   }, [data, items, community_scopes, id])
 
+  const isManager =
+    scopes?.includes('/seta/community/owner') || scopes?.includes('/seta/community/manager')
+
   if (error) {
     return <ComponentError onTryAgain={refetch} />
   }
@@ -99,8 +102,7 @@ const CommunityMembers = () => {
             <td>{row.status.toUpperCase()}</td>
             <td>
               <Group spacing={0}>
-                {scopes?.includes('/seta/community/manager') ||
-                scopes?.includes('/seta/community/owner') ? (
+                {isManager ? (
                   <>
                     <UpdateMembership props={row} />
                     <DeleteMembership props={row} />
