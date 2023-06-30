@@ -31,17 +31,29 @@ const UpdateResource = ({ resource, resource_scopes }) => {
               opacity: 0.55,
               blur: 3
             }}
+            onClick={e => {
+              e.stopPropagation()
+            }}
           >
             <Divider my="xs" label="Update Resource" labelPosition="center" />
-            <UpdateForm resource={resource} />
+            <UpdateForm resource={resource} close={close} />
           </Modal>
           <Tooltip label="Update Resource" color="gray">
             <ActionIcon>
-              <IconPencil size="1rem" stroke={1.5} onClick={open} />
+              <IconPencil
+                size="1rem"
+                stroke={1.5}
+                onClick={e => {
+                  e.stopPropagation()
+                  open()
+                }}
+              />
             </ActionIcon>
           </Tooltip>
         </>
-      ) : null}
+      ) : (
+        <div />
+      )}
     </>
   )
 }

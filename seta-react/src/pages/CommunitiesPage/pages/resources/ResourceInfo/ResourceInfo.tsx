@@ -53,12 +53,12 @@ const ResourceInfo = ({ resource, resource_scopes }: Props) => {
             </Badge>
           </Tooltip>
         )}
-        <div css={(S.title, S.titleGroup)}>
+        <div css={S.title}>
           <Text fz="md" fw={600} truncate={detailsOpen ? undefined : 'end'}>
             {title.charAt(0).toUpperCase() + title.slice(1)}
           </Text>
-          <UpdateResource resource={resource} resource_scopes={resource_scopes} />
         </div>
+        <UpdateResource resource={resource} resource_scopes={resource_scopes} />
         <DeleteResource id={resource_id} resource_scopes={resource_scopes} />
         {toggleIcon}
       </div>

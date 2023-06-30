@@ -55,7 +55,8 @@ const LeaveCommunity = ({ props, onChangeMessage, reload }) => {
           <Button
             variant="filled"
             size="xs"
-            onClick={() => {
+            onClick={e => {
+              e.stopPropagation()
               memberNumber === 1 ? setOpened(o => !o) : deleteMembership()
             }}
             // onClick={() => deleteMembership()}
@@ -76,10 +77,25 @@ const LeaveCommunity = ({ props, onChangeMessage, reload }) => {
           Press Confirm to proceed with the deletion or press Cancel to abort
         </Text>
         <Group position="right">
-          <Button variant="outline" size="xs" color="blue" onClick={() => setOpened(o => !o)}>
+          <Button
+            variant="outline"
+            size="xs"
+            color="blue"
+            onClick={e => {
+              e.stopPropagation()
+              setOpened(o => !o)
+            }}
+          >
             Cancel
           </Button>
-          <Button size="xs" color="blue" onClick={() => deleteMembership()}>
+          <Button
+            size="xs"
+            color="blue"
+            onClick={e => {
+              e.stopPropagation()
+              deleteMembership()
+            }}
+          >
             Confirm
           </Button>
         </Group>

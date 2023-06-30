@@ -10,12 +10,10 @@ import type {
   SystemScopes
 } from '../../../../contexts/scope-context'
 import CreateResource from '../../../../resources/ResourceInfo/components/CreateResource/CreateResource'
-import ChangePrivacy from '../ChangePrivacy/ChangePrivacy'
 import ChangeCommunityRequests from '../ChangeRequests/ChangeRequests'
 import CommunityInvites from '../CommunityInvites/CommunityInvites'
 import CommunityResources from '../CommunityResources/CommunityResources'
 import CommunityUsersPermissions from '../CommunityUserPermissions/CommunityUserPermissions'
-import DeleteCommunity from '../DeleteCommunity/DeleteCommunity'
 import MembershipRequests from '../MembershipRequests/MembershipRequests'
 
 type Props = ClassNameProp & {
@@ -30,7 +28,6 @@ type Props = ClassNameProp & {
 const CommunityDetails = ({ className, open, id, community, community_scopes }: Props) => {
   const [activeTab, setActiveTab] = useState<string | null>('resources')
   const [scopes, setScopes] = useState<string[] | undefined>([])
-  const [totalResources, setTotalResources] = useState<number | undefined>()
   const [nrInvites, setNrInvites] = useState<number>(0)
   const [nrChangeRequests, setNrChangeRequests] = useState<number>(0)
   const [nrMembershipRequests, setNrMembershipRequests] = useState<number>(0)
@@ -41,10 +38,6 @@ const CommunityDetails = ({ className, open, id, community, community_scopes }: 
 
     findCommunity ? setScopes(findCommunity[0]?.scopes) : setScopes([])
   }, [community_scopes, id])
-
-  const onChangeNrResources = (total: number) => {
-    setTotalResources(total)
-  }
 
   const handleNrInvitesChange = (value: number) => {
     setNrInvites(value)
@@ -73,14 +66,6 @@ const CommunityDetails = ({ className, open, id, community, community_scopes }: 
           Created at: {new Date(created_at).toDateString()}
         </Text>
       </Group>
-      <Group position="right">
-        {scopes?.includes('/seta/community/owner') ? (
-          <>
-            <ChangePrivacy props={community} />
-            <DeleteCommunity props={community} totalResources={totalResources} />
-          </>
-        ) : null}
-      </Group>
       <Tabs value={activeTab} onTabChange={setActiveTab} orientation="horizontal">
         <Tabs.List
           sx={theme => ({
@@ -90,17 +75,17 @@ const CommunityDetails = ({ className, open, id, community, community_scopes }: 
           <Tabs.Tab value="resources">Resource List</Tabs.Tab>
           {isManager || invite ? (
             <Tabs.Tab value="invites">
-              My Pending Invites
+              Sent Invites
               <Badge>{nrInvites}</Badge>
             </Tabs.Tab>
           ) : null}
           {isManager || approve ? (
             <>
               <Tabs.Tab value="change_requests">
-                Change Requests <Badge>{nrChangeRequests}</Badge>
+                My Change Requests <Badge>{nrChangeRequests}</Badge>
               </Tabs.Tab>
               <Tabs.Tab value="membership_requests">
-                Membership Requests <Badge>{nrMembershipRequests}</Badge>
+                Pending Membership Requests <Badge>{nrMembershipRequests}</Badge>
               </Tabs.Tab>
               <Tabs.Tab value="permissions">Permission</Tabs.Tab>
             </>
@@ -114,7 +99,7 @@ const CommunityDetails = ({ className, open, id, community, community_scopes }: 
               <CreateResource id={id} />
             </Group>
           ) : null}
-          <CommunityResources id={id} nrResources={onChangeNrResources} />
+          <CommunityResources id={id} />
         </Tabs.Panel>
         {isManager || invite ? (
           <Tabs.Panel value="invites" sx={{ paddingLeft: '2%' }}>

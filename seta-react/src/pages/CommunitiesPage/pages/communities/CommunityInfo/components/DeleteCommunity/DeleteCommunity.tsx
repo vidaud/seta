@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Text, Popover, Button, Group, createStyles, Title, Tooltip } from '@mantine/core'
+import { Text, Popover, Button, Group, createStyles, Title, UnstyledButton } from '@mantine/core'
 import { IconTrash } from '@tabler/icons-react'
 
 import { deleteCommunityByID } from '../../../../../../../api/communities/manage/my-community'
@@ -8,7 +8,13 @@ const useStyles = createStyles(theme => ({
   form: {
     marginTop: '20px'
   },
-  text: { paddingBottom: theme.spacing.md }
+  text: { paddingBottom: theme.spacing.md },
+  button: {
+    padding: '0.625rem 0.75rem',
+    width: '100%',
+    borderRadius: '4px',
+    ':hover': { background: '#f1f3f5' }
+  }
 }))
 
 const DeleteCommunity = ({ props, totalResources }) => {
@@ -22,27 +28,27 @@ const DeleteCommunity = ({ props, totalResources }) => {
   return (
     <Popover
       width={300}
-      withinPortal={true}
+      // withinPortal={true}
       trapFocus
-      position="bottom"
+      position="left"
       withArrow
       shadow="md"
       opened={opened}
       onChange={setOpened}
     >
       <Popover.Target>
-        <Tooltip label="Delete Community" color="red">
-          <Button
-            className="deleteCommunity"
-            variant="outline"
-            color="red"
-            size="xs"
-            leftIcon={<IconTrash size="1rem" stroke={1.5} />}
-            onClick={() => setOpened(o => !o)}
+        <Group>
+          <UnstyledButton
+            className={classes.button}
+            onClick={e => {
+              e.stopPropagation()
+              setOpened(o => !o)
+            }}
           >
-            Delete Community
-          </Button>
-        </Tooltip>
+            <IconTrash size="1rem" stroke={1.5} />
+            {'  '} Delete Community
+          </UnstyledButton>
+        </Group>
       </Popover.Target>
       {totalResources === 0 ? (
         <Popover.Dropdown
@@ -57,10 +63,25 @@ const DeleteCommunity = ({ props, totalResources }) => {
             Press Confirm to proceed with the deletion or press Cancel to abort
           </Text>
           <Group className={cx(classes.form)} position="right">
-            <Button variant="outline" size="xs" color="blue" onClick={() => setOpened(o => !o)}>
+            <Button
+              variant="outline"
+              size="xs"
+              color="blue"
+              onClick={e => {
+                setOpened(o => !o)
+                e.stopPropagation()
+              }}
+            >
               Cancel
             </Button>
-            <Button size="xs" color="blue" onClick={() => deleteCommunity()}>
+            <Button
+              size="xs"
+              color="blue"
+              onClick={e => {
+                deleteCommunity()
+                e.stopPropagation()
+              }}
+            >
               Confirm
             </Button>
           </Group>
@@ -80,7 +101,15 @@ const DeleteCommunity = ({ props, totalResources }) => {
           </Text>
 
           <Group className={cx(classes.form)} position="right">
-            <Button variant="outline" size="xs" color="blue" onClick={() => setOpened(o => !o)}>
+            <Button
+              variant="outline"
+              size="xs"
+              color="blue"
+              onClick={e => {
+                setOpened(o => !o)
+                e.stopPropagation()
+              }}
+            >
               Close
             </Button>
           </Group>
