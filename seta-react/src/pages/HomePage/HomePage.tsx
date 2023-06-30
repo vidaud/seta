@@ -4,15 +4,13 @@ import { modals } from '@mantine/modals'
 import TextTransition, { presets } from 'react-text-transition'
 
 import image from '../../images/background.jpg'
-import image7 from '../../images/communities_1.png'
-import image8 from '../../images/communities_2.png'
-import image9 from '../../images/communities_3.png'
-import image1 from '../../images/search_1.png'
-import image2 from '../../images/search_2.png'
-import image4 from '../../images/search_results.png'
-import image5 from '../../images/search_results_2.png'
-import image6 from '../../images/search_results_3.png'
-import image3 from '../../images/search_upload.png'
+import image1 from '../../images/communities_1_join_badge.png'
+import image2 from '../../images/communities_1_join_msg_badge.png'
+import image3 from '../../images/communities_1_join_pending_badge.png'
+import image4 from '../../images/search_1_badge.png'
+import image5 from '../../images/search_2_badge.png'
+import image6 from '../../images/search_3_badge.png'
+import image7 from '../../images/search_4_badge.png'
 
 const useStyles = createStyles(theme => ({
   wrapper: {
@@ -58,8 +56,8 @@ const useStyles = createStyles(theme => ({
   },
 
   titleModal: {
-    fontWeight: 800,
-    fontSize: rem(40),
+    fontWeight: 600,
+    fontSize: rem(20),
     letterSpacing: rem(-1),
     paddingLeft: theme.spacing.md,
     paddingRight: theme.spacing.md,
@@ -112,61 +110,95 @@ const HomePage = () => {
                 onClick={() =>
                   modals.openConfirmModal({
                     closeOnConfirm: false,
+                    withCloseButton: true,
                     labels: { confirm: 'Next', cancel: 'Skip' },
-                    size: '75%',
+                    size: '65%',
                     children: (
                       <>
-                        <h1 className={classes.titleModal}> Welcome to SeTA</h1>
-                        <Text size="md">
-                          An online search engine tool designed to search for metadata on the SeTA
-                          database based on the user's search query. It sorts the results, and makes
-                          an ordered list of these results according to the search algorithms.
+                        <Text className={classes.titleModal}>
+                          SeTA communities offers a shared place, where users can have the
+                          possibility to interact with others users about specific areas of
+                          interest.
                         </Text>
-                        <Image src={image1} alt="Search page" />
-                        <input type="checkbox" /> Don't Show me again
+                        <Image src={image1} alt="Communities page" />
+                        <div style={{ float: 'right' }}>
+                          <input type="checkbox" /> Don't Show me again
+                        </div>
                       </>
                     ),
                     onConfirm: () =>
                       modals.openConfirmModal({
                         labels: { confirm: 'Next', cancel: 'Back' },
-                        size: '75%',
+                        size: '65%',
                         closeOnConfirm: false,
                         children: (
                           <>
-                            <br />
+                            <Text className={classes.titleModal}>
+                              SeTA communities offers a shared place, where users can have the
+                              possibility to interact with others users about specific areas of
+                              interest.
+                            </Text>
                             <Image src={image2} alt="Communities" />
                           </>
                         ),
                         onConfirm: () =>
                           modals.openConfirmModal({
                             labels: { confirm: 'Next', cancel: 'Back' },
-                            size: '75%',
+                            size: '65%',
                             closeOnConfirm: false,
                             children: (
                               <>
-                                <br />
                                 <Image src={image3} alt="Communities" />
                               </>
                             ),
                             onConfirm: () =>
                               modals.openConfirmModal({
-                                title: 'Communities',
-                                labels: { confirm: 'Close', cancel: 'Back' },
-                                size: '75%',
+                                labels: { confirm: 'Next', cancel: 'Back' },
+                                size: '65%',
                                 closeOnConfirm: false,
                                 children: (
                                   <>
-                                    <Text size="md">
-                                      The communities of the SeTA software application are a shared
-                                      space where members engage with another to connect and learn
-                                      about similar interests, opinions of different type of
-                                      publications.
+                                    <Text className={classes.titleModal}>
+                                      SeTA offers a search functionality in large document
+                                      collections.
                                     </Text>
-                                    <br />
-                                    <Image src={image4} alt="Communities" />
+                                    <Image src={image4} alt="Search" />
                                   </>
                                 ),
-                                onConfirm: modals.closeAll
+                                onConfirm: () =>
+                                  modals.openConfirmModal({
+                                    labels: { confirm: 'Next', cancel: 'Back' },
+                                    size: '65%',
+                                    closeOnConfirm: false,
+                                    children: (
+                                      <>
+                                        <Image src={image5} alt="Search" />
+                                      </>
+                                    ),
+                                    onConfirm: () =>
+                                      modals.openConfirmModal({
+                                        labels: { confirm: 'Next', cancel: 'Back' },
+                                        size: '65%',
+                                        closeOnConfirm: false,
+                                        children: (
+                                          <>
+                                            <Image src={image6} alt="Search" />
+                                          </>
+                                        ),
+                                        onConfirm: () =>
+                                          modals.openConfirmModal({
+                                            labels: { confirm: 'Close', cancel: 'Back' },
+                                            size: '65%',
+                                            closeOnConfirm: false,
+                                            children: (
+                                              <>
+                                                <Image src={image7} alt="Search" />
+                                              </>
+                                            ),
+                                            onConfirm: modals.closeAll
+                                          })
+                                      })
+                                  })
                               })
                           })
                       })
