@@ -50,7 +50,15 @@ const MembershipRequest = ({ community_id, reload }) => {
       <Popover.Target>
         <Group position="right">
           <Tooltip label="Join Community" color="orange">
-            <Button variant="filled" color="orange" size="xs" onClick={() => setOpened(o => !o)}>
+            <Button
+              variant="filled"
+              color="orange"
+              size="xs"
+              onClick={e => {
+                e.stopPropagation()
+                setOpened(o => !o)
+              }}
+            >
               + JOIN
             </Button>
           </Tooltip>
@@ -76,14 +84,15 @@ const MembershipRequest = ({ community_id, reload }) => {
                 variant="outline"
                 size="xs"
                 color="blue"
-                onClick={() => {
+                onClick={e => {
                   form.reset()
+                  e.stopPropagation()
                   setOpened(o => !o)
                 }}
               >
                 Cancel
               </Button>
-              <Button size="xs" type="submit">
+              <Button size="xs" type="submit" onClick={e => e.stopPropagation()}>
                 Send
               </Button>
             </Group>

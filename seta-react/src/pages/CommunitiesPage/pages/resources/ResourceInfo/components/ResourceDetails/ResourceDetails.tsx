@@ -46,35 +46,29 @@ const ResourceDetails = ({ className, open, id, resource, resource_scopes }: Pro
       <Text size="xs" sx={{ width: '50%' }}>
         Community: {community_title.charAt(0).toUpperCase() + community_title.slice(1)}
       </Text>
-      <Tabs value={activeTab} onTabChange={setActiveTab} orientation="horizontal">
-        <Tabs.List
-          sx={theme => ({
-            marginBottom: theme.spacing.xs
-          })}
-        >
-          <Tabs.Tab value="limits">Resource Limits</Tabs.Tab>
-          {scopes?.includes('/seta/resource/edit') ? (
-            <>
-              <Tabs.Tab value="change_requests">Change Requests</Tabs.Tab>
-              <Tabs.Tab value="permissions">Permission</Tabs.Tab>
-            </>
-          ) : null}
-        </Tabs.List>
+      {scopes?.includes('/seta/resource/edit') ? (
+        <Tabs value={activeTab} onTabChange={setActiveTab} orientation="horizontal">
+          <Tabs.List
+            sx={theme => ({
+              marginBottom: theme.spacing.xs
+            })}
+          >
+            <Tabs.Tab value="limits">Resource Limits</Tabs.Tab>
+            <Tabs.Tab value="change_requests">Change Requests</Tabs.Tab>
+            <Tabs.Tab value="permissions">Permission</Tabs.Tab>
+          </Tabs.List>
 
-        <Tabs.Panel value="limits" sx={{ paddingLeft: '2%' }}>
-          <LimitsDetails id={resource_id} scopes={scopes} />
-        </Tabs.Panel>
-        {scopes?.includes('/seta/resource/edit') ? (
-          <>
-            <Tabs.Panel value="change_requests" sx={{ paddingLeft: '2%' }}>
-              <ChangeResourceRequests id={resource_id} />
-            </Tabs.Panel>
-            <Tabs.Panel value="permissions" sx={{ paddingLeft: '2%' }}>
-              <ResourceUsersPermissions id={resource_id} />
-            </Tabs.Panel>
-          </>
-        ) : null}
-      </Tabs>
+          <Tabs.Panel value="limits" sx={{ paddingLeft: '2%' }}>
+            <LimitsDetails id={resource_id} scopes={scopes} />
+          </Tabs.Panel>
+          <Tabs.Panel value="change_requests" sx={{ paddingLeft: '2%' }}>
+            <ChangeResourceRequests id={resource_id} />
+          </Tabs.Panel>
+          <Tabs.Panel value="permissions" sx={{ paddingLeft: '2%' }}>
+            <ResourceUsersPermissions id={resource_id} />
+          </Tabs.Panel>
+        </Tabs>
+      ) : null}
     </Collapse>
   )
 }

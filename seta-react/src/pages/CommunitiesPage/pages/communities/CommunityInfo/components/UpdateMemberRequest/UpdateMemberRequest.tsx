@@ -34,6 +34,8 @@ const UpdateMemberRequest = ({ props }) => {
     if (props) {
       form.setValues(props)
     }
+    // adding form to useEffect will cause infinite loop call
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props])
 
   const handleSubmit = (values: MembershipRequestValues) => {

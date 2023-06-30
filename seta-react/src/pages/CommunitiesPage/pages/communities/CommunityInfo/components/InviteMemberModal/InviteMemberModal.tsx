@@ -6,10 +6,9 @@ import {
   Textarea,
   createStyles,
   Input,
-  Tooltip,
-  Badge
+  UnstyledButton
 } from '@mantine/core'
-import { FcInvite } from 'react-icons/fc'
+import { IconMessages } from '@tabler/icons-react'
 
 import { createCommunityInvite } from '../../../../../../../api/communities/invite'
 import { InvitationFormProvider, useInvitation } from '../../../../contexts/invite-context'
@@ -18,6 +17,12 @@ import type { InvitationValues } from '../../../../contexts/invite-context'
 const useStyles = createStyles({
   form: {
     marginTop: '20px'
+  },
+  button: {
+    padding: '0.625rem 0.75rem',
+    width: '100%',
+    borderRadius: '4px',
+    ':hover': { background: '#f1f3f5' }
   }
 })
 
@@ -43,26 +48,26 @@ const InviteMember = communityId => {
   return (
     <Popover
       width={300}
-      withinPortal={true}
-      trapFocus
-      position="bottom"
+      // withinPortal={true}
+      // trapFocus
+      position="left"
       withArrow
       shadow="md"
       opened={opened}
       onChange={setOpened}
     >
       <Popover.Target>
-        <Group position="right">
-          <Tooltip label="Invite friends to this community" color="orange">
-            <Badge
-              variant="outline"
-              color="gray"
-              w="min-content"
-              onClick={() => setOpened(o => !o)}
-            >
-              <FcInvite />
-            </Badge>
-          </Tooltip>
+        <Group>
+          <UnstyledButton
+            className={classes.button}
+            onClick={e => {
+              e.stopPropagation()
+              setOpened(o => !o)
+            }}
+          >
+            <IconMessages size="1rem" stroke={1.5} />
+            {'  '} Invite
+          </UnstyledButton>
         </Group>
       </Popover.Target>
       <Popover.Dropdown
@@ -83,6 +88,7 @@ const InviteMember = communityId => {
                 size="xs"
                 mt="xs"
                 multiple={true}
+                onClick={e => e.stopPropagation()}
               />
             </Input.Wrapper>
             <Textarea
@@ -91,6 +97,7 @@ const InviteMember = communityId => {
               placeholder="Message"
               size="xs"
               withAsterisk
+              onClick={e => e.stopPropagation()}
             />
 
             <Group className={cx(classes.form)}>
@@ -98,14 +105,15 @@ const InviteMember = communityId => {
                 variant="outline"
                 size="xs"
                 color="blue"
-                onClick={() => {
+                onClick={e => {
                   form.reset()
                   setOpened(o => !o)
+                  e.stopPropagation()
                 }}
               >
                 Cancel
               </Button>
-              <Button size="xs" type="submit">
+              <Button size="xs" type="submit" onClick={e => e.stopPropagation()}>
                 Send
               </Button>
             </Group>

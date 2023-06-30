@@ -33,7 +33,7 @@ export const root: ThemedCSS = theme => css`
 
 export const header: ThemedCSS = theme => css`
   display: grid;
-  grid-template-columns: ${PROGRESS_WIDTH} ${PROGRESS_WIDTH} 1fr auto auto;
+  grid-template-columns: ${PROGRESS_WIDTH} 1fr auto auto;
   align-items: center;
   gap: ${theme.spacing.md};
   position: relative;
@@ -107,7 +107,7 @@ export const titleGroup: ThemedCSS = () => css`
 `
 
 const contentMarginLeft: ThemedCSS = theme => css`
-  margin-left: calc(2 * ${PROGRESS_WIDTH} + ${theme.spacing.lg});
+  margin-left: calc(${PROGRESS_WIDTH} + ${theme.spacing.lg});
   // margin-left: ${theme.spacing.lg};
 `
 

@@ -47,7 +47,9 @@ const DeleteResource = ({ id, resource_scopes }) => {
             </Tooltip>
           </Group>
         </Popover.Target>
-      ) : null}
+      ) : (
+        <div />
+      )}
       <Popover.Dropdown
         sx={theme => ({
           background: theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.white

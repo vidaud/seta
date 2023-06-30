@@ -33,7 +33,8 @@ const OpenCommunityMember = ({ community_id, reload }) => {
               variant="filled"
               color="orange"
               size="xs"
-              onClick={() => {
+              onClick={e => {
+                e.stopPropagation()
                 createMember()
               }}
             >

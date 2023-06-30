@@ -25,7 +25,7 @@ const useStyles = createStyles(theme => ({
   }
 }))
 
-const CommunityResources = ({ id, nrResources }) => {
+const CommunityResources = ({ id }) => {
   const { data, isLoading, error, refetch } = useMyCommunityResources(id)
   const [items, setItems] = useState<ResourceResponse[]>()
   const { classes } = useStyles()
@@ -33,9 +33,8 @@ const CommunityResources = ({ id, nrResources }) => {
   useEffect(() => {
     if (data) {
       setItems(data)
-      nrResources(data?.length)
     }
-  }, [data, items, nrResources])
+  }, [data, items])
 
   if (error) {
     return <ComponentError onTryAgain={refetch} />

@@ -1,8 +1,6 @@
-import { Flex, Text, clsx, Badge, Tooltip } from '@mantine/core'
+import { Flex, Text, clsx, Tooltip } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
-import { FaChevronDown, FaUser, FaUserSlash, FaUsers, FaUsersSlash } from 'react-icons/fa'
-import { FcInvite, FcCancel } from 'react-icons/fc'
-import { TbLoader } from 'react-icons/tb'
+import { FaChevronDown, FaUsers, FaUsersSlash } from 'react-icons/fa'
 
 import type {
   CommunityScopes,
@@ -12,9 +10,9 @@ import type {
 
 import CommunityButton from './components/CommunityButton/CommunityButton'
 import CommunityDetails from './components/CommunityDetails/CommunityDetails'
-import UpdateCommunity from './components/UpdateCommunity/UpdateCommunity'
 import * as S from './styles'
 
+import { useMyCommunityResources } from '../../../../../api/communities/manage/my-community'
 import type { CommunityResponse } from '../../../../../api/types/community-types'
 
 type Props = {
@@ -31,14 +29,15 @@ const membershipColors: Record<string, string> = {
 }
 
 const CommunityInfo = ({ community, community_scopes }: Props) => {
-  const { title, community_id, description, membership, status } = community
+  const { title, community_id, description, membership } = community
+  const { data } = useMyCommunityResources(community_id)
 
   const [detailsOpen, { toggle }] = useDisclosure()
 
   const chevronClass = clsx({ open: detailsOpen })
   const openClass = clsx({ open: detailsOpen })
 
-  const hasDetails = !!membership || !!status
+  const hasDetails = !!membership || !!community_id
 
   const toggleIcon = hasDetails && (
     <div css={S.chevron} className={chevronClass}>
@@ -50,19 +49,23 @@ const CommunityInfo = ({ community, community_scopes }: Props) => {
     <div css={S.root} className={openClass}>
       <div css={S.header} data-details={hasDetails} data-open={detailsOpen} onClick={toggle}>
         {membership === 'closed' ? (
-          <Tooltip label="Restricted Community" color={membershipColors[membership.toLowerCase()]}>
-            <Badge variant="outline" color={membershipColors[membership.toLowerCase()]}>
-              <FaUsersSlash />
-            </Badge>
+          <Tooltip
+            label="Restricted Community"
+            color={membershipColors[membership.toLowerCase()]}
+            position="right"
+          >
+            <FaUsersSlash size="1.5rem" color={membershipColors[membership.toLowerCase()]} />
           </Tooltip>
         ) : (
-          <Tooltip label="Opened Community" color={membershipColors[membership.toLowerCase()]}>
-            <Badge variant="outline" color={membershipColors[membership.toLowerCase()]}>
-              <FaUsers />
-            </Badge>
+          <Tooltip
+            label="Opened Community"
+            color={membershipColors[membership.toLowerCase()]}
+            position="right"
+          >
+            <FaUsers size="1.5rem" color={membershipColors[membership.toLowerCase()]} />
           </Tooltip>
         )}
-        {status === 'membership' ? (
+        {/* {status === 'membership' ? (
           <Tooltip label="Member" color="green">
             <Badge variant="outline" color="green" w="min-content">
               <FaUser />
@@ -92,14 +95,13 @@ const CommunityInfo = ({ community, community_scopes }: Props) => {
               <FaUserSlash />
             </Badge>
           </Tooltip>
-        ) : null}
-        <div css={(S.title, S.titleGroup)}>
+        ) : null} */}
+        <div css={S.title}>
           <Text fz="md" fw={600} truncate={detailsOpen ? undefined : 'end'}>
             {title.charAt(0).toUpperCase() + title.slice(1)}
           </Text>
-          <UpdateCommunity community={community} community_scopes={community_scopes} />
         </div>
-        <CommunityButton props={community} community_scopes={community_scopes} />
+        <CommunityButton props={community} community_scopes={community_scopes} resources={data} />
         {toggleIcon}
       </div>
 

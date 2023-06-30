@@ -1,11 +1,30 @@
 import { useEffect, useState } from 'react'
-import { useMantineTheme, Modal, Divider, ActionIcon, Tooltip } from '@mantine/core'
+import {
+  useMantineTheme,
+  Modal,
+  Divider,
+  Tooltip,
+  UnstyledButton,
+  createStyles,
+  Group
+} from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 import { IconPencil } from '@tabler/icons-react'
 
 import UpdateForm from './components/UpdateForm/UpdateForm'
 
+const useStyles = createStyles({
+  button: {
+    padding: '0.3rem 0.5rem',
+    width: '100%',
+    color: '#868e96',
+    borderRadius: '4px',
+    ':hover': { background: '#f1f3f5' }
+  }
+})
+
 const UpdateCommunity = ({ community, community_scopes }) => {
+  const { classes } = useStyles()
   const [scopes, setScopes] = useState<string[] | undefined>([])
   const [opened, { open, close }] = useDisclosure(false)
   const theme = useMantineTheme()
@@ -28,21 +47,30 @@ const UpdateCommunity = ({ community, community_scopes }) => {
           <Modal
             opened={opened}
             onClose={close}
-            withCloseButton={false}
+            withCloseButton={true}
             overlayProps={{
               color: theme.colorScheme === 'dark' ? theme.colors.dark[9] : theme.colors.gray[2],
               opacity: 0.55,
               blur: 3
             }}
+            onClick={e => e.stopPropagation()}
           >
             <Divider my="xs" label="Update Community" labelPosition="center" />
-            <UpdateForm community={community} />
+            <UpdateForm community={community} close={close} />
           </Modal>
-          <Tooltip label="Update Community" color="gray">
-            <ActionIcon>
-              <IconPencil size="1rem" stroke={1.5} onClick={open} />
-            </ActionIcon>
-          </Tooltip>
+          <Group sx={{ marginRight: '-1rem' }}>
+            <Tooltip label="Update Community" color="gray">
+              <UnstyledButton
+                className={classes.button}
+                onClick={e => {
+                  e.stopPropagation()
+                  open()
+                }}
+              >
+                <IconPencil size="1rem" stroke={1.5} />
+              </UnstyledButton>
+            </Tooltip>
+          </Group>
         </>
       ) : null}
     </>

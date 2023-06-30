@@ -1,6 +1,5 @@
 import { useEffect } from 'react'
 import { TextInput, Group, createStyles, Button, Textarea } from '@mantine/core'
-import { useNavigate } from 'react-router-dom'
 
 import {
   updateResource,
@@ -25,9 +24,8 @@ const useStyles = createStyles({
   }
 })
 
-const UpdateForm = ({ resource }) => {
+const UpdateForm = ({ resource, close }) => {
   const { classes, cx } = useStyles()
-  const navigate = useNavigate()
 
   const { data, isLoading } = useResourceID(resource.resource_id)
 
@@ -47,6 +45,8 @@ const UpdateForm = ({ resource }) => {
     if (data) {
       form.setValues(data)
     }
+    // adding form to useEffect will cause infinite loop call
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data])
 
   if (isLoading || !data) {
@@ -85,14 +85,15 @@ const UpdateForm = ({ resource }) => {
               variant="outline"
               size="xs"
               color="blue"
-              onClick={() => {
-                navigate(-1)
+              onClick={e => {
+                close()
+                e.stopPropagation()
               }}
             >
               Cancel
             </Button>
 
-            <Button size="xs" type="submit">
+            <Button size="xs" type="submit" onClick={e => e.stopPropagation()}>
               Update
             </Button>
           </Group>
