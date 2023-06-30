@@ -26,7 +26,13 @@ const globalStyles: MantineThemeOverride['globalStyles'] = theme => ({
       transform: 'scaleX(0)',
       animation: `${growX} 300ms 100ms ease forwards`
     }
-  }
+  },
+
+  // Override the default button focus styles for Firefox
+  'button:-moz-focusring, [type="button"]:-moz-focusring, [type="reset"]:-moz-focusring, [type="submit"]:-moz-focusring':
+    {
+      outline: `0.125rem solid ${theme.colors[theme.primaryColor][5]}`
+    }
 })
 
 export default globalStyles

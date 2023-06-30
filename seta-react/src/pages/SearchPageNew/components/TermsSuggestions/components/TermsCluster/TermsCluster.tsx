@@ -6,6 +6,8 @@ import { useSearch } from '~/pages/SearchPageNew/contexts/search-context'
 import { useSearchInput } from '~/pages/SearchPageNew/contexts/search-input-context'
 import { useTermsSelection } from '~/pages/SearchPageNew/contexts/terms-selection-context'
 
+import useSpacebarAction from '~/hooks/use-spacebar-action'
+
 import * as S from './styles'
 
 export type TermsClusterProps = {
@@ -111,6 +113,8 @@ const TermsCluster = ({ className, terms, clickable = false }: TermsClusterProps
     }
   }
 
+  const { preventKeyDownScroll, handleKeyUp: handleRootKeyUp } = useSpacebarAction(handleRootClick)
+
   const isSelected = (term: string) => values.includes(term)
 
   return (
@@ -120,10 +124,19 @@ const TermsCluster = ({ className, terms, clickable = false }: TermsClusterProps
       align="center"
       gap="xs"
       css={S.root}
+      tabIndex={clickable ? 0 : undefined}
       onClick={handleRootClick}
+      onKeyDown={preventKeyDownScroll}
+      onKeyUp={handleRootKeyUp}
     >
       {terms.map(term => (
-        <S.TermChip key={term} data-term={term} data-selected={isSelected(term)}>
+        <S.TermChip
+          key={term}
+          data-term={term}
+          tabIndex={0}
+          role="checkbox"
+          aria-checked={isSelected(term)}
+        >
           {term}
         </S.TermChip>
       ))}

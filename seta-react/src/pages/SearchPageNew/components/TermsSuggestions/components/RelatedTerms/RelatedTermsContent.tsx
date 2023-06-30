@@ -31,7 +31,7 @@ const RelatedTermsContent = ({ data, isLoading, error, onTryAgain, ...props }: P
   }
 
   return (
-    <ScrollArea mt="md">
+    <ScrollArea>
       <TermsCluster terms={terms} {...props} />
     </ScrollArea>
   )

@@ -1,3 +1,4 @@
+import type { KeyboardEvent } from 'react'
 import { useEffect, useRef, useState } from 'react'
 import type { PopoverProps } from '@mantine/core'
 import { Divider, ActionIcon, Popover } from '@mantine/core'
@@ -111,6 +112,12 @@ const SuggestionsPopup = ({ opened, enrichQuery, onOpenChange, onEnrichToggle }:
     }
   }
 
+  const handleInputKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (e.key !== 'Tab') {
+      openPopup(PopupTarget.Input)
+    }
+  }
+
   const handleUploadClick = () => {
     if (popupOpen && popupTarget === PopupTarget.Upload) {
       closePopup()
@@ -169,6 +176,7 @@ const SuggestionsPopup = ({ opened, enrichQuery, onOpenChange, onEnrichToggle }:
           allowSearching={allowSearching}
           enrichQuery={enrichQuery}
           onClick={handleInputClick}
+          onKeyDown={handleInputKeyDown}
           onDeferredChange={handleInputChange}
           onSearch={handleSearch}
           onUploadClick={handleUploadClick}
