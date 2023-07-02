@@ -6,11 +6,11 @@ import TextTransition, { presets } from 'react-text-transition'
 import image from '../../images/background.jpg'
 import image1 from '../../images/communities_1_join_badge.png'
 import image2 from '../../images/communities_1_join_msg_badge.png'
-import image3 from '../../images/communities_1_join_pending_badge.png'
+import image3 from '../../images/communities_2_accepted_badge.png'
 import image4 from '../../images/search_1_badge.png'
-import image5 from '../../images/search_2_badge.png'
-import image6 from '../../images/search_3_badge.png'
+import image5 from '../../images/search_3.png'
 import image7 from '../../images/search_4_badge.png'
+import image6 from '../../images/search_5_upload_text_badge.png'
 
 const useStyles = createStyles(theme => ({
   wrapper: {
@@ -134,9 +134,8 @@ const HomePage = () => {
                         children: (
                           <>
                             <Text className={classes.titleModal}>
-                              SeTA communities offers a shared place, where users can have the
-                              possibility to interact with others users about specific areas of
-                              interest.
+                              In SeTA there two types of communities: Public Communities and Private
+                              Communities
                             </Text>
                             <Image src={image2} alt="Communities" />
                           </>
@@ -148,6 +147,10 @@ const HomePage = () => {
                             closeOnConfirm: false,
                             children: (
                               <>
+                                <Text className={classes.titleModal}>
+                                  The status of the request remains “Pending” until the Community
+                                  Owner accepts the request.
+                                </Text>
                                 <Image src={image3} alt="Communities" />
                               </>
                             ),
@@ -159,8 +162,8 @@ const HomePage = () => {
                                 children: (
                                   <>
                                     <Text className={classes.titleModal}>
-                                      SeTA offers a search functionality in large document
-                                      collections.
+                                      As part of the access to the community data, it is possible to
+                                      use the search functionality in large document collections.
                                     </Text>
                                     <Image src={image4} alt="Search" />
                                   </>
@@ -172,6 +175,11 @@ const HomePage = () => {
                                     closeOnConfirm: false,
                                     children: (
                                       <>
+                                        <Text className={classes.titleModal}>
+                                          In the search by terms or phrase it is possible to apply a
+                                          wizard so the search is enriched automatically by clicking
+                                          on the wizard icon.
+                                        </Text>
                                         <Image src={image5} alt="Search" />
                                       </>
                                     ),
@@ -182,6 +190,10 @@ const HomePage = () => {
                                         closeOnConfirm: false,
                                         children: (
                                           <>
+                                            <Text className={classes.titleModal}>
+                                              With the option of search by document or text, you can
+                                              upload the elements with the cloud icon.
+                                            </Text>
                                             <Image src={image6} alt="Search" />
                                           </>
                                         ),
@@ -192,6 +204,10 @@ const HomePage = () => {
                                             closeOnConfirm: false,
                                             children: (
                                               <>
+                                                <Text className={classes.titleModal}>
+                                                  The search results can be easily screened and
+                                                  filtered by the user with the help of the tool.
+                                                </Text>
                                                 <Image src={image7} alt="Search" />
                                               </>
                                             ),
