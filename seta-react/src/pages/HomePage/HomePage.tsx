@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { createStyles, Container, Title, Text, rem, Button, Image, Group } from '@mantine/core'
 import { modals } from '@mantine/modals'
 import TextTransition, { presets } from 'react-text-transition'
@@ -8,15 +8,15 @@ import image1 from '../../images/communities_1_join_badge.png'
 import image2 from '../../images/communities_1_join_msg_badge.png'
 import image3 from '../../images/communities_2_accepted_badge.png'
 import image4 from '../../images/search_1_badge.png'
-import image5 from '../../images/search_3.png'
+import image5 from '../../images/search_3_border.png'
 import image7 from '../../images/search_4_badge.png'
 import image6 from '../../images/search_5_upload_text_badge.png'
 
 const useStyles = createStyles(theme => ({
   wrapper: {
     position: 'relative',
-    paddingTop: rem(180),
-    paddingBottom: rem(200),
+    paddingTop: rem(190),
+    paddingBottom: rem(210),
     backgroundImage: 'url(' + image + ')',
     backgroundSize: 'cover',
     backgroundPosition: 'center'
@@ -61,7 +61,23 @@ const useStyles = createStyles(theme => ({
     letterSpacing: rem(-1),
     paddingLeft: theme.spacing.md,
     paddingRight: theme.spacing.md,
-    color: theme.colors.blue,
+    color: theme.white,
+    textAlign: 'center',
+    fontFamily: `Greycliff CF, ${theme.fontFamily}`,
+    backgroundColor: `rgba(118, 113, 113)`,
+    borderTopRightRadius: rem(10),
+    borderTopLeftRadius: rem(10),
+    borderBottomLeftRadius: rem(10),
+    borderBottomRightRadius: rem(10)
+  },
+
+  titleText: {
+    fontWeight: 400,
+    fontSize: rem(15),
+    letterSpacing: rem(-1),
+    paddingLeft: theme.spacing.md,
+    paddingRight: theme.spacing.md,
+    color: theme.white,
     textAlign: 'center',
     fontFamily: `Greycliff CF, ${theme.fontFamily}`
   }
@@ -75,6 +91,7 @@ const TEXTS = [
 const HomePage = () => {
   const { classes } = useStyles()
   const [index, setIndex] = React.useState(0)
+  const [showButton, setShowButton] = useState(true)
 
   React.useEffect(() => {
     const intervalId = setInterval(
@@ -84,6 +101,10 @@ const HomePage = () => {
 
     return () => clearTimeout(intervalId)
   }, [])
+
+  const toggleButton = () => {
+    setShowButton(!showButton)
+  }
 
   return (
     <>
@@ -103,126 +124,144 @@ const HomePage = () => {
           </Title>
           <div className={classes.controls}>
             <Group position="center">
-              <Button
-                className={classes.control}
-                variant="white"
-                size="lg"
-                onClick={() =>
-                  modals.openConfirmModal({
-                    closeOnConfirm: false,
-                    withCloseButton: true,
-                    labels: { confirm: 'Next', cancel: 'Skip' },
-                    size: '65%',
-                    children: (
-                      <>
-                        <Text className={classes.titleModal}>
-                          SeTA communities offers a shared place, where users can have the
-                          possibility to interact with others users about specific areas of
-                          interest.
-                        </Text>
-                        <Image src={image1} alt="Communities page" />
-                        <div style={{ float: 'right' }}>
-                          <input type="checkbox" /> Don't Show me again
-                        </div>
-                      </>
-                    ),
-                    onConfirm: () =>
-                      modals.openConfirmModal({
-                        labels: { confirm: 'Next', cancel: 'Back' },
-                        size: '65%',
-                        closeOnConfirm: false,
-                        children: (
-                          <>
-                            <Text className={classes.titleModal}>
-                              In SeTA there two types of communities: Public Communities and Private
-                              Communities
-                            </Text>
-                            <Image src={image2} alt="Communities" />
-                          </>
-                        ),
-                        onConfirm: () =>
-                          modals.openConfirmModal({
-                            labels: { confirm: 'Next', cancel: 'Back' },
-                            size: '65%',
-                            closeOnConfirm: false,
-                            children: (
-                              <>
-                                <Text className={classes.titleModal}>
-                                  The status of the request remains “Pending” until the Community
-                                  Owner accepts the request.
-                                </Text>
-                                <Image src={image3} alt="Communities" />
-                              </>
-                            ),
-                            onConfirm: () =>
-                              modals.openConfirmModal({
-                                labels: { confirm: 'Next', cancel: 'Back' },
-                                size: '65%',
-                                closeOnConfirm: false,
-                                children: (
-                                  <>
-                                    <Text className={classes.titleModal}>
-                                      As part of the access to the community data, it is possible to
-                                      use the search functionality in large document collections.
-                                    </Text>
-                                    <Image src={image4} alt="Search" />
-                                  </>
-                                ),
-                                onConfirm: () =>
-                                  modals.openConfirmModal({
-                                    labels: { confirm: 'Next', cancel: 'Back' },
-                                    size: '65%',
-                                    closeOnConfirm: false,
-                                    children: (
-                                      <>
-                                        <Text className={classes.titleModal}>
-                                          In the search by terms or phrase it is possible to apply a
-                                          wizard so the search is enriched automatically by clicking
-                                          on the wizard icon.
-                                        </Text>
-                                        <Image src={image5} alt="Search" />
-                                      </>
-                                    ),
-                                    onConfirm: () =>
-                                      modals.openConfirmModal({
-                                        labels: { confirm: 'Next', cancel: 'Back' },
-                                        size: '65%',
-                                        closeOnConfirm: false,
-                                        children: (
-                                          <>
-                                            <Text className={classes.titleModal}>
-                                              With the option of search by document or text, you can
-                                              upload the elements with the cloud icon.
-                                            </Text>
-                                            <Image src={image6} alt="Search" />
-                                          </>
-                                        ),
-                                        onConfirm: () =>
-                                          modals.openConfirmModal({
-                                            labels: { confirm: 'Close', cancel: 'Back' },
-                                            size: '65%',
-                                            closeOnConfirm: false,
-                                            children: (
-                                              <>
-                                                <Text className={classes.titleModal}>
-                                                  The search results can be easily screened and
-                                                  filtered by the user with the help of the tool.
-                                                </Text>
-                                                <Image src={image7} alt="Search" />
-                                              </>
-                                            ),
-                                            onConfirm: modals.closeAll
-                                          })
-                                      })
-                                  })
-                              })
-                          })
-                      })
-                  })
-                }
-              >
-                Get Started
-              </Button>
+              {showButton && (
+                <Button
+                  className={classes.control}
+                  variant="white"
+                  size="lg"
+                  onClick={() =>
+                    modals.openConfirmModal({
+                      closeOnConfirm: false,
+                      withCloseButton: true,
+                      labels: { confirm: 'Next', cancel: 'Skip' },
+                      size: '70%',
+                      className: classes.titleText,
+                      children: (
+                        <>
+                          <Text className={classes.titleModal}>
+                            SeTA communities offers a shared place, where users can have the
+                            possibility to interact with others users about specific areas of
+                            interest.
+                          </Text>
+                          <br />
+                          <Image src={image1} alt="Communities page" />
+                          <div style={{ float: 'right', paddingTop: '19px', paddingLeft: '3px' }}>
+                            <input type="checkbox" onClick={toggleButton} /> Don't Show me again
+                          </div>
+                        </>
+                      ),
+                      onConfirm: () =>
+                        modals.openConfirmModal({
+                          closeOnConfirm: false,
+                          withCloseButton: true,
+                          labels: { confirm: 'Next', cancel: 'Back' },
+                          size: '70%',
+                          children: (
+                            <>
+                              <Text className={classes.titleModal}>
+                                In SeTA there two types of communities: Public Communities and
+                                Private Communities
+                              </Text>
+                              <br />
+                              <Image src={image2} alt="Communities" />
+                            </>
+                          ),
+                          onConfirm: () =>
+                            modals.openConfirmModal({
+                              labels: { confirm: 'Next', cancel: 'Back' },
+                              size: '70%',
+                              closeOnConfirm: false,
+                              withCloseButton: true,
+                              children: (
+                                <>
+                                  <Text className={classes.titleModal}>
+                                    The status of the request remains “Pending” until the Community
+                                    Owner accepts the request.
+                                  </Text>
+                                  <br />
+                                  <Image src={image3} alt="Communities" />
+                                </>
+                              ),
+                              onConfirm: () =>
+                                modals.openConfirmModal({
+                                  labels: { confirm: 'Next', cancel: 'Back' },
+                                  size: '70%',
+                                  closeOnConfirm: false,
+                                  withCloseButton: true,
+                                  children: (
+                                    <>
+                                      <Text className={classes.titleModal}>
+                                        As part of the access to the community data, it is possible
+                                        to use the search functionality in large document
+                                        collections.
+                                      </Text>
+                                      <br />
+                                      <Image src={image4} alt="Search" />
+                                    </>
+                                  ),
+                                  onConfirm: () =>
+                                    modals.openConfirmModal({
+                                      closeOnClickOutside: false,
+                                      labels: { confirm: 'Next', cancel: 'Back' },
+                                      size: '70%',
+                                      closeOnConfirm: false,
+                                      withCloseButton: true,
+                                      children: (
+                                        <>
+                                          <Text className={classes.titleModal}>
+                                            In the search by terms or phrase it is possible to apply
+                                            a wizard so the search is enriched automatically by
+                                            clicking on the wizard icon.
+                                          </Text>
+                                          <br />
+                                          <Image src={image5} alt="Search" />
+                                        </>
+                                      ),
+                                      onConfirm: () =>
+                                        modals.openConfirmModal({
+                                          labels: { confirm: 'Next', cancel: 'Back' },
+                                          size: '70%',
+                                          closeOnConfirm: false,
+                                          withCloseButton: true,
+                                          children: (
+                                            <>
+                                              <Text className={classes.titleModal}>
+                                                With the option of search by document or text, you
+                                                can upload the elements with the cloud icon.
+                                              </Text>
+                                              <br />
+                                              <Image src={image6} alt="Search" />
+                                            </>
+                                          ),
+                                          onConfirm: () =>
+                                            modals.openConfirmModal({
+                                              labels: { confirm: 'Close', cancel: 'Back' },
+                                              size: '70%',
+                                              closeOnConfirm: false,
+                                              withCloseButton: true,
+                                              children: (
+                                                <>
+                                                  <Text className={classes.titleModal}>
+                                                    The search results can be easily screened and
+                                                    filtered by the user with the help of the tool.
+                                                  </Text>
+                                                  <br />
+                                                  <Image src={image7} alt="Search" />
+                                                </>
+                                              ),
+                                              onConfirm: modals.closeAll
+                                            })
+                                        })
+                                    })
+                                })
+                            })
+                        })
+                    })
+                  }
+                >
+                  Get Started
+                </Button>
+              )}
             </Group>
           </div>
         </Container>
