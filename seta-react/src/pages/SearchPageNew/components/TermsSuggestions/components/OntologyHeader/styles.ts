@@ -19,3 +19,22 @@ export const termChip: ThemedCSS = theme => css`
     }
   }
 `
+
+export const operator: ThemedCSS = theme => css`
+  font-weight: 600;
+  padding: 0.25rem ${theme.spacing.sm};
+
+  span {
+    color: ${theme.colors.gray[6]};
+  }
+
+  &[data-operator='AND'] {
+    color: ${theme.colors.grape[6]};
+    background-color: ${theme.colors.grape[0]};
+  }
+
+  &[data-operator='OR'] {
+    color: ${theme.colors.blue[6]};
+    background-color: ${theme.colors.blue[0]};
+  }
+`
