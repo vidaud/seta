@@ -7,6 +7,7 @@ import image from '../../images/background.jpg'
 import image1 from '../../images/communities_1_join_badge.png'
 import image2 from '../../images/communities_1_join_msg_badge.png'
 import image3 from '../../images/communities_2_accepted_badge.png'
+import image0 from '../../images/introduction.png'
 import image4 from '../../images/search_1_badge.png'
 import image5 from '../../images/search_3_border.png'
 import image7 from '../../images/search_4_badge.png'
@@ -80,6 +81,12 @@ const useStyles = createStyles(theme => ({
     color: theme.white,
     textAlign: 'center',
     fontFamily: `Greycliff CF, ${theme.fontFamily}`
+  },
+
+  dontShowMe: {
+    float: 'left',
+    paddingTop: rem(10),
+    paddingLeft: rem(30)
   }
 }))
 const TEXTS = [
@@ -138,16 +145,10 @@ const HomePage = () => {
                       className: classes.titleText,
                       children: (
                         <>
-                          <Text className={classes.titleModal}>
-                            SeTA communities offers a shared place, where users can have the
-                            possibility to interact with others users about specific areas of
-                            interest.
-                          </Text>
-                          <br />
-                          <Image src={image1} alt="Communities page" />
-                          <div style={{ float: 'right', paddingTop: '19px', paddingLeft: '3px' }}>
+                          <Image src={image0} alt="Presentation" />
+                          <span className={classes.dontShowMe}>
                             <input type="checkbox" onClick={toggleButton} /> Don't Show me again
-                          </div>
+                          </span>
                         </>
                       ),
                       onConfirm: () =>
@@ -159,11 +160,15 @@ const HomePage = () => {
                           children: (
                             <>
                               <Text className={classes.titleModal}>
-                                In SeTA there two types of communities: Public Communities and
-                                Private Communities
+                                SeTA communities offers a shared place, where users can have the
+                                possibility to interact with others users about specific areas of
+                                interest.
                               </Text>
                               <br />
-                              <Image src={image2} alt="Communities" />
+                              <Image src={image1} alt="Communities" />
+                              <span className={classes.dontShowMe}>
+                                <input type="checkbox" onClick={toggleButton} /> Don't Show me again
+                              </span>
                             </>
                           ),
                           onConfirm: () =>
@@ -175,11 +180,15 @@ const HomePage = () => {
                               children: (
                                 <>
                                   <Text className={classes.titleModal}>
-                                    The status of the request remains “Pending” until the Community
-                                    Owner accepts the request.
+                                    In SeTA there two types of communities: Public Communities and
+                                    Private Communities
                                   </Text>
                                   <br />
-                                  <Image src={image3} alt="Communities" />
+                                  <Image src={image2} alt="Communities" />
+                                  <span className={classes.dontShowMe}>
+                                    <input type="checkbox" onClick={toggleButton} /> Don't Show me
+                                    again
+                                  </span>
                                 </>
                               ),
                               onConfirm: () =>
@@ -191,12 +200,15 @@ const HomePage = () => {
                                   children: (
                                     <>
                                       <Text className={classes.titleModal}>
-                                        As part of the access to the community data, it is possible
-                                        to use the search functionality in large document
-                                        collections.
+                                        The status of the request remains “Pending” until the
+                                        Community Owner accepts the request.
                                       </Text>
                                       <br />
-                                      <Image src={image4} alt="Search" />
+                                      <Image src={image3} alt="Search" />
+                                      <span className={classes.dontShowMe}>
+                                        <input type="checkbox" onClick={toggleButton} /> Don't Show
+                                        me again
+                                      </span>
                                     </>
                                   ),
                                   onConfirm: () =>
@@ -209,12 +221,12 @@ const HomePage = () => {
                                       children: (
                                         <>
                                           <Text className={classes.titleModal}>
-                                            In the search by terms or phrase it is possible to apply
-                                            a wizard so the search is enriched automatically by
-                                            clicking on the wizard icon.
+                                            As part of the access to the community data, it is
+                                            possible to use the search functionality in large
+                                            document collections.
                                           </Text>
                                           <br />
-                                          <Image src={image5} alt="Search" />
+                                          <Image src={image4} alt="Search" />
                                         </>
                                       ),
                                       onConfirm: () =>
@@ -226,30 +238,49 @@ const HomePage = () => {
                                           children: (
                                             <>
                                               <Text className={classes.titleModal}>
-                                                With the option of search by document or text, you
-                                                can upload the elements with the cloud icon.
+                                                In the search by terms or phrase it is possible to
+                                                apply a wizard so the search is enriched
+                                                automatically by clicking on the wizard icon.
                                               </Text>
                                               <br />
-                                              <Image src={image6} alt="Search" />
+                                              <Image src={image5} alt="Search" />
                                             </>
                                           ),
                                           onConfirm: () =>
                                             modals.openConfirmModal({
-                                              labels: { confirm: 'Close', cancel: 'Back' },
+                                              labels: { confirm: 'Next', cancel: 'Back' },
                                               size: '70%',
                                               closeOnConfirm: false,
                                               withCloseButton: true,
                                               children: (
                                                 <>
                                                   <Text className={classes.titleModal}>
-                                                    The search results can be easily screened and
-                                                    filtered by the user with the help of the tool.
+                                                    With the option of search by document or text,
+                                                    you can upload the elements with the cloud icon.
                                                   </Text>
                                                   <br />
-                                                  <Image src={image7} alt="Search" />
+                                                  <Image src={image6} alt="Search" />
                                                 </>
                                               ),
-                                              onConfirm: modals.closeAll
+                                              onConfirm: () =>
+                                                modals.openConfirmModal({
+                                                  labels: { confirm: 'Next', cancel: 'Back' },
+                                                  size: '70%',
+                                                  closeOnConfirm: false,
+                                                  withCloseButton: true,
+                                                  children: (
+                                                    <>
+                                                      <Text className={classes.titleModal}>
+                                                        With the option of search by document or
+                                                        text, you can upload the elements with the
+                                                        cloud icon.
+                                                      </Text>
+                                                      <br />
+                                                      <Image src={image6} alt="Search" />
+                                                    </>
+                                                  ),
+                                                  onConfirm: modals.closeAll
+                                                })
                                             })
                                         })
                                     })
