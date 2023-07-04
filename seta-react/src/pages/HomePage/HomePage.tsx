@@ -1,5 +1,15 @@
 import React, { useState } from 'react'
-import { createStyles, Container, Title, Text, rem, Button, Image, Group } from '@mantine/core'
+import {
+  createStyles,
+  Container,
+  Title,
+  Text,
+  rem,
+  Button,
+  Image,
+  Group,
+  Pagination
+} from '@mantine/core'
 import { modals } from '@mantine/modals'
 import TextTransition, { presets } from 'react-text-transition'
 
@@ -99,6 +109,7 @@ const HomePage = () => {
   const { classes } = useStyles()
   const [index, setIndex] = React.useState(0)
   const [showButton, setShowButton] = useState(true)
+  const [activePage, setPage] = useState(1)
 
   React.useEffect(() => {
     const intervalId = setInterval(
@@ -149,13 +160,17 @@ const HomePage = () => {
                           <span className={classes.dontShowMe}>
                             <input type="checkbox" onClick={toggleButton} /> Don't Show me again
                           </span>
+                          <span className={classes.dontShowMe}>
+                            <Pagination total={8} siblings={1} defaultValue={1} />
+                          </span>
                         </>
                       ),
+                      onCancel: modals.closeAll,
                       onConfirm: () =>
                         modals.openConfirmModal({
                           closeOnConfirm: false,
                           withCloseButton: true,
-                          labels: { confirm: 'Next', cancel: 'Back' },
+                          labels: { confirm: 'Next', cancel: 'Skip' },
                           size: '70%',
                           children: (
                             <>
@@ -169,11 +184,15 @@ const HomePage = () => {
                               <span className={classes.dontShowMe}>
                                 <input type="checkbox" onClick={toggleButton} /> Don't Show me again
                               </span>
+                              <span className={classes.dontShowMe}>
+                                <Pagination total={8} siblings={2} defaultValue={2} />
+                              </span>
                             </>
                           ),
+                          onCancel: modals.closeAll,
                           onConfirm: () =>
                             modals.openConfirmModal({
-                              labels: { confirm: 'Next', cancel: 'Back' },
+                              labels: { confirm: 'Next', cancel: 'Skip' },
                               size: '70%',
                               closeOnConfirm: false,
                               withCloseButton: true,
@@ -189,11 +208,15 @@ const HomePage = () => {
                                     <input type="checkbox" onClick={toggleButton} /> Don't Show me
                                     again
                                   </span>
+                                  <span className={classes.dontShowMe}>
+                                    <Pagination total={8} siblings={3} defaultValue={3} />
+                                  </span>
                                 </>
                               ),
+                              onCancel: modals.closeAll,
                               onConfirm: () =>
                                 modals.openConfirmModal({
-                                  labels: { confirm: 'Next', cancel: 'Back' },
+                                  labels: { confirm: 'Next', cancel: 'Skip' },
                                   size: '70%',
                                   closeOnConfirm: false,
                                   withCloseButton: true,
@@ -209,12 +232,16 @@ const HomePage = () => {
                                         <input type="checkbox" onClick={toggleButton} /> Don't Show
                                         me again
                                       </span>
+                                      <span className={classes.dontShowMe}>
+                                        <Pagination siblings={1} defaultValue={4} total={8} />
+                                      </span>
                                     </>
                                   ),
+                                  onCancel: modals.closeAll,
                                   onConfirm: () =>
                                     modals.openConfirmModal({
                                       closeOnClickOutside: false,
-                                      labels: { confirm: 'Next', cancel: 'Back' },
+                                      labels: { confirm: 'Next', cancel: 'Skip' },
                                       size: '70%',
                                       closeOnConfirm: false,
                                       withCloseButton: true,
@@ -227,11 +254,19 @@ const HomePage = () => {
                                           </Text>
                                           <br />
                                           <Image src={image4} alt="Search" />
+                                          <span className={classes.dontShowMe}>
+                                            <input type="checkbox" onClick={toggleButton} /> Don't
+                                            Show me again
+                                          </span>
+                                          <span className={classes.dontShowMe}>
+                                            <Pagination siblings={1} defaultValue={5} total={8} />
+                                          </span>
                                         </>
                                       ),
+                                      onCancel: modals.closeAll,
                                       onConfirm: () =>
                                         modals.openConfirmModal({
-                                          labels: { confirm: 'Next', cancel: 'Back' },
+                                          labels: { confirm: 'Next', cancel: 'Skip' },
                                           size: '70%',
                                           closeOnConfirm: false,
                                           withCloseButton: true,
@@ -244,11 +279,23 @@ const HomePage = () => {
                                               </Text>
                                               <br />
                                               <Image src={image5} alt="Search" />
+                                              <span className={classes.dontShowMe}>
+                                                <input type="checkbox" onClick={toggleButton} />
+                                                Don't Show me again
+                                              </span>
+                                              <span className={classes.dontShowMe}>
+                                                <Pagination
+                                                  siblings={1}
+                                                  defaultValue={6}
+                                                  total={8}
+                                                />
+                                              </span>
                                             </>
                                           ),
+                                          onCancel: modals.closeAll,
                                           onConfirm: () =>
                                             modals.openConfirmModal({
-                                              labels: { confirm: 'Next', cancel: 'Back' },
+                                              labels: { confirm: 'Next', cancel: 'Skip' },
                                               size: '70%',
                                               closeOnConfirm: false,
                                               withCloseButton: true,
@@ -260,11 +307,23 @@ const HomePage = () => {
                                                   </Text>
                                                   <br />
                                                   <Image src={image6} alt="Search" />
+                                                  <span className={classes.dontShowMe}>
+                                                    <input type="checkbox" onClick={toggleButton} />
+                                                    Don't Show me again
+                                                  </span>
+                                                  <span className={classes.dontShowMe}>
+                                                    <Pagination
+                                                      siblings={1}
+                                                      defaultValue={7}
+                                                      total={8}
+                                                    />
+                                                  </span>
                                                 </>
                                               ),
+                                              onCancel: modals.closeAll,
                                               onConfirm: () =>
                                                 modals.openConfirmModal({
-                                                  labels: { confirm: 'Next', cancel: 'Back' },
+                                                  labels: { confirm: 'Close', cancel: 'Skip' },
                                                   size: '70%',
                                                   closeOnConfirm: false,
                                                   withCloseButton: true,
@@ -276,7 +335,21 @@ const HomePage = () => {
                                                         cloud icon.
                                                       </Text>
                                                       <br />
-                                                      <Image src={image6} alt="Search" />
+                                                      <Image src={image7} alt="Search" />
+                                                      <span className={classes.dontShowMe}>
+                                                        <input
+                                                          type="checkbox"
+                                                          onClick={toggleButton}
+                                                        />
+                                                        Don't Show me again
+                                                      </span>
+                                                      <span className={classes.dontShowMe}>
+                                                        <Pagination
+                                                          siblings={1}
+                                                          defaultValue={8}
+                                                          total={8}
+                                                        />
+                                                      </span>
                                                     </>
                                                   ),
                                                   onConfirm: modals.closeAll
