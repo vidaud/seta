@@ -13,6 +13,8 @@ import {
 import { modals } from '@mantine/modals'
 import TextTransition, { presets } from 'react-text-transition'
 
+import ModalPage from './components/modal/ModalPage'
+
 import image from '../../images/background.jpg'
 import image1 from '../../images/communities_1_join_badge.png'
 import image2 from '../../images/communities_1_join_msg_badge.png'
@@ -128,6 +130,7 @@ const HomePage = () => {
     <>
       <div className={classes.wrapper}>
         <Container size={940}>
+          <ModalPage />
           <Title className={classes.title}>
             <TextTransition springConfig={presets.stiff}>
               <Text
