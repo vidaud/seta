@@ -26,10 +26,11 @@ services:
       - discovery.seed_hosts=seta-es02,seta-es03
     networks:
       - seta-network
+    depends_on:
+      - seta-es02
+      - seta-es03
 
   seta-es02:
-    depends_on:
-      - seta-es
     extends:
       file: common.yml
       service: es
@@ -44,8 +45,6 @@ services:
       - seta-network
 
   seta-es03:
-    depends_on:
-      - seta-es02
     extends:
       file: common.yml
       service: es
