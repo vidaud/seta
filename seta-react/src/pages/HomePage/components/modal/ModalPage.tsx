@@ -2,7 +2,6 @@ import { useState } from 'react'
 import { createStyles, Group, Button, Image, Pagination, rem, Text } from '@mantine/core'
 import { modals } from '@mantine/modals'
 
-import image from '~/images/background.jpg'
 import image1 from '~/images/communities_1_join_badge.png'
 import image2 from '~/images/communities_1_join_msg_badge.png'
 import image3 from '~/images/communities_2_accepted_badge.png'
@@ -13,39 +12,6 @@ import image7 from '~/images/search_4_badge.png'
 import image6 from '~/images/search_5_upload_text_badge.png'
 
 const useStyles = createStyles(theme => ({
-  wrapper: {
-    position: 'relative',
-    paddingTop: rem(190),
-    paddingBottom: rem(210),
-    backgroundImage: 'url(' + image + ')',
-    backgroundSize: 'cover',
-    backgroundPosition: 'center'
-  },
-
-  title: {
-    fontWeight: 800,
-    fontSize: rem(40),
-    letterSpacing: rem(-1),
-    paddingLeft: theme.spacing.md,
-    paddingRight: theme.spacing.md,
-    color: theme.white,
-    marginBottom: 100,
-    textAlign: 'center',
-    fontFamily: `Greycliff CF, ${theme.fontFamily}`
-  },
-
-  controls: {
-    marginTop: 100,
-    display: 'flex',
-    justifyContent: 'center',
-    paddingLeft: theme.spacing.md,
-    paddingRight: theme.spacing.md,
-
-    [theme.fn.smallerThan('xs')]: {
-      flexDirection: 'column'
-    }
-  },
-
   control: {
     height: rem(42),
     fontSize: theme.fontSizes.md,
