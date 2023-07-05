@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
-import { Popover, Button, Group, createStyles, Tooltip, Select } from '@mantine/core'
+import { Popover, Button, Group, createStyles, Select, UnstyledButton } from '@mantine/core'
+import { IconSwitch } from '@tabler/icons-react'
 
 import { createCommunityChangeRequest } from '../../../../../../../api/communities/community-change-requests'
 import type { NewValueValues } from '../../../../contexts/change-request-context'
@@ -11,6 +12,12 @@ import {
 const useStyles = createStyles({
   form: {
     marginTop: '20px'
+  },
+  button: {
+    padding: '0.625rem 0.75rem',
+    width: '100%',
+    borderRadius: '4px',
+    ':hover': { background: '#f1f3f5' }
   }
 })
 
@@ -35,6 +42,8 @@ const ChangePrivacy = ({ props }) => {
         membership: props.membership
       })
     }
+    // adding form to useEffect will cause infinite loop call
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props])
 
   const handleSubmit = (values: NewValueValues) => {
@@ -51,20 +60,27 @@ const ChangePrivacy = ({ props }) => {
   return (
     <Popover
       width={300}
-      withinPortal={true}
+      // withinPortal={true}
       trapFocus
-      position="bottom"
+      position="left"
       withArrow
       shadow="md"
       opened={opened}
       onChange={setOpened}
     >
       <Popover.Target>
-        <Tooltip label="Change community privacy" color="blue">
-          <Button size="xs" onClick={() => setOpened(o => !o)}>
-            Update Privacy
-          </Button>
-        </Tooltip>
+        <Group>
+          <UnstyledButton
+            className={classes.button}
+            onClick={e => {
+              e.stopPropagation()
+              setOpened(o => !o)
+            }}
+          >
+            <IconSwitch size="1rem" stroke={1.5} />
+            {'  '} Request switch to {props.membership === 'closed' ? 'Opened' : 'Restricted'}
+          </UnstyledButton>
+        </Group>
       </Popover.Target>
       <Popover.Dropdown
         sx={theme => ({
@@ -79,20 +95,23 @@ const ChangePrivacy = ({ props }) => {
               name="membership"
               data={membershipOptions}
               withAsterisk
+              onClick={e => e.stopPropagation()}
+              onSelect={e => e.stopPropagation()}
             />
             <Group className={cx(classes.form)}>
               <Button
                 variant="outline"
                 size="xs"
                 color="blue"
-                onClick={() => {
+                onClick={e => {
                   form.reset()
                   setOpened(o => !o)
+                  e.stopPropagation()
                 }}
               >
                 Cancel
               </Button>
-              <Button size="xs" type="submit">
+              <Button size="xs" type="submit" onClick={e => e.stopPropagation()}>
                 Update
               </Button>
             </Group>

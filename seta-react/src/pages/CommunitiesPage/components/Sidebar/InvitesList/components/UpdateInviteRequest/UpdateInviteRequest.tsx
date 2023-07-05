@@ -75,13 +75,28 @@ const UpdateInviteRequest = ({ props, parent }) => {
     >
       <Popover.Target>
         <Group position="right">
-          <Tooltip label="Update Status">
+          <Tooltip label="Update Invitation Status" color="gray">
             {parent === 'InvitesList' ? (
               <ActionIcon>
-                <IconPencil size="1rem" stroke={1.5} onClick={() => setOpened(o => !o)} />
+                <IconPencil
+                  size="1rem"
+                  stroke={1.5}
+                  onClick={e => {
+                    e.stopPropagation()
+                    setOpened(o => !o)
+                  }}
+                />
               </ActionIcon>
             ) : (
-              <Button variant="outline" size="xs" color="gray" onClick={() => setOpened(o => !o)}>
+              <Button
+                variant="outline"
+                size="xs"
+                color="gray"
+                onClick={e => {
+                  e.stopPropagation()
+                  setOpened(o => !o)
+                }}
+              >
                 INVITED
               </Button>
             )}
@@ -101,6 +116,8 @@ const UpdateInviteRequest = ({ props, parent }) => {
               name="status"
               data={statusOptions}
               withAsterisk
+              onClick={e => e.stopPropagation()}
+              onSelect={e => e.stopPropagation()}
             />
 
             <Group className={cx(classes.form)}>
@@ -108,14 +125,15 @@ const UpdateInviteRequest = ({ props, parent }) => {
                 variant="outline"
                 size="xs"
                 color="blue"
-                onClick={() => {
+                onClick={e => {
                   form.reset()
+                  e.stopPropagation()
                   setOpened(o => !o)
                 }}
               >
                 Cancel
               </Button>
-              <Button size="xs" type="submit">
+              <Button size="xs" type="submit" onClick={e => e.stopPropagation()}>
                 Send
               </Button>
             </Group>

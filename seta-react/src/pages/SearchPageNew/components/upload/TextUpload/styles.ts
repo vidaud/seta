@@ -1,5 +1,7 @@
 import { css, keyframes } from '@emotion/react'
 
+import { focusStyles, outlineTransition } from '~/styles'
+
 const textAreaEntry = keyframes({
   to: {
     marginBottom: '3rem'
@@ -8,7 +10,7 @@ const textAreaEntry = keyframes({
 
 const actionsEntry = keyframes({
   to: {
-    height: '2.5rem',
+    height: '3.5rem',
     opacity: 1
   }
 })
@@ -19,12 +21,14 @@ export const root: ThemedCSS = theme => css`
   border: 1px solid transparent;
   border-radius: ${theme.radius.md};
   transition: border-color 200ms ${theme.transitionTimingFunction},
-    background-color 200ms ${theme.transitionTimingFunction};
+    background-color 200ms ${theme.transitionTimingFunction}, ${outlineTransition};
 
   &:hover {
     border-color: ${theme.colors.gray[4]};
     background-color: ${theme.fn.lighten(theme.colors.gray[0], 0.05)};
   }
+
+  ${focusStyles(theme)}
 `
 
 export const textArea: ThemedCSS = theme => css`
@@ -64,8 +68,9 @@ export const textArea: ThemedCSS = theme => css`
 
 export const actions: ThemedCSS = theme => css`
   position: absolute;
-  right: calc(${theme.spacing.lg} + ${theme.spacing.sm});
-  bottom: 1.25rem;
+  right: calc(${theme.spacing.lg} + ${theme.spacing.sm} - 0.5rem);
+  padding: 0.5rem;
+  bottom: 0.75rem;
   height: 0;
   opacity: 0;
   overflow: hidden;

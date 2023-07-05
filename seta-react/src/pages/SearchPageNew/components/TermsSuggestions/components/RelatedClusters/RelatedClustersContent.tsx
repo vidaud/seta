@@ -1,3 +1,4 @@
+import type { ScrollAreaProps } from '@mantine/core'
 import { ScrollArea } from '@mantine/core'
 import { HttpStatusCode, isAxiosError } from 'axios'
 
@@ -12,9 +13,21 @@ import TermsCluster from '~/pages/SearchPageNew/components/TermsSuggestions/comp
 import type { RelatedClustersResponse } from '~/api/search/related-clusters'
 import type { DataProps } from '~/types/data-props'
 
-type Props = Omit<TermsClusterProps, 'terms'> & DataProps<RelatedClustersResponse>
+import * as S from './styles'
 
-const RelatedClustersContent = ({ data, isLoading, error, onTryAgain, ...props }: Props) => {
+type Props = Omit<TermsClusterProps, 'terms'> &
+  DataProps<RelatedClustersResponse> & {
+    onScrollPositionChange?: ScrollAreaProps['onScrollPositionChange']
+  }
+
+const RelatedClustersContent = ({
+  data,
+  isLoading,
+  error,
+  onTryAgain,
+  onScrollPositionChange,
+  ...props
+}: Props) => {
   if (error) {
     if (isAxiosError(error) && error.response?.status === HttpStatusCode.NotFound) {
       return <SuggestionsEmpty />
@@ -34,7 +47,7 @@ const RelatedClustersContent = ({ data, isLoading, error, onTryAgain, ...props }
   const { nodes } = data
 
   return (
-    <ScrollArea mt="md">
+    <ScrollArea css={S.root} onScrollPositionChange={onScrollPositionChange}>
       {nodes.map((terms, index) => (
         <TermsCluster
           // The API returns an array of arrays of terms, so we need to use the index as the key
