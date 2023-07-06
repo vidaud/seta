@@ -10,6 +10,8 @@ from elasticsearch.helpers import bulk
 import hashlib as hash
 from config import Config as DevConfig, TestConfig
 
+import ijson
+
 app_env = os.environ.get('APP_ENV')
 
 if app_env is not None and app_env.lower() == "test":
@@ -94,16 +96,14 @@ def gen_data(crc):
     print("suggestions indexing started", flush=True)
 
     with open(config.MODELS_PATH + config.WORD2VEC_JSON_EXPORT) as json_file:
-        data = json.load(json_file)
-
-    for suggestion in data:
-        yield {
-            "_index": config.INDEX_SUGGESTION,
-            "phrase": suggestion["phrase"],
-            "most_similar": suggestion["most_similar"],
-            "size": suggestion["size"],
-            "crc": crc
-        }
+        for suggestion in ijson.items(json_file, "item"):
+            yield {
+                "_index": config.INDEX_SUGGESTION,
+                "phrase": suggestion["phrase"],
+                "most_similar": suggestion["most_similar"],
+                "size": suggestion["size"],
+                "crc": crc
+            }
 
 
 def delete_all_suggestion(crc, es):
