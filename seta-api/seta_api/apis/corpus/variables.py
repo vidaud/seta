@@ -161,37 +161,6 @@ corpus_post_params["other"] = None
 corpus_delete_id_response = {}
 corpus_delete_id_response["deleted_document_id"] = fields.String
 
-document_chunk_text = {}
-document_chunk_text["chunk_id"]= fields.String()
-document_chunk_text["chunk_number"] = fields.Integer()
-document_chunk_text["chunk_text"] = fields.String()
-
-corpus_get_id_document_response = {}
-corpus_get_id_document_response["abstract"] = fields.String()
-corpus_get_id_document_response["author"] = fields.List(fields.String())
-corpus_get_id_document_response["document_chunk_text"] = None
-corpus_get_id_document_response["collection"] = fields.String()
-corpus_get_id_document_response["concordance"] = fields.List(fields.List(fields.String()))
-corpus_get_id_document_response["date"] = fields.String()
-corpus_get_id_document_response["document_id"] = fields.String()
-corpus_get_id_document_response["id"] = fields.String()
-corpus_get_id_document_response["id_alias"] = fields.String()
-corpus_get_id_document_response["in_force"] = fields.String()
-corpus_get_id_document_response["keywords"] = None
-corpus_get_id_document_response["language"] = fields.String()
-corpus_get_id_document_response["link_origin"] = fields.String()
-corpus_get_id_document_response["link_alias"] = fields.String()
-corpus_get_id_document_response["link_related"] = fields.String()
-corpus_get_id_document_response["link_reference"] = fields.String()
-corpus_get_id_document_response["mime_type"] = fields.String()
-corpus_get_id_document_response["other"] = None
-corpus_get_id_document_response["reference"] = fields.String()
-corpus_get_id_document_response["score"] = fields.Float
-corpus_get_id_document_response["taxonomy"] = None
-corpus_get_id_document_response["title"] = fields.String()
-corpus_get_id_document_response["source"] = fields.String()
-corpus_get_id_document_response["abstract"] = fields.String()
-corpus_get_id_document_response["sbert_embedding"] = fields.List(fields.Float)
 
 corpus_get_id_response = {}
 corpus_get_id_response["abstract"] = fields.String()
@@ -267,11 +236,12 @@ class Variable:
         return self.namespace.model("corpus_get_id_response", corpus_get_id_response)
 
     def corpus_get_id_document_response(self):
-        corpus_get_id_document_response["keywords"] = fields.List(fields.Nested(self.keywords_model))
-        corpus_get_id_document_response["taxonomy"] = fields.List(fields.Nested(self.taxonomy_model_tree))
-        corpus_get_id_document_response["other"] = fields.List(fields.Nested(self.other_model))
-        corpus_get_id_document_response["document_chunk_text"] = fields.List(fields.Nested(self.namespace.model("document_chunk_text", document_chunk_text)))
-        return self.namespace.model("corpus_get_id_response", corpus_get_id_response)
+        corpus_get_id_response["keywords"] = fields.List(fields.Nested(self.keywords_model))
+        corpus_get_id_response["taxonomy"] = fields.List(fields.Nested(self.taxonomy_model_tree))
+        corpus_get_id_response["other"] = fields.List(fields.Nested(self.other_model))
+        corpus_get_id_response_model = self.namespace.model("corpus_get_id_response_model", corpus_get_id_response)
+        corpus_get_id_document_response = {"chunk_list": fields.List(fields.Nested(corpus_get_id_response_model))}
+        return self.namespace.model("corpus_get_id_document_response", corpus_get_id_document_response)
 
     def get_delete_id_request_model(self):
         return self.namespace.model("corpus_delete_id_response", corpus_delete_id_response)

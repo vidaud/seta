@@ -58,6 +58,9 @@ def build_metadata_param_blocks(collection, reference, in_force, author, date_ra
             var = param.split(':')
             range_block["range"]["date"][var[0]] = var[1]
         full_block.append(range_block)
+    else:
+        range_block = {"range": {"date": {"gt": "1920-12-31"}}}
+        full_block.append(range_block)
     if search_type == "DOCUMENT_SEARCH":
         block = {"match": {"chunk_number": 1}}
         full_block.append(block)
