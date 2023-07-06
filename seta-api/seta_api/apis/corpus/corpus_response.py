@@ -17,7 +17,7 @@ def sigmoid(x):
     return 1 / (1 + math.exp(-x))
 
 
-def handle_corpus_response(aggs, res, search_type, semantic_sort_id, term, current_app):
+def handle_corpus_response(aggs, res, search_type, term, current_app):
     documents = {"total_docs": None, "documents": []}
     tax = taxonomy.Taxonomy()
     for response in res["responses"]:
