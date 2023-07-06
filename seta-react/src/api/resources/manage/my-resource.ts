@@ -12,8 +12,8 @@ import community_api from '../../communities/api'
 
 const RESOURCE_API_PATH = '/resources/'
 
-export const cacheKey = (id?: string) => ['my-resources', id]
-export const cacheResourceKey = () => ['my-resources']
+export const cacheKey = (id?: string) => ['resources', id]
+export const cacheResourceKey = () => ['resources']
 
 export const getResource = async (id?: string): Promise<ResourceResponse> => {
   const { data } = await community_api.get<ResourceResponse>(`${RESOURCE_API_PATH}${id}`)
@@ -93,7 +93,7 @@ export const deleteResourceByID = async (resource_id?: string) => {
     })
     .then(response => {
       if (response.status === 200) {
-        window.location.href = `/my-resources/`
+        window.location.href = `/resources/`
       }
     })
 }

@@ -1,11 +1,31 @@
 import { useEffect, useState } from 'react'
-import { useMantineTheme, Modal, Divider, ActionIcon, Tooltip } from '@mantine/core'
+import { useMantineTheme, Modal, Divider, UnstyledButton, createStyles, Group } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 import { IconPencil } from '@tabler/icons-react'
 
+import type { ResourceResponse } from '~/api/types/resource-types'
+
 import UpdateForm from './components/UpdateForm/UpdateForm'
 
-const UpdateResource = ({ resource, resource_scopes }) => {
+import type { ResourceScopes } from '../../../../contexts/scope-context'
+
+const useStyles = createStyles({
+  button: {
+    padding: '0.625rem 0.75rem',
+    color: '#868e96',
+    width: '100%',
+    borderRadius: '4px',
+    ':hover': { background: '#f1f3f5' }
+  }
+})
+
+type Props = {
+  resource: ResourceResponse
+  resource_scopes: ResourceScopes[] | undefined
+}
+
+const UpdateResource = ({ resource, resource_scopes }: Props) => {
+  const { classes } = useStyles()
   const [scopes, setScopes] = useState<string[] | undefined>([])
   const [opened, { open, close }] = useDisclosure(false)
   const theme = useMantineTheme()
@@ -25,7 +45,7 @@ const UpdateResource = ({ resource, resource_scopes }) => {
           <Modal
             opened={opened}
             onClose={close}
-            withCloseButton={false}
+            withCloseButton={true}
             overlayProps={{
               color: theme.colorScheme === 'dark' ? theme.colors.dark[9] : theme.colors.gray[2],
               opacity: 0.55,
@@ -33,27 +53,27 @@ const UpdateResource = ({ resource, resource_scopes }) => {
             }}
             onClick={e => {
               e.stopPropagation()
+              e.preventDefault()
             }}
           >
             <Divider my="xs" label="Update Resource" labelPosition="center" />
             <UpdateForm resource={resource} close={close} />
           </Modal>
-          <Tooltip label="Update Resource" color="gray">
-            <ActionIcon>
-              <IconPencil
-                size="1rem"
-                stroke={1.5}
-                onClick={e => {
-                  e.stopPropagation()
-                  open()
-                }}
-              />
-            </ActionIcon>
-          </Tooltip>
+
+          <Group>
+            <UnstyledButton
+              className={classes.button}
+              onClick={e => {
+                e.stopPropagation()
+                open()
+              }}
+            >
+              <IconPencil size="1rem" stroke={1.5} />
+              {'  '} Update Resource
+            </UnstyledButton>
+          </Group>
         </>
-      ) : (
-        <div />
-      )}
+      ) : null}
     </>
   )
 }

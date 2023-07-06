@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react'
-import { Text, Popover, Button, Group, createStyles, ActionIcon, Tooltip } from '@mantine/core'
+import { Text, Popover, Button, Group, createStyles, UnstyledButton } from '@mantine/core'
 import { IconTrash } from '@tabler/icons-react'
+
+import type { ResourceScopes } from '~/pages/CommunitiesPage/pages/contexts/scope-context'
 
 import { deleteResourceByID } from '../../../../../../../api/resources/manage/my-resource'
 
@@ -8,10 +10,22 @@ const useStyles = createStyles(theme => ({
   form: {
     marginTop: '20px'
   },
-  text: { paddingBottom: theme.spacing.md }
+  text: { paddingBottom: theme.spacing.md },
+  button: {
+    padding: '0.625rem 0.75rem',
+    color: '#868e96',
+    width: '100%',
+    borderRadius: '4px',
+    ':hover': { background: '#f1f3f5' }
+  }
 }))
 
-const DeleteResource = ({ id, resource_scopes }) => {
+type Props = {
+  id: string
+  resource_scopes: ResourceScopes[] | undefined
+}
+
+const DeleteResource = ({ id, resource_scopes }: Props) => {
   const [scopes, setScopes] = useState<string[] | undefined>([])
   const { classes, cx } = useStyles()
   const [opened, setOpened] = useState(false)
@@ -39,17 +53,20 @@ const DeleteResource = ({ id, resource_scopes }) => {
     >
       {scopes?.includes('/seta/resource/edit') ? (
         <Popover.Target>
-          <Group position="left">
-            <Tooltip label="Delete Resource" color="red">
-              <ActionIcon onClick={() => setOpened(o => !o)}>
-                <IconTrash size="1rem" color="red" stroke={1.5} />{' '}
-              </ActionIcon>
-            </Tooltip>
+          <Group>
+            <UnstyledButton
+              className={classes.button}
+              onClick={e => {
+                e.stopPropagation()
+                setOpened(o => !o)
+              }}
+            >
+              <IconTrash size="1rem" stroke={1.5} />
+              {'  '} Delete Resource
+            </UnstyledButton>
           </Group>
         </Popover.Target>
-      ) : (
-        <div />
-      )}
+      ) : null}
       <Popover.Dropdown
         sx={theme => ({
           background: theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.white

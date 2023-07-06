@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { ScrollArea, Badge, Text, Grid, Paper, Group, Tooltip, createStyles } from '@mantine/core'
 import { ImBlocked } from 'react-icons/im'
 import { VscLayersActive } from 'react-icons/vsc'
+import { useNavigate } from 'react-router-dom'
 
 import type { ResourceResponse } from '~/api/types/resource-types'
 
@@ -29,6 +30,8 @@ const CommunityResources = ({ id }) => {
   const { data, isLoading, error, refetch } = useMyCommunityResources(id)
   const [items, setItems] = useState<ResourceResponse[]>()
   const { classes } = useStyles()
+  // const { scrollTargetRef } = useScroller({ resetPageDependencies: [id] })
+  const navigate = useNavigate()
 
   useEffect(() => {
     if (data) {
@@ -50,10 +53,18 @@ const CommunityResources = ({ id }) => {
     return <ComponentLoading />
   }
 
+  const handleCommunityRedirection = (row: ResourceResponse) => {
+    navigate(`/resources/#${row.resource_id}`)
+  }
+
   const rows =
     items &&
     items?.map(row => (
-      <Grid.Col key={row?.resource_id}>
+      <Grid.Col
+        key={row?.resource_id}
+        onClick={() => handleCommunityRedirection(row)}
+        // ref={scrollTargetRef}
+      >
         <Paper withBorder p="md" radius="md" className={classes.row}>
           <Group>
             <Text sx={{ width: '73%' }}>

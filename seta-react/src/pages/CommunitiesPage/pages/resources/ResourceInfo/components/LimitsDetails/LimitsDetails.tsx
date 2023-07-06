@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Group, Text, createStyles, Table } from '@mantine/core'
+import { Group, Text, createStyles } from '@mantine/core'
 
 import { useResourceID } from '../../../../../../../api/resources/manage/my-resource'
 import { ComponentLoading } from '../../../../../components/common'
@@ -36,31 +36,16 @@ const LimitsDetails = ({ id, scopes }) => {
 
   return (
     <>
-      <Table className={classes.table}>
-        <tbody>
-          <tr>
-            <td className={classes.td}>
-              <Text className={classes.text}>
-                Total Files No: {rows?.community_id ? rows?.limits?.total_files_no : null}
-              </Text>
-            </td>
-          </tr>
-          <tr>
-            <td className={classes.td}>
-              <Text className={classes.text}>
-                Total Storage Mb: {rows?.limits?.total_storage_mb}
-              </Text>
-            </td>
-          </tr>
-          <tr>
-            <td className={classes.td}>
-              <Text className={classes.text}>File Size Mb: {rows?.limits?.file_size_mb}</Text>
-            </td>
-          </tr>
-        </tbody>
-      </Table>
+      <Group>
+        <Text className={classes.text}>
+          Total Files: {rows?.community_id ? rows?.limits?.total_files_no : null}
+        </Text>
+        <Text className={classes.text}>Total Storage: {rows?.limits?.total_storage_mb} Mb</Text>
+        <Text className={classes.text}>File Size: {rows?.limits?.file_size_mb} Mb</Text>
+      </Group>
+
       {scopes?.includes('/seta/resource/edit') ? (
-        <Group position="left" style={{ paddingTop: '2%' }}>
+        <Group position="right" style={{ paddingTop: '2%' }}>
           <UpdateLimits props={rows} />
         </Group>
       ) : null}
