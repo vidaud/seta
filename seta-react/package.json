@@ -43,6 +43,7 @@
     "chart.js": "^3.9.1",
     "css-what": "^4.0.0",
     "dayjs": "^1.11.7",
+    "embla-carousel-react": "^7.0.0",
     "force": "^0.0.3",
     "html-react-parser": "^3.0.9",
     "moment": "^2.29.4",

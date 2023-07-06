@@ -1,15 +1,15 @@
 import { useState } from 'react'
-import { createStyles, Group, Button, Image, Pagination, rem, Text } from '@mantine/core'
+import { createStyles, Group, Button, Image, Progress, rem, Text } from '@mantine/core'
 import { modals } from '@mantine/modals'
 
-import image1 from '~/images/communities_1_join_badge.png'
-import image2 from '~/images/communities_1_join_msg_badge.png'
-import image3 from '~/images/communities_2_accepted_badge.png'
-import image0 from '~/images/introduction.png'
-import image4 from '~/images/search_1_badge.png'
-import image5 from '~/images/search_3_border.png'
-import image7 from '~/images/search_4_badge.png'
-import image6 from '~/images/search_5_upload_text_badge.png'
+import image1 from '~/images/page_1.png'
+import image2 from '~/images/page_2.png'
+import image3 from '~/images/page_3.png'
+import image4 from '~/images/page_4.png'
+import image5 from '~/images/page_5.png'
+import image6 from '~/images/page_6.png'
+import image7 from '~/images/page_7.png'
+import image8 from '~/images/page_8.png'
 
 const useStyles = createStyles(theme => ({
   control: {
@@ -50,8 +50,14 @@ const useStyles = createStyles(theme => ({
 
   dontShowMe: {
     float: 'left',
+    paddingTop: rem(15),
+    paddingLeft: rem(40)
+  },
+
+  indicatorBar: {
+    float: 'left',
     paddingTop: rem(10),
-    paddingLeft: rem(30)
+    paddingLeft: rem(100)
   }
 }))
 
@@ -60,7 +66,11 @@ const ModalPage = () => {
   const [showButton, setShowButton] = useState(true)
 
   const toggleButton = () => {
-    setShowButton(!showButton)
+    if (showButton) {
+      setShowButton(!showButton)
+    } else {
+      setShowButton(showButton)
+    }
   }
 
   return (
@@ -73,18 +83,18 @@ const ModalPage = () => {
           onClick={() =>
             modals.openConfirmModal({
               closeOnConfirm: false,
-              withCloseButton: true,
+              withCloseButton: false,
+              closeOnClickOutside: true,
               labels: { confirm: 'Next', cancel: 'Skip' },
               size: '70%',
-              className: classes.titleText,
               children: (
                 <>
-                  <Image src={image0} alt="Presentation" />
+                  <Text className={classes.titleModal}> Welcome to SeTA! </Text>
+                  <br />
+                  <Image src={image1} alt="Presentation" />
+                  <Progress color="gray" value={12.5} size="md" radius="xl" />
                   <span className={classes.dontShowMe}>
-                    <input type="checkbox" onClick={toggleButton} /> Don't Show me again
-                  </span>
-                  <span className={classes.dontShowMe}>
-                    <Pagination total={8} siblings={1} defaultValue={1} />
+                    <input type="checkbox" onClick={toggleButton} /> Don't show this again
                   </span>
                 </>
               ),
@@ -92,7 +102,8 @@ const ModalPage = () => {
               onConfirm: () =>
                 modals.openConfirmModal({
                   closeOnConfirm: false,
-                  withCloseButton: true,
+                  withCloseButton: false,
+                  closeOnClickOutside: true,
                   labels: { confirm: 'Next', cancel: 'Skip' },
                   size: '70%',
                   children: (
@@ -102,12 +113,10 @@ const ModalPage = () => {
                         to interact with others users about specific areas of interest.
                       </Text>
                       <br />
-                      <Image src={image1} alt="Communities" />
+                      <Image src={image2} alt="Communities" />
+                      <Progress color="gray" value={25} size="md" radius="xl" />
                       <span className={classes.dontShowMe}>
-                        <input type="checkbox" onClick={toggleButton} /> Don't Show me again
-                      </span>
-                      <span className={classes.dontShowMe}>
-                        <Pagination total={8} siblings={2} defaultValue={2} />
+                        <input type="checkbox" onClick={toggleButton} /> Don't show this again
                       </span>
                     </>
                   ),
@@ -117,20 +126,19 @@ const ModalPage = () => {
                       labels: { confirm: 'Next', cancel: 'Skip' },
                       size: '70%',
                       closeOnConfirm: false,
-                      withCloseButton: true,
+                      withCloseButton: false,
+                      closeOnClickOutside: true,
                       children: (
                         <>
                           <Text className={classes.titleModal}>
-                            In SeTA there two types of communities: Public Communities and Private
-                            Communities
+                            In SeTA there are two types of communities: Public Communities and
+                            Private Communities
                           </Text>
                           <br />
-                          <Image src={image2} alt="Communities" />
+                          <Image src={image3} alt="Communities" />
+                          <Progress color="gray" value={37.5} size="md" radius="xl" />
                           <span className={classes.dontShowMe}>
-                            <input type="checkbox" onClick={toggleButton} /> Don't Show me again
-                          </span>
-                          <span className={classes.dontShowMe}>
-                            <Pagination total={8} siblings={3} defaultValue={3} />
+                            <input type="checkbox" onClick={toggleButton} /> Don't show this again
                           </span>
                         </>
                       ),
@@ -140,7 +148,8 @@ const ModalPage = () => {
                           labels: { confirm: 'Next', cancel: 'Skip' },
                           size: '70%',
                           closeOnConfirm: false,
-                          withCloseButton: true,
+                          withCloseButton: false,
+                          closeOnClickOutside: true,
                           children: (
                             <>
                               <Text className={classes.titleModal}>
@@ -148,23 +157,22 @@ const ModalPage = () => {
                                 Owner accepts the request.
                               </Text>
                               <br />
-                              <Image src={image3} alt="Search" />
+                              <Image src={image4} />
+                              <Progress color="gray" value={50} size="md" radius="xl" />
                               <span className={classes.dontShowMe}>
-                                <input type="checkbox" onClick={toggleButton} /> Don't Show me again
-                              </span>
-                              <span className={classes.dontShowMe}>
-                                <Pagination siblings={1} defaultValue={4} total={8} />
+                                <input type="checkbox" onClick={toggleButton} /> Don't show this
+                                again
                               </span>
                             </>
                           ),
                           onCancel: modals.closeAll,
                           onConfirm: () =>
                             modals.openConfirmModal({
-                              closeOnClickOutside: false,
+                              closeOnClickOutside: true,
                               labels: { confirm: 'Next', cancel: 'Skip' },
                               size: '70%',
                               closeOnConfirm: false,
-                              withCloseButton: true,
+                              withCloseButton: false,
                               children: (
                                 <>
                                   <Text className={classes.titleModal}>
@@ -172,13 +180,11 @@ const ModalPage = () => {
                                     use the search functionality in large document collections.
                                   </Text>
                                   <br />
-                                  <Image src={image4} alt="Search" />
+                                  <Image src={image5} />
+                                  <Progress color="gray" value={62.5} size="md" radius="xl" />
                                   <span className={classes.dontShowMe}>
-                                    <input type="checkbox" onClick={toggleButton} /> Don't Show me
+                                    <input type="checkbox" onClick={toggleButton} /> Don't show this
                                     again
-                                  </span>
-                                  <span className={classes.dontShowMe}>
-                                    <Pagination siblings={1} defaultValue={5} total={8} />
                                   </span>
                                 </>
                               ),
@@ -188,7 +194,8 @@ const ModalPage = () => {
                                   labels: { confirm: 'Next', cancel: 'Skip' },
                                   size: '70%',
                                   closeOnConfirm: false,
-                                  withCloseButton: true,
+                                  withCloseButton: false,
+                                  closeOnClickOutside: true,
                                   children: (
                                     <>
                                       <Text className={classes.titleModal}>
@@ -197,13 +204,11 @@ const ModalPage = () => {
                                         on the wizard icon.
                                       </Text>
                                       <br />
-                                      <Image src={image5} alt="Search" />
+                                      <Image src={image6} />
+                                      <Progress color="gray" value={75} size="md" radius="xl" />
                                       <span className={classes.dontShowMe}>
                                         <input type="checkbox" onClick={toggleButton} />
-                                        Don't Show me again
-                                      </span>
-                                      <span className={classes.dontShowMe}>
-                                        <Pagination siblings={1} defaultValue={6} total={8} />
+                                        &nbsp;Don't show this again
                                       </span>
                                     </>
                                   ),
@@ -213,7 +218,8 @@ const ModalPage = () => {
                                       labels: { confirm: 'Next', cancel: 'Skip' },
                                       size: '70%',
                                       closeOnConfirm: false,
-                                      withCloseButton: true,
+                                      withCloseButton: false,
+                                      closeOnClickOutside: true,
                                       children: (
                                         <>
                                           <Text className={classes.titleModal}>
@@ -221,13 +227,16 @@ const ModalPage = () => {
                                             upload the elements with the cloud icon.
                                           </Text>
                                           <br />
-                                          <Image src={image6} alt="Search" />
+                                          <Image src={image7} alt="Search" />
+                                          <Progress
+                                            color="gray"
+                                            value={87.5}
+                                            size="md"
+                                            radius="xl"
+                                          />
                                           <span className={classes.dontShowMe}>
                                             <input type="checkbox" onClick={toggleButton} />
-                                            Don't Show me again
-                                          </span>
-                                          <span className={classes.dontShowMe}>
-                                            <Pagination siblings={1} defaultValue={7} total={8} />
+                                            &nbsp;Don't show this again
                                           </span>
                                         </>
                                       ),
@@ -237,28 +246,29 @@ const ModalPage = () => {
                                           labels: { confirm: 'Close', cancel: 'Skip' },
                                           size: '70%',
                                           closeOnConfirm: false,
-                                          withCloseButton: true,
+                                          withCloseButton: false,
+                                          closeOnClickOutside: true,
                                           children: (
                                             <>
                                               <Text className={classes.titleModal}>
-                                                With the option of search by document or text, you
-                                                can upload the elements with the cloud icon.
+                                                The search results can be easily screened and
+                                                filtered by the user with the help of the tool.
                                               </Text>
                                               <br />
-                                              <Image src={image7} alt="Search" />
+                                              <Image src={image8} alt="Search" />
+                                              <Progress
+                                                color="gray"
+                                                value={100}
+                                                size="md"
+                                                radius="xl"
+                                              />
                                               <span className={classes.dontShowMe}>
                                                 <input type="checkbox" onClick={toggleButton} />
-                                                Don't Show me again
-                                              </span>
-                                              <span className={classes.dontShowMe}>
-                                                <Pagination
-                                                  siblings={1}
-                                                  defaultValue={8}
-                                                  total={8}
-                                                />
+                                                &nbsp;Don't show this again
                                               </span>
                                             </>
                                           ),
+                                          onCancel: modals.closeAll,
                                           onConfirm: modals.closeAll
                                         })
                                     })
