@@ -7,7 +7,7 @@ import * as S from './styles'
 
 type Props = {
   text: string
-  queryTerms: string[]
+  queryTerms?: string[]
 }
 
 const ChunkPreview = ({ text, queryTerms }: Props) => {

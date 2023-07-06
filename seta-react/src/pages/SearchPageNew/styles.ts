@@ -5,5 +5,11 @@ export const searchWrapper = css`
 `
 
 export const noDocuments: ThemedCSS = theme => css`
+  margin-top: ${theme.spacing.xl};
   padding: 3rem;
+
+  .icon {
+    color: ${theme.colors.gray[4]};
+    font-size: 3rem;
+  }
 `

@@ -1,10 +1,13 @@
 import { css } from '@emotion/react'
 import styled from '@emotion/styled'
 
+import { focusStyles, outlineTransition } from '~/styles'
+
 export const root: ThemedCSS = theme => css`
   border-top: dashed 1px ${theme.colors.gray[3]};
   padding: ${theme.spacing.md} ${theme.spacing.sm};
   border-radius: ${theme.radius.sm};
+  transition: ${outlineTransition}, border-radius 100ms ease;
 
   &.clickable {
     cursor: pointer;
@@ -12,6 +15,7 @@ export const root: ThemedCSS = theme => css`
 
   &:first-of-type {
     border-top: 0;
+    margin-top: ${theme.spacing.md};
   }
 
   &.clickable:hover {
@@ -19,9 +23,19 @@ export const root: ThemedCSS = theme => css`
     border-color: transparent;
   }
 
-  &:hover + & {
+  &:hover + &,
+  &:focus:focus-visible + & {
     border-color: transparent;
   }
+
+  ${focusStyles(theme)}
+
+  &:focus:focus-visible {
+    outline-offset: -0.18rem;
+    border-radius: ${theme.radius.lg};
+  }
+
+  outline-offset: -0.5rem;
 
   .seta-Checkbox-input {
     cursor: pointer;
@@ -40,12 +54,14 @@ export const TermChip = styled.div(({ theme }) => {
     border: 1px solid ${defaultStyle.border};
     padding: calc(${theme.spacing.xs} / 2) ${theme.spacing.md};
     border-radius: ${theme.radius.xl};
-    transition: border-color 100ms ease;
+    transition: border-color 100ms ease, ${outlineTransition};
     cursor: pointer;
 
-    &:hover:not([data-selected='true']) {
+    &:hover:not([aria-checked='true']) {
       border-color: ${hoverStyle.border};
     }
+
+    ${focusStyles(theme)}
 
     &&:active {
       transition: none;
@@ -53,7 +69,7 @@ export const TermChip = styled.div(({ theme }) => {
       box-shadow: none;
     }
 
-    &[data-selected='true'] {
+    &[aria-checked='true'] {
       color: ${checkedStyle.color};
       background-color: ${checkedStyle.background};
       border-color: ${checkedStyle.border};

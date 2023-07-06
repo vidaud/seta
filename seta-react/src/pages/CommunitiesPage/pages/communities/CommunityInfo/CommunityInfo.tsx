@@ -1,0 +1,125 @@
+import { Flex, Text, clsx, Tooltip } from '@mantine/core'
+import { useDisclosure } from '@mantine/hooks'
+import { FaChevronDown, FaUsers, FaUsersSlash } from 'react-icons/fa'
+
+import type {
+  CommunityScopes,
+  ResourceScopes,
+  SystemScopes
+} from '~/pages/CommunitiesPage/pages/contexts/scope-context'
+
+import CommunityButton from './components/CommunityButton/CommunityButton'
+import CommunityDetails from './components/CommunityDetails/CommunityDetails'
+import * as S from './styles'
+
+import { useMyCommunityResources } from '../../../../../api/communities/manage/my-community'
+import type { CommunityResponse } from '../../../../../api/types/community-types'
+
+type Props = {
+  queryTerms: string
+  community: CommunityResponse
+  community_scopes?: CommunityScopes[]
+  resource_scopes?: ResourceScopes[]
+  system_scopes?: SystemScopes[]
+}
+
+const membershipColors: Record<string, string> = {
+  closed: 'orange',
+  opened: 'green'
+}
+
+const CommunityInfo = ({ community, community_scopes }: Props) => {
+  const { title, community_id, description, membership } = community
+  const { data } = useMyCommunityResources(community_id)
+
+  const [detailsOpen, { toggle }] = useDisclosure()
+
+  const chevronClass = clsx({ open: detailsOpen })
+  const openClass = clsx({ open: detailsOpen })
+
+  const hasDetails = !!membership || !!community_id
+
+  const toggleIcon = hasDetails && (
+    <div css={S.chevron} className={chevronClass}>
+      <FaChevronDown />
+    </div>
+  )
+
+  return (
+    <div css={S.root} className={openClass}>
+      <div css={S.header} data-details={hasDetails} data-open={detailsOpen} onClick={toggle}>
+        {membership === 'closed' ? (
+          <Tooltip
+            label="Restricted Community"
+            color={membershipColors[membership.toLowerCase()]}
+            position="right"
+          >
+            <FaUsersSlash size="1.5rem" color={membershipColors[membership.toLowerCase()]} />
+          </Tooltip>
+        ) : (
+          <Tooltip
+            label="Opened Community"
+            color={membershipColors[membership.toLowerCase()]}
+            position="right"
+          >
+            <FaUsers size="1.5rem" color={membershipColors[membership.toLowerCase()]} />
+          </Tooltip>
+        )}
+        {/* {status === 'membership' ? (
+          <Tooltip label="Member" color="green">
+            <Badge variant="outline" color="green" w="min-content">
+              <FaUser />
+            </Badge>
+          </Tooltip>
+        ) : status === 'invited' ? (
+          <Tooltip label="Invited" color="gray">
+            <Badge variant="outline" color="gray" w="min-content">
+              <FcInvite />
+            </Badge>
+          </Tooltip>
+        ) : status === 'rejected' ? (
+          <Tooltip label="Rejected" color="red">
+            <Badge variant="outline" color="red" w="min-content">
+              <FcCancel />
+            </Badge>
+          </Tooltip>
+        ) : status === 'pending' ? (
+          <Tooltip label="Rejected" color="gray">
+            <Badge variant="outline" color="gray" w="min-content">
+              <TbLoader />
+            </Badge>
+          </Tooltip>
+        ) : status === 'unknown' ? (
+          <Tooltip label="Not Member" color="orange">
+            <Badge variant="outline" color="orange" w="min-content">
+              <FaUserSlash />
+            </Badge>
+          </Tooltip>
+        ) : null} */}
+        <div css={S.title}>
+          <Text fz="md" fw={600} truncate={detailsOpen ? undefined : 'end'}>
+            {title.charAt(0).toUpperCase() + title.slice(1)}
+          </Text>
+        </div>
+        <CommunityButton props={community} community_scopes={community_scopes} resources={data} />
+        {toggleIcon}
+      </div>
+
+      <Flex direction="column" gap="xs" data-info css={S.info}>
+        <Text size="xs">{description.charAt(0).toUpperCase() + description.slice(1)}</Text>
+      </Flex>
+
+      {hasDetails && (
+        <CommunityDetails
+          css={S.details}
+          open={detailsOpen}
+          id={community_id}
+          community={community}
+          community_scopes={community_scopes}
+        />
+      )}
+    </div>
+  )
+}
+
+export default CommunityInfo

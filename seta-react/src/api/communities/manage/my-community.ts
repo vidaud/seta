@@ -2,7 +2,6 @@ import { useQuery } from '@tanstack/react-query'
 import { getCookie } from 'typescript-cookie'
 
 import type {
-  Community,
   MyCommunity,
   CommunityResponse,
   CreateCommunityAPI,
@@ -14,20 +13,12 @@ import type { ResourceResponse } from '~/api/types/resource-types'
 import { environment } from '../../../environments/environment'
 import community_api from '../api'
 
-export const cacheKey = (id?: string) => ['my-communities', id]
+export const cacheKey = (id?: string) => ['communities', id]
 
-const getCommunity = async (id?: string): Promise<Community> => {
-  const communities = await community_api.get<CommunityResponse>(
+const getCommunity = async (id?: string): Promise<CommunityResponse> => {
+  const { data } = await community_api.get<CommunityResponse>(
     `${environment.COMMUNITIES_API_PATH}/${id}`
   )
-  const resources = await community_api.get<ResourceResponse[]>(
-    `${environment.COMMUNITIES_API_PATH}/${id}/resources`
-  )
-
-  const data = {
-    communities: communities.data,
-    resources: resources.data
-  }
 
   return data
 }
@@ -64,6 +55,17 @@ const getMyCommunity = async (id?: string): Promise<MyCommunity> => {
 export const useMyCommunityID = (id?: string) =>
   useQuery({ queryKey: cacheKey(id), queryFn: () => getMyCommunity(id) })
 
+const getMyCommunityResources = async (id?: string): Promise<ResourceResponse[]> => {
+  const { data } = await community_api.get<ResourceResponse[]>(
+    `${environment.COMMUNITIES_API_PATH}/${id}/resources`
+  )
+
+  return data
+}
+
+export const useMyCommunityResources = (id?: string) =>
+  useQuery({ queryKey: cacheKey(id), queryFn: () => getMyCommunityResources(id) })
+
 const getCommunityManage = async (id?: string): Promise<ManageCommunityAPI> => {
   const { data } = await community_api.get<ManageCommunityAPI>(
     `${environment.COMMUNITIES_API_PATH}/${id}`
@@ -88,7 +90,7 @@ export const createCommunity = async (values?: CreateCommunityAPI) => {
     })
     .then(response => {
       if (response.status === 201) {
-        window.location.href = `/my-communities`
+        window.location.href = `/communities`
       }
     })
 }
@@ -104,7 +106,7 @@ export const updateCommunity = async (id?: string, values?: UpdateCommunityAPI) 
     })
     .then(response => {
       if (response.status === 200) {
-        window.location.href = `/my-communities`
+        window.location.href = `/communities`
       }
     })
 }
@@ -120,7 +122,7 @@ export const deleteCommunityByID = async (id?: string) => {
     })
     .then(response => {
       if (response.status === 200) {
-        window.location.href = `/my-communities`
+        window.location.href = `/communities`
       }
     })
 }

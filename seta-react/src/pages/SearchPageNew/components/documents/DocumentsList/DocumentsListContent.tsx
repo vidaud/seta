@@ -2,23 +2,18 @@ import type { ReactElement } from 'react'
 import { forwardRef } from 'react'
 import { Flex } from '@mantine/core'
 
-import {
-  SuggestionsEmpty,
-  SuggestionsError,
-  SuggestionsLoading
-} from '~/pages/SearchPageNew/components/common'
-
 import type { DocumentsResponse } from '~/api/search/documents'
 import type { DataProps } from '~/types/data-props'
 
 import * as S from './styles'
 
+import { SuggestionsEmpty, SuggestionsError, SuggestionsLoading } from '../../common'
 import DocumentInfo from '../DocumentInfo'
 
-const MARGIN_TOP = '4rem'
+export const MARGIN_TOP = '5rem'
 
 type Props = DataProps<DocumentsResponse> & {
-  queryTerms: string[]
+  queryTerms?: string[]
   paginator?: ReactElement | false | null
   info?: ReactElement | false | null
 }

@@ -31,9 +31,9 @@ const RelatedTermsContent = ({ data, isLoading, error, onTryAgain, ...props }: P
   }
 
   return (
-    <ScrollArea.Autosize mah={330} type="scroll" mt="md">
+    <ScrollArea>
       <TermsCluster terms={terms} {...props} />
-    </ScrollArea.Autosize>
+    </ScrollArea>
   )
 }
 

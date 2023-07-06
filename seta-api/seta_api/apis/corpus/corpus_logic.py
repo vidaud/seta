@@ -7,11 +7,12 @@ from .corpus_response import handle_corpus_response
 from .taxonomy import Taxonomy
 
 
-def doc_by_id(doc_id, es, index):
+def chunk_by_id(doc_id, es, index):
     tax = Taxonomy()
     try:
         q = es.get(index=index, id=doc_id)
         doc = q['_source']
+        doc['_id'] = q['_id']
         tax.create_tree_from_elasticsearch_format(is_field_in_doc(doc, "taxonomy"), is_field_in_doc(doc, "taxonomy_path"))
         doc['taxonomy'] = tax.tree
         return doc
@@ -19,9 +20,45 @@ def doc_by_id(doc_id, es, index):
         raise ApiLogicError('ID not found.')
 
 
-def delete_doc(id, es, index):
+def delete_chunk(id, es, index):
     try:
         es.delete(index=index, id=id)
+    except:
+        raise ApiLogicError("id not found")
+
+
+def document_by_id(doc_id, n_docs, from_doc, current_app):
+    tax = Taxonomy()
+    resp = {"chunk_list": []}
+    if n_docs is None:
+        n_docs = current_app.config["DEFAULT_DOCS_NUMBER"]
+    if from_doc is None:
+        from_doc = current_app.config["DEFAULT_FROM_DOC_NUMBER"]
+    try:
+        body = {"size": n_docs,
+                "from": from_doc,
+                "query": {"bool": {"must": [{"match": {"document_id": doc_id}}]}},
+                          "sort": [{"chunk_number": {"order": "asc"}}]}
+
+        request = compose_request_for_msearch(body, current_app)
+        res = current_app.es.msearch(searches=request)
+        for response in res["responses"]:
+            for doc in response["hits"]["hits"]:
+                document = doc["_source"]
+                document['_id'] = doc['_id']
+                tax.create_tree_from_elasticsearch_format(is_field_in_doc(document, "taxonomy"),
+                                                          is_field_in_doc(document, "taxonomy_path"))
+                document["taxonomy"] = tax.tree
+                resp["chunk_list"].append(document)
+    except:
+        raise ApiLogicError('ID not found.')
+    return resp
+
+
+def delete_document(id, es, index):
+    try:
+        query = {"query": {"bool": {"must": [{"match": {"document_id": id}}]}}}
+        es.delete_by_query(index=index, body=query)
     except:
         raise ApiLogicError("id not found")
 
@@ -86,5 +123,5 @@ def corpus(term, n_docs, from_doc, sources, collection, reference, in_force, sor
     # print(json.dumps(body))
     request = compose_request_for_msearch(body, current_app)
     res = current_app.es.msearch(searches=request)
-    documents = handle_corpus_response(aggs, res, search_type, semantic_sort_id, term, current_app)
+    documents = handle_corpus_response(aggs, res, search_type, term, current_app)
     return documents

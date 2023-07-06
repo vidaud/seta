@@ -1,4 +1,5 @@
 import { useMemo } from 'react'
+import type { ScrollAreaProps } from '@mantine/core'
 
 import { useSearch } from '~/pages/SearchPageNew/contexts/search-context'
 import useAllSelected from '~/pages/SearchPageNew/hooks/use-all-selected'
@@ -10,9 +11,10 @@ import RelatedClustersContent from './RelatedClustersContent'
 
 type Props = {
   onLoadingChange?: (loading: boolean) => void
+  onScrollPositionChange?: ScrollAreaProps['onScrollPositionChange']
 }
 
-const RelatedClusters = ({ onLoadingChange }: Props) => {
+const RelatedClusters = ({ onLoadingChange, onScrollPositionChange }: Props) => {
   const { currentToken } = useSearch()
 
   const searchTerm = currentToken?.rawValue
@@ -25,7 +27,13 @@ const RelatedClusters = ({ onLoadingChange }: Props) => {
   useUpdateCallback(onLoadingChange, isLoading)
 
   return (
-    <RelatedClustersContent data={data} isLoading={isLoading} error={error} onTryAgain={refetch} />
+    <RelatedClustersContent
+      data={data}
+      isLoading={isLoading}
+      error={error}
+      onTryAgain={refetch}
+      onScrollPositionChange={onScrollPositionChange}
+    />
   )
 }
 

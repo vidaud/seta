@@ -101,7 +101,7 @@ const ListMenu = ({ className, items, currentWord, onSelect }: ListMenuProps) =>
 
   return (
     <Box className={className} tabIndex={-1}>
-      <ScrollArea.Autosize mah={400} type="scroll" viewportRef={viewport}>
+      <ScrollArea viewportRef={viewport}>
         {formattedItems.map(item => (
           <ListMenuItem
             key={item.value}
@@ -112,7 +112,7 @@ const ListMenu = ({ className, items, currentWord, onSelect }: ListMenuProps) =>
             onMouseEnter={() => handleItemMouseEnter(item.value)}
           />
         ))}
-      </ScrollArea.Autosize>
+      </ScrollArea>
     </Box>
   )
 }

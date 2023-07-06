@@ -12,11 +12,11 @@ import {
 import { IconPencil } from '@tabler/icons-react'
 
 import { updateCommunityMembership } from '../../../../../../../../api/communities/membership'
-import type { MembershipValues } from '../../../../../../contexts/membership-context'
+import type { MembershipValues } from '../../../../../../pages/contexts/membership-context'
 import {
   MembershipFormProvider,
   useMembership
-} from '../../../../../../contexts/membership-context'
+} from '../../../../../../pages/contexts/membership-context'
 
 const useStyles = createStyles({
   form: {
@@ -34,8 +34,6 @@ const UpdateMembership = ({ props }) => {
 
   const form = useMembership({
     initialValues: {
-      community_id: props.community_id,
-      user_id: props.user_id,
       status: '',
       role: ''
     }

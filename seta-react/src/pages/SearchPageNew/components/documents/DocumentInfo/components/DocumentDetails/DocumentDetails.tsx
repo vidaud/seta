@@ -10,7 +10,7 @@ type Props = ClassNameProp & {
   open: boolean
   taxonomy: Taxonomy[] | null
   chunkText: string | null
-  queryTerms: string[]
+  queryTerms?: string[]
 }
 
 const DocumentDetails = ({ className, open, taxonomy, chunkText, queryTerms }: Props) => {

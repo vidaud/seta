@@ -1,13 +1,13 @@
 from flask import current_app as app
 from flask import jsonify, request
-from flask_restx import Namespace, Resource, abort, fields
+from flask_restx import Namespace, Resource, abort
 
 from seta_api.infrastructure.ApiLogicError import ApiLogicError, ForbiddenResourceError
 from seta_api.infrastructure.auth_validator import auth_validator, validate_view_permissions, validate_add_permission, validate_delete_permission
 from seta_api.infrastructure.helpers import is_field_in_doc
 
-from .corpus_logic import corpus, delete_doc, doc_by_id, insert_doc
-from .variables import corpus_parser
+from .corpus_logic import corpus, delete_chunk, chunk_by_id, insert_doc, document_by_id, delete_document
+from .variables import corpus_parser, corpus_get_document_id_parser
 from .variables import Variable
 
 from http import HTTPStatus
@@ -30,7 +30,7 @@ class Corpus(Resource):
     def get(self, id):
         try:
 
-            doc = doc_by_id(id, es=app.es, index=app.config['INDEX_PUBLIC'])
+            doc = chunk_by_id(id, es=app.es, index=app.config['INDEX_PUBLIC'])
             validate_view_permissions(sources=[doc.get("source", None)])
             
             return doc
@@ -51,13 +51,124 @@ class Corpus(Resource):
     @corpus_api.response(404, 'Not Found Error')
     def delete(self, id):
         try:
-            doc = doc_by_id(id, es=app.es, index=app.config['INDEX_PUBLIC'])
+            doc = chunk_by_id(id, es=app.es, index=app.config['INDEX_PUBLIC'])
             resource_id = doc.get("source", None)
             
             if not validate_delete_permission(resource_id):
                 raise ForbiddenResourceError(resource_id=resource_id, message="User does not have delete permission for the resource")
             
-            delete_doc(id, es=app.es, index=app.config["INDEX_PUBLIC"])
+            delete_chunk(id, es=app.es, index=app.config["INDEX_PUBLIC"])
+            return jsonify({"deleted document id": id})
+        except ApiLogicError as aex:
+            abort(404, str(aex))
+        except ForbiddenResourceError as fre:
+            abort(HTTPStatus.FORBIDDEN, fre.message)
+        except:
+            app.logger.exception("Corpus->delete")
+            abort(500, "Internal server error")
+
+
+@corpus_api.route("corpus/chunk/<string:id>", methods=['GET', 'DELETE'])
+class CorpusChunk(Resource):
+    @auth_validator()
+    @corpus_api.doc(description='Given the elasticsearch unique _id, the relative document (chunk) is provided.',
+                    params={'id': 'Return the document (chunk) with the specified _id'},
+                    security='apikey')
+    @corpus_api.response(200, 'Success', swagger_doc.get_corpus_get_id_response())
+    @corpus_api.response(401, 'Forbbiden access to the resource')
+    @corpus_api.response(404, 'Not Found Error')
+    def get(self, id):
+        try:
+
+            chunk = chunk_by_id(id, es=app.es, index=app.config['INDEX_PUBLIC'])
+            validate_view_permissions(sources=[chunk.get("source", None)])
+            return chunk
+        except ApiLogicError as aex:
+            abort(404, str(aex))
+        except ForbiddenResourceError as fre:
+            abort(HTTPStatus.FORBIDDEN, fre.message)
+        except:
+            app.logger.exception("Corpus->get")
+            abort(500, "Internal server error")
+
+    @auth_validator()
+    @corpus_api.doc(description='Given the elasticsearch unique _id, the relative document (chunk) is deleted.',
+                    params={'id': 'Delete the document (chunk) with the specified _id'},
+                    security='apikey')
+    @corpus_api.response(200, 'Success', swagger_doc.get_delete_id_request_model())
+    @corpus_api.response(401, 'Forbbiden access to the resource')
+    @corpus_api.response(404, 'Not Found Error')
+    def delete(self, id):
+        try:
+            chunk = chunk_by_id(id, es=app.es, index=app.config['INDEX_PUBLIC'])
+            resource_id = chunk.get("source", None)
+
+            if not validate_delete_permission(resource_id):
+                raise ForbiddenResourceError(resource_id=resource_id,
+                                             message="User does not have delete permission for the resource")
+
+            delete_chunk(id, es=app.es, index=app.config["INDEX_PUBLIC"])
+            return jsonify({"deleted document id": id})
+        except ApiLogicError as aex:
+            abort(404, str(aex))
+        except ForbiddenResourceError as fre:
+            abort(HTTPStatus.FORBIDDEN, fre.message)
+        except:
+            app.logger.exception("Corpus->delete")
+            abort(500, "Internal server error")
+
+
+def get_source_from_chunk_list(chunk_list):
+    for doc in chunk_list:
+        if "source" in doc:
+            return doc["source"]
+
+
+@corpus_api.route("corpus/document/<string:id>", methods=['GET', 'DELETE'])
+class CorpusDocument(Resource):
+    @auth_validator()
+    @corpus_api.doc(description='Given a document_id, the relative list of chunks is shown.',
+                    params={'id': 'Return all the chunks of document with the specified document_id',
+                            'n_docs': 'Number of chunks to be returned. Default 10.',
+                            'from_doc': 'Defines the number of hits to skip, defaulting to 0.'},
+                    security='apikey')
+    @corpus_api.response(200, 'Success', swagger_doc.corpus_get_id_document_response())
+    @corpus_api.response(401, 'Forbbiden access to the resource')
+    @corpus_api.response(404, 'Not Found Error')
+    def get(self, id):
+        args = corpus_get_document_id_parser.parse_args()
+        try:
+            document = document_by_id(id, args["n_docs"], args["from_doc"], current_app=app)
+            source = get_source_from_chunk_list(document["chunk_list"])
+            if source:
+                validate_view_permissions(sources=[source])
+                return document
+            return {"chunk_list": []}
+        except ApiLogicError as aex:
+            abort(404, str(aex))
+        except ForbiddenResourceError as fre:
+            abort(HTTPStatus.FORBIDDEN, fre.message)
+        except:
+            app.logger.exception("Corpus->get")
+            abort(500, "Internal server error")
+
+    @auth_validator()
+    @corpus_api.doc(description='Given a document_id, the relative list of chunks is deleted.',
+                    params={'id': 'Delete the list of chunks with the specified document_id'},
+                    security='apikey')
+    @corpus_api.response(200, 'Success', swagger_doc.get_delete_id_request_model())
+    @corpus_api.response(401, 'Forbbiden access to the resource')
+    @corpus_api.response(404, 'Not Found Error')
+    def delete(self, id):
+        try:
+            doc = chunk_by_id(id, es=app.es, index=app.config['INDEX_PUBLIC'])
+            resource_id = doc.get("source", None)
+
+            if not validate_delete_permission(resource_id):
+                raise ForbiddenResourceError(resource_id=resource_id,
+                                             message="User does not have delete permission for the resource")
+
+            delete_document(id, es=app.es, index=app.config["INDEX_PUBLIC"])
             return jsonify({"deleted document id": id})
         except ApiLogicError as aex:
             abort(404, str(aex))

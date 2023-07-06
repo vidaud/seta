@@ -15,6 +15,7 @@ const Header = () => {
   const { user, isLoading: isUserLoading, logout } = useCurrentUser()
 
   const authenticated = !!user
+  const role = user?.role === 'Administrator'
 
   const handleLogout = () => {
     logout()
@@ -22,7 +23,7 @@ const Header = () => {
   }
 
   const menuItems = getMenuItems(authenticated)
-  const dropdownItems = getDropdownItems({ onLogout: handleLogout })
+  const dropdownItems = getDropdownItems({ role, onLogout: handleLogout })
 
   const visibleMenuItems = menuItems.filter(link => !link.hidden)
 
@@ -32,9 +33,9 @@ const Header = () => {
       return <Menu.Divider key={index} />
     }
 
-    const { label, icon, url, onClick } = item
+    const { label, icon, url, hidden, onClick } = item
 
-    if (url) {
+    if (!hidden && url) {
       return (
         <Menu.Item key={label} icon={icon} component={Link} to={url}>
           {label}
@@ -42,11 +43,11 @@ const Header = () => {
       )
     }
 
-    return (
+    return !hidden ? (
       <Menu.Item key={label} icon={icon} onClick={onClick}>
         {label}
       </Menu.Item>
-    )
+    ) : null
   })
 
   const dropdownMenu = (

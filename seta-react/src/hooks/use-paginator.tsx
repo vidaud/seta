@@ -1,5 +1,5 @@
 import type { ReactElement } from 'react'
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import { Flex, Pagination, Text } from '@mantine/core'
 import { useScrollIntoView } from '@mantine/hooks'
 
@@ -12,6 +12,7 @@ type Args = {
   info?: { singular: string; plural?: string; currentPageItems?: number }
   resetPageDependencies?: unknown[]
   scrollDependencies?: unknown[]
+  scrollOnPageChange?: boolean
   onPageChange: (page: number) => void
 }
 
@@ -42,12 +43,17 @@ const usePaginator = ({
   info,
   resetPageDependencies,
   scrollDependencies,
+  scrollOnPageChange = true,
   onPageChange
 }: Args) => {
   const { scrollIntoView, targetRef: scrollTargetRef } = useScrollIntoView<HTMLDivElement>({
     duration: 200,
     offset: 40
   })
+
+  const prevPageRef = useRef(page)
+
+  const hasScrollDependencies = !!scrollDependencies?.length
 
   useEffect(() => {
     if (resetPageDependencies) {
@@ -62,6 +68,19 @@ const usePaginator = ({
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [scrollIntoView, scrollDependencies].flat())
+
+  useEffect(() => {
+    // Don't scroll if there are scroll dependencies, as they will manage scrolling the page
+    if (hasScrollDependencies) {
+      return
+    }
+
+    if (scrollOnPageChange && prevPageRef !== null && prevPageRef.current !== page) {
+      scrollIntoView({ alignment: 'start' })
+
+      prevPageRef.current = page
+    }
+  }, [hasScrollDependencies, page, scrollOnPageChange, scrollIntoView])
 
   const paginator =
     total > perPage ? (

@@ -2,8 +2,11 @@ import { useState } from 'react'
 import { Popover, Button, Group, Textarea, createStyles, Tooltip } from '@mantine/core'
 
 import { createMembershipRequest } from '../../../../../../api/communities/membership'
-import type { MembershipValues } from '../../../../contexts/membership-context'
-import { MembershipFormProvider, useMembership } from '../../../../contexts/membership-context'
+import type { MembershipValues } from '../../../../pages/contexts/membership-context'
+import {
+  MembershipFormProvider,
+  useMembership
+} from '../../../../pages/contexts/membership-context'
 
 const useStyles = createStyles({
   form: {
@@ -11,13 +14,12 @@ const useStyles = createStyles({
   }
 })
 
-const MembershipRequest = ({ community_id, onReload }) => {
+const MembershipRequest = ({ community_id, reload }) => {
   const [opened, setOpened] = useState(false)
   const { classes, cx } = useStyles()
 
   const form = useMembership({
     initialValues: {
-      community_id: community_id,
       message: ''
     },
     validate: values => ({
@@ -28,7 +30,7 @@ const MembershipRequest = ({ community_id, onReload }) => {
   const handleSubmit = (values: MembershipValues) => {
     createMembershipRequest(community_id, values).then(() =>
       setTimeout(() => {
-        onReload()
+        reload()
         setOpened(o => !o)
       }, 100)
     )
@@ -47,8 +49,16 @@ const MembershipRequest = ({ community_id, onReload }) => {
     >
       <Popover.Target>
         <Group position="right">
-          <Tooltip label="Join Community">
-            <Button variant="filled" color="orange" size="xs" onClick={() => setOpened(o => !o)}>
+          <Tooltip label="Join Community" color="orange">
+            <Button
+              variant="filled"
+              color="orange"
+              size="xs"
+              onClick={e => {
+                e.stopPropagation()
+                setOpened(o => !o)
+              }}
+            >
               + JOIN
             </Button>
           </Tooltip>
@@ -74,14 +84,15 @@ const MembershipRequest = ({ community_id, onReload }) => {
                 variant="outline"
                 size="xs"
                 color="blue"
-                onClick={() => {
+                onClick={e => {
                   form.reset()
+                  e.stopPropagation()
                   setOpened(o => !o)
                 }}
               >
                 Cancel
               </Button>
-              <Button size="xs" type="submit">
+              <Button size="xs" type="submit" onClick={e => e.stopPropagation()}>
                 Send
               </Button>
             </Group>

@@ -17,7 +17,7 @@ const bind = <T extends keyof Console>(
 }
 
 const logger = (() => {
-  let padding = ''
+  let padding = ' '
 
   const log: Console['log'] = (...args) => {
     console.log(padding, ...args)

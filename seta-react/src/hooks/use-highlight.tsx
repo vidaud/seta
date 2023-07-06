@@ -30,8 +30,12 @@ const highlight = (text: string, terms: string[], className = 'highlight') => {
  * @param values The values to return with highlighted terms
  * @returns The `values` array with highlighted terms
  */
-const useHighlight = (terms: string[], ...values: string[]) => {
+const useHighlight = (terms: string[] | undefined, ...values: string[]) => {
   return useMemo(() => {
+    if (!terms?.length) {
+      return values
+    }
+
     return values.map(value => highlight(value, terms))
   }, [terms, values])
 }

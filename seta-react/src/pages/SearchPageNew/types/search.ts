@@ -1,3 +1,5 @@
+import type { EmbeddingInfo } from '~/types/embeddings'
+
 import type { Token } from './token'
 
 export enum EnrichType {
@@ -14,4 +16,5 @@ export type SearchValue = {
   value: string
   tokens: Token[]
   enrichedStatus: EnrichedStatus
+  embeddings?: EmbeddingInfo[]
 }

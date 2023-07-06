@@ -1,4 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
+import type { AxiosRequestConfig } from 'axios'
 
 import api from '~/api'
 import type { Suggestion } from '~/types/search/suggestion'
@@ -14,12 +15,18 @@ export const queryKey = {
   terms: (terms?: string) => [queryKey.root, terms]
 }
 
-const getSuggestions = async (terms?: string): Promise<SuggestionsResponse> => {
+const getSuggestions = async (
+  terms?: string,
+  config?: AxiosRequestConfig
+): Promise<SuggestionsResponse> => {
   if (!terms) {
     return { words: [] }
   }
 
-  const { data } = await api.get<SuggestionsResponse>(`${SUGGESTIONS_API_PATH}?chars=${terms}`)
+  const { data } = await api.get<SuggestionsResponse>(
+    `${SUGGESTIONS_API_PATH}?chars=${terms}`,
+    config
+  )
 
   // Remove duplicates
   return {
@@ -28,4 +35,7 @@ const getSuggestions = async (terms?: string): Promise<SuggestionsResponse> => {
 }
 
 export const useSuggestions = (terms?: string) =>
-  useQuery({ queryKey: queryKey.terms(terms), queryFn: () => getSuggestions(terms) })
+  useQuery({
+    queryKey: queryKey.terms(terms),
+    queryFn: ({ signal }) => getSuggestions(terms, { signal })
+  })

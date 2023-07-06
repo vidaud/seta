@@ -7,7 +7,7 @@ import type { Token } from '~/pages/SearchPageNew/types/token'
 
 const EXPRESSION_REGEX = /("[^"\\]*(\\.[^"\\]*)*"|\S+)(\s*)/g
 
-const useTokens = (value: string, inputRef: RefObject<HTMLInputElement>) => {
+const useTokens = (value: string, inputRef: RefObject<HTMLInputElement>, focused: boolean) => {
   const { currentToken, setCurrentToken, tokens, setTokens } = useSearch()
 
   const timeoutRef = useRef<number | null>(null)
@@ -52,7 +52,7 @@ const useTokens = (value: string, inputRef: RefObject<HTMLInputElement>) => {
   )
 
   const updateCurrentToken = useCallback(() => {
-    if (!inputRef.current) {
+    if (!inputRef.current || !focused) {
       return
     }
 
@@ -77,7 +77,7 @@ const useTokens = (value: string, inputRef: RefObject<HTMLInputElement>) => {
     } else {
       setCurrentToken(null)
     }
-  }, [inputRef, tokens, selectLeftToken, setCurrentToken])
+  }, [inputRef, focused, tokens, selectLeftToken, setCurrentToken])
 
   const updateCurrentTokenDeferred = useCallback(() => {
     if (timeoutRef.current) {

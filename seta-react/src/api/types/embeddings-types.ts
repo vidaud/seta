@@ -1,10 +1,5 @@
-export type EmbeddingsValue = {
-  vector: number[]
-  chunk: number
-  version: string
-  text: string
-}
+import type { Embedding } from '~/types/embeddings'
 
 export type EmbeddingsResponse = {
-  emb_with_chunk_text: EmbeddingsValue[]
+  emb_with_chunk_text: Embedding[]
 }

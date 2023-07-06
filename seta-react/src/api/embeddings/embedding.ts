@@ -1,4 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
+import type { AxiosRequestConfig } from 'axios'
 
 import api from '../api'
 import type { EmbeddingsResponse } from '../types/embeddings-types'
@@ -10,18 +11,18 @@ export const queryKey = {
   text: (text?: string) => [queryKey.root, text]
 }
 
-const getEmbeddings = async (text?: string): Promise<EmbeddingsResponse> => {
+export const getEmbeddings = async (
+  text?: string,
+  config?: AxiosRequestConfig
+): Promise<EmbeddingsResponse> => {
   if (!text) {
     return { emb_with_chunk_text: [{ vector: [], chunk: 0, version: '', text: '' }] }
   }
 
-  const { data } = await api.post<EmbeddingsResponse>(`${EMBEDDINGS_API_PATH}?text=${text}`)
+  const { data } = await api.post<EmbeddingsResponse>(`${EMBEDDINGS_API_PATH}`, { text }, config)
 
-  // Remove duplicates
-  return {
-    emb_with_chunk_text: data.emb_with_chunk_text
-  }
+  return data
 }
 
-export const useEmbedding = (text?: string) =>
+export const useEmbeddings = (text?: string) =>
   useQuery({ queryKey: queryKey.text(text), queryFn: () => getEmbeddings(text) })

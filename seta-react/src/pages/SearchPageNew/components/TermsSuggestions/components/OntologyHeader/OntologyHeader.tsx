@@ -86,7 +86,7 @@ const OntologyHeader = ({
 
   const enrichButton = hasToken && (
     <Tooltip label="Enrich query automatically">
-      <ActionIcon size="lg" radius="md" onClick={onEnrichToggle} {...enrichedProps}>
+      <ActionIcon size="lg" radius="sm" onClick={onEnrichToggle} {...enrichedProps}>
         <IconWand />
       </ActionIcon>
     </Tooltip>
