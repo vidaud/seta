@@ -23,7 +23,7 @@ const useStyles = createStyles(theme => ({
 
   titleModal: {
     fontWeight: 600,
-    fontSize: rem(20),
+    fontSize: rem(23),
     letterSpacing: rem(-1),
     paddingLeft: theme.spacing.md,
     paddingRight: theme.spacing.md,
@@ -37,27 +37,11 @@ const useStyles = createStyles(theme => ({
     borderBottomRightRadius: rem(10)
   },
 
-  titleText: {
-    fontWeight: 400,
-    fontSize: rem(15),
-    letterSpacing: rem(-1),
-    paddingLeft: theme.spacing.md,
-    paddingRight: theme.spacing.md,
-    color: theme.white,
-    textAlign: 'center',
-    fontFamily: `Greycliff CF, ${theme.fontFamily}`
-  },
-
   dontShowMe: {
+    fontSize: rem(20),
     float: 'left',
     paddingTop: rem(15),
     paddingLeft: rem(40)
-  },
-
-  indicatorBar: {
-    float: 'left',
-    paddingTop: rem(10),
-    paddingLeft: rem(100)
   }
 }))
 
@@ -66,11 +50,7 @@ const ModalPage = () => {
   const [showButton, setShowButton] = useState(true)
 
   const toggleButton = () => {
-    if (showButton) {
-      setShowButton(!showButton)
-    } else {
-      setShowButton(showButton)
-    }
+    setShowButton(!showButton)
   }
 
   return (
@@ -109,8 +89,8 @@ const ModalPage = () => {
                   children: (
                     <>
                       <Text className={classes.titleModal}>
-                        SeTA communities offers a shared place, where users can have the possibility
-                        to interact with others users about specific areas of interest.
+                        SeTA communities offers a shared place, where users can interact among them
+                        about specific areas of interest.
                       </Text>
                       <br />
                       <Image src={image2} alt="Communities" />
@@ -153,7 +133,7 @@ const ModalPage = () => {
                           children: (
                             <>
                               <Text className={classes.titleModal}>
-                                The status of the request remains “Pending” until the Community
+                                After the request, the status remains “Pending” until the Community
                                 Owner accepts the request.
                               </Text>
                               <br />
@@ -176,8 +156,7 @@ const ModalPage = () => {
                               children: (
                                 <>
                                   <Text className={classes.titleModal}>
-                                    As part of the access to the community data, it is possible to
-                                    use the search functionality in large document collections.
+                                    The search tool allows the access to the community data.
                                   </Text>
                                   <br />
                                   <Image src={image5} />
@@ -200,8 +179,7 @@ const ModalPage = () => {
                                     <>
                                       <Text className={classes.titleModal}>
                                         In the search by terms or phrase it is possible to apply a
-                                        wizard so the search is enriched automatically by clicking
-                                        on the wizard icon.
+                                        wizard so the search can be enriched automatically.
                                       </Text>
                                       <br />
                                       <Image src={image6} />
