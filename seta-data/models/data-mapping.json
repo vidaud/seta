@@ -1,4 +1,5 @@
 {"settings": {
+    "index.number_of_shards": 5,
     "analysis": {
       "analyzer": {
         "custom_path_tree": {
