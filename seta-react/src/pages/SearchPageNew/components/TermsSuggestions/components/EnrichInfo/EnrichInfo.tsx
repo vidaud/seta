@@ -22,6 +22,7 @@ const EnrichInfo = ({ type }: Props) => {
         <div css={S.icon}>
           <FaHatWizard size={64} />
         </div>
+
         <div css={S.content}>
           <div>This search is enriched automatically.</div>
           <div>Every term is expanded in the background to include all the {what}.</div>

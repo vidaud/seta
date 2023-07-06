@@ -4,8 +4,36 @@ import { clsx } from '@mantine/core'
 
 import { useSearch } from '~/pages/SearchPageNew/contexts/search-context'
 import type { Token } from '~/pages/SearchPageNew/types/token'
+import { TokenType, TokenOperator } from '~/pages/SearchPageNew/types/token'
 
 const EXPRESSION_REGEX = /("[^"\\]*(\\.[^"\\]*)*"|\S+)(\s*)/g
+const OPERATOR_REGEX = /^(AND|OR)$/
+
+const processMatch = (match: RegExpExecArray): Token => {
+  const start = match.index
+  const token = match[1]
+  const spacesAfter = match[3]?.length ?? 0
+
+  const type: TokenType = token.match(OPERATOR_REGEX)
+    ? TokenType.OPERATOR
+    : token.match(/\s/)
+    ? TokenType.EXPRESSION
+    : TokenType.WORD
+
+  const operator: TokenOperator | undefined =
+    type === TokenType.OPERATOR ? TokenOperator[token] : undefined
+
+  const rawValue = type === TokenType.EXPRESSION ? token.replace(/"/g, '') : token
+
+  return {
+    token,
+    rawValue,
+    index: start,
+    type,
+    operator,
+    spacesAfter
+  }
+}
 
 const useTokens = (value: string, inputRef: RefObject<HTMLInputElement>, focused: boolean) => {
   const { currentToken, setCurrentToken, tokens, setTokens } = useSearch()
@@ -22,17 +50,9 @@ const useTokens = (value: string, inputRef: RefObject<HTMLInputElement>, focused
     let match: RegExpExecArray | null
 
     while ((match = EXPRESSION_REGEX.exec(value)) !== null) {
-      const start = match.index
-      const token = match[1]
-      const spacesAfter = match[3]?.length ?? 0
+      const token = processMatch(match)
 
-      result.push({
-        token,
-        rawValue: token.replace(/"/g, ''),
-        index: start,
-        isExpression: !!token.match(/\s/),
-        spacesAfter
-      })
+      result.push(token)
     }
 
     return result
@@ -40,11 +60,9 @@ const useTokens = (value: string, inputRef: RefObject<HTMLInputElement>, focused
 
   const selectLeftToken = useCallback(
     (position: number) => {
-      const found = tokens.find(({ index, token }) => {
-        const end = index + token.length
-
-        return position >= index && position <= end + 2
-      })
+      const found = tokens.find(
+        ({ index, token }) => position >= index && position <= index + token.length + 2
+      )
 
       return found
     },
@@ -107,16 +125,23 @@ const useTokens = (value: string, inputRef: RefObject<HTMLInputElement>, focused
 
     let index = 0
 
-    const highlightedTokens = tokens.map(({ token, spacesAfter, isExpression, rawValue }) => {
+    const highlightedTokens = tokens.map(({ token, spacesAfter, type, rawValue, operator }) => {
       const isCurrentToken = token === currentToken?.token && index === currentToken.index
+      const isExpression = type === TokenType.EXPRESSION
+      const isOperator = type === TokenType.OPERATOR
 
       const cls = {
-        root: clsx({ current: isCurrentToken && tokens.length > 1, expression: isExpression }),
+        root: clsx({
+          current: isCurrentToken && tokens.length > 1,
+          expression: isExpression,
+          operator: isOperator,
+          'operator-and': operator === TokenOperator.AND,
+          'operator-or': operator === TokenOperator.OR
+        }),
         token: clsx({ highlighted: isCurrentToken })
       }
 
       const quote = isExpression && <span className="quote">"</span>
-      const tokenValue = isExpression ? rawValue : token
 
       index += token.length + (spacesAfter ?? 0)
 
@@ -124,13 +149,13 @@ const useTokens = (value: string, inputRef: RefObject<HTMLInputElement>, focused
         <span key={index} className={cls.root}>
           <span className={cls.token}>
             {quote}
-            {tokenValue}
+            {rawValue}
             {quote}
 
             <span className="marker" />
           </span>
 
-          {spacesAfter && ' '.repeat(spacesAfter)}
+          {!!spacesAfter && ' '.repeat(spacesAfter)}
         </span>
       )
     })

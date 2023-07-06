@@ -1,11 +1,14 @@
 import { useEffect, useState } from 'react'
 import { Flex, Divider } from '@mantine/core'
 
+import { useSearch } from '~/pages/SearchPageNew/contexts/search-context'
 import { TermsSelectionProvider } from '~/pages/SearchPageNew/contexts/terms-selection-context'
 import { TermsView } from '~/pages/SearchPageNew/types/terms-view'
+import { TokenType } from '~/pages/SearchPageNew/types/token'
 
 import EnrichInfo from './components/EnrichInfo'
 import OntologyHeader from './components/OntologyHeader'
+import OperatorInfo from './components/OperatorInfo'
 import RelatedClusters from './components/RelatedClusters'
 import RelatedTerms from './components/RelatedTerms'
 import * as S from './styles'
@@ -28,8 +31,12 @@ const TermsSuggestions = ({
   const [loading, setLoading] = useState(false)
   const [scrolled, setScrolled] = useState(false)
 
+  const { currentToken } = useSearch()
+
   const dividerStyle = [S.divider, scrolled && S.withShadow]
   const dividerColor = scrolled ? 'gray.3' : 'gray.2'
+
+  const isOperator = currentToken?.type === TokenType.OPERATOR
 
   useEffect(() => {
     setScrolled(false)
@@ -39,7 +46,9 @@ const TermsSuggestions = ({
     setLoading(value)
   }
 
-  const termsView = enrichQuery ? (
+  const termsView = isOperator ? (
+    <OperatorInfo token={currentToken} />
+  ) : enrichQuery ? (
     <EnrichInfo type={currentView} />
   ) : currentView === TermsView.TermsClusters ? (
     <RelatedClusters

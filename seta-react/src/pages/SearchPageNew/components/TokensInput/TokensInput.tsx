@@ -1,6 +1,8 @@
 import type {
   ChangeEvent,
+  ClipboardEvent,
   FocusEventHandler,
+  KeyboardEvent,
   KeyboardEventHandler,
   MouseEventHandler,
   UIEvent
@@ -39,9 +41,12 @@ const TokensInput = forwardRef<HTMLInputElement, Props>(
     ref
   ) => {
     const [focused, setFocused] = useState(false)
+    const [isTyping, setIsTyping] = useState(false)
 
     const inputRef = useRef<HTMLInputElement>(null)
     const rendererRef = useRef<HTMLDivElement>(null)
+
+    const timeoutRef = useRef<number | null>(null)
 
     useImperativeHandle(ref, () => inputRef.current as HTMLInputElement)
 
@@ -54,15 +59,38 @@ const TokensInput = forwardRef<HTMLInputElement, Props>(
       }
     }, [setInputRef])
 
+    const markTyping = (e: KeyboardEvent<HTMLInputElement>) => {
+      if (
+        (e.key.length !== 1 && e.key !== 'Backspace' && e.key !== 'Delete') ||
+        e.ctrlKey ||
+        e.metaKey
+      ) {
+        return
+      }
+
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current)
+      }
+
+      setIsTyping(true)
+
+      timeoutRef.current = window.setTimeout(() => {
+        setIsTyping(false)
+        syncScroll(inputRef.current?.scrollLeft ?? 0)
+      }, 200)
+    }
+
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
       onChange?.(e.target.value)
     }
 
     const handleKeyDown: KeyboardEventHandler<HTMLInputElement> = e => {
-      const ignoreKeys = ['ArrowUp', 'ArrowDown']
+      const ignoreKeys = ['ArrowUp', 'ArrowDown', '(', ')']
 
       if (ignoreKeys.includes(e.key)) {
         e.preventDefault()
+
+        return
       }
 
       const position = e.currentTarget.selectionStart ?? 0
@@ -75,7 +103,11 @@ const TokensInput = forwardRef<HTMLInputElement, Props>(
           val.slice(position - 1, position + 1) === '  ')
       ) {
         e.preventDefault()
+
+        return
       }
+
+      markTyping(e)
 
       onKeyDown?.(e)
     }
@@ -126,6 +158,14 @@ const TokensInput = forwardRef<HTMLInputElement, Props>(
       inputRef.current?.focus()
     }
 
+    const handlePaste = (e: ClipboardEvent<HTMLInputElement>) => {
+      e.preventDefault()
+
+      const text = e.clipboardData.getData('text/plain').replace(/\(|\)/g, '')
+
+      onChange?.(text)
+    }
+
     const clearButton = !!value && (
       <ActionIcon size="sm" onClick={handleClear}>
         <IconX />
@@ -148,9 +188,14 @@ const TokensInput = forwardRef<HTMLInputElement, Props>(
           onFocus={handleFocus}
           onBlur={handleBlur}
           onScroll={handleScroll}
+          onPaste={handlePaste}
           {...props}
         />
-        <Text ref={rendererRef} css={S.renderer} className={clsx('renderer', { focused })}>
+        <Text
+          ref={rendererRef}
+          css={S.renderer}
+          className={clsx('renderer', { focused, typing: isTyping })}
+        >
           {renderTokens()}
         </Text>
 

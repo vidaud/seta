@@ -1,10 +1,11 @@
 import type { ActionIconProps, ChipProps, SelectItem } from '@mantine/core'
-import { ActionIcon, Text, Select, Chip, Flex, Tooltip } from '@mantine/core'
+import { ActionIcon, Text, Select, Chip, Flex, Tooltip, Group } from '@mantine/core'
 import { IconWand } from '@tabler/icons-react'
 
 import { useSearch } from '~/pages/SearchPageNew/contexts/search-context'
 import { useTermsSelection } from '~/pages/SearchPageNew/contexts/terms-selection-context'
 import { TermsView } from '~/pages/SearchPageNew/types/terms-view'
+import { TokenType } from '~/pages/SearchPageNew/types/token'
 
 import * as S from './styles'
 
@@ -61,8 +62,21 @@ const OntologyHeader = ({
   }
 
   const hasToken = !!currentToken?.token
+  const isOperator = currentToken?.type === TokenType.OPERATOR
 
-  const token = hasToken ? (
+  const { rawValue, operator } = currentToken ?? {}
+
+  const token = isOperator ? (
+    <Group spacing="xs">
+      <div css={S.operator} data-operator={operator}>
+        {rawValue}
+      </div>
+
+      <Text size="sm" color="dimmed">
+        [operator]
+      </Text>
+    </Group>
+  ) : hasToken ? (
     <Tooltip label={termTooltip} disabled={disabled}>
       <div>
         <Chip
@@ -74,7 +88,7 @@ const OntologyHeader = ({
           disabled={disabled}
           onChange={handleSelectAllChange}
         >
-          {currentToken.rawValue}
+          {rawValue}
         </Chip>
       </div>
     </Tooltip>
