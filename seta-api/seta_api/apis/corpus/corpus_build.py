@@ -3,6 +3,7 @@ from .corpus_build_search import build_search_query
 from seta_api.infrastructure.ApiLogicError import ApiLogicError
 import copy
 
+
 def retrieve_vector_list(semantic_sort_id, emb_vector, semantic_sort_id_list, emb_vector_list, current_app):
     vectors = []
     if semantic_sort_id:
@@ -101,7 +102,7 @@ def fill_body_for_sort(body, emb_vector, semantic_sort_id, emb_vector_list, sema
 
 def if_needed_add_knn_search_query(current_app, emb_vector, emb_vector_list, semantic_sort_id, semantic_sort_id_list,
                                    body):
-    # emb_vector, semantic_sort_id TO BE REMOVED
+    # TODO emb_vector, semantic_sort_id TO BE REMOVED
     if semantic_sort_id_list or emb_vector_list or emb_vector or semantic_sort_id:
         knn_k_check_body = copy.deepcopy(body)
         k = calculate_knn_search_k(knn_k_check_body, current_app)

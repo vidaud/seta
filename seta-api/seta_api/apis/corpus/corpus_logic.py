@@ -34,6 +34,8 @@ def document_by_id(doc_id, n_docs, from_doc, current_app):
         n_docs = current_app.config["DEFAULT_DOCS_NUMBER"]
     if from_doc is None:
         from_doc = current_app.config["DEFAULT_FROM_DOC_NUMBER"]
+    elif from_doc + n_docs > current_app.config["PAGINATION_DOC_LIMIT"]:
+        from_doc = (current_app.config["PAGINATION_DOC_LIMIT"] - n_docs)
     try:
         body = {"size": n_docs,
                 "from": from_doc,
@@ -115,8 +117,8 @@ def corpus(term, n_docs, from_doc, sources, collection, reference, in_force, sor
         n_docs = current_app.config["DEFAULT_DOCS_NUMBER"]
     if from_doc is None:
         from_doc = current_app.config["DEFAULT_FROM_DOC_NUMBER"]
-    elif from_doc + n_docs > current_app.config["FROM_DOC_LIMIT"]:
-        from_doc = (current_app.config["FROM_DOC_LIMIT"] - n_docs)
+    elif from_doc + n_docs > current_app.config["PAGINATION_DOC_LIMIT"]:
+        from_doc = (current_app.config["PAGINATION_DOC_LIMIT"] - n_docs)
 
     body = build_corpus_request(term, n_docs, from_doc, sources, collection, reference, in_force, sort, taxonomy_path,
                                 semantic_sort_id, emb_vector, semantic_sort_id_list, emb_vector_list, author,
