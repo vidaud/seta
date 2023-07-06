@@ -39,12 +39,11 @@ const CommunityButton = ({ props, community_scopes, resources }) => {
       <Group style={{ width: 'max-content' }} position="right">
         {isManager ? (
           <>
-            <UpdateCommunity community={props} community_scopes={community_scopes} />
             <Menu
               transitionProps={{ transition: 'pop' }}
               withArrow
-              position="bottom-end"
-              withinPortal
+              position="left"
+              closeOnClickOutside={false}
             >
               <Menu.Target>
                 <ActionIcon onClick={e => e.stopPropagation()}>
@@ -52,6 +51,7 @@ const CommunityButton = ({ props, community_scopes, resources }) => {
                 </ActionIcon>
               </Menu.Target>
               <Menu.Dropdown>
+                <UpdateCommunity community={props} community_scopes={community_scopes} />
                 {scopes?.includes('/seta/community/invite') ? (
                   <InviteMember id={props.community_id} />
                 ) : null}

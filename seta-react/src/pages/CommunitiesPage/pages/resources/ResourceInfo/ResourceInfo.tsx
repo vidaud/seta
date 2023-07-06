@@ -1,13 +1,17 @@
-import { Badge, Flex, Text, clsx, Tooltip } from '@mantine/core'
+import { createRef, useEffect, useState } from 'react'
+import { Flex, Text, clsx, Group, Anchor, Menu, ActionIcon } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
+import { IconDotsVertical } from '@tabler/icons-react'
 import { CgSearchFound } from 'react-icons/cg'
 import { FaChevronDown } from 'react-icons/fa'
 import { MdOutlineSearchOff } from 'react-icons/md'
+import { useLocation, useNavigate } from 'react-router-dom'
 
 import type { ResourceResponse } from '~/api/types/resource-types'
 
 import DeleteResource from './components/DeleteResource/DeleteResource'
 import ResourceDetails from './components/ResourceDetails/ResourceDetails'
+import RestrictedResource from './components/RestrictedResources/RestrictedResources'
 import UpdateResource from './components/UpdateResource/UpdateResource'
 import * as S from './styles'
 
@@ -22,14 +26,19 @@ type Props = {
 }
 
 const ResourceInfo = ({ resource, resource_scopes }: Props) => {
-  const { title, resource_id, abstract, searchable } = resource
+  const [scopes, setScopes] = useState<string[] | undefined>([])
+  const { title, resource_id, abstract, community_title, created_at, community_id, searchable } =
+    resource
+  const location = useLocation()
+  const ref = createRef<HTMLDivElement>()
+  const navigate = useNavigate()
 
   const [detailsOpen, { toggle }] = useDisclosure()
 
   const chevronClass = clsx({ open: detailsOpen })
   const openClass = clsx({ open: detailsOpen })
 
-  const hasDetails = !!searchable
+  const hasDetails = !!community_id
 
   const toggleIcon = hasDetails && (
     <div css={S.chevron} className={chevronClass}>
@@ -37,33 +46,97 @@ const ResourceInfo = ({ resource, resource_scopes }: Props) => {
     </div>
   )
 
+  useEffect(() => {
+    if (location.hash === `#${resource_id.replace(/ /g, '%20')}`) {
+      toggle()
+      ref.current?.scrollIntoView()
+    }
+
+    const findResource = resource_scopes?.filter(
+      scope => scope.resource_id === resource.resource_id
+    )
+
+    findResource ? setScopes(findResource[0]?.scopes) : setScopes([])
+    //prevent entering infinite loop
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  const handleCommunityRedirection = () => {
+    navigate(`/communities/#${community_id}`)
+  }
+
   return (
     <div css={S.root} className={openClass}>
-      <div css={S.header} data-details={hasDetails} data-open={detailsOpen} onClick={toggle}>
-        {searchable === 'true' ? (
-          <Tooltip label="Searchable Resource" color="green">
-            <Badge variant="outline" color="green">
-              <CgSearchFound />
-            </Badge>
-          </Tooltip>
+      <div
+        css={S.header}
+        data-details={hasDetails}
+        data-open={detailsOpen}
+        onClick={toggle}
+        ref={ref}
+      >
+        {searchable === true ? (
+          <CgSearchFound size={26} color="green" />
         ) : (
-          <Tooltip label="Not Searchable Resource" color="blue">
-            <Badge variant="outline" color="blue">
-              <MdOutlineSearchOff />
-            </Badge>
-          </Tooltip>
+          <MdOutlineSearchOff size={26} color="blue" />
         )}
         <div css={S.title}>
           <Text fz="md" fw={600} truncate={detailsOpen ? undefined : 'end'}>
             {title.charAt(0).toUpperCase() + title.slice(1)}
           </Text>
         </div>
-        <UpdateResource resource={resource} resource_scopes={resource_scopes} />
-        <DeleteResource id={resource_id} resource_scopes={resource_scopes} />
+        {scopes?.includes('/seta/resource/edit') ? (
+          <Menu
+            transitionProps={{ transition: 'pop' }}
+            withArrow
+            position="left"
+            closeOnClickOutside={false}
+          >
+            <Menu.Target>
+              <ActionIcon
+                onClick={e => {
+                  e.stopPropagation()
+                }}
+              >
+                <IconDotsVertical size="1rem" stroke={1.5} />
+              </ActionIcon>
+            </Menu.Target>
+            <Menu.Dropdown
+              onClick={e => {
+                e.stopPropagation()
+              }}
+            >
+              <RestrictedResource resource={resource} />
+              <UpdateResource resource={resource} />
+              <DeleteResource id={resource_id} />
+            </Menu.Dropdown>
+          </Menu>
+        ) : (
+          <div />
+        )}
+
         {toggleIcon}
       </div>
 
       <Flex direction="column" gap="xs" data-info css={S.info}>
+        <Group sx={{ gap: '0.4rem' }}>
+          <Text size="sm" onClick={() => handleCommunityRedirection()}>
+            Community: {'  '}
+            <Anchor
+              onClick={e => {
+                e.stopPropagation()
+                handleCommunityRedirection()
+              }}
+            >
+              {community_title.charAt(0).toUpperCase() + community_title.slice(1)}
+            </Anchor>
+          </Text>
+          <Text size="sm">
+            {'>'} ID: {resource_id.charAt(0).toUpperCase() + resource_id.slice(1)}
+          </Text>
+          <Text size="sm">
+            {'>'} Created at: {new Date(created_at).toDateString()}
+          </Text>
+        </Group>
         <Text size="xs">{abstract.charAt(0).toUpperCase() + abstract.slice(1)}</Text>
       </Flex>
 
@@ -71,7 +144,6 @@ const ResourceInfo = ({ resource, resource_scopes }: Props) => {
         <ResourceDetails
           css={S.details}
           open={detailsOpen}
-          id={resource_id}
           resource={resource}
           resource_scopes={resource_scopes}
         />

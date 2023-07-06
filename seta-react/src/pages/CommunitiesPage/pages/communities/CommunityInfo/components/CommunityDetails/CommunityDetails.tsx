@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Badge, Collapse, Group, Tabs, Text } from '@mantine/core'
+import { Badge, Collapse, Group, Tabs } from '@mantine/core'
 
 import type { CommunityResponse } from '~/api/types/community-types'
 import type { ClassNameProp } from '~/types/children-props'
@@ -18,26 +18,25 @@ import MembershipRequests from '../MembershipRequests/MembershipRequests'
 
 type Props = ClassNameProp & {
   open: boolean
-  id: string
   community: CommunityResponse
   community_scopes?: CommunityScopes[]
   resource_scopes?: ResourceScopes[]
   system_scopes?: SystemScopes[]
 }
 
-const CommunityDetails = ({ className, open, id, community, community_scopes }: Props) => {
+const CommunityDetails = ({ className, open, community, community_scopes }: Props) => {
   const [activeTab, setActiveTab] = useState<string | null>('resources')
   const [scopes, setScopes] = useState<string[] | undefined>([])
   const [nrInvites, setNrInvites] = useState<number>(0)
   const [nrChangeRequests, setNrChangeRequests] = useState<number>(0)
   const [nrMembershipRequests, setNrMembershipRequests] = useState<number>(0)
-  const { community_id, created_at } = community
+  const { community_id } = community
 
   useEffect(() => {
-    const findCommunity = community_scopes?.filter(scope => scope.community_id === id)
+    const findCommunity = community_scopes?.filter(scope => scope.community_id === community_id)
 
     findCommunity ? setScopes(findCommunity[0]?.scopes) : setScopes([])
-  }, [community_scopes, id])
+  }, [community_scopes, community_id])
 
   const handleNrInvitesChange = (value: number) => {
     setNrInvites(value)
@@ -58,14 +57,6 @@ const CommunityDetails = ({ className, open, id, community, community_scopes }: 
 
   return (
     <Collapse className={className} in={open}>
-      <Group>
-        <Text size="xs" sx={{ width: '50%' }}>
-          ID: {community_id.charAt(0).toUpperCase() + community_id.slice(1)}
-        </Text>
-        <Text size="sm" sx={{ width: '45%', textAlign: 'right' }}>
-          Created at: {new Date(created_at).toDateString()}
-        </Text>
-      </Group>
       <Tabs value={activeTab} onTabChange={setActiveTab} orientation="horizontal">
         <Tabs.List
           sx={theme => ({
@@ -96,26 +87,26 @@ const CommunityDetails = ({ className, open, id, community, community_scopes }: 
           {/* {scopes?.includes('/seta/resource/create') ? ( */}
           {isManager ? (
             <Group position="right">
-              <CreateResource id={id} />
+              <CreateResource id={community_id} />
             </Group>
           ) : null}
-          <CommunityResources id={id} />
+          <CommunityResources id={community_id} />
         </Tabs.Panel>
         {isManager || invite ? (
           <Tabs.Panel value="invites" sx={{ paddingLeft: '2%' }}>
-            <CommunityInvites id={id} onChange={handleNrInvitesChange} />
+            <CommunityInvites id={community_id} onChange={handleNrInvitesChange} />
           </Tabs.Panel>
         ) : null}
         {isManager || approve ? (
           <>
             <Tabs.Panel value="change_requests" sx={{ paddingLeft: '2%' }}>
-              <ChangeCommunityRequests id={id} onChange={handleNrChangeRequestsChange} />
+              <ChangeCommunityRequests id={community_id} onChange={handleNrChangeRequestsChange} />
             </Tabs.Panel>
             <Tabs.Panel value="membership_requests" sx={{ paddingLeft: '2%' }}>
-              <MembershipRequests id={id} onChange={handleNrMembershipRequestsChange} />
+              <MembershipRequests id={community_id} onChange={handleNrMembershipRequestsChange} />
             </Tabs.Panel>
             <Tabs.Panel value="permissions" sx={{ paddingLeft: '2%' }}>
-              <CommunityUsersPermissions id={id} />
+              <CommunityUsersPermissions id={community_id} />
             </Tabs.Panel>
           </>
         ) : null}

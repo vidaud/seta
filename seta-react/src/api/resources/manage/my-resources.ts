@@ -6,7 +6,7 @@ import community_api from '../../communities/api'
 
 const RESOURCE_API_PATH = '/resources/'
 
-export const cacheKey = () => ['my-resources']
+export const cacheKey = () => ['resources']
 
 const getMyResources = async (): Promise<ResourceResponse[]> => {
   const { data } = await community_api.get<ResourceResponse[]>(`${RESOURCE_API_PATH}`)

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Popover, Button, Group, createStyles, Tooltip, Text, NumberInput } from '@mantine/core'
+import { Popover, Button, Group, createStyles, Text, NumberInput } from '@mantine/core'
 
 import { createResourceChangeRequest } from '../../../../../../../api/communities/resource-change-requests'
 import type { NewValueValues } from '../../../../contexts/change-request-context'
@@ -66,13 +66,9 @@ const UpdateLimits = ({ props }) => {
       onChange={setOpened}
     >
       <Popover.Target>
-        <Group position="right">
-          <Tooltip label="Update Limits" color="blue">
-            <Button size="sm" onClick={() => setOpened(o => !o)}>
-              Update Limits
-            </Button>
-          </Tooltip>
-        </Group>
+        <Button size="xs" onClick={() => setOpened(o => !o)}>
+          Request Update Limits
+        </Button>
       </Popover.Target>
       <Popover.Dropdown
         sx={theme => ({

@@ -20,6 +20,7 @@ const useStyles = createStyles({
   },
   button: {
     padding: '0.625rem 0.75rem',
+    color: '#868e96',
     width: '100%',
     borderRadius: '4px',
     ':hover': { background: '#f1f3f5' }

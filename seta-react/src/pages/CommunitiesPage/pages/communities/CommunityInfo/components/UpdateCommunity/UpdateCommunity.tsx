@@ -15,9 +15,9 @@ import UpdateForm from './components/UpdateForm/UpdateForm'
 
 const useStyles = createStyles({
   button: {
-    padding: '0.3rem 0.5rem',
-    width: '100%',
+    padding: '0.625rem 0.75rem',
     color: '#868e96',
+    width: '100%',
     borderRadius: '4px',
     ':hover': { background: '#f1f3f5' }
   }
@@ -53,12 +53,15 @@ const UpdateCommunity = ({ community, community_scopes }) => {
               opacity: 0.55,
               blur: 3
             }}
-            onClick={e => e.stopPropagation()}
+            onClick={e => {
+              e.stopPropagation()
+              e.preventDefault()
+            }}
           >
             <Divider my="xs" label="Update Community" labelPosition="center" />
             <UpdateForm community={community} close={close} />
           </Modal>
-          <Group sx={{ marginRight: '-1rem' }}>
+          <Group>
             <Tooltip label="Update Community" color="gray">
               <UnstyledButton
                 className={classes.button}
@@ -68,6 +71,7 @@ const UpdateCommunity = ({ community, community_scopes }) => {
                 }}
               >
                 <IconPencil size="1rem" stroke={1.5} />
+                {'  '} Update Community
               </UnstyledButton>
             </Tooltip>
           </Group>

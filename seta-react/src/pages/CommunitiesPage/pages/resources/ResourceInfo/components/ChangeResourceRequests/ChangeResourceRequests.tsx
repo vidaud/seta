@@ -31,7 +31,7 @@ const useStyles = createStyles(theme => ({
   }
 }))
 
-const ChangeResourceRequests = ({ id }) => {
+const ChangeResourceRequests = ({ id, onChange }) => {
   const { classes, cx } = useStyles()
   const [scrolled, setScrolled] = useState(false)
   const { data, isLoading, error, refetch } = useResourcesChangeRequests(id)
@@ -41,8 +41,9 @@ const ChangeResourceRequests = ({ id }) => {
   useEffect(() => {
     if (data) {
       setItems(data)
+      onChange(data.length)
     }
-  }, [data, items])
+  }, [data, items, onChange])
 
   if (error) {
     return <ComponentError onTryAgain={refetch} />

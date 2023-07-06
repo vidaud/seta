@@ -4,7 +4,7 @@ export type ResourceResponse = {
   community_title: string
   title: string
   abstract: string
-  searchable: string
+  searchable: boolean
   limits?: {
     total_files_no: number
     total_storage_mb: number
@@ -33,4 +33,8 @@ export type UpdateResourceAPI = {
   title: string
   abstract: string
   status?: string
+}
+
+export type RestrictedResource = {
+  resource?: string
 }

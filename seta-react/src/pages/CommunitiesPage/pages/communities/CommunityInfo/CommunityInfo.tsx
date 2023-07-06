@@ -1,6 +1,8 @@
-import { Flex, Text, clsx, Tooltip } from '@mantine/core'
+import { createRef, useEffect } from 'react'
+import { Flex, Group, Text, clsx } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 import { FaChevronDown, FaUsers, FaUsersSlash } from 'react-icons/fa'
+import { Link, useLocation } from 'react-router-dom'
 
 import type {
   CommunityScopes,
@@ -29,8 +31,10 @@ const membershipColors: Record<string, string> = {
 }
 
 const CommunityInfo = ({ community, community_scopes }: Props) => {
-  const { title, community_id, description, membership } = community
+  const { title, community_id, description, membership, created_at } = community
   const { data } = useMyCommunityResources(community_id)
+  const location = useLocation()
+  const ref = createRef<HTMLDivElement>()
 
   const [detailsOpen, { toggle }] = useDisclosure()
 
@@ -45,67 +49,48 @@ const CommunityInfo = ({ community, community_scopes }: Props) => {
     </div>
   )
 
+  useEffect(() => {
+    if (location.hash === `#${community_id.replace(/ /g, '%20')}`) {
+      toggle()
+      ref.current?.scrollIntoView()
+    }
+    //prevent entering infinite loop
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
   return (
     <div css={S.root} className={openClass}>
-      <div css={S.header} data-details={hasDetails} data-open={detailsOpen} onClick={toggle}>
-        {membership === 'closed' ? (
-          <Tooltip
-            label="Restricted Community"
-            color={membershipColors[membership.toLowerCase()]}
-            position="right"
-          >
+      <Link to={`/communities/#${community_id}`}>
+        <div
+          css={S.header}
+          data-details={hasDetails}
+          data-open={detailsOpen}
+          onClick={toggle}
+          ref={ref}
+        >
+          {membership === 'closed' ? (
             <FaUsersSlash size="1.5rem" color={membershipColors[membership.toLowerCase()]} />
-          </Tooltip>
-        ) : (
-          <Tooltip
-            label="Opened Community"
-            color={membershipColors[membership.toLowerCase()]}
-            position="right"
-          >
+          ) : (
             <FaUsers size="1.5rem" color={membershipColors[membership.toLowerCase()]} />
-          </Tooltip>
-        )}
-        {/* {status === 'membership' ? (
-          <Tooltip label="Member" color="green">
-            <Badge variant="outline" color="green" w="min-content">
-              <FaUser />
-            </Badge>
-          </Tooltip>
-        ) : status === 'invited' ? (
-          <Tooltip label="Invited" color="gray">
-            <Badge variant="outline" color="gray" w="min-content">
-              <FcInvite />
-            </Badge>
-          </Tooltip>
-        ) : status === 'rejected' ? (
-          <Tooltip label="Rejected" color="red">
-            <Badge variant="outline" color="red" w="min-content">
-              <FcCancel />
-            </Badge>
-          </Tooltip>
-        ) : status === 'pending' ? (
-          <Tooltip label="Rejected" color="gray">
-            <Badge variant="outline" color="gray" w="min-content">
-              <TbLoader />
-            </Badge>
-          </Tooltip>
-        ) : status === 'unknown' ? (
-          <Tooltip label="Not Member" color="orange">
-            <Badge variant="outline" color="orange" w="min-content">
-              <FaUserSlash />
-            </Badge>
-          </Tooltip>
-        ) : null} */}
-        <div css={S.title}>
-          <Text fz="md" fw={600} truncate={detailsOpen ? undefined : 'end'}>
-            {title.charAt(0).toUpperCase() + title.slice(1)}
-          </Text>
+          )}
+
+          <div css={S.title}>
+            <Text fz="md" fw={600} truncate={detailsOpen ? undefined : 'end'}>
+              {title.charAt(0).toUpperCase() + title.slice(1)}
+            </Text>
+          </div>
+          <CommunityButton props={community} community_scopes={community_scopes} resources={data} />
+          {toggleIcon}
         </div>
-        <CommunityButton props={community} community_scopes={community_scopes} resources={data} />
-        {toggleIcon}
-      </div>
+      </Link>
 
       <Flex direction="column" gap="xs" data-info css={S.info}>
+        <Group sx={{ gap: '0.4rem' }}>
+          <Text size="sm">ID: {community_id.charAt(0).toUpperCase() + community_id.slice(1)}</Text>
+          <Text size="sm">
+            {'>'} Created at: {new Date(created_at).toDateString()}
+          </Text>
+        </Group>
         <Text size="xs">{description.charAt(0).toUpperCase() + description.slice(1)}</Text>
       </Flex>
 
@@ -113,7 +98,6 @@ const CommunityInfo = ({ community, community_scopes }: Props) => {
         <CommunityDetails
           css={S.details}
           open={detailsOpen}
-          id={community_id}
           community={community}
           community_scopes={community_scopes}
         />
