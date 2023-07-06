@@ -45,9 +45,14 @@ const useStyles = createStyles(theme => ({
   }
 }))
 
+function getStrength(slides, currentslide) {
+  return Math.max((100 / slides) * currentslide)
+}
+
 const ModalPage = () => {
   const { classes } = useStyles()
   const [showButton, setShowButton] = useState(true)
+  const dontshow = "Don't show this again"
 
   const toggleButton = () => {
     setShowButton(!showButton)
@@ -72,9 +77,9 @@ const ModalPage = () => {
                   <Text className={classes.titleModal}> Welcome to SeTA! </Text>
                   <br />
                   <Image src={image1} alt="Presentation" />
-                  <Progress color="gray" value={12.5} size="md" radius="xl" />
+                  <Progress color="gray" value={getStrength(8, 1)} size="md" radius="xl" />
                   <span className={classes.dontShowMe}>
-                    <input type="checkbox" onClick={toggleButton} /> Don't show this again
+                    <input type="checkbox" onClick={toggleButton} /> {dontshow}
                   </span>
                 </>
               ),
@@ -94,9 +99,9 @@ const ModalPage = () => {
                       </Text>
                       <br />
                       <Image src={image2} alt="Communities" />
-                      <Progress color="gray" value={25} size="md" radius="xl" />
+                      <Progress color="gray" value={getStrength(8, 2)} size="md" radius="xl" />
                       <span className={classes.dontShowMe}>
-                        <input type="checkbox" onClick={toggleButton} /> Don't show this again
+                        <input type="checkbox" onClick={toggleButton} /> {dontshow}
                       </span>
                     </>
                   ),
@@ -116,9 +121,9 @@ const ModalPage = () => {
                           </Text>
                           <br />
                           <Image src={image3} alt="Communities" />
-                          <Progress color="gray" value={37.5} size="md" radius="xl" />
+                          <Progress color="gray" value={getStrength(8, 3)} size="md" radius="xl" />
                           <span className={classes.dontShowMe}>
-                            <input type="checkbox" onClick={toggleButton} /> Don't show this again
+                            <input type="checkbox" onClick={toggleButton} /> {dontshow}
                           </span>
                         </>
                       ),
@@ -138,10 +143,14 @@ const ModalPage = () => {
                               </Text>
                               <br />
                               <Image src={image4} />
-                              <Progress color="gray" value={50} size="md" radius="xl" />
+                              <Progress
+                                color="gray"
+                                value={getStrength(8, 4)}
+                                size="md"
+                                radius="xl"
+                              />
                               <span className={classes.dontShowMe}>
-                                <input type="checkbox" onClick={toggleButton} /> Don't show this
-                                again
+                                <input type="checkbox" onClick={toggleButton} /> {dontshow}
                               </span>
                             </>
                           ),
@@ -160,10 +169,14 @@ const ModalPage = () => {
                                   </Text>
                                   <br />
                                   <Image src={image5} />
-                                  <Progress color="gray" value={62.5} size="md" radius="xl" />
+                                  <Progress
+                                    color="gray"
+                                    value={getStrength(8, 5)}
+                                    size="md"
+                                    radius="xl"
+                                  />
                                   <span className={classes.dontShowMe}>
-                                    <input type="checkbox" onClick={toggleButton} /> Don't show this
-                                    again
+                                    <input type="checkbox" onClick={toggleButton} /> {dontshow}
                                   </span>
                                 </>
                               ),
@@ -183,10 +196,15 @@ const ModalPage = () => {
                                       </Text>
                                       <br />
                                       <Image src={image6} />
-                                      <Progress color="gray" value={75} size="md" radius="xl" />
+                                      <Progress
+                                        color="gray"
+                                        value={getStrength(8, 6)}
+                                        size="md"
+                                        radius="xl"
+                                      />
                                       <span className={classes.dontShowMe}>
                                         <input type="checkbox" onClick={toggleButton} />
-                                        &nbsp;Don't show this again
+                                        &nbsp;{dontshow}
                                       </span>
                                     </>
                                   ),
@@ -208,13 +226,13 @@ const ModalPage = () => {
                                           <Image src={image7} alt="Search" />
                                           <Progress
                                             color="gray"
-                                            value={87.5}
+                                            value={getStrength(8, 7)}
                                             size="md"
                                             radius="xl"
                                           />
                                           <span className={classes.dontShowMe}>
                                             <input type="checkbox" onClick={toggleButton} />
-                                            &nbsp;Don't show this again
+                                            &nbsp;{dontshow}
                                           </span>
                                         </>
                                       ),
@@ -236,13 +254,13 @@ const ModalPage = () => {
                                               <Image src={image8} alt="Search" />
                                               <Progress
                                                 color="gray"
-                                                value={100}
+                                                value={getStrength(8, 8)}
                                                 size="md"
                                                 radius="xl"
                                               />
                                               <span className={classes.dontShowMe}>
                                                 <input type="checkbox" onClick={toggleButton} />
-                                                &nbsp;Don't show this again
+                                                &nbsp;{dontshow}
                                               </span>
                                             </>
                                           ),
