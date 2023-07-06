@@ -1,4 +1,4 @@
-import { createRef, useEffect } from 'react'
+import { createRef, useEffect, useState } from 'react'
 import { Flex, Text, clsx, Group, Anchor, Menu, ActionIcon } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 import { IconDotsVertical } from '@tabler/icons-react'
@@ -26,6 +26,7 @@ type Props = {
 }
 
 const ResourceInfo = ({ resource, resource_scopes }: Props) => {
+  const [scopes, setScopes] = useState<string[] | undefined>([])
   const { title, resource_id, abstract, community_title, created_at, community_id, searchable } =
     resource
   const location = useLocation()
@@ -50,6 +51,12 @@ const ResourceInfo = ({ resource, resource_scopes }: Props) => {
       toggle()
       ref.current?.scrollIntoView()
     }
+
+    const findResource = resource_scopes?.filter(
+      scope => scope.resource_id === resource.resource_id
+    )
+
+    findResource ? setScopes(findResource[0]?.scopes) : setScopes([])
     //prevent entering infinite loop
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
@@ -77,31 +84,35 @@ const ResourceInfo = ({ resource, resource_scopes }: Props) => {
             {title.charAt(0).toUpperCase() + title.slice(1)}
           </Text>
         </div>
-        <Menu
-          transitionProps={{ transition: 'pop' }}
-          withArrow
-          position="left"
-          closeOnClickOutside={false}
-        >
-          <Menu.Target>
-            <ActionIcon
+        {scopes?.includes('/seta/resource/edit') ? (
+          <Menu
+            transitionProps={{ transition: 'pop' }}
+            withArrow
+            position="left"
+            closeOnClickOutside={false}
+          >
+            <Menu.Target>
+              <ActionIcon
+                onClick={e => {
+                  e.stopPropagation()
+                }}
+              >
+                <IconDotsVertical size="1rem" stroke={1.5} />
+              </ActionIcon>
+            </Menu.Target>
+            <Menu.Dropdown
               onClick={e => {
                 e.stopPropagation()
               }}
             >
-              <IconDotsVertical size="1rem" stroke={1.5} />
-            </ActionIcon>
-          </Menu.Target>
-          <Menu.Dropdown
-            onClick={e => {
-              e.stopPropagation()
-            }}
-          >
-            <RestrictedResource resource={resource} resource_scopes={resource_scopes} />
-            <UpdateResource resource={resource} resource_scopes={resource_scopes} />
-            <DeleteResource id={resource_id} resource_scopes={resource_scopes} />
-          </Menu.Dropdown>
-        </Menu>
+              <RestrictedResource resource={resource} />
+              <UpdateResource resource={resource} />
+              <DeleteResource id={resource_id} />
+            </Menu.Dropdown>
+          </Menu>
+        ) : (
+          <div />
+        )}
 
         {toggleIcon}
       </div>

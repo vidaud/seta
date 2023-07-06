@@ -34,62 +34,42 @@ const useStyles = createStyles(theme => ({
 
 type Props = {
   resource: ResourceResponse
-  resource_scopes: ResourceScopes[] | undefined
+  resource_scopes?: ResourceScopes[] | undefined
 }
 
-const RestrictedResource = ({ resource, resource_scopes }: Props) => {
+const RestrictedResource = ({ resource }: Props) => {
   const { data, refetch } = useAllResources()
   const { classes } = useStyles()
-  const [scopes, setScopes] = useState<string[] | undefined>([])
-  const [idResources, setIdResources] = useState<string[]>([])
   const theme = useMantineTheme()
-  const [checked, setChecked] = useState(resource.searchable)
+  const [checked, setChecked] = useState(!resource.searchable)
 
   useEffect(() => {
     if (resource) {
       // form.setValues(props)
-      const findResource = resource_scopes?.filter(
-        scope => scope.resource_id === resource.resource_id
-      )
-
-      findResource ? setScopes(findResource[0]?.scopes) : setScopes([])
-
-      const list: string[] = []
-
-      data
-        ?.filter(item => item.searchable === true)
-        .forEach(item => {
-          list.push(...[item.resource_id])
-          setIdResources(...[list])
-        })
     }
-  }, [resource, data, resource_scopes])
+  }, [resource, data])
 
-  const handleSwitch = (value: boolean) => {
-    setChecked(value)
+  const handleSwitch = (value: React.ChangeEvent<HTMLInputElement>, id: string) => {
+    setChecked(value.currentTarget.checked)
 
-    if (!value) {
-      // const list: Props = { resource: resource.resource_id }
-      const list: string[] = []
+    if (value.currentTarget.checked) {
+      const form = new FormData()
 
-      idResources.forEach(element => {
-        list.push(element)
-      })
+      const index = data?.filter(item => item.searchable === false).map(item => item.resource_id)
 
-      list.push(resource.resource_id)
-      // manageRestrictedResources(list)
-      manageRestrictedResources(resource.resource_id)
+      index?.forEach(element => form.append('resource', element))
+      form.append('resource', id)
+      manageRestrictedResources(form)
     } else {
-      const list: string[] = []
+      const form = new FormData()
 
-      idResources.forEach(element => {
-        list.push(element)
-      })
+      const index = data
+        ?.filter(item => item.searchable === false && item.resource_id !== id)
+        .map(item => item.resource_id)
 
-      list.filter(item => item !== resource.resource_id)
+      index?.forEach(element => form.append('resource', element))
 
-      // manageRestrictedResources(list)
-      manageRestrictedResources('')
+      manageRestrictedResources(form)
     }
 
     refetch()
@@ -97,27 +77,25 @@ const RestrictedResource = ({ resource, resource_scopes }: Props) => {
 
   return (
     <>
-      {scopes?.includes('/seta/resource/edit') ? (
-        <Switch
-          className={classes.button}
-          checked={checked}
-          onChange={event => handleSwitch(event.currentTarget.checked)}
-          color="teal"
-          size="md"
-          label={checked ? 'Switch to Not Searchable' : 'Switch to Searchable'}
-          thumbIcon={
-            checked ? (
-              <IconCheck
-                size="0.8rem"
-                color={theme.colors.teal[theme.fn.primaryShade()]}
-                stroke={3}
-              />
-            ) : (
-              <IconX size="0.8rem" color={theme.colors.red[theme.fn.primaryShade()]} stroke={3} />
-            )
-          }
-        />
-      ) : null}
+      <Switch
+        className={classes.button}
+        checked={checked}
+        onChange={event => handleSwitch(event, resource.resource_id)}
+        color="teal"
+        size="md"
+        label={checked ? 'Switch to Searchable' : 'Switch to Not Searchable'}
+        thumbIcon={
+          checked ? (
+            <IconCheck
+              size="0.8rem"
+              color={theme.colors.teal[theme.fn.primaryShade()]}
+              stroke={3}
+            />
+          ) : (
+            <IconX size="0.8rem" color={theme.colors.red[theme.fn.primaryShade()]} stroke={3} />
+          )
+        }
+      />
     </>
   )
 }

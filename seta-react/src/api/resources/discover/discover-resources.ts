@@ -18,19 +18,15 @@ export const useAllResources = () =>
 
 const csrf_token = getCookie('csrf_access_token')
 
-export const manageRestrictedResources = async (resources?: string) => {
+export const manageRestrictedResources = async (resources?: FormData) => {
   await community_api
-    .post<string>(
-      `/me/resources`,
-      { resource: resources },
-      {
-        headers: {
-          accept: 'application/json',
-          'X-CSRF-TOKEN': csrf_token,
-          'Content-Type': 'application/x-www-form-urlencoded'
-        }
+    .post<FormData>(`/me/resources`, resources, {
+      headers: {
+        accept: 'application/json',
+        'X-CSRF-TOKEN': csrf_token,
+        'Content-Type': 'application/x-www-form-urlencoded'
       }
-    )
+    })
     .then(response => {
       if (response.status === 201) {
         window.location.href = `/resources`

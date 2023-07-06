@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { Text, Popover, Button, Group, createStyles, UnstyledButton } from '@mantine/core'
 import { IconTrash } from '@tabler/icons-react'
 
@@ -22,19 +22,12 @@ const useStyles = createStyles(theme => ({
 
 type Props = {
   id: string
-  resource_scopes: ResourceScopes[] | undefined
+  resource_scopes?: ResourceScopes[] | undefined
 }
 
-const DeleteResource = ({ id, resource_scopes }: Props) => {
-  const [scopes, setScopes] = useState<string[] | undefined>([])
+const DeleteResource = ({ id }: Props) => {
   const { classes, cx } = useStyles()
   const [opened, setOpened] = useState(false)
-
-  useEffect(() => {
-    const findResource = resource_scopes?.filter(scope => scope.resource_id === id)
-
-    findResource ? setScopes(findResource[0]?.scopes) : setScopes([])
-  }, [resource_scopes, id])
 
   const deleteResource = () => {
     deleteResourceByID(id)
@@ -51,22 +44,21 @@ const DeleteResource = ({ id, resource_scopes }: Props) => {
       opened={opened}
       onChange={setOpened}
     >
-      {scopes?.includes('/seta/resource/edit') ? (
-        <Popover.Target>
-          <Group>
-            <UnstyledButton
-              className={classes.button}
-              onClick={e => {
-                e.stopPropagation()
-                setOpened(o => !o)
-              }}
-            >
-              <IconTrash size="1rem" stroke={1.5} />
-              {'  '} Delete Resource
-            </UnstyledButton>
-          </Group>
-        </Popover.Target>
-      ) : null}
+      <Popover.Target>
+        <Group>
+          <UnstyledButton
+            className={classes.button}
+            onClick={e => {
+              e.stopPropagation()
+              setOpened(o => !o)
+            }}
+          >
+            <IconTrash size="1rem" stroke={1.5} />
+            {'  '} Delete Resource
+          </UnstyledButton>
+        </Group>
+      </Popover.Target>
+
       <Popover.Dropdown
         sx={theme => ({
           background: theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.white
