@@ -68,7 +68,6 @@ const ResourceInfo = ({ resource, resource_scopes }: Props) => {
 
   const handleOutsideClick = value => {
     setOutsideClick(value)
-    console.log(value)
   }
 
   return (
