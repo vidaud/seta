@@ -24,10 +24,10 @@ const useStyles = createStyles({
   }
 })
 
-const UpdateForm = ({ resource, close }) => {
+const UpdateForm = ({ resourceInfo, close, onChange }) => {
   const { classes, cx } = useStyles()
 
-  const { data, isLoading } = useResourceID(resource.resource_id)
+  const { data, isLoading } = useResourceID(resourceInfo)
 
   const form = useResource({
     initialValues: {
@@ -54,7 +54,7 @@ const UpdateForm = ({ resource, close }) => {
   }
 
   const handleSubmit = (values: ResourceValues) => {
-    updateResource(resource.resource_id, values.resource_id, values)
+    updateResource(resourceInfo, values.resource_id, values)
   }
 
   return (
@@ -88,12 +88,19 @@ const UpdateForm = ({ resource, close }) => {
               onClick={e => {
                 close()
                 e.stopPropagation()
+                onChange(true)
               }}
             >
               Cancel
             </Button>
 
-            <Button size="xs" type="submit" onClick={e => e.stopPropagation()}>
+            <Button
+              size="xs"
+              type="submit"
+              onClick={e => {
+                e.stopPropagation()
+              }}
+            >
               Update
             </Button>
           </Group>

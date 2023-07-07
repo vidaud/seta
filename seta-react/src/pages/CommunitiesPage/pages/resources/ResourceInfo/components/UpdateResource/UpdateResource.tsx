@@ -21,11 +21,13 @@ const useStyles = createStyles({
 type Props = {
   resource: ResourceResponse
   resource_scopes?: ResourceScopes[] | undefined
+  onChange: (value: boolean) => void
 }
 
-const UpdateResource = ({ resource }: Props) => {
+const UpdateResource = ({ resource, onChange }: Props) => {
   const { classes } = useStyles()
   const [opened, { open, close }] = useDisclosure(false)
+  const { resource_id } = resource
   const theme = useMantineTheme()
 
   return (
@@ -46,7 +48,7 @@ const UpdateResource = ({ resource }: Props) => {
           }}
         >
           <Divider my="xs" label="Update Resource" labelPosition="center" />
-          <UpdateForm resource={resource} close={close} />
+          <UpdateForm resourceInfo={resource_id} close={close} onChange={onChange} />
         </Modal>
 
         <Group>
@@ -54,6 +56,7 @@ const UpdateResource = ({ resource }: Props) => {
             className={classes.button}
             onClick={e => {
               e.stopPropagation()
+              onChange(false)
               open()
             }}
           >
