@@ -19,6 +19,7 @@ const CommunityButton = ({ props, community_scopes, resources }) => {
   const [data, setData] = useState<CommunityResponse>(props)
   const [message, setMessage] = useState('')
   const [scopes, setScopes] = useState<string[] | undefined>([])
+  const [outsideClick, setOutsideClick] = useState(true)
 
   useEffect(() => {
     if (props) {
@@ -34,6 +35,10 @@ const CommunityButton = ({ props, community_scopes, resources }) => {
   const isManager =
     scopes?.includes('/seta/community/owner') || scopes?.includes('/seta/community/manager')
 
+  const handleOutsideClick = value => {
+    setOutsideClick(value)
+  }
+
   return (
     <>
       <Group style={{ width: 'max-content' }} position="right">
@@ -43,7 +48,7 @@ const CommunityButton = ({ props, community_scopes, resources }) => {
               transitionProps={{ transition: 'pop' }}
               withArrow
               position="left"
-              closeOnClickOutside={false}
+              closeOnClickOutside={outsideClick}
             >
               <Menu.Target>
                 <ActionIcon onClick={e => e.stopPropagation()}>
@@ -51,7 +56,11 @@ const CommunityButton = ({ props, community_scopes, resources }) => {
                 </ActionIcon>
               </Menu.Target>
               <Menu.Dropdown>
-                <UpdateCommunity community={props} community_scopes={community_scopes} />
+                <UpdateCommunity
+                  community={props}
+                  community_scopes={community_scopes}
+                  onChange={handleOutsideClick}
+                />
                 {scopes?.includes('/seta/community/invite') ? (
                   <InviteMember id={props.community_id} />
                 ) : null}

@@ -27,6 +27,7 @@ type Props = {
 
 const ResourceInfo = ({ resource, resource_scopes }: Props) => {
   const [scopes, setScopes] = useState<string[] | undefined>([])
+  const [outsideClick, setOutsideClick] = useState(true)
   const { title, resource_id, abstract, community_title, created_at, community_id, searchable } =
     resource
   const location = useLocation()
@@ -65,6 +66,10 @@ const ResourceInfo = ({ resource, resource_scopes }: Props) => {
     navigate(`/communities/#${community_id}`)
   }
 
+  const handleOutsideClick = value => {
+    setOutsideClick(value)
+  }
+
   return (
     <div css={S.root} className={openClass}>
       <div
@@ -89,7 +94,7 @@ const ResourceInfo = ({ resource, resource_scopes }: Props) => {
             transitionProps={{ transition: 'pop' }}
             withArrow
             position="left"
-            closeOnClickOutside={false}
+            closeOnClickOutside={outsideClick}
           >
             <Menu.Target>
               <ActionIcon
@@ -106,7 +111,7 @@ const ResourceInfo = ({ resource, resource_scopes }: Props) => {
               }}
             >
               <RestrictedResource resource={resource} />
-              <UpdateResource resource={resource} />
+              <UpdateResource resource={resource} onChange={handleOutsideClick} />
               <DeleteResource id={resource_id} />
             </Menu.Dropdown>
           </Menu>

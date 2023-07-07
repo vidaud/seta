@@ -24,7 +24,7 @@ const useStyles = createStyles({
   }
 })
 
-const UpdateForm = ({ community, close }) => {
+const UpdateForm = ({ community, close, onChange }) => {
   const { classes, cx } = useStyles()
 
   const { data, isLoading } = useCommunityID(community.community_id)
@@ -98,6 +98,7 @@ const UpdateForm = ({ community, close }) => {
               color="blue"
               onClick={e => {
                 close()
+                onChange(true)
                 e.stopPropagation()
               }}
             >
