@@ -1,31 +1,50 @@
-import { Collapse, Flex } from '@mantine/core'
+import { Collapse, Stack } from '@mantine/core'
 
 import type { ClassNameProp } from '~/types/children-props'
 import type { Taxonomy } from '~/types/search/documents'
 
 import ChunkPreview from '../ChunkPreview'
-import TaxonomyTree from '../TaxonomyTree'
+import TaxonomyInfo from '../TaxonomyInfo'
 
 type Props = ClassNameProp & {
   open: boolean
+  documentTitle: string
+  documentId: string
   taxonomy: Taxonomy[] | null
   chunkText: string | null
+  chunkNumber: number
   queryTerms?: string[]
 }
 
-const DocumentDetails = ({ className, open, taxonomy, chunkText, queryTerms }: Props) => {
+const DocumentDetails = ({
+  className,
+  open,
+  documentId,
+  documentTitle,
+  taxonomy,
+  chunkText,
+  chunkNumber,
+  queryTerms
+}: Props) => {
   const hasTaxonomy = !!taxonomy?.length
 
   if (!hasTaxonomy && !chunkText) {
     return null
   }
 
+  const chunkMeta = {
+    documentId,
+    documentTitle,
+    chunkNumber
+  }
+
   return (
     <Collapse className={className} in={open}>
-      <Flex gap="md">
-        {hasTaxonomy && <TaxonomyTree taxonomy={taxonomy} />}
-        {chunkText && <ChunkPreview text={chunkText} queryTerms={queryTerms} />}
-      </Flex>
+      <Stack spacing="sm">
+        {hasTaxonomy && <TaxonomyInfo taxonomy={taxonomy} documentTitle={documentTitle} />}
+
+        {chunkText && <ChunkPreview text={chunkText} queryTerms={queryTerms} {...chunkMeta} />}
+      </Stack>
     </Collapse>
   )
 }

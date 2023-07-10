@@ -1,4 +1,4 @@
-import { Text } from '@mantine/core'
+import { Box, Text } from '@mantine/core'
 
 import type { Taxonomy } from '~/types/search/documents'
 
@@ -9,17 +9,20 @@ type Props = {
   taxonomy: Taxonomy[]
 }
 
-//!sometimes there's a 'null' object in the array
 const TaxonomyTree = ({ taxonomy }: Props) => {
+  const title = taxonomy.length > 1 ? 'Taxonomies' : 'Taxonomy'
+
   return (
-    <S.Container>
+    <Box px="xs">
       <Text fz="lg" fw={600} color="gray.8" mb="sm">
-        Taxonomy
+        {title}
       </Text>
+
       {taxonomy.map(
+        // Sometimes there's a 'null' object in the array
         node => node && <TaxonomyNode key={node.code} taxonomy={node} css={S.rootNode} />
       )}
-    </S.Container>
+    </Box>
   )
 }
 
