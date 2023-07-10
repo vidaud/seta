@@ -39,7 +39,8 @@ def create_app(config_object):
     register_cas_client(app)
            
     request_endswith_ignore_list = ['.js', '.css', '.png', '.ico', '.svg', '.map', '.json', 'doc']
-    request_starts_with_ignore_list = ['/authorization', '/authentication', '/seta-ui/api/v1/login', '/seta-ui/api/v1/logout', '/seta-ui/api/v1/refresh']
+    request_starts_with_ignore_list = ['/authorization', '/authentication', '/seta-ui/api/v1/login', 
+                                       '/seta-ui/api/v1/logout', '/seta-ui/api/v1/refresh', '/seta-ui/api/v1/me/user-info']
     
     with app.app_context():         
             

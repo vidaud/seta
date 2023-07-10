@@ -5,6 +5,8 @@ from datetime import datetime
 from datetime import timedelta
 from datetime import timezone
 
+import re
+
 from flask import Response, make_response, redirect, session
 
 from flask_jwt_extended import create_access_token, create_refresh_token
@@ -131,3 +133,19 @@ def _create_session(seta_user: SetaUser, access_token: str, refresh_token: str) 
     user_session.session_tokens = [rt, at]
     
     return user_session
+
+def validate_next_url(next: str) -> bool:
+
+    '''
+    Validates relative URL (no scheme or authority) with absolute path
+    '''
+
+    pattern = "\A((\/[a-z0-9\-._~%!$&'()*+,;=:@]+)+\/?)"
+
+    if next:       
+        regex = re.compile(pattern, re.IGNORECASE)
+        match  = regex.match(next)
+
+        return bool(match)
+
+    return False

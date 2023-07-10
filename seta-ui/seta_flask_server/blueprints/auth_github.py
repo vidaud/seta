@@ -1,10 +1,10 @@
 from flask import Blueprint, abort
 from flask import current_app as app, g
-from flask import request
+from flask import request, session
 
 from urllib.parse import urljoin
 
-from seta_flask_server.infrastructure.auth_helpers import create_login_response
+from seta_flask_server.infrastructure.auth_helpers import create_login_response, validate_next_url
 from seta_flask_server.infrastructure.extensions import github
 from seta_flask_server.repository.interfaces import IUsersBroker, ISessionsBroker
 from seta_flask_server.repository.models import SetaUserExt
@@ -21,9 +21,11 @@ def login():
     """
     Redirect to GITHUB authentication page
     """
-    next = request.args.get("next", None)
+    next = request.args.get("redirect", None)
+    session["redirect"] = next
     
-    return github.authorize(scope="read:user,user:email", redirect_uri=next)
+    #! redirect uri must match the callback URL, so no other path is working
+    return github.authorize(scope="read:user,user:email", redirect_uri=None)
 
 @github.access_token_getter
 def token_getter():
@@ -60,10 +62,12 @@ def login_callback_github(access_token, userBroker: IUsersBroker, sessionBroker:
         
     seta_user = SetaUserExt.from_github_json(github_user)
     
-    next = request.args.get("next")
-    #TODO: verify 'next' domain before redirect, replace with home_route if anything suspicious
-    if not next:
+    #next = request.args.get("next")
+    next = session.get("redirect")        
+   
+    if not next or not validate_next_url(next):                        
         next = app.home_route
+
     next = urljoin(next, "?action=login")        
     
     auth_user = userBroker.authenticate_user(seta_user)
