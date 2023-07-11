@@ -66,21 +66,6 @@ const ModalPage = () => {
     setCookie(!isCookie)
   }
 
-  const readCookie = () => {
-    const cookies = document.cookie.split(';')
-
-    cookies.forEach(cookie => {
-      console.log({ cookie })
-
-      if (cookie.startsWith(` ${COOKIE_NAME}`)) {
-        setCookie(isCookie)
-        console.log('what is this  cookie ' + isCookie)
-      }
-    })
-
-    return isCookie
-  }
-
   return (
     <Group position="center">
       {showButton && (
@@ -107,7 +92,6 @@ const ModalPage = () => {
                       onClick={() => {
                         toggleButton()
                         saveToCookie(COOKIE_NAME2, COOKIE_NAME)
-                        readCookie()
                       }}
                     />
                     {}
