@@ -46,7 +46,7 @@ export const createCommunityChangeRequest = async (id?: string, values?: ChangeR
     })
     .then(response => {
       if (response.status === 200) {
-        window.location.reload()
+        // window.location.reload()
       }
     })
 }

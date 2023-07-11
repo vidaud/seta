@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { createStyles, Switch, useMantineTheme } from '@mantine/core'
-import { IconCheck, IconX } from '@tabler/icons-react'
+import { CgSearchFound } from 'react-icons/cg'
+import { MdOutlineSearchOff } from 'react-icons/md'
 
 import type { ResourceScopes } from '~/pages/CommunitiesPage/pages/contexts/scope-context'
 
@@ -41,7 +42,7 @@ const RestrictedResource = ({ resource }: Props) => {
   const { data, refetch } = useAllResources()
   const { classes } = useStyles()
   const theme = useMantineTheme()
-  const [checked, setChecked] = useState(!resource.searchable)
+  const [checked, setChecked] = useState(resource.searchable)
 
   useEffect(() => {
     if (resource) {
@@ -52,7 +53,7 @@ const RestrictedResource = ({ resource }: Props) => {
   const handleSwitch = (value: React.ChangeEvent<HTMLInputElement>, id: string) => {
     setChecked(value.currentTarget.checked)
 
-    if (value.currentTarget.checked) {
+    if (!value.currentTarget.checked) {
       const form = new FormData()
 
       const index = data?.filter(item => item.searchable === false).map(item => item.resource_id)
@@ -83,16 +84,15 @@ const RestrictedResource = ({ resource }: Props) => {
         onChange={event => handleSwitch(event, resource.resource_id)}
         color="teal"
         size="md"
-        label={checked ? 'Switch to Searchable' : 'Switch to Not Searchable'}
+        // label={checked ? 'Switch to Searchable' : 'Switch to Not Searchable'}
         thumbIcon={
           checked ? (
-            <IconCheck
-              size="0.8rem"
-              color={theme.colors.teal[theme.fn.primaryShade()]}
-              stroke={3}
-            />
+            <CgSearchFound size="0.8rem" color={theme.colors.teal[theme.fn.primaryShade()]} />
           ) : (
-            <IconX size="0.8rem" color={theme.colors.red[theme.fn.primaryShade()]} stroke={3} />
+            <MdOutlineSearchOff
+              size="0.8rem"
+              color={theme.colors.orange[theme.fn.primaryShade()]}
+            />
           )
         }
       />
