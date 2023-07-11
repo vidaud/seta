@@ -48,11 +48,9 @@ class RolesCatalogueBuilder:
             {
                 "catalogue": catalogue_name,
                 "code":  "ResourceCreator",
-                "name": "Resource manager",
-                "description": "Resource manager",
-                "default_scopes":["/seta/resource/edit", 
-                                  "/seta/resource/data/add", 
-                                  "/seta/resource/data/delete"]
+                "name": "Resource creator",
+                "description": "Resource creator",
+                "default_scopes":["/seta/resource/create"]
             },
             {
                 "catalogue": catalogue_name,

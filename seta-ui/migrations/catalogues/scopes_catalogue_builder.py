@@ -72,13 +72,13 @@ class ScopesCatalogueBuilder:
             },
             {
                 "catalogue": catalogue_name,
-                "code": "/seta/resource/add",
+                "code": "/seta/resource/data/add",
                 "name": "Add data",
                 "description": "Upload documents for the resource."
             },
             {
                 "catalogue": catalogue_name,
-                "code": "/seta/resource/delete",
+                "code": "/seta/resource/data/delete",
                 "name": "Delete data",
                 "description": "Delete documents or drop entire resource."
             },

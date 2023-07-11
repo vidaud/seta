@@ -18,7 +18,7 @@ class MembershipsBroker(implements(IMembershipsBroker)):
        self.request_collection = self.db["communities"]
        self.user_collection = self.db["users"]
     
-    def create_membership(self, model: MembershipModel, community_scopes: list[dict]) -> None:
+    def create_membership(self, model: MembershipModel, community_scopes: list[dict] = None) -> None:
         '''Create community membership json objects in mongo db'''
         
         if not self.membership_exists(user_id=model.user_id, community_id=model.community_id):
@@ -33,7 +33,9 @@ class MembershipsBroker(implements(IMembershipsBroker)):
             
             with self.db.client.start_session(causal_consistency=True) as session:
                 self.collection.insert_one(model.to_json())
-                self.user_collection.insert_many(community_scopes, session=session)
+
+                if community_scopes is not None and len(community_scopes) > 0:
+                    self.user_collection.insert_many(community_scopes, session=session)
 
     def update_membership(self, model: MembershipModel) -> None:
         '''Update membership fields'''
