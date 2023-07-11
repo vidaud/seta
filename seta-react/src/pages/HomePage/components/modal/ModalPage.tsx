@@ -94,8 +94,7 @@ const ModalPage = () => {
                         saveToCookie(COOKIE_NAME2, COOKIE_NAME)
                       }}
                     />
-                    {}
-                    '&nbsp' + {dontshow}
+                    {} {dontshow}
                   </span>
                 </>
               ),
