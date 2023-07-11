@@ -1,5 +1,5 @@
 import { createRef, useEffect, useState } from 'react'
-import { Flex, Text, clsx, Group, Anchor, Menu, ActionIcon } from '@mantine/core'
+import { Flex, Text, clsx, Group, Anchor, Menu, ActionIcon, useMantineTheme } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 import { IconDotsVertical } from '@tabler/icons-react'
 import { CgSearchFound } from 'react-icons/cg'
@@ -28,6 +28,7 @@ type Props = {
 const ResourceInfo = ({ resource, resource_scopes }: Props) => {
   const [scopes, setScopes] = useState<string[] | undefined>([])
   const [outsideClick, setOutsideClick] = useState(true)
+  const theme = useMantineTheme()
   const { title, resource_id, abstract, community_title, created_at, community_id, searchable } =
     resource
   const location = useLocation()
@@ -80,9 +81,9 @@ const ResourceInfo = ({ resource, resource_scopes }: Props) => {
         ref={ref}
       >
         {searchable === true ? (
-          <CgSearchFound size={26} color="green" />
+          <CgSearchFound size={26} color={theme.colors.teal[theme.fn.primaryShade()]} />
         ) : (
-          <MdOutlineSearchOff size={26} color="blue" />
+          <MdOutlineSearchOff size={26} color="orange" />
         )}
         <div css={S.title}>
           <Text fz="md" fw={600} truncate={detailsOpen ? undefined : 'end'}>
@@ -90,31 +91,34 @@ const ResourceInfo = ({ resource, resource_scopes }: Props) => {
           </Text>
         </div>
         {scopes?.includes('/seta/resource/edit') ? (
-          <Menu
-            transitionProps={{ transition: 'pop' }}
-            withArrow
-            position="left"
-            closeOnClickOutside={outsideClick}
-          >
-            <Menu.Target>
-              <ActionIcon
+          <>
+            <RestrictedResource resource={resource} />
+            <Menu
+              transitionProps={{ transition: 'pop' }}
+              withArrow
+              position="left"
+              closeOnClickOutside={outsideClick}
+            >
+              <Menu.Target>
+                <ActionIcon
+                  onClick={e => {
+                    e.stopPropagation()
+                  }}
+                >
+                  <IconDotsVertical size="1rem" stroke={1.5} />
+                </ActionIcon>
+              </Menu.Target>
+              <Menu.Dropdown
                 onClick={e => {
                   e.stopPropagation()
                 }}
               >
-                <IconDotsVertical size="1rem" stroke={1.5} />
-              </ActionIcon>
-            </Menu.Target>
-            <Menu.Dropdown
-              onClick={e => {
-                e.stopPropagation()
-              }}
-            >
-              <RestrictedResource resource={resource} />
-              <UpdateResource resource={resource} onChange={handleOutsideClick} />
-              <DeleteResource id={resource_id} />
-            </Menu.Dropdown>
-          </Menu>
+                {/* <RestrictedResource resource={resource} /> */}
+                <UpdateResource resource={resource} onChange={handleOutsideClick} />
+                <DeleteResource id={resource_id} />
+              </Menu.Dropdown>
+            </Menu>
+          </>
         ) : (
           <div />
         )}

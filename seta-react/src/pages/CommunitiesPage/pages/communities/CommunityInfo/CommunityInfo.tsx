@@ -1,5 +1,5 @@
 import { createRef, useEffect } from 'react'
-import { Flex, Group, Text, clsx } from '@mantine/core'
+import { Flex, Group, Text, clsx, useMantineTheme } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 import { FaChevronDown, FaUsers, FaUsersSlash } from 'react-icons/fa'
 import { Link, useLocation } from 'react-router-dom'
@@ -25,14 +25,10 @@ type Props = {
   system_scopes?: SystemScopes[]
 }
 
-const membershipColors: Record<string, string> = {
-  closed: 'orange',
-  opened: 'green'
-}
-
 const CommunityInfo = ({ community, community_scopes }: Props) => {
   const { title, community_id, description, membership, created_at } = community
   const { data } = useMyCommunityResources(community_id)
+  const theme = useMantineTheme()
   const location = useLocation()
   const ref = createRef<HTMLDivElement>()
 
@@ -69,9 +65,9 @@ const CommunityInfo = ({ community, community_scopes }: Props) => {
           ref={ref}
         >
           {membership === 'closed' ? (
-            <FaUsersSlash size="1.5rem" color={membershipColors[membership.toLowerCase()]} />
+            <FaUsersSlash size="1.5rem" color="orange" />
           ) : (
-            <FaUsers size="1.5rem" color={membershipColors[membership.toLowerCase()]} />
+            <FaUsers size="1.5rem" color={theme.colors.teal[theme.fn.primaryShade()]} />
           )}
 
           <div css={S.title}>

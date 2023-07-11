@@ -2,19 +2,27 @@ import { useEffect, useState } from 'react'
 import { ActionIcon, Button, Group, Menu, Notification } from '@mantine/core'
 import { IconDotsVertical, IconX } from '@tabler/icons-react'
 
-import type { CommunityResponse } from '~/api/types/community-types'
+import type { CommunityScopes } from '~/pages/CommunitiesPage/pages/contexts/scope-context'
 
 import { useAllCommunities } from '../../../../../../../api/communities/discover/discover-communities'
+import type { CommunityResponse } from '../../../../../../../api/types/community-types'
+import type { ResourceResponse } from '../../../../../../../api/types/resource-types'
 import MembershipRequest from '../../../../../components/Manage/Members/InviteMemberModal/InviteMemberModal'
 import OpenCommunityMember from '../../../../../components/Manage/Members/OpenCommunityMember/OpenCommunityMember'
 import UpdateInviteRequest from '../../../../../components/Sidebar/InvitesList/components/UpdateInviteRequest'
-import ChangePrivacy from '../ChangePrivacy/ChangePrivacy'
+import ChangePrivacy from '../ChangePrivacy/ChangePrivacyRequest'
 import DeleteCommunity from '../DeleteCommunity/DeleteCommunity'
 import InviteMember from '../InviteMemberModal/InviteMemberModal'
 import LeaveCommunity from '../LeaveCommunity/LeaveCommunity'
 import UpdateCommunity from '../UpdateCommunity/UpdateCommunity'
 
-const CommunityButton = ({ props, community_scopes, resources }) => {
+type Props = {
+  props: CommunityResponse
+  community_scopes?: CommunityScopes[]
+  resources?: ResourceResponse[]
+}
+
+const CommunityButton = ({ props, community_scopes, resources }: Props) => {
   const { refetch } = useAllCommunities()
   const [data, setData] = useState<CommunityResponse>(props)
   const [message, setMessage] = useState('')
@@ -55,7 +63,11 @@ const CommunityButton = ({ props, community_scopes, resources }) => {
                   <IconDotsVertical size="1rem" stroke={1.5} />
                 </ActionIcon>
               </Menu.Target>
-              <Menu.Dropdown>
+              <Menu.Dropdown
+                onClick={e => {
+                  e.stopPropagation()
+                }}
+              >
                 <UpdateCommunity
                   community={props}
                   community_scopes={community_scopes}
@@ -64,12 +76,15 @@ const CommunityButton = ({ props, community_scopes, resources }) => {
                 {scopes?.includes('/seta/community/invite') ? (
                   <InviteMember id={props.community_id} />
                 ) : null}
-                <ChangePrivacy props={props} />
+
                 {scopes?.includes('/seta/community/owner') ? (
-                  <DeleteCommunity
-                    props={props}
-                    totalResources={resources ? resources?.length : 0}
-                  />
+                  <>
+                    <DeleteCommunity
+                      props={props}
+                      totalResources={resources ? resources?.length : 0}
+                    />
+                    <ChangePrivacy community={props} />
+                  </>
                 ) : null}
               </Menu.Dropdown>
             </Menu>

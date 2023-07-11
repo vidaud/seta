@@ -74,7 +74,7 @@ const ManagePermissions = ({ props }) => {
       onChange={setOpened}
     >
       <Popover.Target>
-        <Group position="right">
+        <Group position="left">
           <Tooltip label="Manage Membership" color="gray">
             <ActionIcon>
               <IconPencil size="1rem" stroke={1.5} onClick={() => setOpened(o => !o)} />
