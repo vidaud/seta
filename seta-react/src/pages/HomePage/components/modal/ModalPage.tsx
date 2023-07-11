@@ -52,10 +52,33 @@ function getStrength(slides, currentslide) {
 const ModalPage = () => {
   const { classes } = useStyles()
   const [showButton, setShowButton] = useState(true)
+  const [isCookie, setCookie] = useState(true)
   const dontshow = "Don't show this again"
+  const COOKIE_NAME = 'session_seta'
+  const COOKIE_NAME2 = 'show_cookie'
 
   const toggleButton = () => {
     setShowButton(!showButton)
+  }
+
+  const saveToCookie = (cookieName: string, cookieValue: string): void => {
+    document.cookie = `${cookieName}=${cookieValue}`
+    setCookie(!isCookie)
+  }
+
+  const readCookie = () => {
+    const cookies = document.cookie.split(';')
+
+    cookies.forEach(cookie => {
+      console.log({ cookie })
+
+      if (cookie.startsWith(` ${COOKIE_NAME}`)) {
+        setCookie(isCookie)
+        console.log('what is this  cookie ' + isCookie)
+      }
+    })
+
+    return isCookie
   }
 
   return (
@@ -79,7 +102,16 @@ const ModalPage = () => {
                   <Image src={image1} alt="Presentation" />
                   <Progress color="gray" value={getStrength(8, 1)} size="md" radius="xl" />
                   <span className={classes.dontShowMe}>
-                    <input type="checkbox" onClick={toggleButton} /> {dontshow}
+                    <input
+                      type="checkbox"
+                      onClick={() => {
+                        toggleButton()
+                        saveToCookie(COOKIE_NAME2, COOKIE_NAME)
+                        readCookie()
+                      }}
+                    />
+                    {}
+                    '&nbsp' + {dontshow}
                   </span>
                 </>
               ),
