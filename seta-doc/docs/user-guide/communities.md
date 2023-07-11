@@ -9,17 +9,12 @@ In the SeTA web application, we have two types of communities: public communitie
 
 ## Discover Communities
 
-On the main page of the Communities, it is possible to see, two side panels on the left side: *Discovery* and *Manage* and in the centre, the list of the Communities.
+On the main page of the Communities, it is possible to see the list of the Communities.
 
-On **Discovery** panel it is possible to access to:
+From this page it is possible to access to:
 
 - Communities *(List of available Communities)*        
 - Resources *(The Resources related to those communities)*        
-
-On **Manage** panel it is possible to access to:             
-
-- My Communities                 
-- My Resources               
 
 <figure markdown>
   ![Image title](../img/seta_communities.png)
@@ -29,8 +24,7 @@ On **Manage** panel it is possible to access to:
    
 ## Create a Community
                      
-1. From the side panel click on ^^Manage^^ -> ^^My Communities^^.  
-2. Click on the top right bottom ^^New Community^^.  
+1. From the main panel click on the top right bottom ^^New Community^^.  
 3. Enter the Community id, Title and Description.  
 4. Click Save.         
 
@@ -47,56 +41,19 @@ On **Manage** panel it is possible to access to:
 
 ## List of Communities
 
-1. From the side menu click on ^^Manage^^ -> ^^My Communities^^.   
-2. You will see a list of the Communities in the page.
-3. You can enter in the search bar the name of the Community you are looking for.                 
+1. You will see a list of the Communities in the page.   
+2.  You can enter in the search bar the name of the Community you are looking for.                  
 <figure markdown>
   ![Image title](../img/communities_list.png)
   <figcaption>Communities</figcaption>
 </figure>
 
-## List of My Communities
-
-1. From the side menu click on ^^Manage^^ -> ^^My Communities^^.   
-2. You will see a list of the Communities in the page.
-3. You can enter in the search bar the name of the Community you are looking for.                  
-
-<figure markdown>
-  ![Image title](../img/my_communities.png)
-  <figcaption>My Communities</figcaption>
-</figure>
-
 ## Details of a Community                
                         
-### From Communities
-
-1. From the side menu click on ^^Discovery^^ -> ^^Communities^^.  
-2. You can either enter in the search bar the name of the Community you are looking for or select from the Community list.  
-3. Click on :octicons-eye-24: at the right side of the Community row.  
-4. If you are a member or the community, you will be redirect to the Community Details page.  
-5. If you are not a member of the Community you will only see a pop-up window with a brief information about the community.          
-
-### From My Communities
-
-1. From the side menu click on ^^Manage^^ -> ^^My Communities^^.  
-2. You can either enter in the search bar the name of the Community you are looking for or select from the Community list.  
-3. Click on :material-dots-horizontal: at the right side of button ^^Invite^^ and select the option ^^:octicons-eye-24: View Details^^.  
-4. In the next window, you will see the Details page of the Community.        
-
-<figure markdown>
-  ![Image title](../img/seta_communities.png)
-  <figcaption>Community Details</figcaption>
-</figure>
-
-<figure markdown>
-  ![Image title](../img/communities_details_page.png)
-  <figcaption>Community Details for Members</figcaption>
-</figure>
-
-<figure markdown>
-  ![Image title](../img/communities_details_noMember.png)
-  <figcaption>Community details for no Members</figcaption>
-</figure>
+1. You can either enter in the search bar the name of the Community you are looking for or select from the Community list.  
+2. Click on :octicons-eye-24: at the right side of the Community row.  
+3. If you are a member or the community, you will be redirect to the Community Details page.  
+4. If you are not a member of the Community you will only see a pop-up window with a brief information about the community.          
 
 ## Delete a Community
 
