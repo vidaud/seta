@@ -67,7 +67,7 @@ const HomePage = () => {
     cookies.forEach(cookie => {
       if (cookie.startsWith(` ${COOKIE_NAME}`)) {
         setCookie(!isCookie)
-        console.log('what is this  cookie in home ' + isCookie)
+        console.log('setup of the cookie in home ' + isCookie)
       }
     })
   }, [])
