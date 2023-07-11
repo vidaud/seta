@@ -3,7 +3,7 @@ from seta_flask_server.repository.models import MembershipModel, MembershipReque
 
 
 class IMembershipsBroker(Interface):
-    def create_membership(self, model: MembershipModel, community_scopes: list[dict]) -> None:
+    def create_membership(self, model: MembershipModel, community_scopes: list[dict] = None) -> None:
         pass
 
     def update_membership(self, model: MembershipModel) -> None:

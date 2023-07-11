@@ -9,7 +9,7 @@ from seta_flask_server.repository.models import MembershipModel, EntityScope
 from seta_flask_server.repository.interfaces import IMembershipsBroker, IUsersBroker, ICommunitiesBroker, IUserPermissionsBroker
 from seta_flask_server.infrastructure.decorators import auth_validator
 from seta_flask_server.infrastructure.scope_constants import CommunityScopeConstants
-from seta_flask_server.infrastructure.constants import CommunityMembershipConstants
+from seta_flask_server.infrastructure.constants import CommunityMembershipConstants, CommunityRoleConstants
 
 from .models.membership_dto import (membership_model, update_membership_parser, user_info_model)
 
@@ -89,12 +89,11 @@ class MembershipList(Resource):
             member_exists = self.membershipsBroker.membership_exists(community_id, auth_id)
                        
             if not member_exists:
-                model = MembershipModel(community_id=community_id, user_id=auth_id)
+                model = MembershipModel(community_id=community_id, 
+                                        user_id=auth_id, 
+                                        role=CommunityRoleConstants.Member)
                 
-                scopes = [
-                    EntityScope(user_id=model.user_id,  id=model.community_id, scope=CommunityScopeConstants.CreateResource).to_community_json()
-                          ]
-                self.membershipsBroker.create_membership(model=model, community_scopes=scopes)
+                self.membershipsBroker.create_membership(model=model)
         except:
             app.logger.exception("MembershipList->post")
             abort(HTTPStatus.INTERNAL_SERVER_ERROR)

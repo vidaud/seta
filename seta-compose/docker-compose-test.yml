@@ -14,10 +14,24 @@ services:
 
   seta-es-test:
     container_name: es-test
-    extends:
-      file: common.yml
-      service: es
     restart: "no"   
+    build:
+      context: ../seta-es
+      args:
+        - HTTP_PROXY=${HTTP_PROXY}
+        - HTTPS_PROXY=${HTTPS_PROXY}
+    mem_limit: "4g"
+    environment:
+      - NO_PROXY=${NO_PROXY}
+      - no_proxy=${NO_PROXY}
+      - xpack.security.enabled=false
+      - discovery.type=single-node
+      - xpack.security.http.ssl.enabled=false
+      - xpack.security.transport.ssl.enabled=false
+      - ingest.geoip.downloader.enabled=false
+    expose:
+      - "9200"
+      - "9300"
     ports:
       - "0.0.0.0:9200:9200"
       - "0.0.0.0:9300:9300"

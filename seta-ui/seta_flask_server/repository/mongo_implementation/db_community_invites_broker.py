@@ -62,10 +62,8 @@ class CommunityInvitesBroker(implements(ICommunityInvitesBroker)):
                 
                 membership = MembershipModel(community_id=invite.community_id, user_id=invite.invited_user, 
                                              role=CommunityRoleConstants.Member, join_date=now, status=CommunityStatusConstants.Active)
-                scopes = [
-                    EntityScope(user_id=membership.user_id,  id=membership.community_id, scope=CommunityScopeConstants.CreateResource).to_community_json()
-                          ]
-                self.membershipBroker.create_membership(model=membership, community_scopes=scopes)
+            
+                self.membershipBroker.create_membership(model=membership)
                     
 
     def get_by_invite_id(self, invite_id: str) -> CommunityInviteModel:
