@@ -2,7 +2,7 @@ from flask import Blueprint, abort
 from flask import current_app as app
 from flask import (redirect, request, url_for)
 
-from seta_flask_server.infrastructure.auth_helpers import create_login_response
+from seta_flask_server.infrastructure.auth_helpers import create_login_response, validate_next_url
 from seta_flask_server.repository.interfaces import IUsersBroker, ISessionsBroker
 from seta_flask_server.repository.models import SetaUserExt
 
@@ -21,8 +21,8 @@ def login():
     Redirects to ECAS authentication page
     """
     
-    #TODO: verify if user already logged in ?
-    next = request.args.get("next")
+    next = request.args.get("redirect")
+    app.logger.debug('next: %s', next)
       
     # No ticket, the request come from end user, send to CAS login
     app.cas_client.service_url = url_for('auth_ecas.login_callback_ecas', next=next, _external=True) #redirect to the same path after ECAS login
@@ -40,15 +40,13 @@ def login_callback_ecas(userBroker: IUsersBroker, sessionBroker: ISessionsBroker
     next = request.args.get("next")
     ticket = request.args.get("ticket")
     
-     # There is a ticket, the request come from CAS as callback.
+    # There is a ticket, the request come from CAS as callback.
     # need call `verify_ticket()` to validate ticket and get user profile.
     app.logger.debug('ticket: %s', ticket)
     app.logger.debug('next: %s', next)
     
     try:
-        app.logger.debug("cas_client.verify_ticket_Start")
         user, attributes, pgtiou = app.cas_client.verify_ticket(ticket)
-        app.logger.debug("cas_client.verify_ticket_end")
     except:
         app.logger.exception("Failed to verify ticket.")
         abort(HTTPStatus.UNAUTHORIZED, "Failed to verify ticket.")
@@ -65,8 +63,7 @@ def login_callback_ecas(userBroker: IUsersBroker, sessionBroker: ISessionsBroker
     
     seta_user = SetaUserExt.from_ecas_json(attributes)
     
-    #TODO: verify 'next' domain before redirect, replace with home_route if anything suspicious
-    if not next:                        
+    if not next or not validate_next_url(next):                        
         next = app.home_route
         
     next = urljoin(next, "?action=login")

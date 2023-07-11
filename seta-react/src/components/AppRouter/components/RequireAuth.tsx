@@ -6,7 +6,7 @@ import { useCurrentUser } from '~/contexts/user-context'
 import type { ChildrenProp } from '../../../types/children-props'
 
 // TODO: Get this from an environment variable
-const AUTH_PATH = '/login'
+const AUTH_PATH = '/login?redirect=' + window.location.pathname
 
 const RequireAuth = ({ children }: ChildrenProp) => {
   const { user, isLoading } = useCurrentUser()
