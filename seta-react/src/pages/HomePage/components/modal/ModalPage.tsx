@@ -54,15 +54,20 @@ const ModalPage = () => {
   const [showButton, setShowButton] = useState(true)
   const [isCookie, setCookie] = useState(true)
   const dontshow = "Don't show this again"
-  const COOKIE_NAME = 'session_seta'
-  const COOKIE_NAME2 = 'show_cookie'
+  const COOKIE_NAME = 'intro_cookie'
+  const rand_value = Math.random().toString(36).substring(3, 11).toUpperCase()
+  const today = new Date()
+  const time = today.getTime()
+  const expireTime = time + 1000 * 86400
+
+  today.setTime(expireTime)
 
   const toggleButton = () => {
-    setShowButton(!showButton)
+    setShowButton(false)
   }
 
   const saveToCookie = (cookieName: string, cookieValue: string): void => {
-    document.cookie = `${cookieName}=${cookieValue}`
+    document.cookie = `${cookieName}=${cookieValue};expires=${today.toUTCString()};samesite=lax`
     setCookie(!isCookie)
   }
 
@@ -91,7 +96,7 @@ const ModalPage = () => {
                       type="checkbox"
                       onClick={() => {
                         toggleButton()
-                        saveToCookie(COOKIE_NAME2, COOKIE_NAME)
+                        saveToCookie(COOKIE_NAME, rand_value)
                       }}
                     />
                     {} {dontshow}

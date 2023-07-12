@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { createStyles, Container, Title, Text, rem, Group } from '@mantine/core'
 import TextTransition, { presets } from 'react-text-transition'
 
@@ -50,7 +50,7 @@ const HomePage = () => {
   const { classes } = useStyles()
   const [index, setIndex] = React.useState(0)
   const [isCookie, setCookie] = React.useState(true)
-  const COOKIE_NAME = 'show_cookie'
+  const COOKIE_NAME = 'intro_cookie'
 
   React.useEffect(() => {
     const intervalId = setInterval(
@@ -65,9 +65,9 @@ const HomePage = () => {
     const cookies = document.cookie.split(';')
 
     cookies.forEach(cookie => {
-      if (cookie.startsWith(` ${COOKIE_NAME}`)) {
-        setCookie(!isCookie)
-        console.log('setup of the cookie in home ' + isCookie)
+      if (cookie.startsWith(`${COOKIE_NAME}`)) {
+        console.log('ok we found it')
+        setCookie(false)
       }
     })
   }, [])
