@@ -1,55 +1,12 @@
 import { useEffect, useState } from 'react'
-import {
-  Popover,
-  Button,
-  Group,
-  createStyles,
-  Tooltip,
-  ActionIcon,
-  MultiSelect
-} from '@mantine/core'
-import { IconPencil } from '@tabler/icons-react'
-import { useParams } from 'react-router-dom'
+import { Checkbox } from '@mantine/core'
 
+import { useCategoryCatalogueScopes } from '../../../../../../../api/communities/scope-catalogue-permissions'
 import { manageCommunityScopes } from '../../../../../../../api/communities/user-community-permissions'
-import type { CommunityPermissions } from '../../../../contexts/community-user-permissions'
-import {
-  CommunityPermissionsFormProvider,
-  useCommunityPermissions
-} from '../../../../contexts/community-user-permissions'
 
-const useStyles = createStyles(theme => ({
-  form: {
-    marginTop: '20px'
-  },
-  divider: {
-    paddingBottom: theme.spacing.md
-  },
-  text: {
-    textAlign: 'center'
-  },
-  dropdown: {
-    background: theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.white
-  }
-}))
-const scopeOptions = [
-  { label: 'Community Owner', value: '/seta/community/owner' },
-  { label: 'Community Manager', value: '/seta/community/manager' },
-  { label: 'Community Invite', value: '/seta/community/invite' },
-  { label: 'Membership Approve', value: '/seta/community/membership/approve' },
-  { label: 'Create Resource', value: '/seta/resource/create' }
-]
-
-const ManagePermissions = ({ props }) => {
-  const [opened, setOpened] = useState(false)
-  const { classes, cx } = useStyles()
-  const { id } = useParams()
-
-  const form = useCommunityPermissions({
-    initialValues: {
-      scope: []
-    }
-  })
+const ManagePermissions = ({ props, id }) => {
+  const [value, setValue] = useState<string[]>(props.scopes)
+  const { data } = useCategoryCatalogueScopes('community')
 
   useEffect(() => {
     if (props) {
@@ -57,63 +14,32 @@ const ManagePermissions = ({ props }) => {
     }
   }, [props])
 
-  const handleSubmit = (values: CommunityPermissions) => {
-    manageCommunityScopes(id, props.user_id, values)
-    setOpened(o => !o)
+  const updateScopes = (values: string[]) => {
+    setValue(values)
+    const form = new FormData()
+
+    values?.forEach(element => form.append('scope', element))
+    manageCommunityScopes(id, props.user_id, form)
   }
 
   return (
-    <Popover
-      position="left"
-      withArrow
-      trapFocus
-      width={300}
-      withinPortal={true}
-      shadow="md"
-      opened={opened}
-      onChange={setOpened}
+    <Checkbox.Group
+      value={value}
+      onChange={e => {
+        updateScopes(e)
+      }}
     >
-      <Popover.Target>
-        <Group position="left">
-          <Tooltip label="Manage Membership" color="gray">
-            <ActionIcon>
-              <IconPencil size="1rem" stroke={1.5} onClick={() => setOpened(o => !o)} />
-            </ActionIcon>
-          </Tooltip>
-        </Group>
-      </Popover.Target>
-      <Popover.Dropdown className={cx(classes.dropdown)}>
-        <CommunityPermissionsFormProvider form={form}>
-          <form onSubmit={form.onSubmit(handleSubmit)}>
-            <MultiSelect
-              multiple
-              {...form.getInputProps('scope')}
-              label="Scope"
-              name="scope"
-              data={scopeOptions}
-              withAsterisk
+      {data
+        ? data?.map(scope => (
+            <Checkbox
+              sx={{ paddingBottom: '2px' }}
+              key={scope.code}
+              value={scope.code}
+              label={scope.name}
             />
-
-            <Group className={cx(classes.form)}>
-              <Button
-                variant="outline"
-                size="xs"
-                color="blue"
-                onClick={() => {
-                  form.reset()
-                  setOpened(o => !o)
-                }}
-              >
-                Cancel
-              </Button>
-              <Button size="xs" type="submit">
-                Send
-              </Button>
-            </Group>
-          </form>
-        </CommunityPermissionsFormProvider>
-      </Popover.Dropdown>
-    </Popover>
+          ))
+        : []}
+    </Checkbox.Group>
   )
 }
 
