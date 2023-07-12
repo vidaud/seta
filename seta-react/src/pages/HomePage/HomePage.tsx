@@ -65,8 +65,8 @@ const HomePage = () => {
     const cookies = document.cookie.split(';')
 
     cookies.forEach(cookie => {
-      if (cookie.startsWith(`${COOKIE_NAME}`)) {
-        console.log('ok we found it')
+      if (cookie.trim().includes(`${COOKIE_NAME}`)) {
+        console.log('there is a cookie')
         setCookie(false)
       }
     })
