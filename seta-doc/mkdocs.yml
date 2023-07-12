@@ -97,9 +97,6 @@ nav:
   - Using SeTA:
     - Setup: user-guide/setup.md
     - Web App:
-      - Search: 
-        - Methodology: user-guide/methodology.md
-        - Web Interface: user-guide/web-app.md
       - Communities: 
         - SeTA Communities: user-guide/communities.md
       # - Communities ChangeRequest: user-guide/communitiesChangeRequest.md
@@ -107,6 +104,9 @@ nav:
         - Community Invites: user-guide/communityInvites.md
         - Resources: user-guide/resources.md
       #  - Users Permissions: user-guide/usersPermissions.md
+      - Search: 
+        - Methodology: user-guide/methodology.md
+        - Web Interface: user-guide/web-app.md
     - APIs: 
       - SeTA API: apis/seta_api/seta_api.md
       - Communities API: apis/communities_api/seta_api_communities.md

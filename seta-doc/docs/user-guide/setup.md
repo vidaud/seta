@@ -11,7 +11,7 @@ SeTA has two user interfaces:
 The SeTA Web App is a user-friendly interface that allows the user to access the content in a Web browser. 
  
 <figure markdown>
-![Image title](../img/main_screen.jpg)
+![Image title](../img/main_screen.png)
 <figcaption>SeTA main page</figcaption>
 </figure>
 

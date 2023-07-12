@@ -21,6 +21,15 @@ From this page it is possible to access to:
   <figcaption>Communities page</figcaption>
 </figure>
 
+## List of Communities
+
+1. You will see a list of the Communities in the page.   
+2. You can filter by the different types display on top of the page: *Select Membership, Select Status* and search by *Field*.                  
+<figure markdown>
+  ![Image title](../img/my_communities.png)
+  <figcaption>Communities</figcaption>
+</figure>
+
    
 ## Create a Community
                      
@@ -29,38 +38,25 @@ From this page it is possible to access to:
 4. Click Save.         
 
 <figure markdown>
-  ![Image title](../img/my_communities.png)
-  <figcaption>My Communities</figcaption>
-</figure>
-
-<figure markdown>
   ![Image title](../img/new_community.png)
   <figcaption>New Community</figcaption>
 </figure>
 
 
-## List of Communities
 
-1. You will see a list of the Communities in the page.   
-2.  You can enter in the search bar the name of the Community you are looking for.                  
-<figure markdown>
-  ![Image title](../img/communities_list.png)
-  <figcaption>Communities</figcaption>
-</figure>
 
 ## Details of a Community                
                         
 1. You can either enter in the search bar the name of the Community you are looking for or select from the Community list.  
-2. Click on :octicons-eye-24: at the right side of the Community row.  
-3. If you are a member or the community, you will be redirect to the Community Details page.  
-4. If you are not a member of the Community you will only see a pop-up window with a brief information about the community.          
+2. Click on :octicons-chevron-down-12: at the right side of the Community row.  
+3. If you are a member or the community, a detailed section will appear.  
+4. If you are not a member of the Community you will only see a brief information about the community.          
 
 ## Delete a Community
 
-1. From the side menu click on ^^Manage^^ -> ^^My Communities^^.  
-2. You can either enter in the search bar the name of the Community you are looking for or select from the Communities list.  
-3. After you select the Community, click on button ^^Delete^^ on the left top of the Communities list.
-4. It is also possible to delete the Community by clicking :material-dots-horizontal: at the right side of each Community and select the option ^^:octicons-trash-24: Delete Community^^. 
+1. You can either enter in the search bar the name of the Community you are looking for or select from the Communities list.  
+2. Click on the :material-dots-vertical: at the right side of the community row.  
+3. Select the option ^^:octicons-trash-24: Delete Community^^. 
 5. A confirm window will appear to delete the Community.
 
 > Please consider that before you can delete a Community, it is necessary to delete the Resources related.
