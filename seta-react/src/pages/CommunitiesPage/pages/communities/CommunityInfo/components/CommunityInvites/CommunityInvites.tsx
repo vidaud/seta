@@ -38,11 +38,21 @@ const CommunityInvites = ({ id, onChange }) => {
   const [items, setItems] = useState(data)
 
   useEffect(() => {
+    let timeout: number | null = null
+
     if (data) {
       setItems(data)
       onChange(data.length)
     }
-  }, [data, items, onChange, id])
+
+    timeout = setTimeout(refetch, 1000)
+
+    return () => {
+      if (timeout) {
+        clearTimeout(timeout)
+      }
+    }
+  }, [data, onChange, refetch])
 
   if (error) {
     return <ComponentError onTryAgain={refetch} />

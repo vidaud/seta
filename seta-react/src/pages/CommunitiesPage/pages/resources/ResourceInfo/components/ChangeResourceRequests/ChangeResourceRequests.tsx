@@ -47,13 +47,22 @@ const ChangeResourceRequests = ({ id, onChange }) => {
   const [selected, setSelected] = useState<string | null>('pending')
 
   useEffect(() => {
+    let timeout: number | null = null
+
     if (data) {
       selected === 'all' ? setItems(data) : setItems(data.filter(item => item.status === selected))
 
       // setItems(data)
       onChange(data.length)
+      timeout = setTimeout(refetch, 1000)
+
+      return () => {
+        if (timeout) {
+          clearTimeout(timeout)
+        }
+      }
     }
-  }, [data, items, onChange, selected])
+  }, [data, onChange, selected, refetch])
 
   if (error) {
     return <ComponentError onTryAgain={refetch} />

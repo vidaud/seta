@@ -67,7 +67,7 @@ export const updateResourceChangeRequest = async (
     })
     .then(response => {
       if (response.status === 200) {
-        window.location.reload()
+        // window.location.reload()
       }
     })
 }

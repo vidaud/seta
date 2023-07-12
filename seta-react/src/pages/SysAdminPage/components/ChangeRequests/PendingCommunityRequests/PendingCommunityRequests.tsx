@@ -45,10 +45,19 @@ const PendingCommunityRequests = () => {
   const [items, setItems] = useState<CommunityChangeRequests[]>()
 
   useEffect(() => {
+    let timeout: number | null = null
+
     if (data) {
       setItems(data)
+      timeout = setTimeout(refetch, 1000)
+
+      return () => {
+        if (timeout) {
+          clearTimeout(timeout)
+        }
+      }
     }
-  }, [data, items])
+  }, [data, refetch])
 
   if (error) {
     return <ComponentError onTryAgain={refetch} />
@@ -83,7 +92,7 @@ const PendingCommunityRequests = () => {
       <td>{row?.reviewed_by ? row?.reviewed_by : null}</td>
       <td>{row?.review_date ? new Date(row?.review_date).toDateString() : null}</td>
       <td>
-        <UpdateCommunityChangeRequest props={row} />
+        <UpdateCommunityChangeRequest props={row} reload={refetch} />
       </td>
     </tr>
   ))

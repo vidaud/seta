@@ -40,11 +40,20 @@ const MembershipRequests = ({ id, onChange }) => {
   const theme = useMantineTheme()
 
   useEffect(() => {
+    let timeout: number | null = null
+
     if (data) {
       setItems(data)
       onChange(data.length)
+      timeout = setTimeout(refetch, 1000)
+
+      return () => {
+        if (timeout) {
+          clearTimeout(timeout)
+        }
+      }
     }
-  }, [data, items, onChange, id])
+  }, [data, onChange, refetch])
 
   if (error) {
     return <ComponentError onTryAgain={refetch} />
