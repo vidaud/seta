@@ -6,8 +6,10 @@ from flask import json
 from tests.infrastructure.helpers.authentication import (login_user)
 from tests.infrastructure.helpers.community import (create_community ,get_community)
 from tests.infrastructure.helpers.resource import (create_resource, get_resource)
-from tests.infrastructure.helpers.community_change_request import (create_community_change_request, get_community_pending_change_requests, update_community_change_request)
-from tests.infrastructure.helpers.resource_change_request import (create_resource_change_request, get_resource_pending_change_requests, update_resource_change_request)
+from tests.infrastructure.helpers.community_change_request import create_community_change_request
+from tests.infrastructure.helpers.resource_change_request import (create_resource_change_request)
+from tests.infrastructure.helpers.admin_change_requests import (get_community_pending_change_requests, update_community_change_request, 
+                                                                get_resource_pending_change_requests, update_resource_change_request)
 
 from seta_flask_server.repository.models import ResourceLimitsModel
 from seta_flask_server.infrastructure.constants import (RequestStatusConstants, ResourceRequestFieldConstants,
