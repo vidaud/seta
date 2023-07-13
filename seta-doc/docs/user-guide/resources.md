@@ -19,7 +19,6 @@
   <figcaption>New Resource in a Community</figcaption>
 </figure>
 
-
 ## List of Resources
 
 1. From the side menu click on ^^Discovery^^ -> ^^Resources^^.      
@@ -56,7 +55,6 @@
 3. Click on :material-dots-vertical: at the right side of each Resource and select the option ^^Delete Resource^^.  
 4. A pop-up window appear asking to confirm.  
 
-
 <figure markdown>
   ![Image title](../img/delete_resource.png)
   <figcaption>Delete a Resource</figcaption>
@@ -66,21 +64,19 @@
 
 1. From the side menu click on ^^Discovery^^ -> ^^Resources^^.  
 2. You can either enter in the search bar the name of the Resource you are looking for.              
-3. Click on :material-dots-vertical: at the right side of each Resource and scroll to abilitate the option ^^Switch to Not Searchable / Switch to Searchable^^.  
-
+3. Click on :material-dots-vertical: at the right side of each Resource and scroll to enable the option ^^Switch to Not Searchable / Switch to Searchable^^.  
 
 <figure markdown>
   ![Image title](../img/resource_searchable.png)
   <figcaption>Searchable Resource</figcaption>
 </figure>
 
-
 ## Request Update Limits
 
 1. From the side menu click on ^^Discovery^^ -> ^^Resources^^.  
 2. You can either enter in the search bar the name of the Resource you are looking for.              
 3. Click on :octicons-chevron-down-12: at the right side of the Resource row.     
-4. Click in the botton ^^Request Update Limits^^       
+4. Click in the button ^^Request Update Limits^^       
 5. Setup the limit values for *Total Files No., Total Storage Mb, File Size Mb*
 6. Click on *Update*
 
@@ -88,3 +84,4 @@
   ![Image title](../img/resource_request_update_limits.png)
   <figcaption>Searchable Resource</figcaption>
 </figure>
+
