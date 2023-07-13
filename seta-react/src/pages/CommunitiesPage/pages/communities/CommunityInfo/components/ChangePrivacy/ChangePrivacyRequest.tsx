@@ -60,8 +60,9 @@ const ChangePrivacy = ({ community }: Props) => {
       old_value: community.membership
     }
 
-    createCommunityChangeRequest(id, formValues)
-    refetch()
+    createCommunityChangeRequest(id, formValues).then(() => {
+      refetch()
+    })
   }
 
   return (

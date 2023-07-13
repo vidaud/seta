@@ -50,7 +50,7 @@ const ResourceDetails = ({ className, open, resource, resource_scopes }: Props) 
             <Tabs.Tab value="change_requests">
               Change Requests <Badge>{nrChangeRequests}</Badge>
             </Tabs.Tab>
-            <Tabs.Tab value="permissions">Permission</Tabs.Tab>
+            <Tabs.Tab value="permissions">Permissions</Tabs.Tab>
           </Tabs.List>
 
           <Tabs.Panel value="limits" sx={{ paddingLeft: '2%' }}>

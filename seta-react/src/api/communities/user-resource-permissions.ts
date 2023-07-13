@@ -1,8 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 import { getCookie } from 'typescript-cookie'
 
-import type { ResourcePermissions } from '~/pages/CommunitiesPage/pages/contexts/resource-user-permissions'
-
 import community_api from './api'
 
 import type { UserPermissionsResponse } from '../types/user-permissions-types'
@@ -26,11 +24,7 @@ export const useResourcePermissionsID = (id?: string) =>
 
 const csrf_token = getCookie('csrf_access_token')
 
-export const manageResourceScopes = async (
-  id?: string,
-  userId?: string,
-  values?: ResourcePermissions
-) => {
+export const manageResourceScopes = async (id?: string, userId?: string, values?: FormData) => {
   await community_api
     .post(`/permissions/resource/${id}/user/${userId}`, values, {
       headers: {

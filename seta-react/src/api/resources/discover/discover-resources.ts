@@ -29,7 +29,7 @@ export const manageRestrictedResources = async (resources?: FormData) => {
     })
     .then(response => {
       if (response.status === 201) {
-        window.location.href = `/resources`
+        // window.location.href = `/resources`
       }
     })
 }

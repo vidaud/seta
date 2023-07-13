@@ -78,7 +78,7 @@ const CommunityDetails = ({ className, open, community, community_scopes }: Prop
               <Tabs.Tab value="membership_requests">
                 Pending Membership Requests <Badge>{nrMembershipRequests}</Badge>
               </Tabs.Tab>
-              <Tabs.Tab value="permissions">Permission</Tabs.Tab>
+              <Tabs.Tab value="permissions">Permissions</Tabs.Tab>
             </>
           ) : null}
         </Tabs.List>
