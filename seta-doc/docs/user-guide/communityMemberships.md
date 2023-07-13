@@ -1,79 +1,17 @@
-<!-- (to update with UI implementation)-->
-
-<!--### Retrieve all pending change requests for communities
-
-> This option is only available to sysadmins 
-
-1. From the side menu click on ^^Manage^^ -> ^^My Communities^^.  
-2. You can either enter in the search bar the name of the Community you are looking for or select from the Community list.  
-3. Click on :material-dots-horizontal: at the right side of button ^^Invite^^ and select the option ^^View Details^^.  
-4. In the next window, on section ^^Details^^, click on button ^^Manage^^ 
-5. In the next window, on section ^^Pending Changes Requests^^, you can see the pending requests.                     
-5. By clicking in the ^^:octicons-pencil-24:^^, under *actions* column you can change the status to: *approved*.
-6. Click ^^Send^^.      
-
-### Change community membership request 
-
-> This option is available to community managers  
-
-1. From the side menu click on ^^Manage^^ -> ^^My Communities^^.  
-2. You can either enter in the search bar the name of the Community you are looking for or select from the Community list.  
-3. Click on :material-dots-horizontal: at the right side of button ^^Invite^^ and select the option ^^View Details^^.  
-4. In the next window, on section ^^Details^^, click on button ^^Manage^^ 
-5. In the next window, on section ^^Pending Changes Requests^^, you can see the pending requests.                     
-5. By clicking in the ^^:octicons-pencil-24:^^, under *actions* column you can change the status to: *approved*.
-6. Click ^^Send^^.      
-
-### Retrieve change requests for My communities
-
-1. From the side menu click on ^^Manage^^ -> ^^My Communities^^.       
-2. You can either enter in the search bar the name of the Community you are looking for or select from the Community list.      
-3. Click on :material-dots-horizontal: at the right side of each Community and select the option ^^Manage^^.       
-4. In the next window, in section ^^Pending Join Requests^^ you can see the pending requests.                     
-5. By clicking in the ^^:octicons-pencil-24:^^, under *actions* column you can change the status to: *approved*.
-6. Click ^^Send^^. 
-
-### Update change requests for My communities
-
-1. From the side menu click on ^^Manage^^ -> ^^My Communities^^.       
-2. You can either enter in the search bar the name of the Community you are looking for or select from the Community list.      
-3. Click on :material-dots-horizontal: at the right side of each Community and select the option ^^Manage^^.       
-4. In the next window, in section ^^Pending Join Requests^^ you can see the pending requests.                     
-5. By clicking in the ^^:octicons-pencil-24:^^, under *actions* column you can change the status to: *approved*.
-6. Click ^^Send^^. 
-
--->
-
 ## List of Community Members
 
-### From Discovery
-1. From the side menu click on ^^Discovery^^ -> ^^Communities^^.       
-2. You can either enter in the search bar the name of the Community you are looking for or select from the Community list.      
-3. Click on :octicons-eye-24: to view the details.                  
-4. In the next window, in section ^^STATS^^, you can see the number of members.              
-
-!!! info
-    If you are not a member of the Community you will only see the number of members.               
-
-### From My Communities
-                        
-1. From the side menu click on ^^Manage^^ -> ^^My Communities^^.       
-2. You can either enter in the search bar the name of the Community you are looking for or select from the Community list.      
-3. Click on :material-dots-horizontal: at the right side of each Community and select the option ^^:octicons-eye-24: View Details^^.                    
-4. In the next window, in section ^^STATS^^, you can click in the number of members to go to the list of members.              
+1. You can either enter in the search bar the name of the Community you are looking for or select from the Community list.             
+2. Click on :octicons-chevron-down-12: at the right side of the Community row.      
+3. A new section will appear where you can see different tabs: *Resource List, Sent Invites, My Change Requests, Pending Membership Requests, Permission*.                  
+4. On tab *Permission* you can see a list of the memebers and their scopes.              
 
 <figure markdown>
   ![Image title](../img/communities_members.png)
   <figcaption>Community Members</figcaption>
 </figure>
 
-<figure markdown>
-  ![Image title](../img/members_list.png)
-  <figcaption>List of Members</figcaption>
-</figure>
 
-
-## Remove a Member of the Community 
+<!-- ## Remove a Member of the Community 
 
 ### From Communities 
 1. From the side menu click on ^^Discovery^^ -> ^^Communities^^.       
@@ -87,19 +25,14 @@
   ![Image title](../img/communities_list.png)
   <figcaption>Communities</figcaption>
 </figure>
-
-### From My Communities 
-1. From the side menu click on ^^Manage^^ -> ^^My Communities^^.       
-2. You can either enter in the search bar the name of the Community you are looking for or select from the Community list.      
-3. Click on :material-dots-horizontal: at the right side of each Community and select the option ^^:octicons-eye-24: View Details^^.       
-4. On the Community page, on section ^^STATS^^, click on the badge with the number of members.
-5. On the List of Members page, under column ^^Actions^^ click on the :octicons-trash-24: to remove the member.
-6. Click ^^Confirm^^            
+  
 
 <figure markdown>
   ![Image title](../img/remove_community_member.png)
   <figcaption>Remove Community Member</figcaption>
 </figure>
+
+
 
 ## Block a member of the Community
 
@@ -116,14 +49,6 @@
   <figcaption>Communities</figcaption>
 </figure>
 
-### From My Communities 
-1. From the side menu click on ^^Manage^^ -> ^^My Communities^^.       
-2. You can either enter in the search bar the name of the Community you are looking for or select from the Community list.      
-3. Click on :material-dots-horizontal: at the right side of each Community and select the option ^^:octicons-eye-24: View Details^^.       
-4. On the Community page, on section ^^STATS^^, click on the badge with the number of members.
-5. On the List of Members page, under column ^^Actions^^ click on the :octicons-pencil-24: and change the status to *blocked*.
-6. Click ^^Send^^            
-
 <figure markdown>
   ![Image title](../img/block_member.png)
   <figcaption>Block Community Member</figcaption>
@@ -134,11 +59,10 @@
 
 ## Join a Community
 
-1. From the side menu click on ^^Discovery^^ -> ^^Communities^^.       
-2. You can either enter in the search bar the name of the Community you are looking for or select from the Community list.      
-3. Click on the button ^^Join^^.     
-4. If the *Membership* status is *closed*, a pop-up window will appear to send a message to ask for the request.
-5. The status changes to *pending* and the join button changes to ^^PENDING^^ until the Community manager approves or reject the request to join. If the request is approved, the status changes to *membership* and the button changes to ^^LEAVE^^, if the request is rejected the status changes to *rejected* and the button changes to ^^REJECTED^^.
+1. You can either enter in the search bar the name of the Community you are looking for or select from the Community list.      
+2. Click on the button ^^Join^^.     
+3. If the *Membership* status is *Restricted*, a pop-up window will appear to send a message to ask for the request.      
+4. The join button changes to ^^PENDING^^ until the Community manager approves or reject the request to join. If the request is approved, the status changes to *membership* and the button changes to ^^LEAVE^^, if the request is rejected the status changes to *rejected* and the button changes to ^^REJECTED^^.
 5. If the *Membership* status is *opened*, it is possible to join without sending a request.  
     
 

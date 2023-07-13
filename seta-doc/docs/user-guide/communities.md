@@ -52,14 +52,60 @@ From this page it is possible to access to:
 3. If you are a member or the community, a detailed section will appear.  
 4. If you are not a member of the Community you will only see a brief information about the community.          
 
+
+## Update Details of a Community                
+
+!!! info 
+
+    To be able to update the Community details, you need to have the rights to do so.
+
+1. You can either enter in the search bar the name of the Community you are looking for or select from the Community list.      
+2. Click  :material-dots-vertical: at the left side of button ^^LEAVE^^ and select the option ^^:octicons-pencil-24: Update Community^^.       
+3. A pop-up window will appear where you can update the *Title* and *Description*.      
+4. Click ^^Update^^       
+
+<figure markdown>
+  ![Image title](../img/communities_update.png)
+  <figcaption>Update a Community</figcaption>
+</figure>
+
+
+## Invite to Join a Community
+
+1. You can either enter in the search bar the name of the Community you are looking for or select from the Community list.      
+2. Click  :material-dots-vertical: at the left side of button ^^LEAVE^^ and select the option ^^:material-comment-multiple-outline: Invite^^.    
+3. A pop-up window will appear where you can write the *Emails* and a *Message*.      
+4. Click ^^Send^^.       
+
+<figure markdown>
+  ![Image title](../img/seta_communities_invite_join.png)
+  <figcaption>Invite to Join Community</figcaption>
+</figure>
+
+
+
+## Request Switch to Open a Community                
+
+!!! info 
+
+    To be able to switch to Open Community, you need to have the rights to do so.
+
+1. You can either enter in the search bar the name of the Community you are looking for or select from the Community list.      
+2. Click  :material-dots-vertical: at the left side of button ^^LEAVE^^ and select the option ^^:material-arrow-projectile-multiple: Request switch to Opened^^.       
+3. A pop-up window will appear where you can select the type of Privacy: *Restricted* or *Opened*.      
+4. Click ^^Update^^       
+
+<figure markdown>
+  ![Image title](../img/request_switch_opened.png)
+  <figcaption>Update a Community</figcaption>
+</figure>
+
 ## Delete a Community
 
-1. You can either enter in the search bar the name of the Community you are looking for or select from the Communities list.  
-2. Click on the :material-dots-vertical: at the right side of the community row.  
-3. Select the option ^^:octicons-trash-24: Delete Community^^. 
-5. A confirm window will appear to delete the Community.
-
-> Please consider that before you can delete a Community, it is necessary to delete the Resources related.
+1. You can either enter in the search bar the name of the Community you are looking for or select from the Communities list.   
+2. Click on the :octicons-chevron-down-12: at the right side of the community row.    
+3. Select the option ^^:octicons-trash-24: Delete Community^^.  *If there are resources related, a warning message will appear to inform that is neccesary to delete first the resources.*             
+5. A confirm window will appear to delete the Community.              
 
 <figure markdown>
   ![Image title](../img/delete_community_warning.png)
@@ -71,47 +117,6 @@ From this page it is possible to access to:
   ![Image title](../img/delete_community.png)
   <figcaption>Delete a Community</figcaption>
 </figure>
-
-## Update Details of a Community                
-                        
-### From My Communities
-
-1. From the side menu click on ^^Manage^^ -> ^^My Communities^^.  
-2. You can either enter in the search bar the name of the Community you are looking for or select from the Community list.  
-3. Click  :material-dots-horizontal: at the right side of button ^^Invite^^ and select the option ^^:octicons-pencil-24: Update^^.  
-4. In the next window, you can update the *Title* and *Description*.  
-5. Click ^^Update^^
-
-### From Manage
-
-1. From the side menu click on ^^Manage^^ -> ^^My Communities^^.  
-2. You can either enter in the search bar the name of the Community you are looking for or select from the Community list.  
-3. Click on :material-dots-horizontal: at the right side of button ^^Invite^^ and select the option ^^:octicons-gear-24: Manage^^.  
-4. In the next window, on section ^^Details^^, click on button ^^Update^^ 
-5. You can update the *Title* and *Description*.  
-6. Click ^^Update^^
-
-### From View Details
-
-1. From the side menu click on ^^Manage^^ -> ^^My Communities^^.  
-2. You can either enter in the search bar the name of the Community you are looking for or select from the Community list.  
-3. Click on :material-dots-horizontal: at the right side of button ^^Invite^^ and select the option ^^:octicons-eye-24: View Details^^.  
-4. In the next window, on section ^^Details^^, click on button ^^Manage^^ 
-5. In the next window, on section ^^Details^^, click on button ^^Update^^ 
-6. You can update the *Title* and *Description*.  
-7. Click ^^Update^^
-
-<figure markdown>
-  ![Image title](../img/communities_update1.png)
-  <figcaption>Update a Community</figcaption>
-</figure>
-
-<figure markdown>
-  ![Image title](../img/communities_update.png)
-  <figcaption>Update a Community</figcaption>
-</figure>
-
-
       
 
 
