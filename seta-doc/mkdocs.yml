@@ -101,7 +101,7 @@ nav:
         - SeTA Communities: user-guide/communities.md
       # - Communities ChangeRequest: user-guide/communitiesChangeRequest.md
         - Community Memberships: user-guide/communityMemberships.md
-        - Community Invites: user-guide/communityInvites.md
+      #  - Community Invites: user-guide/communityInvites.md
         - Resources: user-guide/resources.md
       #  - Users Permissions: user-guide/usersPermissions.md
       - Search: 

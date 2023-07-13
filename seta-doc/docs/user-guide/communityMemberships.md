@@ -10,50 +10,6 @@
   <figcaption>Community Members</figcaption>
 </figure>
 
-<!-- ## Remove a Member of the Community 
-
-### From Communities 
-1. From the side menu click on ^^Discovery^^ -> ^^Communities^^.       
-2. You can filter by ^^Status^^ (*MEMBER*) and either enter in the search bar the name of the Community you are looking for or select from the Community list.      
-3. Click on :octicons-eye-24: at the right side of the Community row.       
-4. On the Community page, on section ^^STATS^^, click on the badge with the number of members.
-5. On the List of Members page, under column ^^Actions^^ click on the :octicons-trash-24: to remove the member.
-6. Click ^^Confirm^^            
-
-<figure markdown>
-  ![Image title](../img/communities_list.png)
-  <figcaption>Communities</figcaption>
-</figure>
-  
-
-<figure markdown>
-  ![Image title](../img/remove_community_member.png)
-  <figcaption>Remove Community Member</figcaption>
-</figure>
-
-## Block a member of the Community
-
-### From Communities 
-1. From the side menu click on ^^Discovery^^ -> ^^Communities^^.       
-2. You can filter by ^^Status^^ (*member*) and either enter in the search bar the name of the Community you are looking for or select from the Community list.      
-3. Click on :octicons-eye-24: at the right side of the Community row.       
-4. On the Community page, on section ^^STATS^^, click on the badge with the number of members.
-5. On the List of Members page, under column ^^Actions^^ click on the :octicons-pencil-24: and change the status to *blocked*.
-6. Click ^^Send^^            
-
-<figure markdown>
-  ![Image title](../img/communities_list.png)
-  <figcaption>Communities</figcaption>
-</figure>
-
-<figure markdown>
-  ![Image title](../img/block_member.png)
-  <figcaption>Block Community Member</figcaption>
-</figure>
-
-<!--### Display the available memberships 
-> (*to check*)-->
-
 ## Join a Community
 
 1. You can either use the filters to search the Community or select from the Communities list.      
@@ -96,6 +52,7 @@
 
 ## Request to Join My Community
 
+### From the main page
 1. You can either use the filters to search the Community or select from the Communities list.             
 2. Click on :octicons-chevron-down-12: at the right side of the Community row.      
 3. On the opened section, click on tab *Pending Membership Requests*.           
@@ -111,4 +68,40 @@
 
 > If the status is not update, the status will remain *PENDING*, if the request is set to *Rejected* the status in the communities list will be *REJECTED*
 
+### From the side menu
+1. From the side menu on top you can see if you have *Pending Invites*.  
+2. Click in the number badge.  
+3. In the main window, you will see a List of Invites.
+4. Click in the ^^:octicons-pencil-24:^^, under *actions* column to change the status to: *accepted* or *rejected*.
+6. Click ^^Send^^.     
 
+<figure markdown>
+  ![Image title](../img/communities_pending_join_list.png)
+  <figcaption>Pending Membership Requests</figcaption>
+</figure>
+
+## See the Invites Sent
+
+1. You can either use the filters to search the Community or select from the Communities list.             
+2. Click on :octicons-chevron-down-12: at the right side of the Community row.      
+3. On the opened section, click on tab *Sent Invites*.           
+4. You can see a list of the Invites sent.            
+
+<figure markdown>
+  ![Image title](../img/seta_communities_invites_list.png)
+  <figcaption>Sent Invites</figcaption>
+</figure>
+
+## Accept Invitation to Join a Community.
+
+
+1. From the side menu on top you can see if you have *Pending Invites*.  
+2. Click in the number badge.  
+3. In the main window, you will see a List of Invites.
+4. Click in the ^^:octicons-pencil-24:^^, under *actions* column to change the status to: *accepted* or *rejected*.
+6. Click ^^Send^^.      
+
+<figure markdown>
+  ![Image title](../img/list_pending_invites.png)
+  <figcaption>Sent Invites</figcaption>
+</figure>
