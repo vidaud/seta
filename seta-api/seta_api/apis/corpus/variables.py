@@ -161,6 +161,8 @@ corpus_post_params["other"] = None
 corpus_delete_id_response = {}
 corpus_delete_id_response["deleted_document_id"] = fields.String
 
+corpus_update_id_response = {}
+corpus_update_id_response["updated_document_id"] = fields.String
 
 corpus_get_id_response = {}
 corpus_get_id_response["abstract"] = fields.String()
@@ -245,6 +247,9 @@ class Variable:
 
     def get_delete_id_request_model(self):
         return self.namespace.model("corpus_delete_id_response", corpus_delete_id_response)
+
+    def get_update_id_request_model(self):
+        return self.namespace.model("corpus_update_id_response", corpus_delete_id_response)
 
     def get_post_request_model(self):
         corpus_post_params["other"] = fields.List(fields.Nested(self.other_model))

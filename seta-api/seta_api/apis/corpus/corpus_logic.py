@@ -24,7 +24,15 @@ def delete_chunk(id, es, index):
     try:
         es.delete(index=index, id=id)
     except:
-        raise ApiLogicError("id not found")
+        raise ApiLogicError("ID not found")
+
+
+def update_chunk(id, es, fields, index):
+    res = ""
+    try:
+        res = es.update(index=index, id=id, doc=fields)
+    except:
+        raise ApiLogicError('Update not performed', res)
 
 
 def document_by_id(doc_id, n_docs, from_doc, current_app):
