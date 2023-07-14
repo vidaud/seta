@@ -22,3 +22,8 @@ class ICommunitiesBroker(Interface):
     
     def get_all(self) -> list[CommunityModel]:
         pass
+
+    def get_orphans(self)  -> list[CommunityModel]:
+        """Get all communities without an owner assigned (no user has scope '/seta/community/owner')"""
+
+        pass

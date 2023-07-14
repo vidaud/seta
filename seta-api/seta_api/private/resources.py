@@ -3,7 +3,7 @@ from flask_restx import Model, fields
 from flask_restx import Namespace, Resource, abort
 from flask import current_app as app, jsonify
 
-from .resources_logic import resource_exists
+from .resources_logic import resource_exists, get_all_resource
 
 from http import HTTPStatus
 
@@ -34,7 +34,7 @@ class PrivateSetaResource(Resource):
                                         int(HTTPStatus.INTERNAL_SERVER_ERROR): "ElasticSearch delete query failed."})
     def delete(self, id):
         """Delete resource data from ES"""
-        
+
         if resource_exists(id, current_app=app):
             body = {"query": {"bool": {"must": [{"match": {"source.keyword": id}}]}}}
             try:
@@ -42,8 +42,8 @@ class PrivateSetaResource(Resource):
             except Exception as ex:
                 message = str(ex)
                 app.logger.exception(message)
-                
-                #it's safe to forward the error message
+
+                # it's safe to forward the error message
                 abort(HTTPStatus.INTERNAL_SERVER_ERROR, message)
 
         message = f"All data for the resource '{id}' deleted."
@@ -51,3 +51,18 @@ class PrivateSetaResource(Resource):
         response.status_code = HTTPStatus.OK
 
         return response
+
+
+all_response = {"resources": fields.List(fields.String())}
+all_response_model = private_resource_ns.model("all_response", all_response)
+
+
+@private_resource_ns.route('/all', methods=['GET'])
+class PrivateSetaAllResource(Resource):
+
+    @private_resource_ns.doc(description='Return a list of all resouces.')
+    @private_resource_ns.response(200, 'Success', all_response_model)
+    def get(self):
+        """Get a list of all the resources"""
+        res_list = get_all_resource(current_app=app)
+        return {"resources": res_list}

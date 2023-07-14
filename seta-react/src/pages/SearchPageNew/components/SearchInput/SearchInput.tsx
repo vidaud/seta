@@ -82,7 +82,12 @@ const SearchInput = forwardRef<HTMLDivElement, Props>(
           onChange={onDeferredChange}
         />
 
-        <Tooltip label="Type a keyword to enable searching" disabled={allowSearching}>
+        <Tooltip
+          label="Type a keyword or upload a document to enable searching"
+          multiline
+          width={300}
+          disabled={allowSearching}
+        >
           <div css={S.searchButtonWrapper} data-disabled={!allowSearching}>
             <Button
               css={S.searchButton}

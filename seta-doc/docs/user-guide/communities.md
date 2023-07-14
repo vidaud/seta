@@ -9,35 +9,33 @@ In the SeTA web application, we have two types of communities: public communitie
 
 ## Discover Communities
 
-On the main page of the Communities, it is possible to see, two side panels on the left side: *Discovery* and *Manage* and in the centre, the list of the Communities.
+On the main page of the Communities, it is possible to see the list of the Communities.
 
-On **Discovery** panel it is possible to access to:
+From this page it is possible to access to:
 
 - Communities *(List of available Communities)*        
 - Resources *(The Resources related to those communities)*        
-
-On **Manage** panel it is possible to access to:             
-
-- My Communities                 
-- My Resources               
 
 <figure markdown>
   ![Image title](../img/seta_communities.png)
   <figcaption>Communities page</figcaption>
 </figure>
 
+## List of Communities
+
+1. You will see a list of the Communities in the page.   
+2. You can filter by the different types display on top of the page: *Select Membership, Select Status* and search by *Field*.                  
+<figure markdown>
+  ![Image title](../img/my_communities.png)
+  <figcaption>Communities</figcaption>
+</figure>
+
    
 ## Create a Community
                      
-1. From the side panel click on ^^Manage^^ -> ^^My Communities^^.  
-2. Click on the top right bottom ^^New Community^^.  
+1. From the main panel click on the top right bottom ^^New Community^^.  
 3. Enter the Community id, Title and Description.  
 4. Click Save.         
-
-<figure markdown>
-  ![Image title](../img/my_communities.png)
-  <figcaption>My Communities</figcaption>
-</figure>
 
 <figure markdown>
   ![Image title](../img/new_community.png)
@@ -45,128 +43,74 @@ On **Manage** panel it is possible to access to:
 </figure>
 
 
-## List of Communities
-
-1. From the side menu click on ^^Manage^^ -> ^^My Communities^^.   
-2. You will see a list of the Communities in the page.
-3. You can enter in the search bar the name of the Community you are looking for.                 
-<figure markdown>
-  ![Image title](../img/communities_list.png)
-  <figcaption>Communities</figcaption>
-</figure>
-
-## List of My Communities
-
-1. From the side menu click on ^^Manage^^ -> ^^My Communities^^.   
-2. You will see a list of the Communities in the page.
-3. You can enter in the search bar the name of the Community you are looking for.                  
-
-<figure markdown>
-  ![Image title](../img/my_communities.png)
-  <figcaption>My Communities</figcaption>
-</figure>
 
 ## Details of a Community                
                         
-### From Communities
-
-1. From the side menu click on ^^Discovery^^ -> ^^Communities^^.  
-2. You can either enter in the search bar the name of the Community you are looking for or select from the Community list.  
-3. Click on :octicons-eye-24: at the right side of the Community row.  
-4. If you are a member or the community, you will be redirect to the Community Details page.  
-5. If you are not a member of the Community you will only see a pop-up window with a brief information about the community.          
-
-### From My Communities
-
-1. From the side menu click on ^^Manage^^ -> ^^My Communities^^.  
-2. You can either enter in the search bar the name of the Community you are looking for or select from the Community list.  
-3. Click on :material-dots-horizontal: at the right side of button ^^Invite^^ and select the option ^^:octicons-eye-24: View Details^^.  
-4. In the next window, you will see the Details page of the Community.        
-
-<figure markdown>
-  ![Image title](../img/seta_communities.png)
-  <figcaption>Community Details</figcaption>
-</figure>
-
-<figure markdown>
-  ![Image title](../img/communities_details_page.png)
-  <figcaption>Community Details for Members</figcaption>
-</figure>
-
-<figure markdown>
-  ![Image title](../img/communities_details_noMember.png)
-  <figcaption>Community details for no Members</figcaption>
-</figure>
-
-## Delete a Community
-
-1. From the side menu click on ^^Manage^^ -> ^^My Communities^^.  
-2. You can either enter in the search bar the name of the Community you are looking for or select from the Communities list.  
-3. After you select the Community, click on button ^^Delete^^ on the left top of the Communities list.
-4. It is also possible to delete the Community by clicking :material-dots-horizontal: at the right side of each Community and select the option ^^:octicons-trash-24: Delete Community^^. 
-5. A confirm window will appear to delete the Community.
-
-> Please consider that before you can delete a Community, it is necessary to delete the Resources related.
-
-<figure markdown>
-  ![Image title](../img/delete_community_warning.png)
-  <figcaption>Delete a Community with a Resource related</figcaption>
-</figure>
-
-
-<figure markdown>
-  ![Image title](../img/delete_community.png)
-  <figcaption>Delete a Community</figcaption>
-</figure>
+1. You can either use the filters to search the Community or select from the Communities list.      
+2. Click on :octicons-chevron-down-12: at the right side of the Community row.  
+3. If you are a member or the community, a detailed section will appear.  
+4. If you are not a member of the Community you will only see a brief information about the community.          
 
 ## Update Details of a Community                
-                        
-### From My Communities
 
-1. From the side menu click on ^^Manage^^ -> ^^My Communities^^.  
-2. You can either enter in the search bar the name of the Community you are looking for or select from the Community list.  
-3. Click  :material-dots-horizontal: at the right side of button ^^Invite^^ and select the option ^^:octicons-pencil-24: Update^^.  
-4. In the next window, you can update the *Title* and *Description*.  
-5. Click ^^Update^^
+!!! info 
 
-### From Manage
+    To be able to update the Community details, you need to have the rights to do so.
 
-1. From the side menu click on ^^Manage^^ -> ^^My Communities^^.  
-2. You can either enter in the search bar the name of the Community you are looking for or select from the Community list.  
-3. Click on :material-dots-horizontal: at the right side of button ^^Invite^^ and select the option ^^:octicons-gear-24: Manage^^.  
-4. In the next window, on section ^^Details^^, click on button ^^Update^^ 
-5. You can update the *Title* and *Description*.  
-6. Click ^^Update^^
-
-### From View Details
-
-1. From the side menu click on ^^Manage^^ -> ^^My Communities^^.  
-2. You can either enter in the search bar the name of the Community you are looking for or select from the Community list.  
-3. Click on :material-dots-horizontal: at the right side of button ^^Invite^^ and select the option ^^:octicons-eye-24: View Details^^.  
-4. In the next window, on section ^^Details^^, click on button ^^Manage^^ 
-5. In the next window, on section ^^Details^^, click on button ^^Update^^ 
-6. You can update the *Title* and *Description*.  
-7. Click ^^Update^^
-
-<figure markdown>
-  ![Image title](../img/communities_update1.png)
-  <figcaption>Update a Community</figcaption>
-</figure>
+1. You can either use the filters to search the Community or select from the Communities list.      
+2. Click  :material-dots-vertical: at the left side of button ^^LEAVE^^ and select the option ^^:octicons-pencil-24: Update Community^^.       
+3. A pop-up window will appear where you can update the *Title* and *Description*.      
+4. Click ^^Update^^       
 
 <figure markdown>
   ![Image title](../img/communities_update.png)
   <figcaption>Update a Community</figcaption>
 </figure>
 
+## Invite to Join a Community
 
+1. You can either use the filters to search the Community or select from the Communities list.      
+2. Click  :material-dots-vertical: at the left side of button ^^LEAVE^^ and select the option ^^:material-comment-multiple-outline: Invite^^.    
+3. A pop-up window will appear where you can write the *Emails* and a *Message*.      
+4. Click ^^Send^^.       
+
+<figure markdown>
+  ![Image title](../img/seta_communities_invite_join.png)
+  <figcaption>Invite to Join Community</figcaption>
+</figure>
+
+
+## Request Switch to Open a Community                
+
+!!! info 
+
+    To be able to switch to Open Community, you need to have the rights to do so.
+
+1. You can either use the filters to search the Community or select from the Communities list.      
+2. Click  :material-dots-vertical: at the left side of button ^^LEAVE^^ and select the option ^^:material-arrow-projectile-multiple: Request switch to Opened^^.       
+3. A pop-up window will appear where you can select the type of Privacy: *Restricted* or *Opened*.      
+4. Click ^^Update^^       
+
+<figure markdown>
+  ![Image title](../img/request_switch_opened.png)
+  <figcaption>Update a Community</figcaption>
+</figure>
+
+## Delete a Community
+
+1. You can either use the filters to search the Community or select from the Communities list.      
+2. Click on the :octicons-chevron-down-12: at the right side of the community row.    
+3. Select the option ^^:octicons-trash-24: Delete Community^^.  *If there are resources related, a warning message will appear to inform that is necessary to delete first the resources.*             
+5. A confirm window will appear to delete the Community.              
+
+<figure markdown>
+  ![Image title](../img/delete_community_warning.png)
+  <figcaption>Delete a Community with a Resource related</figcaption>
+</figure>
+
+<figure markdown>
+  ![Image title](../img/delete_community.png)
+  <figcaption>Delete a Community</figcaption>
+</figure>
       
-
-
-
-
-
-
-
-
-
 

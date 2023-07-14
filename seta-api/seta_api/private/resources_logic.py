@@ -14,3 +14,18 @@ def resource_exists(res_id, current_app):
         return False
     else:
         return True
+
+
+def get_all_resource(current_app):
+    res_list = []
+    aggs = {"resources": {"terms": {"field": "source.keyword"}}}
+    try:
+        resp = current_app.es.search(index=current_app.config["INDEX_PUBLIC"], aggs=aggs, size=0)
+        if "aggregations" in resp:
+            for agg in resp["aggregations"]["resources"]["buckets"]:
+                res_list.append(agg["key"])
+    except Exception as ex:
+        message = str(ex)
+        current_app.logger.exception(message)
+        abort(401, message)
+    return res_list
