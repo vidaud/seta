@@ -52,7 +52,7 @@ def document_by_id(doc_id, n_docs, from_doc, current_app):
                                                           is_field_in_doc(document, "taxonomy_path"))
                 document["taxonomy"] = tax.tree
                 resp["chunk_list"].append(document)
-        resp["num_chunks"] = len(resp["chunk_list"])
+            resp["num_chunks"] = response["hits"]["total"]["value"]
     except:
         raise ApiLogicError('ID not found.')
     return resp
