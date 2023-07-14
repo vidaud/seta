@@ -113,7 +113,7 @@ nav:
       - Communities API: apis/communities_api/seta_api_communities.md
   - Install SeTA:
     - Docker: setup/docker-architecture.md
-    # -Migration: To do
+    - MongoDB Migration: setup/migration.md
     - Deployment: setup/deployment.md 
     - Release: setup/release-notes.md
   - License: license/license_v1.md
