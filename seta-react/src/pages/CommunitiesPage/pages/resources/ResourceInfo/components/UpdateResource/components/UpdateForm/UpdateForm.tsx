@@ -24,10 +24,10 @@ const useStyles = createStyles({
   }
 })
 
-const UpdateForm = ({ resourceInfo, close, onChange }) => {
+const UpdateForm = ({ resource, close, onChange }) => {
   const { classes, cx } = useStyles()
 
-  const { data, isLoading } = useResourceID(resourceInfo)
+  const { data, isLoading } = useResourceID(resource.resource_id)
 
   const form = useResource({
     initialValues: {
@@ -42,19 +42,22 @@ const UpdateForm = ({ resourceInfo, close, onChange }) => {
   })
 
   useEffect(() => {
-    if (data) {
-      form.setValues(data)
+    if (resource) {
+      form.setValues({
+        title: resource.title,
+        abstract: resource.abstract
+      })
     }
     // adding form to useEffect will cause infinite loop call
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data])
+  }, [resource])
 
   if (isLoading || !data) {
     return <ComponentLoading />
   }
 
   const handleSubmit = (values: ResourceValues) => {
-    updateResource(resourceInfo, values.resource_id, values)
+    updateResource(resource.resource_id, values)
   }
 
   return (
@@ -64,6 +67,7 @@ const UpdateForm = ({ resourceInfo, close, onChange }) => {
           <TextInput
             label="ID"
             {...form.getInputProps('resource_id')}
+            value={resource.resource_id}
             className={cx(classes.input, classes.sized)}
             disabled={true}
             withAsterisk

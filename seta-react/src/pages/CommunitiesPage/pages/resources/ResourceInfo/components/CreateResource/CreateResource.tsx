@@ -21,7 +21,7 @@ const CreateResource = ({ id }) => {
         }}
       >
         <Divider my="xs" label="Add New Resource" labelPosition="center" />
-        <CreateForm id={id} />
+        <CreateForm id={id} close={close} />
       </Modal>
       <Group position="right" css={S.root}>
         <Tooltip label="Add resource to community" color="blue">

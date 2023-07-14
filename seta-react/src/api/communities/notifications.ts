@@ -58,7 +58,13 @@ const apiConfig: AxiosRequestConfig = {
   baseURL: BASE_URL
 }
 
-export const cacheKey = () => ['membership-requests'] || ['invites']
+export const queryKey = {
+  root: ['membership-requests']
+}
+
+export const queryKey1 = {
+  root: ['invites']
+}
 
 export const getNotificationRequests = async (): Promise<Notifications> => {
   const permissions = await api.get<UserPermissions>(USER_INFO_API_PATH, apiConfig)
@@ -70,8 +76,8 @@ export const getNotificationRequests = async (): Promise<Notifications> => {
         scope.scopes.includes('/seta/community/manager') ||
         scope.scopes.includes('/seta/community/owner')
     )
-    .forEach(item => {
-      community_api
+    .forEach(async item => {
+      await community_api
         .get<MembershipRequest[]>(
           `${environment.COMMUNITIES_API_PATH}/${item.community_id}/requests`
         )
@@ -94,4 +100,7 @@ export const getNotificationRequests = async (): Promise<Notifications> => {
 }
 
 export const useNotificationsRequests = () =>
-  useQuery({ queryKey: cacheKey(), queryFn: () => getNotificationRequests() })
+  useQuery({
+    queryKey: queryKey.root ? queryKey.root : queryKey1.root,
+    queryFn: () => getNotificationRequests()
+  })

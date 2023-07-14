@@ -42,11 +42,7 @@ export const createResource = async (id?: string, values?: CreateResourceAPI) =>
     })
 }
 
-export const updateResource = async (
-  id?: string,
-  resource_id?: string,
-  values?: UpdateResourceAPI
-) => {
+export const updateResource = async (resource_id?: string, values?: UpdateResourceAPI) => {
   await community_api
     .put(`${RESOURCE_API_PATH}${resource_id}`, values, {
       headers: {

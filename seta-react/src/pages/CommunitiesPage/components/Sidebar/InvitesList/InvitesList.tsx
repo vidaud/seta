@@ -53,7 +53,8 @@ const InvitesList = () => {
     if (data) {
       setItems(data.invites)
     }
-  }, [data, items])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data])
 
   if (error) {
     return <ComponentError onTryAgain={refetch} />

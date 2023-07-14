@@ -29,7 +29,7 @@ const CreateCommunity = ({ system_scopes }) => {
             }}
           >
             <Divider my="xs" label="Add New Community" labelPosition="center" />
-            <CreateForm />
+            <CreateForm close={close} />
           </Modal>
           <Group position="right" css={S.root}>
             <Button color="green" onClick={open}>

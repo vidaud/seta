@@ -3,6 +3,7 @@ import { Outlet } from 'react-router-dom'
 
 import Breadcrumbs from '../../components/Breadcrumbs'
 import NavbarNestedWithNotifications from '../../components/NavbarNestedWithNotifications/NavbarNestedWithNotifications'
+import { NotificationsProvider } from '../../pages/CommunitiesPage/pages/contexts/notifications-context'
 import { ScopeProvider } from '../../pages/CommunitiesPage/pages/contexts/scope-context'
 
 const CommunityLayout = () => {
@@ -30,7 +31,9 @@ const CommunityLayout = () => {
           </ScopeProvider>
 
           <Flex direction="column" align="center" sx={{ width: '100%', padding: '2rem' }}>
-            <Outlet />
+            <NotificationsProvider>
+              <Outlet />
+            </NotificationsProvider>
           </Flex>
         </Flex>
       </Flex>
