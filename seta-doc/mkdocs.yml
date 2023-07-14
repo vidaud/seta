@@ -108,6 +108,7 @@ nav:
         - Methodology: user-guide/methodology.md
         - Web Interface: user-guide/web-app.md
     - APIs: 
+      - Swagger: apis/swagger/swagger.md
       - SeTA API: apis/seta_api/seta_api.md
       - Communities API: apis/communities_api/seta_api_communities.md
   - Install SeTA:
