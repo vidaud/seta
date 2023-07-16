@@ -95,20 +95,21 @@ nav:
   - What is SeTA: index.md
   - Who should use it and why: general/who_use_it_and_why.md   
   - Using SeTA:
-    - Setup: user-guide/setup.md
+    - Setup:
+      - Web App: user-guide/configuration/webApp.md
+      - API's: user-guide/configuration/apis.md
     - Web App:
       - Communities: 
-        - SeTA Communities: user-guide/communities.md
+        - SeTA Communities: user-guide/communities/communities.md
       # - Communities ChangeRequest: user-guide/communitiesChangeRequest.md
-        - Community Memberships: user-guide/communityMemberships.md
+        - Community Memberships: user-guide/communities/communityMemberships.md
       #  - Community Invites: user-guide/communityInvites.md
-        - Resources: user-guide/resources.md
+        - Resources: user-guide/communities/resources.md
       #  - Users Permissions: user-guide/usersPermissions.md
       - Search: 
-        - Methodology: user-guide/methodology.md
-        - Web Interface: user-guide/web-app.md
+        - Methodology: user-guide/webApp/methodology.md
+        - Web Interface: user-guide/webApp/webApp.md
     - APIs: 
-      - Swagger: apis/swagger/swagger.md
       - SeTA API: apis/seta_api/seta_api.md
       - Communities API: apis/communities_api/seta_api_communities.md
   - Install SeTA:

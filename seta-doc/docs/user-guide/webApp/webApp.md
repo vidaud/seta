@@ -17,7 +17,7 @@ Within the search page the options to search are:
 
 
 <figure markdown>
-  ![Image title](../img/search_term.png)
+  ![Image title](../../img/search_term.png)
   <figcaption>Search by term</figcaption>
 </figure>
 
@@ -32,7 +32,7 @@ Within the search page the options to search are:
 
 
 <figure markdown>
-  ![Image title](../img/search_phrase.png)
+  ![Image title](../../img/search_phrase.png)
   <figcaption>Search by phrase</figcaption>
 </figure>
 
@@ -41,7 +41,7 @@ Within the search page the options to search are:
 In the search by terms or phrase it is possible to apply a wizard so the search is enriched automatically by clicking on the :fontawesome-solid-wand-magic-sparkles:.   Every term is expanded in the background to include all the related terms.
 
 <figure markdown>
-  ![Image title](../img/search_enrich_terms.png)
+  ![Image title](../../img/search_enrich_terms.png)
   <figcaption>Enrich query automatically</figcaption>
 </figure>
 
@@ -60,7 +60,7 @@ In the search by terms or phrase it is possible to apply a wizard so the search 
 If we don't want to search with this option, it is always possible to cancel the search with the *cancel* button at the bottom of the pop up, and the pop-up window will close.
 
 <figure markdown>
-  ![Image title](../img/upload.png){ width="800" }
+  ![Image title](../../img/upload.png){ width="800" }
   <figcaption>Search by document or text</figcaption>
 </figure>
 
@@ -93,7 +93,7 @@ Once all the filters are selected, click in the button **Apply Filters** at the 
 
 
 <figure markdown>
-  ![Image title](../img/search_results_filters.png){ width="300" }
+  ![Image title](../../img/search_results_filters.png){ width="300" }
   <figcaption>Filters</figcaption>
 </figure>
 
@@ -105,7 +105,7 @@ If we click in the expand option, it is possible to see the Taxonomy tree and th
 
 
 <figure markdown>
-  ![Image title](../img/search_results.png)
+  ![Image title](../../img/search_results.png)
   <figcaption>Search results</figcaption>
 </figure>
 

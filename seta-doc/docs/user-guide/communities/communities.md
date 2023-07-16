@@ -17,7 +17,7 @@ From this page it is possible to access to:
 - Resources *(The Resources related to those communities)*        
 
 <figure markdown>
-  ![Image title](../img/seta_communities.png)
+  ![Image title](../../img/seta_communities.png)
   <figcaption>Communities page</figcaption>
 </figure>
 
@@ -26,7 +26,7 @@ From this page it is possible to access to:
 1. You will see a list of the Communities in the page.   
 2. You can filter by the different types display on top of the page: *Select Membership, Select Status* and search by *Field*.                  
 <figure markdown>
-  ![Image title](../img/my_communities.png)
+  ![Image title](../../img/my_communities.png)
   <figcaption>Communities</figcaption>
 </figure>
 
@@ -38,7 +38,7 @@ From this page it is possible to access to:
 4. Click Save.         
 
 <figure markdown>
-  ![Image title](../img/new_community.png)
+  ![Image title](../../img/new_community.png)
   <figcaption>New Community</figcaption>
 </figure>
 
@@ -63,7 +63,7 @@ From this page it is possible to access to:
 4. Click ^^Update^^       
 
 <figure markdown>
-  ![Image title](../img/communities_update.png)
+  ![Image title](../../img/communities_update.png)
   <figcaption>Update a Community</figcaption>
 </figure>
 
@@ -75,7 +75,7 @@ From this page it is possible to access to:
 4. Click ^^Send^^.       
 
 <figure markdown>
-  ![Image title](../img/seta_communities_invite_join.png)
+  ![Image title](../../img/seta_communities_invite_join.png)
   <figcaption>Invite to Join Community</figcaption>
 </figure>
 
@@ -92,7 +92,7 @@ From this page it is possible to access to:
 4. Click ^^Update^^       
 
 <figure markdown>
-  ![Image title](../img/request_switch_opened.png)
+  ![Image title](../../img/request_switch_opened.png)
   <figcaption>Update a Community</figcaption>
 </figure>
 
@@ -104,12 +104,12 @@ From this page it is possible to access to:
 5. A confirm window will appear to delete the Community.              
 
 <figure markdown>
-  ![Image title](../img/delete_community_warning.png)
+  ![Image title](../../img/delete_community_warning.png)
   <figcaption>Delete a Community with a Resource related</figcaption>
 </figure>
 
 <figure markdown>
-  ![Image title](../img/delete_community.png)
+  ![Image title](../../img/delete_community.png)
   <figcaption>Delete a Community</figcaption>
 </figure>
       

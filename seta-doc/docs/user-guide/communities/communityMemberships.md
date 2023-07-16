@@ -6,7 +6,7 @@
 4. On tab *Permission* you can see a list of the members and their scopes.              
 
 <figure markdown>
-  ![Image title](../img/communities_members.png)
+  ![Image title](../../img/communities_members.png)
   <figcaption>Community Members</figcaption>
 </figure>
 
@@ -20,22 +20,22 @@
     
 
 <figure markdown>
-  ![Image title](../img/join_community.png)
+  ![Image title](../../img/join_community.png)
   <figcaption>Join Community</figcaption>
 </figure>
 
 <figure markdown>
-  ![Image title](../img/seta_communities_pending_join.png)
+  ![Image title](../../img/seta_communities_pending_join.png)
   <figcaption>Join Community (*waiting for approval*)</figcaption>
 </figure>
 
 <figure markdown>
-  ![Image title](../img/join_community_approved.png)
+  ![Image title](../../img/join_community_approved.png)
   <figcaption>Join Community (*approved*)</figcaption>
 </figure>
 
 <figure markdown>
-  ![Image title](../img/join_community_rejected.png)
+  ![Image title](../../img/join_community_rejected.png)
   <figcaption>Join Community (*rejected*)</figcaption>
 </figure>
 
@@ -46,7 +46,7 @@
 3. The button label will change to ^^JOIN^^.              
 
 <figure markdown>
-  ![Image title](../img/communities_list_join_leave.png)
+  ![Image title](../../img/communities_list_join_leave.png)
   <figcaption>Leave a Community</figcaption>
 </figure>
 
@@ -62,7 +62,7 @@
 7. The request disappear from the Pending Membership Requests list.
 
 <figure markdown>
-  ![Image title](../img/pending_invites_from_main.png)
+  ![Image title](../../img/pending_invites_from_main.png)
   <figcaption>Pending Membership Requests</figcaption>
 </figure>
 
@@ -76,7 +76,7 @@
 6. Click ^^Send^^.     
 
 <figure markdown>
-  ![Image title](../img/communities_pending_join_list.png)
+  ![Image title](../../img/communities_pending_join_list.png)
   <figcaption>Pending Membership Requests</figcaption>
 </figure>
 
@@ -88,7 +88,7 @@
 4. You can see a list of the Invites sent.            
 
 <figure markdown>
-  ![Image title](../img/seta_communities_invites_list.png)
+  ![Image title](../../img/seta_communities_invites_list.png)
   <figcaption>Sent Invites</figcaption>
 </figure>
 
@@ -102,6 +102,6 @@
 6. Click ^^Send^^.      
 
 <figure markdown>
-  ![Image title](../img/list_pending_invites.png)
+  ![Image title](../../img/list_pending_invites.png)
   <figcaption>Sent Invites</figcaption>
 </figure>
