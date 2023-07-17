@@ -10,9 +10,9 @@ In Swagger it is possible to write specifications for the API manually, or have 
 Finally, the use of Swagger UI allows to generate interactive API documentation that lets users try out the API calls directly in the browser.
 
 The use of Swagger is convenient when doing development and very useful for public APIs to know how they function.     
-But for security concerns, in the production environment Swagger and Swagger-ui are disabled.      
+But for security concerns, in the production environment Swagger and Swagger-ui are disabled.          
 
-In SeTA, this configuration is setup inside the container *seta-ui* in the *config.py* file `seta-ui\seta_flask_server\config.py` with the command:
+In SeTA, with variable *DISABLE_SWAGGER_DOCUMENTATION* setup in file `seta-ui\seta_flask_server\config.py` on container *seta-ui* it is possible to manage the use of Swagger:
 ```
      DISABLE_SWAGGER_DOCUMENTATION = False
 ```
