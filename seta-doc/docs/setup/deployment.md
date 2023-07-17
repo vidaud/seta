@@ -144,7 +144,7 @@ After successfully start all the containers, you are ready to open your browser 
 
 * **SETA API Communities:** [[location] {{ setaUrls.apiCommunities }}]({{ setaUrls.apiCommunities }})
 
-* **Documentation:** [[location] {{ setaUrls.apiCommunities }}]({{ setaUrls.apiCommunities }})
+* **Documentation:** [[location] {{ setaUrls.docs }}]({{ setaUrls.docs }})
 
 
 

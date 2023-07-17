@@ -10,12 +10,12 @@
 5. Setup the *Resource ID, Title, Abstract* and click *Save*
 
 <figure markdown>
-  ![Image title](../img/communities_new_resource_manage.png)
+  ![Image title](../../img/communities_new_resource_manage.png)
   <figcaption>New Resource in a Community</figcaption>
 </figure>
 
 <figure markdown>
-  ![Image title](../img/communities_new_resource.png)
+  ![Image title](../../img/communities_new_resource.png)
   <figcaption>New Resource in a Community</figcaption>
 </figure>
 
@@ -26,7 +26,7 @@
 3. You can either enter in the search bar the name of the Resource you are looking for.              
 
 <figure markdown>
-  ![Image title](../img/resource_list.png)
+  ![Image title](../../img/resource_list.png)
   <figcaption>Resources</figcaption>
 </figure>
 
@@ -39,12 +39,12 @@
 5. Click ^^Update^^.
 
 <figure markdown>
-  ![Image title](../img/update_resource_fromList.png)
+  ![Image title](../../img/update_resource_fromList.png)
   <figcaption>Update a Resource</figcaption>
 </figure>
 
 <figure markdown>
-  ![Image title](../img/resource_update.png)
+  ![Image title](../../img/resource_update.png)
   <figcaption>Update a Resource</figcaption>
 </figure>
 
@@ -56,7 +56,7 @@
 4. A pop-up window appear asking to confirm.  
 
 <figure markdown>
-  ![Image title](../img/delete_resource.png)
+  ![Image title](../../img/delete_resource.png)
   <figcaption>Delete a Resource</figcaption>
 </figure>
 
@@ -67,7 +67,7 @@
 3. Click on :material-dots-vertical: at the right side of each Resource and scroll to enable the option ^^Switch to Not Searchable / Switch to Searchable^^.  
 
 <figure markdown>
-  ![Image title](../img/resource_searchable.png)
+  ![Image title](../../img/resource_searchable.png)
   <figcaption>Searchable Resource</figcaption>
 </figure>
 
@@ -81,7 +81,7 @@
 6. Click on *Update*
 
 <figure markdown>
-  ![Image title](../img/resource_request_update_limits.png)
-  <figcaption>Searchable Resource</figcaption>
+  ![Image title](../../img/resource_request_update_limits.png)
+  <figcaption>Update Limits</figcaption>
 </figure>
 
