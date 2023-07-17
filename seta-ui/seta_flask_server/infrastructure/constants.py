@@ -1,3 +1,5 @@
+from enum import IntEnum
+
 defaultNoPublicKeyMessage = 'NO PUBLIC KEY SET'
 
 INVITE_EXPIRE_DAYS: float = 3
@@ -81,4 +83,17 @@ class ResourceStatusConstants:
     Active = "active"
     Blocked = "blocked"
     
-    List = [Active, Blocked]    
+    List = [Active, Blocked]
+
+class NotificationTypeConstants:
+    PendingInvite = "pending-invite"
+    MembershipRequest = "membership-request"
+    CommunityChangeRequest = "change-request"
+
+    List=[PendingInvite, MembershipRequest, CommunityChangeRequest]
+
+class NotificationPriorityEnum(IntEnum):
+    Critical = 0
+    High = 1
+    Normal = 2
+    Low = 3
