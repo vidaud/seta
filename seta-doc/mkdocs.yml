@@ -92,7 +92,7 @@ extra_css:
   - stylesheets/extra.css
  
 nav:
-  - What is SeTA: index.md
+  - Introduction: index.md
   - Who should use it and why: general/who_use_it_and_why.md   
   - Using SeTA:
     - Setup:
@@ -107,8 +107,8 @@ nav:
         - Resources: user-guide/communities/resources.md
       #  - Users Permissions: user-guide/usersPermissions.md
       - Search: 
-        - Methodology: user-guide/webApp/methodology.md
-        - Web Interface: user-guide/webApp/webApp.md
+        - Methodology: user-guide/search/methodology.md
+        - Web Interface: user-guide/search/searchWebApp.md
     - APIs: 
       - SeTA API: apis/seta_api/seta_api.md
       - Communities API: apis/communities_api/seta_api_communities.md

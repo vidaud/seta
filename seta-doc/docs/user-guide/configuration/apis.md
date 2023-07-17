@@ -1,6 +1,4 @@
-## APIs
-
-The SeTA APIs provides the functions and procedures to access data from a developer point of view.
+The SeTA APIs provides the functions and procedures to access the data of the Communities and the functionalities from the Search tool, from a developer point of view.
 
 ### Swagger
 The SeTA APIs use the support of Swagger.  Swagger is an open source repository of standards, specifications, and tools for designing and specifying RESTful APIs. The Swagger framework enables the creation of interactive, machine- and human-readable APIs.  Swagger helps describing an API's structure so that computers may comprehend it.[^1]     

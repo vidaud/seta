@@ -1,12 +1,3 @@
-# Setup
-SeTA has two user interfaces:
-
-- Web App: Allows the user to interact through the Web page with the content in a Web browser, which acts as a client.
-
-- API: An Application Programming Interface exposing data and functionality in a consistent format.
-
-
-## Web App
 The SeTA Web App is a user-friendly interface that allows the user to access the content in a Web browser. 
  
 <figure markdown>

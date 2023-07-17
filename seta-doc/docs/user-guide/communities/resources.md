@@ -82,6 +82,6 @@
 
 <figure markdown>
   ![Image title](../../img/resource_request_update_limits.png)
-  <figcaption>Searchable Resource</figcaption>
+  <figcaption>Update Limits</figcaption>
 </figure>
 
