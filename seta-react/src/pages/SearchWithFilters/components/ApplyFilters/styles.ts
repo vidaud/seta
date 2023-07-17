@@ -12,6 +12,10 @@ export const useStyles = createStyles(theme => {
 
     arrow: {
       borderColor
+    },
+
+    chevron: {
+      transition: 'transform 200ms ease'
     }
   }
 })

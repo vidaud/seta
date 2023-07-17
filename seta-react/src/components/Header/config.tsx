@@ -5,6 +5,7 @@ type MenuItem = {
   to: string
   label: string
   hidden?: boolean
+  collapse?: boolean
 }
 
 type DropdownItem =
@@ -16,6 +17,7 @@ type DropdownItem =
       onClick?: () => void
     }
   | { divider: true }
+  | { collapse: true }
 
 export const getMenuItems = (authenticated: boolean): MenuItem[] => [
   {
@@ -56,6 +58,9 @@ export const getDropdownItems = ({ role, onLogout }: DropdownCallbacks): Dropdow
     hidden: !role
   },
   {
+    collapse: true
+  },
+  {
     divider: true
   },
   {
@@ -66,3 +71,5 @@ export const getDropdownItems = ({ role, onLogout }: DropdownCallbacks): Dropdow
 ]
 
 export const itemIsDivider = (item: DropdownItem): item is { divider: true } => 'divider' in item
+
+export const itemIsCollapse = (item: DropdownItem): item is { collapse: true } => 'collapse' in item

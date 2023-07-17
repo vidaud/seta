@@ -1,18 +1,34 @@
-import { ActionIcon, Flex, Image, Loader, Menu, Tooltip } from '@mantine/core'
+import { useState } from 'react'
+import {
+  ActionIcon,
+  Box,
+  ChevronIcon,
+  Collapse,
+  Flex,
+  Group,
+  Image,
+  Loader,
+  Menu,
+  Tooltip
+} from '@mantine/core'
 import { AiOutlineUser } from 'react-icons/ai'
 import { FaSignInAlt } from 'react-icons/fa'
+import { IoMdNotifications } from 'react-icons/io'
 import { Link } from 'react-router-dom'
 
 import SiteHeader from './components/SiteHeader'
-import { getDropdownItems, getMenuItems, itemIsDivider } from './config'
+import { getDropdownItems, getMenuItems, itemIsCollapse, itemIsDivider } from './config'
 import * as S from './styles'
 
 import { useCurrentUser } from '../../contexts/user-context'
+import { useStyles } from '../../pages/SearchWithFilters/components/ApplyFilters/styles'
 
 import './style.css'
 
 const Header = () => {
   const { user, isLoading: isUserLoading, logout } = useCurrentUser()
+  const [isOpen, setIsOpen] = useState(false)
+  const { classes, theme } = useStyles()
 
   const authenticated = !!user
   const role = user?.role === 'Administrator'
@@ -25,12 +41,38 @@ const Header = () => {
   const menuItems = getMenuItems(authenticated)
   const dropdownItems = getDropdownItems({ role, onLogout: handleLogout })
 
-  const visibleMenuItems = menuItems.filter(link => !link.hidden)
+  const visibleMenuItems = menuItems.filter(link => !link.hidden && !link.collapse)
 
   const dropdownMenuItems = dropdownItems.map((item, index) => {
     if (itemIsDivider(item)) {
       // eslint-disable-next-line react/no-array-index-key
       return <Menu.Divider key={index} />
+    }
+
+    if (itemIsCollapse(item)) {
+      // eslint-disable-next-line react/no-array-index-key
+      return (
+        <Menu.Item
+          key={index}
+          icon={<IoMdNotifications size="1.3rem" />}
+          onClick={() => setIsOpen(o => !o)}
+        >
+          <Group position="apart" spacing={0}>
+            <Box sx={{ fontSize: '0.875rem' }}>Notifications</Box>
+
+            {isOpen && (
+              <ChevronIcon
+                className={classes.chevron}
+                style={{
+                  transform: !isOpen ? `rotate(${theme.dir === 'rtl' ? -90 : 90}deg)` : 'none'
+                }}
+              />
+            )}
+          </Group>
+
+          <Collapse in={isOpen}>Test</Collapse>
+        </Menu.Item>
+      )
     }
 
     const { label, icon, url, hidden, onClick } = item
@@ -51,7 +93,7 @@ const Header = () => {
   })
 
   const dropdownMenu = (
-    <Menu shadow="md" width={200} position="bottom-end">
+    <Menu shadow="md" width={200} position="bottom-end" closeOnItemClick={false}>
       <Menu.Target>
         <ActionIcon css={S.dropdownTarget} variant="outline" color="gray.1" radius="xl" size="xl">
           <AiOutlineUser size="1.3rem" />
