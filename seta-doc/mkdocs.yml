@@ -110,8 +110,8 @@ nav:
         - Methodology: user-guide/search/methodology.md
         - Web Interface: user-guide/search/searchWebApp.md
     - APIs: 
-      - SeTA API: apis/seta_api/seta_api.md
       - Communities API: apis/communities_api/seta_api_communities.md
+      - SeTA API: apis/seta_api/seta_api.md
   - Install SeTA:
     - Docker: setup/docker-architecture.md
     - MongoDB Migration: setup/migration.md

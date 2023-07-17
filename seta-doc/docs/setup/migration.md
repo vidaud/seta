@@ -5,7 +5,7 @@ Powerful methods for accessing and analysing the data include ad hoc queries, in
 
 MongoDB is a great NoSQL and schema-less database, but when the data schema changes and there is already data in database, is necessary a migration tool to update the existing data.
 
-In SeTA the DB migration was done with the help of library *mongodb-migrations*[^2]
+In SeTA the DB migration was done with the help of library **mongodb-migrations**[^2]
 
 The procedure as described in the library GitHub project, leads to the execution of the following commands.
 
