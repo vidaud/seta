@@ -16,19 +16,14 @@ From this page it is possible to access to:
 - Communities *(List of available Communities)*        
 - Resources *(The Resources related to those communities)*        
 
+You can filter by the different types display on top of the page: *Select Membership, Select Status* and search by *Field*.                  
+
+
 <figure markdown>
-  ![Image title](../img/seta_communities.png)
+  ![Image title](../../img/seta_communities.png)
   <figcaption>Communities page</figcaption>
 </figure>
 
-## List of Communities
-
-1. You will see a list of the Communities in the page.   
-2. You can filter by the different types display on top of the page: *Select Membership, Select Status* and search by *Field*.                  
-<figure markdown>
-  ![Image title](../img/my_communities.png)
-  <figcaption>Communities</figcaption>
-</figure>
 
    
 ## Create a Community
@@ -38,7 +33,7 @@ From this page it is possible to access to:
 4. Click Save.         
 
 <figure markdown>
-  ![Image title](../img/new_community.png)
+  ![Image title](../../img/new_community.png)
   <figcaption>New Community</figcaption>
 </figure>
 
@@ -49,7 +44,15 @@ From this page it is possible to access to:
 1. You can either use the filters to search the Community or select from the Communities list.      
 2. Click on :octicons-chevron-down-12: at the right side of the Community row.  
 3. If you are a member or the community, a detailed section will appear.  
-4. If you are not a member of the Community you will only see a brief information about the community.          
+4. If you are not a member of the Community you will only see a brief information about the community.     
+
+
+<figure markdown>
+  ![Image title](../../img/communities_new_resource_manage.png)
+  <figcaption>Community Details</figcaption>
+</figure>
+
+
 
 ## Update Details of a Community                
 
@@ -63,7 +66,7 @@ From this page it is possible to access to:
 4. Click ^^Update^^       
 
 <figure markdown>
-  ![Image title](../img/communities_update.png)
+  ![Image title](../../img/communities_update.png)
   <figcaption>Update a Community</figcaption>
 </figure>
 
@@ -75,7 +78,7 @@ From this page it is possible to access to:
 4. Click ^^Send^^.       
 
 <figure markdown>
-  ![Image title](../img/seta_communities_invite_join.png)
+  ![Image title](../../img/seta_communities_invite_join.png)
   <figcaption>Invite to Join Community</figcaption>
 </figure>
 
@@ -92,8 +95,8 @@ From this page it is possible to access to:
 4. Click ^^Update^^       
 
 <figure markdown>
-  ![Image title](../img/request_switch_opened.png)
-  <figcaption>Update a Community</figcaption>
+  ![Image title](../../img/request_switch_opened.png)
+  <figcaption>Switch to Open a Community</figcaption>
 </figure>
 
 ## Delete a Community
@@ -104,12 +107,12 @@ From this page it is possible to access to:
 5. A confirm window will appear to delete the Community.              
 
 <figure markdown>
-  ![Image title](../img/delete_community_warning.png)
+  ![Image title](../../img/delete_community_warning.png)
   <figcaption>Delete a Community with a Resource related</figcaption>
 </figure>
 
 <figure markdown>
-  ![Image title](../img/delete_community.png)
+  ![Image title](../../img/delete_community.png)
   <figcaption>Delete a Community</figcaption>
 </figure>
       
