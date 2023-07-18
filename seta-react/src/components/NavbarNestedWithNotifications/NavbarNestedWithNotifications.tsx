@@ -1,10 +1,8 @@
 import { Navbar, createStyles } from '@mantine/core'
 import { IconNotes } from '@tabler/icons-react'
 
-import { NotificationsProvider } from '../../pages/CommunitiesPage/pages/contexts/notifications-context'
 import { LinksGroup } from '../NavbarLinksGroup/NavbarLinksGroup'
 import NavbarNested from '../NavbarNested/NavbarNested'
-import SidebarNotifications from '../SidebarNotifications/SidebarNotifications'
 
 const mockdata = [
   // {
@@ -37,9 +35,9 @@ const NavbarNestedWithNotifications = () => {
 
   return (
     <Navbar height={800} width={{ sm: 300 }} p="md" className={classes.navbar}>
-      <NotificationsProvider>
+      {/* <NotificationsProvider>
         <SidebarNotifications />
-      </NotificationsProvider>
+      </NotificationsProvider> */}
       <NavbarNested props={links} />
     </Navbar>
   )

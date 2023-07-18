@@ -15,7 +15,6 @@ import type { MembershipRequest } from '../types/membership-types'
 
 type Notifications = {
   memberships: MembershipRequest[]
-  invites: InviteResponse[]
   community_scopes?: CommunityScopes[] | undefined
 }
 
@@ -62,10 +61,6 @@ export const queryKey = {
   root: ['membership-requests']
 }
 
-export const queryKey1 = {
-  root: ['invites']
-}
-
 export const getNotificationRequests = async (): Promise<Notifications> => {
   const permissions = await api.get<UserPermissions>(USER_INFO_API_PATH, apiConfig)
   const memberships: MembershipRequest[] = []
@@ -88,11 +83,8 @@ export const getNotificationRequests = async (): Promise<Notifications> => {
         })
     })
 
-  const invites = await community_api.get<InviteResponse[]>(`/invites/`)
-
   const data = {
     memberships: memberships,
-    invites: invites.data,
     community_scopes: permissions.data?.community_scopes
   }
 
@@ -101,6 +93,6 @@ export const getNotificationRequests = async (): Promise<Notifications> => {
 
 export const useNotificationsRequests = () =>
   useQuery({
-    queryKey: queryKey.root ? queryKey.root : queryKey1.root,
+    queryKey: queryKey.root,
     queryFn: () => getNotificationRequests()
   })

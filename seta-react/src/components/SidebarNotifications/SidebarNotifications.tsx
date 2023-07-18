@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
-import { Badge, Navbar, createStyles, rem, UnstyledButton } from '@mantine/core'
-import { IconMessage, IconUsersGroup } from '@tabler/icons-react'
+import { Navbar, createStyles, rem, UnstyledButton, Badge } from '@mantine/core'
+import { IconExchange, IconMessage } from '@tabler/icons-react'
 import { Link } from 'react-router-dom'
 
 import { ComponentLoading } from '../../pages/CommunitiesPage/components/common'
@@ -88,7 +88,6 @@ const SidebarNotifications = () => {
 
   useEffect(() => {
     getNotificationRequests()
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [notifications])
 
@@ -96,39 +95,32 @@ const SidebarNotifications = () => {
     return <ComponentLoading />
   }
 
-  const notification_links = [
-    {
-      icon: IconMessage,
-      label: 'Pending Invites',
-      notifications:
-        notifications.length > 0
-          ? notifications[0].invites?.filter(invite => invite.status === 'pending').length
-          : 0,
-      link: '/invites'
-    },
-    {
-      icon: IconUsersGroup,
-      label: 'Pending Membership Requests',
-      notifications:
-        notifications.length > 0
-          ? notifications[0].memberships?.filter(member => member.status === 'pending').length
-          : 0,
-      link: '/membership-requests'
-    }
-  ]
-
-  const mainLinks = notification_links
-    .filter(link => link.notifications && link.notifications > 0)
+  const mainLinks = notifications
+    .filter(link => link && link.count > 0)
     .map(link => (
       <UnstyledButton key={link.label} className={classes.mainLink}>
         <div className={classes.mainLinkInner}>
-          <link.icon size={20} className={classes.mainLinkIcon} stroke={1.5} />
+          {link.type === 'invites' ? (
+            <IconMessage size={20} className={classes.mainLinkIcon} stroke={1.5} />
+          ) : link.type === 'membership-request' ? (
+            <IconMessage size={20} className={classes.mainLinkIcon} stroke={1.5} />
+          ) : (
+            <IconExchange size={20} className={classes.mainLinkIcon} stroke={1.5} />
+          )}
           <span>{link.label}</span>
         </div>
-        {link.notifications && (
-          <Link to={link.link}>
+        {link && (
+          <Link
+            to={
+              link.type === 'invites'
+                ? '/invites'
+                : link.type === 'membership-request'
+                ? '/membership-requests'
+                : 'change-request'
+            }
+          >
             <Badge size="sm" variant="filled" className={classes.mainLinkBadge}>
-              {link.notifications}
+              {link.count}
             </Badge>
           </Link>
         )}
@@ -137,12 +129,7 @@ const SidebarNotifications = () => {
 
   return (
     <>
-      {(notifications.length > 0 &&
-        notifications[0].invites &&
-        notifications[0].invites?.length > 0) ||
-      (notifications.length > 0 &&
-        notifications[0].memberships &&
-        notifications[0].memberships?.length > 0) ? (
+      {notifications.length > 0 ? (
         <>
           <Navbar.Section className={classes.section}>
             <div className={classes.mainLinks}>{mainLinks}</div>

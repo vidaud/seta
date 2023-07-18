@@ -53,3 +53,18 @@ export const dropdown: ThemedCSS = theme => css`
     color: ${theme.colors.gray[7]};
   }
 `
+
+export const action: ThemedCSS = () => css`
+  &:hover {
+    background-color: unset;
+    // background-color: rgba(248, 255, 250, 0.23;
+  }
+`
+
+export const badge: ThemedCSS = () => css`
+  margin-top: -1rem;
+  margin-left: -2rem;
+  &:hover {
+    background-color: unset;
+  }
+`

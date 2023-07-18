@@ -1,4 +1,4 @@
-import { FaUser, FaWrench } from 'react-icons/fa'
+import { FaUser } from 'react-icons/fa'
 import { FiLogOut } from 'react-icons/fi'
 
 type MenuItem = {
@@ -45,18 +45,19 @@ type DropdownCallbacks = {
   onLogout: () => void
 }
 
-export const getDropdownItems = ({ role, onLogout }: DropdownCallbacks): DropdownItem[] => [
+// export const getDropdownItems = ({ role, onLogout }: DropdownCallbacks): DropdownItem[] => [
+export const getDropdownItems = ({ onLogout }: DropdownCallbacks): DropdownItem[] => [
   {
     label: 'Profile',
     icon: <FaUser size="1.1rem" />,
     url: '/profile'
   },
-  {
-    label: 'Administrator',
-    icon: <FaWrench size="1.1rem" />,
-    url: '/panel',
-    hidden: !role
-  },
+  // {
+  //   label: 'Administrator',
+  //   icon: <FaWrench size="1.1rem" />,
+  //   url: '/panel',
+  //   hidden: !role
+  // },
   {
     collapse: true
   },

@@ -1,79 +1,57 @@
-import { createContext, useContext, useState } from 'react'
-import type { AxiosRequestConfig } from 'axios'
+import { createContext, useContext, useEffect, useState } from 'react'
 
 import type { ChildrenProp } from '~/types/children-props'
 
-import type { CommunityScopes, UserPermissions } from './scope-context'
-
-import api from '../../../../api/api'
 import community_api from '../../../../api/communities/api'
-import type { InviteResponse } from '../../../../api/types/invite-types'
-import type { MembershipRequest } from '../../../../api/types/membership-types'
-import { environment } from '../../../../environments/environment'
 
-type Notifications = {
-  memberships: MembershipRequest[]
-  invites: InviteResponse[]
-  community_scopes?: CommunityScopes[] | undefined
+type NotificationsResponse = {
+  label: string
+  description: string
+  count: number
+  type: string
+  priority: number
 }
 
 type NotificationsContextProps = {
-  notifications: Notifications[]
+  notifications: NotificationsResponse[]
+  total: number
   getNotificationRequests: () => void
-}
-
-const BASE_URL = environment.baseUrl
-const USER_INFO_API_PATH = '/me/permissions'
-const apiConfig: AxiosRequestConfig = {
-  baseURL: BASE_URL
 }
 
 const NotificationsContext = createContext<NotificationsContextProps | undefined>(undefined)
 
 export const NotificationsProvider = ({ children }: ChildrenProp) => {
-  const [notifications, setNotifications] = useState<Notifications[]>([])
+  const [notifications, setNotifications] = useState<NotificationsResponse[]>([])
+  const [total, setItotal] = useState(0)
+
+  useEffect(() => {
+    getNotificationRequests().then(response => {
+      if (response) {
+        setTimeout(() => {
+          setNotifications(response.data)
+        }, 30000)
+      }
+    })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [notifications])
 
   const getNotificationRequests = async () => {
-    const memberships: MembershipRequest[] = []
-    const permissions = await api.get<UserPermissions>(USER_INFO_API_PATH, apiConfig)
+    let count = 0
+    const result = await community_api.get<NotificationsResponse[]>(`/notifications/`)
 
-    permissions.data?.community_scopes
-      ?.filter(
-        scope =>
-          scope.scopes.includes('/seta/community/manager') ||
-          scope.scopes.includes('/seta/community/owner')
-      )
-      .forEach(item => {
-        community_api
-          .get<MembershipRequest[]>(
-            `${environment.COMMUNITIES_API_PATH}/${item.community_id}/requests`
-          )
-          .then(response => {
-            memberships.push(...response.data)
+    result.data.forEach(element => {
+      count += element.count
+    })
 
-            return response.data
-          })
-      })
+    setItotal(count)
 
-    const invites = await community_api.get<InviteResponse[]>(`/invites/`)
-
-    setTimeout(() => {
-      const data = [
-        {
-          memberships: memberships,
-          invites: invites.data,
-          community_scopes: permissions.data?.community_scopes
-        }
-      ]
-
-      setNotifications(data)
-    }, 30000)
-
+    return result
     // Allow the 100% step to be shown for a second
   }
 
   const value: NotificationsContextProps = {
     notifications,
+    total,
     getNotificationRequests
   }
 

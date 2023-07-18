@@ -1,34 +1,28 @@
-import { useState } from 'react'
-import {
-  ActionIcon,
-  Box,
-  ChevronIcon,
-  Collapse,
-  Flex,
-  Group,
-  Image,
-  Loader,
-  Menu,
-  Tooltip
-} from '@mantine/core'
+import { useEffect, useState } from 'react'
+import { ActionIcon, Flex, Group, Image, Loader, Menu, Tooltip, Badge } from '@mantine/core'
 import { AiOutlineUser } from 'react-icons/ai'
 import { FaSignInAlt } from 'react-icons/fa'
-import { IoMdNotifications } from 'react-icons/io'
 import { Link } from 'react-router-dom'
 
+import NotificationsMenu from './components/NotificationsMenu'
 import SiteHeader from './components/SiteHeader'
 import { getDropdownItems, getMenuItems, itemIsCollapse, itemIsDivider } from './config'
 import * as S from './styles'
 
 import { useCurrentUser } from '../../contexts/user-context'
-import { useStyles } from '../../pages/SearchWithFilters/components/ApplyFilters/styles'
+import { useNotifications } from '../../pages/CommunitiesPage/pages/contexts/notifications-context'
 
 import './style.css'
 
 const Header = () => {
   const { user, isLoading: isUserLoading, logout } = useCurrentUser()
   const [isOpen, setIsOpen] = useState(false)
-  const { classes, theme } = useStyles()
+  const { notifications, total, getNotificationRequests } = useNotifications()
+
+  useEffect(() => {
+    getNotificationRequests()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const authenticated = !!user
   const role = user?.role === 'Administrator'
@@ -36,6 +30,10 @@ const Header = () => {
   const handleLogout = () => {
     logout()
     window.location.href = '/login'
+  }
+
+  const handleOnChange = text => {
+    setIsOpen(text)
   }
 
   const menuItems = getMenuItems(authenticated)
@@ -51,28 +49,7 @@ const Header = () => {
 
     if (itemIsCollapse(item)) {
       // eslint-disable-next-line react/no-array-index-key
-      return (
-        <Menu.Item
-          key={index}
-          icon={<IoMdNotifications size="1.3rem" />}
-          onClick={() => setIsOpen(o => !o)}
-        >
-          <Group position="apart" spacing={0}>
-            <Box sx={{ fontSize: '0.875rem' }}>Notifications</Box>
-
-            {isOpen && (
-              <ChevronIcon
-                className={classes.chevron}
-                style={{
-                  transform: !isOpen ? `rotate(${theme.dir === 'rtl' ? -90 : 90}deg)` : 'none'
-                }}
-              />
-            )}
-          </Group>
-
-          <Collapse in={isOpen}>Test</Collapse>
-        </Menu.Item>
-      )
+      return null
     }
 
     const { label, icon, url, hidden, onClick } = item
@@ -136,8 +113,23 @@ const Header = () => {
             </S.MenuLink>
           ))}
         </Flex>
-
-        {authenticated ? dropdownMenu : loginButton}
+        <Group>
+          {authenticated ? (
+            <Group>
+              <NotificationsMenu
+                isOpen={isOpen}
+                total={total}
+                dropdownItems={dropdownItems}
+                notifications={notifications}
+                onChange={handleOnChange}
+              />
+              <Badge variant="filled" size="xs" css={S.badge}>
+                {total}
+              </Badge>
+            </Group>
+          ) : null}
+          {authenticated ? dropdownMenu : loginButton}
+        </Group>
       </Flex>
     </header>
   )
