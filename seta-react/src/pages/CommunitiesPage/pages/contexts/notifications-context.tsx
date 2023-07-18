@@ -3,6 +3,7 @@ import { createContext, useContext, useEffect, useState } from 'react'
 import type { ChildrenProp } from '~/types/children-props'
 
 import community_api from '../../../../api/communities/api'
+import useIsMounted from '../../../../hooks/use-is-mounted'
 
 type NotificationsResponse = {
   label: string
@@ -23,17 +24,29 @@ const NotificationsContext = createContext<NotificationsContextProps | undefined
 export const NotificationsProvider = ({ children }: ChildrenProp) => {
   const [notifications, setNotifications] = useState<NotificationsResponse[]>([])
   const [total, setItotal] = useState(0)
+  const isMounted = useIsMounted()
 
   useEffect(() => {
-    getNotificationRequests().then(response => {
-      if (response) {
-        setTimeout(() => {
-          setNotifications(response.data)
-        }, 30000)
+    let timeout: number | null = null
+
+    if (isMounted()) {
+      // After a short delay, we ignore subsequent calls to onSearch
+      // to prevent it from triggering when allowSearching changes based on user interaction
+      timeout = setTimeout(() => {
+        if (notifications) {
+          getNotificationRequests().then(response => {
+            setNotifications(response.data)
+          })
+        }
+      }, 3000)
+    }
+
+    return () => {
+      if (timeout) {
+        clearTimeout(timeout)
       }
-    })
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [notifications])
+    }
+  }, [isMounted, notifications])
 
   const getNotificationRequests = async () => {
     let count = 0
