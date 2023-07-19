@@ -81,7 +81,7 @@ interface ContactIconsListProps {
 
 const MOCKDATA = [
   { title: 'Office', description: 'JRC T4 Data Governance and Services', icon: IconBuilding },
-  { title: 'Email', description: 'support@seta.com', icon: IconAt }
+  { title: 'Email', description: 'JRC-DIR-T-DATA-PROTECTION@ec.europa.eu', icon: IconAt }
 ]
 
 export function ContactIconsList({ data = MOCKDATA, variant }: ContactIconsListProps) {
