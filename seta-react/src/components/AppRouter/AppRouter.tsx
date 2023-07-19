@@ -13,7 +13,6 @@ import CommunityLayout from '../../layouts/CommunityLayout/CommunityLayout'
 import SysAdminLayout from '../../layouts/SysAdminLayout/SysAdminLayout'
 import CreateContribution from '../../pages/CommunitiesPage/components/Manage/Contribution/NewContribution/NewContribution'
 import InvitesList from '../../pages/CommunitiesPage/components/Sidebar/InvitesList/InvitesList'
-import MembersList from '../../pages/CommunitiesPage/components/Sidebar/MembersList/MembersList'
 import CommunityList from '../../pages/CommunitiesPage/pages/communities/CommunityList/CommunityList'
 import { CommunityListProvider } from '../../pages/CommunitiesPage/pages/contexts/community-list.context'
 import { ScopeProvider } from '../../pages/CommunitiesPage/pages/contexts/scope-context'
@@ -105,16 +104,6 @@ const routes = createRoutesFromElements(
         element={
           <RequireAuth>
             <InvitesList />
-          </RequireAuth>
-        }
-      />
-    </Route>
-    <Route path="/membership-requests" element={<CommunityLayout />}>
-      <Route
-        path=""
-        element={
-          <RequireAuth>
-            <MembersList />
           </RequireAuth>
         }
       />

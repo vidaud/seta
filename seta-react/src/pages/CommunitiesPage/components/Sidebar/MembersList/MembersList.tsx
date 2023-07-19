@@ -31,13 +31,7 @@ const useStyles = createStyles(theme => ({
 const MembersList = () => {
   const { classes, cx } = useStyles()
   const [scrolled, setScrolled] = useState(false)
-  // const theme = useMantineTheme()
-  // const { memberships, getMembershipRequests } = useNotifications()
-
-  // useEffect(() => {
-  //   getMembershipRequests()
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [])
+  // const { memberships } = useNotifications()
 
   // if (memberships) {
   //   if (memberships.length === 0) {

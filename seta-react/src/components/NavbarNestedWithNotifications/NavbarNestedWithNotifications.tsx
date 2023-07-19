@@ -35,9 +35,6 @@ const NavbarNestedWithNotifications = () => {
 
   return (
     <Navbar height={800} width={{ sm: 300 }} p="md" className={classes.navbar}>
-      {/* <NotificationsProvider>
-        <SidebarNotifications />
-      </NotificationsProvider> */}
       <NavbarNested props={links} />
     </Navbar>
   )

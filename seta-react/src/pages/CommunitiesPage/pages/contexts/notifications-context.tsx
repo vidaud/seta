@@ -16,19 +16,13 @@ export type NotificationsResponse = {
 type NotificationsContextProps = {
   notifications: NotificationsResponse[]
   total: number
-  // permissions?: UserPermissions
-  // memberships: MembershipRequest[]
   getNotificationRequests: () => void
-  // getMembershipRequests: () => Promise<MembershipRequest[]>
-  // getPermissions: () => Promise<UserPermissions>
 }
 
 const NotificationsContext = createContext<NotificationsContextProps | undefined>(undefined)
 
 export const NotificationsProvider = ({ children }: ChildrenProp) => {
   const [notifications, setNotifications] = useState<NotificationsResponse[]>([])
-  // const [permissions, setPermissions] = useState<UserPermissions | undefined>()
-  // const [memberships, setMemberships] = useState<MembershipRequest[]>([])
   const [total, setTotal] = useState(0)
   const isMounted = useIsMounted()
 
@@ -52,52 +46,6 @@ export const NotificationsProvider = ({ children }: ChildrenProp) => {
     }
   }, [isMounted, notifications])
 
-  // useEffect(() => {
-  //   getPermissions().then(response => {
-  //     setPermissions(response)
-  //   })
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [])
-
-  // const BASE_URL = environment.baseUrl
-  // const apiConfig: AxiosRequestConfig = {
-  //   baseURL: BASE_URL
-  // }
-
-  // const getPermissions = async (): Promise<UserPermissions> => {
-  //   const { data } = await api.get<UserPermissions>('/me/permissions', apiConfig)
-
-  //   setPermissions(data)
-
-  //   return data
-  // }
-
-  // const getMembershipRequests = async (): Promise<MembershipRequest[]> => {
-  //   const list: MembershipRequest[] = []
-
-  //   permissions?.community_scopes
-  //     ?.filter(
-  //       scope =>
-  //         scope.scopes.includes('/seta/community/manager') ||
-  //         scope.scopes.includes('/seta/community/owner')
-  //     )
-  //     .forEach(async item => {
-  //       await community_api
-  //         .get<MembershipRequest[]>(
-  //           `${environment.COMMUNITIES_API_PATH}/${item.community_id}/requests`
-  //         )
-  //         .then(response => {
-  //           list.push(...response.data)
-
-  //           return response.data
-  //         })
-  //     })
-
-  //   setMemberships(list)
-
-  //   return list
-  // }
-
   const getNotificationRequests = async () => {
     let count = 0
     const result = await community_api.get<NotificationsResponse[]>(`/notifications/`)
@@ -115,11 +63,7 @@ export const NotificationsProvider = ({ children }: ChildrenProp) => {
   const value: NotificationsContextProps = {
     notifications,
     total,
-    // permissions,
-    // memberships,
     getNotificationRequests
-    // getMembershipRequests,
-    // getPermissions
   }
 
   return <NotificationsContext.Provider value={value}>{children}</NotificationsContext.Provider>
