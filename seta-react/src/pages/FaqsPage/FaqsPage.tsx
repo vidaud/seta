@@ -1,18 +1,16 @@
-import { useState, useEffect } from 'react'
 import {
   createStyles,
   Title,
   Container,
   Accordion,
-  ThemeIcon,
   MantineProvider,
   getStylesRef,
   rem
 } from '@mantine/core'
-import { IconPlus } from '@tabler/icons-react'
-import parse from 'html-react-parser'
 
-import { FaqsService } from '../../services/FaqsService'
+import Breadcrumbs from '~/components/Breadcrumbs'
+
+import type { Crumb } from '~/types/breadcrumbs'
 
 const useStyles = createStyles(theme => ({
   wrapper: {
@@ -81,6 +79,13 @@ const useStyles = createStyles(theme => ({
   }
 }))
 
+const breadcrumbs: Crumb[] = [
+  {
+    title: 'FAQs',
+    path: '/faqs'
+  }
+]
+
 const FaqsPage = () => {
   const { classes } = useStyles()
 
@@ -89,6 +94,7 @@ const FaqsPage = () => {
 
   return (
     <MantineProvider inherit theme={{ colorScheme: 'light' }}>
+      {breadcrumbs && <Breadcrumbs crumbs={breadcrumbs} />}
       <div className={classes.wrapper}>
         <Container size="sm">
           <Title align="center" className={classes.title}>

@@ -1,4 +1,8 @@
-import { createStyles, Text, Title, SimpleGrid, Image, rem, Center } from '@mantine/core'
+import { createStyles, Title, SimpleGrid, Image } from '@mantine/core'
+
+import Breadcrumbs from '~/components/Breadcrumbs'
+
+import type { Crumb } from '~/types/breadcrumbs'
 
 import { ContactIconsList } from './components/ContactIcons/ContactIcons'
 
@@ -34,22 +38,32 @@ const useStyles = createStyles(theme => ({
   }
 }))
 
+const breadcrumbs: Crumb[] = [
+  {
+    title: 'Contact',
+    path: '/contact'
+  }
+]
+
 const ContactPage = () => {
   const { classes } = useStyles()
 
   return (
-    <div className={classes.wrapper}>
-      <SimpleGrid cols={2} spacing="sm">
-        <div style={{ alignItems: 'Center' }}>
-          <Title className={classes.title}>Contact us</Title>
-          <br />
-          <ContactIconsList />
-        </div>
-        <div className={classes.form}>
-          <Image src={image} maw={440} mx="auto" radius="xs" />
-        </div>
-      </SimpleGrid>
-    </div>
+    <>
+      {breadcrumbs && <Breadcrumbs crumbs={breadcrumbs} />}
+      <div className={classes.wrapper}>
+        <SimpleGrid cols={2} spacing="sm">
+          <div style={{ alignItems: 'Center' }}>
+            <Title className={classes.title}>Contact us</Title>
+            <br />
+            <ContactIconsList />
+          </div>
+          <div className={classes.form}>
+            <Image src={image} maw={440} mx="auto" radius="xs" />
+          </div>
+        </SimpleGrid>
+      </div>
+    </>
   )
 }
 
