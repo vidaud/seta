@@ -1,5 +1,5 @@
 import { forwardRef } from 'react'
-import { Divider, Flex, Group, Text } from '@mantine/core'
+import { Flex, Group, Text } from '@mantine/core'
 
 import type { CommunityResponse } from '~/api/types/community-types'
 import type { DataProps } from '~/types/data-props'
@@ -89,7 +89,7 @@ const CommunityListContent = forwardRef<HTMLDivElement, Props>(
             system_scopes={system_scopes}
           />
         ))}
-        <Divider size="xs" />
+        {/* <Divider size="xs" /> */}
         <Group position="right">
           <CreateCommunity system_scopes={system_scopes} />
         </Group>
