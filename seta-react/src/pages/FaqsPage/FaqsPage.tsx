@@ -83,30 +83,7 @@ const useStyles = createStyles(theme => ({
 
 const FaqsPage = () => {
   const { classes } = useStyles()
-  const [nodes, setNodes] = useState<any>()
-  const nodeService = new FaqsService()
 
-  const expandNode = (node, _expandedKeys) => {
-    if (node.children && node.children.length) {
-      _expandedKeys[node.key] = true
-
-      for (const child of node.children) {
-        expandNode(child, _expandedKeys)
-      }
-    }
-  }
-
-  useEffect(() => {
-    const nodeData = nodeService.getTreeNodes()
-
-    setNodes(nodeData)
-  }, [])
-
-  const nodeTemplate = (node, options) => {
-    const data = parse(node.data)
-
-    return <span style={{ textAlign: 'justify' }}>{data}</span>
-  }
   const seta_api = 'http://localhost/seta-api/api/v1/doc'
   const comm_api = 'http://localhost/seta-ui/api/v1/communities/doc'
 
@@ -120,23 +97,19 @@ const FaqsPage = () => {
 
           <Accordion
             chevronPosition="right"
-            defaultValue="community-details"
+            multiple
+            defaultValue={['invite', 'resource', 'filters', 'upload-doc', 'api']}
             chevronSize={50}
             variant="separated"
             disableChevronRotation
-            chevron={
-              <ThemeIcon radius="xl" className={classes.gradient} size={32}>
-                <IconPlus size="1.05rem" stroke={1.5} />
-              </ThemeIcon>
-            }
           >
-            <Accordion.Item className={classes.item} value="community-details">
+            <Accordion.Item className={classes.item} value="invite">
               <Accordion.Control>
-                What kind of rights do you need to have in order to update the Community details?
+                What option do you need to select in order to invite others?
               </Accordion.Control>
               <Accordion.Panel>
-                To update the Community details, you need to have administrator rights of the
-                Community{}
+                From the community list, click on the three dots placed at the right of the
+                Community name and select the option "Invite".{}
               </Accordion.Panel>
             </Accordion.Item>
 
@@ -175,8 +148,9 @@ const FaqsPage = () => {
                 How can the Communities and Search tool be accessed through API's?
               </Accordion.Control>
               <Accordion.Panel>
-                The SeTA REST APIs are created with support of Swagger, you can access through our
-                links:
+                The SeTA REST APIs are created with support of Swagger which allows to generate
+                interactive API documentation that lets users try out the API calls directly in the
+                browser. You can access through our links:
                 <br />
                 {seta_api}
                 <br />

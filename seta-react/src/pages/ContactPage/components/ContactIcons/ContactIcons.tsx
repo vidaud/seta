@@ -1,5 +1,5 @@
 import { createStyles, ThemeIcon, Text, SimpleGrid, Box, Stack } from '@mantine/core'
-import { IconSun, IconPhone, IconAt } from '@tabler/icons-react'
+import { IconSun, IconPhone, IconAt, IconBuilding } from '@tabler/icons-react'
 
 type ContactIconVariant = 'white' | 'gradient'
 
@@ -80,9 +80,8 @@ interface ContactIconsListProps {
 }
 
 const MOCKDATA = [
-  { title: 'Email', description: 'support@seta.com', icon: IconAt },
-  { title: 'Phone', description: '+32 (800) 335 35 35', icon: IconPhone },
-  { title: 'Working hours', description: '9 a.m. – 6 p.m.', icon: IconSun }
+  { title: 'Office', description: 'JRC T4 Data Governance and Services', icon: IconBuilding },
+  { title: 'Email', description: 'support@seta.com', icon: IconAt }
 ]
 
 export function ContactIconsList({ data = MOCKDATA, variant }: ContactIconsListProps) {
