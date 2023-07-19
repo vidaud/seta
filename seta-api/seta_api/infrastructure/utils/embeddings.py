@@ -27,7 +27,7 @@ def compute_embeddings(text):
 
 class Embeddings:
     @staticmethod
-    def embeddings_from_doc_fields(title, abstract, text):
+    def chunks_and_embeddings_from_doc_fields(title, abstract, text):
         text_doc = ''
         if title is not None:
             text_doc = title + "\n"
@@ -39,9 +39,17 @@ class Embeddings:
         return emb
 
     @staticmethod
-    def embeddings_from_text(text):
+    def chunks_and_embeddings_from_text(text):
         emb, vec = compute_embeddings(text)
         return version, vec, emb
+
+    @staticmethod
+    def embedding_vector_from_text(text):
+        emb = model.encode(text, convert_to_numpy=True).tolist()
+        return emb
+
+
+
 
 
 

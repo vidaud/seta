@@ -82,7 +82,7 @@ for doc in Lines:
     response = es2.index(index=TO_INDEX_NAME, document=json.dumps(my_doc))
     print(response)
     doc_id = response["_id"]
-    embs = Embeddings.embeddings_from_doc_fields(my_doc["title"], my_doc["abstract"], is_field_in_doc(doc["_source"], "text"))
+    embs = Embeddings.chunks_and_embeddings_from_doc_fields(my_doc["title"], my_doc["abstract"], is_field_in_doc(doc["_source"], "text"))
     first = True
     for emb in embs:
         if first:

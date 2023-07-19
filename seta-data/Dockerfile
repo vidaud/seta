@@ -22,8 +22,8 @@ ARG ROOT=/home/seta
 
 WORKDIR $ROOT
 COPY requirements.txt $ROOT/requirements.txt
-
-RUN pip3 install -r $ROOT/requirements.txt 
+RUN pip install --upgrade pip
+RUN pip install -r $ROOT/requirements.txt 
 
 COPY src/* $ROOT/
 RUN mkdir $ROOT/models_docker

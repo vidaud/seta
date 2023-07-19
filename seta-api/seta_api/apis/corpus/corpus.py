@@ -7,8 +7,13 @@ from seta_api.infrastructure.auth_validator import auth_validator, validate_view
 from seta_api.infrastructure.helpers import is_field_in_doc
 
 from .corpus_logic import corpus, delete_chunk, chunk_by_id, insert_doc, document_by_id, delete_document
+from .corpus_logic import update_chunk, get_source_from_chunk_list, insert_chunk
 from .variables import corpus_parser, corpus_get_document_id_parser
 from .variables import Variable
+
+import jsonschema
+from jsonschema import validate
+from .validation_json_schema import chunk_update_schema, document_post_schema, chunk_post_schema
 
 from http import HTTPStatus
 
@@ -16,59 +21,7 @@ corpus_api = Namespace('seta-api-corpus', description='Corpus')
 swagger_doc = Variable(corpus_api)
 
 
-@corpus_api.route("corpus/<string:id>", methods=['GET', 'DELETE'])
-class Corpus(Resource):
-    @auth_validator()
-    @corpus_api.doc(description='Given the elasticsearch unique _id, the relative document from EU corpus is shown.'
-                        'EU corpus contains documents of the European Commission: '
-                        'Eur-Lex, CORDIS,JRC PUBSY, EU Open Data Portal, etc..',
-            params={'id': 'Return the document with the specified _id'},
-            security='apikey')
-    @corpus_api.response(200, 'Success', swagger_doc.get_corpus_get_id_response())
-    @corpus_api.response(401, 'Forbbiden access to the resource')
-    @corpus_api.response(404, 'Not Found Error')
-    def get(self, id):
-        try:
-
-            doc = chunk_by_id(id, es=app.es, index=app.config['INDEX_PUBLIC'])
-            validate_view_permissions(sources=[doc.get("source", None)])
-            
-            return doc
-        except ApiLogicError as aex:
-            abort(404, str(aex))
-        except ForbiddenResourceError as fre:
-            abort(HTTPStatus.FORBIDDEN, fre.message)
-        except:
-            app.logger.exception("Corpus->get")
-            abort(500, "Internal server error")
-
-    @auth_validator()
-    @corpus_api.doc(description='Given the elasticsearch unique _id, the relative document is deleted.',
-            params={'id': 'Delete the document with the specified _id'},
-            security='apikey')
-    @corpus_api.response(200, 'Success', swagger_doc.get_delete_id_request_model())
-    @corpus_api.response(401, 'Forbbiden access to the resource')
-    @corpus_api.response(404, 'Not Found Error')
-    def delete(self, id):
-        try:
-            doc = chunk_by_id(id, es=app.es, index=app.config['INDEX_PUBLIC'])
-            resource_id = doc.get("source", None)
-            
-            if not validate_delete_permission(resource_id):
-                raise ForbiddenResourceError(resource_id=resource_id, message="User does not have delete permission for the resource")
-            
-            delete_chunk(id, es=app.es, index=app.config["INDEX_PUBLIC"])
-            return jsonify({"deleted document id": id})
-        except ApiLogicError as aex:
-            abort(404, str(aex))
-        except ForbiddenResourceError as fre:
-            abort(HTTPStatus.FORBIDDEN, fre.message)
-        except:
-            app.logger.exception("Corpus->delete")
-            abort(500, "Internal server error")
-
-
-@corpus_api.route("corpus/chunk/<string:id>", methods=['GET', 'DELETE'])
+@corpus_api.route("corpus/chunk/<string:id>", methods=['GET', 'DELETE', 'PUT'])
 class CorpusChunk(Resource):
     @auth_validator()
     @corpus_api.doc(description='Given the elasticsearch unique _id, the relative document (chunk) is provided.',
@@ -88,7 +41,7 @@ class CorpusChunk(Resource):
         except ForbiddenResourceError as fre:
             abort(HTTPStatus.FORBIDDEN, fre.message)
         except:
-            app.logger.exception("Corpus->get")
+            app.logger.exception("Corpus chunk id ->get")
             abort(500, "Internal server error")
 
     @auth_validator()
@@ -108,24 +61,80 @@ class CorpusChunk(Resource):
                                              message="User does not have delete permission for the resource")
 
             delete_chunk(id, es=app.es, index=app.config["INDEX_PUBLIC"])
-            return jsonify({"deleted document id": id})
+            return jsonify({"deleted_document_id": id})
         except ApiLogicError as aex:
             abort(404, str(aex))
         except ForbiddenResourceError as fre:
             abort(HTTPStatus.FORBIDDEN, fre.message)
         except:
-            app.logger.exception("Corpus->delete")
+            app.logger.exception("Corpus chunk id ->delete")
+            abort(500, "Internal server error")
+
+    @auth_validator()
+    @corpus_api.doc(description='Given the elasticsearch unique _id, and json with field to be updated the relative document (chunk) is updated.',
+                    params={'id': 'Update the document (chunk) with the specified _id'},
+                    security='apikey')
+    @corpus_api.response(200, 'Success', swagger_doc.get_update_id_request_model())
+    @corpus_api.response(401, 'Forbbiden access to the resource')
+    @corpus_api.response(404, 'Not Found Error')
+    @corpus_api.expect(swagger_doc.corpus_chunk_put_request_model())
+    def put(self, id):
+        try:
+            chunk = chunk_by_id(id, es=app.es, index=app.config['INDEX_PUBLIC'])
+            resource_id = chunk.get("source", None)
+
+            if not validate_delete_permission(resource_id):
+                raise ForbiddenResourceError(resource_id=resource_id,
+                                             message="User does not have update permission for the resource")
+
+            args = request.get_json(force=True)
+            app.logger.debug(str(args))
+            validate(instance=args, schema=chunk_update_schema)
+            update_chunk(id, es=app.es, fields=args, index=app.config['INDEX_PUBLIC'])
+            return jsonify({"updated_document_id": id})
+        except jsonschema.ValidationError as err:
+            abort(404, str(err))
+        except ApiLogicError as aex:
+            abort(404, str(aex))
+        except ForbiddenResourceError as fre:
+            abort(HTTPStatus.FORBIDDEN, fre.message)
+        except:
+            app.logger.exception("Corpus chunk id update -> put")
             abort(500, "Internal server error")
 
 
-def get_source_from_chunk_list(chunk_list):
-    for doc in chunk_list:
-        if "source" in doc:
-            return doc["source"]
+@corpus_api.route("corpus/chunk", methods=['POST'])
+class CorpusChunk(Resource):
+    @auth_validator()
+    @corpus_api.doc(description='Put a chunk into corpus index.', security='apikey')
+    @corpus_api.response(200, 'Success', swagger_doc.get_put_doc_chunk_response_model())
+    @corpus_api.response(401, 'Forbidden access to the resource')
+    @corpus_api.expect(swagger_doc.corpus_chunk_post_request_model())
+    def post(self):
+        try:
+            args = request.get_json(force=True)
+
+            source = is_field_in_doc(args, 'source')
+            if not validate_add_permission(source):
+                abort(HTTPStatus.FORBIDDEN, "User does not have add document permission for the resource")
+
+            validate(instance=args, schema=chunk_post_schema)
+
+            doc_id = insert_chunk(args, es=app.es, index=app.config["INDEX_PUBLIC"])
+            return jsonify({"_id": doc_id})
+        except jsonschema.ValidationError as err:
+            abort(404, str(err))
+        except ApiLogicError as aex:
+            abort(404, str(aex))
+        except ForbiddenResourceError as fre:
+            abort(HTTPStatus.FORBIDDEN, fre.message)
+        except:
+            app.logger.exception("Corpus chunk -> post")
+            abort(500, "Internal server error")
 
 
 @corpus_api.route("corpus/document/<string:id>", methods=['GET', 'DELETE'])
-class CorpusDocument(Resource):
+class CorpusDocumentId(Resource):
     @auth_validator()
     @corpus_api.doc(description='Given a document_id, the relative list of chunks is shown.',
                     params={'id': 'Return all the chunks of document with the specified document_id',
@@ -149,7 +158,7 @@ class CorpusDocument(Resource):
         except ForbiddenResourceError as fre:
             abort(HTTPStatus.FORBIDDEN, fre.message)
         except:
-            app.logger.exception("Corpus->get")
+            app.logger.exception("Corpus document id ->get")
             abort(500, "Internal server error")
 
     @auth_validator()
@@ -169,24 +178,54 @@ class CorpusDocument(Resource):
                                              message="User does not have delete permission for the resource")
 
             delete_document(id, es=app.es, index=app.config["INDEX_PUBLIC"])
-            return jsonify({"deleted document id": id})
+            return jsonify({"deleted_document_id": id})
         except ApiLogicError as aex:
             abort(404, str(aex))
         except ForbiddenResourceError as fre:
             abort(HTTPStatus.FORBIDDEN, fre.message)
         except:
-            app.logger.exception("Corpus->delete")
+            app.logger.exception("Corpus document id ->delete")
             abort(500, "Internal server error")
 
 
-@corpus_api.route("corpus", methods=['POST', 'GET', 'PUT'])
+@corpus_api.route("corpus/document", methods=['POST'])
+class CorpusDocument(Resource):
+    @auth_validator()
+    @corpus_api.doc(description='Put a document into corpus index.', security='apikey')
+    @corpus_api.response(200, 'Success', swagger_doc.get_put_doc_chunk_response_model())
+    @corpus_api.response(401, 'Forbbiden access to the resource')
+    @corpus_api.expect(swagger_doc.get_put_request_model())
+    def post(self):
+        try:
+            args = request.get_json(force=True)
+
+            source = is_field_in_doc(args, 'source')
+            if not validate_add_permission(source):
+                abort(HTTPStatus.FORBIDDEN, "User does not have add document permission for the resource")
+
+            validate(instance=args, schema=document_post_schema)
+
+            doc_id = insert_doc(args, es=app.es, index=app.config["INDEX_PUBLIC"])
+            return jsonify({"_id": doc_id})
+        except jsonschema.ValidationError as err:
+            abort(404, str(err))
+        except ApiLogicError as aex:
+            abort(404, str(aex))
+        except ForbiddenResourceError as fre:
+            abort(HTTPStatus.FORBIDDEN, fre.message)
+        except:
+            app.logger.exception("Corpus document -> post")
+            abort(500, "Internal server error")
+
+
+@corpus_api.route("corpus", methods=['POST', 'GET'])
 class CorpusQuery(Resource):
     @auth_validator()
     @corpus_api.doc(description='Retrieve documents related to a term from EU corpus.'
                         'EU corpus contains documents of the European Commission: '
                         'Eur-Lex, CORDIS, JRC PUBSY, EU Open Data Portal, etc..',
                     security='apikey')
-    @corpus_api.response(200, 'Success', swagger_doc.get_post_response_model())
+    @corpus_api.response(200, 'Success', swagger_doc.get_corpus_post_response_model())
     @corpus_api.response(401, 'Forbbiden access to the resource')
     @corpus_api.response(404, 'Not Found Error')
     @corpus_api.expect(swagger_doc.get_post_request_model())
@@ -222,20 +261,6 @@ class CorpusQuery(Resource):
             app.logger.exception("CorpusQuery->post")
             abort(500, "Internal server error")
 
-    @auth_validator()
-    @corpus_api.doc(description='Put a document into corpus index.', security='apikey')
-    @corpus_api.response(200, 'Success', swagger_doc.get_put_response_model())
-    @corpus_api.response(401, 'Forbbiden access to the resource')
-    @corpus_api.expect(swagger_doc.get_put_request_model())
-    def put(self):
-        args = request.get_json(force=True)
-        
-        source = is_field_in_doc(args, 'source')
-        if not validate_add_permission(source):
-            abort(HTTPStatus.FORBIDDEN, "User does not have add document permission for the resource")
-        
-        doc_id = insert_doc(args, es=app.es, index=app.config["INDEX_PUBLIC"])
-        return jsonify({"document_id": doc_id})
 
     @corpus_api.expect(corpus_parser)
     @auth_validator()
