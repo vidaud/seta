@@ -2,7 +2,7 @@
 # Methodology 
 The Search tool in SeTA follows a series of steps for the preparation of the knowledge data. The first two steps concern document collection, cleaning and storage, and the second two steps concern text analysis and modelling.   
 \       
-![Image title](../img/machine_learning_icons.png){ align=right width=400 }   
+![Image title](../../img/machine_learning_icons.png){ align=right width=400 }   
 1. Everything starts by receiving as input from different sources the data that will fill the database.      
 2. The data is processed (cleaned, algorithms)      
 3. The processed data is used to create the AI Models       
@@ -51,7 +51,7 @@ When creating a Taxonomy, consider:
 The following example describes a simple Taxonomy:
 
 <figure markdown>
-![Image title](../img/taxonomy.png){ width="600" }
+![Image title](../../img/taxonomy.png){ width="600" }
 <figcaption>Taxonomy</figcaption>
 </figure>
 

@@ -19,7 +19,7 @@ const statusOptions = [
   { label: 'rejected', value: 'rejected' }
 ]
 
-const UpdateResourceChangeRequest = ({ props }) => {
+const UpdateResourceChangeRequest = ({ props, reload }) => {
   const [opened, setOpened] = useState(false)
   const { classes, cx } = useStyles()
 
@@ -35,10 +35,14 @@ const UpdateResourceChangeRequest = ({ props }) => {
         status: props.status
       })
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props])
 
   const handleSubmit = (values: ResourceChangeRequestValues) => {
-    updateResourceChangeRequest(props.resource_id, props.request_id, values)
+    updateResourceChangeRequest(props.resource_id, props.request_id, values).then(() => {
+      reload()
+    })
+
     setOpened(o => !o)
   }
 

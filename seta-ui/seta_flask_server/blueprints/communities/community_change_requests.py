@@ -12,7 +12,7 @@ from seta_flask_server.infrastructure.decorators import auth_validator
 from seta_flask_server.infrastructure.scope_constants import CommunityScopeConstants, SystemScopeConstants
 from seta_flask_server.infrastructure.constants import RequestStatusConstants, UserRoleConstants, CommunityRequestFieldConstants, CommunityMembershipConstants
 
-from .models.community_dto import(new_change_request_parser, update_change_request_parser, 
+from .models.community_dto import(new_change_request_parser,  
                     change_request_model, resource_change_request_model, all_change_requests_model, user_info_model)
 
 community_change_request_ns = Namespace('Community Change Requests', validate=True, description='SETA Community Change Requests')
@@ -20,63 +20,10 @@ community_change_request_ns.models[user_info_model.name] = user_info_model
 community_change_request_ns.models[change_request_model.name] = change_request_model
 community_change_request_ns.models[resource_change_request_model.name] = resource_change_request_model
 community_change_request_ns.models[all_change_requests_model.name] = all_change_requests_model
-
-@community_change_request_ns.route('/change-requests/pending', endpoint="community_change_request_list", methods=['GET', 'POST'])
-class CommunityChangeRequestList(Resource):
-    '''Get list of all pending change requests for communities'''
-    
-    @inject
-    def __init__(self, usersBroker: IUsersBroker, changeRequestsBroker: ICommunityChangeRequestsBroker, api=None, *args, **kwargs):
-        self.usersBroker = usersBroker
-        self.changeRequestsBroker = changeRequestsBroker
-        
-        super().__init__(api, *args, **kwargs)
-        
-    @community_change_request_ns.doc(description='Retrieve all pending change requests issued for communities',
-        responses={
-                    int(HTTPStatus.OK): "'Retrieved pending change requests.",
-                    int(HTTPStatus.FORBIDDEN): "Insufficient rights, scope 'community/change_request/approve' required"
-                },
-        
-        security='CSRF')
-    @community_change_request_ns.marshal_list_with(change_request_model, mask="*")
-    @auth_validator()
-    def get(self):
-        '''
-        Retrieve all pending change requests for communities, available to sysadmins
-        
-        Permissions: either scope "/seta/community/change_request/approve" or "Administrator" role
-        '''
-        
-        identity = get_jwt_identity()
-        user_id = identity["user_id"]
-        
-        #verify scope
-        user = self.usersBroker.get_user_by_id(user_id)        
-        if user is None or user.is_not_active():
-            abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
-
-        hasApproveRight = user.role.lower() == UserRoleConstants.Admin.lower() or user.has_system_scope(SystemScopeConstants.ApproveCommunityChangeRequest)        
-        if not hasApproveRight:        
-            abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
-
-        requests = self.changeRequestsBroker.get_all_pending()
-
-        for request in requests:
-            requested_by = self.usersBroker.get_user_by_id(request.requested_by, load_scopes=False)
-            if requested_by:
-                request.requested_by_info = requested_by.user_info
-
-            if request.reviewed_by:
-                reviewed_by = self.usersBroker.get_user_by_id(request.reviewed_by, load_scopes=False)
-                if reviewed_by:
-                    request.reviewed_by_info = reviewed_by.user_info
-
-        return requests
     
 @community_change_request_ns.route('/<string:community_id>/change-requests', endpoint="community_create_change_request", methods=['GET','POST'])
 @community_change_request_ns.param("community_id", "Community identifier") 
-class CommunityCreateChangeRequest(Resource):
+class CommunityChangeRequests(Resource):
     """Handles HTTP POST requests to URL: /communities/{community_id}/change-requests."""
     
     @inject
@@ -159,7 +106,7 @@ class CommunityCreateChangeRequest(Resource):
         
         return response
     
-    @community_change_request_ns.doc(description='Retrieve all change requests for a community',
+    @community_change_request_ns.doc(description='Retrieve all change requests for a community and its resources',
         responses={
                     int(HTTPStatus.OK): "'Retrieved change requests.",
                     int(HTTPStatus.FORBIDDEN): "Insufficient rights, scope 'community/manager' or 'community/owner' required"
@@ -170,7 +117,7 @@ class CommunityCreateChangeRequest(Resource):
     @auth_validator()
     def get(self, community_id):
         '''
-        Retrieve all change requests for a community, available to community managers
+        Retrieve all change requests for a community and its resources, available to community managers
 
         Permission scopes: either '/seta/community/owner' or '/seta/community/manager'
         '''
@@ -215,7 +162,7 @@ class CommunityCreateChangeRequest(Resource):
             "resource_change_requests":  resource_change_requests
         } 
    
-@community_change_request_ns.route('/<string:community_id>/change-requests/<string:request_id>', endpoint="community_change_request", methods=['GET', 'PUT'])
+@community_change_request_ns.route('/<string:community_id>/change-requests/<string:request_id>', endpoint="community_change_request", methods=['GET'])
 @community_change_request_ns.param("community_id", "Community identifier") 
 @community_change_request_ns.param("request_id", "Change request identifier")
 class CommunityChangeRequest(Resource):
@@ -271,56 +218,3 @@ class CommunityChangeRequest(Resource):
                 request.reviewed_by_info = reviewed_by.user_info
         
         return request
-    
-    @community_change_request_ns.doc(description='Approve/reject change request',        
-    responses={
-                int(HTTPStatus.OK): "Request updated.", 
-                int(HTTPStatus.FORBIDDEN): "Insufficient rights, scope 'community/change_request/approve' required",
-                int(HTTPStatus.NOT_FOUND): "Request not found."
-                },
-    security='CSRF')
-    @community_change_request_ns.expect(update_change_request_parser)
-    @auth_validator()
-    def put(self, community_id, request_id):
-        '''
-        Update a change request for community, available to sysadmins
-
-        Permissions: scope '/seta/community/change_request/approve' or "Administrator" role
-        '''
-        
-        identity = get_jwt_identity()
-        auth_id = identity["user_id"]
-        
-        user = self.usersBroker.get_user_by_id(auth_id)
-
-        if user is None or user.is_not_active():
-            abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
-            
-        hasApproveRight = user.role.lower() == UserRoleConstants.Admin.lower() or user.has_system_scope(SystemScopeConstants.ApproveCommunityChangeRequest)        
-        if not hasApproveRight:
-            abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
-
-        request = None
-        request_dict = update_change_request_parser.parse_args()
-        status = request_dict["status"]
-        
-        try:  
-            request = self.changeRequestsBroker.get_request(community_id=community_id, request_id=request_id)
-            
-            if request is not None:              
-                request.status = status
-                request.reviewed_by = auth_id
-                
-                self.changeRequestsBroker.update(request)                
-        except:
-            app.logger.exception("Request->put")
-            abort(HTTPStatus.INTERNAL_SERVER_ERROR)   
-           
-        if request is None:
-            abort(HTTPStatus.NOT_FOUND)
-        
-        message = f"Request {status}."
-        response = jsonify(status="success", message=message)
-        response.status_code = HTTPStatus.OK
-        
-        return response

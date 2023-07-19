@@ -1,51 +1,23 @@
+The SeTA APIs provides the functions and procedures to access the data of the Communities and the functionalities from the Search tool, from a developer point of view.
 
-# Setup
-SeTA has two user interfaces:
+### Swagger
+The SeTA APIs use the support of Swagger.  Swagger is an open source repository of standards, specifications, and tools for designing and specifying RESTful APIs. The Swagger framework enables the creation of interactive, machine- and human-readable APIs.  Swagger helps describing an API's structure so that computers may comprehend it.[^1]     
+Swagger achieves this by requesting a comprehensive YAML or JSON answer from the API that provides a detailed description of the whole API. The resources of the API are listed in this file, which adheres to the OpenAPI Specification.      
+In Swagger it is possible to write specifications for the API manually, or have it generated automatically from annotations in the source code.      
 
-- Web App: Allows the user to interact through the Web page with the content in a Web browser, which acts as a client.
+> The [open-source-integrations](swagger.io/open-source-integrations) page can be consulted for a list of tools that let generates Swagger from code. 
 
-- API: An Application Programming Interface exposing data and functionality in a consistent format.
+Finally, the use of Swagger UI allows to generate interactive API documentation that lets users try out the API calls directly in the browser.
 
+The use of Swagger is convenient when doing development and very useful for public APIs to know how they function.     
+But for security concerns, in the production environment Swagger and Swagger-ui are disabled.          
 
-## Web App
-The SeTA Web App is a user-friendly interface that allows the user to access the content in a Web browser. 
- 
-<figure markdown>
-![Image title](../img/main_screen.jpg)
-<figcaption>SeTA main page</figcaption>
-</figure>
+In SeTA, with variable *DISABLE_SWAGGER_DOCUMENTATION* setup in file `seta-ui\seta_flask_server\config.py` on container *seta-ui* it is possible to manage the use of Swagger:
+```
+     DISABLE_SWAGGER_DOCUMENTATION = False
+```
 
-
-
-In the SeTA Web App, we can find:
-
-- Search tool: An online search engine tool designed to search for metadata on the SeTA database based on the user's search query. It sorts the results, and makes an ordered list of these results according to the search algorithms.
-
-- Communities: A digital platform for people with a common interest to discuss or share and connect and communicate with one another.
-
-To access these features, first, you need either to login with an EU login[^1] account or with a GitHub[^2] authentication.
-
-
-<figure markdown>
-![Image title](../img/login.png)
-<figcaption>Login</figcaption>
-</figure>
-
-
-
-Once you are logged in, you can see in the top menu the link to the Search and to the Communities:
-
-
-<figure markdown>
-![Image title](../img/seta_menu.png)
-<figcaption>Search</figcaption>
-</figure>
-
-
-
-## APIs
-
-The SeTA APIs provides the functions and procedures to access data from a developer point of view.
+### SeTA API's
 
 In SeTA there are two APIs:   
 - Communities API       
@@ -75,7 +47,7 @@ After successful authentication, check that you have the following entries in th
 
 
 <figure markdown>
-![Image title](../img/db_usr_collection.png){ width="700" }
+![Image title](../../../img/db_usr_collection.png){ width="700" }
 <figcaption>Partial object for the new seta account</figcaption>
 </figure>
 
@@ -93,7 +65,7 @@ After successful authentication, check that you have the following entries in th
 
 
 <figure markdown>
-![Image title](../img/Provider_object.png){ width="700" }
+![Image title](../../../img/Provider_object.png){ width="700" }
 <figcaption>Provider object</figcaption>
 </figure>
 
@@ -110,7 +82,7 @@ After successful authentication, check that you have the following entries in th
 
 
 <figure markdown>
-![Image title](../img/community_create_scope.png){ width="700" }
+![Image title](../../../img/community_create_scope.png){ width="700" }
 <figcaption>Community create scope</figcaption>
 </figure>
 
@@ -125,7 +97,7 @@ After successful authentication, check that you have the following entries in th
 
 
 <figure markdown>
-![Image title](../img/role_claim.png){ width="700" }
+![Image title](../../../img/role_claim.png){ width="700" }
 <figcaption>Role claim (claim_value can different)</figcaption>
 </figure>
 
@@ -145,7 +117,7 @@ After successful authentication, check that you have the following entries in th
 Open a new tab in the same browser for the [Community API swagger documentation]({{ setaUrls.apiCommunities }})
 
 <figure markdown>
-![Image title](../img/communities_api.png)
+![Image title](../../../img/communities_api.png)
 <figcaption>SeTA Communities</figcaption>
 </figure>
 
@@ -158,7 +130,7 @@ Open the *browser developer tool* and copy the value of the ^^**csrf_access_toke
 Click on the **Authorize** button to open the Available authorizations dialog; set the CSRF value and click on *Authorize* button; leave the **Bearer** field empty.
 
 <figure markdown>
-![Image title](../img/authorize.png){ width="500" }
+![Image title](../../img/authorize.png){ width="500" }
 <figcaption>Authorize</figcaption>
 </figure>
 
@@ -179,7 +151,7 @@ SeTA-API will get at each request another authorization decoded token from seta-
 Expand **Communities** region and then Try out **POST** /communities:
 
 <figure markdown>
-![Image title](../img/create_community.png){ width="800" }
+![Image title](../../img/create_community.png){ width="800" }
 <figcaption>Create Community</figcaption>
 </figure>
 
@@ -196,7 +168,7 @@ Check the following entries in the **seta database - communities** collection:
 
 
 <figure markdown>
-![Image title](../img/community_object.png){ width="700" }
+![Image title](../../img/community_object.png){ width="700" }
 <figcaption>Community object</figcaption>
 </figure>
 
@@ -214,7 +186,7 @@ Check the following entries in the **seta database - communities** collection:
 
 
 <figure markdown>
-![Image title](../img/membership_object.png){ width="700" }
+![Image title](../../img/membership_object.png){ width="700" }
 <figcaption>Membership object</figcaption>
 </figure>
 
@@ -237,7 +209,7 @@ Check the objects for the community scopes in the **seta database - users** coll
 
 
 <figure markdown>
-![Image title](../img/seta_usr_scope.png){ width="700" }
+![Image title](../../img/seta_usr_scope.png){ width="700" }
 <figcaption>User scope</figcaption>
 </figure>
 
@@ -281,7 +253,7 @@ Expand **Community Resources** region and then Try out **POST** /communities/{co
 
 
 <figure markdown>
-![Image title](../img/create-resource.png)
+![Image title](../../img/create-resource.png)
 <figcaption>Create Resource</figcaption>
 </figure>
 
@@ -290,7 +262,7 @@ Check that the Resource entry appears in the **seta database - resources** colle
 
 
 <figure markdown>
-![Image title](../img/resource_community.png){ width="700" }
+![Image title](../../img/resource_community.png){ width="700" }
 <figcaption>Resource</figcaption>
 </figure>
 
@@ -311,7 +283,7 @@ Check that the objects for the resource scopes in the **seta database - users** 
 
 
 <figure markdown>
-![Image title](../img/usrs_resources.png){ width="700" }
+![Image title](../../img/usrs_resources.png){ width="700" }
 <figcaption>Users Resource</figcaption>
 </figure>
 
@@ -354,7 +326,7 @@ Open a browser and go to seta-ui [login]({{ setaUrls.login }}) page. Connect wit
 
 
 <figure markdown>
-![Image title](../img/seta-api.png)
+![Image title](../../img/seta-api.png)
 <figcaption>SeTA API</figcaption>
 </figure>
 
@@ -362,5 +334,7 @@ Open a browser and go to seta-ui [login]({{ setaUrls.login }}) page. Connect wit
 
 
 
-[^1]:https://webgate.ec.europa.eu/ern/userguide/Content/A.HOW%20TO%20JOIN/Register%20on%20EU-Login.htm
-[^2]:https://github.com/
+
+
+[^1]: https://swagger.io/docs/specification/2-0/what-is-swagger/
+

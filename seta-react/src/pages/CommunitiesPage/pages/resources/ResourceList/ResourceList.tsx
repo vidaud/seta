@@ -7,7 +7,6 @@ import type { ResourceResponse } from '~/api/types/resource-types'
 import ResourceListContent from './ResourceListContent'
 
 import { useAllResources } from '../../../../../api/resources/discover/discover-resources'
-import { useCommunityListContext } from '../../contexts/community-list.context'
 import { useCurrentUserPermissions } from '../../contexts/scope-context'
 import { sortResourceData } from '../ResourceInfo/utils/resource-utils'
 
@@ -23,16 +22,13 @@ const ResourceList = () => {
   const [sortedData, setSortedData] = useState<ResourceResponse[]>([])
 
   const { data, isLoading, error, refetch } = useAllResources()
-  const { membership, status } = useCommunityListContext()
   const { community_scopes, system_scopes, resource_scopes } = useCurrentUserPermissions()
 
   useEffect(() => {
     if (data) {
       setSortedData(data)
-
-      // refetch()
     }
-  }, [data, membership, status])
+  }, [data])
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = event.currentTarget

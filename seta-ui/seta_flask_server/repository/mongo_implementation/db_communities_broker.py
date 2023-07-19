@@ -15,7 +15,7 @@ class CommunitiesBroker(implements(ICommunitiesBroker)):
     @inject
     def __init__(self, config: IDbConfig) -> None:
        self.db = config.get_db()
-       self.collection = self.db["communities"]
+       self.collection = self.db["communities"]       
 
     def create(self, model: CommunityModel, scopes: list[dict]) -> None:
         '''Create community json objects in mongo db'''
@@ -114,6 +114,24 @@ class CommunitiesBroker(implements(ICommunitiesBroker)):
         communities = self.collection.find(filter)
         
         return [CommunityModel.from_db_json(c) for c in communities]
+    
+    def get_orphans(self)  -> list[CommunityModel]:
+        # get community ids that have an owner assigned
+        pipeline = [
+            {"$match":{ "community_scope": CommunityScopeConstants.Owner}},
+            {"$group" : { "_id" : "$community_id" }}
+        ]
+        ids = self.db["users"].aggregate(pipeline)
+
+        #get communities that are not in 'ids'
+        filter =  {
+                    "membership":{"$exists" : True}, 
+                    "community_id": {"$not": {"$in": [i["_id"] for i in ids]}}
+                }
+        communities = self.collection.find(filter)
+
+        return [CommunityModel.from_db_json(c) for c in communities]
+        
     
     #------------------------#
     """ Private methods """

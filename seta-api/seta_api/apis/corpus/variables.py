@@ -292,7 +292,8 @@ class Variable:
         corpus_get_id_response["taxonomy"] = fields.List(fields.Nested(self.taxonomy_model_tree))
         corpus_get_id_response["other"] = fields.List(fields.Nested(self.other_model))
         corpus_get_id_response_model = self.namespace.model("corpus_get_id_response_model", corpus_get_id_response)
-        corpus_get_id_document_response = {"chunk_list": fields.List(fields.Nested(corpus_get_id_response_model))}
+        corpus_get_id_document_response = {"chunk_list": fields.List(fields.Nested(corpus_get_id_response_model)),
+                                           "num_chunks": fields.Integer()}
         return self.namespace.model("corpus_get_id_document_response", corpus_get_id_document_response)
 
     def get_delete_id_request_model(self):

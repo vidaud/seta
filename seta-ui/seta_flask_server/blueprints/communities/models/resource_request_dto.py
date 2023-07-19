@@ -27,17 +27,6 @@ new_change_request_parser.add_argument("old_value",
                                   nullable=False,
                                   help="Current value at request")
 
-update_change_request_parser = RequestParser(bundle_errors=True)
-
-update_change_request_parser.add_argument("status",
-                                  location="form",
-                                  required=True,
-                                  nullable=False,
-                                  case_sensitive=False,
-                                  choices=RequestStatusConstants.EditList,
-                                  help=f"Change request status")
-
-
 change_request_model = Model("ResourceChangeRequest",
                              {
                                  "request_id": fields.String(description="Request identifier"),

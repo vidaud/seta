@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { createStyles, Table, ScrollArea, rem, useMantineTheme, Badge } from '@mantine/core'
+import { createStyles, Table, ScrollArea, rem, useMantineTheme, Badge, Select } from '@mantine/core'
 
 import type { ResourceChangeRequests } from '~/api/types/change-request-types'
 
@@ -31,26 +31,45 @@ const useStyles = createStyles(theme => ({
   }
 }))
 
+const requestStatus = [
+  { label: 'All', value: 'all' },
+  { label: 'Approved', value: 'approved' },
+  { label: 'Rejected', value: 'rejected' },
+  { label: 'Pending', value: 'pending' }
+]
+
 const ChangeResourceRequests = ({ id, onChange }) => {
   const { classes, cx } = useStyles()
   const [scrolled, setScrolled] = useState(false)
   const { data, isLoading, error, refetch } = useResourcesChangeRequests(id)
   const theme = useMantineTheme()
   const [items, setItems] = useState<ResourceChangeRequests[]>()
+  const [selected, setSelected] = useState<string | null>('pending')
 
   useEffect(() => {
+    let timeout: number | null = null
+
     if (data) {
-      setItems(data)
+      selected === 'all' ? setItems(data) : setItems(data.filter(item => item.status === selected))
+
+      // setItems(data)
       onChange(data.length)
+      timeout = setTimeout(refetch, 1000)
+
+      return () => {
+        if (timeout) {
+          clearTimeout(timeout)
+        }
+      }
     }
-  }, [data, items, onChange])
+  }, [data, onChange, selected, refetch])
 
   if (error) {
     return <ComponentError onTryAgain={refetch} />
   }
 
   if (data) {
-    if (items?.length === 0) {
+    if (data?.length === 0) {
       return <ComponentEmpty />
     }
   }
@@ -87,6 +106,14 @@ const ChangeResourceRequests = ({ id, onChange }) => {
 
   return (
     <ScrollArea h={200} onScrollPositionChange={({ y }) => setScrolled(y !== 0)}>
+      <Select
+        // label="Select Status"
+        name="requestStatus"
+        sx={{ width: 'fit-content', float: 'right' }}
+        data={requestStatus}
+        value={selected}
+        onChange={setSelected}
+      />
       <Table miw={500}>
         <thead className={cx(classes.header, { [classes.scrolled]: scrolled })}>
           <tr>

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { createStyles, Table, ScrollArea, rem, useMantineTheme, Badge } from '@mantine/core'
+import { createStyles, Table, ScrollArea, rem, useMantineTheme, Badge, Select } from '@mantine/core'
 
 import type { CommunityChangeRequests } from '~/api/types/change-request-types'
 
@@ -31,26 +31,47 @@ const useStyles = createStyles(theme => ({
   }
 }))
 
+const requestStatus = [
+  { label: 'All', value: 'all' },
+  { label: 'Approved', value: 'approved' },
+  { label: 'Rejected', value: 'rejected' },
+  { label: 'Pending', value: 'pending' }
+]
+
 const ChangeCommunityRequests = ({ id, onChange }) => {
   const { classes, cx } = useStyles()
   const [scrolled, setScrolled] = useState(false)
   const { data, isLoading, error, refetch } = useCommunityChangeRequests(id)
   const theme = useMantineTheme()
   const [items, setItems] = useState<CommunityChangeRequests[]>()
+  const [selected, setSelected] = useState<string | null>('pending')
 
   useEffect(() => {
+    let timeout: number | null = null
+
     if (data) {
-      setItems(data.community_change_requests)
+      selected === 'all'
+        ? setItems(data.community_change_requests)
+        : setItems(data.community_change_requests.filter(item => item.status === selected))
+
+      // setItems(data.community_change_requests)
       onChange(data.community_change_requests.length)
+      timeout = setTimeout(refetch, 1000)
+
+      return () => {
+        if (timeout) {
+          clearTimeout(timeout)
+        }
+      }
     }
-  }, [data, items, onChange, id])
+  }, [data, onChange, selected, refetch])
 
   if (error) {
     return <ComponentError onTryAgain={refetch} />
   }
 
   if (data) {
-    if (items?.length === 0) {
+    if (data.community_change_requests?.length === 0) {
       return <ComponentEmpty />
     }
   }
@@ -75,18 +96,19 @@ const ChangeCommunityRequests = ({ id, onChange }) => {
           {row?.status.toUpperCase()}
         </Badge>
       </td>
-      {/* <td>
-        <Group spacing={0}>
-          <ActionIcon color="red">
-            <IconTrash size="1rem" stroke={1.5} />
-          </ActionIcon>
-        </Group>
-      </td> */}
     </tr>
   ))
 
   return (
     <ScrollArea h={200} onScrollPositionChange={({ y }) => setScrolled(y !== 0)}>
+      <Select
+        // label="Select Status"
+        name="requestStatus"
+        sx={{ width: 'fit-content', float: 'right' }}
+        data={requestStatus}
+        value={selected}
+        onChange={setSelected}
+      />
       <Table miw={500}>
         <thead className={cx(classes.header, { [classes.scrolled]: scrolled })}>
           <tr>
@@ -97,8 +119,6 @@ const ChangeCommunityRequests = ({ id, onChange }) => {
             <th>Requested by</th>
             <th>Initiated Date</th>
             <th>Status</th>
-            {/* <th>Reviewed Date</th> */}
-            {/* <th>Actions</th> */}
           </tr>
         </thead>
         <tbody>{rows}</tbody>

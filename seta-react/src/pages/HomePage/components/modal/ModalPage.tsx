@@ -52,10 +52,36 @@ function getStrength(slides, currentslide) {
 const ModalPage = () => {
   const { classes } = useStyles()
   const [showButton, setShowButton] = useState(true)
+  const [isCookie, setCookie] = useState(true)
   const dontshow = "Don't show this again"
+  const COOKIE_NAME = 'intro_cookie'
+  const rand_value = Math.random().toString(36).substring(3, 11).toUpperCase()
+  const today = new Date()
+  const time = today.getTime()
+  const expireTime = time + 1000 * 86400
+
+  today.setTime(expireTime)
 
   const toggleButton = () => {
-    setShowButton(!showButton)
+    setShowButton(false)
+  }
+
+  const clickCheckbox = (
+    <span className={classes.dontShowMe}>
+      <input
+        type="checkbox"
+        onClick={() => {
+          toggleButton()
+          saveToCookie(COOKIE_NAME, rand_value)
+        }}
+      />
+      {} {dontshow}
+    </span>
+  )
+
+  const saveToCookie = (cookieName: string, cookieValue: string): void => {
+    document.cookie = `${cookieName.trim()}=${cookieValue.trim()};expires=${today.toUTCString()};samesite=lax`
+    setCookie(!isCookie)
   }
 
   return (
@@ -78,9 +104,7 @@ const ModalPage = () => {
                   <br />
                   <Image src={image1} alt="Presentation" />
                   <Progress color="gray" value={getStrength(8, 1)} size="md" radius="xl" />
-                  <span className={classes.dontShowMe}>
-                    <input type="checkbox" onClick={toggleButton} /> {dontshow}
-                  </span>
+                  {clickCheckbox}
                 </>
               ),
               onCancel: modals.closeAll,
@@ -100,9 +124,7 @@ const ModalPage = () => {
                       <br />
                       <Image src={image2} alt="Communities" />
                       <Progress color="gray" value={getStrength(8, 2)} size="md" radius="xl" />
-                      <span className={classes.dontShowMe}>
-                        <input type="checkbox" onClick={toggleButton} /> {dontshow}
-                      </span>
+                      {clickCheckbox}
                     </>
                   ),
                   onCancel: modals.closeAll,
@@ -122,9 +144,7 @@ const ModalPage = () => {
                           <br />
                           <Image src={image3} alt="Communities" />
                           <Progress color="gray" value={getStrength(8, 3)} size="md" radius="xl" />
-                          <span className={classes.dontShowMe}>
-                            <input type="checkbox" onClick={toggleButton} /> {dontshow}
-                          </span>
+                          {clickCheckbox}
                         </>
                       ),
                       onCancel: modals.closeAll,
@@ -149,9 +169,7 @@ const ModalPage = () => {
                                 size="md"
                                 radius="xl"
                               />
-                              <span className={classes.dontShowMe}>
-                                <input type="checkbox" onClick={toggleButton} /> {dontshow}
-                              </span>
+                              {clickCheckbox}
                             </>
                           ),
                           onCancel: modals.closeAll,
@@ -175,9 +193,7 @@ const ModalPage = () => {
                                     size="md"
                                     radius="xl"
                                   />
-                                  <span className={classes.dontShowMe}>
-                                    <input type="checkbox" onClick={toggleButton} /> {dontshow}
-                                  </span>
+                                  {clickCheckbox}
                                 </>
                               ),
                               onCancel: modals.closeAll,
@@ -202,10 +218,7 @@ const ModalPage = () => {
                                         size="md"
                                         radius="xl"
                                       />
-                                      <span className={classes.dontShowMe}>
-                                        <input type="checkbox" onClick={toggleButton} />
-                                        &nbsp;{dontshow}
-                                      </span>
+                                      {clickCheckbox}
                                     </>
                                   ),
                                   onCancel: modals.closeAll,
@@ -230,10 +243,7 @@ const ModalPage = () => {
                                             size="md"
                                             radius="xl"
                                           />
-                                          <span className={classes.dontShowMe}>
-                                            <input type="checkbox" onClick={toggleButton} />
-                                            &nbsp;{dontshow}
-                                          </span>
+                                          {clickCheckbox}
                                         </>
                                       ),
                                       onCancel: modals.closeAll,
@@ -258,10 +268,7 @@ const ModalPage = () => {
                                                 size="md"
                                                 radius="xl"
                                               />
-                                              <span className={classes.dontShowMe}>
-                                                <input type="checkbox" onClick={toggleButton} />
-                                                &nbsp;{dontshow}
-                                              </span>
+                                              {clickCheckbox}
                                             </>
                                           ),
                                           onCancel: modals.closeAll,

@@ -38,30 +38,18 @@ const ResourceUsersPermissions = ({ id }) => {
         </Group>
       </td>
       <td>
-        {item.scopes
-          .filter((element, index) => {
-            return item.scopes.indexOf(element) === index
-          })
-          .map(scope => (
-            <Text key={scope} fz="sm" c="dimmed">
-              {scope}
-            </Text>
-          ))}
-      </td>
-      <td>
-        <ManageResourcePermissions props={item} />
+        <ManageResourcePermissions props={item} id={id} />
       </td>
     </tr>
   ))
 
   return (
-    <ScrollArea>
+    <ScrollArea h={150}>
       <Table verticalSpacing="sm">
         <thead>
           <tr>
             <th>User</th>
             <th>Scopes</th>
-            <th>Manage</th>
           </tr>
         </thead>
         <tbody>{rows}</tbody>

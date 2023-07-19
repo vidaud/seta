@@ -45,10 +45,19 @@ const PendingResourceRequests = () => {
   const [items, setItems] = useState<ResourceChangeRequests[]>([])
 
   useEffect(() => {
+    let timeout: number | null = null
+
     if (data) {
       setItems(data)
+      timeout = setTimeout(refetch, 1000)
+
+      return () => {
+        if (timeout) {
+          clearTimeout(timeout)
+        }
+      }
     }
-  }, [data, items])
+  }, [data, refetch])
 
   if (error) {
     return <ComponentError onTryAgain={refetch} />
@@ -81,7 +90,7 @@ const PendingResourceRequests = () => {
         </Badge>
       </td>
       <td>
-        <UpdateResourceChangeRequest props={row} />
+        <UpdateResourceChangeRequest props={row} reload={refetch} />
       </td>
     </tr>
   ))

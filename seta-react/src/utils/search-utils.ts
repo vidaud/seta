@@ -36,6 +36,11 @@ const getQueryAndTermsFromTokens = async (
   const groups: string[][] = [[]]
   const terms: string[] = []
 
+  // Exit early if there are no tokens to search for
+  if (!tokens.length) {
+    return ['', []]
+  }
+
   for (const [index, token] of tokens.entries()) {
     const { operator, token: value } = token
 
@@ -62,8 +67,14 @@ const getQueryAndTermsFromTokens = async (
   }
 
   // Clean up empty groups caused by consecutive `AND` operators at the end
-  while (groups[groups.length - 1].length === 0) {
+  // or by having only `AND`/`OR` operators in the query
+  while (groups[groups.length - 1]?.length === 0) {
     groups.pop()
+  }
+
+  // Exit early if there are no groups
+  if (!groups.length) {
+    return ['', []]
   }
 
   if (enrichedStatus?.enriched) {

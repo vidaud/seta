@@ -60,7 +60,9 @@ const RestrictedResource = ({ resource }: Props) => {
 
       index?.forEach(element => form.append('resource', element))
       form.append('resource', id)
-      manageRestrictedResources(form)
+      manageRestrictedResources(form).then(() => {
+        refetch()
+      })
     } else {
       const form = new FormData()
 
@@ -70,10 +72,10 @@ const RestrictedResource = ({ resource }: Props) => {
 
       index?.forEach(element => form.append('resource', element))
 
-      manageRestrictedResources(form)
+      manageRestrictedResources(form).then(() => {
+        refetch()
+      })
     }
-
-    refetch()
   }
 
   return (
