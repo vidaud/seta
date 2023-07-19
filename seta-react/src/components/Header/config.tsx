@@ -8,7 +8,7 @@ type MenuItem = {
   collapse?: boolean
 }
 
-type DropdownItem =
+export type DropdownItem =
   | {
       label: string
       icon: JSX.Element

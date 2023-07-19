@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { ActionIcon, Flex, Group, Image, Loader, Menu, Tooltip, Badge } from '@mantine/core'
 import { AiOutlineUser } from 'react-icons/ai'
 import { FaSignInAlt } from 'react-icons/fa'
@@ -16,7 +16,6 @@ import './style.css'
 
 const Header = () => {
   const { user, isLoading: isUserLoading, logout } = useCurrentUser()
-  const [isOpen, setIsOpen] = useState(false)
   const { notifications, total, getNotificationRequests } = useNotifications()
 
   useEffect(() => {
@@ -30,10 +29,6 @@ const Header = () => {
   const handleLogout = () => {
     logout()
     window.location.href = '/login'
-  }
-
-  const handleOnChange = text => {
-    setIsOpen(text)
   }
 
   const menuItems = getMenuItems(authenticated)
@@ -117,11 +112,9 @@ const Header = () => {
           {authenticated ? (
             <Group>
               <NotificationsMenu
-                isOpen={isOpen}
                 total={total}
                 dropdownItems={dropdownItems}
                 notifications={notifications}
-                onChange={handleOnChange}
               />
               <Badge variant="filled" size="xs" css={S.badge}>
                 {total}

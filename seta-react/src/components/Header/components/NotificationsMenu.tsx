@@ -1,49 +1,47 @@
-import { Badge, Menu, Group, Box, ChevronIcon, ActionIcon } from '@mantine/core'
+import { Badge, Menu, Group, Box, ActionIcon } from '@mantine/core'
 import { IoMdNotifications } from 'react-icons/io'
 
 import NotificationsDropdown from './NotificationsDropdown'
 
+import type { NotificationsResponse } from '../../../pages/CommunitiesPage/pages/contexts/notifications-context'
 import { useStyles } from '../../../pages/SearchWithFilters/components/ApplyFilters/styles'
+import type { DropdownItem } from '../config'
 import { itemIsCollapse } from '../config'
 import * as S from '../styles'
 
-const NotificationsMenu = ({ isOpen, total, dropdownItems, notifications, onChange }) => {
-  const { classes, theme } = useStyles()
+type Props = {
+  total: number
+  dropdownItems: DropdownItem[]
+  notifications: NotificationsResponse[]
+}
+
+const NotificationsMenu = ({ total, dropdownItems, notifications }: Props) => {
+  const { classes } = useStyles()
 
   const notificationsMenuItems = dropdownItems.map((item, index) => {
     if (itemIsCollapse(item)) {
       // eslint-disable-next-line react/no-array-index-key
       return (
         // eslint-disable-next-line react/no-array-index-key
-        <Menu.Item key={index} onClick={() => onChange(o => !o)}>
+        <Menu.Item key={index}>
           <Group position="apart" spacing={0} sx={{ paddingBottom: '1rem' }}>
             <IoMdNotifications size="1.3rem" />
             <Box className={classes.box}>Notifications</Box>
             <Badge variant="filled" size="xs">
               {total}
             </Badge>
-            {total > 0 ? (
-              <ChevronIcon
-                className={classes.chevron}
-                style={{
-                  transform: !isOpen ? `rotate(${theme.dir === 'rtl' ? -90 : 90}deg)` : 'none'
-                }}
-              />
-            ) : (
-              <div />
-            )}
           </Group>
-          <NotificationsDropdown isOpen={isOpen} notifications={notifications} />
+          <NotificationsDropdown notifications={notifications} />
         </Menu.Item>
       )
     }
   })
 
   return (
-    <Menu shadow="md" width={200} position="bottom-end" closeOnItemClick={false}>
+    <Menu shadow="md" width={200} position="bottom-end">
       <Menu.Target>
         <ActionIcon css={(S.dropdownTarget, S.action)} color="gray.1" size="xl" radius="xl">
-          <IoMdNotifications size="1.3rem" />
+          <IoMdNotifications size="2rem" />
         </ActionIcon>
       </Menu.Target>
 

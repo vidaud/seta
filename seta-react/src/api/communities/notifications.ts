@@ -1,10 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import type { AxiosRequestConfig } from 'axios'
 
-import type {
-  CommunityScopes,
-  UserPermissions
-} from '~/pages/CommunitiesPage/pages/contexts/scope-context'
+import type { UserPermissions } from '~/pages/CommunitiesPage/pages/contexts/scope-context'
 
 import community_api from './api'
 
@@ -15,26 +12,7 @@ import type { MembershipRequest } from '../types/membership-types'
 
 type Notifications = {
   memberships: MembershipRequest[]
-  community_scopes?: CommunityScopes[] | undefined
 }
-
-// export const getNotifications = async (): Promise<Notifications> => {
-//   const memberships = await community_api.get<MembershipRequest[]>(
-//     `${environment.COMMUNITIES_API_PATH}/membership-requests`
-//   )
-
-//   const invites = await community_api.get<InviteResponse[]>(`/invites/`)
-
-//   const data = {
-//     memberships: memberships.data,
-//     invites: invites.data
-//   }
-
-//   return data
-// }
-
-// export const useNotificationsRequests = () =>
-//   useQuery({ queryKey: cacheKey(), queryFn: () => getNotifications() })
 
 export const getNotifications = async (): Promise<Notifications> => {
   const memberships = await community_api.get<MembershipRequest[]>(
@@ -84,8 +62,7 @@ export const getNotificationRequests = async (): Promise<Notifications> => {
     })
 
   const data = {
-    memberships: memberships,
-    community_scopes: permissions.data?.community_scopes
+    memberships: memberships
   }
 
   return data
