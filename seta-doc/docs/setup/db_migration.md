@@ -3,11 +3,9 @@ MongoDB stores data in adaptable, JSON-like documents with variable fields that 
 
 Powerful methods for accessing and analysing the data include ad hoc queries, indexing, and real-time aggregation.[^1]     
 
-MongoDB is a great NoSQL and schema-less database, but when the data schema changes and there is already data in database, is necessary a migration tool to update the existing data.
+In SeTA due to somes changes in the DataBase was necessary to use a migration tool to update the schema with existing data. The DB migration was done with the help of library ^^mongodb-migrations^^[^2]
 
-In SeTA the DB migration was done with the help of library **mongodb-migrations**[^2]
-
-The procedure as described in the library GitHub project, leads to the execution of the following commands.
+The followed procedure was as described in the library GitHub project, and leads to the execution of the following commands.
 
 Run in the terminal of the **seta-ui docker container**:
 

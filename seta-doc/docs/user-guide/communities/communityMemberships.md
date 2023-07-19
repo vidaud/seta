@@ -13,10 +13,10 @@
 ## Join a Community
 
 1. You can either use the filters to search the Community or select from the Communities list.      
-2. Click on the button ^^Join^^.     
-3. If the *Membership* status is *Restricted*, a pop-up window will appear to send a message to ask for the request.      
-4. The join button changes to ^^PENDING^^ until the Community manager approves or reject the request to join. If the request is approved, the status changes to *membership* and the button changes to ^^LEAVE^^, if the request is rejected the status changes to *rejected* and the button changes to ^^REJECTED^^.
-5. If the *Membership* status is *opened*, it is possible to join without sending a request.  
+2. Click on the button ^^JOIN^^.     
+3. If the *Community* access is *Restricted*, a pop-up window will appear to send a message to ask for the request.      
+4. The join button label changes to ^^PENDING^^ until the Community manager approves or reject the request to join. If the request is approved, the user joins the community and the button label changes to ^^LEAVE^^, if the request is rejected the button label changes to ^^REJECTED^^.
+5. If the *Community* access is *opened*, after clicking in button ^^JOIN^^ automatically the user joins the community and the button label changes to ^^LEAVE^^.  
     
 
 <figure markdown>

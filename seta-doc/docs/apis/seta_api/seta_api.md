@@ -22,33 +22,29 @@ Retrieve terms by initial letters. By default, it returns 6 terms, with the para
 ##  seta-api-corpus
 The corpus, is a collection of text organized into json files. The SeTA API provides with the following functions to manage the corpus.
 
-### POST /corpus     
+### POST /corpus/chunk
 Retrieve documents related to a term from EU corpus. The input is a JSON file with the options I want to retrieve.
 
-### GET /corpus       
+### POST /corpus/document
+Retrieve documents related to a term from EU corpus. The input is a JSON file with the options I want to retrieve.
+
+### PUT /corpus/chunk/{id}
+Retrieve documents related to a term from EU corpus. The input is a JSON file with the options I want to retrieve.
+
+### GET /corpus
 Retrieve documents related to a term from EU corpus.        
 
-### PUT /corpus       
-Put a document into corpus index. The format is a JSON file.
-
-### DELETE /corpus/chunk/{id}       
+### DELETE /corpus/chunk/{id}
 Given the elasticsearch unique _id, the relative document (chunk) is deleted.
 
-### GET /corpus/chunk/{id}       
+### GET /corpus/chunk/{id}    
 Given the elasticsearch unique _id, the relative document (chunk) is provided.
 
-### DELETE /corpus/document/{id}     
+### DELETE /corpus/document/{id}
 Given a document_id, the relative list of chunks is deleted.
 
-### GET /corpus/document/{id}      
+### GET /corpus/document/{id}   
 Given a document_id, the relative list of chunks is shown.
-
-### DELETE /corpus/{id}     
-Given the elasticsearch unique _id, the relative document is deleted.
-
-### GET /corpus/{id}      
-Given the Elasticsearch  unique _id, the relative document from EU corpus is shown.
-
 
 <figure markdown>
 ![Image title](/docs/img/seta_api_suggestions_corpus.png)
@@ -72,17 +68,17 @@ Return a list of lists of similar terms that describes the ontology of the speci
 
 ## seta-api-embeddings
 
-### POST /compute-embeddings     
+### POST /compute-embeddings
 Given a file or a plain text, related embeddings are provided. Embeddings are built using Doc2vec. Tika is used to extract text from the provided file. If both file and text are provided, function will return text embeddings.
 
 ## seta-api-file-to-text
 
-### POST /file_to_text     
+### POST /file_to_text
 Given a file, its text is provided. Tika is used to extract text from file.
 
 ## seta-api-term-enrichment
 
-### GET /term-enrichment     
+### GET /term-enrichment
 Given a list of terms, and the enrichment type a list of term is returned. The list of term is created using api given with enrichment type parameter.
 
 <figure markdown>
