@@ -2,7 +2,7 @@ import { createRef, useEffect } from 'react'
 import { Flex, Group, Text, clsx, useMantineTheme } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 import { FaChevronDown, FaUsers, FaUsersSlash } from 'react-icons/fa'
-import { Link, useLocation } from 'react-router-dom'
+import { useLocation } from 'react-router-dom'
 
 import type {
   CommunityScopes,
@@ -56,29 +56,27 @@ const CommunityInfo = ({ community, community_scopes }: Props) => {
 
   return (
     <div css={S.root} className={openClass}>
-      <Link to={`/communities/#${community_id}`}>
-        <div
-          css={S.header}
-          data-details={hasDetails}
-          data-open={detailsOpen}
-          onClick={toggle}
-          ref={ref}
-        >
-          {membership === 'closed' ? (
-            <FaUsersSlash size="1.5rem" color="orange" />
-          ) : (
-            <FaUsers size="1.5rem" color={theme.colors.teal[theme.fn.primaryShade()]} />
-          )}
+      <div
+        css={S.header}
+        data-details={hasDetails}
+        data-open={detailsOpen}
+        onClick={toggle}
+        ref={ref}
+      >
+        {membership === 'closed' ? (
+          <FaUsersSlash size="1.5rem" color="orange" />
+        ) : (
+          <FaUsers size="1.5rem" color={theme.colors.teal[theme.fn.primaryShade()]} />
+        )}
 
-          <div css={S.title}>
-            <Text fz="md" fw={600} truncate={detailsOpen ? undefined : 'end'}>
-              {title.charAt(0).toUpperCase() + title.slice(1)}
-            </Text>
-          </div>
-          <CommunityButton props={community} community_scopes={community_scopes} resources={data} />
-          {toggleIcon}
+        <div css={S.title}>
+          <Text fz="md" fw={600} truncate={detailsOpen ? undefined : 'end'}>
+            {title.charAt(0).toUpperCase() + title.slice(1)}
+          </Text>
         </div>
-      </Link>
+        <CommunityButton props={community} community_scopes={community_scopes} resources={data} />
+        {toggleIcon}
+      </div>
 
       <Flex direction="column" gap="xs" data-info css={S.info}>
         <Group sx={{ gap: '0.4rem' }}>
