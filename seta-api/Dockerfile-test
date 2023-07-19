@@ -17,6 +17,7 @@ RUN apt install -y  --no-install-recommends gnupg
 RUN apt install -y  --no-install-recommends python3-pip
 RUN apt install -y  --no-install-recommends python3-dev
 RUN apt install -y  --no-install-recommends libmagic-dev
+RUN pip install --upgrade pip
 
 RUN useradd seta 
 ARG ROOT=/home/seta

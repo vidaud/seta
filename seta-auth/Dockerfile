@@ -13,6 +13,7 @@ RUN apt update -y
 RUN apt install -y  --no-install-recommends curl
 RUN apt install -y  --no-install-recommends wget
 RUN apt install -y  --no-install-recommends python3-pip
+RUN pip install --upgrade pip
 
 RUN useradd -m seta
 
