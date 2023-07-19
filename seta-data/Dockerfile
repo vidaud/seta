@@ -14,6 +14,7 @@ RUN apt update -y
 RUN apt install -y  --no-install-recommends python3-pip
 RUN apt install -y  --no-install-recommends python3-dev
 RUN apt install -y  --no-install-recommends wget
+RUN pip install --upgrade pip
 
 RUN useradd seta 
 

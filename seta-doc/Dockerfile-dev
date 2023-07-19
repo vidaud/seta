@@ -13,6 +13,7 @@ ARG ROOT=/home/seta
 
 RUN apt update -y
 RUN apt install -y  --no-install-recommends python3-pip
+RUN pip install --upgrade pip
 
 RUN useradd seta
 
