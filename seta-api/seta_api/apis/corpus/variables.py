@@ -107,6 +107,9 @@ post_get_response["aggregations"] = None
 corpus_put_response = {}
 corpus_put_response["document_id"] = fields.String()
 
+corpus_doc_chunk_post_response = {}
+corpus_doc_chunk_post_response["_id"] = fields.String()
+
 corpus_put_params = {}
 corpus_put_params["id"] = fields.String()
 corpus_put_params["id_alias"] = fields.String()
@@ -128,6 +131,53 @@ corpus_put_params["language"] = fields.String()
 corpus_put_params["taxonomy"] = None
 corpus_put_params["keywords"] = None
 corpus_put_params["other"] = None
+
+
+corpus_chunk_put_params = {}
+corpus_chunk_put_params["id"] = fields.String()
+corpus_chunk_put_params["id_alias"] = fields.String()
+corpus_chunk_put_params["title"] = fields.String()
+corpus_chunk_put_params["abstract"] = fields.String()
+corpus_chunk_put_params["collection"] = fields.String()
+corpus_chunk_put_params["reference"] = fields.String()
+corpus_chunk_put_params["author"] = fields.List(fields.String())
+corpus_chunk_put_params["date"] = fields.Date()
+corpus_chunk_put_params["link_origin"] = fields.List(fields.String())
+corpus_chunk_put_params["link_alias"] = fields.List(fields.String())
+corpus_chunk_put_params["link_related"] = fields.List(fields.String())
+corpus_chunk_put_params["link_reference"] = fields.List(fields.String())
+corpus_chunk_put_params["mime_type"] = fields.String()
+corpus_chunk_put_params["in_force"] = fields.String()
+corpus_chunk_put_params["language"] = fields.String()
+corpus_chunk_put_params["taxonomy"] = None
+corpus_chunk_put_params["keywords"] = None
+corpus_chunk_put_params["other"] = None
+corpus_chunk_put_params["chunk_text"] = fields.String()
+corpus_chunk_put_params["sbert_embedding"] = fields.List(fields.Float)
+
+corpus_chunk_post_params = {}
+corpus_chunk_post_params["id"] = fields.String()
+corpus_chunk_post_params["document_id"] = fields.String()
+corpus_chunk_post_params["source"] = fields.String()
+corpus_chunk_post_params["id_alias"] = fields.String()
+corpus_chunk_post_params["title"] = fields.String()
+corpus_chunk_post_params["abstract"] = fields.String()
+corpus_chunk_post_params["collection"] = fields.String()
+corpus_chunk_post_params["reference"] = fields.String()
+corpus_chunk_post_params["author"] = fields.List(fields.String())
+corpus_chunk_post_params["date"] = fields.Date()
+corpus_chunk_post_params["link_origin"] = fields.List(fields.String())
+corpus_chunk_post_params["link_alias"] = fields.List(fields.String())
+corpus_chunk_post_params["link_related"] = fields.List(fields.String())
+corpus_chunk_post_params["link_reference"] = fields.List(fields.String())
+corpus_chunk_post_params["mime_type"] = fields.String()
+corpus_chunk_post_params["in_force"] = fields.String()
+corpus_chunk_post_params["language"] = fields.String()
+corpus_chunk_post_params["taxonomy"] = None
+corpus_chunk_post_params["keywords"] = None
+corpus_chunk_post_params["other"] = None
+corpus_chunk_post_params["chunk_text"] = fields.String()
+corpus_chunk_post_params["sbert_embedding"] = fields.List(fields.Float)
 
 corpus_post_params = {}
 corpus_post_params["term"] = fields.String(description="term to be searched", example="data")
@@ -161,6 +211,8 @@ corpus_post_params["other"] = None
 corpus_delete_id_response = {}
 corpus_delete_id_response["deleted_document_id"] = fields.String
 
+corpus_update_id_response = {}
+corpus_update_id_response["updated_document_id"] = fields.String
 
 corpus_get_id_response = {}
 corpus_get_id_response["abstract"] = fields.String()
@@ -247,11 +299,14 @@ class Variable:
     def get_delete_id_request_model(self):
         return self.namespace.model("corpus_delete_id_response", corpus_delete_id_response)
 
+    def get_update_id_request_model(self):
+        return self.namespace.model("corpus_update_id_response", corpus_update_id_response)
+
     def get_post_request_model(self):
         corpus_post_params["other"] = fields.List(fields.Nested(self.other_model))
         return self.namespace.model("corpus_post_params", corpus_post_params)
 
-    def get_post_response_model(self):
+    def get_corpus_post_response_model(self):
         return self.namespace.model('post_response_model', self.post_get_response)
 
     def get_get_response_model(self):
@@ -260,12 +315,24 @@ class Variable:
     def get_put_response_model(self):
         return self.namespace.model("corpus_put_response", corpus_put_response)
 
+    def get_put_doc_chunk_response_model(self):
+        return self.namespace.model("corpus_doc_chunk_post_response", corpus_doc_chunk_post_response)
+
     def get_put_request_model(self):
         corpus_put_params["taxonomy"] = fields.List(fields.Nested(self.taxonomy_model_tree))
         corpus_put_params["keywords"] = fields.List(fields.Nested(self.keywords_model))
         corpus_put_params["other"] = fields.List(fields.Nested(self.other_model))
         return self.namespace.model("corpus_put_request", corpus_put_params)
 
+    def corpus_chunk_put_request_model(self):
+        corpus_chunk_put_params["taxonomy"] = fields.List(fields.Nested(self.taxonomy_model_tree))
+        corpus_chunk_put_params["keywords"] = fields.List(fields.Nested(self.keywords_model))
+        corpus_chunk_put_params["other"] = fields.List(fields.Nested(self.other_model))
+        return self.namespace.model("corpus_chunk_put_params", corpus_chunk_put_params)
 
-
+    def corpus_chunk_post_request_model(self):
+        corpus_chunk_post_params["taxonomy"] = fields.List(fields.Nested(self.taxonomy_model_tree))
+        corpus_chunk_post_params["keywords"] = fields.List(fields.Nested(self.keywords_model))
+        corpus_chunk_post_params["other"] = fields.List(fields.Nested(self.other_model))
+        return self.namespace.model("corpus_chunk_post_params", corpus_chunk_post_params)
 

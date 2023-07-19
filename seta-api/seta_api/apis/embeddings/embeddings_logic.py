@@ -6,7 +6,7 @@ def compute_embeddings(text, current_app):
     if text is None:
         raise ApiLogicError('No text provided.')
     vector = current_app.sbert_model.encode([text], convert_to_numpy=True)
-    version, vectors, emb_wt = Embeddings.embeddings_from_text(text)
+    version, vectors, emb_wt = Embeddings.chunks_and_embeddings_from_text(text)
     emb = {
         "embeddings": {
             "version": version,
