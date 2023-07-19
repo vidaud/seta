@@ -72,6 +72,41 @@ def delete_document(id, es, index):
     except:
         raise ApiLogicError("id not found")
 
+def insert_chunk(args, es, index):
+    new_doc = {}
+    new_doc["id"] = is_field_in_doc(args, "id")
+    new_doc["id_alias"] = is_field_in_doc(args, "id_alias")
+    new_doc["source"] = is_field_in_doc(args, "source")
+    new_doc["title"] = is_field_in_doc(args, "title")
+    new_doc["abstract"] = is_field_in_doc(args, "abstract")
+    new_doc["collection"] = is_field_in_doc(args, "collection")
+    new_doc["reference"] = is_field_in_doc(args, "reference")
+    new_doc["author"] = is_field_in_doc(args, "author")
+    new_doc["date"] = is_field_in_doc(args, "date")
+    new_doc["link_origin"] = is_field_in_doc(args, "link_origin")
+    new_doc["link_alias"] = is_field_in_doc(args, "link_alias")
+    new_doc["link_related"] = is_field_in_doc(args, "link_related")
+    new_doc["link_reference"] = is_field_in_doc(args, "link_reference")
+    new_doc["mime_type"] = is_field_in_doc(args, "mime_type")
+    new_doc["in_force"] = is_field_in_doc(args, "in_force")
+    new_doc["language"] = is_field_in_doc(args, "language")
+    new_doc["taxonomy"], new_doc["taxonomy_path"] = Taxonomy.from_tree_to_elasticsearch_format(
+        is_field_in_doc(args, "taxonomy"))
+    new_doc["other"] = is_field_in_doc(args, "other")
+    new_doc["keywords"] = is_field_in_doc(args, "keywords")
+    new_doc["chunk_text"] = is_field_in_doc(args, "chunk_text")
+    new_doc["document_id"] = is_field_in_doc(args, "document_id")
+    new_doc["chunk_number"] = is_field_in_doc(args, "chunk_number")
+    new_doc["sbert_embedding"] = get_embeddings(args)
+    res = es.index(index=index, document=new_doc)
+    return res["_id"]
+
+
+def get_embeddings(args):
+    if is_field_in_doc(args, "sbert_embedding"):
+        return args["sbert_embedding"]
+    return Embeddings.embedding_vector_from_text(is_field_in_doc(args, "chunk_text"))
+
 
 def insert_doc(args, es, index):
     new_doc = {}
@@ -97,9 +132,9 @@ def insert_doc(args, es, index):
 
     res = es.index(index=index, document=new_doc)
     doc_id = res["_id"]
-    embs = Embeddings.embeddings_from_doc_fields(is_field_in_doc(args, "title"),
-                                                 is_field_in_doc(args, "abstract"),
-                                                 is_field_in_doc(args, "text"))
+    embs = Embeddings.chunks_and_embeddings_from_doc_fields(is_field_in_doc(args, "title"),
+                                                            is_field_in_doc(args, "abstract"),
+                                                            is_field_in_doc(args, "text"))
     first = True
     for emb in embs:
         if first:
@@ -137,3 +172,9 @@ def corpus(term, n_docs, from_doc, sources, collection, reference, in_force, sor
     res = current_app.es.msearch(searches=request)
     documents = handle_corpus_response(aggs, res, search_type, term, current_app)
     return documents
+
+
+def get_source_from_chunk_list(chunk_list):
+    for doc in chunk_list:
+        if "source" in doc:
+            return doc["source"]
