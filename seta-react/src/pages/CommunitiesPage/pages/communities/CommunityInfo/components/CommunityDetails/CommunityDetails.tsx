@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Badge, Collapse, Group, Tabs } from '@mantine/core'
+import { Badge, Collapse, Divider, Group, Tabs } from '@mantine/core'
 
 import type { CommunityResponse } from '~/api/types/community-types'
 import type { ClassNameProp } from '~/types/children-props'
@@ -85,12 +85,13 @@ const CommunityDetails = ({ className, open, community, community_scopes }: Prop
 
         <Tabs.Panel value="resources" sx={{ paddingLeft: '2%' }}>
           {/* {scopes?.includes('/seta/resource/create') ? ( */}
+          <CommunityResources id={community_id} />
+          <Divider sx={{ marginTop: '1rem', marginBottom: '1rem' }} size="xs" />
           {isManager ? (
             <Group position="right">
               <CreateResource id={community_id} />
             </Group>
           ) : null}
-          <CommunityResources id={community_id} />
         </Tabs.Panel>
         {isManager || invite ? (
           <Tabs.Panel value="invites" sx={{ paddingLeft: '2%' }}>

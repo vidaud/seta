@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Group, Button, useMantineTheme, Modal, Divider } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
+import { IconPlus } from '@tabler/icons-react'
 
 import CreateForm from './components/CreateForm/CreateForm'
 import * as S from './styles'
@@ -31,9 +32,19 @@ const CreateCommunity = ({ system_scopes }) => {
             <Divider my="xs" label="Add New Community" labelPosition="center" />
             <CreateForm close={close} />
           </Modal>
-          <Group position="right" css={S.root}>
-            <Button color="green" onClick={open}>
-              + New Community
+          <Group
+            position="right"
+            css={S.root}
+            sx={{ width: '100%', border: '1px solid #d0d4d7', borderRadius: '0.25rem' }}
+          >
+            <Button
+              size="sm"
+              color="green"
+              onClick={open}
+              h="40px"
+              rightIcon={<IconPlus size="1rem" color="white" />}
+            >
+              New Community
             </Button>
           </Group>
         </>
