@@ -28,11 +28,11 @@ const useStyles = createStyles(theme => ({
   },
 
   item: {
-    backgroundColor: theme.white,
-    borderBottom: 0,
     borderRadius: theme.radius.md,
-    boxShadow: theme.shadows.lg,
-    overflow: 'hidden'
+    marginBottom: theme.spacing.lg,
+    border: `${rem(1)} solid ${
+      theme.colorScheme === 'dark' ? theme.colors.dark[4] : theme.colors.gray[3]
+    }`
   },
 
   control: {
@@ -107,7 +107,6 @@ const FaqsPage = () => {
             defaultValue={['invite', 'resource', 'filters', 'upload-doc', 'api']}
             chevronSize={50}
             variant="separated"
-            disableChevronRotation
           >
             <Accordion.Item className={classes.item} value="invite">
               <Accordion.Control>
