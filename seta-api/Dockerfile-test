@@ -37,7 +37,8 @@ RUN wget https://archive.apache.org/dist/tika/2.4.1/tika-app-2.4.1.jar \
 
 WORKDIR $ROOT
 COPY requirements.txt $ROOT/requirements.txt
-RUN pip3 install -r $ROOT/requirements.txt 
+RUN pip install --upgrade pip
+RUN pip install -r $ROOT/requirements.txt 
 RUN  python3 -m nltk.downloader punkt 
 RUN python3 -c 'from sentence_transformers import SentenceTransformer; SentenceTransformer("all-distilroberta-v1")'
 

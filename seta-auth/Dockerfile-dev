@@ -26,6 +26,7 @@ RUN apt-get install -yq tzdata && \
 
 COPY ./requirements.txt $ROOT/requirements.txt
 WORKDIR $ROOT
+RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
 
 # Keeps Python from generating .pyc files in the container
