@@ -85,12 +85,16 @@ const CommunityDetails = ({ className, open, community, community_scopes }: Prop
 
         <Tabs.Panel value="resources" sx={{ paddingLeft: '2%' }}>
           {/* {scopes?.includes('/seta/resource/create') ? ( */}
-          {isManager ? (
-            <Group position="right">
-              <CreateResource id={community_id} />
-            </Group>
-          ) : null}
           <CommunityResources id={community_id} />
+
+          {isManager ? (
+            <>
+              {/* <Divider sx={{ marginTop: '1rem', marginBottom: '1rem' }} size="xs" /> */}
+              <Group position="right" sx={{ marginTop: '1rem', marginBottom: '1rem' }}>
+                <CreateResource id={community_id} />
+              </Group>
+            </>
+          ) : null}
         </Tabs.Panel>
         {isManager || invite ? (
           <Tabs.Panel value="invites" sx={{ paddingLeft: '2%' }}>

@@ -75,14 +75,9 @@ const CommunityListContent = forwardRef<HTMLDivElement, Props>(
 
     return (
       <Flex ref={ref} direction="column" css={S.root} sx={{ width: '100%' }}>
-        <div>
-          <Text fz="md" color="gray.7">
-            Showing {data?.length} results
-          </Text>
-          <Group position="right">
-            <CreateCommunity system_scopes={system_scopes} />
-          </Group>
-        </div>
+        <Text fz="md" color="gray.7">
+          Showing {data?.length} results
+        </Text>
 
         {communities.map(community => (
           <CommunityInfo
@@ -94,6 +89,10 @@ const CommunityListContent = forwardRef<HTMLDivElement, Props>(
             system_scopes={system_scopes}
           />
         ))}
+        {/* <Divider size="xs" /> */}
+        <Group position="right">
+          <CreateCommunity system_scopes={system_scopes} />
+        </Group>
       </Flex>
     )
   }

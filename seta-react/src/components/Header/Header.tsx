@@ -1,18 +1,27 @@
-import { ActionIcon, Flex, Image, Loader, Menu, Tooltip } from '@mantine/core'
+import { useEffect } from 'react'
+import { ActionIcon, Flex, Group, Image, Loader, Menu, Tooltip, Badge } from '@mantine/core'
 import { AiOutlineUser } from 'react-icons/ai'
 import { FaSignInAlt } from 'react-icons/fa'
 import { Link } from 'react-router-dom'
 
+import NotificationsMenu from './components/NotificationsMenu'
 import SiteHeader from './components/SiteHeader'
-import { getDropdownItems, getMenuItems, itemIsDivider } from './config'
+import { getDropdownItems, getMenuItems, itemIsCollapse, itemIsDivider } from './config'
 import * as S from './styles'
 
 import { useCurrentUser } from '../../contexts/user-context'
+import { useNotifications } from '../../pages/CommunitiesPage/pages/contexts/notifications-context'
 
 import './style.css'
 
 const Header = () => {
   const { user, isLoading: isUserLoading, logout } = useCurrentUser()
+  const { notifications, total, getNotificationRequests } = useNotifications()
+
+  useEffect(() => {
+    getNotificationRequests()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const authenticated = !!user
   const role = user?.role === 'Administrator'
@@ -25,12 +34,17 @@ const Header = () => {
   const menuItems = getMenuItems(authenticated)
   const dropdownItems = getDropdownItems({ role, onLogout: handleLogout })
 
-  const visibleMenuItems = menuItems.filter(link => !link.hidden)
+  const visibleMenuItems = menuItems.filter(link => !link.hidden && !link.collapse)
 
   const dropdownMenuItems = dropdownItems.map((item, index) => {
     if (itemIsDivider(item)) {
       // eslint-disable-next-line react/no-array-index-key
       return <Menu.Divider key={index} />
+    }
+
+    if (itemIsCollapse(item)) {
+      // eslint-disable-next-line react/no-array-index-key
+      return null
     }
 
     const { label, icon, url, hidden, onClick } = item
@@ -51,7 +65,7 @@ const Header = () => {
   })
 
   const dropdownMenu = (
-    <Menu shadow="md" width={200} position="bottom-end">
+    <Menu shadow="md" width={200} position="bottom-end" closeOnItemClick={false}>
       <Menu.Target>
         <ActionIcon css={S.dropdownTarget} variant="outline" color="gray.1" radius="xl" size="xl">
           <AiOutlineUser size="1.3rem" />
@@ -94,8 +108,21 @@ const Header = () => {
             </S.MenuLink>
           ))}
         </Flex>
-
-        {authenticated ? dropdownMenu : loginButton}
+        <Group>
+          {authenticated ? (
+            <Group>
+              <NotificationsMenu
+                total={total}
+                dropdownItems={dropdownItems}
+                notifications={notifications}
+              />
+              <Badge variant="filled" size="xs" css={S.badge}>
+                {total}
+              </Badge>
+            </Group>
+          ) : null}
+          {authenticated ? dropdownMenu : loginButton}
+        </Group>
       </Flex>
     </header>
   )

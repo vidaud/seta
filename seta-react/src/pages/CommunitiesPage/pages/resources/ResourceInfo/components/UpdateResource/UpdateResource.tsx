@@ -48,7 +48,7 @@ const UpdateResource = ({ resource, onChange }: Props) => {
           }}
         >
           <Divider my="xs" label="Update Resource" labelPosition="center" />
-          <UpdateForm resourceInfo={resource_id} close={close} onChange={onChange} />
+          <UpdateForm resource={resource} close={close} onChange={onChange} />
         </Modal>
 
         <Group>

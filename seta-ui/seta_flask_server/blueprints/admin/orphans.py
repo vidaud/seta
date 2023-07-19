@@ -95,6 +95,17 @@ class CommunityOrphanOwner(Resource):
         Permission scopes: "Administrator" role
         '''
 
+        identity = get_jwt_identity()
+        auth_id = identity["user_id"]
+        
+        #verify scope
+        user = self.usersBroker.get_user_by_id(auth_id)        
+        if user is None or user.is_not_active():
+            abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
+        
+        if user.role.lower() != UserRoleConstants.Admin.lower():        
+            abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
+
         if not self.communitiesBroker.community_id_exists(community_id):
             abort(HTTPStatus.NOT_FOUND, "Community id not found")
             
