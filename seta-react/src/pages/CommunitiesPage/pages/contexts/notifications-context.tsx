@@ -9,6 +9,7 @@ import type { UserPermissions } from './scope-context'
 import api from '../../../../api/api'
 import community_api from '../../../../api/communities/api'
 import { environment } from '../../../../environments/environment'
+import useIsMounted from '../../../../hooks/use-is-mounted'
 
 export type NotificationsResponse = {
   label: string
