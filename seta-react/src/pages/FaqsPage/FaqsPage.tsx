@@ -143,7 +143,7 @@ const FaqsPage = () => {
                   On the left side of the Search results area, there are filters that can be applied
                   to refine the search of the results:
                 </Text>
-                <Text italic color="blue">
+                <Text italic>
                   {}
                   by Data Range, Data Sources, Taxonomies, etc.
                   {}
@@ -178,11 +178,25 @@ const FaqsPage = () => {
                   interactive API documentation that lets users try out the API calls directly in
                   the browser. You can access through our links:
                 </Text>
-                <Text variant="link" component="a" href={comm_api} color="blue" underline>
+                <Text
+                  variant="link"
+                  component="a"
+                  href={comm_api}
+                  color="blue"
+                  underline
+                  align="center"
+                >
                   Communities API
                 </Text>
                 <br />
-                <Text variant="link" component="a" href={seta_api} color="blue" underline>
+                <Text
+                  variant="link"
+                  component="a"
+                  href={seta_api}
+                  color="blue"
+                  underline
+                  align="center"
+                >
                   SeTA API
                 </Text>
               </Accordion.Panel>
