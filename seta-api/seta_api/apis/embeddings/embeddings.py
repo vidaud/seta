@@ -1,9 +1,12 @@
 from flask_restx import Namespace, Resource, reqparse, abort, fields
-from flask import current_app as app, jsonify
+from flask import jsonify
 
 from seta_api.infrastructure.auth_validator import auth_validator
 
 from .embeddings_logic import compute_embeddings
+
+import jsonschema
+from jsonschema import validate
 
 emb_api = Namespace('seta-api-embeddings', description='Embeddings')
 
@@ -13,15 +16,16 @@ parser_file.add_argument('text')
 embeddings = {"vector": fields.List(fields.Float), "chunk": fields.Integer, "version": fields.String,
               "text": fields.String}
 embeddings_model = emb_api.model("embeddings", embeddings)
-to_be_removed = {"version": fields.String,
-                 "vector": fields.List(fields.Float),
-                 "vectors": fields.List(fields.List(fields.Float))}
-to_be_removed_model = emb_api.model("to_be_removed", to_be_removed)
-
-emb = {"embeddings": fields.Nested(to_be_removed_model),
-       "emb_with_chunk_text": fields.List(fields.Nested(embeddings_model))}
+emb = {"emb_with_chunk_text": fields.List(fields.Nested(embeddings_model))}
 
 emb_response_model = emb_api.model("emb_response_model", emb)
+
+emb_json_schema = {"type": "object",
+                   "properties": {
+                       "text": {"type": "string"}
+                   },
+                   "additionalProperties": False,
+                   "required": ["text"]}
 
 
 @emb_api.route("compute_embeddings")
@@ -35,14 +39,12 @@ class ComputeEmb(Resource):
     @auth_validator()
     @emb_api.expect(parser_file)
     def post(self):
-        args = parser_file.parse_args()
-        if args['text']:
-            try:
-                emb = compute_embeddings(args['text'], current_app=app)
-                return jsonify(emb)
-            except Exception as ex:
-                abort(404, str(ex))
-
-        response = jsonify('No text provided.')
-        response.status_code = 400
-        return response
+        try:
+            args = parser_file.parse_args()
+            validate(instance=args, schema=emb_json_schema)
+            emb = compute_embeddings(args['text'])
+            return jsonify(emb)
+        except Exception as ex:
+            abort(404, str(ex))
+        except jsonschema.ValidationError as err:
+            abort(404, str(err))

@@ -152,9 +152,8 @@ def insert_doc(args, es, index):
     return doc_id
 
 
-def corpus(term, n_docs, from_doc, sources, collection, reference, in_force, sort, taxonomy_path, semantic_sort_id,
-           emb_vector, semantic_sort_id_list, emb_vector_list, author, date_range, aggs, search_type, other,
-           current_app):
+def corpus(term, n_docs, from_doc, sources, collection, reference, in_force, sort, taxonomy_path, semantic_sort_id_list,
+           emb_vector_list, author, date_range, aggs, search_type, other, current_app):
     if search_type is None or search_type not in current_app.config["SEARCH_TYPES"]:
         search_type = "CHUNK_SEARCH"
     if n_docs is None:
@@ -165,7 +164,7 @@ def corpus(term, n_docs, from_doc, sources, collection, reference, in_force, sor
         return {"total_docs": 0, "documents": []}
 
     body = build_corpus_request(term, n_docs, from_doc, sources, collection, reference, in_force, sort, taxonomy_path,
-                                semantic_sort_id, emb_vector, semantic_sort_id_list, emb_vector_list, author,
+                                semantic_sort_id_list, emb_vector_list, author,
                                 date_range, aggs, search_type, other, current_app)
     # import json
     # print(json.dumps(body))

@@ -10,7 +10,7 @@ def perform_enrichment(terms, enrichment_type, current_app):
     if enrichment_type == "similar":
         similar_words = set()
         for t in terms:
-            similar_obj = get_similar_words(t, None, None, current_app)
+            similar_obj = get_similar_words(t, None, current_app)
             for s in similar_obj["words"]:
                 similar_words.add(s["similar_word"])
         response["words"] = list(similar_words)
@@ -19,7 +19,7 @@ def perform_enrichment(terms, enrichment_type, current_app):
     if enrichment_type == "ontology":
         ontology_words = set()
         for t in terms:
-            ontology_result = build_tree(t, None, current_app)
+            ontology_result = build_tree(t, current_app)
             for node in ontology_result["nodes"]:
                 for word in node:
                     ontology_words.add(word)

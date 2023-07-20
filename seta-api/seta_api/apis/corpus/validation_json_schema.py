@@ -81,3 +81,24 @@ chunk_post_schema = {"type": "object",
                      },
                      "additionalProperties": False,
                      "required": ["source", "document_id", "chunk_number"]}
+
+query_post_schema = {"type": "object",
+                     "properties": {
+                         "term": {"type": "string"},
+                         "n_docs": {"type": "number"},
+                         "from_doc": {"type": "number"},
+                         "source": {"type": "array", "items": {"type": "string"}},
+                         "collection": {"type": "array", "items": {"type": "string"}},
+                         "reference": {"type": "array", "items": {"type": "string"}},
+                         "in_force": {"type": "string"},
+                         "sort": {"type": "array", "items": {"type": "string"}},
+                         "taxonomy_path": {"type": "array", "items": {"type": "string"}},
+                         "semantic_sort_id_list": {"type": "array", "items": {"type": "string"}},
+                         "sbert_embedding_list": {"type": "array", "items": {"type": "array", "items": {"type": "number"}}},
+                         "author": {"type": "string"},
+                         "date_range": {"type": "array", "items": {"type": "string"}},
+                         "aggs": {"type": "array", "items": {"type": "string"}},
+                         "search_type": {"type": "string"},
+                         "other": {"type": "array", "items": {"type": "object"}}
+                     },
+                     "additionalProperties": False}
