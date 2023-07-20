@@ -1,4 +1,3 @@
-import { useEffect } from 'react'
 import { ActionIcon, Flex, Group, Image, Loader, Menu, Tooltip, Badge } from '@mantine/core'
 import { AiOutlineUser } from 'react-icons/ai'
 import { FaSignInAlt } from 'react-icons/fa'
@@ -10,18 +9,11 @@ import { getDropdownItems, getMenuItems, itemIsCollapse, itemIsDivider } from '.
 import * as S from './styles'
 
 import { useCurrentUser } from '../../contexts/user-context'
-import { useNotifications } from '../../pages/CommunitiesPage/pages/contexts/notifications-context'
 
 import './style.css'
 
 const Header = () => {
-  const { user, isLoading: isUserLoading, logout } = useCurrentUser()
-  const { notifications, total, getNotificationRequests } = useNotifications()
-
-  useEffect(() => {
-    getNotificationRequests()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  const { user, isLoading: isUserLoading, logout, notifications, total } = useCurrentUser()
 
   const authenticated = !!user
   const role = user?.role === 'Administrator'
@@ -116,9 +108,11 @@ const Header = () => {
                 dropdownItems={dropdownItems}
                 notifications={notifications}
               />
-              <Badge variant="filled" size="xs" css={S.badge}>
-                {total}
-              </Badge>
+              {total > 0 ? (
+                <Badge variant="filled" size="xs" css={S.badge}>
+                  {total}
+                </Badge>
+              ) : null}
             </Group>
           ) : null}
           {authenticated ? dropdownMenu : loginButton}

@@ -1,8 +1,10 @@
 import { createContext, useContext, useEffect, useState } from 'react'
+import type { AxiosRequestConfig } from 'axios'
 
 import type { ChildrenProp } from '~/types/children-props'
 
-import community_api from '../../../../api/communities/api'
+import api from '../../../../api/api'
+import { environment } from '../../../../environments/environment'
 import useIsMounted from '../../../../hooks/use-is-mounted'
 
 export type NotificationsResponse = {
@@ -17,6 +19,12 @@ type NotificationsContextProps = {
   notifications: NotificationsResponse[]
   total: number
   getNotificationRequests: () => void
+}
+
+const BASE_URL = environment.baseUrl
+
+const apiConfig: AxiosRequestConfig = {
+  baseURL: BASE_URL
 }
 
 const NotificationsContext = createContext<NotificationsContextProps | undefined>(undefined)
@@ -48,7 +56,7 @@ export const NotificationsProvider = ({ children }: ChildrenProp) => {
 
   const getNotificationRequests = async () => {
     let count = 0
-    const result = await community_api.get<NotificationsResponse[]>(`/notifications/`)
+    const result = await api.get<NotificationsResponse[]>(`/notifications/`, apiConfig)
 
     result.data.forEach(element => {
       count += element.count

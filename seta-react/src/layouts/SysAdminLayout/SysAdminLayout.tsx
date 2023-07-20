@@ -5,7 +5,7 @@ import { Outlet } from 'react-router-dom'
 import Breadcrumbs from '../../components/Breadcrumbs'
 import { LinksGroup } from '../../components/NavbarLinksGroup/NavbarLinksGroup'
 import NavbarNested from '../../components/NavbarNested/NavbarNested'
-import { ScopeProvider } from '../../pages/CommunitiesPage/pages/contexts/scope-context'
+import { CommunityListProvider } from '../../pages/CommunitiesPage/pages/contexts/community-list.context'
 
 const mockdata = [
   {
@@ -53,14 +53,14 @@ const SysAdminLayout = () => {
       className="sysadmin min-h-screen"
       sx={{ display: '-webkit-inline-box' }}
     >
-      <ScopeProvider>
+      <CommunityListProvider>
         <Navbar height={800} width={{ sm: 300 }} p="md" className={classes.navbar}>
           <Navbar.Section className={classes.section}>
             <div className={classes.mainLinks}>Admin Panel</div>
           </Navbar.Section>
           <NavbarNested props={links} />
         </Navbar>
-      </ScopeProvider>
+      </CommunityListProvider>
       <Box sx={{ flexGrow: 1, padding: '2rem' }}>
         <Breadcrumbs readFromPath />
         <Outlet />

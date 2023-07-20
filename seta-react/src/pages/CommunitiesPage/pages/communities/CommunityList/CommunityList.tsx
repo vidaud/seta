@@ -8,7 +8,6 @@ import CommunityListContent from './CommunityListContent'
 
 import { useAllCommunities } from '../../../../../api/communities/discover/discover-communities'
 import { useCommunityListContext } from '../../contexts/community-list.context'
-import { useCurrentUserPermissions } from '../../contexts/scope-context'
 import Filters from '../CommunityInfo/components/Filters/Filters'
 import { sortCommunityData } from '../CommunityInfo/utils/community-utils'
 
@@ -30,7 +29,7 @@ const CommunityList = () => {
 
   const { data, isLoading, error, refetch } = useAllCommunities()
   const { membership, status } = useCommunityListContext()
-  const { community_scopes, system_scopes, resource_scopes } = useCurrentUserPermissions()
+  const { community_scopes, system_scopes, resource_scopes } = useCommunityListContext()
 
   useEffect(() => {
     if (data) {

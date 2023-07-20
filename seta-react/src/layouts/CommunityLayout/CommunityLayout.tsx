@@ -3,7 +3,7 @@ import { Outlet } from 'react-router-dom'
 
 import Breadcrumbs from '../../components/Breadcrumbs'
 import NavbarNestedWithNotifications from '../../components/NavbarNestedWithNotifications/NavbarNestedWithNotifications'
-import { ScopeProvider } from '../../pages/CommunitiesPage/pages/contexts/scope-context'
+import { CommunityListProvider } from '../../pages/CommunitiesPage/pages/contexts/community-list.context'
 
 const CommunityLayout = () => {
   return (
@@ -12,9 +12,9 @@ const CommunityLayout = () => {
         <Breadcrumbs readFromPath includeCom />
 
         <Flex sx={{ marginTop: '-3rem', zIndex: 100 }}>
-          <ScopeProvider>
+          <CommunityListProvider>
             <NavbarNestedWithNotifications />
-          </ScopeProvider>
+          </CommunityListProvider>
 
           <Flex direction="column" align="center" sx={{ width: '100%', padding: '2rem' }}>
             <Outlet />

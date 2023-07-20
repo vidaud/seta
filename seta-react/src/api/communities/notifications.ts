@@ -3,8 +3,6 @@ import type { AxiosRequestConfig } from 'axios'
 
 import type { UserPermissions } from '~/pages/CommunitiesPage/pages/contexts/scope-context'
 
-import community_api from './api'
-
 import { environment } from '../../environments/environment'
 import api from '../api'
 import type { InviteResponse } from '../types/invite-types'
@@ -14,12 +12,19 @@ type Notifications = {
   memberships: MembershipRequest[]
 }
 
+const BASE_URL = environment.baseUrl
+const USER_INFO_API_PATH = '/me/permissions'
+const apiConfig: AxiosRequestConfig = {
+  baseURL: BASE_URL
+}
+
 export const getNotifications = async (): Promise<Notifications> => {
-  const memberships = await community_api.get<MembershipRequest[]>(
-    `${environment.COMMUNITIES_API_PATH}/membership-requests`
+  const memberships = await api.get<MembershipRequest[]>(
+    `${environment.COMMUNITIES_API_PATH}/membership-requests`,
+    apiConfig
   )
 
-  const invites = await community_api.get<InviteResponse[]>(`/invites/`)
+  const invites = await api.get<InviteResponse[]>(`/invites/`, apiConfig)
 
   const data = {
     memberships: memberships.data,
@@ -27,12 +32,6 @@ export const getNotifications = async (): Promise<Notifications> => {
   }
 
   return data
-}
-
-const BASE_URL = environment.baseUrl
-const USER_INFO_API_PATH = '/me/permissions'
-const apiConfig: AxiosRequestConfig = {
-  baseURL: BASE_URL
 }
 
 export const queryKey = {
@@ -50,9 +49,10 @@ export const getNotificationRequests = async (): Promise<Notifications> => {
         scope.scopes.includes('/seta/community/owner')
     )
     .forEach(async item => {
-      await community_api
+      await api
         .get<MembershipRequest[]>(
-          `${environment.COMMUNITIES_API_PATH}/${item.community_id}/requests`
+          `${environment.COMMUNITIES_API_PATH}/${item.community_id}/requests`,
+          apiConfig
         )
         .then(response => {
           memberships.push(...response.data)
