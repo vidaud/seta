@@ -120,7 +120,10 @@ const ResourceInfo = ({ resource, resource_scopes }: Props) => {
             </Menu>
           </>
         ) : (
-          <div />
+          <>
+            <div />
+            <div />
+          </>
         )}
 
         {toggleIcon}
