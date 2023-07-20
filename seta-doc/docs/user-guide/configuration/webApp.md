@@ -9,11 +9,11 @@ The SeTA Web App is a user-friendly interface that allows the user to access the
 
 In the SeTA Web App, we can find:
 
-- Search tool: An online search engine tool designed to search for metadata on the SeTA database based on the user's search query. It sorts the results, and makes an ordered list of these results according to the search algorithms.
+- Communities: A digital platform where people with a common interest can share, connect and communicate with one another.               
 
-- Communities: A digital platform for people with a common interest to discuss or share and connect and communicate with one another.
+- Search tool: An online search engine tool designed to search for metadata on the SeTA community database. It sorts the results, and makes an ordered list of these results according to the search algorithms.
 
-To access these features, first, you need either to login with an EU login[^1] account or with a GitHub[^2] authentication.
+To access these features, you need to login either with an EU login[^1] account or with a GitHub[^2] authentication.
 
 
 <figure markdown>
@@ -28,7 +28,7 @@ Once you are logged in, you can see in the top menu the link to the Search and t
 
 <figure markdown>
 ![Image title](../../img/seta_menu.png)
-<figcaption>Search</figcaption>
+<figcaption>Top Menu</figcaption>
 </figure>
 
 

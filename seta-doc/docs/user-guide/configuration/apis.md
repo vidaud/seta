@@ -1,23 +1,21 @@
 The SeTA APIs provides the functions and procedures to access the data of the Communities and the functionalities from the Search tool, from a developer point of view.
 
-### Swagger
-The SeTA APIs use the support of Swagger.  Swagger is an open source repository of standards, specifications, and tools for designing and specifying RESTful APIs. The Swagger framework enables the creation of interactive, machine- and human-readable APIs.  Swagger helps describing an API's structure so that computers may comprehend it.[^1]     
-Swagger achieves this by requesting a comprehensive YAML or JSON answer from the API that provides a detailed description of the whole API. The resources of the API are listed in this file, which adheres to the OpenAPI Specification.      
+## Swagger
+SeTA APIs use the support of Swagger.  Swagger is an open source repository of standards, specifications and tools for designing and specifying RESTful APIs. The Swagger framework enables the creation of interactive, machine- and human-readable APIs.  Swagger helps describing an API's structure so they can be comprehended  it.[^1]     
+Swagger achieves this by requesting a comprehensive YAML or JSON answer from the API that provides a detailed description of the whole API. The resources of the API are listed in this file.      
 In Swagger it is possible to write specifications for the API manually, or have it generated automatically from annotations in the source code.      
 
 > The [open-source-integrations](swagger.io/open-source-integrations) page can be consulted for a list of tools that let generates Swagger from code. 
 
 Finally, the use of Swagger UI allows to generate interactive API documentation that lets users try out the API calls directly in the browser.
 
-The use of Swagger is convenient when doing development and very useful for public APIs to know how they function.     
-But for security concerns, in the production environment Swagger and Swagger-ui are disabled.          
+In SeTA, with the variable *DISABLE_SWAGGER_DOCUMENTATION* setup in file `seta-ui\seta_flask_server\config.py` in container *seta-ui* it is possible to manage the display of Swagger Documentation:
 
-In SeTA, with variable *DISABLE_SWAGGER_DOCUMENTATION* setup in file `seta-ui\seta_flask_server\config.py` on container *seta-ui* it is possible to manage the use of Swagger:
 ```
      DISABLE_SWAGGER_DOCUMENTATION = False
 ```
 
-### SeTA API's
+## API's in SeTA
 
 In SeTA there are two APIs:   
 - Communities API       
@@ -25,7 +23,7 @@ In SeTA there are two APIs:
 
 To prepare the upload of the data, it is important to setup first the **Communities API** to then follow with **SeTA API**.
 
-### Communities API 
+### SeTA Communities API 
 
 
 #### Prerequisites
@@ -143,9 +141,6 @@ SeTA-API will get at each request another authorization decoded token from seta-
 > You can verify the authorization token at [authorization doc]({{ setaUrls.auth_Token }}) passing the JWT access token as payload.
 
 
-
-
-
 #### Create community
 
 Expand **Communities** region and then Try out **POST** /communities:
@@ -244,9 +239,6 @@ Check the objects for the community scopes in the **seta database - users** coll
 ```
 -->
 
-
-
-
 #### Create resource
 
 Expand **Community Resources** region and then Try out **POST** /communities/{community_id}/resources:
@@ -316,7 +308,7 @@ At this point, Community API usage is set up and now it is possible to go to SeT
 
 #### EU Login Authentication
 
-Open a browser and go to seta-ui [login]({{ setaUrls.login }}) page. Connect with EU Login account or use a GitHub authentication. After that, you can open a new tab in the same browser or go to [Search API swagger documentation]({{ setaUrls.apiSeta }}).
+Open a browser and go to seta-ui [login]({{ setaUrls.login }}) page. Connect with EU Login account or use a GitHub authentication. After that, you can open a new tab in the same browser or go to [SeTA API]({{ setaUrls.apiSeta }}).
 
 
 !!! info
@@ -329,8 +321,6 @@ Open a browser and go to seta-ui [login]({{ setaUrls.login }}) page. Connect wit
 ![Image title](../../img/seta-api.png)
 <figcaption>SeTA API</figcaption>
 </figure>
-
-
 
 
 

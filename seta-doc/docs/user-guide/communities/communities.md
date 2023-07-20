@@ -61,7 +61,7 @@ You can filter by the different types display on top of the page: *Select Member
     To be able to update the Community details, you need to have the rights to do so.
 
 1. You can either use the filters to search the Community or select from the Communities list.      
-2. Click  :material-dots-vertical: at the left side of button ^^LEAVE^^ and select the option ^^:octicons-pencil-24: Update Community^^.       
+2. Click  :material-dots-vertical: at the right side of the Community row selected and choose the option  ^^:octicons-pencil-24: Update Community^^.       
 3. A pop-up window will appear where you can update the *Title* and *Description*.      
 4. Click ^^Update^^       
 
@@ -73,7 +73,7 @@ You can filter by the different types display on top of the page: *Select Member
 ## Invite to Join a Community
 
 1. You can either use the filters to search the Community or select from the Communities list.      
-2. Click  :material-dots-vertical: at the left side of button ^^LEAVE^^ and select the option ^^:material-comment-multiple-outline: Invite^^.    
+2. Click  :material-dots-vertical: at the right side of the Community row selected and choose the option ^^:material-comment-multiple-outline: Invite^^.    
 3. A pop-up window will appear where you can write the *Emails* and a *Message*.      
 4. Click ^^Send^^.       
 
@@ -90,9 +90,8 @@ You can filter by the different types display on top of the page: *Select Member
     To be able to switch to Open Community, you need to have the rights to do so.
 
 1. You can either use the filters to search the Community or select from the Communities list.      
-2. Click  :material-dots-vertical: at the left side of button ^^LEAVE^^ and select the option ^^:material-arrow-projectile-multiple: Request switch to Opened^^.       
-3. A pop-up window will appear where you can select the type of Privacy: *Restricted* or *Opened*.      
-4. Click ^^Update^^       
+2. Click  :material-dots-vertical: at the right side of the Community row selected and scroll to right the option  ^^Switch to Opened Request^^.          
+3. The label of the option will change to ^^Switch to Opened Pending^^.      
 
 <figure markdown>
   ![Image title](../../img/request_switch_opened.png)

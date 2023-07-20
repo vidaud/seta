@@ -1,6 +1,6 @@
-# SETA-API Communities
+# SETA Communities API
 
-The SeTA API Communities exposes the data and functionality of the management in the communities. It has various methods that can be performed on them over HTTP, like *GET, POST, PUT, and DELETE*. 
+The SeTA Communities API exposes the data and functionality of the management in the communities. It has various methods that can be performed over HTTP, like *GET, POST, PUT, and DELETE*. 
 
 The main categories are:    
 - Communities    
