@@ -69,7 +69,7 @@ const ScrollModal = ({
   const titleEl = !!title && (
     <Flex css={{ flex: 1 }} pr="xs" justify="space-between">
       <Flex gap="sm" align="center">
-        <div css={S.icon}>{icon}</div>
+        {icon && <div css={S.icon}>{icon}</div>}
 
         <Text size="lg" fw={500} color="gray.8">
           {title}

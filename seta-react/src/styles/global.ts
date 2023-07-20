@@ -5,6 +5,8 @@ import type { CSSObject, MantineTheme } from '@mantine/core'
 
 export const PAGE_PADDING = '2rem'
 
+export const CONTENT_MAX_WIDTH = '66vw'
+
 export const outlineTransition = 'outline-color 100ms ease, outline-offset 100ms ease'
 
 export const unfocusedOutlineStyles = css`
@@ -58,3 +60,9 @@ export const focusedOutlineStylesObject = (theme: MantineTheme): CSSObject => ({
   outlineOffset: '0.125rem',
   outline: `0.125rem solid ${theme.colors[theme.primaryColor][5]}`
 })
+
+export const pinnable = css`
+  position: sticky;
+  top: -1px;
+  z-index: 10;
+`

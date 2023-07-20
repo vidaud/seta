@@ -32,7 +32,13 @@ const globalStyles: MantineThemeOverride['globalStyles'] = theme => ({
   'button:-moz-focusring, [type="button"]:-moz-focusring, [type="reset"]:-moz-focusring, [type="submit"]:-moz-focusring':
     {
       outline: `0.125rem solid ${theme.colors[theme.primaryColor][5]}`
-    }
+    },
+
+  '.pinnable': {
+    position: 'sticky',
+    top: -1,
+    zIndex: 10
+  }
 })
 
 export default globalStyles

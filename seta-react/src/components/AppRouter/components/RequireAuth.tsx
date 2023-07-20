@@ -1,15 +1,20 @@
+import type { ReactElement } from 'react'
 import { Flex, Loader } from '@mantine/core'
 import { Navigate } from 'react-router-dom'
 
 import { useCurrentUser } from '~/contexts/user-context'
-import type { AllowedRolesAndChildrenProps } from '~/types/children-props'
 import type { UserRole } from '~/types/user'
 
 // TODO: Get this from an environment variable
 const AUTH_PATH = '/login?redirect=' + window.location.pathname
 const HOME_PATH = '/'
 
-const RequireAuth = ({ children, allowedRoles }: AllowedRolesAndChildrenProps) => {
+type Props = {
+  allowedRoles?: UserRole[]
+  children: ReactElement
+}
+
+const RequireAuth = ({ children, allowedRoles }: Props) => {
   const { user, isLoading } = useCurrentUser()
 
   if (isLoading) {

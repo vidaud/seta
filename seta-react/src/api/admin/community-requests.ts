@@ -12,7 +12,10 @@ const COMMUNITY_REQUESTS_API_PATH = '/admin/communities/change-requests'
 const getPendingRequests = async (
   config?: AxiosRequestConfig
 ): Promise<CommunityChangeRequest[]> => {
-  const { data } = await api.get<CommunityChangeRequest[]>(COMMUNITY_REQUESTS_API_PATH, config)
+  const { data } = await api.get<CommunityChangeRequest[]>(COMMUNITY_REQUESTS_API_PATH, {
+    baseURL: environment.baseUrl,
+    ...config
+  })
 
   return data
 }
@@ -20,7 +23,7 @@ const getPendingRequests = async (
 export const useCommunityPendingRequests = () => {
   return useQuery({
     queryKey: AdminQueryKeys.CommunityRequestsQueryKey,
-    queryFn: ({ signal }) => getPendingRequests({ baseURL: environment.baseUrl, signal })
+    queryFn: ({ signal }) => getPendingRequests({ signal })
   })
 }
 

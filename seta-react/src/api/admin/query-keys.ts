@@ -5,7 +5,7 @@ export class AdminQueryKeys {
 
   public static readonly ResourceRequestsQueryKey = ['admin-pending-resource-requests']
 
-  public static readonly OphanedCommunitiesQueryKey = ['admin-orphaned-communities']
+  public static readonly OrphanedCommunitiesQueryKey = ['admin-orphaned-communities']
 
-  public static readonly OphanedResourcesQueryKey = ['admin-orphaned-resources']
+  public static readonly OrphanedResourcesQueryKey = ['admin-orphaned-resources']
 }

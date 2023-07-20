@@ -7,12 +7,15 @@ import type { ResourceChangeRequest, RequestStatus } from '~/types/admin/change-
 
 import { AdminQueryKeys } from './query-keys'
 
-const RESOUCE_REQUESTS_API_PATH = '/admin/resources/change-requests'
+const RESOURCE_REQUESTS_API_PATH = '/admin/resources/change-requests'
 
 const getPendingRequests = async (
   config?: AxiosRequestConfig
 ): Promise<ResourceChangeRequest[]> => {
-  const { data } = await api.get<ResourceChangeRequest[]>(RESOUCE_REQUESTS_API_PATH, config)
+  const { data } = await api.get<ResourceChangeRequest[]>(RESOURCE_REQUESTS_API_PATH, {
+    baseURL: environment.baseUrl,
+    ...config
+  })
 
   return data
 }
@@ -20,7 +23,7 @@ const getPendingRequests = async (
 export const useResourcePendingRequests = () => {
   return useQuery({
     queryKey: AdminQueryKeys.ResourceRequestsQueryKey,
-    queryFn: ({ signal }) => getPendingRequests({ baseURL: environment.baseUrl, signal })
+    queryFn: ({ signal }) => getPendingRequests({ signal })
   })
 }
 

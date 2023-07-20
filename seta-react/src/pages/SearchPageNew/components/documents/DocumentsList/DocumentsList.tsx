@@ -48,6 +48,7 @@ const DocumentsList = ({ query, terms, embeddings, searchOptions, onDocumentsCha
       singular: 'document'
     },
     resetPageDependencies: [query, searchOptions],
+    scrollOffset: 80,
     onPageChange: setPage
   })
 

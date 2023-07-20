@@ -3,47 +3,54 @@ import type { TextProps } from '@mantine/core'
 import { Text } from '@mantine/core'
 import { FaChevronDown } from 'react-icons/fa'
 
+import type { ClassNameProp } from '~/types/children-props'
+
 import * as S from './styles'
 
-enum Orientation {
-  UP = 'up',
-  DOWN = 'down',
-  LEFT = 'left',
-  RIGHT = 'right'
-}
+type Orientation = 'up' | 'down' | 'left' | 'right'
 
 const startStyles: Record<Orientation, SerializedStyles> = {
-  [Orientation.UP]: S.upStart,
-  [Orientation.DOWN]: S.downStart,
-  [Orientation.LEFT]: S.leftStart,
-  [Orientation.RIGHT]: S.rightStart
+  up: S.upStart,
+  down: S.downStart,
+  left: S.leftStart,
+  right: S.rightStart
 }
 
 const endStyles: Record<Orientation, SerializedStyles> = {
-  [Orientation.UP]: S.upEnd,
-  [Orientation.DOWN]: S.downEnd,
-  [Orientation.LEFT]: S.leftEnd,
-  [Orientation.RIGHT]: S.rightEnd
+  up: S.upEnd,
+  down: S.downEnd,
+  left: S.leftEnd,
+  right: S.rightEnd
 }
 
-type Props = {
+type Props = ClassNameProp & {
   toggled: boolean
-  startOrientation?: Orientation
-  endOrientation?: Orientation
+  start?: Orientation
+  end?: Orientation
   color?: TextProps['color']
+  size?: TextProps['size']
 }
 
 const ChevronToggleIcon = ({
   toggled,
   color = 'gray.7',
-  startOrientation = Orientation.DOWN,
-  endOrientation = Orientation.UP
+  start = 'down',
+  end = 'up',
+  size,
+  className
 }: Props) => {
-  const startStyle = startStyles[startOrientation]
-  const endStyle = endStyles[endOrientation]
+  const startStyle = startStyles[start]
+  const endStyle = endStyles[end]
 
   return (
-    <Text css={[S.chevron, startStyle, endStyle]} data-toggled={toggled} color={color} lh={1}>
+    <Text
+      className={className}
+      css={[S.chevron, startStyle, endStyle]}
+      data-toggled={toggled}
+      color={color}
+      size={size}
+      lh={1}
+    >
       <FaChevronDown />
     </Text>
   )

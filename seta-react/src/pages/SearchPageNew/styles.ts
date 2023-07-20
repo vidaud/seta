@@ -1,7 +1,9 @@
 import { css } from '@emotion/react'
 
-export const searchWrapper = css`
+export const searchWrapper: ThemedCSS = theme => css`
   flex: 1;
+  align-self: stretch;
+  margin-top: ${theme.spacing.xs};
 `
 
 export const noDocuments: ThemedCSS = theme => css`

@@ -25,7 +25,7 @@ export const linkChild: ThemedCSS = theme => css`
   border-left: ${rem(1)} solid
     ${theme.colorScheme === 'dark' ? theme.colors.dark[4] : theme.colors.gray[3]};
 
-  '&:hover': {
+  &:hover {
     background-color: ${theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.colors.gray[0]};
     color: ${theme.colorScheme === 'dark' ? theme.white : theme.black};
   }

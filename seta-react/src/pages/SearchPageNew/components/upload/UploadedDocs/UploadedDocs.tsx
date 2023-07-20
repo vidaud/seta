@@ -32,13 +32,13 @@ type RemoveModalState = {
 const getRemoveValues = (type: RemoveType | undefined, id?: string) => {
   switch (type) {
     case 'chunk':
-      return ['Chunk', `the chunk ${id}`]
+      return ['chunk', `the chunk ${id}`]
 
     case 'document':
-      return ['Document', `the document ${id}`]
+      return ['document', `the document ${id}`]
 
     case 'all':
-      return ['All Entries', 'all the entries']
+      return ['all entries', 'all the entries']
 
     default:
       return ['', '']

@@ -38,11 +38,11 @@ export const leftEnd = css`
 `
 
 export const rightStart = css`
-  transform: rotate(270deg);
+  transform: rotate(-90deg);
 `
 
 export const rightEnd = css`
   &[data-toggled='true'] {
-    transform: rotate(270deg);
+    transform: rotate(-90deg);
   }
 `
