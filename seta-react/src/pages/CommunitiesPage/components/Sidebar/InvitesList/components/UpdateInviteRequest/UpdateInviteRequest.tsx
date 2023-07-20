@@ -11,6 +11,9 @@ import {
   Text
 } from '@mantine/core'
 import { IconPencil } from '@tabler/icons-react'
+import type { QueryObserverResult, RefetchOptions, RefetchQueryFilters } from '@tanstack/query-core'
+
+import type { InviteResponse } from '~/api/types/invite-types'
 
 import { updateInviteRequest } from '../../../../../../../api/communities/invite'
 import type { InviteRequestValues } from '../../../../../pages/contexts/invite-request-context'
@@ -38,7 +41,15 @@ const statusOptions = [
   { label: 'rejected', value: 'rejected' }
 ]
 
-const UpdateInviteRequest = ({ props, parent }) => {
+type Props = {
+  props: InviteResponse
+  parent: string
+  refetch: <TPageData>(
+    options?: (RefetchOptions & RefetchQueryFilters<TPageData>) | undefined
+  ) => Promise<QueryObserverResult<InviteResponse[], unknown>>
+}
+
+const UpdateInviteRequest = ({ props, parent, refetch }: Props) => {
   const [opened, setOpened] = useState(false)
   const { classes, cx } = useStyles()
 
@@ -55,9 +66,12 @@ const UpdateInviteRequest = ({ props, parent }) => {
   }, [props])
 
   const handleSubmit = (values: InviteRequestValues) => {
-    parent === 'InvitesList'
-      ? updateInviteRequest(props.invite_id, values)
-      : updateInviteRequest(props.pending_invite.invite_id, values)
+    updateInviteRequest(props.invite_id, values).then(() => {
+      refetch()
+    })
+    // : updateInviteRequest(props.pending_invite.invite_id, values).then(() => {
+    //     refetch()
+    //   })
 
     setOpened(o => !o)
   }

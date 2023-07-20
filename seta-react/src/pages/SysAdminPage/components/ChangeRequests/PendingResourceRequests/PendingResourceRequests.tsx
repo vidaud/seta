@@ -90,7 +90,7 @@ const PendingResourceRequests = () => {
         </Badge>
       </td>
       <td>
-        <UpdateResourceChangeRequest props={row} reload={refetch} />
+        <UpdateResourceChangeRequest props={row} refetch={refetch} />
       </td>
     </tr>
   ))

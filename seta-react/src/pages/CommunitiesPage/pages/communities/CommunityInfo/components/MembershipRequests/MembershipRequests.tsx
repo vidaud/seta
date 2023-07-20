@@ -84,7 +84,7 @@ const MembershipRequests = ({ id, onChange }) => {
       </td>
       <td>
         <Group spacing={0}>
-          <UpdateMemberRequest props={row} />
+          <UpdateMemberRequest props={row} refetch={refetch} />
           {/* <ActionIcon color="red">
             <IconTrash size="1rem" stroke={1.5} />
           </ActionIcon> */}

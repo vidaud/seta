@@ -34,21 +34,15 @@ export const updateMembershipRequest = async (
   values?: MembershipRequestValues,
   userId?: string
 ) => {
-  await api
-    .put(`${environment.COMMUNITIES_API_PATH}/${id}/requests/${userId}`, values, {
-      ...apiConfig,
-      headers: {
-        ...apiConfig?.headers,
-        accept: 'application/json',
-        'X-CSRF-TOKEN': csrf_token,
-        'Content-Type': 'application/x-www-form-urlencoded'
-      }
-    })
-    .then(response => {
-      if (response.status === 200) {
-        window.location.reload()
-      }
-    })
+  await api.put(`${environment.COMMUNITIES_API_PATH}/${id}/requests/${userId}`, values, {
+    ...apiConfig,
+    headers: {
+      ...apiConfig?.headers,
+      accept: 'application/json',
+      'X-CSRF-TOKEN': csrf_token,
+      'Content-Type': 'application/x-www-form-urlencoded'
+    }
+  })
 }
 
 export const membershipRequests = async (): Promise<MembershipRequest[]> => {

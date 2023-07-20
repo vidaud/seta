@@ -59,19 +59,13 @@ export const useAllPendingInvites = () =>
   useQuery({ queryKey: cacheNoIDKey(), queryFn: () => pendingInvites() })
 
 export const updateInviteRequest = async (id?: string, values?: InviteRequestValues) => {
-  await api
-    .put(`/invites/${id}`, values, {
-      ...apiConfig,
-      headers: {
-        ...apiConfig?.headers,
-        accept: 'application/json',
-        'X-CSRF-TOKEN': csrf_token,
-        'Content-Type': 'application/x-www-form-urlencoded'
-      }
-    })
-    .then(response => {
-      if (response.status === 200) {
-        window.location.reload()
-      }
-    })
+  await api.put(`/invites/${id}`, values, {
+    ...apiConfig,
+    headers: {
+      ...apiConfig?.headers,
+      accept: 'application/json',
+      'X-CSRF-TOKEN': csrf_token,
+      'Content-Type': 'application/x-www-form-urlencoded'
+    }
+  })
 }

@@ -45,21 +45,15 @@ export const usePendingChangeRequests = () =>
 const csrf_token = getCookie('csrf_access_token')
 
 export const createResourceChangeRequest = async (id?: string, values?: ChangeRequestValues) => {
-  await api
-    .post(`/resources/${id}/change-requests`, values, {
-      ...apiConfig,
-      headers: {
-        ...apiConfig?.headers,
-        accept: 'application/json',
-        'X-CSRF-TOKEN': csrf_token,
-        'Content-Type': 'application/x-www-form-urlencoded'
-      }
-    })
-    .then(response => {
-      if (response.status === 200) {
-        window.location.reload()
-      }
-    })
+  await api.post(`/resources/${id}/change-requests`, values, {
+    ...apiConfig,
+    headers: {
+      ...apiConfig?.headers,
+      accept: 'application/json',
+      'X-CSRF-TOKEN': csrf_token,
+      'Content-Type': 'application/x-www-form-urlencoded'
+    }
+  })
 }
 
 export const updateResourceChangeRequest = async (
