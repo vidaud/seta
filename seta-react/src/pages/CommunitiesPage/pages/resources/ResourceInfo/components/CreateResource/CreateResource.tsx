@@ -1,5 +1,6 @@
-import { Group, Button, useMantineTheme, Modal, Divider, Tooltip } from '@mantine/core'
+import { Group, Button, useMantineTheme, Modal, Divider } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
+import { IconPlus } from '@tabler/icons-react'
 
 import CreateForm from './components/CreateForm/CreateForm'
 import * as S from './styles'
@@ -21,22 +22,23 @@ const CreateResource = ({ id }) => {
         }}
       >
         <Divider my="xs" label="Add New Resource" labelPosition="center" />
-        <CreateForm id={id} />
+        <CreateForm id={id} close={close} />
       </Modal>
-      <Group position="right" css={S.root}>
-        <Tooltip label="Add resource to community" color="blue">
-          <Button
-            size="xs"
-            color="blue"
-            variant="outline"
-            sx={{
-              marginBottom: theme.spacing.xs
-            }}
-            onClick={open}
-          >
-            + New Resource
-          </Button>
-        </Tooltip>
+      <Group
+        position="right"
+        css={S.root}
+        sx={{ width: '100%', border: '1px solid #d0d4d7', borderRadius: '0.25rem' }}
+      >
+        <Button
+          size="xs"
+          color="blue"
+          variant="outline"
+          onClick={open}
+          h="35px"
+          rightIcon={<IconPlus size="1rem" />}
+        >
+          New Resource
+        </Button>
       </Group>
     </>
   )

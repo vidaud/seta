@@ -1,34 +1,48 @@
-import { Box, Text } from '@mantine/core'
-import { ImQuotesLeft, ImQuotesRight } from 'react-icons/im'
+import { Text } from '@mantine/core'
 
 import useHighlight from '~/hooks/use-highlight'
+import useModalState from '~/hooks/use-modal-state'
 
 import * as S from './styles'
+
+import DocumentChunksModal from '../DocumentChunksModal'
+import InfoContainer from '../InfoContainer'
 
 type Props = {
   text: string
   queryTerms?: string[]
+  documentId: string
+  documentTitle: string
+  chunkNumber: number
 }
 
-const ChunkPreview = ({ text, queryTerms }: Props) => {
+const ChunkPreview = ({ text, queryTerms, documentTitle, documentId, chunkNumber }: Props) => {
+  const { modalOpen, openModal, closeModal } = useModalState()
+
   const [textHl] = useHighlight(queryTerms, text)
 
   return (
-    <S.Container>
-      <Box px="xl" css={S.root}>
-        <div css={S.quote} className="left">
-          <ImQuotesLeft size={24} />
-        </div>
-
+    <>
+      <InfoContainer
+        withQuotes
+        expandable
+        expandTitle="Expand document chunks"
+        onExpand={openModal}
+      >
         <Text color="gray.7" css={S.text}>
           {textHl}
         </Text>
+      </InfoContainer>
 
-        <div css={S.quote} className="right">
-          <ImQuotesRight size={24} />
-        </div>
-      </Box>
-    </S.Container>
+      <DocumentChunksModal
+        title={documentTitle}
+        documentId={documentId}
+        chunkNumber={chunkNumber}
+        queryTerms={queryTerms}
+        opened={modalOpen}
+        onClose={closeModal}
+      />
+    </>
   )
 }
 

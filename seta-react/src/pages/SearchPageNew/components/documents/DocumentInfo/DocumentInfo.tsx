@@ -16,8 +16,19 @@ type Props = {
 }
 
 const DocumentInfo = ({ document, queryTerms }: Props) => {
-  const { title, score, link_origin, abstract, source, collection, date, taxonomy, chunk_text } =
-    document
+  const {
+    document_id,
+    title,
+    score,
+    link_origin,
+    abstract,
+    source,
+    collection,
+    date,
+    taxonomy,
+    chunk_text,
+    chunk_number
+  } = document
 
   const [detailsOpen, { toggle }] = useDisclosure()
 
@@ -79,8 +90,11 @@ const DocumentInfo = ({ document, queryTerms }: Props) => {
         <DocumentDetails
           css={S.details}
           open={detailsOpen}
+          documentId={document_id}
+          documentTitle={title}
           taxonomy={taxonomy}
           chunkText={chunk_text}
+          chunkNumber={chunk_number}
           queryTerms={queryTerms}
         />
       )}

@@ -1,5 +1,4 @@
 import { TextInput, Group, createStyles, Button, Textarea } from '@mantine/core'
-import { useNavigate } from 'react-router-dom'
 
 import type { ResourceValues } from '~/pages/CommunitiesPage/pages/contexts/resource-context'
 
@@ -18,9 +17,8 @@ const useStyles = createStyles({
   }
 })
 
-const CreateForm = ({ id }) => {
+const CreateForm = ({ id, close }) => {
   const { classes, cx } = useStyles()
-  const navigate = useNavigate()
 
   const form = useResource({
     initialValues: {
@@ -77,7 +75,7 @@ const CreateForm = ({ id }) => {
               color="blue"
               onClick={() => {
                 form.reset()
-                navigate(-1)
+                close()
               }}
             >
               Cancel

@@ -38,15 +38,14 @@ const DocumentsList = ({ query, terms, embeddings, searchOptions, onDocumentsCha
     }
   }, [data])
 
-  const { total_docs, documents } = data ?? {}
+  const { total_docs } = data ?? {}
 
   const { scrollTargetRef, paginator, info } = usePaginator({
     total: total_docs ?? 0,
     perPage: PER_PAGE,
     page,
     info: {
-      singular: 'result',
-      currentPageItems: documents?.length ?? 0
+      singular: 'document'
     },
     resetPageDependencies: [query, searchOptions],
     onPageChange: setPage

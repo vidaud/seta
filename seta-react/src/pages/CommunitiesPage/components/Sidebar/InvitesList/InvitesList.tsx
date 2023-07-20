@@ -12,7 +12,7 @@ import {
 
 import UpdateInviteRequest from './components/UpdateInviteRequest'
 
-import { useNotificationsRequests } from '../../../../../api/communities/notifications'
+import { useAllPendingInvites } from '../../../../../api/communities/invite'
 import { statusColors } from '../../../pages/types'
 import { ComponentEmpty, ComponentError, ComponentLoading } from '../../common'
 
@@ -45,22 +45,23 @@ const useStyles = createStyles(theme => ({
 const InvitesList = () => {
   const { classes, cx } = useStyles()
   const [scrolled, setScrolled] = useState(false)
-  const { data, isLoading, error, refetch } = useNotificationsRequests()
-  const [items, setItems] = useState(data?.invites)
+  const { data, isLoading, error, refetch } = useAllPendingInvites()
+  const [items, setItems] = useState(data)
   const theme = useMantineTheme()
 
   useEffect(() => {
     if (data) {
-      setItems(data.invites)
+      setItems(data)
     }
-  }, [data, items])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data])
 
   if (error) {
     return <ComponentError onTryAgain={refetch} />
   }
 
   if (data) {
-    if (data?.invites.length === 0) {
+    if (data.length === 0) {
       return <ComponentEmpty />
     }
   }

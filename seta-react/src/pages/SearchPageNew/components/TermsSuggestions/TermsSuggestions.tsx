@@ -6,6 +6,8 @@ import { TermsSelectionProvider } from '~/pages/SearchPageNew/contexts/terms-sel
 import { TermsView } from '~/pages/SearchPageNew/types/terms-view'
 import { TokenType } from '~/pages/SearchPageNew/types/token'
 
+import useScrolled from '~/hooks/use-scrolled'
+
 import EnrichInfo from './components/EnrichInfo'
 import OntologyHeader from './components/OntologyHeader'
 import OperatorInfo from './components/OperatorInfo'
@@ -29,7 +31,8 @@ const TermsSuggestions = ({
   onEnrichToggle
 }: Props) => {
   const [loading, setLoading] = useState(false)
-  const [scrolled, setScrolled] = useState(false)
+
+  const { scrolled, setScrolled, handleScrollChange } = useScrolled({ delta: 16 })
 
   const { currentToken } = useSearch()
 
@@ -40,7 +43,7 @@ const TermsSuggestions = ({
 
   useEffect(() => {
     setScrolled(false)
-  }, [currentView, enrichQuery, loading])
+  }, [currentView, enrichQuery, loading, setScrolled])
 
   const handleLoadingChange = (value: boolean) => {
     setLoading(value)
@@ -53,7 +56,7 @@ const TermsSuggestions = ({
   ) : currentView === TermsView.TermsClusters ? (
     <RelatedClusters
       onLoadingChange={handleLoadingChange}
-      onScrollPositionChange={({ y }) => setScrolled(y > 16)}
+      onScrollPositionChange={handleScrollChange}
     />
   ) : (
     <RelatedTerms onLoadingChange={handleLoadingChange} />

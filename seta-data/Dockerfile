@@ -14,6 +14,7 @@ RUN apt update -y
 RUN apt install -y  --no-install-recommends python3-pip
 RUN apt install -y  --no-install-recommends python3-dev
 RUN apt install -y  --no-install-recommends wget
+RUN pip install --upgrade pip
 
 RUN useradd seta 
 
@@ -21,8 +22,8 @@ ARG ROOT=/home/seta
 
 WORKDIR $ROOT
 COPY requirements.txt $ROOT/requirements.txt
-
-RUN pip3 install -r $ROOT/requirements.txt 
+RUN pip install --upgrade pip
+RUN pip install -r $ROOT/requirements.txt 
 
 COPY src/* $ROOT/
 RUN mkdir $ROOT/models_docker

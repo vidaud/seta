@@ -10,10 +10,10 @@ import {
   Group
 } from '@mantine/core'
 
-import { useNotificationsRequests } from '../../../../../api/communities/notifications'
 import UpdateMemberRequest from '../../../pages/communities/CommunityInfo/components/UpdateMemberRequest/UpdateMemberRequest'
+import { useNotifications } from '../../../pages/contexts/notifications-context'
 import { statusColors } from '../../../pages/types'
-import { ComponentEmpty, ComponentError, ComponentLoading } from '../../common'
+import { ComponentEmpty, ComponentLoading } from '../../common'
 
 const useStyles = createStyles(theme => ({
   header: {
@@ -46,30 +46,26 @@ const MembersList = () => {
   const { classes, cx } = useStyles()
   const [scrolled, setScrolled] = useState(false)
   const theme = useMantineTheme()
-  const { data, isLoading, error, refetch } = useNotificationsRequests()
-  const [items, setItems] = useState(data?.memberships)
+  const { memberships, getMembershipRequests } = useNotifications()
 
   useEffect(() => {
-    setItems(data?.memberships)
-  }, [data, items])
+    getMembershipRequests()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
-  if (error) {
-    return <ComponentError onTryAgain={refetch} />
-  }
-
-  if (data) {
-    if (data?.memberships.length === 0) {
+  if (memberships) {
+    if (memberships.length === 0) {
       return <ComponentEmpty />
     }
   }
 
-  if (isLoading || !data) {
+  if (!memberships) {
     return <ComponentLoading />
   }
 
   const rows =
-    items && items?.length > 0
-      ? items?.map(row => (
+    memberships && memberships?.length > 0
+      ? memberships?.map(row => (
           <tr key={row.community_id}>
             <td>{row.community_id.charAt(0).toUpperCase() + row?.community_id.slice(1)}</td>
             <td>

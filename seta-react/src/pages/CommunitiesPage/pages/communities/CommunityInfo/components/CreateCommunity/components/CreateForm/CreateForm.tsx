@@ -1,5 +1,4 @@
 import { TextInput, Group, createStyles, Button, Textarea } from '@mantine/core'
-import { useNavigate } from 'react-router-dom'
 
 import { createCommunity } from '../../../../../../../../../api/communities/manage/my-community'
 import type { CommunityValues } from '../../../../../../contexts/community-context'
@@ -17,9 +16,8 @@ const useStyles = createStyles({
   }
 })
 
-const CreateForm = () => {
+const CreateForm = ({ close }) => {
   const { classes, cx } = useStyles()
-  const navigate = useNavigate()
 
   const form = useCommunity({
     initialValues: {
@@ -78,7 +76,7 @@ const CreateForm = () => {
               color="blue"
               onClick={() => {
                 form.reset()
-                navigate(-1)
+                close()
               }}
             >
               Cancel

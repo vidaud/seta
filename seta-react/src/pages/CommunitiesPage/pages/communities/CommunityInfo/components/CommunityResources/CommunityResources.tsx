@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { ScrollArea, Badge, Text, Grid, Paper, Group, Tooltip, createStyles } from '@mantine/core'
+import { Badge, Text, Grid, Paper, Group, Tooltip, createStyles } from '@mantine/core'
 import { ImBlocked } from 'react-icons/im'
 import { VscLayersActive } from 'react-icons/vsc'
 import { useNavigate } from 'react-router-dom'
@@ -93,9 +93,9 @@ const CommunityResources = ({ id }) => {
     ))
 
   return (
-    <ScrollArea w="content">
-      <Grid>{rows}</Grid>
-    </ScrollArea>
+    // <ScrollArea w="content">
+    <Grid>{rows}</Grid>
+    // </ScrollArea>
   )
 }
 

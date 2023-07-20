@@ -62,8 +62,12 @@ class DiscoverCommunities(Resource):
                           result))
         
         #get pending invites
-        invites = filter(lambda inv: inv.expire_date.replace(tzinfo=pytz.utc) > now,
-                         self.invitesBroker.get_all_by_status_and_invited_user_id(user_id=user_id, status=InviteStatusConstants.Pending))
+        # invites = filter(lambda inv: inv.expire_date.replace(tzinfo=pytz.utc) > now,
+        #                  self.invitesBroker.get_all_by_status_and_invited_user_id(user_id=user_id, status=InviteStatusConstants.Pending))
+
+        invites = list(filter(lambda inv: inv.expire_date.replace(tzinfo=pytz.utc) > now,
+
+                         self.invitesBroker.get_all_by_status_and_invited_user_id(user_id=user_id, status=InviteStatusConstants.Pending)))
 
         for community in communities:
             discover = {"community_id": community.community_id, 

@@ -17,6 +17,7 @@ RUN apt install -y  --no-install-recommends gnupg
 RUN apt install -y  --no-install-recommends python3-pip
 RUN apt install -y  --no-install-recommends python3-dev
 RUN apt install -y  --no-install-recommends libmagic-dev
+RUN pip install --upgrade pip
 
 RUN useradd seta 
 ARG ROOT=/home/seta
@@ -37,7 +38,8 @@ RUN wget https://archive.apache.org/dist/tika/2.4.1/tika-app-2.4.1.jar \
 
 WORKDIR $ROOT
 COPY requirements.txt $ROOT/requirements.txt
-RUN pip3 install -r $ROOT/requirements.txt 
+RUN pip install --upgrade pip
+RUN pip install -r $ROOT/requirements.txt 
 RUN  python3 -m nltk.downloader punkt 
 RUN python3 -c 'from sentence_transformers import SentenceTransformer; SentenceTransformer("all-distilroberta-v1")'
 

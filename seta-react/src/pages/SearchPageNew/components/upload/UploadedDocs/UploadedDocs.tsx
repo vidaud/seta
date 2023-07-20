@@ -6,6 +6,7 @@ import { FaRegTrashAlt } from 'react-icons/fa'
 import ConfirmModal from '~/components/ConfirmModal'
 import { useUploadDocuments } from '~/pages/SearchPageNew/contexts/upload-documents-context'
 
+import useScrolled from '~/hooks/use-scrolled'
 import type { ClassNameProp } from '~/types/children-props'
 import type { ChunkInfo } from '~/types/embeddings'
 
@@ -52,7 +53,7 @@ const UploadedDocs = ({ className, onAddText }: Props) => {
   const [chunkModalState, setChunkModalState] = useState<ChunkModalState>({ open: false })
   const [removeModalState, setRemoveModalState] = useState<RemoveModalState>({ open: false })
 
-  const [scrolled, setScrolled] = useState(false)
+  const { scrolled, handleScrollChange } = useScrolled({ delta: 10 })
 
   const { documents, removeChunk, removeDocument, removeAll } = useUploadDocuments()
 
@@ -106,7 +107,7 @@ const UploadedDocs = ({ className, onAddText }: Props) => {
       <Stack spacing={0} className={className} mah="100%">
         <UploadActions css={headerStyle} onAddText={onAddText} onRemoveAll={handleRemoveAll} />
 
-        <ScrollArea css={S.scrollArea} onScrollPositionChange={({ y }) => setScrolled(y > 10)}>
+        <ScrollArea css={S.scrollArea} onScrollPositionChange={handleScrollChange}>
           <div ref={animateRef}>
             {documents.map(doc => (
               <DocumentInfo
