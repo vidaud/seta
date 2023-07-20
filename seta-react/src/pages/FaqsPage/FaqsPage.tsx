@@ -5,8 +5,10 @@ import {
   Accordion,
   MantineProvider,
   getStylesRef,
-  rem
+  rem,
+  Text
 } from '@mantine/core'
+import { IconDotsVertical } from '@tabler/icons-react'
 
 import Breadcrumbs from '~/components/Breadcrumbs'
 
@@ -37,12 +39,11 @@ const useStyles = createStyles(theme => ({
 
   control: {
     fontSize: theme.fontSizes.lg,
-    padding: `${theme.spacing.lg} ${theme.spacing.xl}`,
+    borderRadius: theme.radius.sm,
+    padding: `${theme.spacing.md} ${theme.spacing.lg}`,
     color: theme.black,
-
-    '&:hover': {
-      backgroundColor: 'transparent'
-    }
+    backgroundColor: theme.colors.blue[4],
+    fontWeight: 200
   },
 
   content: {
@@ -109,57 +110,81 @@ const FaqsPage = () => {
             variant="separated"
           >
             <Accordion.Item className={classes.item} value="invite">
-              <Accordion.Control>
-                What option do you need to select in order to invite others?
+              <Accordion.Control className={classes.control}>
+                <Text fw={700}> What option do you need to select in order to invite others? </Text>
               </Accordion.Control>
               <Accordion.Panel>
-                From the community list, click on the three dots placed at the right of the
-                Community name and select the option "Invite".{}
+                <Text>
+                  From the community list, click on the <IconDotsVertical size={16} /> placed at the
+                  right of the Community name and select the option INVITE.
+                </Text>
               </Accordion.Panel>
             </Accordion.Item>
 
             <Accordion.Item className={classes.item} value="resource">
-              <Accordion.Control>
-                What are the specific details that can be updated in a Community?
+              <Accordion.Control className={classes.control}>
+                <Text fw={700}>
+                  What are the specific details that can be updated in a Community?
+                </Text>
               </Accordion.Control>
               <Accordion.Panel>
-                It is possible update the 'Title' and 'Description' of the Communities{}
+                <Text>
+                  It is possible to update the 'Title' and 'Description' of the Communities.
+                </Text>
               </Accordion.Panel>
             </Accordion.Item>
 
             <Accordion.Item className={classes.item} value="filters">
-              <Accordion.Control>
-                How does the user screen and filter search results in SeTA?
+              <Accordion.Control className={classes.control}>
+                <Text fw={700}> How does the user screen and filter search results in SeTA? </Text>
               </Accordion.Control>
               <Accordion.Panel>
-                On the left side of the Search results area, there are filters that can be applied
-                to refine the search of the results: by Data Range, Data Sources, Taxonomies, etc.{}
+                <Text>
+                  On the left side of the Search results area, there are filters that can be applied
+                  to refine the search of the results:
+                </Text>
+                <Text italic color="blue">
+                  {}
+                  by Data Range, Data Sources, Taxonomies, etc.
+                  {}
+                </Text>
               </Accordion.Panel>
             </Accordion.Item>
 
             <Accordion.Item className={classes.item} value="upload-doc">
-              <Accordion.Control>
-                Is it necessary to select the path where the document is located or can we simply
-                drag and drop it?
+              <Accordion.Control className={classes.control}>
+                <Text fw={700}>
+                  Is it necessary to select the path where the document is located or can we simply
+                  drag and drop it?
+                </Text>
               </Accordion.Control>
               <Accordion.Panel>
-                You have both options to upload documents, by drag and drop or selecting the path
-                where the docuemnt is located {}
+                <Text>
+                  You have both options to upload documents, by drag and drop or selecting the path
+                  where the docuemnt is located.
+                </Text>
               </Accordion.Panel>
             </Accordion.Item>
 
             <Accordion.Item className={classes.item} value="api">
-              <Accordion.Control>
-                How can the Communities and Search tool be accessed through API's?
+              <Accordion.Control className={classes.control}>
+                <Text fw={700}>
+                  How can the Communities and Search tool be accessed through API's?
+                </Text>
               </Accordion.Control>
               <Accordion.Panel>
-                The SeTA REST APIs are created with support of Swagger which allows to generate
-                interactive API documentation that lets users try out the API calls directly in the
-                browser. You can access through our links:
+                <Text>
+                  The SeTA REST APIs are created with support of Swagger which allows to generate
+                  interactive API documentation that lets users try out the API calls directly in
+                  the browser. You can access through our links:
+                </Text>
+                <Text variant="link" component="a" href={comm_api} color="blue" underline>
+                  Communities API
+                </Text>
                 <br />
-                {seta_api}
-                <br />
-                {comm_api}
+                <Text variant="link" component="a" href={seta_api} color="blue" underline>
+                  SeTA API
+                </Text>
               </Accordion.Panel>
             </Accordion.Item>
           </Accordion>
