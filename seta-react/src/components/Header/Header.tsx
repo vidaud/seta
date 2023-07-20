@@ -1,4 +1,3 @@
-import { useEffect } from 'react'
 import { ActionIcon, Flex, Group, Image, Loader, Menu, Tooltip, Badge } from '@mantine/core'
 import { AiOutlineUser } from 'react-icons/ai'
 import { FaSignInAlt } from 'react-icons/fa'
@@ -10,18 +9,14 @@ import { getDropdownItems, getMenuItems, itemIsCollapse, itemIsDivider } from '.
 import * as S from './styles'
 
 import { useCurrentUser } from '../../contexts/user-context'
-import { useNotifications } from '../../pages/CommunitiesPage/pages/contexts/notifications-context'
 
 import './style.css'
 
 const Header = () => {
   const { user, isLoading: isUserLoading, logout } = useCurrentUser()
-  const { notifications, total, getNotificationRequests } = useNotifications()
 
-  useEffect(() => {
-    getNotificationRequests()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  // FIXME: This is just a placeholder for the notifications data
+  const [notifications, total] = [[], 0]
 
   const authenticated = !!user
   const role = user?.role === 'Administrator'

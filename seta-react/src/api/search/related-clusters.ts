@@ -24,7 +24,7 @@ const getRelatedClusters = async (
   }
 
   const { data } = await api.get<RelatedClustersResponse>(
-    `${RELATED_CLUSTERS_API_PATH}?terms=${words}`,
+    `${RELATED_CLUSTERS_API_PATH}?term=${words}`,
     config
   )
 
