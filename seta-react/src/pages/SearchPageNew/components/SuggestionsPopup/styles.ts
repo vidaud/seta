@@ -36,6 +36,7 @@ export const closeButton = css`
   position: absolute;
   top: 0;
   right: 0;
+  z-index: 1;
 `
 
 export const inputWrapper = css`

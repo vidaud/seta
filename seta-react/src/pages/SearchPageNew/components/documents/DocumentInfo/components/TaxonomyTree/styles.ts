@@ -10,15 +10,15 @@ export const node: ThemedCSS = theme => css`
   margin-right: ${theme.spacing.lg};
   color: ${theme.colors.gray[8]};
   white-space: nowrap;
-  animation: taxonomy-node-slideRight 300ms 300ms ease forwards;
+  animation: taxonomy-node-slideRight 300ms 500ms ease forwards;
 
   &.leaf {
     color: ${theme.colors.gray[8]};
   }
 
   &:not(.leaf) {
-    animation: taxonomy-node-slideRight 300ms ease forwards,
-      taxonomy-node-fadeColor 300ms 300ms ease forwards;
+    animation: taxonomy-node-slideRight 300ms 200ms ease forwards,
+      taxonomy-node-fadeColor 300ms 500ms ease forwards;
   }
 
   // Giving it a more specific name as it gets scoped to the document
@@ -47,8 +47,16 @@ export const node: ThemedCSS = theme => css`
 `
 
 export const rootNode: ThemedCSS = theme => css`
+  // Override the animation for the root node
+  margin-left: 0 !important;
+
+  & > div:first-of-type {
+    font-weight: 500;
+    color: ${theme.colors.teal[8]};
+  }
+
   &:not(.leaf) {
-    margin-bottom: ${theme.spacing.xs};
+    margin-bottom: ${theme.spacing.md};
   }
 
   &.leaf + :not(.leaf) {

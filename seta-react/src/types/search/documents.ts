@@ -32,3 +32,11 @@ export type Document = {
   taxonomy: Taxonomy[] | null
   title: string
 }
+
+export type Chunk = Document & {
+  link_alias: string | null
+  link_related: string | null
+  link_reference: string | null
+  mime_type: string | null
+  sbert_embedding: number[]
+}
