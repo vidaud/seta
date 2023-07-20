@@ -35,23 +35,8 @@ def build_graph(term, current_app):
     return graphjs
 
 
-def build_tree(term, terms, current_app):
-    total_nodes = set()
-    nodes = []
-    if term:
-        nodes = get_most_similar(term, current_app, 20)
-        #to let the check in building tree phase work
-        terms = [term]
-        #if the above line is removed in the code
-        #instead of "not in terms" -> "!= term"
-
-    if terms:
-        for t in terms:
-            if not word_exists(current_app, t):
-                continue
-            partial_nodes = get_most_similar(t, current_app, 20)
-            total_nodes.update(partial_nodes)
-        nodes = list(total_nodes)
+def build_tree(term, current_app):
+    nodes = get_most_similar(term, current_app, 20)
 
     graphjs = {"nodes": []}
     nodes2 = []
@@ -59,13 +44,13 @@ def build_tree(term, terms, current_app):
     done2 = []
     for i in range(0, len(nodes)):
         n1 = nodes[i]
-        if n1 not in done and n1 not in terms and n1 not in done2:
+        if n1 not in done and n1 != term and n1 not in done2:
             done.append(n1)
             r = [n1]
             for j in range(i + 1, len(nodes)):
                 n2 = nodes[j]
                 if is_similarity_gt_value(n1, n2, 0.7, current_app):
-                    if n2 not in done and n2 not in terms and n2 not in done2:
+                    if n2 not in done and n2 != term and n2 not in done2:
                         done2.append(n2)
                         r.append(n2)
             nodes2.append(r)
@@ -76,7 +61,7 @@ def build_tree(term, terms, current_app):
         r2 = copy.deepcopy(r)
         for n in r:
             for m in get_most_similar(n, current_app, 7):
-                if m not in done and m not in terms and m not in done2:
+                if m not in done and m != term and m not in done2:
                     done2.append(m)
                     r2.append(m)
         graphjs["nodes"].append(r2)

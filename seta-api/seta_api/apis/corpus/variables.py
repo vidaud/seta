@@ -1,22 +1,5 @@
 from flask_restx import reqparse, fields
 
-corpus_parser = reqparse.RequestParser()
-corpus_parser.add_argument("term")
-corpus_parser.add_argument("n_docs", type=int)
-corpus_parser.add_argument("from_doc", type=int)
-corpus_parser.add_argument("search_type")
-corpus_parser.add_argument("source", action="split")
-corpus_parser.add_argument("collection", action="split")
-corpus_parser.add_argument("subject", action="split")
-corpus_parser.add_argument("reference", action="split")
-corpus_parser.add_argument("in_force")
-corpus_parser.add_argument("sort", action="split")
-corpus_parser.add_argument("semantic_sort_id")
-corpus_parser.add_argument("semantic_sort_id_list", action="split")
-corpus_parser.add_argument("author", action="split")
-corpus_parser.add_argument("date_range", action="split")
-corpus_parser.add_argument("aggs", action="split")
-corpus_parser.add_argument("other", action="split")
 
 corpus_get_document_id_parser = reqparse.RequestParser()
 corpus_get_document_id_parser.add_argument("n_docs", type=int)
@@ -194,8 +177,6 @@ corpus_post_params["collection"] = fields.List(fields.String(), description="eur
 corpus_post_params["taxonomy_path"] = fields.List(fields.String(), description="list of taxonomy path, delimiter ':'")
 corpus_post_params["in_force"] = fields.String(description="eurlex metadata into_force")
 corpus_post_params["sort"] = fields.List(fields.String(), description="sort results field:order")
-corpus_post_params["semantic_sort_id"] = fields.String(description="sort results by semantic distance among documents")
-corpus_post_params["sbert_embedding"] = fields.List(fields.Float, description="embeddings vector")
 corpus_post_params["semantic_sort_id_list"] = fields.List(fields.String(),
                                                           description="sort results by semantic distance among documents")
 corpus_post_params["sbert_embedding_list"] = fields.List(fields.List(fields.Float,
