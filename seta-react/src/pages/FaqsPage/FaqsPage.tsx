@@ -42,7 +42,7 @@ const useStyles = createStyles(theme => ({
     borderRadius: theme.radius.sm,
     padding: `${theme.spacing.md} ${theme.spacing.lg}`,
     color: theme.black,
-    backgroundColor: theme.colors.blue[4],
+    backgroundColor: theme.colors.gray[1],
     fontWeight: 200
   },
 
