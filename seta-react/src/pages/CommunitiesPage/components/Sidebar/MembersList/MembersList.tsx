@@ -1,5 +1,19 @@
 import { useState } from 'react'
-import { createStyles, Table, ScrollArea, rem, Title } from '@mantine/core'
+import {
+  createStyles,
+  Table,
+  ScrollArea,
+  rem,
+  Title,
+  Badge,
+  Group,
+  useMantineTheme
+} from '@mantine/core'
+
+import { useMembershipRequests } from '../../../../../api/communities/membership-requests'
+import UpdateMemberRequest from '../../../pages/communities/CommunityInfo/components/UpdateMemberRequest'
+import { statusColors } from '../../../pages/types'
+import { ComponentEmpty, ComponentLoading } from '../../common'
 
 const useStyles = createStyles(theme => ({
   header: {
@@ -31,44 +45,45 @@ const useStyles = createStyles(theme => ({
 const MembersList = () => {
   const { classes, cx } = useStyles()
   const [scrolled, setScrolled] = useState(false)
-  // const { memberships } = useNotifications()
+  const { data, refetch } = useMembershipRequests()
+  const theme = useMantineTheme()
 
-  // if (memberships) {
-  //   if (memberships.length === 0) {
-  //     return <ComponentEmpty />
-  //   }
-  // }
+  if (data) {
+    if (data.length === 0) {
+      return <ComponentEmpty />
+    }
+  }
 
-  // if (!memberships) {
-  //   return <ComponentLoading />
-  // }
+  if (!data) {
+    return <ComponentLoading />
+  }
 
   const rows =
-    // memberships && memberships?.length > 0
-    //   ? memberships?.map(row => (
-    //       <tr key={row.community_id}>
-    //         <td>{row.community_id.charAt(0).toUpperCase() + row?.community_id.slice(1)}</td>
-    //         <td>
-    //           <Badge
-    //             color={statusColors[row.status.toLowerCase()]}
-    //             variant={theme.colorScheme === 'dark' ? 'light' : 'outline'}
-    //           >
-    //             {row.status.toUpperCase()}
-    //           </Badge>
-    //         </td>
-    //         <td>{row.message.charAt(0).toUpperCase() + row?.message.slice(1)}</td>
-    //         <td>{new Date(row.initiated_date).toDateString()}</td>
-    //         <td>{row.requested_by_info?.full_name}</td>
-    //         <td>{row.review_date ? new Date(row.review_date).toDateString() : null}</td>
-    //         <td>{row.reviewed_by_info?.full_name}</td>
-    //         <td>
-    //           <Group spacing={0}>
-    //             <UpdateMemberRequest props={row} />
-    //           </Group>
-    //         </td>
-    //       </tr>
-    //     ))
-    []
+    data && data?.length > 0
+      ? data?.map(row => (
+          <tr key={row.community_id}>
+            <td>{row.community_id.charAt(0).toUpperCase() + row?.community_id.slice(1)}</td>
+            <td>
+              <Badge
+                color={statusColors[row.status.toLowerCase()]}
+                variant={theme.colorScheme === 'dark' ? 'light' : 'outline'}
+              >
+                {row.status.toUpperCase()}
+              </Badge>
+            </td>
+            <td>{row.message.charAt(0).toUpperCase() + row?.message.slice(1)}</td>
+            <td>{new Date(row.initiated_date).toDateString()}</td>
+            <td>{row.requested_by_info?.full_name}</td>
+            <td>{row.review_date ? new Date(row.review_date).toDateString() : null}</td>
+            <td>{row.reviewed_by_info?.full_name}</td>
+            <td>
+              <Group spacing={0}>
+                <UpdateMemberRequest props={row} refetch={refetch} />
+              </Group>
+            </td>
+          </tr>
+        ))
+      : []
 
   return (
     <>

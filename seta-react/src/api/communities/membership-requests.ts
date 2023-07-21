@@ -15,6 +15,18 @@ const apiConfig: AxiosRequestConfig = {
   baseURL: BASE_URL
 }
 
+export const getAllMembershipRequests = async (): Promise<MembershipRequest[]> => {
+  const { data } = await api.get<MembershipRequest[]>(
+    `${environment.COMMUNITIES_API_PATH}/requests`,
+    apiConfig
+  )
+
+  return data
+}
+
+export const useMembershipRequests = () =>
+  useQuery({ queryKey: cacheKey(), queryFn: () => getAllMembershipRequests() })
+
 export const getMembershipRequests = async (id?: string): Promise<MembershipRequest[]> => {
   const { data } = await api.get<MembershipRequest[]>(
     `${environment.COMMUNITIES_API_PATH}/${id}/requests`,
