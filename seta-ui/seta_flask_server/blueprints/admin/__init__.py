@@ -3,6 +3,7 @@ from flask import Blueprint, current_app
 
 from .change_requests import change_requests_ns
 from .orphans import orphans_ns
+from .stats import stats_ns
 
 authorizations = {
     'Bearer': {
@@ -35,3 +36,4 @@ admin_api = Api(admin_bp,
 
 admin_api.add_namespace(change_requests_ns, path="/admin")
 admin_api.add_namespace(orphans_ns, path="/admin/orphan")
+admin_api.add_namespace(stats_ns, path="/admin/stats")

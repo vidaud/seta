@@ -39,7 +39,21 @@ Open the project's `.vscode/settings.json` file and add the following configurat
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": true
   },
-  "editor.formatOnSave": false
+  "editor.formatOnSave": false,
+  "eslint.workingDirectories": [
+      "./seta-react"
+  ]
+}
+```
+
+Note: when the folder `seta` is the root of the opened project (the parent of `seta-react`), then add the following to the `.vscode/settings.json` file
+```json
+{
+  ...
+
+  "eslint.workingDirectories": [
+      "./seta-react"
+  ]
 }
 ```
 

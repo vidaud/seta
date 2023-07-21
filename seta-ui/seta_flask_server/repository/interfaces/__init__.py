@@ -13,3 +13,4 @@ from .apps_broker import IAppsBroker
 from .user_profile import IUserProfile
 from .catalogue_broker import ICatalogueBroker
 from .notifications_broker import INotificationsBroker
+from .stats_broker import IStatsBroker
