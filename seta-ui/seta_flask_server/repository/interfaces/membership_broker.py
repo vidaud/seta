@@ -37,7 +37,7 @@ class IMembershipsBroker(Interface):
     def get_request(self, community_id: str, user_id: str) -> MembershipRequestModel:
         pass
     
-    def get_requests_by_community_id(self, community_id: str, status: str = None) -> list[MembershipRequestModel]:
+    def get_requests_by_community_ids(self, community_ids: list[str], status: str = None) -> list[MembershipRequestModel]:
         pass
     
     def get_requests_by_user_id(self, user_id: str) -> list[MembershipRequestModel]:

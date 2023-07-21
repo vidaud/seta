@@ -60,17 +60,12 @@ class MembersipRequestList(Resource):
         if not self.communitiesBroker.community_id_exists(community_id):
             abort(HTTPStatus.NOT_FOUND)
         
-        requests = self.membershipsBroker.get_requests_by_community_id(community_id=community_id, status=RequestStatusConstants.Pending)
+        requests = self.membershipsBroker.get_requests_by_community_ids(community_ids=[community_id], status=RequestStatusConstants.Pending)
 
         for request in requests:
             requested_by = self.usersBroker.get_user_by_id(request.requested_by, load_scopes=False)
             if requested_by:
                 request.requested_by_info = requested_by.user_info
-
-            if request.reviewed_by:
-                reviewed_by = self.usersBroker.get_user_by_id(request.reviewed_by, load_scopes=False)
-                if reviewed_by:
-                    request.reviewed_by_info = reviewed_by.user_info
 
         return requests
     
@@ -126,6 +121,58 @@ class MembersipRequestList(Resource):
         response.status_code = HTTPStatus.CREATED
         
         return response
+    
+@membership_request_ns.route('/requests', endpoint="all-requests", methods=['GET'])
+class MembersipAllRequests(Resource):
+    '''Get a list of pending requests for all managed communities'''
+    
+    @inject
+    def __init__(self, usersBroker: IUsersBroker, membershipsBroker: IMembershipsBroker, communitiesBroker: ICommunitiesBroker, api=None, *args, **kwargs):
+        self.usersBroker = usersBroker
+        self.membershipsBroker = membershipsBroker
+        self.communitiesBroker = communitiesBroker
+        
+        super().__init__(api, *args, **kwargs)
+        
+    @membership_request_ns.doc(description='Retrieve pending request list for managed communities.',
+        responses={int(HTTPStatus.OK): "'Retrieved request list.",
+                   int(HTTPStatus.FORBIDDEN): "Insufficient rights"},
+        security='CSRF')
+    @membership_request_ns.marshal_list_with(request_model, mask="*", skip_none = True)
+    @auth_validator()    
+    def get(self):
+        '''
+        Retrieve pending requests for all managed communities, available to community managers
+
+        Permission scopes: any of "/seta/community/owner", "/seta/community/manager" or "/seta/community/membership/approve"
+        '''
+        
+        identity = get_jwt_identity()
+        auth_id = identity["user_id"]
+
+        user = self.usersBroker.get_user_by_id(auth_id)
+        if user is None or user.is_not_active():
+            abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
+
+        scopes=[CommunityScopeConstants.Owner, CommunityScopeConstants.Manager, CommunityScopeConstants.ApproveMembershipRequest]
+
+        #get all managed community ids:
+        community_ids = []
+        for community_scope in user.community_scopes:
+            if any(s == community_scope.scope for s in scopes) and (not community_scope.id in community_ids):
+                community_ids.append(community_scope.id)
+
+        if len(community_ids) == 0:
+            abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
+        
+        requests = self.membershipsBroker.get_requests_by_community_ids(community_ids=community_ids, status=RequestStatusConstants.Pending)
+
+        for request in requests:
+            requested_by = self.usersBroker.get_user_by_id(request.requested_by, load_scopes=False)
+            if requested_by:
+                request.requested_by_info = requested_by.user_info
+
+        return requests
     
 @membership_request_ns.route('/<string:community_id>/requests/<string:user_id>', endpoint="request", methods=['GET', 'PUT'])
 @membership_request_ns.param("community_id", "Community identifier")
