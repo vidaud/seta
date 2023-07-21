@@ -19,7 +19,7 @@ const statusOptions = [
   { label: 'rejected', value: 'rejected' }
 ]
 
-const UpdateResourceChangeRequest = ({ props, reload }) => {
+const UpdateResourceChangeRequest = ({ props, refetch }) => {
   const [opened, setOpened] = useState(false)
   const { classes, cx } = useStyles()
 
@@ -40,7 +40,7 @@ const UpdateResourceChangeRequest = ({ props, reload }) => {
 
   const handleSubmit = (values: ResourceChangeRequestValues) => {
     updateResourceChangeRequest(props.resource_id, props.request_id, values).then(() => {
-      reload()
+      refetch()
     })
 
     setOpened(o => !o)

@@ -15,7 +15,7 @@ import DeleteMembership from './components/DeleteMembership/DeleteMembership'
 import UpdateMembership from './components/UpdateMembership/UpdateMembership'
 
 import { useMembershipID } from '../../../../../../api/communities/membership'
-import { useCurrentUserPermissions } from '../../../../pages/contexts/scope-context'
+import { useCommunityListContext } from '../../../../pages/contexts/community-list.context'
 import { jobColors } from '../../../../pages/types'
 import { ComponentEmpty, ComponentError } from '../../../common'
 import ComponentLoading from '../../../common/ComponentLoading'
@@ -52,7 +52,7 @@ const CommunityMembers = () => {
   const [scrolled, setScrolled] = useState(false)
   const { id } = useParams()
   const { data, isLoading, error, refetch } = useMembershipID(id)
-  const { community_scopes } = useCurrentUserPermissions()
+  const { community_scopes } = useCommunityListContext()
   const [scopes, setScopes] = useState<string[] | undefined>([])
   const [items, setItems] = useState(data)
   const theme = useMantineTheme()

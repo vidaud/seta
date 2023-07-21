@@ -9,7 +9,6 @@ import type { CommunityResponse } from '../../../../../../../api/types/community
 import type { ResourceResponse } from '../../../../../../../api/types/resource-types'
 import MembershipRequest from '../../../../../components/Manage/Members/InviteMemberModal/InviteMemberModal'
 import OpenCommunityMember from '../../../../../components/Manage/Members/OpenCommunityMember/OpenCommunityMember'
-import UpdateInviteRequest from '../../../../../components/Sidebar/InvitesList/components/UpdateInviteRequest'
 import ChangePrivacy from '../ChangePrivacy/ChangePrivacyRequest'
 import DeleteCommunity from '../DeleteCommunity/DeleteCommunity'
 import InviteMember from '../InviteMemberModal/InviteMemberModal'
@@ -94,7 +93,7 @@ const CommunityButton = ({ props, community_scopes, resources }: Props) => {
         {data.status === 'membership' ? (
           <>
             {' '}
-            <LeaveCommunity props={data} onChangeMessage={setMessage} reload={refetch} />
+            <LeaveCommunity props={data} onChangeMessage={setMessage} refetch={refetch} />
             {message !== '' ? (
               <Notification
                 title="We notify you that"
@@ -110,15 +109,10 @@ const CommunityButton = ({ props, community_scopes, resources }: Props) => {
           <Button color="gray" variant="outline" size="xs">
             PENDING
           </Button>
-        ) : data.status === 'invited' ? (
-          // <Button variant="outline" size="xs" color="orange">
-          //   INVITED
-          // </Button>
-          <UpdateInviteRequest props={data} parent="CommunityList" />
         ) : data.status === 'unknown' && data.membership === 'closed' ? (
-          <MembershipRequest community_id={data.community_id} reload={refetch} />
+          <MembershipRequest community_id={data.community_id} refetch={refetch} />
         ) : data.status === 'unknown' && data.membership === 'opened' ? (
-          <OpenCommunityMember community_id={data.community_id} reload={refetch} />
+          <OpenCommunityMember community_id={data.community_id} refetch={refetch} />
         ) : data.status === 'rejected' ? (
           <Button variant="filled" size="xs" color="red">
             REJECTED

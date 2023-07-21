@@ -53,7 +53,6 @@ const InvitesList = () => {
     if (data) {
       setItems(data)
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data])
 
   if (error) {
@@ -89,7 +88,7 @@ const InvitesList = () => {
       <td>{new Date(row.expire_date).toLocaleDateString()}</td>
       <td>
         <Group spacing={0}>
-          <UpdateInviteRequest props={row} parent="InvitesList" />
+          <UpdateInviteRequest props={row} parent="InvitesList" refetch={refetch} />
         </Group>
       </td>
     </tr>

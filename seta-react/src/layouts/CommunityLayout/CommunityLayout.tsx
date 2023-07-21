@@ -3,37 +3,21 @@ import { Outlet } from 'react-router-dom'
 
 import Breadcrumbs from '../../components/Breadcrumbs'
 import NavbarNestedWithNotifications from '../../components/NavbarNestedWithNotifications/NavbarNestedWithNotifications'
-import { NotificationsProvider } from '../../pages/CommunitiesPage/pages/contexts/notifications-context'
-import { ScopeProvider } from '../../pages/CommunitiesPage/pages/contexts/scope-context'
+import { CommunityListProvider } from '../../pages/CommunitiesPage/pages/contexts/community-list.context'
 
 const CommunityLayout = () => {
   return (
     <>
-      {/* <Flex
-        direction="column"
-        className="communities min-h-screen"
-        sx={{ display: '-webkit-inline-box' }}
-      >
-        <ScopeProvider>
-          <NavbarNestedWithNotifications />
-        </ScopeProvider>
-        <Box sx={{ flexGrow: 1, padding: '2rem' }}>
-          <Breadcrumbs readFromPath />
-          <Outlet />
-        </Box>
-      </Flex> */}
       <Flex direction="column" className="communities min-h-screen">
         <Breadcrumbs readFromPath includeCom />
 
         <Flex sx={{ marginTop: '-3rem', zIndex: 100 }}>
-          <ScopeProvider>
+          <CommunityListProvider>
             <NavbarNestedWithNotifications />
-          </ScopeProvider>
+          </CommunityListProvider>
 
           <Flex direction="column" align="center" sx={{ width: '100%', padding: '2rem' }}>
-            <NotificationsProvider>
-              <Outlet />
-            </NotificationsProvider>
+            <Outlet />
           </Flex>
         </Flex>
       </Flex>

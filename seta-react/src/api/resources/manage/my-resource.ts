@@ -1,4 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
+import type { AxiosRequestConfig } from 'axios'
 import { getCookie } from 'typescript-cookie'
 
 import type {
@@ -8,15 +9,20 @@ import type {
 } from '~/api/types/resource-types'
 
 import { environment } from '../../../environments/environment'
-import community_api from '../../communities/api'
+import api from '../../api'
 
 const RESOURCE_API_PATH = '/resources/'
+const BASE_URL = environment.baseUrl
+
+const apiConfig: AxiosRequestConfig = {
+  baseURL: BASE_URL
+}
 
 export const cacheKey = (id?: string) => ['resources', id]
 export const cacheResourceKey = () => ['resources']
 
 export const getResource = async (id?: string): Promise<ResourceResponse> => {
-  const { data } = await community_api.get<ResourceResponse>(`${RESOURCE_API_PATH}${id}`)
+  const { data } = await api.get<ResourceResponse>(`${RESOURCE_API_PATH}${id}`, apiConfig)
 
   return data
 }
@@ -27,9 +33,11 @@ export const useResourceID = (id?: string) =>
 const csrf_token = getCookie('csrf_access_token')
 
 export const createResource = async (id?: string, values?: CreateResourceAPI) => {
-  await community_api
+  await api
     .post<CreateResourceAPI[]>(`${environment.COMMUNITIES_API_PATH}/${id}/resources`, values, {
+      ...apiConfig,
       headers: {
+        ...apiConfig?.headers,
         accept: 'application/json',
         'X-CSRF-TOKEN': csrf_token,
         'Content-Type': 'application/x-www-form-urlencoded'
@@ -43,9 +51,11 @@ export const createResource = async (id?: string, values?: CreateResourceAPI) =>
 }
 
 export const updateResource = async (resource_id?: string, values?: UpdateResourceAPI) => {
-  await community_api
+  await api
     .put(`${RESOURCE_API_PATH}${resource_id}`, values, {
+      ...apiConfig,
       headers: {
+        ...apiConfig?.headers,
         accept: 'application/json',
         'X-CSRF-TOKEN': csrf_token,
         'Content-Type': 'application/x-www-form-urlencoded'
@@ -63,9 +73,11 @@ export const updateCommunityResource = async (
   resource_id?: string,
   values?: UpdateResourceAPI
 ) => {
-  await community_api
+  await api
     .put(`${RESOURCE_API_PATH}${resource_id}`, values, {
+      ...apiConfig,
       headers: {
+        ...apiConfig?.headers,
         accept: 'application/json',
         'X-CSRF-TOKEN': csrf_token,
         'Content-Type': 'application/x-www-form-urlencoded'
@@ -79,9 +91,11 @@ export const updateCommunityResource = async (
 }
 
 export const deleteResourceByID = async (resource_id?: string) => {
-  await community_api
+  await api
     .delete(`${RESOURCE_API_PATH}${resource_id}`, {
+      ...apiConfig,
       headers: {
+        ...apiConfig?.headers,
         accept: 'application/json',
         'X-CSRF-TOKEN': csrf_token,
         'Content-Type': 'application/x-www-form-urlencoded'
