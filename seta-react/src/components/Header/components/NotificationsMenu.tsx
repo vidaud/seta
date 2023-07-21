@@ -18,10 +18,11 @@ type Props = {
 const NotificationsMenu = ({ total, dropdownItems, notifications }: Props) => {
   const { classes } = useStyles()
 
+  // FIXME: This needs to be fixed - Array.map should always return a value
   const notificationsMenuItems = dropdownItems.map((item, index) => {
     if (itemIsCollapse(item)) {
-      // eslint-disable-next-line react/no-array-index-key
       return (
+        // FIXME: We should try to avoid using index as a key when possible - see https://adhithiravi.medium.com/why-do-i-need-keys-in-react-lists-dbb522188bbb
         // eslint-disable-next-line react/no-array-index-key
         <Menu.Item key={index}>
           <Group position="apart" spacing={0} sx={{ paddingBottom: '1rem' }}>

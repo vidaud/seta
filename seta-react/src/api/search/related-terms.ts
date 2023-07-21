@@ -24,7 +24,7 @@ const getRelatedTerms = async (
   }
 
   const { data } = await api.get<RelatedTermsResponse>(
-    `${RELATED_TERMS_API_PATH}?terms=${words}`,
+    `${RELATED_TERMS_API_PATH}?term=${words}`,
     config
   )
 
