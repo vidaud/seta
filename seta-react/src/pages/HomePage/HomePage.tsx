@@ -1,5 +1,5 @@
 import React from 'react'
-import { createStyles, Container, Title, Text, rem, Group } from '@mantine/core'
+import { createStyles, Container, Title, Text, rem, Group, BackgroundImage } from '@mantine/core'
 import TextTransition, { presets } from 'react-text-transition'
 
 import ModalPage from './components/modal/ModalPage'
@@ -9,9 +9,8 @@ import image from '../../images/background.jpg'
 const useStyles = createStyles(theme => ({
   wrapper: {
     position: 'relative',
-    paddingTop: rem(200),
-    paddingBottom: rem(210),
-    backgroundImage: 'url(' + image + ')',
+    paddingTop: `calc(${theme.spacing.xl} * 5)`,
+    paddingBottom: `calc(${theme.spacing.xl} * 5)`,
     backgroundSize: 'cover',
     backgroundPosition: 'center'
   },
@@ -75,27 +74,29 @@ const HomePage = () => {
   return (
     <>
       <div className={classes.wrapper}>
-        <Container size={940}>
-          <Title className={classes.title}>
-            <TextTransition springConfig={presets.stiff}>
-              <Text
-                component="span"
-                inherit
-                variant="gradient"
-                gradient={{ from: 'blue', to: 'white' }}
-              >
-                {TEXTS[index % TEXTS.length]}
-              </Text>
-            </TextTransition>
-          </Title>
-          {isCookie && (
-            <div className={classes.controls}>
-              <Group position="center">
-                <ModalPage />
-              </Group>
-            </div>
-          )}
-        </Container>
+        <BackgroundImage src={image} radius="xs">
+          <Container size={940}>
+            <Title className={classes.title}>
+              <TextTransition springConfig={presets.stiff}>
+                <Text
+                  component="span"
+                  inherit
+                  variant="gradient"
+                  gradient={{ from: 'blue', to: 'white' }}
+                >
+                  {TEXTS[index % TEXTS.length]}
+                </Text>
+              </TextTransition>
+            </Title>
+            {isCookie && (
+              <div className={classes.controls}>
+                <Group position="center">
+                  <ModalPage />
+                </Group>
+              </div>
+            )}
+          </Container>
+        </BackgroundImage>
       </div>
     </>
   )
