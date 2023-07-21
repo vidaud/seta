@@ -142,8 +142,8 @@ class MembershipsBroker(implements(IMembershipsBroker)):
         
         self.request_collection.update_one(self._filter_request(model.community_id, model.requested_by), uq)
     
-    def get_requests_by_community_id(self, community_id: str, status: str = None) -> list[MembershipRequestModel]:
-        filter =  {"community_id": community_id, "requested_by": {"$exists" : True}, "field_name": {"$exists" : False}}
+    def get_requests_by_community_ids(self, community_ids: list[str], status: str = None) -> list[MembershipRequestModel]:
+        filter =  {"community_id": {"$in": [id for id in community_ids]}, "requested_by": {"$exists" : True}, "field_name": {"$exists" : False}}
 
         if status:
             filter["status"] = status
