@@ -2,15 +2,15 @@
     "root": [        
         {
             "key": "0",
-			"label": "Search in SeTA",
-			"data": "<b>Search</b>",
+			"label": "",
+			"data": "<b>Communities</b>",
 			"icon": "",
 			"children": [				
 				{
 					"key": "0-0",
 					"label": "",
 					"icon": "",
-					"data":"<b>1. How can I refine the results of my search?</b>",
+					"data":"<b>1. What kind of rights do you need to have in order to update the Community details?</b>",
 					"children": [
 						{
 						"key": "0-0-0",
@@ -23,7 +23,7 @@
 					"key": "0-1",
 					"label": "",
 					"icon": "",
-					"data":"<b>2. What can I find in My Search section?</b>",
+					"data":"<b>2. How do you create a new resource in the opened section?</b>",
 					"children": [
 						{
 						"key": "0-1-0",
@@ -37,13 +37,13 @@
 			"key": "1",
 			"label": "",
 			"icon": "",
-			"data": "<b>Communities</b>",
+			"data": "<b>Search</b>",
 			"children": [								
 				{
 					"key": "1-0",
 					"label": "",
 					"icon": "",
-					"data":"<b>1. How can I find Communities I might be interested in?</b>",
+					"data":"<b>1. How does the user screen and filter search results in SeTA?</b>",
 					"children": [
 						{
 						"key": "1-0-0",
@@ -56,7 +56,7 @@
 					"key": "1-1",
 					"label": "",
 					"icon": "",
-					"data":"<b>2. How can I create a new Community?</b>",
+					"data":"<b>2. Is it necessary to select the path where the document is located or can we simply drag and drop it? </b>",
 					"children": [
 						{
 						"key": "1-1-0",
@@ -69,7 +69,7 @@
 					"key": "1-2",
 					"label": "",
 					"icon": "",
-					"data":"<b>3. How can I join a Community?</b>",
+					"data":"<b>3. How can the Communities and Search tool be accessed through API's?</b>",
 					"children": [
 						{
 						"key": "1-2-0",
