@@ -3,13 +3,13 @@ import { Popover, Button, Group, Tooltip, Text } from '@mantine/core'
 
 import { createOpenMembership } from '../../../../../../api/communities/membership'
 
-const OpenCommunityMember = ({ community_id, reload }) => {
+const OpenCommunityMember = ({ community_id, refetch }) => {
   const [opened, setOpened] = useState(false)
 
   const createMember = () => {
     createOpenMembership(community_id).then(() =>
       setTimeout(() => {
-        reload()
+        refetch()
         setOpened(o => !o)
       }, 100)
     )

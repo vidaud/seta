@@ -19,7 +19,7 @@ const statusOptions = [
   { label: 'rejected', value: 'rejected' }
 ]
 
-const UpdateCommunityChangeRequest = ({ props, reload }) => {
+const UpdateCommunityChangeRequest = ({ props, refetch }) => {
   const [opened, setOpened] = useState(false)
   const { classes, cx } = useStyles()
 
@@ -40,7 +40,7 @@ const UpdateCommunityChangeRequest = ({ props, reload }) => {
 
   const handleSubmit = (values: CommunityChangeRequestValues) => {
     updateCommunityChangeRequest(props.community_id, props.request_id, values).then(() => {
-      reload()
+      refetch()
     })
 
     setOpened(o => !o)

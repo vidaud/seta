@@ -1,17 +1,24 @@
 import { useQuery } from '@tanstack/react-query'
+import type { AxiosRequestConfig } from 'axios'
 import { getCookie } from 'typescript-cookie'
 
-import community_api from './api'
-
+import api from '..'
+import { environment } from '../../environments/environment'
 import type { UserPermissionsResponse } from '../types/user-permissions-types'
 
 const PERMISSIONS_API_PATH = '/permissions'
 
 export const cacheKey = (id?: string) => ['permissions', id]
+const BASE_URL = environment.baseUrl
+
+const apiConfig: AxiosRequestConfig = {
+  baseURL: BASE_URL
+}
 
 export const getCommunityPermissions = async (id?: string): Promise<UserPermissionsResponse[]> => {
-  const { data } = await community_api.get<UserPermissionsResponse[]>(
-    `${PERMISSIONS_API_PATH}/community/${id}`
+  const { data } = await api.get<UserPermissionsResponse[]>(
+    `${PERMISSIONS_API_PATH}/community/${id}`,
+    apiConfig
   )
 
   return data
@@ -23,9 +30,11 @@ export const useCommunityPermissionsID = (id?: string) =>
 const csrf_token = getCookie('csrf_access_token')
 
 export const manageCommunityScopes = async (id?: string, userId?: string, values?: FormData) => {
-  await community_api
+  await api
     .post(`/permissions/community/${id}/user/${userId}`, values, {
+      ...apiConfig,
       headers: {
+        ...apiConfig?.headers,
         accept: 'application/json',
         'X-CSRF-TOKEN': csrf_token,
         'Content-Type': 'application/x-www-form-urlencoded'

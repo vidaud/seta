@@ -20,7 +20,7 @@ const statusOptions = [
   { label: 'rejected', value: 'rejected' }
 ]
 
-const UpdateMemberRequest = ({ props }) => {
+const UpdateMemberRequest = ({ props, refetch }) => {
   const [opened, setOpened] = useState(false)
   const { classes, cx } = useStyles()
 
@@ -39,7 +39,10 @@ const UpdateMemberRequest = ({ props }) => {
   }, [props])
 
   const handleSubmit = (values: MembershipRequestValues) => {
-    updateMembershipRequest(props.community_id, values, props.requested_by)
+    updateMembershipRequest(props.community_id, values, props.requested_by).then(() => {
+      refetch()
+    })
+
     setOpened(o => !o)
   }
 

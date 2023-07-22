@@ -25,7 +25,7 @@ const NotificationsMenu = ({ total, dropdownItems, notifications }: Props) => {
         // FIXME: We should try to avoid using index as a key when possible - see https://adhithiravi.medium.com/why-do-i-need-keys-in-react-lists-dbb522188bbb
         // eslint-disable-next-line react/no-array-index-key
         <Menu.Item key={index}>
-          <Group position="apart" spacing={0} sx={{ paddingBottom: '1rem' }}>
+          <Group position="apart" spacing={0} sx={{ paddingBottom: '1rem' }} w="98%">
             <IoMdNotifications size="1.3rem" />
             <Box className={classes.box}>Notifications</Box>
             <Badge variant="filled" size="xs">
@@ -39,7 +39,7 @@ const NotificationsMenu = ({ total, dropdownItems, notifications }: Props) => {
   })
 
   return (
-    <Menu shadow="md" width={200} position="bottom-end">
+    <Menu shadow="md" width={220} position="bottom-end">
       <Menu.Target>
         <ActionIcon css={(S.dropdownTarget, S.action)} color="gray.1" size="xl" radius="xl">
           <IoMdNotifications size="2rem" />
