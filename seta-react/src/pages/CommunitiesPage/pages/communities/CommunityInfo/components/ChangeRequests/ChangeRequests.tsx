@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { createStyles, Table, ScrollArea, rem, useMantineTheme, Badge, Select } from '@mantine/core'
+import { createStyles, Table, rem, useMantineTheme, Badge, Select } from '@mantine/core'
 
 import type { CommunityChangeRequests } from '~/api/types/change-request-types'
 
@@ -38,9 +38,12 @@ const requestStatus = [
   { label: 'Pending', value: 'pending' }
 ]
 
-const ChangeCommunityRequests = ({ id, onChange }) => {
+type Props = {
+  id: string
+}
+
+const ChangeCommunityRequests = ({ id }: Props) => {
   const { classes, cx } = useStyles()
-  const [scrolled, setScrolled] = useState(false)
   const { data, isLoading, error, refetch } = useCommunityChangeRequests(id)
   const theme = useMantineTheme()
   const [items, setItems] = useState<CommunityChangeRequests[]>()
@@ -55,7 +58,6 @@ const ChangeCommunityRequests = ({ id, onChange }) => {
         : setItems(data.community_change_requests.filter(item => item.status === selected))
 
       // setItems(data.community_change_requests)
-      onChange(data.community_change_requests.length)
       timeout = setTimeout(refetch, 1000)
 
       return () => {
@@ -64,7 +66,7 @@ const ChangeCommunityRequests = ({ id, onChange }) => {
         }
       }
     }
-  }, [data, onChange, selected, refetch])
+  }, [data, selected, refetch])
 
   if (error) {
     return <ComponentError onTryAgain={refetch} />
@@ -100,17 +102,17 @@ const ChangeCommunityRequests = ({ id, onChange }) => {
   ))
 
   return (
-    <ScrollArea h={200} onScrollPositionChange={({ y }) => setScrolled(y !== 0)}>
+    <>
       <Select
         // label="Select Status"
         name="requestStatus"
-        sx={{ width: 'fit-content', float: 'right' }}
+        sx={{ width: 'fit-content', float: 'right', paddingBottom: '1%' }}
         data={requestStatus}
         value={selected}
         onChange={setSelected}
       />
       <Table miw={500}>
-        <thead className={cx(classes.header, { [classes.scrolled]: scrolled })}>
+        <thead className={cx(classes.header)}>
           <tr>
             <th>Community</th>
             <th>Field</th>
@@ -123,7 +125,7 @@ const ChangeCommunityRequests = ({ id, onChange }) => {
         </thead>
         <tbody>{rows}</tbody>
       </Table>
-    </ScrollArea>
+    </>
   )
 }
 

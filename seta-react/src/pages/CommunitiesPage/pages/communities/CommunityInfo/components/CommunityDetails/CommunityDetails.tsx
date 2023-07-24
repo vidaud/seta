@@ -1,20 +1,17 @@
 import { useEffect, useState } from 'react'
 import { Badge, Collapse, Group, Tabs } from '@mantine/core'
 
-import type { CommunityResponse } from '~/api/types/community-types'
 import type { ClassNameProp } from '~/types/children-props'
 
+import type { CommunityResponse } from '../../../../../../../api/types/community-types'
 import type {
   CommunityScopes,
   ResourceScopes,
   SystemScopes
 } from '../../../../contexts/scope-context'
 import CreateResource from '../../../../resources/ResourceInfo/components/CreateResource/CreateResource'
-import ChangeCommunityRequests from '../ChangeRequests/ChangeRequests'
-import CommunityInvites from '../CommunityInvites/CommunityInvites'
 import CommunityResources from '../CommunityResources/CommunityResources'
-import CommunityUsersPermissions from '../CommunityUserPermissions/CommunityUserPermissions'
-import MembershipRequests from '../MembershipRequests/MembershipRequests'
+import PanelContent from '../PanelContent/PanelContent'
 
 type Props = ClassNameProp & {
   open: boolean
@@ -37,18 +34,6 @@ const CommunityDetails = ({ className, open, community, community_scopes }: Prop
 
     findCommunity ? setScopes(findCommunity[0]?.scopes) : setScopes([])
   }, [community_scopes, community_id])
-
-  const handleNrInvitesChange = (value: number) => {
-    setNrInvites(value)
-  }
-
-  const handleNrChangeRequestsChange = (value: number) => {
-    setNrChangeRequests(value)
-  }
-
-  const handleNrMembershipRequestsChange = (value: number) => {
-    setNrMembershipRequests(value)
-  }
 
   const isManager =
     scopes?.includes('/seta/community/owner') || scopes?.includes('/seta/community/manager')
@@ -83,7 +68,7 @@ const CommunityDetails = ({ className, open, community, community_scopes }: Prop
           ) : null}
         </Tabs.List>
 
-        <Tabs.Panel value="resources" sx={{ paddingLeft: '2%' }}>
+        <Tabs.Panel value="resources">
           {/* {scopes?.includes('/seta/resource/create') ? ( */}
           <CommunityResources id={community_id} />
 
@@ -97,20 +82,20 @@ const CommunityDetails = ({ className, open, community, community_scopes }: Prop
           ) : null}
         </Tabs.Panel>
         {isManager || invite ? (
-          <Tabs.Panel value="invites" sx={{ paddingLeft: '2%' }}>
-            <CommunityInvites id={community_id} onChange={handleNrInvitesChange} />
+          <Tabs.Panel value="invites">
+            <PanelContent id={community_id} panel={activeTab} />
           </Tabs.Panel>
         ) : null}
         {isManager || approve ? (
           <>
-            <Tabs.Panel value="change_requests" sx={{ paddingLeft: '2%' }}>
-              <ChangeCommunityRequests id={community_id} onChange={handleNrChangeRequestsChange} />
+            <Tabs.Panel value="change_requests">
+              <PanelContent id={community_id} panel={activeTab} />
             </Tabs.Panel>
-            <Tabs.Panel value="membership_requests" sx={{ paddingLeft: '2%' }}>
-              <MembershipRequests id={community_id} onChange={handleNrMembershipRequestsChange} />
+            <Tabs.Panel value="membership_requests">
+              <PanelContent id={community_id} panel={activeTab} />
             </Tabs.Panel>
-            <Tabs.Panel value="permissions" sx={{ paddingLeft: '2%' }}>
-              <CommunityUsersPermissions id={community_id} />
+            <Tabs.Panel value="permissions">
+              <PanelContent id={community_id} panel={activeTab} />
             </Tabs.Panel>
           </>
         ) : null}

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { createStyles, Table, ScrollArea, rem, Badge, useMantineTheme, Group } from '@mantine/core'
+import { createStyles, Table, rem, Badge, useMantineTheme, Group, Text } from '@mantine/core'
 
 import type { MembershipRequest } from '~/api/types/membership-types'
 
@@ -32,19 +32,19 @@ const useStyles = createStyles(theme => ({
   }
 }))
 
-const MembershipRequests = ({ id, onChange }) => {
+const MembershipRequests = ({ id, type }) => {
   const { classes, cx } = useStyles()
-  const [scrolled, setScrolled] = useState(false)
   const { data, isLoading, error, refetch } = useMembershipRequestsID(id)
   const [items, setItems] = useState<MembershipRequest[] | undefined[]>([])
   const theme = useMantineTheme()
+  const perPage = 5
 
   useEffect(() => {
     let timeout: number | null = null
 
     if (data) {
-      setItems(data)
-      onChange(data.length)
+      type === 'container' ? setItems(data.slice(0, perPage)) : setItems(data)
+
       timeout = setTimeout(refetch, 1000)
 
       return () => {
@@ -53,7 +53,7 @@ const MembershipRequests = ({ id, onChange }) => {
         }
       }
     }
-  }, [data, onChange, refetch])
+  }, [data, refetch, type])
 
   if (error) {
     return <ComponentError onTryAgain={refetch} />
@@ -94,9 +94,9 @@ const MembershipRequests = ({ id, onChange }) => {
   ))
 
   return (
-    <ScrollArea onScrollPositionChange={({ y }) => setScrolled(y !== 0)}>
+    <>
       <Table miw={500}>
-        <thead className={cx(classes.header, { [classes.scrolled]: scrolled })}>
+        <thead className={cx(classes.header)}>
           <tr>
             <th>Requested By</th>
             <th>Message</th>
@@ -107,7 +107,12 @@ const MembershipRequests = ({ id, onChange }) => {
         </thead>
         <tbody>{rows}</tbody>
       </Table>
-    </ScrollArea>
+      {data.length > perPage && type === 'container' ? (
+        <Text color="gray.5" size="sm" sx={{ float: 'right' }}>
+          Expand to see full list ...
+        </Text>
+      ) : null}
+    </>
   )
 }
 
