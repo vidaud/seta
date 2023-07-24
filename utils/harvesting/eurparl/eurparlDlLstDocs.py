@@ -24,19 +24,17 @@ date_format = now.strftime('%Y%m%d')
 startDir = os.path.realpath(os.path.dirname(os.path.dirname(__file__)))
 externalDir = 'D:/SeTA'
 os.chdir('D:')
-# assignment of base folder, from where to start creating the folders,  if it does not exist then create it
+# assignment of base folder, from where to start creating the folders, if the folder does not exist then is created
 base_folder = externalDir + '/EURPARL/'
 if not os.path.exists(base_folder):
     os.makedirs(base_folder)
 
-# assignment of folder where to save the files, if it does not exist then create it
+# assignment of folder where to save the files, if the folder does not exist then is created
 pathFolder = externalDir + '/EURPARL/download_pages'
 # if the folder does not exist, then create it
 if not os.path.exists(pathFolder):
     os.makedirs(pathFolder)
 
-# for now this assignment is commented
-# hostname = socket.getfqdn()
 local = False
 
 # declaration of input variables to run the script
@@ -58,7 +56,7 @@ if optionToRun != 'S':
 dateUpdate = None
 dateDownload = None
 
-# assignment of log folder if it does not exist then create it
+# assignment of log folder if it does not exist then is created
 loggingFolder = base_folder + 'logs/logDownloadPages/'
 if not os.path.exists(loggingFolder):
     os.makedirs(loggingFolder)
@@ -74,6 +72,8 @@ logger.info('File location using os.path.realpath:{}'.format(startDir))
 
 # conditions for the different types of options selected when launching the script
 if optionToRun == 'A':
+    # for adopted-texts list
+    # if the folder does not exist then is created
     pathFolder = pathFolder + '/parlAdopTxtLst/'
     if not os.path.exists(pathFolder):
         os.makedirs(pathFolder)
@@ -83,6 +83,8 @@ if optionToRun == 'A':
         os.makedirs(loggingFolder)
 
 if optionToRun == 'D':
+    # for plenary-documents list
+    # if the folder does not exist then is created
     pathFolder = pathFolder + '/parl_docsLst/'
     if not os.path.exists(pathFolder):
         os.makedirs(pathFolder)
@@ -92,6 +94,8 @@ if optionToRun == 'D':
         os.makedirs(loggingFolder)
 
 if optionToRun == 'M':
+    # for meetings list
+    # if the folder does not exist then is created
     pathFolder = pathFolder + '/parlMeetLst/'
     if not os.path.exists(pathFolder):
         os.makedirs(pathFolder)
@@ -101,6 +105,8 @@ if optionToRun == 'M':
         os.makedirs(loggingFolder)
 
 if optionToRun == 'Q':
+    # for parliamentary-questions list
+    # if the folder does not exist then is created
     pathFolder = pathFolder + '/parl_questionsLst/'
     if not os.path.exists(pathFolder):
         os.makedirs(pathFolder)
@@ -110,6 +116,8 @@ if optionToRun == 'Q':
         os.makedirs(loggingFolder)
 
 if optionToRun == 'S':
+    # for plenary-session list
+    # if the folder does not exist then is created
     meetingPathFolder = pathFolder + '/parlMeetLst/'
     if not os.path.exists(pathFolder):
         logger.info('The folder with the Meetings list does not exist, verify')
@@ -235,7 +243,6 @@ def urlCallListByYear(optionToRun, startYear='2011', currYear=currYear):
                                             logger.info('The file:' + yearFolder+'/sess_' + str(dateSession) + '.json is been '
                                                                                                      'download '
                                                                                                      'already')
-                # exit()
 
             else:
                 logger.info('The file page_' + str(curYear) + '.json is been download already')

@@ -22,9 +22,7 @@ print("File location using os.getcwd():", startDir)
 now = datetime.now()
 date_format = now.strftime("%Y%m%d")
 
-# for now this assignment is commented
-# hostname = socket.getfqdn()
-
+# declaration of input variables to run the script
 username = input("insert your internet proxy username: ")
 userpwd = getpass(prompt='insert your internet proxy password: ')
 
@@ -40,12 +38,12 @@ env_px = "http://" + username + ":" + userpwd + "@autoproxy.cec.eu.int:8012"
 # set the environment variable HTTPS_PROXY with the value of variable env_px
 os.environ["HTTPS_PROXY"] = env_px
 
-# assignment of base folder, from where to start creating the folders,  if it does not exist then create it
+# assignment of base folder, from where to start creating the folders,  if it does not exist then is created
 base_folder = externalDir + '/EURPARL/'
 if not os.path.exists(base_folder):
     os.makedirs(base_folder)
 
-# assignment of log folder if it does not exist then create it
+# assignment of log folder if it does not exist then is created
 loggingFolder = base_folder + 'logs/logDownloadFiles/'
 if not os.path.exists(loggingFolder):
     os.makedirs(loggingFolder)
@@ -54,31 +52,31 @@ if not os.path.exists(loggingFolder):
 date_time = now.strftime("%Y%m%d%H%M%S")
 
 if optionToRun == 'A':
-    # setting the dest of log folder
+    # setting the dest of log folder for adopted-texts
     loggingFolder = base_folder + 'logs/logparlAdopTxtFiles/'
     if not os.path.exists(loggingFolder):
         os.makedirs(loggingFolder)
 
 if optionToRun == 'D':
-    # setting the dest of log folder
+    # setting the dest of log folder for plenary-documents
     loggingFolder = base_folder + 'logs/logDocsFiles/'
     if not os.path.exists(loggingFolder):
         os.makedirs(loggingFolder)
 
 if optionToRun == 'M':
-    # setting the dest of log folder
+    # setting the dest of log folder for meetings
     loggingFolder = base_folder + 'logs/logMeetFiles/'
     if not os.path.exists(loggingFolder):
         os.makedirs(loggingFolder)
 
 if optionToRun == 'Q':
-    # setting the dest of log folder
+    # setting the dest of log folder for parliamentary-questions
     loggingFolder = base_folder + 'logs/logQuestionsFiles/'
     if not os.path.exists(loggingFolder):
         os.makedirs(loggingFolder)
 
 if optionToRun == 'S':
-    # setting the dest of log folder
+    # setting the dest of log folder for plenary-sessions
     loggingFolder = base_folder + 'logs/logSessionsFiles/'
     if not os.path.exists(loggingFolder):
         os.makedirs(loggingFolder)
@@ -89,32 +87,35 @@ logging.basicConfig(level=logging.DEBUG, format="%(asctime)s %(message)s",
 # declaration variable logger that will be writing into the log txt file
 logger = logging.getLogger()
 
-# assignment of folder where to save the files, if it does not exist then create it
+# assignment of folder where to save the files, if it does not exist then is created
 pathFolder = externalDir + '/EURPARL/download_pages/'
 
 # conditions for the different types of options selected when launching the script
+# for adopted-texts
 if optionToRun == 'A':
     pathFolder = base_folder + 'download_pages/parlAdopTxtLst/'
     if not os.path.exists(pathFolder):
         logger.info('The folder with the elements list does not exist')
         exit()
 
-    # setting of destination folder for the saved files
+    # setting of destination folder for the saved files, if it does not exist then is created
     downloadFolder = base_folder + 'downloadFiles/parlAdopTxtFiles/'
     if not os.path.exists(downloadFolder):
         os.makedirs(downloadFolder)
 
+# for plenary-documents
 if optionToRun == 'D':
     pathFolder = base_folder + 'download_pages/parl_docsLst/'
     if not os.path.exists(pathFolder):
         logger.info('The folder with the elements list does not exist')
         exit()
 
-    # setting of destination folder for the saved files
+    # setting of destination folder for the saved files, if it does not exist then is created
     downloadFolder = base_folder + 'downloadFiles/parl_docsFiles/'
     if not os.path.exists(downloadFolder):
         os.makedirs(downloadFolder)
 
+# for meetings
 if optionToRun == 'M':
     pathFolder = base_folder + 'download_pages/parlMeetLst/'
     if not os.path.exists(pathFolder):
@@ -126,24 +127,26 @@ if optionToRun == 'M':
     if not os.path.exists(downloadFolder):
         os.makedirs(downloadFolder)
 
+# for parliamentary-questions
 if optionToRun == 'Q':
     pathFolder = base_folder + 'download_pages/parl_questionsLst/'
     if not os.path.exists(pathFolder):
         logger.info('The folder with the elements list does not exist')
         exit()
 
-    # setting of destination folder for the saved files
+    # setting of destination folder for the saved files, if it does not exist then is created
     downloadFolder = base_folder + 'downloadFiles/parl_questionsFiles/'
     if not os.path.exists(downloadFolder):
         os.makedirs(downloadFolder)
 
+# for plenary-sessions
 if optionToRun == 'S':
     pathFolder = base_folder + 'download_pages/parlSessionsLst/'
     if not os.path.exists(pathFolder):
         logger.info('The folder with the elements list does not exist')
         exit()
 
-    # setting of destination folder for the saved files
+    # setting of destination folder for the saved files, if it does not exist then is created
     downloadFolder = base_folder + 'downloadFiles/parlSessionsFiles/'
     if not os.path.exists(downloadFolder):
         os.makedirs(downloadFolder)
@@ -157,11 +160,9 @@ os.chdir(pathFolder)
 def read_text_file(optionToRun, file_path):
     with open(file_path, 'r', encoding='utf-8') as f:
         # get the year from the file path
-        # print(file_path)
         strYear = re.search(r'\d{4}', file_path)
         curYear = strYear.group()
         data = json.load(f)
-        # print(data)
         if data and curYear:
             if optionToRun == 'A':
                 results = data["docs"]
@@ -328,8 +329,8 @@ def main():
                         print("Find file to read {}".format(file_path))
                         # get the start time
                         st_Main = time.time()
-                        # call the function read_text_file which reads the json file and look in the results the xml file of
-                        # the single items to save.
+                        # call the function read_text_file which reads the json file and look in the results the xml
+                        # file of the single items to save.
                         isReadable = read_text_file(optionToRun, file_path)
                         et_Main = time.time()
                         elapsed_time_Main = et_Main - st_Main

@@ -203,7 +203,6 @@ def countingFilesTypesA(readFolder):
         a.write('percentage Number of EP Adopted text SL:{:.3%}'.format(adoptedTxt_SL / adoptedTxt) + '\n')
         a.write('percentage Number of EP Adopted text SV:{:.3%}'.format(adoptedTxt_SV / adoptedTxt) + '\n')
 
-
 # the following function counts all the  plenary-documents PDF files in the different languages, gives some percentage
 # and write it to a txt file
 def countingFilesTypesD(readFolder):
@@ -400,14 +399,14 @@ def countingFilesTypesD(readFolder):
     jntMotResAmSL = 0
     jntMotResAmSV = 0
 
-    # Looking for files of type Reports
+    # Start reading files
     for file in os.listdir(r'' + readFolder):
         # Total parliamentary documents
         if ".pdf" in file:
             totalParlDocs += 1
         if ".pdf" in file and '-AM-' in file:
             totalAm += 1
-        # Reports
+        # Counting for files of type Reports
         if ".pdf" in file and 'A-' in file and '-AM-' not in file:
             totparlRep += 1
         if "_bg.pdf" in file and 'A-' in file and '-AM-' not in file:
@@ -459,7 +458,7 @@ def countingFilesTypesD(readFolder):
         if "_sv.pdf" in file and 'A-' in file and '-AM-' not in file:
             parlRepSV += 1
 
-        # Looking for files of type Reports amendment
+        # Counting for files of type Reports amendment
         if ".pdf" in file and 'A-' in file and '-AM-' in file:
             totparlDocAmRep += 1
         if "_bg.pdf" in file and 'A-' in file and '-AM-' in file:
@@ -511,7 +510,7 @@ def countingFilesTypesD(readFolder):
         if "_sv.pdf" in file and 'A-' in file and '-AM-' in file:
             parlDocAmRepSV += 1
 
-        # Looking for files of type Motion for a resolution
+        # Counting for files of type Motion for a resolution
         if ".pdf" in file and 'B-' in file and '-AM-' not in file:
             totMotRes += 1
         if "_bg.pdf" in file and 'B-' in file and '-AM-' not in file:
@@ -563,7 +562,7 @@ def countingFilesTypesD(readFolder):
         if "_sv.pdf" in file and 'B-' in file and '-AM-' not in file:
             motResSV += 1
 
-        # Looking for files of type Amendment for Motion for a resolution
+        # Counting for files of type Amendment for Motion for a resolution
         if ".pdf" in file and 'B-' in file and '-AM-' in file:
             totMotResAm += 1
         if "_bg.pdf" in file and 'B-' in file and '-AM-' in file:
@@ -615,7 +614,7 @@ def countingFilesTypesD(readFolder):
         if "_sv.pdf" in file and 'B-' in file and '-AM-' in file:
             motResAmSV += 1
 
-        # Looking for files of type EP motions for resolution - oral questions
+        # Counting for files of type EP motions for resolution - oral questions
         if ".pdf" in file and 'QOB-' in file and '-AM-' not in file:
             totMotResOralQst += 1
         if "_bg.pdf" in file and 'QOB-' in file and '-AM-' not in file:
@@ -667,7 +666,7 @@ def countingFilesTypesD(readFolder):
         if "_sv.pdf" in file and 'QOB-' in file and '-AM-' not in file:
             motResOralQstSV += 1
 
-        # Looking for files of type Joint motion for a resolution
+        # Counting for files of type Joint motion for a resolution
         if ".pdf" in file and 'RC-' in file and '-AM-' not in file:
             totJntMotRes += 1
         if "_bg.pdf" in file and 'RC-' in file and '-AM-' not in file:
@@ -770,14 +769,15 @@ def countingFilesTypesD(readFolder):
         if "_sv.pdf" in file and 'RC-' in file and '-AM-' in file:
             jntMotResAmSV += 1
 
-    # print to the console the results stats file, if the folder and the file did not exist they are created
+    # If the folder and the file did not exist they are created
     if not os.path.exists(base_folder + '/stats'):
         os.makedirs(base_folder + '/stats')
     if not os.path.exists(base_folder + '/stats/outputStsEurParlParlDocpdf.txt'):
         with open(base_folder + '/stats/outputStsEurParlParlDocpdf.txt', 'w') as file:
             file.close()
+    # start writing the file with the results from the counting from the different languages
+    # first object to write reports
     with open(base_folder + '/stats/outputStsEurParlParlDocpdf.txt', 'w') as a:
-
         a.write('Number of EP plenary documents : {}'.format(totalParlDocs) + '\n\n')
         a.write('Number of EP plenary documents reports: {}'.format(totparlRep) + '\n')
         a.write('Number of EP plenary documents reports(Bulgarian): {}'.format(parlRepBG) + '\n')
@@ -805,6 +805,7 @@ def countingFilesTypesD(readFolder):
         a.write('Number of EP plenary documents reports(Slovenian): {}'.format(parlRepSL) + '\n')
         a.write('Number of EP plenary documents reports(Swedish): {}'.format(parlRepSV) + '\n\n')
 
+        # object to write EP plenary documents reports amendments
         a.write('Number of EP plenary documents reports amendments: {}'.format(totparlDocAmRep) + '\n')
         a.write('Number of EP plenary documents reports amendments in (Bulgarian): {}'.format(parlDocAmRepBG) + '\n')
         a.write('Number of EP plenary documents reports amendments in (Czech): {}'.format(parlDocAmRepCS) + '\n')
@@ -831,6 +832,7 @@ def countingFilesTypesD(readFolder):
         a.write('Number of EP plenary documents reports amendments in (Slovenian): {}'.format(parlDocAmRepSL) + '\n')
         a.write('Number of EP plenary documents reports amendments in (Swedish): {}'.format(parlDocAmRepSV) + '\n\n')
 
+        # object to write EP plenary documents Motion for a resolution
         a.write('Number of EP plenary documents Motion for a resolution: {}'.format(totMotRes) + '\n')
         a.write(
             'Number of EP plenary documents Motion for a resolution  (Bulgarian): {}'.format(motResBG) + '\n')
@@ -863,6 +865,7 @@ def countingFilesTypesD(readFolder):
         a.write(
             'Number of EP plenary documents Motion for a resolution (Swedish): {}'.format(motResSV) + '\n\n')
 
+        # object to write plenary documents Motion for a resolution amendments
         a.write('Number of EP plenary documents Motion for a resolution amendments: {}'.format(totMotResAm) + '\n')
         a.write(
             'Number of EP plenary documents Motion for a resolution amendments in (Bulgarian): {}'.format(
@@ -919,6 +922,7 @@ def countingFilesTypesD(readFolder):
             'Number of EP plenary documents Motion for a resolution amendments in (Swedish): {}'.format(
                 motResAmSV) + '\n\n')
 
+        # object to write plenary documents Motion for a resolution - oral questions
         a.write('Number of EP plenary documents Motions for resolution - oral questions: {}'.format(
             totMotResOralQst) + '\n')
         a.write('Number of EP plenary documents Motions for resolution - oral questions  (Bulgarian): {}'.format(
@@ -970,6 +974,7 @@ def countingFilesTypesD(readFolder):
         a.write('Number of EP plenary documents Motions for resolution - oral questions (Swedish): {}'.format(
             motResOralQstSV) + '\n\n')
 
+        # object to write EP plenary documents Joint Motion for a resolution
         a.write('Number of EP plenary documents Joint motion for a resolution: {}'.format(totJntMotRes) + '\n')
         a.write(
             'Number of EP plenary documents Joint motion for a resolution  (Bulgarian): {}'.format(
@@ -1044,6 +1049,7 @@ def countingFilesTypesD(readFolder):
             'Number of EP plenary documents Joint motion for a resolution (Swedish): {}'.format(
                 jntMotResSV) + '\n\n\n')
 
+        # object to write EP plenary documents Joint Motion for a resolution amendment
         a.write('Number of EP plenary documents Joint motion for a resolution amendment: {}'.format(
             totJntMotResAm) + '\n')
         a.write(
@@ -1119,6 +1125,7 @@ def countingFilesTypesD(readFolder):
             'Number of EP plenary documents Joint motion for a resolution amendment in (Swedish): {}'.format(
                 jntMotResAmSV) + '\n\n\n')
 
+        # object to write percentage of EP plenary documents reports
         a.write('percentage of EP plenary documents reports: {:.3%}'.format(totparlRep / totalParlDocs) + '\n')
         a.write('percentage of EP plenary documents reports BG: {:.3%}'.format(parlRepBG / totparlRep) + '\n')
         a.write('percentage of EP plenary documents reports CS: {:.3%}'.format(parlRepCS / totparlRep) + '\n')
@@ -1146,6 +1153,7 @@ def countingFilesTypesD(readFolder):
         a.write(
             'percentage of EP plenary documents reports SV: {:.3%}'.format(parlRepSV / totparlRep) + '\n\n')
 
+        # object to write percentage of EP plenary documents reports amendment
         a.write(
             'percentage of EP plenary documents reports amendment: {:.3%}'.format(
                 totparlDocAmRep / totalParlDocs) + '\n')
@@ -1198,6 +1206,7 @@ def countingFilesTypesD(readFolder):
         a.write('percentage of EP plenary documents reports amendment in SV: {:.3%}'.format(
             parlDocAmRepSV / totparlDocAmRep) + '\n\n')
 
+        # object to write percentage of EP plenary documents Motion for a resolution
         a.write('percentage of EP plenary documents Motion for a resolution: {:.3%}'.format(
             totMotRes / totalParlDocs) + '\n')
         a.write('percentage of EP plenary documents Motion for a resolution BG: {:.3%}'.format(
@@ -1249,6 +1258,7 @@ def countingFilesTypesD(readFolder):
         a.write('percentage of EP plenary documents Motion for a resolution SV: {:.3%}'.format(
             motResSV / totMotRes) + '\n\n')
 
+        # object to write percentage of amendments of EP plenary documents Motion for a resolution
         a.write(
             'percentage of amendments of EP plenary documents Motion for a resolution: {:.3%}'.format(
                 totMotResAm / totalParlDocs) + '\n')
@@ -1301,6 +1311,7 @@ def countingFilesTypesD(readFolder):
         a.write('percentage of amendments of EP plenary documents Motion for a resolution SV: {:.3%}'.format(
             motResAmSV / totMotResAm) + '\n\n')
 
+        # object to write percentage of amendments of EP plenary documents Motion for a resolution - oral questions
         a.write('percentage of EP plenary documents Motions for resolution - oral questions: {:.3%}'.format(
             totMotResOralQst / totalParlDocs) + '\n')
         a.write('percentage of EP plenary documents Motions for resolution - oral questions BG: {:.3%}'.format(
@@ -1352,6 +1363,7 @@ def countingFilesTypesD(readFolder):
         a.write('percentage of EP plenary documents Motions for resolution - oral questions SV: {:.3%}'.format(
             motResOralQstSV / totMotResOralQst) + '\n\n')
 
+        # object to write percentage of EP plenary documents Joint motion for a resolution
         a.write('percentage of EP plenary documents Joint motion for a resolution: {:.3%}'.format(
             totJntMotRes / totalParlDocs) + '\n')
         a.write('percentage of EP plenary documents Joint motion for a resolution BG: {:.3%}'.format(
@@ -1403,6 +1415,7 @@ def countingFilesTypesD(readFolder):
         a.write('percentage of EP plenary documents Joint motion for a resolution SV: {:.3%}'.format(
             jntMotResSV / totJntMotRes) + '\n\n')
 
+        # object to write percentage of amendments EP plenary documents Joint motion for a resolution
         a.write('percentage of amendments EP plenary documents Joint motion for a resolution: {:.3%}'.format(
             totJntMotResAm / totalParlDocs) + '\n')
         a.write('percentage of amendments EP plenary documents Joint motion for a resolution BG: {:.3%}'.format(
@@ -1454,14 +1467,14 @@ def countingFilesTypesD(readFolder):
         a.write('percentage of amendments EP plenary documents Joint motion for a resolution SV: {:.3%}'.format(
             jntMotResAmSV / totJntMotResAm) + '\n')
 
-
+# the following function counts all the parliamentary-questions PDF files in the different languages, gives some
+# percentage and write it to a txt file
 def countingFilesTypesQ(readFolder):
-    # count the numer of file that have the extension pdf
     countQst = 0
     countAsw = 0
     print('read folder {}'.format(readFolder))
 
-    # Questions for oral answer
+    # Variables of Questions for Oral Answer
     totQstOralAnsw = 0
     qstOralAnswBG = 0
     qstOralAnswCS = 0
@@ -1488,7 +1501,7 @@ def countingFilesTypesQ(readFolder):
     qstOralAnswSL = 0
     qstOralAnswSV = 0
 
-    # Answers for oral answer
+    # Variables for oral Answer
     totOralAnsw = 0
     oralAnswBG = 0
     oralAnswCS = 0
@@ -1515,7 +1528,7 @@ def countingFilesTypesQ(readFolder):
     oralAnswSL = 0
     oralAnswSV = 0
 
-    # Questions for Question Time asked during the period set aside for questions during plenary sittings
+    # Variables for Question Time asked during the period set aside for questions during plenary sittings
     qstTimeAnsw = 0
     qstTimeAnswBG = 0
     qstTimeAnswCS = 0
@@ -1542,7 +1555,7 @@ def countingFilesTypesQ(readFolder):
     qstTimeAnswSL = 0
     qstTimeAnswSV = 0
 
-    # Answer for Question Time asked during the period set aside during plenary sittings
+    # Variables of Answer for Question Time asked during the period set aside during plenary sittings
     answQstTime = 0
     answQstTimeBG = 0
     answQstTimeCS = 0
@@ -1569,7 +1582,7 @@ def countingFilesTypesQ(readFolder):
     answQstTimeSL = 0
     answQstTimeSV = 0
 
-    # Written questions with a request for a written answer
+    # Variable for Written questions with a request for a written answer
     wrtQstReqAnsw = 0
     wrtQstReqAnswBG = 0
     wrtQstReqAnswCS = 0
@@ -1596,7 +1609,7 @@ def countingFilesTypesQ(readFolder):
     wrtQstReqAnswSL = 0
     wrtQstReqAnswSV = 0
 
-    # Answer for written questions with a request for a written answer
+    # Variable for Answer for written questions with a request for a written answer
     answWrtQstReq = 0
     answWrtQstReqBG = 0
     answWrtQstReqCS = 0
@@ -1623,13 +1636,13 @@ def countingFilesTypesQ(readFolder):
     answWrtQstReqSL = 0
     answWrtQstReqSV = 0
 
+# Start looking for differente types of files to count
     for file in os.listdir(r'' + readFolder):
-        # print(type(file))
         if ".pdf" in file and 'ASW' not in file:
             countQst += 1
         if '.pdf' in file and 'ASW' in file:
             countAsw += 1
-        # Questions for oral answer
+        # Counting questions for oral answer
         if ".pdf" in file and 'E-' in file and 'ASW' not in file:
             totQstOralAnsw += 1
         if "_bg.pdf" in file and 'E-' in file and 'ASW' not in file:
@@ -1681,7 +1694,7 @@ def countingFilesTypesQ(readFolder):
         if "_sv.pdf" in file and 'E-' in file and 'ASW' not in file:
             qstOralAnswSV += 1
 
-        # Answers for oral answer
+        # Counting answers for oral answer
         if ".pdf" in file and 'E-' in file and 'ASW' in file:
             totOralAnsw += 1
         if "_bg.pdf" in file and 'E-' in file and 'ASW' in file:
@@ -1733,7 +1746,7 @@ def countingFilesTypesQ(readFolder):
         if "_sv.pdf" in file and 'E-' in file and 'ASW' in file:
             oralAnswSV += 1
 
-        # Questions for Question Time asked during the period set aside for questions during plenary sittings
+        # Counting Questions for Question Time asked during the period set aside for questions during plenary sittings
         if ".pdf" in file and 'O-' in file and 'ASW' not in file:
             qstTimeAnsw += 1
         if "_bg.pdf" in file and 'O-' in file and 'ASW' not in file:
@@ -1785,7 +1798,7 @@ def countingFilesTypesQ(readFolder):
         if "_sv.pdf" in file and 'O-' in file and 'ASW' not in file:
             qstTimeAnswSV += 1
 
-        # Answer for Question Time asked during the period set aside during plenary sittings
+        # Counting answer for Question Time asked during the period set aside during plenary sittings
         if ".pdf" in file and 'O-' in file and 'ASW' in file:
             answQstTime += 1
         if "_bg.pdf" in file and 'O-' in file and 'ASW' in file:
@@ -1837,7 +1850,7 @@ def countingFilesTypesQ(readFolder):
         if "_sv.pdf" in file and 'O-' in file and 'ASW' in file:
             answQstTimeSV += 1
 
-        # Written questions with a request for a written answer
+        # Counting written questions with a request for a written answer
         if ".pdf" in file and 'P-' in file and 'ASW' not in file:
             wrtQstReqAnsw += 1
         if "_bg.pdf" in file and 'P-' in file and 'ASW' not in file:
@@ -1889,7 +1902,7 @@ def countingFilesTypesQ(readFolder):
         if "_sv.pdf" in file and 'P-' in file and 'ASW' not in file:
             wrtQstReqAnswSV += 1
 
-        # Answer for written questions with a request for a written answer
+        # Counting Answer for written questions with a request for a written answer
         if ".pdf" in file and 'P-' in file and 'ASW' in file:
             answWrtQstReq += 1
         if "_bg.pdf" in file and 'P-' in file and 'ASW' in file:
@@ -1946,19 +1959,21 @@ def countingFilesTypesQ(readFolder):
     logger.info('Number of questions  {}:'.format(countQst))
     logger.info('Number of answers  {}:'.format(countAsw))
 
-    # print to the console the results stats file, if the folder and the file did not exist they are created
+    # Checking  if the folder and the file did not exist they are created
     if not os.path.exists(base_folder + '/stats'):
         os.makedirs(base_folder + '/stats')
     if not os.path.exists(base_folder + '/stats/outputStsEurParlParlQstpdf.txt'):
         with open(base_folder + '/stats/outputStsEurParlParlQstpdf.txt', 'w') as file:
             file.close()
+
+    # start writing the file with the results from the counting from the different languages
     with open(base_folder + '/stats/outputStsEurParlParlQstpdf.txt', 'w') as a:
 
         a.write('Total files with pdf ext: {}'.format(totalFiles) + '\n')
         a.write('Number of questions:  {}'.format(countQst) + '\n')
         a.write('Number of answers:  {}'.format(countAsw) + '\n\n')
 
-        # Questions for oral answer
+        # Object to write: Questions for oral answer
         a.write(
             'Number of Questions for oral answer dealt with during plenary sittings: {}'.format(totQstOralAnsw) + '\n')
         a.write('Number of Questions for oral answer dealt with during plenary sittings(Bulgarian) bg: {}'.format(
@@ -2010,7 +2025,7 @@ def countingFilesTypesQ(readFolder):
         a.write('Number of Questions for oral answer dealt with during plenary sittings(Swedish): {}'.format(
             qstOralAnswSV) + '\n\n')
 
-        # Oral Answers for Questions
+        # Object to write: Oral Answers for Questions
         a.write(
             'Number of Oral Answers for Questions dealt with during plenary sittings: {}'.format(totOralAnsw) + '\n')
         a.write('Number of Oral Answers for Questions dealt with during plenary sittings(Bulgarian) bg: {}'.format(
@@ -2062,7 +2077,8 @@ def countingFilesTypesQ(readFolder):
         a.write('Number of Oral Answers for Questions dealt with during plenary sittings(Swedish): {}'.format(
             oralAnswSV) + '\n\n')
 
-        # Questions for Question Time asked during the period set aside for questions during plenary sittings
+        # Object to write: Questions for Question Time asked during the period set aside for questions during plenary
+        # sittings
         a.write('Number of Questions for Question Time asked during the period: {}'.format(qstTimeAnsw) + '\n')
         a.write(
             'Number of Questions for Question Time asked during the period (Bulgarian): {}'.format(
@@ -2119,7 +2135,8 @@ def countingFilesTypesQ(readFolder):
             'Number of Questions for Question Time asked during the period (Swedish): {}'.format(
                 qstTimeAnswSV) + '\n\n')
 
-        # Answer for Question Time asked during the period set aside for questions during plenary sittings
+        # Object to write Answer for Question Time asked during the period set aside for questions during plenary
+        # sittings
         a.write('Number of Answers for Question Time asked during the period: {}'.format(answQstTime) + '\n')
         a.write(
             'Number of Answers for Question Time asked during the period (Bulgarian): {}'.format(
@@ -2176,7 +2193,7 @@ def countingFilesTypesQ(readFolder):
             'Number of Answers for Question Time asked during the period (Swedish): {}'.format(
                 answQstTimeSV) + '\n\n')
 
-        # Written questions with a request for a written answer
+        # Object to write: Written questions with a request for a written answer
         a.write('Number of Written questions with a request for a written answer : {}'.format(
             wrtQstReqAnsw) + '\n')
         a.write('Number of Written questions with a request for a written answer   (Bulgarian): {}'.format(
@@ -2228,7 +2245,7 @@ def countingFilesTypesQ(readFolder):
         a.write('Number of Written questions with a request for a written answer  (Swedish): {}'.format(
             wrtQstReqAnswSV) + '\n\n')
 
-        # Number of Answers for written questions with a request for a written answer
+        # Object to write: Number of Answers for written questions with a request for a written answer
         a.write('Number of Answers for written questions with a request for a written answer : {}'.format(
             answWrtQstReq) + '\n')
         a.write('Number of Answers for written questions with a request for a written answer   (Bulgarian): {}'.format(
@@ -2280,7 +2297,7 @@ def countingFilesTypesQ(readFolder):
         a.write('Number of Answers for written questions with a request for a written answer  (Swedish): {}'.format(
             answWrtQstReqSV) + '\n\n')
 
-        # percentage of Questions for oral answer dealt with during plenary sittings
+        # Object to write: percentage of Questions for oral answer dealt with during plenary sittings
         a.write('percentage of Questions for oral answer dealt with during plenary sittings: {:.3%}'.format(
             totQstOralAnsw / countQst) + '\n')
         a.write('percentage of Questions for oral answer dealt with during plenary sittings BG: {:.3%}'.format(
@@ -2332,7 +2349,8 @@ def countingFilesTypesQ(readFolder):
         a.write(
             'percentage of Questions for oral answer dealt with during plenary sittings SV: {:.3%}'.format(
                 qstOralAnswSV / totQstOralAnsw) + '\n\n')
-        # percentage of Answers for Oral Questions
+
+        # Object to write: percentage of Answers for Oral Questions
         a.write('percentage of Answers for Oral Questions dealt with during plenary sittings: {:.3%}'.format(
             totOralAnsw / countAsw) + '\n')
         a.write('percentage of Answers for Oral Questions dealt with during plenary sittings BG: {:.3%}'.format(
@@ -2385,7 +2403,7 @@ def countingFilesTypesQ(readFolder):
             'percentage of Answers for Oral Questions dealt with during plenary sittings SV: {:.3%}'.format(
                 oralAnswSV / totOralAnsw) + '\n\n')
 
-        # percentage of Questions for Question Time asked during the period
+        # Object to write: percentage of Questions for Question Time asked during the period
         a.write(
             'percentage of Questions for Question Time asked during the period: {:.3%}'.format(
                 qstTimeAnsw / countQst) + '\n')
@@ -2437,12 +2455,13 @@ def countingFilesTypesQ(readFolder):
             qstTimeAnswSL / qstTimeAnsw) + '\n')
         a.write('percentage of Questions for Question Time asked during the period SV: {:.3%}'.format(
             qstTimeAnswSV / qstTimeAnsw) + '\n\n')
-        # percentage of Answer for Questions Time asked during the period
+
+        # Object to write: percentage of Answer for Questions Time asked during the period
         a.write(
             'percentage of Answer for Questions Time asked during the period: {:.3%}'.format(
                 answQstTime / countAsw) + '\n')
 
-        # percentage of Written questions with a request for a written answer
+        # Object to write: percentage of Written questions with a request for a written answer
         a.write('percentage of Written questions with a request for a written answer : {:.3%}'.format(
             wrtQstReqAnsw / countQst) + '\n')
         a.write('percentage of Written questions with a request for a written answer  BG: {:.3%}'.format(
@@ -2494,21 +2513,18 @@ def countingFilesTypesQ(readFolder):
         a.write('percentage of Written questions with a request for a written answer  SV: {:.3%}'.format(
             wrtQstReqAnswSV / wrtQstReqAnsw) + '\n\n')
 
-        #   percentage of written answer for Written questions with a request
+        # Object to write: percentage of written answer for Written questions with a request
         a.write('percentage of written answer for Written questions with a request : {:.3%}'.format(
             answWrtQstReq / countAsw) + '\n')
 
-
+# the following function counts all the plenary-session PDF files in the different languages, gives some
+# percentage and write it to a txt file
 def countingFilesTypesS(readFolder):
-    # assignment of folder where to read the files
-    # readFolder = base_folder + '/downloadPdfFiles/parlSessionsPdf'
-
-    # count the numer of file that have the extension pdf
     totalFiles = len(fnmatch.filter(os.listdir(readFolder), '*.pdf'))
     logger.info('Files with pdf ext {}:'.format(totalFiles))
 
     verbatimCounter = len(glob.glob1(readFolder, "CRE*.pdf"))
-
+    # Start counting the objects' agenda in the different languages
     agendaCounter = len(glob.glob1(readFolder, "OJ*.pdf"))
     agendaCounterBG = len(glob.glob1(readFolder, "OJ*_bg.pdf"))
     agendaCounterCS = len(glob.glob1(readFolder, "OJ*_cs.pdf"))
@@ -2535,6 +2551,7 @@ def countingFilesTypesS(readFolder):
     agendaCounterSL = len(glob.glob1(readFolder, "OJ*_sl.pdf"))
     agendaCounterSV = len(glob.glob1(readFolder, "OJ*_sv.pdf"))
 
+    # Start counting the objects' minutes in the different languages
     minutesCounter = len(glob.glob1(readFolder, "PV*.pdf"))
     minutesCounterBG = len(glob.glob1(readFolder, "PV*_bg.pdf"))
     minutesCounterCS = len(glob.glob1(readFolder, "PV*_cs.pdf"))
@@ -2561,7 +2578,7 @@ def countingFilesTypesS(readFolder):
     minutesCounterSL = len(glob.glob1(readFolder, "PV*_sl.pdf"))
     minutesCounterSV = len(glob.glob1(readFolder, "PV*_sv.pdf"))
 
-    # print to the console the results stats file, if the folder and the file did not exist they are created
+    # if the folder stats and the file did not exist they are created
     if not os.path.exists(base_folder + '/stats'):
         os.makedirs(base_folder + '/stats')
     if not os.path.exists(base_folder + '/stats/outputStsEurParlSessPdf.txt'):
@@ -2569,9 +2586,9 @@ def countingFilesTypesS(readFolder):
             file.close()
     with open(base_folder + '/stats/output_lst_EurParl_pdf_file.txt', 'w') as a:
         a.write('Total files count {}:'.format(totalFiles) + '\n\n')
-
+        # Start writing EP plenary sitting verbatim report of proceedings
         a.write('Number of EP plenary sitting verbatim report of proceedings: {}'.format(verbatimCounter) + '\n\n')
-
+        # Start writing object plenary part-session agenda
         a.write('Number of EP plenary part-session agenda : {}'.format(agendaCounter) + '\n')
         a.write('Number of EP plenary part-session agenda BG: {}'.format(agendaCounterBG) + '\n')
         a.write('Number of EP plenary part-session agenda CS: {}'.format(agendaCounterCS) + '\n')
@@ -2597,8 +2614,9 @@ def countingFilesTypesS(readFolder):
         a.write('Number of EP plenary part-session agenda SK: {}'.format(agendaCounterSK) + '\n')
         a.write('Number of EP plenary part-session agenda SL: {}'.format(agendaCounterSL) + '\n')
         a.write('Number of EP plenary part-session agenda SV: {}'.format(agendaCounterSV) + '\n\n')
-
+        # Start writing object EP plenary sitting minutes
         a.write('Number of EP plenary sitting minutes: {}'.format(minutesCounter) + '\n')
+        # Start writing object EP plenary sitting verbatim report of proceedings for the different languages
         a.write('Number of EP plenary sitting verbatim report of proceedings BG: {}'.format(minutesCounterBG) + '\n')
         a.write('Number of EP plenary sitting verbatim report of proceedings CS: {}'.format(minutesCounterCS) + '\n')
         a.write('Number of EP plenary sitting verbatim report of proceedings DA: {}'.format(minutesCounterDA) + '\n')
@@ -2624,6 +2642,7 @@ def countingFilesTypesS(readFolder):
         a.write('Number of EP plenary sitting verbatim report of proceedings SL: {}'.format(minutesCounterSL) + '\n')
         a.write('Number of EP plenary sitting verbatim report of proceedings SV: {}'.format(minutesCounterSV) + '\n\n')
 
+        # Start writing object percentage of EP plenary part-session agenda for the different languages
         a.write('percentage of EP plenary sitting verbatim report of proceedings: {:.3%}'.format(
             verbatimCounter / totalFiles) + '\n\n')
         a.write('percentage of EP plenary part-session agenda: {:.3%}'.format(agendaCounter / totalFiles) + '\n')
@@ -2652,6 +2671,7 @@ def countingFilesTypesS(readFolder):
         a.write('percentage of EP plenary part-session agenda SL: {:.3%}'.format(agendaCounterSL / totalFiles) + '\n')
         a.write('percentage of EP plenary part-session agenda SV: {:.3%}'.format(agendaCounterSV / totalFiles) + '\n\n')
 
+        # Start writing object percentage of EP plenary part-session agenda for the different languages
         a.write('percentage of EP plenary sitting minutes: {:.3%}'.format(minutesCounter / totalFiles) + '\n')
         a.write('percentage of EP plenary sitting verbatim report of proceedings BG: {:.3%}'.format(
             minutesCounterBG / totalFiles) + '\n')

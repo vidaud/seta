@@ -8,6 +8,7 @@ import rdflib
 import requests
 from testProxy import is_good_proxy
 
+# setting the source and destination folders
 startDir = os.path.realpath(os.path.dirname(os.path.dirname(__file__)))
 externalDir = 'D:/SeTA/'
 os.chdir('D:')
@@ -20,8 +21,7 @@ print("File location using os.getcwd():", startDir)
 now = datetime.now()
 date_format = now.strftime("%Y%m%d")
 
-# hostname = socket.getfqdn()
-# TODO declaration of input variables to run the script
+# declaration of input variables to run the script
 username = input("insert your internet proxy username: ")
 userpwd = getpass(prompt='insert your internet proxy password: ')
 
@@ -42,25 +42,25 @@ if not os.path.exists(loggingFolder):
 date_time = now.strftime("%Y%m%d%H%M%S")
 
 if optionToRun == 'A':
-    # setting the dest of log folder
+    # setting the dest of log folder for adopted-texts PDF
     loggingFolder = base_folder + 'logs/logparlAdopTxtPDFFiles/'
     if not os.path.exists(loggingFolder):
         os.makedirs(loggingFolder)
 
 if optionToRun == 'D':
-    # setting the dest of log folder
+    # setting the dest of log folder for plenary-documents
     loggingFolder = base_folder + 'logs/logDocsPDFFiles/'
     if not os.path.exists(loggingFolder):
         os.makedirs(loggingFolder)
 
 if optionToRun == 'Q':
-    # setting the dest of log folder
+    # setting the dest of log folder for parliamentary-questions
     loggingFolder = base_folder + 'logs/logQuestionsPDFFiles/'
     if not os.path.exists(loggingFolder):
         os.makedirs(loggingFolder)
 
 if optionToRun == 'S':
-    # setting the dest of log folder
+    # setting the dest of log folder for plenary-session
     loggingFolder = base_folder + 'logs/logSessionsPDFFiles/'
     if not os.path.exists(loggingFolder):
         os.makedirs(loggingFolder)
@@ -73,7 +73,7 @@ logging.basicConfig(level=logging.DEBUG, format="%(asctime)s %(message)s",
                     filename=loggingFolder + "/log" + date_time + ".txt")
 logger = logging.getLogger()
 
-# assignment of folder where to save the files, if it does not exist then create it
+# assignment of folder where to save the files, if it does not exist then is created
 destFolder = base_folder + 'downloadPdfFiles'
 if not os.path.exists(destFolder):
     os.makedirs(destFolder)
