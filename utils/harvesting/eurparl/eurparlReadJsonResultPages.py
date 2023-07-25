@@ -14,9 +14,6 @@ from testProxy import is_good_proxy
 
 # setting the source and destination folders
 startDir = os.path.realpath(os.path.dirname(os.path.dirname(__file__)))
-externalDir = 'C:/SeTA'
-os.chdir('C:')
-print("File location using os.getcwd():", startDir)
 
 # getting current date to use later
 now = datetime.now()
@@ -39,14 +36,9 @@ env_px = "http://" + username + ":" + userpwd + "@autoproxy.cec.eu.int:8012"
 os.environ["HTTPS_PROXY"] = env_px
 
 # assignment of base folder, from where to start creating the folders,  if it does not exist then is created
-base_folder = externalDir + '/EURPARL/'
+base_folder = startDir + '/EURPARL/'
 if not os.path.exists(base_folder):
     os.makedirs(base_folder)
-
-# assignment of log folder if it does not exist then is created
-loggingFolder = base_folder + 'logs/logDownloadFiles/'
-if not os.path.exists(loggingFolder):
-    os.makedirs(loggingFolder)
 
 # setting the date time variable with the format value
 date_time = now.strftime("%Y%m%d%H%M%S")
@@ -87,8 +79,10 @@ logging.basicConfig(level=logging.DEBUG, format="%(asctime)s %(message)s",
 # declaration variable logger that will be writing into the log txt file
 logger = logging.getLogger()
 
+print('logging folder {}'.format(loggingFolder))
+
 # assignment of folder where to save the files, if it does not exist then is created
-pathFolder = externalDir + '/EURPARL/download_pages/'
+pathFolder = base_folder + 'download_pages/'
 
 # conditions for the different types of options selected when launching the script
 # for adopted-texts

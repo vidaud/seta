@@ -9,11 +9,6 @@ from datetime import datetime
 
 # setting the source and destination folders
 startDir = os.path.realpath(os.path.dirname(os.path.dirname(__file__)))
-externalDir = 'C:/SeTA/'
-startDir = externalDir
-# assignment of folder where to read the files
-pathFolder = startDir + 'EURPARL/'
-directory = os.listdir(pathFolder)
 print("File location using os.getcwd():", startDir)
 
 # getting current date to use later
@@ -27,7 +22,7 @@ optionToRun = input('choose what you want to do: \n'
                     'statistics of parliamentary-questions PDF files (Q)  \n'
                     'statistics of plenary-session PDF files (S):  \n')
 
-base_folder = startDir + 'EURPARL/'
+base_folder = startDir + '/EURPARL/'
 if not os.path.exists(base_folder):
     os.makedirs(base_folder)
 
@@ -2595,7 +2590,6 @@ def countingFilesTypesS(readFolder):
     if not os.path.exists(base_folder + '/stats/outputStsEurParlSessPdf.txt'):
         with open(base_folder + '/stats/outputStsEurParlSessPdf.txt', 'w') as file:
             file.close()
-    print(base_folder)
     with open(base_folder + '/stats/outputStsEurParlSessPdf.txt', 'w') as a:
         a.write('Total files count {}:'.format(totalFiles) + '\n\n')
         # Start writing EP plenary sitting verbatim report of proceedings
@@ -2738,7 +2732,7 @@ def countingFilesTypesS(readFolder):
 # launch of the script
 def main():
     # Here below the execution of the different functions to
-    print(readFolder)
+    print('Reading folder: '+readFolder)
     if optionToRun == 'A':
         countingFilesTypesA(readFolder)
     if optionToRun == 'D':

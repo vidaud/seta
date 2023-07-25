@@ -21,8 +21,7 @@
 * 2) From a windows power shell or a command line launch the script eurparlDlLstDocs.py with the following command:
 *       Before launching the script verify that on rows:
 *
-*       externalDir = 'C:/SeTA'
-*       os.chdir('C:')
+*       startDir = os.path.realpath(os.path.dirname(os.path.dirname(__file__)))
 *
 *       The drive is set to where the documents will be save.
 *
@@ -65,8 +64,7 @@
 * 6) From a windows power shell or a command line launch the script eurparlReadJsonResultPages.py with the following command:
 *       Before launching the script verify that on rows:
 *
-*       externalDir = 'C:/SeTA'
-*       os.chdir('C:')
+*       startDir = os.path.realpath(os.path.dirname(os.path.dirname(__file__)))
 *
 *       The drive is set to where the documents will be save.
 *
@@ -109,8 +107,7 @@
 *
 *       Before launching the script verify that on rows:
 *
-*       externalDir = 'C:/SeTA'
-*       os.chdir('C:')
+*       startDir = os.path.realpath(os.path.dirname(os.path.dirname(__file__)))
 *
 *       The drive is set to where the documents will be save.
 *
@@ -152,8 +149,7 @@
 *
 *       Before launching the script verify that on rows:
 *
-*       externalDir = 'C:/SeTA'
-*       os.chdir('C:')
+*       startDir = os.path.realpath(os.path.dirname(os.path.dirname(__file__)))
 *
 *       The drive is set to where the documents will be save.
 *

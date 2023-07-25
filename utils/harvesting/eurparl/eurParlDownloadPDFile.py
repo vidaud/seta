@@ -10,11 +10,6 @@ from testProxy import is_good_proxy
 
 # setting the source and destination folders
 startDir = os.path.realpath(os.path.dirname(os.path.dirname(__file__)))
-externalDir = 'C:/SeTA/'
-os.chdir('C:')
-startDir = externalDir
-pathFolder = startDir + 'EURPARL/'
-directory = os.listdir(pathFolder)
 print("File location using os.getcwd():", startDir)
 
 # getting current date to use later
@@ -31,7 +26,7 @@ optionToRun = input('choose what you want to do: \n'
                     'download parliamentary-questions PDF files (Q)\n'
                     'download plenary-session PDF files (S):  \n')
 
-base_folder = startDir + 'EURPARL/'
+base_folder = startDir + '/EURPARL/'
 if not os.path.exists(base_folder):
     os.makedirs(base_folder)
 
@@ -65,6 +60,7 @@ if optionToRun == 'S':
     if not os.path.exists(loggingFolder):
         os.makedirs(loggingFolder)
 
+
 if not os.path.exists(loggingFolder + '/failedPdf.txt'):
     with open(loggingFolder + "/failedPdf.txt", "w") as fileFailed:
         fileFailed.close()
@@ -73,13 +69,17 @@ logging.basicConfig(level=logging.DEBUG, format="%(asctime)s %(message)s",
                     filename=loggingFolder + "/log" + date_time + ".txt")
 logger = logging.getLogger()
 
+print('logging folder {}'.format(loggingFolder))
+
 # assignment of folder where to save the files, if it does not exist then is createpyd
 destFolder = base_folder + 'downloadPdfFiles'
 if not os.path.exists(destFolder):
     os.makedirs(destFolder)
 
 # assignment of folder where to read the files
-pathFolder = externalDir + 'EURPARL/downloadFiles/'
+pathFolder = base_folder + 'downloadFiles/'
+if not os.path.exists(pathFolder):
+    os.makedirs(pathFolder)
 # changing the current folder to the declared path folder destination
 os.chdir(pathFolder)
 
@@ -164,12 +164,12 @@ def download_pdf_files(optionToRun, xmlFile):
     for s in graph:
         if '.pdf' in s[2]:
             try:
-                print('link\t {}\n'.format(s[2]))
+                logger.info('link\t {}\n'.format(s[2]))
                 urlPDF = s[2]
                 # starting the download
-                print('urlPDF {}'.format(urlPDF))
+                logger.info('urlPDF {}'.format(urlPDF))
                 fileName = str(urlPDF.split('/')[6]).strip()
-                print('filename {}'.format(fileName))
+                logger.info('filename {}'.format(fileName))
                 if optionToRun == 'S':
                     if 'OJ-' in urlPDF and '.pdf' in urlPDF:
                         typeFileName = fileName.partition('OJ-')[2]
@@ -179,17 +179,13 @@ def download_pdf_files(optionToRun, xmlFile):
                         if not glob.glob(downloadFolder + typeFileName):
                             if '-OFF' in urlPDF and '.pdf' in urlPDF:
                                 fileToSearch = str(fileName).replace('-OFF','')
-                                print('filetosearch {}'.format(fileToSearch))
+                                logger.info('file to search {}'.format(fileToSearch))
                                 if glob.glob(downloadFolder + fileToSearch):
                                     fileList = glob.glob(downloadFolder + fileToSearch)
-                                    print('filelist {}'.format(fileList))
+                                    logger.info('filelist {}'.format(fileList))
                                     for filePath in fileList:
-                                        # try:
-                                            print('found something already there')
-                                            os.remove(filePath)
-                                            # exit()
-                                        # except:
-                                        #     print("Error while deleting file : ", filePath)
+                                        logger.info('found something already there')
+                                        os.remove(filePath)
                                 # check if the file is the version 'ADOPTED'(FNL-OFF) or 'FINAL' (FNL)
                                 # for the minutes and part-session agenda
                                 file_exists = os.path.exists(downloadFolder + fileName)
@@ -203,7 +199,7 @@ def download_pdf_files(optionToRun, xmlFile):
                                         "https": "http://" + username + ":" + userpwd + "@autoproxy.cec.eu.int:8012"}
 
                                     r = s.get(urlPDF)
-                                    print(f'Status Code: {r.status_code}')
+                                    logger.info(f'Status Code: {r.status_code}')
                                     chunk_size = 2000
 
                                     with open(downloadFolder + fileName, 'wb') as fd:
@@ -226,7 +222,7 @@ def download_pdf_files(optionToRun, xmlFile):
                                         "https": "http://" + username + ":" + userpwd + "@autoproxy.cec.eu.int:8012"}
 
                                     r = s.get(urlPDF)
-                                    print(f'Status Code: {r.status_code}')
+                                    logger.info(f'Status Code: {r.status_code}')
                                     chunk_size = 2000
 
                                     with open(downloadFolder + fileName, 'wb') as fd:
@@ -249,7 +245,7 @@ def download_pdf_files(optionToRun, xmlFile):
                             s.proxies = {"https": "http://" + username + ":" + userpwd + "@autoproxy.cec.eu.int:8012"}
 
                             r = s.get(urlPDF)
-                            print(f'Status Code: {r.status_code}')
+                            logger.info(f'Status Code: {r.status_code}')
                             chunk_size = 2000
 
                             with open(downloadFolder + '/' + fileName, 'wb') as fd:
@@ -269,7 +265,7 @@ def download_pdf_files(optionToRun, xmlFile):
                             s.proxies = {"https": "http://" + username + ":" + userpwd + "@autoproxy.cec.eu.int:8012"}
 
                             r = s.get(urlPDF)
-                            print(f'Status Code: {r.status_code}')
+                            logger.info(f'Status Code: {r.status_code}')
                             chunk_size = 2000
 
                             with open(downloadFolder + '/' + fileName, 'wb') as fd:
@@ -289,7 +285,7 @@ def download_pdf_files(optionToRun, xmlFile):
                         s.proxies = {"https": "http://" + username + ":" + userpwd + "@autoproxy.cec.eu.int:8012"}
 
                         r = s.get(urlPDF)
-                        print(f'Status Code: {r.status_code}')
+                        logger.info(f'Status Code: {r.status_code}')
                         chunk_size = 2000
 
                         with open(downloadFolder + '/' + fileName, 'wb') as fd:
