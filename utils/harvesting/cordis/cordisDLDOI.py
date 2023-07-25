@@ -12,15 +12,9 @@ from testProxy import is_good_proxy
 # setting the source and destination folders
 startDir = os.path.realpath(os.path.dirname(os.path.dirname(__file__)))
 
-externalDir = 'D:/SeTA/CORDIS/'
-startDir = externalDir
-# externalDir = startDir + '/DOI/'
-# print('start dir' + startDir)
 # getting current date to use later
 now = datetime.now()
 date_format = now.strftime("%Y%m%d")
-# for now this assignment is commented
-# hostname = socket.getfqdn()
 
 username = input("insert your internet proxy username: ")
 userpwd = getpass(prompt='insert your internet proxy password: ')
@@ -29,13 +23,13 @@ userpwd = getpass(prompt='insert your internet proxy password: ')
 env_px = "http://" + username + ":" + userpwd + "@autoproxy.cec.eu.int:8012"
 os.environ["HTTPS_PROXY"] = env_px
 
-# assignment of base folder, from where to start creating the folders, if it does not exist then is create it
-base_folder = startDir + 'DOI/'
+# assignment of base folder, from where to start creating the folders, if it does not exist then is created
+base_folder = startDir + '/DOI/'
 if not os.path.exists(base_folder):
     os.makedirs(base_folder)
 
 # declaration of folder where the xml files are located
-pathFolder = startDir + 'xmlFiles/withpublicURL'
+pathFolder = startDir + '/CORDIS/downloadFiles/xmlFiles'
 
 # assignment of log folder
 loggingFolder = base_folder + 'logs/logDlDOI'

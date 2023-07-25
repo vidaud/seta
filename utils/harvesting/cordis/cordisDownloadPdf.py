@@ -14,10 +14,6 @@ from testProxy import is_good_proxy
 
 # setting the source and destination folders
 startDir = os.path.realpath(os.path.dirname(os.path.dirname(__file__)))
-externalDir = 'D:/SeTA/CORDIS/'
-print('start dir' +startDir)
-os.chdir('D:')
-# print(os.listdir(externalDir))
 
 # getting current date to use later
 now = datetime.now()
@@ -44,7 +40,7 @@ if not os.path.exists(pathFolder):
     os.makedirs(pathFolder)
 
 # assignment of log folder
-loggingFolder = externalDir + 'logs/logDownloadPdf'
+loggingFolder = base_folder + 'logs/logDownloadPdf'
 if not os.path.exists(loggingFolder):
     os.makedirs(loggingFolder)
 if not os.path.exists(loggingFolder + '/failedPdf.txt'):
@@ -61,7 +57,7 @@ logging.basicConfig(level=logging.DEBUG, format="%(asctime)s %(message)s",
 logger = logging.getLogger()
 
 # assignment of folder where to save the files, if it does not exist then is created
-destFolder = externalDir + 'pdfFilesRelated'
+destFolder = base_folder + 'pdfFilesRelated'
 if not os.path.exists(destFolder):
     os.makedirs(destFolder)
 
