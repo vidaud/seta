@@ -12,10 +12,10 @@ const HOME_CRUMB: Crumb = {
   path: '/'
 }
 
-const COMMUNITY_CRUMB: Crumb = {
-  title: 'Communities',
-  path: '/communities'
-}
+// const COMMUNITY_CRUMB: Crumb = {
+//   title: 'Communities',
+//   path: '/communities'
+// }
 
 const linksFromLocation = (location: string): Crumb[] => {
   const paths = location.split('/').filter(Boolean)
@@ -38,16 +38,12 @@ type Props = {
   includeCom?: boolean
 }
 
-const Breadcrumbs = ({ crumbs, readFromPath, excludeHome, includeCom }: Props) => {
+const Breadcrumbs = ({ crumbs, readFromPath, excludeHome }: Props) => {
   const location = useLocation()
 
   const crumbValues = readFromPath || !crumbs ? linksFromLocation(location.pathname) : crumbs ?? []
 
-  const values = excludeHome
-    ? crumbValues
-    : includeCom
-    ? [HOME_CRUMB, COMMUNITY_CRUMB, ...crumbValues]
-    : [HOME_CRUMB, ...crumbValues]
+  const values = excludeHome ? crumbValues : [HOME_CRUMB, ...crumbValues]
 
   const elements = values.map((crumb, index) => {
     const isLast = index === values.length - 1

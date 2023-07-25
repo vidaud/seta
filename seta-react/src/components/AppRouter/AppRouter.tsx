@@ -26,7 +26,7 @@ import SearchPageNew from '../../pages/SearchPageNew'
 
 const ROOT_PATH = '/'
 const DISCOVER_COMMUNITY_PATH = '/communities/'
-const DISCOVER_RESOURCE_PATH = '/resources/'
+const DISCOVER_RESOURCE_PATH = '/communities/resources/'
 
 const routes = createRoutesFromElements(
   <Route path={ROOT_PATH} element={<AppLayout />}>
