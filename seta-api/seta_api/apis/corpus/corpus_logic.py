@@ -164,13 +164,13 @@ def corpus(term, n_docs, from_doc, sources, collection, reference, in_force, sor
         return {"total_docs": 0, "documents": []}
 
     body = build_corpus_request(term, n_docs, from_doc, sources, collection, reference, in_force, sort, taxonomy_path,
-                                semantic_sort_id_list, emb_vector_list, author,
-                                date_range, aggs, search_type, other, current_app)
+                                semantic_sort_id_list, emb_vector_list, author, date_range, aggs, search_type, other,
+                                current_app)
     # import json
     # print(json.dumps(body))
     request = compose_request_for_msearch(body, current_app)
     res = current_app.es.msearch(searches=request)
-    documents = handle_corpus_response(aggs, res, search_type, term, current_app)
+    documents = handle_corpus_response(aggs, res, search_type, term, current_app, semantic_sort_id_list, emb_vector_list)
     return documents
 
 
