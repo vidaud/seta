@@ -3,7 +3,7 @@ import { createStyles, Table, rem, Badge, useMantineTheme, Group, Text } from '@
 
 import type { MembershipRequest } from '~/api/types/membership-types'
 
-import { useMembershipRequestsID } from '../../../../../../../api/communities/membership-requests'
+import { useAllCommunityRequestsID } from '../../../../../../../api/communities/community-all-requests'
 import { ComponentEmpty, ComponentError, ComponentLoading } from '../../../../../components/common'
 import { statusColors } from '../../../../types'
 import UpdateMemberRequest from '../UpdateMemberRequest/UpdateMemberRequest'
@@ -34,7 +34,7 @@ const useStyles = createStyles(theme => ({
 
 const MembershipRequests = ({ id, type }) => {
   const { classes, cx } = useStyles()
-  const { data, isLoading, error, refetch } = useMembershipRequestsID(id)
+  const { data, isLoading, error, refetch } = useAllCommunityRequestsID(id)
   const [items, setItems] = useState<MembershipRequest[] | undefined[]>([])
   const theme = useMantineTheme()
   const perPage = 5
@@ -43,7 +43,9 @@ const MembershipRequests = ({ id, type }) => {
     let timeout: number | null = null
 
     if (data) {
-      type === 'container' ? setItems(data.slice(0, perPage)) : setItems(data)
+      type === 'container'
+        ? setItems(data.memberships.slice(0, perPage))
+        : setItems(data.memberships)
 
       timeout = setTimeout(refetch, 1000)
 
@@ -60,7 +62,7 @@ const MembershipRequests = ({ id, type }) => {
   }
 
   if (data) {
-    if (data.length === 0) {
+    if (data.memberships.length === 0) {
       return <ComponentEmpty />
     }
   }
@@ -107,7 +109,7 @@ const MembershipRequests = ({ id, type }) => {
         </thead>
         <tbody>{rows}</tbody>
       </Table>
-      {data.length > perPage && type === 'container' ? (
+      {data.memberships.length > perPage && type === 'container' ? (
         <Text color="gray.5" size="sm" sx={{ float: 'right' }}>
           Expand to see full list ...
         </Text>

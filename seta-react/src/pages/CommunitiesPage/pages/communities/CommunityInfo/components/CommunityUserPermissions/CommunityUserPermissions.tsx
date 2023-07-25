@@ -15,7 +15,7 @@ const CommunityUsersPermissions = ({ id, type }) => {
     if (data) {
       type === 'container' ? setItems(data.slice(0, perPage)) : setItems(data)
     }
-  }, [data, items, type])
+  }, [data, type])
 
   if (error) {
     return <ComponentError onTryAgain={refetch} />

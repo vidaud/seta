@@ -4,14 +4,14 @@ import { Badge, Collapse, Tabs } from '@mantine/core'
 import type { ResourceResponse } from '~/api/types/resource-types'
 import type { ClassNameProp } from '~/types/children-props'
 
+import { useResourcesChangeRequests } from '../../../../../../../api/communities/resource-change-requests'
 import type {
   CommunityScopes,
   ResourceScopes,
   SystemScopes
 } from '../../../../contexts/scope-context'
-import ChangeResourceRequests from '../ChangeResourceRequests/ChangeResourceRequests'
 import LimitsDetails from '../LimitsDetails/LimitsDetails'
-import ResourceUsersPermissions from '../ResourcePermissions/ResourceUserPermissions'
+import ResourcePanelContent from '../PanelContent/PanelContent'
 
 type Props = ClassNameProp & {
   open: boolean
@@ -23,19 +23,20 @@ type Props = ClassNameProp & {
 
 const ResourceDetails = ({ className, open, resource, resource_scopes }: Props) => {
   const [activeTab, setActiveTab] = useState<string | null>('limits')
-  const [scopes, setScopes] = useState<string[] | undefined>([])
-  const [nrChangeRequests, setNrChangeRequests] = useState<number>(0)
   const { resource_id } = resource
+  const { data } = useResourcesChangeRequests(resource_id)
+  const [scopes, setScopes] = useState<string[] | undefined>([])
+  const [nrChangeRequests, setNrChangeRequests] = useState<number | undefined>(data?.length)
 
   useEffect(() => {
     const findResource = resource_scopes?.filter(scope => scope.resource_id === resource_id)
 
     findResource ? setScopes(findResource[0]?.scopes) : setScopes([])
-  }, [resource_scopes, resource_id])
 
-  const handleNrChangeRequestsChange = (value: number) => {
-    setNrChangeRequests(value)
-  }
+    if (data) {
+      setNrChangeRequests(data?.length)
+    }
+  }, [resource_scopes, resource_id, data])
 
   return (
     <Collapse className={className} in={open}>
@@ -53,14 +54,14 @@ const ResourceDetails = ({ className, open, resource, resource_scopes }: Props) 
             <Tabs.Tab value="permissions">Permissions</Tabs.Tab>
           </Tabs.List>
 
-          <Tabs.Panel value="limits" sx={{ paddingLeft: '2%' }}>
+          <Tabs.Panel value="limits">
             <LimitsDetails id={resource_id} scopes={scopes} />
           </Tabs.Panel>
-          <Tabs.Panel value="change_requests" sx={{ paddingLeft: '2%' }}>
-            <ChangeResourceRequests id={resource_id} onChange={handleNrChangeRequestsChange} />
+          <Tabs.Panel value="change_requests">
+            <ResourcePanelContent id={resource_id} panel={activeTab} />
           </Tabs.Panel>
-          <Tabs.Panel value="permissions" sx={{ paddingLeft: '2%' }}>
-            <ResourceUsersPermissions id={resource_id} />
+          <Tabs.Panel value="permissions">
+            <ResourcePanelContent id={resource_id} panel={activeTab} />
           </Tabs.Panel>
         </Tabs>
       ) : null}

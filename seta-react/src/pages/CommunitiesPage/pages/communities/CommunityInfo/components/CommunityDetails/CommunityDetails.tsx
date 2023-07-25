@@ -3,6 +3,7 @@ import { Badge, Collapse, Group, Tabs } from '@mantine/core'
 
 import type { ClassNameProp } from '~/types/children-props'
 
+import { useAllCommunityRequestsID } from '../../../../../../../api/communities/community-all-requests'
 import type { CommunityResponse } from '../../../../../../../api/types/community-types'
 import type {
   CommunityScopes,
@@ -24,16 +25,28 @@ type Props = ClassNameProp & {
 const CommunityDetails = ({ className, open, community, community_scopes }: Props) => {
   const [activeTab, setActiveTab] = useState<string | null>('resources')
   const [scopes, setScopes] = useState<string[] | undefined>([])
-  const [nrInvites, setNrInvites] = useState<number>(0)
-  const [nrChangeRequests, setNrChangeRequests] = useState<number>(0)
-  const [nrMembershipRequests, setNrMembershipRequests] = useState<number>(0)
+
   const { community_id } = community
+  const { data } = useAllCommunityRequestsID(community_id)
+  const [nrInvites, setNrInvites] = useState<number | undefined>(data?.invites.length)
+  const [nrChangeRequests, setNrChangeRequests] = useState<number | undefined>(
+    data?.changeRequests.community_change_requests.length
+  )
+  const [nrMembershipRequests, setNrMembershipRequests] = useState<number | undefined>(
+    data?.memberships.length
+  )
 
   useEffect(() => {
     const findCommunity = community_scopes?.filter(scope => scope.community_id === community_id)
 
     findCommunity ? setScopes(findCommunity[0]?.scopes) : setScopes([])
-  }, [community_scopes, community_id])
+
+    if (data) {
+      setNrInvites(data?.invites.length)
+      setNrChangeRequests(data?.changeRequests.community_change_requests.length)
+      setNrMembershipRequests(data?.memberships.length)
+    }
+  }, [community_scopes, community_id, data])
 
   const isManager =
     scopes?.includes('/seta/community/owner') || scopes?.includes('/seta/community/manager')
