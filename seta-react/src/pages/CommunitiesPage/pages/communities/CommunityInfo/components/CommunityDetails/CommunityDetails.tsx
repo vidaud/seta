@@ -125,7 +125,7 @@ const CommunityDetails = ({ className, open, community, community_scopes }: Prop
             </>
           ) : null}
         </Tabs.Panel>
-        {tabs}
+        {isManager ? tabs : null}
       </Tabs>
     </Collapse>
   )
