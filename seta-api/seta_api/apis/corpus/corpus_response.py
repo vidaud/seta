@@ -8,7 +8,9 @@ from seta_api.apis.corpus import taxonomy
 import math
 
 
-def normalize_es_score(score):
+def normalize_es_score(score, semantic_sort_id_list, emb_vector_list):
+    if semantic_sort_id_list or emb_vector_list:
+        return score
     normalized_score = sigmoid(score)
     return normalized_score
 
@@ -17,7 +19,7 @@ def sigmoid(x):
     return 1 / (1 + math.exp(-x))
 
 
-def handle_corpus_response(aggs, res, search_type, term, current_app):
+def handle_corpus_response(aggs, res, search_type, term, current_app, semantic_sort_id_list, emb_vector_list):
     documents = {"total_docs": None, "documents": []}
     tax = taxonomy.Taxonomy()
     for response in res["responses"]:
@@ -42,7 +44,7 @@ def handle_corpus_response(aggs, res, search_type, term, current_app):
                                            "link_origin": document['_source']["link_origin"],
                                            "date": is_field_in_doc(document['_source'], "date"),
                                            "source": document['_source']['source'],
-                                           "score": normalize_es_score(document['_score']),
+                                           "score": normalize_es_score(document['_score'], semantic_sort_id_list, emb_vector_list),
                                            "language": is_field_in_doc(document['_source'], "language"),
                                            "in_force": is_field_in_doc(document['_source'], "in_force"),
                                            "collection": is_field_in_doc(document['_source'], "collection"),
