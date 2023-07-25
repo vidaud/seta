@@ -13,10 +13,7 @@ import { useCurrentUser } from '../../contexts/user-context'
 import './style.css'
 
 const Header = () => {
-  const { user, isLoading: isUserLoading, logout } = useCurrentUser()
-
-  // FIXME: This is just a placeholder for the notifications data
-  const [notifications, total] = [[], 0]
+  const { user, isLoading: isUserLoading, logout, notifications, total } = useCurrentUser()
 
   const authenticated = !!user
   const role = user?.role === 'Administrator'
@@ -111,9 +108,11 @@ const Header = () => {
                 dropdownItems={dropdownItems}
                 notifications={notifications}
               />
-              <Badge variant="filled" size="xs" css={S.badge}>
-                {total}
-              </Badge>
+              {total > 0 ? (
+                <Badge variant="filled" size="xs" css={S.badge}>
+                  {total}
+                </Badge>
+              ) : null}
             </Group>
           ) : null}
           {authenticated ? dropdownMenu : loginButton}

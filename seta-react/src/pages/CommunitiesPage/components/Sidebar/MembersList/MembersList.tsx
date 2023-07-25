@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import {
   createStyles,
   Table,
@@ -6,12 +6,12 @@ import {
   rem,
   Title,
   Badge,
-  useMantineTheme,
-  Group
+  Group,
+  useMantineTheme
 } from '@mantine/core'
 
-import UpdateMemberRequest from '../../../pages/communities/CommunityInfo/components/UpdateMemberRequest/UpdateMemberRequest'
-import { useNotifications } from '../../../pages/contexts/notifications-context'
+import { useMembershipRequests } from '../../../../../api/communities/membership-requests'
+import UpdateMemberRequest from '../../../pages/communities/CommunityInfo/components/UpdateMemberRequest'
 import { statusColors } from '../../../pages/types'
 import { ComponentEmpty, ComponentLoading } from '../../common'
 
@@ -45,27 +45,22 @@ const useStyles = createStyles(theme => ({
 const MembersList = () => {
   const { classes, cx } = useStyles()
   const [scrolled, setScrolled] = useState(false)
+  const { data, refetch } = useMembershipRequests()
   const theme = useMantineTheme()
-  const { memberships, getMembershipRequests } = useNotifications()
 
-  useEffect(() => {
-    getMembershipRequests()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
-
-  if (memberships) {
-    if (memberships.length === 0) {
+  if (data) {
+    if (data.length === 0) {
       return <ComponentEmpty />
     }
   }
 
-  if (!memberships) {
+  if (!data) {
     return <ComponentLoading />
   }
 
   const rows =
-    memberships && memberships?.length > 0
-      ? memberships?.map(row => (
+    data && data?.length > 0
+      ? data?.map(row => (
           <tr key={row.community_id}>
             <td>{row.community_id.charAt(0).toUpperCase() + row?.community_id.slice(1)}</td>
             <td>
@@ -83,7 +78,7 @@ const MembersList = () => {
             <td>{row.reviewed_by_info?.full_name}</td>
             <td>
               <Group spacing={0}>
-                <UpdateMemberRequest props={row} />
+                <UpdateMemberRequest props={row} refetch={refetch} />
               </Group>
             </td>
           </tr>

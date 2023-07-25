@@ -32,7 +32,7 @@ export const getMenuItems = (authenticated: boolean): MenuItem[] => [
   },
   {
     to: '/faqs',
-    label: 'Faqs'
+    label: 'FAQs'
   },
   {
     to: '/contact',

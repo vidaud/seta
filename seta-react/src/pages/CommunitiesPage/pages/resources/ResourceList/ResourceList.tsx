@@ -7,7 +7,7 @@ import type { ResourceResponse } from '~/api/types/resource-types'
 import ResourceListContent from './ResourceListContent'
 
 import { useAllResources } from '../../../../../api/resources/discover/discover-resources'
-import { useCurrentUserPermissions } from '../../contexts/scope-context'
+import { useCommunityListContext } from '../../contexts/community-list.context'
 import { sortResourceData } from '../ResourceInfo/utils/resource-utils'
 
 const useStyles = createStyles({
@@ -22,7 +22,7 @@ const ResourceList = () => {
   const [sortedData, setSortedData] = useState<ResourceResponse[]>([])
 
   const { data, isLoading, error, refetch } = useAllResources()
-  const { community_scopes, system_scopes, resource_scopes } = useCurrentUserPermissions()
+  const { community_scopes, system_scopes, resource_scopes } = useCommunityListContext()
 
   useEffect(() => {
     if (data) {

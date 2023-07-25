@@ -24,7 +24,7 @@ export const useStyles = createStyles(theme => {
     },
 
     link: {
-      width: '90%',
+      width: '80%',
       display: 'block',
       textDecoration: 'none',
       fontSize: theme.fontSizes.xs,
@@ -39,7 +39,7 @@ export const useStyles = createStyles(theme => {
     priority: {
       color: '#4169e1',
       fontSize: theme.fontSizes.xs,
-      width: '90%',
+      width: '80%',
       textDecoration: 'none',
       paddingBottom: theme.spacing.xs,
       '&:hover': {
