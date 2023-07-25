@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react'
 import { Badge, Collapse, Tabs } from '@mantine/core'
 
+import type { ResourceChangeRequests } from '~/api/types/change-request-types'
 import type { ResourceResponse } from '~/api/types/resource-types'
 import type { ClassNameProp } from '~/types/children-props'
 
-import { useResourcesChangeRequests } from '../../../../../../../api/communities/resource-change-requests'
 import type {
   CommunityScopes,
   ResourceScopes,
@@ -24,7 +24,8 @@ type Props = ClassNameProp & {
 const ResourceDetails = ({ className, open, resource, resource_scopes }: Props) => {
   const [activeTab, setActiveTab] = useState<string | null>('limits')
   const { resource_id } = resource
-  const { data } = useResourcesChangeRequests(resource_id)
+  const [data, setData] = useState<ResourceChangeRequests[] | undefined>()
+
   const [scopes, setScopes] = useState<string[] | undefined>([])
   const [nrChangeRequests, setNrChangeRequests] = useState<number | undefined>(data?.length)
 
@@ -37,6 +38,10 @@ const ResourceDetails = ({ className, open, resource, resource_scopes }: Props) 
       setNrChangeRequests(data?.length)
     }
   }, [resource_scopes, resource_id, data])
+
+  const handleData = (value: ResourceChangeRequests[]) => {
+    setData(value)
+  }
 
   return (
     <Collapse className={className} in={open}>
@@ -58,10 +63,10 @@ const ResourceDetails = ({ className, open, resource, resource_scopes }: Props) 
             <LimitsDetails id={resource_id} scopes={scopes} />
           </Tabs.Panel>
           <Tabs.Panel value="change_requests">
-            <ResourcePanelContent id={resource_id} panel={activeTab} />
+            <ResourcePanelContent id={resource_id} panel={activeTab} onChange={handleData} />
           </Tabs.Panel>
           <Tabs.Panel value="permissions">
-            <ResourcePanelContent id={resource_id} panel={activeTab} />
+            <ResourcePanelContent id={resource_id} panel={activeTab} onChange={handleData} />
           </Tabs.Panel>
         </Tabs>
       ) : null}

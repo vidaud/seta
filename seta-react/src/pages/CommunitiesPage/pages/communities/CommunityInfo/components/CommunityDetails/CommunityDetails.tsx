@@ -1,9 +1,12 @@
 import { useEffect, useState } from 'react'
 import { Badge, Collapse, Group, Tabs } from '@mantine/core'
 
+import type { ChangeRequestResponse } from '~/api/types/change-request-types'
+import type { InviteResponse } from '~/api/types/invite-types'
+import type { MembershipRequest } from '~/api/types/membership-types'
+import type { UserPermissionsResponse } from '~/api/types/user-permissions-types'
 import type { ClassNameProp } from '~/types/children-props'
 
-import { useAllCommunityRequestsID } from '../../../../../../../api/communities/community-all-requests'
 import type { CommunityResponse } from '../../../../../../../api/types/community-types'
 import type {
   CommunityScopes,
@@ -22,12 +25,25 @@ type Props = ClassNameProp & {
   system_scopes?: SystemScopes[]
 }
 
+export type DataResponse = {
+  memberships: MembershipRequest[]
+  invites: InviteResponse[]
+  userPermissions: UserPermissionsResponse[]
+  changeRequests: ChangeRequestResponse
+}
+
+const items = [
+  { value: 'invites' },
+  { value: 'change_requests' },
+  { value: 'membership_requests' },
+  { value: 'permissions' }
+]
+
 const CommunityDetails = ({ className, open, community, community_scopes }: Props) => {
   const [activeTab, setActiveTab] = useState<string | null>('resources')
   const [scopes, setScopes] = useState<string[] | undefined>([])
-
   const { community_id } = community
-  const { data } = useAllCommunityRequestsID(community_id)
+  const [data, setData] = useState<DataResponse | undefined>()
   const [nrInvites, setNrInvites] = useState<number | undefined>(data?.invites.length)
   const [nrChangeRequests, setNrChangeRequests] = useState<number | undefined>(
     data?.changeRequests.community_change_requests.length
@@ -53,6 +69,16 @@ const CommunityDetails = ({ className, open, community, community_scopes }: Prop
   const invite = scopes?.includes('/seta/community/invite')
   const approve = scopes?.includes('seta/community/membership/approve')
 
+  const handleData = (value: DataResponse) => {
+    setData(value)
+  }
+
+  const tabs = items?.map(item => (
+    <Tabs.Panel value={item.value} key={item.value}>
+      <PanelContent id={community_id} panel={activeTab} onChange={handleData} />
+    </Tabs.Panel>
+  ))
+
   return (
     <Collapse className={className} in={open}>
       <Tabs value={activeTab} onTabChange={setActiveTab} orientation="horizontal">
@@ -65,16 +91,22 @@ const CommunityDetails = ({ className, open, community, community_scopes }: Prop
           {isManager || invite ? (
             <Tabs.Tab value="invites">
               Sent Invites
-              <Badge>{nrInvites}</Badge>
+              {nrInvites && nrInvites > 0 ? <Badge>{nrInvites}</Badge> : null}
             </Tabs.Tab>
           ) : null}
           {isManager || approve ? (
             <>
               <Tabs.Tab value="change_requests">
-                My Change Requests <Badge>{nrChangeRequests}</Badge>
+                My Change Requests
+                {nrChangeRequests && nrChangeRequests > 0 ? (
+                  <Badge>{nrChangeRequests}</Badge>
+                ) : null}
               </Tabs.Tab>
               <Tabs.Tab value="membership_requests">
-                Pending Membership Requests <Badge>{nrMembershipRequests}</Badge>
+                Pending Membership Requests
+                {nrMembershipRequests && nrMembershipRequests > 0 ? (
+                  <Badge>{nrMembershipRequests}</Badge>
+                ) : null}
               </Tabs.Tab>
               <Tabs.Tab value="permissions">Permissions</Tabs.Tab>
             </>
@@ -87,33 +119,14 @@ const CommunityDetails = ({ className, open, community, community_scopes }: Prop
 
           {isManager ? (
             <>
-              {/* <Divider sx={{ marginTop: '1rem', marginBottom: '1rem' }} size="xs" /> */}
               <Group position="right" sx={{ marginTop: '1rem', marginBottom: '1rem' }}>
                 <CreateResource id={community_id} />
               </Group>
             </>
           ) : null}
         </Tabs.Panel>
-        {isManager || invite ? (
-          <Tabs.Panel value="invites">
-            <PanelContent id={community_id} panel={activeTab} />
-          </Tabs.Panel>
-        ) : null}
-        {isManager || approve ? (
-          <>
-            <Tabs.Panel value="change_requests">
-              <PanelContent id={community_id} panel={activeTab} />
-            </Tabs.Panel>
-            <Tabs.Panel value="membership_requests">
-              <PanelContent id={community_id} panel={activeTab} />
-            </Tabs.Panel>
-            <Tabs.Panel value="permissions">
-              <PanelContent id={community_id} panel={activeTab} />
-            </Tabs.Panel>
-          </>
-        ) : null}
+        {tabs}
       </Tabs>
-      {/* <Stats resourceNumber={10} /> */}
     </Collapse>
   )
 }

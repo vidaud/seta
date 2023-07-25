@@ -1,8 +1,11 @@
+import { useEffect } from 'react'
 import { Box } from '@mantine/core'
 
+import { useAllCommunityRequestsID } from '../../../../../../../api/communities/community-all-requests'
 import useModalState from '../../../../../../../hooks/use-modal-state'
 import InfoContainer from '../../../../../../SearchPageNew/components/documents/DocumentInfo/components/InfoContainer/InfoContainer'
 import ChangeCommunityRequests from '../ChangeRequests/ChangeRequests'
+import type { DataResponse } from '../CommunityDetails/CommunityDetails'
 import CommunityInvites from '../CommunityInvites/CommunityInvites'
 import CommunityUsersPermissions from '../CommunityUserPermissions/CommunityUserPermissions'
 import MembershipRequests from '../MembershipRequests/MembershipRequests'
@@ -11,10 +14,18 @@ import PanelModal from '../PanelModal/PanelModal'
 type Props = {
   id: string
   panel: string | null
+  onChange: (value: DataResponse) => void
 }
 
-const PanelContent = ({ id, panel }: Props) => {
+const PanelContent = ({ id, panel, onChange }: Props) => {
   const { modalOpen, openModal, closeModal } = useModalState()
+  const { data } = useAllCommunityRequestsID(id)
+
+  useEffect(() => {
+    if (data) {
+      onChange(data)
+    }
+  }, [data, onChange])
 
   const title =
     panel === 'change_requests'

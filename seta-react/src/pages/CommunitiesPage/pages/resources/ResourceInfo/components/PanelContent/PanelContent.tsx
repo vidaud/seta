@@ -1,5 +1,9 @@
+import { useEffect } from 'react'
 import { Box } from '@mantine/core'
 
+import type { ResourceChangeRequests } from '~/api/types/change-request-types'
+
+import { useResourcesChangeRequests } from '../../../../../../../api/communities/resource-change-requests'
 import useModalState from '../../../../../../../hooks/use-modal-state'
 import InfoContainer from '../../../../../../SearchPageNew/components/documents/DocumentInfo/components/InfoContainer/InfoContainer'
 import ChangeResourceRequests from '../ChangeResourceRequests/ChangeResourceRequests'
@@ -9,10 +13,18 @@ import ResourceUsersPermissions from '../ResourcePermissions/ResourceUserPermiss
 type Props = {
   id: string
   panel: string | null
+  onChange: (value: ResourceChangeRequests[]) => void
 }
 
-const ResourcePanelContent = ({ id, panel }: Props) => {
+const ResourcePanelContent = ({ id, panel, onChange }: Props) => {
   const { modalOpen, openModal, closeModal } = useModalState()
+  const { data } = useResourcesChangeRequests(id)
+
+  useEffect(() => {
+    if (data) {
+      onChange(data)
+    }
+  }, [data, onChange])
 
   const title = panel === 'change_requests' ? 'Change Requests' : 'User Permissions'
 
