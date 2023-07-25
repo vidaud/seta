@@ -14,8 +14,8 @@ from testProxy import is_good_proxy
 
 # setting the source and destination folders
 startDir = os.path.realpath(os.path.dirname(os.path.dirname(__file__)))
-externalDir = 'D:/SeTA/'
-os.chdir('D:')
+externalDir = 'C:/SeTA'
+os.chdir('C:')
 print("File location using os.getcwd():", startDir)
 
 # getting current date to use later
@@ -31,7 +31,7 @@ optionToRun = input('choose what you want to do: \n'
                     'download plenary-documents (D)\n'
                     'download meetings (M)\n'
                     'download parliamentary-questions (Q)\n'
-                    'download plenary-sessions (S): \t')
+                    'download plenary-sessions (S): \n')
 
 # setting the proxy
 env_px = "http://" + username + ":" + userpwd + "@autoproxy.cec.eu.int:8012"
@@ -158,6 +158,7 @@ os.chdir(pathFolder)
 # the following function reads the single json files gathered through the URL call made in the script
 # "EURPARLDlLstDocs" and from the info of the results constructs the URL to download the xml file
 def read_text_file(optionToRun, file_path):
+    print(file_path)
     with open(file_path, 'r', encoding='utf-8') as f:
         # get the year from the file path
         strYear = re.search(r'\d{4}', file_path)
@@ -316,13 +317,13 @@ def saveFile(urlPath, idDoc, curYear):
 def main():
     # test if the credentials given at the start of the script are correct
     if is_good_proxy(username, userpwd):
+        # start looking inside the files folders of pages
         for file in os.listdir():
             logger.info("Start program time {}".format(date_time))
             if optionToRun == 'S':
                 filePath = f"{pathFolder}{file}"
                 fileList = os.listdir(filePath)
                 for jFiles in fileList:
-                    # print('filelist {}'.format(jFiles))
                     if jFiles.endswith(".json"):
                         file_path = f"{filePath}/{jFiles}"
                         logger.info("Find file to read {}".format(file_path))
@@ -340,21 +341,24 @@ def main():
                         et_Main = None
             else:
                 # check if the file to read is a json type
-                if file.endswith(".json"):
-                    file_path = f"{pathFolder}{file}"
-                    logger.info("Find file to read {}".format(file_path))
-                    print("Find file to read {}".format(file_path))
-                    # get the start time
-                    st_Main = time.time()
-                    # call the function read_text_file which reads the json file and look in the results the xml file of
-                    # the single items to save.
-                    isReadable = read_text_file(optionToRun, file_path)
-                    et_Main = time.time()
-                    elapsed_time_Main = et_Main - st_Main
-                    print("elapsed_time of whole read_text_file: {}".format(elapsed_time_Main))
-                    logger.info("elapsed_time of whole read_text_file: {}".format(elapsed_time_Main))
-                    elapsed_time_Main = None
-                    et_Main = None
+                fileList = os.listdir(file)
+                for jFile in fileList:
+                    if jFile.endswith(".json"):
+                        file_path = f"{pathFolder}{file}/{jFile}"
+                        logger.info("Find file to read {}".format(file_path))
+                        print("Find file to read {}".format(file_path))
+                        # get the start time
+                        st_Main = time.time()
+                        # call the function read_text_file which reads the json file and look in the results the xml
+                        # file of the single items to save.
+                        isReadable = read_text_file(optionToRun, file_path)
+                        et_Main = time.time()
+                        elapsed_time_Main = et_Main - st_Main
+                        print("elapsed_time of whole read_text_file: {}".format(elapsed_time_Main))
+                        logger.info("elapsed_time of whole read_text_file: {}".format(elapsed_time_Main))
+                        elapsed_time_Main = None
+                        et_Main = None
+
 
 
 if __name__ != '__main__':

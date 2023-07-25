@@ -10,8 +10,8 @@ from testProxy import is_good_proxy
 
 # setting the source and destination folders
 startDir = os.path.realpath(os.path.dirname(os.path.dirname(__file__)))
-externalDir = 'D:/SeTA/'
-os.chdir('D:')
+externalDir = 'C:/SeTA/'
+os.chdir('C:')
 startDir = externalDir
 pathFolder = startDir + 'EURPARL/'
 directory = os.listdir(pathFolder)
@@ -29,7 +29,7 @@ optionToRun = input('choose what you want to do: \n'
                     'download adopted-texts PDF files (A) \n'
                     'download plenary-documents PDF files (D)\n'
                     'download parliamentary-questions PDF files (Q)\n'
-                    'download plenary-session PDF files (S):  \t')
+                    'download plenary-session PDF files (S):  \n')
 
 base_folder = startDir + 'EURPARL/'
 if not os.path.exists(base_folder):
@@ -73,7 +73,7 @@ logging.basicConfig(level=logging.DEBUG, format="%(asctime)s %(message)s",
                     filename=loggingFolder + "/log" + date_time + ".txt")
 logger = logging.getLogger()
 
-# assignment of folder where to save the files, if it does not exist then is created
+# assignment of folder where to save the files, if it does not exist then is createpyd
 destFolder = base_folder + 'downloadPdfFiles'
 if not os.path.exists(destFolder):
     os.makedirs(destFolder)

@@ -9,7 +9,7 @@ from datetime import datetime
 
 # setting the source and destination folders
 startDir = os.path.realpath(os.path.dirname(os.path.dirname(__file__)))
-externalDir = 'D:/SeTA/'
+externalDir = 'C:/SeTA/'
 startDir = externalDir
 # assignment of folder where to read the files
 pathFolder = startDir + 'EURPARL/'
@@ -25,7 +25,7 @@ optionToRun = input('choose what you want to do: \n'
                     'statistics of adopted-texts PDF files (A) \n'
                     'statistics of plenary-documents PDF files (D)\n'
                     'statistics of parliamentary-questions PDF files (Q)  \n'
-                    'statistics of plenary-session PDF files (S):  \t')
+                    'statistics of plenary-session PDF files (S):  \n')
 
 base_folder = startDir + 'EURPARL/'
 if not os.path.exists(base_folder):
@@ -78,7 +78,6 @@ if optionToRun == 'S':
 # and write it to a txt file
 def countingFilesTypesA(readFolder):
     totalFiles = len(fnmatch.filter(os.listdir(readFolder), '*.pdf'))
-    logger.info('Files with pdf ext {}:'.format(totalFiles))
 
     # reading all adopted-texts pdf files
     adoptedTxt = len(glob.glob1(readFolder, "TA*.pdf"))
@@ -1157,315 +1156,323 @@ def countingFilesTypesD(readFolder):
         a.write(
             'percentage of EP plenary documents reports amendment: {:.3%}'.format(
                 totparlDocAmRep / totalParlDocs) + '\n')
-        a.write('percentage of EP plenary documents reports amendment in BG: {:.3%}'.format(
-            parlDocAmRepBG / totparlDocAmRep) + '\n')
-        a.write('percentage of EP plenary documents reports amendment in CS: {:.3%}'.format(
-            parlDocAmRepCS / totparlDocAmRep) + '\n')
-        a.write('percentage of EP plenary documents reports amendment in DA: {:.3%}'.format(
-            parlDocAmRepDA / totparlDocAmRep) + '\n')
-        a.write('percentage of EP plenary documents reports amendment in DE: {:.3%}'.format(
-            parlDocAmRepDE / totparlDocAmRep) + '\n')
-        a.write('percentage of EP plenary documents reports amendment in EL: {:.3%}'.format(
-            parlDocAmRepEL / totparlDocAmRep) + '\n')
-        a.write('percentage of EP plenary documents reports amendment in EN: {:.3%}'.format(
-            parlDocAmRepEN / totparlDocAmRep) + '\n')
-        a.write('percentage of EP plenary documents reports amendment in ES: {:.3%}'.format(
-            parlDocAmRepES / totparlDocAmRep) + '\n')
-        a.write('percentage of EP plenary documents reports amendment in ET: {:.3%}'.format(
-            parlDocAmRepET / totparlDocAmRep) + '\n')
-        a.write('percentage of EP plenary documents reports amendment in FI: {:.3%}'.format(
-            parlDocAmRepFI / totparlDocAmRep) + '\n')
-        a.write('percentage of EP plenary documents reports amendment in FR: {:.3%}'.format(
-            parlDocAmRepFR / totparlDocAmRep) + '\n')
-        a.write('percentage of EP plenary documents reports amendment in GA: {:.3%}'.format(
-            parlDocAmRepGA / totparlDocAmRep) + '\n')
-        a.write('percentage of EP plenary documents reports amendment in HR: {:.3%}'.format(
-            parlDocAmRepHR / totparlDocAmRep) + '\n')
-        a.write('percentage of EP plenary documents reports amendment in HU: {:.3%}'.format(
-            parlDocAmRepHU / totparlDocAmRep) + '\n')
-        a.write('percentage of EP plenary documents reports amendment in IT: {:.3%}'.format(
-            parlDocAmRepIT / totparlDocAmRep) + '\n')
-        a.write('percentage of EP plenary documents reports amendment in LT: {:.3%}'.format(
-            parlDocAmRepLT / totparlDocAmRep) + '\n')
-        a.write('percentage of EP plenary documents reports amendment in LV: {:.3%}'.format(
-            parlDocAmRepLV / totparlDocAmRep) + '\n')
-        a.write('percentage of EP plenary documents reports amendment in MT: {:.3%}'.format(
-            parlDocAmRepMT / totparlDocAmRep) + '\n')
-        a.write('percentage of EP plenary documents reports amendment in NL: {:.3%}'.format(
-            parlDocAmRepNL / totparlDocAmRep) + '\n')
-        a.write('percentage of EP plenary documents reports amendment in PL: {:.3%}'.format(
-            parlDocAmRepPL / totparlDocAmRep) + '\n')
-        a.write('percentage of EP plenary documents reports amendment in PT: {:.3%}'.format(
-            parlDocAmRepPT / totparlDocAmRep) + '\n')
-        a.write('percentage of EP plenary documents reports amendment in RO: {:.3%}'.format(
-            parlDocAmRepRO / totparlDocAmRep) + '\n')
-        a.write('percentage of EP plenary documents reports amendment in SK: {:.3%}'.format(
-            parlDocAmRepSK / totparlDocAmRep) + '\n')
-        a.write('percentage of EP plenary documents reports amendment in SL: {:.3%}'.format(
-            parlDocAmRepSL / totparlDocAmRep) + '\n')
-        a.write('percentage of EP plenary documents reports amendment in SV: {:.3%}'.format(
-            parlDocAmRepSV / totparlDocAmRep) + '\n\n')
+        if totparlDocAmRep > 0:
+            a.write('percentage of EP plenary documents reports amendment in BG: {:.3%}'.format(
+                parlDocAmRepBG / totparlDocAmRep) + '\n')
+            a.write('percentage of EP plenary documents reports amendment in CS: {:.3%}'.format(
+                parlDocAmRepCS / totparlDocAmRep) + '\n')
+            a.write('percentage of EP plenary documents reports amendment in DA: {:.3%}'.format(
+                parlDocAmRepDA / totparlDocAmRep) + '\n')
+            a.write('percentage of EP plenary documents reports amendment in DE: {:.3%}'.format(
+                parlDocAmRepDE / totparlDocAmRep) + '\n')
+            a.write('percentage of EP plenary documents reports amendment in EL: {:.3%}'.format(
+                parlDocAmRepEL / totparlDocAmRep) + '\n')
+            a.write('percentage of EP plenary documents reports amendment in EN: {:.3%}'.format(
+                parlDocAmRepEN / totparlDocAmRep) + '\n')
+            a.write('percentage of EP plenary documents reports amendment in ES: {:.3%}'.format(
+                parlDocAmRepES / totparlDocAmRep) + '\n')
+            a.write('percentage of EP plenary documents reports amendment in ET: {:.3%}'.format(
+                parlDocAmRepET / totparlDocAmRep) + '\n')
+            a.write('percentage of EP plenary documents reports amendment in FI: {:.3%}'.format(
+                parlDocAmRepFI / totparlDocAmRep) + '\n')
+            a.write('percentage of EP plenary documents reports amendment in FR: {:.3%}'.format(
+                parlDocAmRepFR / totparlDocAmRep) + '\n')
+            a.write('percentage of EP plenary documents reports amendment in GA: {:.3%}'.format(
+                parlDocAmRepGA / totparlDocAmRep) + '\n')
+            a.write('percentage of EP plenary documents reports amendment in HR: {:.3%}'.format(
+                parlDocAmRepHR / totparlDocAmRep) + '\n')
+            a.write('percentage of EP plenary documents reports amendment in HU: {:.3%}'.format(
+                parlDocAmRepHU / totparlDocAmRep) + '\n')
+            a.write('percentage of EP plenary documents reports amendment in IT: {:.3%}'.format(
+                parlDocAmRepIT / totparlDocAmRep) + '\n')
+            a.write('percentage of EP plenary documents reports amendment in LT: {:.3%}'.format(
+                parlDocAmRepLT / totparlDocAmRep) + '\n')
+            a.write('percentage of EP plenary documents reports amendment in LV: {:.3%}'.format(
+                parlDocAmRepLV / totparlDocAmRep) + '\n')
+            a.write('percentage of EP plenary documents reports amendment in MT: {:.3%}'.format(
+                parlDocAmRepMT / totparlDocAmRep) + '\n')
+            a.write('percentage of EP plenary documents reports amendment in NL: {:.3%}'.format(
+                parlDocAmRepNL / totparlDocAmRep) + '\n')
+            a.write('percentage of EP plenary documents reports amendment in PL: {:.3%}'.format(
+                parlDocAmRepPL / totparlDocAmRep) + '\n')
+            a.write('percentage of EP plenary documents reports amendment in PT: {:.3%}'.format(
+                parlDocAmRepPT / totparlDocAmRep) + '\n')
+            a.write('percentage of EP plenary documents reports amendment in RO: {:.3%}'.format(
+                parlDocAmRepRO / totparlDocAmRep) + '\n')
+            a.write('percentage of EP plenary documents reports amendment in SK: {:.3%}'.format(
+                parlDocAmRepSK / totparlDocAmRep) + '\n')
+            a.write('percentage of EP plenary documents reports amendment in SL: {:.3%}'.format(
+                parlDocAmRepSL / totparlDocAmRep) + '\n')
+            a.write('percentage of EP plenary documents reports amendment in SV: {:.3%}'.format(
+                parlDocAmRepSV / totparlDocAmRep) + '\n\n')
 
         # object to write percentage of EP plenary documents Motion for a resolution
         a.write('percentage of EP plenary documents Motion for a resolution: {:.3%}'.format(
             totMotRes / totalParlDocs) + '\n')
-        a.write('percentage of EP plenary documents Motion for a resolution BG: {:.3%}'.format(
-            motResBG / totMotRes) + '\n')
-        a.write('percentage of EP plenary documents Motion for a resolution CS: {:.3%}'.format(
-            motResCS / totMotRes) + '\n')
-        a.write('percentage of EP plenary documents Motion for a resolution DA: {:.3%}'.format(
-            motResDA / totMotRes) + '\n')
-        a.write('percentage of EP plenary documents Motion for a resolution DE: {:.3%}'.format(
-            motResDE / totMotRes) + '\n')
-        a.write('percentage of EP plenary documents Motion for a resolution EL: {:.3%}'.format(
-            motResEL / totMotRes) + '\n')
-        a.write('percentage of EP plenary documents Motion for a resolution EN: {:.3%}'.format(
-            motResEN / totMotRes) + '\n')
-        a.write('percentage of EP plenary documents Motion for a resolution ES: {:.3%}'.format(
-            motResES / totMotRes) + '\n')
-        a.write('percentage of EP plenary documents Motion for a resolution ET: {:.3%}'.format(
-            motResET / totMotRes) + '\n')
-        a.write('percentage of EP plenary documents Motion for a resolution FI: {:.3%}'.format(
-            motResFI / totMotRes) + '\n')
-        a.write('percentage of EP plenary documents Motion for a resolution FR: {:.3%}'.format(
-            motResFR / totMotRes) + '\n')
-        a.write('percentage of EP plenary documents Motion for a resolution GA: {:.3%}'.format(
-            motResGA / totMotRes) + '\n')
-        a.write('percentage of EP plenary documents Motion for a resolution HR: {:.3%}'.format(
-            motResHR / totMotRes) + '\n')
-        a.write('percentage of EP plenary documents Motion for a resolution HU: {:.3%}'.format(
-            motResHU / totMotRes) + '\n')
-        a.write('percentage of EP plenary documents Motion for a resolution IT: {:.3%}'.format(
-            motResIT / totMotRes) + '\n')
-        a.write('percentage of EP plenary documents Motion for a resolution LT: {:.3%}'.format(
-            motResLT / totMotRes) + '\n')
-        a.write('percentage of EP plenary documents Motion for a resolution LV: {:.3%}'.format(
-            motResLV / totMotRes) + '\n')
-        a.write('percentage of EP plenary documents Motion for a resolution MT: {:.3%}'.format(
-            motResMT / totMotRes) + '\n')
-        a.write('percentage of EP plenary documents Motion for a resolution NL: {:.3%}'.format(
-            motResNL / totMotRes) + '\n')
-        a.write('percentage of EP plenary documents Motion for a resolution PL: {:.3%}'.format(
-            motResPL / totMotRes) + '\n')
-        a.write('percentage of EP plenary documents Motion for a resolution PT: {:.3%}'.format(
-            motResPT / totMotRes) + '\n')
-        a.write('percentage of EP plenary documents Motion for a resolution RO: {:.3%}'.format(
-            motResRO / totMotRes) + '\n')
-        a.write('percentage of EP plenary documents Motion for a resolution SK: {:.3%}'.format(
-            motResSK / totMotRes) + '\n')
-        a.write('percentage of EP plenary documents Motion for a resolution SL: {:.3%}'.format(
-            motResSL / totMotRes) + '\n')
-        a.write('percentage of EP plenary documents Motion for a resolution SV: {:.3%}'.format(
-            motResSV / totMotRes) + '\n\n')
+        if totMotRes > 0:
+            a.write('percentage of EP plenary documents Motion for a resolution BG: {:.3%}'.format(
+                motResBG / totMotRes) + '\n')
+            a.write('percentage of EP plenary documents Motion for a resolution CS: {:.3%}'.format(
+                motResCS / totMotRes) + '\n')
+            a.write('percentage of EP plenary documents Motion for a resolution DA: {:.3%}'.format(
+                motResDA / totMotRes) + '\n')
+            a.write('percentage of EP plenary documents Motion for a resolution DE: {:.3%}'.format(
+                motResDE / totMotRes) + '\n')
+            a.write('percentage of EP plenary documents Motion for a resolution EL: {:.3%}'.format(
+                motResEL / totMotRes) + '\n')
+            a.write('percentage of EP plenary documents Motion for a resolution EN: {:.3%}'.format(
+                motResEN / totMotRes) + '\n')
+            a.write('percentage of EP plenary documents Motion for a resolution ES: {:.3%}'.format(
+                motResES / totMotRes) + '\n')
+            a.write('percentage of EP plenary documents Motion for a resolution ET: {:.3%}'.format(
+                motResET / totMotRes) + '\n')
+            a.write('percentage of EP plenary documents Motion for a resolution FI: {:.3%}'.format(
+                motResFI / totMotRes) + '\n')
+            a.write('percentage of EP plenary documents Motion for a resolution FR: {:.3%}'.format(
+                motResFR / totMotRes) + '\n')
+            a.write('percentage of EP plenary documents Motion for a resolution GA: {:.3%}'.format(
+                motResGA / totMotRes) + '\n')
+            a.write('percentage of EP plenary documents Motion for a resolution HR: {:.3%}'.format(
+                motResHR / totMotRes) + '\n')
+            a.write('percentage of EP plenary documents Motion for a resolution HU: {:.3%}'.format(
+                motResHU / totMotRes) + '\n')
+            a.write('percentage of EP plenary documents Motion for a resolution IT: {:.3%}'.format(
+                motResIT / totMotRes) + '\n')
+            a.write('percentage of EP plenary documents Motion for a resolution LT: {:.3%}'.format(
+                motResLT / totMotRes) + '\n')
+            a.write('percentage of EP plenary documents Motion for a resolution LV: {:.3%}'.format(
+                motResLV / totMotRes) + '\n')
+            a.write('percentage of EP plenary documents Motion for a resolution MT: {:.3%}'.format(
+                motResMT / totMotRes) + '\n')
+            a.write('percentage of EP plenary documents Motion for a resolution NL: {:.3%}'.format(
+                motResNL / totMotRes) + '\n')
+            a.write('percentage of EP plenary documents Motion for a resolution PL: {:.3%}'.format(
+                motResPL / totMotRes) + '\n')
+            a.write('percentage of EP plenary documents Motion for a resolution PT: {:.3%}'.format(
+                motResPT / totMotRes) + '\n')
+            a.write('percentage of EP plenary documents Motion for a resolution RO: {:.3%}'.format(
+                motResRO / totMotRes) + '\n')
+            a.write('percentage of EP plenary documents Motion for a resolution SK: {:.3%}'.format(
+                motResSK / totMotRes) + '\n')
+            a.write('percentage of EP plenary documents Motion for a resolution SL: {:.3%}'.format(
+                motResSL / totMotRes) + '\n')
+            a.write('percentage of EP plenary documents Motion for a resolution SV: {:.3%}'.format(
+                motResSV / totMotRes) + '\n\n')
 
         # object to write percentage of amendments of EP plenary documents Motion for a resolution
         a.write(
             'percentage of amendments of EP plenary documents Motion for a resolution: {:.3%}'.format(
                 totMotResAm / totalParlDocs) + '\n')
-        a.write('percentage of amendments of EP plenary documents Motion for a resolution BG: {:.3%}'.format(
-            motResAmBG / totMotResAm) + '\n')
-        a.write('percentage of amendments of EP plenary documents Motion for a resolution CS: {:.3%}'.format(
-            motResAmCS / totMotResAm) + '\n')
-        a.write('percentage of amendments of EP plenary documents Motion for a resolution DA: {:.3%}'.format(
-            motResAmDA / totMotResAm) + '\n')
-        a.write('percentage of amendments of EP plenary documents Motion for a resolution DE: {:.3%}'.format(
-            motResAmDE / totMotResAm) + '\n')
-        a.write('percentage of amendments of EP plenary documents Motion for a resolution EL: {:.3%}'.format(
-            motResAmEL / totMotResAm) + '\n')
-        a.write('percentage of amendments of EP plenary documents Motion for a resolution EN: {:.3%}'.format(
-            motResAmEN / totMotResAm) + '\n')
-        a.write('percentage of amendments of EP plenary documents Motion for a resolution ES: {:.3%}'.format(
-            motResAmES / totMotResAm) + '\n')
-        a.write('percentage of amendments of EP plenary documents Motion for a resolution ET: {:.3%}'.format(
-            motResAmET / totMotResAm) + '\n')
-        a.write('percentage of amendments of EP plenary documents Motion for a resolution FI: {:.3%}'.format(
-            motResAmFI / totMotResAm) + '\n')
-        a.write('percentage of amendments of EP plenary documents Motion for a resolution FR: {:.3%}'.format(
-            motResAmFR / totMotResAm) + '\n')
-        a.write('percentage of amendments of EP plenary documents Motion for a resolution GA: {:.3%}'.format(
-            motResAmGA / totMotResAm) + '\n')
-        a.write('percentage of amendments of EP plenary documents Motion for a resolution HR: {:.3%}'.format(
-            motResAmHR / totMotResAm) + '\n')
-        a.write('percentage of amendments of EP plenary documents Motion for a resolution HU: {:.3%}'.format(
-            motResAmHU / totMotResAm) + '\n')
-        a.write('percentage of amendments of EP plenary documents Motion for a resolution IT: {:.3%}'.format(
-            motResAmIT / totMotResAm) + '\n')
-        a.write('percentage of amendments of EP plenary documents Motion for a resolution LT: {:.3%}'.format(
-            motResAmLT / totMotResAm) + '\n')
-        a.write('percentage of amendments of EP plenary documents Motion for a resolution LV: {:.3%}'.format(
-            motResAmLV / totMotResAm) + '\n')
-        a.write('percentage of amendments of EP plenary documents Motion for a resolution MT: {:.3%}'.format(
-            motResAmMT / totMotResAm) + '\n')
-        a.write('percentage of amendments of EP plenary documents Motion for a resolution NL: {:.3%}'.format(
-            motResAmNL / totMotResAm) + '\n')
-        a.write('percentage of amendments of EP plenary documents Motion for a resolution PL: {:.3%}'.format(
-            motResAmPL / totMotResAm) + '\n')
-        a.write('percentage of amendments of EP plenary documents Motion for a resolution PT: {:.3%}'.format(
-            motResAmPT / totMotResAm) + '\n')
-        a.write('percentage of amendments of EP plenary documents Motion for a resolution RO: {:.3%}'.format(
-            motResAmRO / totMotResAm) + '\n')
-        a.write('percentage of amendments of EP plenary documents Motion for a resolution SK: {:.3%}'.format(
-            motResAmSK / totMotResAm) + '\n')
-        a.write('percentage of amendments of EP plenary documents Motion for a resolution SL: {:.3%}'.format(
-            motResAmSL / totMotResAm) + '\n')
-        a.write('percentage of amendments of EP plenary documents Motion for a resolution SV: {:.3%}'.format(
-            motResAmSV / totMotResAm) + '\n\n')
+        if totMotResAm > 0:
+            a.write('percentage of amendments of EP plenary documents Motion for a resolution BG: {:.3%}'.format(
+                motResAmBG / totMotResAm) + '\n')
+            a.write('percentage of amendments of EP plenary documents Motion for a resolution CS: {:.3%}'.format(
+                motResAmCS / totMotResAm) + '\n')
+            a.write('percentage of amendments of EP plenary documents Motion for a resolution DA: {:.3%}'.format(
+                motResAmDA / totMotResAm) + '\n')
+            a.write('percentage of amendments of EP plenary documents Motion for a resolution DE: {:.3%}'.format(
+                motResAmDE / totMotResAm) + '\n')
+            a.write('percentage of amendments of EP plenary documents Motion for a resolution EL: {:.3%}'.format(
+                motResAmEL / totMotResAm) + '\n')
+            a.write('percentage of amendments of EP plenary documents Motion for a resolution EN: {:.3%}'.format(
+                motResAmEN / totMotResAm) + '\n')
+            a.write('percentage of amendments of EP plenary documents Motion for a resolution ES: {:.3%}'.format(
+                motResAmES / totMotResAm) + '\n')
+            a.write('percentage of amendments of EP plenary documents Motion for a resolution ET: {:.3%}'.format(
+                motResAmET / totMotResAm) + '\n')
+            a.write('percentage of amendments of EP plenary documents Motion for a resolution FI: {:.3%}'.format(
+                motResAmFI / totMotResAm) + '\n')
+            a.write('percentage of amendments of EP plenary documents Motion for a resolution FR: {:.3%}'.format(
+                motResAmFR / totMotResAm) + '\n')
+            a.write('percentage of amendments of EP plenary documents Motion for a resolution GA: {:.3%}'.format(
+                motResAmGA / totMotResAm) + '\n')
+            a.write('percentage of amendments of EP plenary documents Motion for a resolution HR: {:.3%}'.format(
+                motResAmHR / totMotResAm) + '\n')
+            a.write('percentage of amendments of EP plenary documents Motion for a resolution HU: {:.3%}'.format(
+                motResAmHU / totMotResAm) + '\n')
+            a.write('percentage of amendments of EP plenary documents Motion for a resolution IT: {:.3%}'.format(
+                motResAmIT / totMotResAm) + '\n')
+            a.write('percentage of amendments of EP plenary documents Motion for a resolution LT: {:.3%}'.format(
+                motResAmLT / totMotResAm) + '\n')
+            a.write('percentage of amendments of EP plenary documents Motion for a resolution LV: {:.3%}'.format(
+                motResAmLV / totMotResAm) + '\n')
+            a.write('percentage of amendments of EP plenary documents Motion for a resolution MT: {:.3%}'.format(
+                motResAmMT / totMotResAm) + '\n')
+            a.write('percentage of amendments of EP plenary documents Motion for a resolution NL: {:.3%}'.format(
+                motResAmNL / totMotResAm) + '\n')
+            a.write('percentage of amendments of EP plenary documents Motion for a resolution PL: {:.3%}'.format(
+                motResAmPL / totMotResAm) + '\n')
+            a.write('percentage of amendments of EP plenary documents Motion for a resolution PT: {:.3%}'.format(
+                motResAmPT / totMotResAm) + '\n')
+            a.write('percentage of amendments of EP plenary documents Motion for a resolution RO: {:.3%}'.format(
+                motResAmRO / totMotResAm) + '\n')
+            a.write('percentage of amendments of EP plenary documents Motion for a resolution SK: {:.3%}'.format(
+                motResAmSK / totMotResAm) + '\n')
+            a.write('percentage of amendments of EP plenary documents Motion for a resolution SL: {:.3%}'.format(
+                motResAmSL / totMotResAm) + '\n')
+            a.write('percentage of amendments of EP plenary documents Motion for a resolution SV: {:.3%}'.format(
+                motResAmSV / totMotResAm) + '\n\n')
 
         # object to write percentage of amendments of EP plenary documents Motion for a resolution - oral questions
         a.write('percentage of EP plenary documents Motions for resolution - oral questions: {:.3%}'.format(
             totMotResOralQst / totalParlDocs) + '\n')
-        a.write('percentage of EP plenary documents Motions for resolution - oral questions BG: {:.3%}'.format(
-            motResOralQstBG / totMotResOralQst) + '\n')
-        a.write('percentage of EP plenary documents Motions for resolution - oral questions CS: {:.3%}'.format(
-            motResOralQstCS / totMotResOralQst) + '\n')
-        a.write('percentage of EP plenary documents Motions for resolution - oral questions DA: {:.3%}'.format(
-            motResOralQstDA / totMotResOralQst) + '\n')
-        a.write('percentage of EP plenary documents Motions for resolution - oral questions DE: {:.3%}'.format(
-            motResOralQstDE / totMotResOralQst) + '\n')
-        a.write('percentage of EP plenary documents Motions for resolution - oral questions EL: {:.3%}'.format(
-            motResOralQstEL / totMotResOralQst) + '\n')
-        a.write('percentage of EP plenary documents Motions for resolution - oral questions EN: {:.3%}'.format(
-            motResOralQstEN / totMotResOralQst) + '\n')
-        a.write('percentage of EP plenary documents Motions for resolution - oral questions ES: {:.3%}'.format(
-            motResOralQstES / totMotResOralQst) + '\n')
-        a.write('percentage of EP plenary documents Motions for resolution - oral questions ET: {:.3%}'.format(
-            motResOralQstET / totMotResOralQst) + '\n')
-        a.write('percentage of EP plenary documents Motions for resolution - oral questions FI: {:.3%}'.format(
-            motResOralQstFI / totMotResOralQst) + '\n')
-        a.write('percentage of EP plenary documents Motions for resolution - oral questions FR: {:.3%}'.format(
-            motResOralQstFR / totMotResOralQst) + '\n')
-        a.write('percentage of EP plenary documents Motions for resolution - oral questions GA: {:.3%}'.format(
-            motResOralQstGA / totMotResOralQst) + '\n')
-        a.write('percentage of EP plenary documents Motions for resolution - oral questions HR: {:.3%}'.format(
-            motResOralQstHR / totMotResOralQst) + '\n')
-        a.write('percentage of EP plenary documents Motions for resolution - oral questions HU: {:.3%}'.format(
-            motResOralQstHU / totMotResOralQst) + '\n')
-        a.write('percentage of EP plenary documents Motions for resolution - oral questions IT: {:.3%}'.format(
-            motResOralQstIT / totMotResOralQst) + '\n')
-        a.write('percentage of EP plenary documents Motions for resolution - oral questions LT: {:.3%}'.format(
-            motResOralQstLT / totMotResOralQst) + '\n')
-        a.write('percentage of EP plenary documents Motions for resolution - oral questions LV: {:.3%}'.format(
-            motResOralQstLV / totMotResOralQst) + '\n')
-        a.write('percentage of EP plenary documents Motions for resolution - oral questions MT: {:.3%}'.format(
-            motResOralQstMT / totMotResOralQst) + '\n')
-        a.write('percentage of EP plenary documents Motions for resolution - oral questions NL: {:.3%}'.format(
-            motResOralQstNL / totMotResOralQst) + '\n')
-        a.write('percentage of EP plenary documents Motions for resolution - oral questions PL: {:.3%}'.format(
-            motResOralQstPL / totMotResOralQst) + '\n')
-        a.write('percentage of EP plenary documents Motions for resolution - oral questions PT: {:.3%}'.format(
-            motResOralQstPT / totMotResOralQst) + '\n')
-        a.write('percentage of EP plenary documents Motions for resolution - oral questions RO: {:.3%}'.format(
-            motResOralQstRO / totMotResOralQst) + '\n')
-        a.write('percentage of EP plenary documents Motions for resolution - oral questions SK: {:.3%}'.format(
-            motResOralQstSK / totMotResOralQst) + '\n')
-        a.write('percentage of EP plenary documents Motions for resolution - oral questions SL: {:.3%}'.format(
-            motResOralQstSL / totMotResOralQst) + '\n')
-        a.write('percentage of EP plenary documents Motions for resolution - oral questions SV: {:.3%}'.format(
-            motResOralQstSV / totMotResOralQst) + '\n\n')
+
+        if totMotResOralQst > 0:
+            a.write('percentage of EP plenary documents Motions for resolution - oral questions BG: {:.3%}'.format(
+                motResOralQstBG / totMotResOralQst) + '\n')
+            a.write('percentage of EP plenary documents Motions for resolution - oral questions CS: {:.3%}'.format(
+                motResOralQstCS / totMotResOralQst) + '\n')
+            a.write('percentage of EP plenary documents Motions for resolution - oral questions DA: {:.3%}'.format(
+                motResOralQstDA / totMotResOralQst) + '\n')
+            a.write('percentage of EP plenary documents Motions for resolution - oral questions DE: {:.3%}'.format(
+                motResOralQstDE / totMotResOralQst) + '\n')
+            a.write('percentage of EP plenary documents Motions for resolution - oral questions EL: {:.3%}'.format(
+                motResOralQstEL / totMotResOralQst) + '\n')
+            a.write('percentage of EP plenary documents Motions for resolution - oral questions EN: {:.3%}'.format(
+                motResOralQstEN / totMotResOralQst) + '\n')
+            a.write('percentage of EP plenary documents Motions for resolution - oral questions ES: {:.3%}'.format(
+                motResOralQstES / totMotResOralQst) + '\n')
+            a.write('percentage of EP plenary documents Motions for resolution - oral questions ET: {:.3%}'.format(
+                motResOralQstET / totMotResOralQst) + '\n')
+            a.write('percentage of EP plenary documents Motions for resolution - oral questions FI: {:.3%}'.format(
+                motResOralQstFI / totMotResOralQst) + '\n')
+            a.write('percentage of EP plenary documents Motions for resolution - oral questions FR: {:.3%}'.format(
+                motResOralQstFR / totMotResOralQst) + '\n')
+            a.write('percentage of EP plenary documents Motions for resolution - oral questions GA: {:.3%}'.format(
+                motResOralQstGA / totMotResOralQst) + '\n')
+            a.write('percentage of EP plenary documents Motions for resolution - oral questions HR: {:.3%}'.format(
+                motResOralQstHR / totMotResOralQst) + '\n')
+            a.write('percentage of EP plenary documents Motions for resolution - oral questions HU: {:.3%}'.format(
+                motResOralQstHU / totMotResOralQst) + '\n')
+            a.write('percentage of EP plenary documents Motions for resolution - oral questions IT: {:.3%}'.format(
+                motResOralQstIT / totMotResOralQst) + '\n')
+            a.write('percentage of EP plenary documents Motions for resolution - oral questions LT: {:.3%}'.format(
+                motResOralQstLT / totMotResOralQst) + '\n')
+            a.write('percentage of EP plenary documents Motions for resolution - oral questions LV: {:.3%}'.format(
+                motResOralQstLV / totMotResOralQst) + '\n')
+            a.write('percentage of EP plenary documents Motions for resolution - oral questions MT: {:.3%}'.format(
+                motResOralQstMT / totMotResOralQst) + '\n')
+            a.write('percentage of EP plenary documents Motions for resolution - oral questions NL: {:.3%}'.format(
+                motResOralQstNL / totMotResOralQst) + '\n')
+            a.write('percentage of EP plenary documents Motions for resolution - oral questions PL: {:.3%}'.format(
+                motResOralQstPL / totMotResOralQst) + '\n')
+            a.write('percentage of EP plenary documents Motions for resolution - oral questions PT: {:.3%}'.format(
+                motResOralQstPT / totMotResOralQst) + '\n')
+            a.write('percentage of EP plenary documents Motions for resolution - oral questions RO: {:.3%}'.format(
+                motResOralQstRO / totMotResOralQst) + '\n')
+            a.write('percentage of EP plenary documents Motions for resolution - oral questions SK: {:.3%}'.format(
+                motResOralQstSK / totMotResOralQst) + '\n')
+            a.write('percentage of EP plenary documents Motions for resolution - oral questions SL: {:.3%}'.format(
+                motResOralQstSL / totMotResOralQst) + '\n')
+            a.write('percentage of EP plenary documents Motions for resolution - oral questions SV: {:.3%}'.format(
+                motResOralQstSV / totMotResOralQst) + '\n\n')
 
         # object to write percentage of EP plenary documents Joint motion for a resolution
         a.write('percentage of EP plenary documents Joint motion for a resolution: {:.3%}'.format(
             totJntMotRes / totalParlDocs) + '\n')
-        a.write('percentage of EP plenary documents Joint motion for a resolution BG: {:.3%}'.format(
-            jntMotResBG / totJntMotRes) + '\n')
-        a.write('percentage of EP plenary documents Joint motion for a resolution CS: {:.3%}'.format(
-            jntMotResCS / totJntMotRes) + '\n')
-        a.write('percentage of EP plenary documents Joint motion for a resolution DA: {:.3%}'.format(
-            jntMotResDA / totJntMotRes) + '\n')
-        a.write('percentage of EP plenary documents Joint motion for a resolution DE: {:.3%}'.format(
-            jntMotResDE / totJntMotRes) + '\n')
-        a.write('percentage of EP plenary documents Joint motion for a resolution EL: {:.3%}'.format(
-            jntMotResEL / totJntMotRes) + '\n')
-        a.write('percentage of EP plenary documents Joint motion for a resolution EN: {:.3%}'.format(
-            jntMotResEN / totJntMotRes) + '\n')
-        a.write('percentage of EP plenary documents Joint motion for a resolution ES: {:.3%}'.format(
-            jntMotResES / totJntMotRes) + '\n')
-        a.write('percentage of EP plenary documents Joint motion for a resolution ET: {:.3%}'.format(
-            jntMotResET / totJntMotRes) + '\n')
-        a.write('percentage of EP plenary documents Joint motion for a resolution FI: {:.3%}'.format(
-            jntMotResFI / totJntMotRes) + '\n')
-        a.write('percentage of EP plenary documents Joint motion for a resolution FR: {:.3%}'.format(
-            jntMotResFR / totJntMotRes) + '\n')
-        a.write('percentage of EP plenary documents Joint motion for a resolution GA: {:.3%}'.format(
-            jntMotResGA / totJntMotRes) + '\n')
-        a.write('percentage of EP plenary documents Joint motion for a resolution HR: {:.3%}'.format(
-            jntMotResHR / totJntMotRes) + '\n')
-        a.write('percentage of EP plenary documents Joint motion for a resolution HU: {:.3%}'.format(
-            jntMotResHU / totJntMotRes) + '\n')
-        a.write('percentage of EP plenary documents Joint motion for a resolution IT: {:.3%}'.format(
-            jntMotResIT / totJntMotRes) + '\n')
-        a.write('percentage of EP plenary documents Joint motion for a resolution LT: {:.3%}'.format(
-            jntMotResLT / totJntMotRes) + '\n')
-        a.write('percentage of EP plenary documents Joint motion for a resolution LV: {:.3%}'.format(
-            jntMotResLV / totJntMotRes) + '\n')
-        a.write('percentage of EP plenary documents Joint motion for a resolution MT: {:.3%}'.format(
-            jntMotResMT / totJntMotRes) + '\n')
-        a.write('percentage of EP plenary documents Joint motion for a resolution NL: {:.3%}'.format(
-            jntMotResNL / totJntMotRes) + '\n')
-        a.write('percentage of EP plenary documents Joint motion for a resolution PL: {:.3%}'.format(
-            jntMotResPL / totJntMotRes) + '\n')
-        a.write('percentage of EP plenary documents Joint motion for a resolution PT: {:.3%}'.format(
-            jntMotResPT / totJntMotRes) + '\n')
-        a.write('percentage of EP plenary documents Joint motion for a resolution RO: {:.3%}'.format(
-            jntMotResRO / totJntMotRes) + '\n')
-        a.write('percentage of EP plenary documents Joint motion for a resolution SK: {:.3%}'.format(
-            jntMotResSK / totJntMotRes) + '\n')
-        a.write('percentage of EP plenary documents Joint motion for a resolution SL: {:.3%}'.format(
-            jntMotResSL / totJntMotRes) + '\n')
-        a.write('percentage of EP plenary documents Joint motion for a resolution SV: {:.3%}'.format(
-            jntMotResSV / totJntMotRes) + '\n\n')
+
+        if totJntMotRes > 0:
+            a.write('percentage of EP plenary documents Joint motion for a resolution BG: {:.3%}'.format(
+                jntMotResBG / totJntMotRes) + '\n')
+            a.write('percentage of EP plenary documents Joint motion for a resolution CS: {:.3%}'.format(
+                jntMotResCS / totJntMotRes) + '\n')
+            a.write('percentage of EP plenary documents Joint motion for a resolution DA: {:.3%}'.format(
+                jntMotResDA / totJntMotRes) + '\n')
+            a.write('percentage of EP plenary documents Joint motion for a resolution DE: {:.3%}'.format(
+                jntMotResDE / totJntMotRes) + '\n')
+            a.write('percentage of EP plenary documents Joint motion for a resolution EL: {:.3%}'.format(
+                jntMotResEL / totJntMotRes) + '\n')
+            a.write('percentage of EP plenary documents Joint motion for a resolution EN: {:.3%}'.format(
+                jntMotResEN / totJntMotRes) + '\n')
+            a.write('percentage of EP plenary documents Joint motion for a resolution ES: {:.3%}'.format(
+                jntMotResES / totJntMotRes) + '\n')
+            a.write('percentage of EP plenary documents Joint motion for a resolution ET: {:.3%}'.format(
+                jntMotResET / totJntMotRes) + '\n')
+            a.write('percentage of EP plenary documents Joint motion for a resolution FI: {:.3%}'.format(
+                jntMotResFI / totJntMotRes) + '\n')
+            a.write('percentage of EP plenary documents Joint motion for a resolution FR: {:.3%}'.format(
+                jntMotResFR / totJntMotRes) + '\n')
+            a.write('percentage of EP plenary documents Joint motion for a resolution GA: {:.3%}'.format(
+                jntMotResGA / totJntMotRes) + '\n')
+            a.write('percentage of EP plenary documents Joint motion for a resolution HR: {:.3%}'.format(
+                jntMotResHR / totJntMotRes) + '\n')
+            a.write('percentage of EP plenary documents Joint motion for a resolution HU: {:.3%}'.format(
+                jntMotResHU / totJntMotRes) + '\n')
+            a.write('percentage of EP plenary documents Joint motion for a resolution IT: {:.3%}'.format(
+                jntMotResIT / totJntMotRes) + '\n')
+            a.write('percentage of EP plenary documents Joint motion for a resolution LT: {:.3%}'.format(
+                jntMotResLT / totJntMotRes) + '\n')
+            a.write('percentage of EP plenary documents Joint motion for a resolution LV: {:.3%}'.format(
+                jntMotResLV / totJntMotRes) + '\n')
+            a.write('percentage of EP plenary documents Joint motion for a resolution MT: {:.3%}'.format(
+                jntMotResMT / totJntMotRes) + '\n')
+            a.write('percentage of EP plenary documents Joint motion for a resolution NL: {:.3%}'.format(
+                jntMotResNL / totJntMotRes) + '\n')
+            a.write('percentage of EP plenary documents Joint motion for a resolution PL: {:.3%}'.format(
+                jntMotResPL / totJntMotRes) + '\n')
+            a.write('percentage of EP plenary documents Joint motion for a resolution PT: {:.3%}'.format(
+                jntMotResPT / totJntMotRes) + '\n')
+            a.write('percentage of EP plenary documents Joint motion for a resolution RO: {:.3%}'.format(
+                jntMotResRO / totJntMotRes) + '\n')
+            a.write('percentage of EP plenary documents Joint motion for a resolution SK: {:.3%}'.format(
+                jntMotResSK / totJntMotRes) + '\n')
+            a.write('percentage of EP plenary documents Joint motion for a resolution SL: {:.3%}'.format(
+                jntMotResSL / totJntMotRes) + '\n')
+            a.write('percentage of EP plenary documents Joint motion for a resolution SV: {:.3%}'.format(
+                jntMotResSV / totJntMotRes) + '\n\n')
 
         # object to write percentage of amendments EP plenary documents Joint motion for a resolution
         a.write('percentage of amendments EP plenary documents Joint motion for a resolution: {:.3%}'.format(
             totJntMotResAm / totalParlDocs) + '\n')
-        a.write('percentage of amendments EP plenary documents Joint motion for a resolution BG: {:.3%}'.format(
-            jntMotResAmBG / totJntMotResAm) + '\n')
-        a.write('percentage of amendments EP plenary documents Joint motion for a resolution CS: {:.3%}'.format(
-            jntMotResAmCS / totJntMotResAm) + '\n')
-        a.write('percentage of amendments EP plenary documents Joint motion for a resolution DA: {:.3%}'.format(
-            jntMotResAmDA / totJntMotResAm) + '\n')
-        a.write('percentage of amendments EP plenary documents Joint motion for a resolution DE: {:.3%}'.format(
-            jntMotResAmDE / totJntMotResAm) + '\n')
-        a.write('percentage of amendments EP plenary documents Joint motion for a resolution EL: {:.3%}'.format(
-            jntMotResAmEL / totJntMotResAm) + '\n')
-        a.write('percentage of amendments EP plenary documents Joint motion for a resolution EN: {:.3%}'.format(
-            jntMotResAmEN / totJntMotResAm) + '\n')
-        a.write('percentage of amendments EP plenary documents Joint motion for a resolution ES: {:.3%}'.format(
-            jntMotResAmES / totJntMotResAm) + '\n')
-        a.write('percentage of amendments EP plenary documents Joint motion for a resolution ET: {:.3%}'.format(
-            jntMotResAmET / totJntMotResAm) + '\n')
-        a.write('percentage of amendments EP plenary documents Joint motion for a resolution FI: {:.3%}'.format(
-            jntMotResAmFI / totJntMotResAm) + '\n')
-        a.write('percentage of amendments EP plenary documents Joint motion for a resolution FR: {:.3%}'.format(
-            jntMotResAmFR / totJntMotResAm) + '\n')
-        a.write('percentage of amendments EP plenary documents Joint motion for a resolution GA: {:.3%}'.format(
-            jntMotResAmGA / totJntMotResAm) + '\n')
-        a.write('percentage of amendments EP plenary documents Joint motion for a resolution HR: {:.3%}'.format(
-            jntMotResAmHR / totJntMotResAm) + '\n')
-        a.write('percentage of amendments EP plenary documents Joint motion for a resolution HU: {:.3%}'.format(
-            jntMotResAmHU / totJntMotResAm) + '\n')
-        a.write('percentage of amendments EP plenary documents Joint motion for a resolution IT: {:.3%}'.format(
-            jntMotResAmIT / totJntMotResAm) + '\n')
-        a.write('percentage of amendments EP plenary documents Joint motion for a resolution LT: {:.3%}'.format(
-            jntMotResAmLT / totJntMotResAm) + '\n')
-        a.write('percentage of amendments EP plenary documents Joint motion for a resolution LV: {:.3%}'.format(
-            jntMotResAmLV / totJntMotResAm) + '\n')
-        a.write('percentage of amendments EP plenary documents Joint motion for a resolution MT: {:.3%}'.format(
-            jntMotResAmMT / totJntMotResAm) + '\n')
-        a.write('percentage of amendments EP plenary documents Joint motion for a resolution NL: {:.3%}'.format(
-            jntMotResAmNL / totJntMotResAm) + '\n')
-        a.write('percentage of amendments EP plenary documents Joint motion for a resolution PL: {:.3%}'.format(
-            jntMotResAmPL / totJntMotResAm) + '\n')
-        a.write('percentage of amendments EP plenary documents Joint motion for a resolution PT: {:.3%}'.format(
-            jntMotResAmPT / totJntMotResAm) + '\n')
-        a.write('percentage of amendments EP plenary documents Joint motion for a resolution RO: {:.3%}'.format(
-            jntMotResAmRO / totJntMotResAm) + '\n')
-        a.write('percentage of amendments EP plenary documents Joint motion for a resolution SK: {:.3%}'.format(
-            jntMotResAmSK / totJntMotResAm) + '\n')
-        a.write('percentage of amendments EP plenary documents Joint motion for a resolution SL: {:.3%}'.format(
-            jntMotResAmSL / totJntMotResAm) + '\n')
-        a.write('percentage of amendments EP plenary documents Joint motion for a resolution SV: {:.3%}'.format(
-            jntMotResAmSV / totJntMotResAm) + '\n')
+        if totJntMotResAm > 0:
+            a.write('percentage of amendments EP plenary documents Joint motion for a resolution BG: {:.3%}'.format(
+                jntMotResAmBG / totJntMotResAm) + '\n')
+            a.write('percentage of amendments EP plenary documents Joint motion for a resolution CS: {:.3%}'.format(
+                jntMotResAmCS / totJntMotResAm) + '\n')
+            a.write('percentage of amendments EP plenary documents Joint motion for a resolution DA: {:.3%}'.format(
+                jntMotResAmDA / totJntMotResAm) + '\n')
+            a.write('percentage of amendments EP plenary documents Joint motion for a resolution DE: {:.3%}'.format(
+                jntMotResAmDE / totJntMotResAm) + '\n')
+            a.write('percentage of amendments EP plenary documents Joint motion for a resolution EL: {:.3%}'.format(
+                jntMotResAmEL / totJntMotResAm) + '\n')
+            a.write('percentage of amendments EP plenary documents Joint motion for a resolution EN: {:.3%}'.format(
+                jntMotResAmEN / totJntMotResAm) + '\n')
+            a.write('percentage of amendments EP plenary documents Joint motion for a resolution ES: {:.3%}'.format(
+                jntMotResAmES / totJntMotResAm) + '\n')
+            a.write('percentage of amendments EP plenary documents Joint motion for a resolution ET: {:.3%}'.format(
+                jntMotResAmET / totJntMotResAm) + '\n')
+            a.write('percentage of amendments EP plenary documents Joint motion for a resolution FI: {:.3%}'.format(
+                jntMotResAmFI / totJntMotResAm) + '\n')
+            a.write('percentage of amendments EP plenary documents Joint motion for a resolution FR: {:.3%}'.format(
+                jntMotResAmFR / totJntMotResAm) + '\n')
+            a.write('percentage of amendments EP plenary documents Joint motion for a resolution GA: {:.3%}'.format(
+                jntMotResAmGA / totJntMotResAm) + '\n')
+            a.write('percentage of amendments EP plenary documents Joint motion for a resolution HR: {:.3%}'.format(
+                jntMotResAmHR / totJntMotResAm) + '\n')
+            a.write('percentage of amendments EP plenary documents Joint motion for a resolution HU: {:.3%}'.format(
+                jntMotResAmHU / totJntMotResAm) + '\n')
+            a.write('percentage of amendments EP plenary documents Joint motion for a resolution IT: {:.3%}'.format(
+                jntMotResAmIT / totJntMotResAm) + '\n')
+            a.write('percentage of amendments EP plenary documents Joint motion for a resolution LT: {:.3%}'.format(
+                jntMotResAmLT / totJntMotResAm) + '\n')
+            a.write('percentage of amendments EP plenary documents Joint motion for a resolution LV: {:.3%}'.format(
+                jntMotResAmLV / totJntMotResAm) + '\n')
+            a.write('percentage of amendments EP plenary documents Joint motion for a resolution MT: {:.3%}'.format(
+                jntMotResAmMT / totJntMotResAm) + '\n')
+            a.write('percentage of amendments EP plenary documents Joint motion for a resolution NL: {:.3%}'.format(
+                jntMotResAmNL / totJntMotResAm) + '\n')
+            a.write('percentage of amendments EP plenary documents Joint motion for a resolution PL: {:.3%}'.format(
+                jntMotResAmPL / totJntMotResAm) + '\n')
+            a.write('percentage of amendments EP plenary documents Joint motion for a resolution PT: {:.3%}'.format(
+                jntMotResAmPT / totJntMotResAm) + '\n')
+            a.write('percentage of amendments EP plenary documents Joint motion for a resolution RO: {:.3%}'.format(
+                jntMotResAmRO / totJntMotResAm) + '\n')
+            a.write('percentage of amendments EP plenary documents Joint motion for a resolution SK: {:.3%}'.format(
+                jntMotResAmSK / totJntMotResAm) + '\n')
+            a.write('percentage of amendments EP plenary documents Joint motion for a resolution SL: {:.3%}'.format(
+                jntMotResAmSL / totJntMotResAm) + '\n')
+            a.write('percentage of amendments EP plenary documents Joint motion for a resolution SV: {:.3%}'.format(
+                jntMotResAmSV / totJntMotResAm) + '\n')
 
 # the following function counts all the parliamentary-questions PDF files in the different languages, gives some
 # percentage and write it to a txt file
@@ -2407,54 +2414,56 @@ def countingFilesTypesQ(readFolder):
         a.write(
             'percentage of Questions for Question Time asked during the period: {:.3%}'.format(
                 qstTimeAnsw / countQst) + '\n')
-        a.write('percentage of Questions for Question Time asked during the period BG: {:.3%}'.format(
-            qstTimeAnswBG / qstTimeAnsw) + '\n')
-        a.write('percentage of Questions for Question Time asked during the period CS: {:.3%}'.format(
-            qstTimeAnswCS / qstTimeAnsw) + '\n')
-        a.write('percentage of Questions for Question Time asked during the period DA: {:.3%}'.format(
-            qstTimeAnswDA / qstTimeAnsw) + '\n')
-        a.write('percentage of Questions for Question Time asked during the period DE: {:.3%}'.format(
-            qstTimeAnswDE / qstTimeAnsw) + '\n')
-        a.write('percentage of Questions for Question Time asked during the period EL: {:.3%}'.format(
-            qstTimeAnswEL / qstTimeAnsw) + '\n')
-        a.write('percentage of Questions for Question Time asked during the period EN: {:.3%}'.format(
-            qstTimeAnswEN / qstTimeAnsw) + '\n')
-        a.write('percentage of Questions for Question Time asked during the period ES: {:.3%}'.format(
-            qstTimeAnswES / qstTimeAnsw) + '\n')
-        a.write('percentage of Questions for Question Time asked during the period ET: {:.3%}'.format(
-            qstTimeAnswET / qstTimeAnsw) + '\n')
-        a.write('percentage of Questions for Question Time asked during the period FI: {:.3%}'.format(
-            qstTimeAnswFI / qstTimeAnsw) + '\n')
-        a.write('percentage of Questions for Question Time asked during the period FR: {:.3%}'.format(
-            qstTimeAnswFR / qstTimeAnsw) + '\n')
-        a.write('percentage of Questions for Question Time asked during the period GA: {:.3%}'.format(
-            qstTimeAnswGA / qstTimeAnsw) + '\n')
-        a.write('percentage of Questions for Question Time asked during the period HR: {:.3%}'.format(
-            qstTimeAnswHR / qstTimeAnsw) + '\n')
-        a.write('percentage of Questions for Question Time asked during the period HU: {:.3%}'.format(
-            qstTimeAnswHU / qstTimeAnsw) + '\n')
-        a.write('percentage of Questions for Question Time asked during the period IT: {:.3%}'.format(
-            qstTimeAnswIT / qstTimeAnsw) + '\n')
-        a.write('percentage of Questions for Question Time asked during the period LT: {:.3%}'.format(
-            qstTimeAnswLT / qstTimeAnsw) + '\n')
-        a.write('percentage of Questions for Question Time asked during the period LV: {:.3%}'.format(
-            qstTimeAnswLV / qstTimeAnsw) + '\n')
-        a.write('percentage of Questions for Question Time asked during the period MT: {:.3%}'.format(
-            qstTimeAnswMT / qstTimeAnsw) + '\n')
-        a.write('percentage of Questions for Question Time asked during the period NL: {:.3%}'.format(
-            qstTimeAnswNL / qstTimeAnsw) + '\n')
-        a.write('percentage of Questions for Question Time asked during the period PL: {:.3%}'.format(
-            qstTimeAnswPL / qstTimeAnsw) + '\n')
-        a.write('percentage of Questions for Question Time asked during the period PT: {:.3%}'.format(
-            qstTimeAnswPT / qstTimeAnsw) + '\n')
-        a.write('percentage of Questions for Question Time asked during the period RO: {:.3%}'.format(
-            qstTimeAnswRO / qstTimeAnsw) + '\n')
-        a.write('percentage of Questions for Question Time asked during the period SK: {:.3%}'.format(
-            qstTimeAnswSK / qstTimeAnsw) + '\n')
-        a.write('percentage of Questions for Question Time asked during the period SL: {:.3%}'.format(
-            qstTimeAnswSL / qstTimeAnsw) + '\n')
-        a.write('percentage of Questions for Question Time asked during the period SV: {:.3%}'.format(
-            qstTimeAnswSV / qstTimeAnsw) + '\n\n')
+
+        if qstTimeAnsw > 0:
+            a.write('percentage of Questions for Question Time asked during the period BG: {:.3%}'.format(
+                qstTimeAnswBG / qstTimeAnsw) + '\n')
+            a.write('percentage of Questions for Question Time asked during the period CS: {:.3%}'.format(
+                qstTimeAnswCS / qstTimeAnsw) + '\n')
+            a.write('percentage of Questions for Question Time asked during the period DA: {:.3%}'.format(
+                qstTimeAnswDA / qstTimeAnsw) + '\n')
+            a.write('percentage of Questions for Question Time asked during the period DE: {:.3%}'.format(
+                qstTimeAnswDE / qstTimeAnsw) + '\n')
+            a.write('percentage of Questions for Question Time asked during the period EL: {:.3%}'.format(
+                qstTimeAnswEL / qstTimeAnsw) + '\n')
+            a.write('percentage of Questions for Question Time asked during the period EN: {:.3%}'.format(
+                qstTimeAnswEN / qstTimeAnsw) + '\n')
+            a.write('percentage of Questions for Question Time asked during the period ES: {:.3%}'.format(
+                qstTimeAnswES / qstTimeAnsw) + '\n')
+            a.write('percentage of Questions for Question Time asked during the period ET: {:.3%}'.format(
+                qstTimeAnswET / qstTimeAnsw) + '\n')
+            a.write('percentage of Questions for Question Time asked during the period FI: {:.3%}'.format(
+                qstTimeAnswFI / qstTimeAnsw) + '\n')
+            a.write('percentage of Questions for Question Time asked during the period FR: {:.3%}'.format(
+                qstTimeAnswFR / qstTimeAnsw) + '\n')
+            a.write('percentage of Questions for Question Time asked during the period GA: {:.3%}'.format(
+                qstTimeAnswGA / qstTimeAnsw) + '\n')
+            a.write('percentage of Questions for Question Time asked during the period HR: {:.3%}'.format(
+                qstTimeAnswHR / qstTimeAnsw) + '\n')
+            a.write('percentage of Questions for Question Time asked during the period HU: {:.3%}'.format(
+                qstTimeAnswHU / qstTimeAnsw) + '\n')
+            a.write('percentage of Questions for Question Time asked during the period IT: {:.3%}'.format(
+                qstTimeAnswIT / qstTimeAnsw) + '\n')
+            a.write('percentage of Questions for Question Time asked during the period LT: {:.3%}'.format(
+                qstTimeAnswLT / qstTimeAnsw) + '\n')
+            a.write('percentage of Questions for Question Time asked during the period LV: {:.3%}'.format(
+                qstTimeAnswLV / qstTimeAnsw) + '\n')
+            a.write('percentage of Questions for Question Time asked during the period MT: {:.3%}'.format(
+                qstTimeAnswMT / qstTimeAnsw) + '\n')
+            a.write('percentage of Questions for Question Time asked during the period NL: {:.3%}'.format(
+                qstTimeAnswNL / qstTimeAnsw) + '\n')
+            a.write('percentage of Questions for Question Time asked during the period PL: {:.3%}'.format(
+                qstTimeAnswPL / qstTimeAnsw) + '\n')
+            a.write('percentage of Questions for Question Time asked during the period PT: {:.3%}'.format(
+                qstTimeAnswPT / qstTimeAnsw) + '\n')
+            a.write('percentage of Questions for Question Time asked during the period RO: {:.3%}'.format(
+                qstTimeAnswRO / qstTimeAnsw) + '\n')
+            a.write('percentage of Questions for Question Time asked during the period SK: {:.3%}'.format(
+                qstTimeAnswSK / qstTimeAnsw) + '\n')
+            a.write('percentage of Questions for Question Time asked during the period SL: {:.3%}'.format(
+                qstTimeAnswSL / qstTimeAnsw) + '\n')
+            a.write('percentage of Questions for Question Time asked during the period SV: {:.3%}'.format(
+                qstTimeAnswSV / qstTimeAnsw) + '\n\n')
 
         # Object to write: percentage of Answer for Questions Time asked during the period
         a.write(
@@ -2464,54 +2473,56 @@ def countingFilesTypesQ(readFolder):
         # Object to write: percentage of Written questions with a request for a written answer
         a.write('percentage of Written questions with a request for a written answer : {:.3%}'.format(
             wrtQstReqAnsw / countQst) + '\n')
-        a.write('percentage of Written questions with a request for a written answer  BG: {:.3%}'.format(
-            wrtQstReqAnswBG / wrtQstReqAnsw) + '\n')
-        a.write('percentage of Written questions with a request for a written answer  CS: {:.3%}'.format(
-            wrtQstReqAnswCS / wrtQstReqAnsw) + '\n')
-        a.write('percentage of Written questions with a request for a written answer  DA: {:.3%}'.format(
-            wrtQstReqAnswDA / wrtQstReqAnsw) + '\n')
-        a.write('percentage of Written questions with a request for a written answer  DE: {:.3%}'.format(
-            wrtQstReqAnswDE / wrtQstReqAnsw) + '\n')
-        a.write('percentage of Written questions with a request for a written answer  EL: {:.3%}'.format(
-            wrtQstReqAnswEL / wrtQstReqAnsw) + '\n')
-        a.write('percentage of Written questions with a request for a written answer  EN: {:.3%}'.format(
-            wrtQstReqAnswEN / wrtQstReqAnsw) + '\n')
-        a.write('percentage of Written questions with a request for a written answer  ES: {:.3%}'.format(
-            wrtQstReqAnswES / wrtQstReqAnsw) + '\n')
-        a.write('percentage of Written questions with a request for a written answer  ET: {:.3%}'.format(
-            wrtQstReqAnswET / wrtQstReqAnsw) + '\n')
-        a.write('percentage of Written questions with a request for a written answer  FI: {:.3%}'.format(
-            wrtQstReqAnswFI / wrtQstReqAnsw) + '\n')
-        a.write('percentage of Written questions with a request for a written answer  FR: {:.3%}'.format(
-            wrtQstReqAnswFR / wrtQstReqAnsw) + '\n')
-        a.write('percentage of Written questions with a request for a written answer  GA: {:.3%}'.format(
-            wrtQstReqAnswGA / wrtQstReqAnsw) + '\n')
-        a.write('percentage of Written questions with a request for a written answer  HR: {:.3%}'.format(
-            wrtQstReqAnswHR / wrtQstReqAnsw) + '\n')
-        a.write('percentage of Written questions with a request for a written answer  HU: {:.3%}'.format(
-            wrtQstReqAnswHU / wrtQstReqAnsw) + '\n')
-        a.write('percentage of Written questions with a request for a written answer  IT: {:.3%}'.format(
-            wrtQstReqAnswIT / wrtQstReqAnsw) + '\n')
-        a.write('percentage of Written questions with a request for a written answer  LT: {:.3%}'.format(
-            wrtQstReqAnswLT / wrtQstReqAnsw) + '\n')
-        a.write('percentage of Written questions with a request for a written answer  LV: {:.3%}'.format(
-            wrtQstReqAnswLV / wrtQstReqAnsw) + '\n')
-        a.write('percentage of Written questions with a request for a written answer  MT: {:.3%}'.format(
-            wrtQstReqAnswMT / wrtQstReqAnsw) + '\n')
-        a.write('percentage of Written questions with a request for a written answer  NL: {:.3%}'.format(
-            wrtQstReqAnswNL / wrtQstReqAnsw) + '\n')
-        a.write('percentage of Written questions with a request for a written answer  PL: {:.3%}'.format(
-            wrtQstReqAnswPL / wrtQstReqAnsw) + '\n')
-        a.write('percentage of Written questions with a request for a written answer  PT: {:.3%}'.format(
-            wrtQstReqAnswPT / wrtQstReqAnsw) + '\n')
-        a.write('percentage of Written questions with a request for a written answer  RO: {:.3%}'.format(
-            wrtQstReqAnswRO / wrtQstReqAnsw) + '\n')
-        a.write('percentage of Written questions with a request for a written answer  SK: {:.3%}'.format(
-            wrtQstReqAnswSK / wrtQstReqAnsw) + '\n')
-        a.write('percentage of Written questions with a request for a written answer  SL: {:.3%}'.format(
-            wrtQstReqAnswSL / wrtQstReqAnsw) + '\n')
-        a.write('percentage of Written questions with a request for a written answer  SV: {:.3%}'.format(
-            wrtQstReqAnswSV / wrtQstReqAnsw) + '\n\n')
+
+        if wrtQstReqAnsw > 0:
+            a.write('percentage of Written questions with a request for a written answer  BG: {:.3%}'.format(
+                wrtQstReqAnswBG / wrtQstReqAnsw) + '\n')
+            a.write('percentage of Written questions with a request for a written answer  CS: {:.3%}'.format(
+                wrtQstReqAnswCS / wrtQstReqAnsw) + '\n')
+            a.write('percentage of Written questions with a request for a written answer  DA: {:.3%}'.format(
+                wrtQstReqAnswDA / wrtQstReqAnsw) + '\n')
+            a.write('percentage of Written questions with a request for a written answer  DE: {:.3%}'.format(
+                wrtQstReqAnswDE / wrtQstReqAnsw) + '\n')
+            a.write('percentage of Written questions with a request for a written answer  EL: {:.3%}'.format(
+                wrtQstReqAnswEL / wrtQstReqAnsw) + '\n')
+            a.write('percentage of Written questions with a request for a written answer  EN: {:.3%}'.format(
+                wrtQstReqAnswEN / wrtQstReqAnsw) + '\n')
+            a.write('percentage of Written questions with a request for a written answer  ES: {:.3%}'.format(
+                wrtQstReqAnswES / wrtQstReqAnsw) + '\n')
+            a.write('percentage of Written questions with a request for a written answer  ET: {:.3%}'.format(
+                wrtQstReqAnswET / wrtQstReqAnsw) + '\n')
+            a.write('percentage of Written questions with a request for a written answer  FI: {:.3%}'.format(
+                wrtQstReqAnswFI / wrtQstReqAnsw) + '\n')
+            a.write('percentage of Written questions with a request for a written answer  FR: {:.3%}'.format(
+                wrtQstReqAnswFR / wrtQstReqAnsw) + '\n')
+            a.write('percentage of Written questions with a request for a written answer  GA: {:.3%}'.format(
+                wrtQstReqAnswGA / wrtQstReqAnsw) + '\n')
+            a.write('percentage of Written questions with a request for a written answer  HR: {:.3%}'.format(
+                wrtQstReqAnswHR / wrtQstReqAnsw) + '\n')
+            a.write('percentage of Written questions with a request for a written answer  HU: {:.3%}'.format(
+                wrtQstReqAnswHU / wrtQstReqAnsw) + '\n')
+            a.write('percentage of Written questions with a request for a written answer  IT: {:.3%}'.format(
+                wrtQstReqAnswIT / wrtQstReqAnsw) + '\n')
+            a.write('percentage of Written questions with a request for a written answer  LT: {:.3%}'.format(
+                wrtQstReqAnswLT / wrtQstReqAnsw) + '\n')
+            a.write('percentage of Written questions with a request for a written answer  LV: {:.3%}'.format(
+                wrtQstReqAnswLV / wrtQstReqAnsw) + '\n')
+            a.write('percentage of Written questions with a request for a written answer  MT: {:.3%}'.format(
+                wrtQstReqAnswMT / wrtQstReqAnsw) + '\n')
+            a.write('percentage of Written questions with a request for a written answer  NL: {:.3%}'.format(
+                wrtQstReqAnswNL / wrtQstReqAnsw) + '\n')
+            a.write('percentage of Written questions with a request for a written answer  PL: {:.3%}'.format(
+                wrtQstReqAnswPL / wrtQstReqAnsw) + '\n')
+            a.write('percentage of Written questions with a request for a written answer  PT: {:.3%}'.format(
+                wrtQstReqAnswPT / wrtQstReqAnsw) + '\n')
+            a.write('percentage of Written questions with a request for a written answer  RO: {:.3%}'.format(
+                wrtQstReqAnswRO / wrtQstReqAnsw) + '\n')
+            a.write('percentage of Written questions with a request for a written answer  SK: {:.3%}'.format(
+                wrtQstReqAnswSK / wrtQstReqAnsw) + '\n')
+            a.write('percentage of Written questions with a request for a written answer  SL: {:.3%}'.format(
+                wrtQstReqAnswSL / wrtQstReqAnsw) + '\n')
+            a.write('percentage of Written questions with a request for a written answer  SV: {:.3%}'.format(
+                wrtQstReqAnswSV / wrtQstReqAnsw) + '\n\n')
 
         # Object to write: percentage of written answer for Written questions with a request
         a.write('percentage of written answer for Written questions with a request : {:.3%}'.format(
@@ -2582,9 +2593,10 @@ def countingFilesTypesS(readFolder):
     if not os.path.exists(base_folder + '/stats'):
         os.makedirs(base_folder + '/stats')
     if not os.path.exists(base_folder + '/stats/outputStsEurParlSessPdf.txt'):
-        with open(base_folder + '/stats/output_lst_EurParl_pdf_file.txt', 'w') as file:
+        with open(base_folder + '/stats/outputStsEurParlSessPdf.txt', 'w') as file:
             file.close()
-    with open(base_folder + '/stats/output_lst_EurParl_pdf_file.txt', 'w') as a:
+    print(base_folder)
+    with open(base_folder + '/stats/outputStsEurParlSessPdf.txt', 'w') as a:
         a.write('Total files count {}:'.format(totalFiles) + '\n\n')
         # Start writing EP plenary sitting verbatim report of proceedings
         a.write('Number of EP plenary sitting verbatim report of proceedings: {}'.format(verbatimCounter) + '\n\n')
@@ -2726,6 +2738,7 @@ def countingFilesTypesS(readFolder):
 # launch of the script
 def main():
     # Here below the execution of the different functions to
+    print(readFolder)
     if optionToRun == 'A':
         countingFilesTypesA(readFolder)
     if optionToRun == 'D':

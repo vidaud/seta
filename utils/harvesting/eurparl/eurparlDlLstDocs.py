@@ -22,8 +22,8 @@ date_format = now.strftime('%Y%m%d')
 
 # setting the source and destination folders
 startDir = os.path.realpath(os.path.dirname(os.path.dirname(__file__)))
-externalDir = 'D:/SeTA'
-os.chdir('D:')
+externalDir = 'C:/SeTA'
+os.chdir('C:')
 # assignment of base folder, from where to start creating the folders, if the folder does not exist then is created
 base_folder = externalDir + '/EURPARL/'
 if not os.path.exists(base_folder):
@@ -74,7 +74,7 @@ logger.info('File location using os.path.realpath:{}'.format(startDir))
 if optionToRun == 'A':
     # for adopted-texts list
     # if the folder does not exist then is created
-    pathFolder = pathFolder + '/parlAdopTxtLst/'
+    pathFolder = pathFolder + '/parlAdopTxtLst'
     if not os.path.exists(pathFolder):
         os.makedirs(pathFolder)
 
@@ -85,7 +85,7 @@ if optionToRun == 'A':
 if optionToRun == 'D':
     # for plenary-documents list
     # if the folder does not exist then is created
-    pathFolder = pathFolder + '/parl_docsLst/'
+    pathFolder = pathFolder + '/parl_docsLst'
     if not os.path.exists(pathFolder):
         os.makedirs(pathFolder)
 
@@ -96,7 +96,7 @@ if optionToRun == 'D':
 if optionToRun == 'M':
     # for meetings list
     # if the folder does not exist then is created
-    pathFolder = pathFolder + '/parlMeetLst/'
+    pathFolder = pathFolder + '/parlMeetLst'
     if not os.path.exists(pathFolder):
         os.makedirs(pathFolder)
 
@@ -107,7 +107,7 @@ if optionToRun == 'M':
 if optionToRun == 'Q':
     # for parliamentary-questions list
     # if the folder does not exist then is created
-    pathFolder = pathFolder + '/parl_questionsLst/'
+    pathFolder = pathFolder + '/parl_questionsLst'
     if not os.path.exists(pathFolder):
         os.makedirs(pathFolder)
 
@@ -117,20 +117,20 @@ if optionToRun == 'Q':
 
 if optionToRun == 'S':
     # for plenary-session list
-    # if the folder does not exist then is created
-    meetingPathFolder = pathFolder + '/parlMeetLst/'
+    # look first if the Meetings list folder exists
+    meetingPathFolder = pathFolder + '/parlMeetLst'
     if not os.path.exists(pathFolder):
         logger.info('The folder with the Meetings list does not exist, verify')
         exit()
 
-    pathFolder = pathFolder + '/parlSessionsLst/'
+    # if the folder does not exist then is created
+    pathFolder = pathFolder + '/parlSessionsLst'
     if not os.path.exists(pathFolder):
         os.makedirs(pathFolder)
 
     loggingFolder = base_folder + 'logs/logSessionsLst/'
     if not os.path.exists(loggingFolder):
         os.makedirs(loggingFolder)
-
 
 # setting the log file name and the destination path
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s %(message)s',
@@ -158,6 +158,9 @@ def urlCallListByYear(optionToRun, startYear='2011', currYear=currYear):
     global urlTxt
     try:
         for curYear in range(int(startYear), currYear + 1):
+            yearFolder = pathFolder + '/' + str(curYear)
+            if not os.path.exists(yearFolder):
+                os.makedirs(yearFolder)
             file_exists = exists(pathFolder + 'page_' + str(curYear) + '.json')
             if not file_exists:
                 if optionToRun == 'A':
@@ -166,73 +169,116 @@ def urlCallListByYear(optionToRun, startYear='2011', currYear=currYear):
 
                 elif optionToRun == 'D':
                     urlTxt = 'https://data.europarl.europa.eu/api/v1/plenary-documents?year=' + str(
-                        curYear) + '&work-type=REPORT&work-type=MOTION_RES&work-type=JOINT_MOTION_RES&' \
+                        curYear) + '&work-type=REPORT,MOTION_RES,JOINT_MOTION_RES&' \
                                    'language=en&format=application%2Fld%2Bjson&offset=0'
-
                 elif optionToRun == 'M':
                     urlTxt = 'https://data.europarl.europa.eu/api/v1/meetings?year=' + str(
-                        curYear) + '&activity-type=EP_PLENARY_PART_SESSION&language=en&format=application%2Fld%2Bjson' \
+                        curYear) + '&language=en&format=application%2Fld%2Bjson' \
                                    '&offset=0'
 
                 elif optionToRun == 'Q':
                     urlTxt = 'https://data.europarl.europa.eu/api/v1/parliamentary-questions?year=' + str(
-                        curYear) + '&work-type=EP_QUEST_WRITTEN_PRIORITY' \
-                                   '&work-type=QUEST_WRITTEN&work-type=QUEST_ORAL&work-type=EP_INTERPEL_MAJ&work-type' \
-                                   '=EP_INTERPEL_MIN&work-type=QUEST_TIME&language=en&format=application%2Fld%2Bjson' \
+                        curYear) + '&work-type=QUEST_WRITTEN_PRIORITY_EP,QUEST_WRITTEN,QUEST_ORAL,INTERPEL_MAJ_EP,' \
+                                   'INTERPEL_MIN_EP,QUEST_TIME&language=en&format=application%2Fld%2Bjson' \
                                    '&offset=0'
 
-                elif optionToRun == 'S':
-                    # first grab the code from the meetings file
-                    files = [f for f in glob.glob(meetingPathFolder + "*.json", recursive=True)]
-                    print(meetingPathFolder)
-                    for f in files:
-                        # print(f)
-                        with open(f, 'r', encoding='utf-8') as jsonFile:
-                            # get the year from the file path
-                            strYear = re.search(r'\d{4}', jsonFile.name)
-                            curYear = strYear.group()
-                            data = json.load(jsonFile)
-                            if data and curYear:
-                                results = data["events"]
-                                if results:
-                                    for result in results:
-                                        idDoc = result['activity_id']
-                                        dateRegex = strYear = re.search(r'\d{4}-\d{2}-\d{2}', idDoc)
-                                        dateSession = dateRegex.group()
-                                        yearFolder = pathFolder + '/' + str(curYear)
-                                        if not os.path.exists(yearFolder):
-                                            os.makedirs(yearFolder)
-                                        file_Sess_exists = exists(
-                                            yearFolder + '/sess_' + str(dateSession) + '.json')
-                                        if not file_Sess_exists:
-                                            # print(dateSession)
-                                            urlTxt = 'https://data.europarl.europa.eu/api/v1/plenary-session-documents?session=' + str(
-                                            dateSession) + '&work-type=EP_PLENARY_AGENDA_PART_SESSION&work-type=EP_PLENARY_AGENDA&' \
-                                           'work-type=EP_PLENARY_CRE&work-type=EP_PLENARY_MINUTES&work-type=EP_PLENARY_ATT_LIST' \
-                                           '&work-type=EP_PLENARY_VOTES_RESULTS&work-type=EP_PLENARY_RCV&language=en' \
-                                           '&format=application%2Fld%2Bjson&offset=0'
+                logger.info(
+                    'Url request for initial page with results:' + urlTxt + ' with option to run: ' + optionToRun)
+                print('Url request for initial page with results:' + urlTxt + ' with option to run: ' + optionToRun)
+                url = requests.get(urlTxt, timeout=360)
+                if url.status_code != 200:
+                    url = requests.get(urlTxt, timeout=360)
+                    print(url.status_code)
+                    if url.status_code == 200:
+                        data = json.loads(url.text)
+                        if data:
+                            s = json.dumps(data)
+                            if optionToRun == 'A':
+                                open(yearFolder + '/' + str(curYear) + '.json', 'w').write(s)
+                                logger.info('Destination file ' + yearFolder + '/' + str(curYear) + '.json')
+                                time.sleep(3)
+                        else:
+                            logger.info('No data from query: ' + urlTxt)
+                else:
+                    data = json.loads(url.text)
+                    if data:
+                        s = json.dumps(data)
+                        open(yearFolder + '/' + str(curYear) + '.json', 'w').write(s)
+                        logger.info('Destination file ' + yearFolder + '/' + str(curYear) + '.json')
+                        time.sleep(3)
+                    else:
+                        logger.info('No data from query: ' + urlTxt)
+            else:
+                logger.info('The file in folder :' + yearFolder + ' is been downloaded already')
 
-                                            logger.info(
-                                                'Url request for initial page with results:' + urlTxt + ' with option to run: ' + optionToRun)
-                                            print('Url request for initial page with results:' + urlTxt + ' with option to run: ' + optionToRun)
+        else:
+            logger.info('The file page_' + str(curYear) + '.json is been download already')
+
+    except requests.exceptions.Timeout as errt:
+        print('Timeout Error: {}'.format(errt))
+        logger.info('Timeout Error: {}'.format(errt))
+        return errt
+    except requests.exceptions.ConnectionError as errc:
+        print('Error Connecting:{}'.format(errc))
+        logger.info('Error Connecting:{}'.format(errc))
+        return errc
+    except requests.exceptions.RequestException as err:
+        logger.info('RequestException:{}'.format(err))
+        return err
+
+
+# This functions looks for the different types of Plenary Session Documents
+def urlCallListForSessions(optionToRun, startYear='2011', currYear=currYear):
+    global urlTxt
+    try:
+        for curYear in range(int(startYear), currYear + 1):
+            yearFolder = pathFolder + '/' + str(curYear)
+            if not os.path.exists(yearFolder):
+                os.makedirs(yearFolder)
+            file_exists = exists(pathFolder + 'page_' + str(curYear) + '.json')
+            if not file_exists:
+                # first grab the code from the meetings file
+                files = [f for f in glob.glob(meetingPathFolder + "/" + str(curYear) + "/*.json", recursive=True)]
+                print(meetingPathFolder + "/" + str(curYear) + "/*.json")
+                for f in files:
+                    # print(f)
+                    with open(f, 'r', encoding='utf-8') as jsonFile:
+                        # get the year from the file path
+                        strYear = re.search(r'\d{4}', jsonFile.name)
+                        curYear = strYear.group()
+                        data = json.load(jsonFile)
+                        if data and curYear:
+                            results = data["events"]
+                            if results:
+                                for result in results:
+                                    idDoc = result['activity_id']
+                                    dateRegex = strYear = re.search(r'\d{4}-\d{2}-\d{2}', idDoc)
+                                    dateSession = dateRegex.group()
+                                    yearFolder = pathFolder + '/' + str(curYear)
+                                    if not os.path.exists(yearFolder):
+                                        os.makedirs(yearFolder)
+                                    file_Sess_exists = exists(
+                                        yearFolder + '/sess_' + str(dateSession) + '.json')
+                                    if not file_Sess_exists:
+                                        # print(dateSession)
+                                        urlTxt = 'https://data.europarl.europa.eu/api/v1/plenary-session-documents?session=' + str(
+                                            dateSession) + '&work-type=PLENARY_AGENDA_PART_SESSION_EP,PLENARY_AGENDA_EP,PLENARY_CRE_EP,PLENARY_MINUTES_EP,PLENARY_ATT_LIST_EP,PLENARY_VOTES_RESULTS_EP,PLENARY_RCV_EP&language=en' \
+                                                           '&format=application%2Fld%2Bjson&offset=0'
+
+                                        logger.info(
+                                            'Url request for initial page with results:' + urlTxt + ' with option to run: ' + optionToRun)
+                                        print(
+                                            'Url request for initial page with results:' + urlTxt + ' with option to run: ' + optionToRun)
+                                        url = requests.get(urlTxt, timeout=360)
+                                        if url.status_code != 200:
                                             url = requests.get(urlTxt, timeout=360)
-                                            if url.status_code != 200:
-                                                url = requests.get(urlTxt, timeout=360)
-                                                print(url.status_code)
-                                                if url.status_code == 200:
-                                                    data = json.loads(url.text)
-                                                    if data:
-                                                        s = json.dumps(data)
-                                                        open(yearFolder+'/sess_' + str(dateSession) + '.json', 'w').write(s)
-                                                        logger.info('Destination file ' + yearFolder + 'sess_' + str(dateSession) + '.json')
-                                                        time.sleep(3)
-                                                    else:
-                                                        logger.info('No data from query ' + yearFolder + 'sess_' + str(dateSession) + '.json')
-                                            else:
+                                            print(url.status_code)
+                                            if url.status_code == 200:
                                                 data = json.loads(url.text)
                                                 if data:
                                                     s = json.dumps(data)
-                                                    open(yearFolder+'/sess_' + str(dateSession) + '.json', 'w').write(s)
+                                                    open(yearFolder + '/sess_' + str(dateSession) + '.json', 'w').write(
+                                                        s)
                                                     logger.info('Destination file ' + yearFolder + 'sess_' + str(
                                                         dateSession) + '.json')
                                                     time.sleep(3)
@@ -240,12 +286,36 @@ def urlCallListByYear(optionToRun, startYear='2011', currYear=currYear):
                                                     logger.info('No data from query ' + yearFolder + 'sess_' + str(
                                                         dateSession) + '.json')
                                         else:
-                                            logger.info('The file:' + yearFolder+'/sess_' + str(dateSession) + '.json is been '
+                                            data = json.loads(url.text)
+                                            if data:
+                                                s = json.dumps(data)
+                                                open(yearFolder + '/sess_' + str(dateSession) + '.json', 'w').write(s)
+                                                logger.info('Destination file ' + yearFolder + 'sess_' + str(
+                                                    dateSession) + '.json')
+                                                time.sleep(3)
+                                            else:
+                                                logger.info('No data from query ' + yearFolder + 'sess_' + str(
+                                                    dateSession) + '.json')
+                                    else:
+                                        logger.info(
+                                            'The file:' + yearFolder + '/sess_' + str(dateSession) + '.json is been '
                                                                                                      'download '
                                                                                                      'already')
+                        else:
+                            data = json.loads(url.text)
+                            if data:
+                                s = json.dumps(data)
+                                open(yearFolder + '/sess_' + str(dateSession) + '.json', 'w').write(s)
+                                logger.info('Destination file ' + yearFolder + 'sess_' + str(dateSession) + '.json')
+                                time.sleep(3)
 
+                            else:
+                                logger.info('No data from query: ' + urlTxt)
             else:
-                logger.info('The file page_' + str(curYear) + '.json is been download already')
+                logger.info('The file in folder :' + yearFolder + ' is been downloaded already')
+
+        else:
+            logger.info('The file page_' + str(curYear) + '.json is been download already')
 
     except requests.exceptions.Timeout as errt:
         print('Timeout Error: {}'.format(errt))
@@ -268,7 +338,7 @@ def main():
                 valuesResult = urlCallListByYear(optionToRun, startYear, currYear)
                 logger.info('result from download  function: {}'.format(valuesResult))
         else:
-            valuesResult = urlCallListByYear(optionToRun)
+            valuesResult = urlCallListForSessions(optionToRun)
             logger.info('result from download  function: {}'.format(valuesResult))
 
 
