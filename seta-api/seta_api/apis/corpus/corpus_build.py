@@ -15,7 +15,7 @@ def retrieve_vector_list(semantic_sort_id_list, emb_vector_list, current_app):
     return vectors
 
 
-def create_knn_query(semantic_sort_id_list, emb_vector_list, current_app, k):
+def create_knn_query(semantic_sort_id_list, emb_vector_list, current_app, k, query):
     vectors = retrieve_vector_list(semantic_sort_id_list, emb_vector_list, current_app)
     if not vectors:
         raise ApiLogicError('Sbert vector is not retrieved')
@@ -24,28 +24,11 @@ def create_knn_query(semantic_sort_id_list, emb_vector_list, current_app, k):
         item = {"field": "sbert_embedding",
                 "query_vector": vector,
                 "k": k,
-                "num_candidates": current_app.config["KNN_SEARCH_NUM_CANDIDATES"]}
+                "num_candidates": current_app.config["KNN_SEARCH_NUM_CANDIDATES"],
+                "filter": query}
         knn.append(item)
     return knn
 
-
-def calculate_knn_search_k(knn_body, current_app):
-    knn_body["_source"] = ["id"]
-    knn_body["size"] = 0
-    knn_request = compose_request_for_msearch(knn_body, current_app)
-    total_docs = current_app.config["KNN_SEARCH_K"]
-    try:
-        res = current_app.es.msearch(searches=knn_request)
-        for response in res["responses"]:
-            if "error" in response:
-                raise ApiLogicError('KNN Malformed query.')
-            total_docs = response['hits']['total']['value']
-    except:
-        raise ApiLogicError('errors occurred while executing KNN search query.')
-    if total_docs < current_app.config["KNN_SEARCH_K"]:
-        return total_docs
-    else:
-        return current_app.config["KNN_SEARCH_K"]
 
 
 def build_corpus_request(term, n_docs, from_doc, sources, collection, reference, in_force, sort, taxonomy_path,
@@ -57,19 +40,22 @@ def build_corpus_request(term, n_docs, from_doc, sources, collection, reference,
         "size": n_docs,
         "from": from_doc,
         "track_total_hits": True,
-        "query": query,
         "_source": ["id", "id_alias", "document_id", "source", "title", "abstract", "chunk_text", "chunk_number",
                     "collection", "reference", "author", "date", "link_origin", "link_alias", "link_related",
                     "link_reference", "mime_type", "in_force", "language", "taxonomy", "taxonomy_path",
                     "keywords", "other"]
     }
-
     if search_type == "CHUNK_SEARCH":
         body["collapse"] = {"field": "document_id"}
         body["aggs"] = {"total": {"cardinality": {"field": "document_id"}}}
-    body = fill_body_for_sort(body, emb_vector_list, semantic_sort_id_list, sort)
+
+    if emb_vector_list or semantic_sort_id_list:
+        body = add_knn_search_query(current_app, emb_vector_list, semantic_sort_id_list, body, query)
+    else:
+        body["query"] = query
+        body = fill_body_for_sort(body, sort)
+
     body = fill_body_for_aggregations(aggs, body, current_app)
-    body = if_needed_add_knn_search_query(current_app, emb_vector_list, semantic_sort_id_list, body)
     return body
 
 
@@ -81,28 +67,20 @@ def compose_request_for_msearch(body, current_app):
     return request
 
 
-def fill_body_for_sort(body, emb_vector_list, semantic_sort_id_list, sort):
+def fill_body_for_sort(body, sort):
     if sort:
-        if emb_vector_list or semantic_sort_id_list:
-            # embeddings define sorting, sort parameter must be ignored
-            pass
-        else:
-            sort_list = build_sort_body(sort)
-            body['sort'] = []
-            for sort_item in sort_list:
-                body['sort'].append(sort_item)
+        sort_list = build_sort_body(sort)
+        body['sort'] = []
+        for sort_item in sort_list:
+            body['sort'].append(sort_item)
     return body
 
 
-def if_needed_add_knn_search_query(current_app, emb_vector_list, semantic_sort_id_list,
-                                   body):
+def add_knn_search_query(current_app, emb_vector_list, semantic_sort_id_list,
+                         body, query):
     if semantic_sort_id_list or emb_vector_list:
-        knn_k_check_body = copy.deepcopy(body)
-        k = calculate_knn_search_k(knn_k_check_body, current_app)
-        if k == 0:
-            # k must be grater than 0, knn search body not provided
-            return body
-        body["knn"] = create_knn_query(semantic_sort_id_list, emb_vector_list, current_app, k)
+        k = current_app.config["KNN_SEARCH_K"]
+        body["knn"] = create_knn_query(semantic_sort_id_list, emb_vector_list, current_app, k, query)
     return body
 
 
