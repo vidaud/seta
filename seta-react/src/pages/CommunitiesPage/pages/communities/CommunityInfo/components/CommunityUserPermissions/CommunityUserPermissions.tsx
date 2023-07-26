@@ -1,20 +1,21 @@
 import { useEffect, useState } from 'react'
-import { Table, Group, Text, ScrollArea } from '@mantine/core'
+import { Table, Group, Text } from '@mantine/core'
 
 import { useCommunityPermissionsID } from '../../../../../../../api/communities/user-community-permissions'
 import { ComponentEmpty, ComponentError } from '../../../../../components/common'
 import ComponentLoading from '../../../../../components/common/ComponentLoading'
 import ManagePermissions from '../ManagePermissions/ManagePermissions'
 
-const CommunityUsersPermissions = ({ id }) => {
+const CommunityUsersPermissions = ({ id, type }) => {
+  const perPage = 1
   const { data, isLoading, error, refetch } = useCommunityPermissionsID(id)
-  const [items, setItems] = useState(data)
+  const [items, setItems] = useState(type === 'container' ? data?.slice(0, perPage) : data)
 
   useEffect(() => {
     if (data) {
-      setItems(data)
+      type === 'container' ? setItems(data.slice(0, perPage)) : setItems(data)
     }
-  }, [data, items])
+  }, [data, type])
 
   if (error) {
     return <ComponentError onTryAgain={refetch} />
@@ -44,7 +45,7 @@ const CommunityUsersPermissions = ({ id }) => {
   ))
 
   return (
-    <ScrollArea h={180}>
+    <>
       <Table verticalSpacing="sm">
         <thead>
           <tr>
@@ -54,7 +55,12 @@ const CommunityUsersPermissions = ({ id }) => {
         </thead>
         <tbody>{rows}</tbody>
       </Table>
-    </ScrollArea>
+      {data.length > perPage && type === 'container' ? (
+        <Text color="gray.5" size="sm" sx={{ float: 'right' }}>
+          Expand to see full list ...
+        </Text>
+      ) : null}
+    </>
   )
 }
 

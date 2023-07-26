@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { createStyles, Table, ScrollArea, rem, Title } from '@mantine/core'
+import { createStyles, Table, rem, Title, Text } from '@mantine/core'
 
 import { useInviteID } from '../../../../../../../api/communities/invite'
 import { ComponentEmpty, ComponentError, ComponentLoading } from '../../../../../components/common'
@@ -31,18 +31,17 @@ const useStyles = createStyles(theme => ({
   }
 }))
 
-const CommunityInvites = ({ id, onChange }) => {
+const CommunityInvites = ({ id, type }) => {
   const { classes, cx } = useStyles()
-  const [scrolled, setScrolled] = useState(false)
+  const perPage = 5
   const { data, isLoading, error, refetch } = useInviteID(id)
-  const [items, setItems] = useState(data)
+  const [items, setItems] = useState(type === 'container' ? data?.slice(0, perPage) : data)
 
   useEffect(() => {
     let timeout: number | null = null
 
     if (data) {
-      setItems(data)
-      onChange(data.length)
+      type === 'container' ? setItems(data.slice(0, perPage)) : setItems(data)
     }
 
     timeout = setTimeout(refetch, 1000)
@@ -52,7 +51,7 @@ const CommunityInvites = ({ id, onChange }) => {
         clearTimeout(timeout)
       }
     }
-  }, [data, onChange, refetch])
+  }, [data, refetch, type])
 
   if (error) {
     return <ComponentError onTryAgain={refetch} />
@@ -89,22 +88,26 @@ const CommunityInvites = ({ id, onChange }) => {
       <Title className={cx(classes.title)} order={3}>
         List of Invites
       </Title>
-      <ScrollArea h={220} onScrollPositionChange={({ y }) => setScrolled(y !== 0)}>
-        <Table miw={500}>
-          <thead className={cx(classes.header, { [classes.scrolled]: scrolled })}>
-            <tr>
-              <th>Community</th>
-              <th>Invited User</th>
-              <th>Message</th>
-              <th>Status</th>
-              <th>Initiated Date</th>
-              <th>Initiated By</th>
-              {/* <th>Actions</th> */}
-            </tr>
-          </thead>
-          <tbody>{rows}</tbody>
-        </Table>
-      </ScrollArea>
+
+      <Table miw={500}>
+        <thead className={cx(classes.header)}>
+          <tr>
+            <th>Community</th>
+            <th>Invited User</th>
+            <th>Message</th>
+            <th>Status</th>
+            <th>Initiated Date</th>
+            <th>Initiated By</th>
+            {/* <th>Actions</th> */}
+          </tr>
+        </thead>
+        <tbody>{rows}</tbody>
+      </Table>
+      {data.length > perPage && type === 'container' ? (
+        <Text color="gray.5" size="sm" sx={{ float: 'right' }}>
+          Expand to see full list ...
+        </Text>
+      ) : null}
     </>
   )
 }

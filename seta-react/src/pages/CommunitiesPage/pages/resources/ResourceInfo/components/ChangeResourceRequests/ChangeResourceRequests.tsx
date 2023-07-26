@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { createStyles, Table, ScrollArea, rem, useMantineTheme, Badge, Select } from '@mantine/core'
+import { createStyles, Table, rem, useMantineTheme, Badge, Select } from '@mantine/core'
 
 import type { ResourceChangeRequests } from '~/api/types/change-request-types'
 
@@ -38,9 +38,8 @@ const requestStatus = [
   { label: 'Pending', value: 'pending' }
 ]
 
-const ChangeResourceRequests = ({ id, onChange }) => {
+const ChangeResourceRequests = ({ id }) => {
   const { classes, cx } = useStyles()
-  const [scrolled, setScrolled] = useState(false)
   const { data, isLoading, error, refetch } = useResourcesChangeRequests(id)
   const theme = useMantineTheme()
   const [items, setItems] = useState<ResourceChangeRequests[]>()
@@ -53,7 +52,6 @@ const ChangeResourceRequests = ({ id, onChange }) => {
       selected === 'all' ? setItems(data) : setItems(data.filter(item => item.status === selected))
 
       // setItems(data)
-      onChange(data.length)
       timeout = setTimeout(refetch, 1000)
 
       return () => {
@@ -62,7 +60,7 @@ const ChangeResourceRequests = ({ id, onChange }) => {
         }
       }
     }
-  }, [data, onChange, selected, refetch])
+  }, [data, selected, refetch])
 
   if (error) {
     return <ComponentError onTryAgain={refetch} />
@@ -82,8 +80,12 @@ const ChangeResourceRequests = ({ id, onChange }) => {
     <tr key={row?.request_id}>
       <td>{row?.resource_id.charAt(0).toUpperCase() + row?.resource_id.slice(1)}</td>
       <td>{row?.field_name.charAt(0).toUpperCase() + row?.field_name.slice(1)}</td>
-      <td>{row?.old_value.charAt(0).toUpperCase() + row?.old_value.slice(1)}</td>
-      <td>{row?.new_value.charAt(0).toUpperCase() + row?.new_value.slice(1)}</td>
+      <td style={{ wordBreak: 'break-word' }}>
+        {row?.old_value.charAt(0).toUpperCase() + row?.old_value.slice(1)}
+      </td>
+      <td style={{ wordBreak: 'break-word' }}>
+        {row?.new_value.charAt(0).toUpperCase() + row?.new_value.slice(1)}
+      </td>
       <td>{row?.requested_by_info.full_name}</td>
       <td>{new Date(row?.initiated_date).toDateString()}</td>
       <td>
@@ -105,17 +107,17 @@ const ChangeResourceRequests = ({ id, onChange }) => {
   ))
 
   return (
-    <ScrollArea h={200} onScrollPositionChange={({ y }) => setScrolled(y !== 0)}>
+    <>
       <Select
         // label="Select Status"
         name="requestStatus"
-        sx={{ width: 'fit-content', float: 'right' }}
+        sx={{ width: 'fit-content', float: 'right', paddingBottom: '1%' }}
         data={requestStatus}
         value={selected}
         onChange={setSelected}
       />
       <Table miw={500}>
-        <thead className={cx(classes.header, { [classes.scrolled]: scrolled })}>
+        <thead className={cx(classes.header)}>
           <tr>
             <th>Resource</th>
             <th>Field</th>
@@ -129,7 +131,7 @@ const ChangeResourceRequests = ({ id, onChange }) => {
         </thead>
         <tbody>{rows}</tbody>
       </Table>
-    </ScrollArea>
+    </>
   )
 }
 

@@ -9,7 +9,8 @@ const CommunityLayout = () => {
   return (
     <>
       <Flex direction="column" className="communities min-h-screen">
-        <Breadcrumbs readFromPath includeCom />
+        {/* <Breadcrumbs readFromPath includeCom /> */}
+        <Breadcrumbs readFromPath />
 
         <Flex sx={{ marginTop: '-3rem', zIndex: 100 }}>
           <CommunityListProvider>

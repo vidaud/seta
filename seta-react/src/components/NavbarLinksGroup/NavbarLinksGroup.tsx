@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import {
   Group,
   Box,
@@ -7,10 +7,11 @@ import {
   Text,
   UnstyledButton,
   createStyles,
-  rem
+  rem,
+  getStylesRef
 } from '@mantine/core'
 import { IconChevronLeft, IconChevronRight } from '@tabler/icons-react'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 
 const useStyles = createStyles(theme => ({
   control: {
@@ -48,6 +49,16 @@ const useStyles = createStyles(theme => ({
 
   chevron: {
     transition: 'transform 200ms ease'
+  },
+
+  linkActive: {
+    '&, &:hover': {
+      backgroundColor: theme.fn.variant({ variant: 'light', color: theme.primaryColor }).background,
+      color: theme.fn.variant({ variant: 'light', color: theme.primaryColor }).color,
+      [`& .${getStylesRef('icon')}`]: {
+        color: theme.fn.variant({ variant: 'light', color: theme.primaryColor }).color
+      }
+    }
   }
 }))
 
@@ -59,7 +70,9 @@ interface LinksGroupProps {
 }
 
 export const LinksGroup = ({ icon: Icon, label, initiallyOpened, links }: LinksGroupProps) => {
-  const { classes, theme } = useStyles()
+  const { classes, theme, cx } = useStyles()
+  const location = useLocation()
+  const [active, setActive] = useState(location.pathname)
   const navigate = useNavigate()
   const hasLinks = Array.isArray(links)
   const [opened, setOpened] = useState(initiallyOpened || false)
@@ -67,16 +80,25 @@ export const LinksGroup = ({ icon: Icon, label, initiallyOpened, links }: LinksG
   const items = (hasLinks ? links : []).map(link => (
     <Text<'a'>
       component="a"
-      className={classes.link}
+      className={cx(classes.link, { [classes.linkActive]: link.link === active })}
       // href={link.link}
       onClick={() => {
         navigate(`${link.link}`)
+        setActive(link.link)
       }}
       key={link.label}
     >
       {link.label}
     </Text>
   ))
+
+  useEffect(() => {
+    if (location.pathname === '/communities') {
+      setActive(`${location.pathname}/`)
+    } else {
+      setActive(location.pathname)
+    }
+  }, [location])
 
   return (
     <>

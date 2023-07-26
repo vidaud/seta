@@ -63,7 +63,7 @@ export const updateResource = async (resource_id?: string, values?: UpdateResour
     })
     .then(response => {
       if (response.status === 200) {
-        window.location.href = `/resources/`
+        window.location.href = `/communities/resources/`
       }
     })
 }
@@ -103,7 +103,7 @@ export const deleteResourceByID = async (resource_id?: string) => {
     })
     .then(response => {
       if (response.status === 200) {
-        window.location.href = `/resources/`
+        window.location.href = `/communities/resources/`
       }
     })
 }

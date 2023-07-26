@@ -48,20 +48,36 @@ In the search by terms or phrase it is possible to apply a wizard so the search 
 
 ### Search by document or text
 
-**Search by document**           
+#### Search by document
 1. Click in the :material-cloud-arrow-up-outline: and a pop-up window will appear.  
 2. In this window, there are two sections; the first one on top is to upload the document, we can either select the path where the document is located or we can drag and drop. Either uploading or by drag and drop it is always possible to cancel the upload of the file before the search, with the button :octicons-x-circle-16:.
 
-**Search by text**               
+#### Search by text          
 1. Click in the :material-cloud-arrow-up-outline: and a pop-up window will appear.                    
 2. In the lower section of the pop-up paste the text you want to search. 
 
 
-If we don't want to search with this option, it is always possible to cancel the search with the *cancel* button at the bottom of the pop up, and the pop-up window will close.
+If we don't want to search with this option, it is always possible to cancel the search with the :octicons-x-circle-16: button at the bottom of the pop up, and the pop-up window will close.
 
 <figure markdown>
-  ![Image title](../../img/upload.png){ width="800" }
+  ![Image title](../../img/upload.png)
   <figcaption>Search by document or text</figcaption>
+</figure>
+
+
+<figure markdown>
+  ![Image title](../../img/upload_txt_doc.png)
+  <figcaption>Search by document or text</figcaption>
+</figure>
+
+<figure markdown>
+  ![Image title](../../img/upload_cancel.png)
+  <figcaption>Remove document or text from Search</figcaption>
+</figure>
+
+<figure markdown>
+  ![Image title](../../img/upload_cancel_confirm.png)
+  <figcaption>Remove document or text from Search</figcaption>
 </figure>
 
 
