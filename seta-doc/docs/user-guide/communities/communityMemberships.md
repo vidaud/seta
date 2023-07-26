@@ -68,6 +68,25 @@
 
 > If the status is not update, the status will remain *PENDING*, if the request is set to *Rejected* the status in the communities list will be *REJECTED*
 
+### From Notifications
+
+1. On the :material-bell-badge: on top of the page, a number notification appears.             
+2. Click on the icon and click on the number aside ^^Pending membership requests^^.              
+3. It will open the page with the list of Members asking to join.                    
+4. Click in the ^^:octicons-pencil-24:^^ under column *Actions* to update the status (*pending, approved, rejected*).
+5. Click *send*     
+
+<figure markdown>
+  ![Image title](../../img/pending_invites.png)
+  <figcaption>Notifications of Invites</figcaption>
+</figure>
+
+<figure markdown>
+  ![Image title](../../img/list_membership_request.png)
+  <figcaption>List of Members</figcaption>
+</figure>
+
+
 ## See the Invites Sent
 1. You can either use the filters to search the Community or select from the Communities list.             
 2. Click on :octicons-chevron-down-12: at the right side of the Community row.      
@@ -93,3 +112,19 @@
 </figure>
 
 ### From Notifications
+
+1. On the :material-bell-badge: on top of the page, a number notification appears.             
+2. Click on the icon and click on the number aside ^^Pending invites^^.              
+3. It will open the page with the list of Invites.                    
+4. Click in the ^^:octicons-pencil-24:^^ under column *Actions* to update the status (*accepted, rejected*).
+5. Click *send*     
+
+<figure markdown>
+  ![Image title](../../img/pending_invites.png)
+  <figcaption>Notifications of Invites</figcaption>
+</figure>
+
+<figure markdown>
+  ![Image title](../../img/list_invites.png)
+  <figcaption>List of Invites</figcaption>
+</figure>
