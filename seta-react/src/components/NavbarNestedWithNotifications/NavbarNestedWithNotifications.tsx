@@ -16,7 +16,7 @@ const mockdata = [
     initiallyOpened: true,
     links: [
       { label: 'Communities', link: '/communities/' },
-      { label: 'Resources', link: '/resources/' }
+      { label: 'Resources', link: '/communities/resources/' }
     ]
   }
 ]
