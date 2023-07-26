@@ -25,6 +25,7 @@ def create_knn_query(semantic_sort_id_list, emb_vector_list, current_app, k, que
                 "query_vector": vector,
                 "k": k,
                 "num_candidates": current_app.config["KNN_SEARCH_NUM_CANDIDATES"],
+                "similarity": current_app.config["SIMILARITY_THRESHOLD"],
                 "filter": query}
         knn.append(item)
     return knn
@@ -53,9 +54,9 @@ def build_corpus_request(term, n_docs, from_doc, sources, collection, reference,
         body = add_knn_search_query(current_app, emb_vector_list, semantic_sort_id_list, body, query)
     else:
         body["query"] = query
-        body = fill_body_for_sort(body, sort)
 
-    body = fill_body_for_aggregations(aggs, body, current_app)
+    body = fill_body_for_sort(body, sort)
+    body = fill_body_for_aggregations(aggs, body, current_app, search_type)
     return body
 
 
@@ -84,7 +85,7 @@ def add_knn_search_query(current_app, emb_vector_list, semantic_sort_id_list,
     return body
 
 
-def fill_body_for_aggregations(aggs, body, current_app):
+def fill_body_for_aggregations(aggs, body, current_app, search_type):
     aggregation_size = 1000
     if not aggs:
         return body
@@ -92,15 +93,19 @@ def fill_body_for_aggregations(aggs, body, current_app):
         match agg:
             case agg if agg.startswith("taxonomy:"):
                 agg_body = {"terms": {"field": "taxonomy_path", "size": aggregation_size}}
+                check_search_type_for_unique_aggs(agg_body, search_type)
                 body = add_aggs(agg_body, "taxonomy", body)
             case "taxonomies":
                 agg_body = {"terms": {"field": "taxonomy_path", "size": aggregation_size}}
+                check_search_type_for_unique_aggs(agg_body, search_type)
                 body = add_aggs(agg_body, agg, body)
             case "source":
                 agg_body = {"terms": {"field": agg + '.keyword', "size": aggregation_size}}
+                check_search_type_for_unique_aggs(agg_body, search_type)
                 body = add_aggs(agg_body, agg, body)
             case "date_year":
                 agg_body = {"date_histogram": {"field": "date", "calendar_interval": "year", "format": "yyyy"}}
+                check_search_type_for_unique_aggs(agg_body, search_type)
                 body = add_aggs(agg_body, "years", body)
             case "source_collection_reference":
                 agg_body = {"multi_terms": {"terms": [{"field": "source.keyword"},
@@ -109,10 +114,16 @@ def fill_body_for_aggregations(aggs, body, current_app):
                                                       {"field": "reference.keyword",
                                                        "missing": current_app.config["AGG_MISSING_NAME"]}],
                                             "size": aggregation_size}}
+                check_search_type_for_unique_aggs(agg_body, search_type)
                 body = add_aggs(agg_body, agg, body)
             case _:
                 raise ApiLogicError('Malformed query. Wrong aggs parameter.')
     return body
+
+
+def check_search_type_for_unique_aggs(agg_body, search_type):
+    if search_type == "CHUNK_SEARCH":
+        agg_body["aggs"] = {"unique_values": {"cardinality": {"field": "document_id"}}}
 
 
 def add_aggs(agg_body, aggs_name, body):

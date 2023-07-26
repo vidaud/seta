@@ -106,7 +106,7 @@ class Taxonomy:
                            "label": t["label"], "longLabel": t["longLabel"], "validated": t["validated"],
                            "version": t["version"], "name_in_path": t["name_in_path"], "subcategories": []})
 
-    def __add_tree_from_aggregation_response(self, parent, tax_path, es, index):
+    def __add_tree_from_aggregation_response(self, parent, tax_path, es, index, search_type):
         split_tree = tax_path[self.aggregation_response_field].split(self.separator)
         taxonomy = split_tree[0]
         while len(split_tree) > 1:
@@ -114,7 +114,11 @@ class Taxonomy:
             parent = parent[get_parent_index(parent, split_tree[0])]["subcategories"]
             split_tree = split_tree[1:]
 
-        self.__add_single_category(parent, split_tree[0], tax_path["doc_count"], es, index, taxonomy)
+        if search_type == "CHUNK_SEARCH":
+            count = tax_path["unique_values"]["value"]
+        else:
+            count = tax_path["doc_count"]
+        self.__add_single_category(parent, split_tree[0], count, es, index, taxonomy)
 
     def __add_tree_from_es_format(self, parent, path, taxonomies):
         split_path = path.split(self.separator)
@@ -125,15 +129,15 @@ class Taxonomy:
             split_path = split_path[1:]
         self.__add_single_category_es(parent, split_path[0], taxonomy_name, taxonomies)
 
-    def create_tree_from_aggregation_given_a_taxonomy(self, es, index, response, taxonomy):
+    def create_tree_from_aggregation_given_a_taxonomy(self, es, index, response, taxonomy, search_type):
         for item in response:
             split = item[self.aggregation_response_field].split(self.separator)
             if split[0] == taxonomy:
-                self.__add_tree_from_aggregation_response(self.tree, item, es=es, index=index)
+                self.__add_tree_from_aggregation_response(self.tree, item, es=es, index=index, search_type=search_type)
 
-    def create_tree_from_aggregation(self, es, index, response):
+    def create_tree_from_aggregation(self, es, index, response, search_type):
         for item in response:
-            self.__add_tree_from_aggregation_response(self.tree, item, es=es, index=index)
+            self.__add_tree_from_aggregation_response(self.tree, item, es=es, index=index, search_type=search_type)
 
     def create_tree_from_elasticsearch_format(self, taxonomies, taxonomy_paths):
         if taxonomies is None or taxonomy_paths is None:

@@ -26,7 +26,7 @@ def handle_corpus_response(aggs, res, search_type, term, current_app, semantic_s
         if "error" in response:
             raise ApiLogicError('Malformed query.')
         documents["total_docs"] = retrieve_total_number(response, search_type)
-        documents = handle_aggs_response(aggs, response, documents, current_app)
+        documents = handle_aggs_response(aggs, response, documents, current_app, search_type)
         for document in response["hits"]["hits"]:
             abstract = document['_source']['abstract'] if isinstance(document['_source']['abstract'], str) else ""
             text = is_field_in_doc(document['_source'], "chunk_text")
@@ -64,27 +64,39 @@ def retrieve_total_number(response, search_type):
         return response['aggregations']['total']['value']
 
 
-def compose_source_collection_reference_response_tree(response_buckets, current_app):
+def compose_source_collection_reference_response_tree(response_buckets, current_app, search_type):
     aggregation = {}
     for item in response_buckets:
         s = item["key"][0]
         c = item["key"][1]
         r = item["key"][2]
         if s not in aggregation:
-            aggregation[s] = {"doc_count": item["doc_count"], "collections": {}}
-            aggregation[s]["collections"][c] = {"doc_count": item["doc_count"], "references": {}}
-            aggregation[s]["collections"][c]["references"][r] = {"doc_count": item["doc_count"]}
-        else:
-            aggregation[s]["doc_count"] += item["doc_count"]
-            if c not in aggregation[s]["collections"]:
-                aggregation[s]["collections"][c] = {"doc_count": item["doc_count"], "references": {}}
-                aggregation[s]["collections"][c]["references"][r] = {"doc_count": item["doc_count"]}
+            if search_type == "CHUNK_SEARCH":
+                count = item["unique_values"]["value"]
             else:
-                aggregation[s]["collections"][c]["doc_count"] += item["doc_count"]
-                if r not in aggregation[s]["collections"][c]["references"]:
-                    aggregation[s]["collections"][c]["references"][r] = {"doc_count": item["doc_count"]}
+                count = item["doc_count"]
+            aggregation[s] = {"doc_count": count, "collections": {}}
+            aggregation[s]["collections"][c] = {"doc_count": count, "references": {}}
+            aggregation[s]["collections"][c]["references"][r] = {"doc_count": count}
+        else:
+            if search_type == "CHUNK_SEARCH":
+                count = item["unique_values"]["value"]
+            else:
+                count = item["doc_count"]
+            aggregation[s]["doc_count"] += count
+            if c not in aggregation[s]["collections"]:
+                aggregation[s]["collections"][c] = {"doc_count": count, "references": {}}
+                aggregation[s]["collections"][c]["references"][r] = {"doc_count": count}
+            else:
+                if search_type == "CHUNK_SEARCH":
+                    count = item["unique_values"]["value"]
                 else:
-                    aggregation[s]["collections"][c]["references"][r]["doc_count"] += item["doc_count"]
+                    count = item["doc_count"]
+                aggregation[s]["collections"][c]["doc_count"] += count
+                if r not in aggregation[s]["collections"][c]["references"]:
+                    aggregation[s]["collections"][c]["references"][r] = {"doc_count": count}
+                else:
+                    aggregation[s]["collections"][c]["references"][r]["doc_count"] += count
 
     tree = {"sources": []}
     for s in aggregation:
@@ -103,21 +115,23 @@ def compose_source_collection_reference_response_tree(response_buckets, current_
     return tree
 
 
-def compose_response_tree_given_a_taxonomy(response_buckets, aggs, current_app):
+def compose_response_tree_given_a_taxonomy(response_buckets, aggs, current_app, search_type):
     taxonomy_arg = aggs.split(":")[1]
     tax = taxonomy.Taxonomy()
     tax.create_tree_from_aggregation_given_a_taxonomy(es=current_app.es, index=current_app.config["INDEX"],
-                                                      response=response_buckets, taxonomy=taxonomy_arg)
+                                                      response=response_buckets, taxonomy=taxonomy_arg,
+                                                      search_type=search_type)
     return tax.tree
 
 
-def compose_taxonomies_response_tree(response_buckets, current_app):
+def compose_taxonomies_response_tree(response_buckets, current_app, search_type):
     tax = taxonomy.Taxonomy()
-    tax.create_tree_from_aggregation(es=current_app.es, index=current_app.config["INDEX"], response=response_buckets)
+    tax.create_tree_from_aggregation(es=current_app.es, index=current_app.config["INDEX"], response=response_buckets,
+                                     search_type=search_type)
     return tax.tree
 
 
-def handle_aggs_response(aggs, response, documents, current_app):
+def handle_aggs_response(aggs, response, documents, current_app, search_type):
     if not aggs:
         return documents
     documents["aggregations"] = {}
@@ -127,16 +141,28 @@ def handle_aggs_response(aggs, response, documents, current_app):
                 years = response["aggregations"]["years"]["buckets"]
                 documents["aggregations"][agg] = []
                 for year in years:
-                    y = {"year": year["key_as_string"], "doc_count": year["doc_count"]}
+                    if search_type == "CHUNK_SEARCH":
+                        count = year["unique_values"]["value"]
+                    else:
+                        count = year["doc_count"]
+                    y = {"year": year["key_as_string"], "doc_count": count}
                     documents["aggregations"][agg].append(y)
             case "source_collection_reference":
-                documents["aggregations"][agg] = compose_source_collection_reference_response_tree(response["aggregations"][agg]["buckets"], current_app)
+                documents["aggregations"][agg] = compose_source_collection_reference_response_tree(response["aggregations"][agg]["buckets"], current_app, search_type)
             case agg if agg.startswith("taxonomy:"):
-                documents["aggregations"]["taxonomy"] = compose_response_tree_given_a_taxonomy(response["aggregations"]["taxonomy"]["buckets"], agg, current_app)
+                documents["aggregations"]["taxonomy"] = compose_response_tree_given_a_taxonomy(response["aggregations"]["taxonomy"]["buckets"], agg, current_app, search_type)
             case "taxonomies":
-                documents["aggregations"][agg] = compose_taxonomies_response_tree(response["aggregations"]["taxonomies"]["buckets"], current_app)
-            case _:
-                documents["aggregations"][agg] = response["aggregations"][agg]["buckets"]
+                documents["aggregations"][agg] = compose_taxonomies_response_tree(response["aggregations"]["taxonomies"]["buckets"], current_app, search_type)
+            case "source":
+                sources = response["aggregations"]["source"]["buckets"]
+                documents["aggregations"][agg] = []
+                for source in sources:
+                    if search_type == "CHUNK_SEARCH":
+                        count = source["unique_values"]["value"]
+                    else:
+                        count = source["doc_count"]
+                    y = {"key": source["key"], "doc_count": count}
+                    documents["aggregations"][agg].append(y)
     return documents
 
 
