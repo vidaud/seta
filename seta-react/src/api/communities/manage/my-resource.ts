@@ -68,28 +68,6 @@ export const updateResource = async (resource_id?: string, values?: UpdateResour
     })
 }
 
-export const updateCommunityResource = async (
-  id?: string,
-  resource_id?: string,
-  values?: UpdateResourceAPI
-) => {
-  await api
-    .put(`${RESOURCE_API_PATH}${resource_id}`, values, {
-      ...apiConfig,
-      headers: {
-        ...apiConfig?.headers,
-        accept: 'application/json',
-        'X-CSRF-TOKEN': csrf_token,
-        'Content-Type': 'application/x-www-form-urlencoded'
-      }
-    })
-    .then(response => {
-      if (response.status === 200) {
-        window.location.href = `/communities/${id}`
-      }
-    })
-}
-
 export const deleteResourceByID = async (resource_id?: string) => {
   await api
     .delete(`${RESOURCE_API_PATH}${resource_id}`, {

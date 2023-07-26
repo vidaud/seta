@@ -1,9 +1,10 @@
 import { Badge, Menu, Group, Box, ActionIcon } from '@mantine/core'
 import { IoMdNotifications } from 'react-icons/io'
 
+import type { NotificationsResponse } from '~/api/types/notifications-types'
+
 import NotificationsDropdown from './NotificationsDropdown'
 
-import type { NotificationsResponse } from '../../../pages/CommunitiesPage/pages/contexts/notifications-context'
 import { useStyles } from '../../../pages/SearchWithFilters/components/ApplyFilters/styles'
 import type { DropdownItem } from '../config'
 import { itemIsCollapse } from '../config'

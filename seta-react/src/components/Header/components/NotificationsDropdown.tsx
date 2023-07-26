@@ -1,7 +1,8 @@
 import { Text, Badge, Box } from '@mantine/core'
 import { useNavigate } from 'react-router-dom'
 
-import type { NotificationsResponse } from '../../../pages/CommunitiesPage/pages/contexts/notifications-context'
+import type { NotificationsResponse } from '~/api/types/notifications-types'
+
 import { useStyles } from '../../../pages/SearchWithFilters/components/ApplyFilters/styles'
 
 type Props = {

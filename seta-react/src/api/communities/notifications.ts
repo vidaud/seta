@@ -5,7 +5,6 @@ import type { UserPermissions } from '~/pages/CommunitiesPage/pages/contexts/sco
 
 import { environment } from '../../environments/environment'
 import api from '../api'
-import type { InviteResponse } from '../types/invite-types'
 import type { MembershipRequest } from '../types/membership-types'
 
 type Notifications = {
@@ -16,22 +15,6 @@ const BASE_URL = environment.baseUrl
 const USER_INFO_API_PATH = '/me/permissions'
 const apiConfig: AxiosRequestConfig = {
   baseURL: BASE_URL
-}
-
-export const getNotifications = async (): Promise<Notifications> => {
-  const memberships = await api.get<MembershipRequest[]>(
-    `${environment.COMMUNITIES_API_PATH}/membership-requests`,
-    apiConfig
-  )
-
-  const invites = await api.get<InviteResponse[]>(`/invites/`, apiConfig)
-
-  const data = {
-    memberships: memberships.data,
-    invites: invites.data
-  }
-
-  return data
 }
 
 export const queryKey = {

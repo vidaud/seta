@@ -2,12 +2,12 @@ import { createContext, useCallback, useContext, useEffect, useRef, useState } f
 import type { AxiosRequestConfig } from 'axios'
 import { isAxiosError } from 'axios'
 
+import type { NotificationsResponse } from '~/api/types/notifications-types'
 import type { User } from '~/types/user'
 
 import api from '../api/api'
 import { logout, useUserInfo } from '../api/auth'
 import { environment } from '../environments/environment'
-import type { NotificationsResponse } from '../pages/CommunitiesPage/pages/contexts/notifications-context'
 import type { ChildrenProp } from '../types/children-props'
 
 type UserContextProps = {

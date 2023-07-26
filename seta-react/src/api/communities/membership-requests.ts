@@ -27,18 +27,6 @@ export const getAllMembershipRequests = async (): Promise<MembershipRequest[]> =
 export const useMembershipRequests = () =>
   useQuery({ queryKey: cacheKey(), queryFn: () => getAllMembershipRequests() })
 
-export const getMembershipRequests = async (id?: string): Promise<MembershipRequest[]> => {
-  const { data } = await api.get<MembershipRequest[]>(
-    `${environment.COMMUNITIES_API_PATH}/${id}/requests`,
-    apiConfig
-  )
-
-  return data
-}
-
-export const useMembershipRequestsID = (id?: string) =>
-  useQuery({ queryKey: cacheKey(id), queryFn: () => getMembershipRequests(id) })
-
 const csrf_token = getCookie('csrf_access_token')
 
 export const updateMembershipRequest = async (
@@ -56,15 +44,3 @@ export const updateMembershipRequest = async (
     }
   })
 }
-
-export const membershipRequests = async (): Promise<MembershipRequest[]> => {
-  const { data } = await api.get<MembershipRequest[]>(
-    `${environment.COMMUNITIES_API_PATH}/membership-requests`,
-    apiConfig
-  )
-
-  return data
-}
-
-export const useAllMembershipRequests = () =>
-  useQuery({ queryKey: cacheKey(), queryFn: () => membershipRequests() })

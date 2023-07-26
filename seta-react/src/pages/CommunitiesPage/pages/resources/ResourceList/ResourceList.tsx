@@ -6,7 +6,7 @@ import type { ResourceResponse } from '~/api/types/resource-types'
 
 import ResourceListContent from './ResourceListContent'
 
-import { useAllResources } from '../../../../../api/resources/discover/discover-resources'
+import { useAllResources } from '../../../../../api/communities/discover/discover-resources'
 import { useCommunityListContext } from '../../contexts/community-list.context'
 import { sortResourceData } from '../ResourceInfo/utils/resource-utils'
 

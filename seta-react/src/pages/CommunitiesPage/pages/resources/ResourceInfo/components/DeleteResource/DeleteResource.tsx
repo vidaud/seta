@@ -4,7 +4,7 @@ import { IconTrash } from '@tabler/icons-react'
 
 import type { ResourceScopes } from '~/pages/CommunitiesPage/pages/contexts/scope-context'
 
-import { deleteResourceByID } from '../../../../../../../api/resources/manage/my-resource'
+import { deleteResourceByID } from '../../../../../../../api/communities/manage/my-resource'
 
 const useStyles = createStyles(theme => ({
   form: {

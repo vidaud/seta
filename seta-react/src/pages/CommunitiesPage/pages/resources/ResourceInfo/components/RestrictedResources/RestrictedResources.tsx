@@ -8,7 +8,7 @@ import type { ResourceScopes } from '~/pages/CommunitiesPage/pages/contexts/scop
 import {
   manageRestrictedResources,
   useAllResources
-} from '../../../../../../../api/resources/discover/discover-resources'
+} from '../../../../../../../api/communities/discover/discover-resources'
 import type { ResourceResponse } from '../../../../../../../api/types/resource-types'
 
 const useStyles = createStyles(theme => ({
