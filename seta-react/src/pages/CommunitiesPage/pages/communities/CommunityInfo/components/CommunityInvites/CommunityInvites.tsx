@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react'
-import { createStyles, Table, rem, Title, Text } from '@mantine/core'
+import { createStyles, Table, rem, Text } from '@mantine/core'
 
 import { useInviteID } from '../../../../../../../api/communities/invite'
-import { ComponentEmpty, ComponentError, ComponentLoading } from '../../../../../components/common'
+import { ComponentEmpty, ComponentError, ComponentLoading } from '../../../../common'
 
 const useStyles = createStyles(theme => ({
   header: {
@@ -85,10 +85,6 @@ const CommunityInvites = ({ id, type }) => {
 
   return (
     <>
-      <Title className={cx(classes.title)} order={3}>
-        List of Invites
-      </Title>
-
       <Table miw={500}>
         <thead className={cx(classes.header)}>
           <tr>

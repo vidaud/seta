@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { Group, Text, createStyles } from '@mantine/core'
 
 import { useResourceID } from '../../../../../../../api/resources/manage/my-resource'
-import { ComponentLoading } from '../../../../../components/common'
+import { ComponentLoading } from '../../../../common'
 import UpdateLimits from '../UpdateLimits/UpdateLimits'
 
 const useStyles = createStyles(theme => ({

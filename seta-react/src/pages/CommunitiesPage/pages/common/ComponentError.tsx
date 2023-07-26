@@ -7,7 +7,7 @@ type Props = {
   onTryAgain?: () => void
 }
 
-const CommunitiesError = ({ message, onTryAgain }: Props) => {
+const ComponentError = ({ message, onTryAgain }: Props) => {
   const tryAgain = (
     <>
       <br />
@@ -26,4 +26,4 @@ const CommunitiesError = ({ message, onTryAgain }: Props) => {
   )
 }
 
-export default CommunitiesError
+export default ComponentError

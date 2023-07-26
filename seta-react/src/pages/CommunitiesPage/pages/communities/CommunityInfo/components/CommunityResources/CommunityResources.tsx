@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom'
 import type { ResourceResponse } from '~/api/types/resource-types'
 
 import { useMyCommunityResources } from '../../../../../../../api/communities/manage/my-community'
-import { ComponentEmpty, ComponentError, ComponentLoading } from '../../../../../components/common'
+import { ComponentEmpty, ComponentError, ComponentLoading } from '../../../../common'
 
 const useStyles = createStyles(theme => ({
   row: {

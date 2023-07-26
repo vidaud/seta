@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react'
 import { Table, Group, Text } from '@mantine/core'
 
 import { useResourcePermissionsID } from '../../../../../../../api/communities/user-resource-permissions'
-import { ComponentEmpty, ComponentError } from '../../../../../components/common'
-import ComponentLoading from '../../../../../components/common/ComponentLoading'
+import { ComponentEmpty, ComponentError } from '../../../../common'
+import ComponentLoading from '../../../../common/ComponentLoading'
 import ManageResourcePermissions from '../ManageResourcePermissions/ManageResourcePermissions'
 
 const ResourceUsersPermissions = ({ id, type }) => {

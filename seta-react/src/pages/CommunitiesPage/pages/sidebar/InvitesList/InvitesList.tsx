@@ -10,11 +10,10 @@ import {
   Group
 } from '@mantine/core'
 
-import UpdateInviteRequest from './components/UpdateInviteRequest'
-
 import { useAllPendingInvites } from '../../../../../api/communities/invite'
-import { statusColors } from '../../../pages/types'
 import { ComponentEmpty, ComponentError, ComponentLoading } from '../../common'
+import UpdateInviteRequest from '../../communities/CommunityInfo/components/UpdateInviteRequest'
+import { statusColors } from '../../types'
 
 const useStyles = createStyles(theme => ({
   header: {

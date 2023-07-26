@@ -16,11 +16,11 @@ import type { QueryObserverResult, RefetchOptions, RefetchQueryFilters } from '@
 import type { InviteResponse } from '~/api/types/invite-types'
 
 import { updateInviteRequest } from '../../../../../../../api/communities/invite'
-import type { InviteRequestValues } from '../../../../../pages/contexts/invite-request-context'
+import type { InviteRequestValues } from '../../../../contexts/invite-request-context'
 import {
   InviteRequestFormProvider,
   useInviteRequest
-} from '../../../../../pages/contexts/invite-request-context'
+} from '../../../../contexts/invite-request-context'
 
 const useStyles = createStyles(theme => ({
   form: {

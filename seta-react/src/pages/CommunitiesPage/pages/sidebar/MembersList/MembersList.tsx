@@ -11,9 +11,9 @@ import {
 } from '@mantine/core'
 
 import { useMembershipRequests } from '../../../../../api/communities/membership-requests'
-import UpdateMemberRequest from '../../../pages/communities/CommunityInfo/components/UpdateMemberRequest'
-import { statusColors } from '../../../pages/types'
 import { ComponentEmpty, ComponentLoading } from '../../common'
+import UpdateMemberRequest from '../../communities/CommunityInfo/components/UpdateMemberRequest'
+import { statusColors } from '../../types'
 
 const useStyles = createStyles(theme => ({
   header: {

@@ -14,11 +14,10 @@ import { useParams } from 'react-router-dom'
 import DeleteMembership from './components/DeleteMembership/DeleteMembership'
 import UpdateMembership from './components/UpdateMembership/UpdateMembership'
 
-import { useMembershipID } from '../../../../../../api/communities/membership'
-import { useCommunityListContext } from '../../../../pages/contexts/community-list.context'
-import { jobColors } from '../../../../pages/types'
-import { ComponentEmpty, ComponentError } from '../../../common'
-import ComponentLoading from '../../../common/ComponentLoading'
+import { useMembershipID } from '../../../../../../../api/communities/membership'
+import { ComponentEmpty, ComponentError, ComponentLoading } from '../../../../common'
+import { useCommunityListContext } from '../../../../contexts/community-list.context'
+import { jobColors } from '../../../../types'
 
 const useStyles = createStyles(theme => ({
   header: {

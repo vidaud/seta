@@ -4,7 +4,7 @@ import { Box, Group, Paper, Stack, Text, Title, Tabs, createStyles } from '@mant
 import { UploadFile } from './UploadFile'
 import { UploadText } from './UploadText'
 
-import { useEmbeddings } from '../../../../../../../api/embeddings/embedding'
+import { useEmbeddings } from '../../../../../../api/embeddings/embedding'
 import { Context } from '../context/Context'
 
 const useStyles = createStyles({

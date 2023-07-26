@@ -4,7 +4,7 @@ import { createStyles, Table, rem, useMantineTheme, Badge, Select } from '@manti
 import type { CommunityChangeRequests } from '~/api/types/change-request-types'
 
 import { useCommunityChangeRequests } from '../../../../../../../api/communities/community-change-requests'
-import { ComponentEmpty, ComponentError, ComponentLoading } from '../../../../../components/common'
+import { ComponentEmpty, ComponentError, ComponentLoading } from '../../../../common'
 import { statusColors } from '../../../../types'
 
 const useStyles = createStyles(theme => ({

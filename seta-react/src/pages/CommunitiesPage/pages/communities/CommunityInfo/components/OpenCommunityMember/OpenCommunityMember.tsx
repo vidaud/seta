@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Popover, Button, Group, Tooltip, Text } from '@mantine/core'
 
-import { createOpenMembership } from '../../../../../../api/communities/membership'
+import { createOpenMembership } from '../../../../../../../api/communities/membership'
 
 const OpenCommunityMember = ({ community_id, refetch }) => {
   const [opened, setOpened] = useState(false)

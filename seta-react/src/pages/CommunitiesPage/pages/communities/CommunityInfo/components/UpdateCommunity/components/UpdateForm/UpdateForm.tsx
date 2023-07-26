@@ -5,7 +5,7 @@ import {
   updateCommunity,
   useCommunityID
 } from '../../../../../../../../../api/communities/manage/my-community'
-import { ComponentLoading } from '../../../../../../../components/common'
+import { ComponentLoading } from '../../../../../../common'
 import type { CommunityValues } from '../../../../../../contexts/community-context'
 import { CommunityFormProvider, useCommunity } from '../../../../../../contexts/community-context'
 

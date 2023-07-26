@@ -4,8 +4,8 @@ import { Box, Group, Text, Title, createStyles, Radio, Flex, Select, Paper } fro
 import type { DocumentsOptions } from '~/api/embeddings/taxonomy'
 import type { DocumentsResponse } from '~/api/types/taxonomy-types'
 
-import { useDocuments } from '../../../../../../../api/embeddings/taxonomy'
-import TaxonomyTree from '../../../../../../SearchPageNew/components/documents/DocumentInfo/components/TaxonomyTree/TaxonomyTree'
+import { useDocuments } from '../../../../../../api/embeddings/taxonomy'
+import TaxonomyTree from '../../../../../SearchPageNew/components/documents/DocumentInfo/components/TaxonomyTree/TaxonomyTree'
 import { Context } from '../context/Context'
 
 const useStyles = createStyles({

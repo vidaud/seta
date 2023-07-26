@@ -11,12 +11,12 @@ import {
 } from '@mantine/core'
 import { IconPencil } from '@tabler/icons-react'
 
-import { updateCommunityMembership } from '../../../../../../../../api/communities/membership'
-import type { MembershipValues } from '../../../../../../pages/contexts/membership-context'
+import { updateCommunityMembership } from '../../../../../../../../../api/communities/membership'
 import {
-  MembershipFormProvider,
-  useMembership
-} from '../../../../../../pages/contexts/membership-context'
+  useMembership,
+  type MembershipValues,
+  MembershipFormProvider
+} from '../../../../../../contexts/membership-context'
 
 const useStyles = createStyles({
   form: {

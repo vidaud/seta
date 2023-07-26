@@ -5,7 +5,7 @@ import {
   updateResource,
   useResourceID
 } from '../../../../../../../../../api/resources/manage/my-resource'
-import { ComponentLoading } from '../../../../../../../components/common'
+import { ComponentLoading } from '../../../../../../common'
 import type { ResourceValues } from '../../../../../../contexts/resource-context'
 import { ResourceFormProvider, useResource } from '../../../../../../contexts/resource-context'
 
