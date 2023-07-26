@@ -9,8 +9,8 @@ import image from '../../images/background.jpg'
 const useStyles = createStyles(theme => ({
   wrapper: {
     position: 'relative',
-    paddingTop: rem(200),
-    paddingBottom: rem(210),
+    paddingTop: `calc(${theme.spacing.xl}*8)`,
+    paddingBottom: `calc(${theme.spacing.xl}*7.4)`,
     backgroundImage: 'url(' + image + ')',
     backgroundSize: 'cover',
     backgroundPosition: 'center'
@@ -75,7 +75,7 @@ const HomePage = () => {
   return (
     <>
       <div className={classes.wrapper}>
-        <Container size={940}>
+        <Container size={1040}>
           <Title className={classes.title}>
             <TextTransition springConfig={presets.stiff}>
               <Text
