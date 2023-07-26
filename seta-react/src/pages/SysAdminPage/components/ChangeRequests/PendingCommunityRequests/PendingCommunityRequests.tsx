@@ -10,7 +10,7 @@ import {
   ComponentEmpty,
   ComponentError,
   ComponentLoading
-} from '../../../../CommunitiesPage/components/common'
+} from '../../../../CommunitiesPage/pages/common'
 import { statusColors } from '../../../../CommunitiesPage/pages/types'
 
 const useStyles = createStyles(theme => ({

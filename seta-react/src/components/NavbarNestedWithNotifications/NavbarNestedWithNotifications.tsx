@@ -34,7 +34,20 @@ const NavbarNestedWithNotifications = () => {
   const links = mockdata.map(item => <LinksGroup {...item} key={item.label} />)
 
   return (
-    <Navbar height={800} width={{ sm: 300 }} p="md" className={classes.navbar}>
+    <Navbar
+      height={800}
+      sx={theme => ({
+        marginBottom: theme.spacing.xs,
+        [`@media (max-width: 89em)`]: {
+          width: 'auto'
+        },
+        [`@media (min-width: 90em)`]: {
+          width: 300
+        }
+      })}
+      p="md"
+      className={classes.navbar}
+    >
       <NavbarNested props={links} />
     </Navbar>
   )

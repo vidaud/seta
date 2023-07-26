@@ -2,7 +2,7 @@ import { TextInput, Group, createStyles, Button, Textarea } from '@mantine/core'
 
 import type { ResourceValues } from '~/pages/CommunitiesPage/pages/contexts/resource-context'
 
-import { createResource } from '../../../../../../../../../api/resources/manage/my-resource'
+import { createResource } from '../../../../../../../../../api/communities/manage/my-resource'
 import { ResourceFormProvider, useResource } from '../../../../../../contexts/resource-context'
 
 const useStyles = createStyles({

@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react'
 import { Table, Group, Text } from '@mantine/core'
 
 import { useCommunityPermissionsID } from '../../../../../../../api/communities/user-community-permissions'
-import { ComponentEmpty, ComponentError } from '../../../../../components/common'
-import ComponentLoading from '../../../../../components/common/ComponentLoading'
+import { ComponentEmpty, ComponentError } from '../../../../common'
+import ComponentLoading from '../../../../common/ComponentLoading'
 import ManagePermissions from '../ManagePermissions/ManagePermissions'
 
 const CommunityUsersPermissions = ({ id, type }) => {

@@ -7,12 +7,12 @@ import type { CommunityScopes } from '~/pages/CommunitiesPage/pages/contexts/sco
 import { useAllCommunities } from '../../../../../../../api/communities/discover/discover-communities'
 import type { CommunityResponse } from '../../../../../../../api/types/community-types'
 import type { ResourceResponse } from '../../../../../../../api/types/resource-types'
-import MembershipRequest from '../../../../../components/Manage/Members/InviteMemberModal/InviteMemberModal'
-import OpenCommunityMember from '../../../../../components/Manage/Members/OpenCommunityMember/OpenCommunityMember'
 import ChangePrivacy from '../ChangePrivacy/ChangePrivacyRequest'
 import DeleteCommunity from '../DeleteCommunity/DeleteCommunity'
 import InviteMember from '../InviteMemberModal/InviteMemberModal'
 import LeaveCommunity from '../LeaveCommunity/LeaveCommunity'
+import MembershipRequest from '../MembershipRequestModal/MembershipRequestModal'
+import OpenCommunityMember from '../OpenCommunityMember/OpenCommunityMember'
 import UpdateCommunity from '../UpdateCommunity/UpdateCommunity'
 
 type Props = {
@@ -108,6 +108,10 @@ const CommunityButton = ({ props, community_scopes, resources }: Props) => {
         ) : data.status === 'pending' ? (
           <Button color="gray" variant="outline" size="xs">
             PENDING
+          </Button>
+        ) : data.status === 'invited' ? (
+          <Button color="gray" variant="outline" size="xs">
+            INVITED
           </Button>
         ) : data.status === 'unknown' && data.membership === 'closed' ? (
           <MembershipRequest community_id={data.community_id} refetch={refetch} />

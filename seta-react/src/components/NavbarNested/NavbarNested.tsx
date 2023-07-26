@@ -7,7 +7,7 @@ const useStyles = createStyles(theme => ({
   },
 
   linksInner: {
-    paddingTop: theme.spacing.xl,
+    // paddingTop: theme.spacing.xl
     paddingBottom: theme.spacing.xl
   }
 }))

@@ -4,7 +4,7 @@ import { createStyles, Table, rem, Badge, useMantineTheme, Group, Text } from '@
 import type { MembershipRequest } from '~/api/types/membership-types'
 
 import { useAllCommunityRequestsID } from '../../../../../../../api/communities/community-all-requests'
-import { ComponentEmpty, ComponentError, ComponentLoading } from '../../../../../components/common'
+import { ComponentEmpty, ComponentError, ComponentLoading } from '../../../../common'
 import { statusColors } from '../../../../types'
 import UpdateMemberRequest from '../UpdateMemberRequest/UpdateMemberRequest'
 

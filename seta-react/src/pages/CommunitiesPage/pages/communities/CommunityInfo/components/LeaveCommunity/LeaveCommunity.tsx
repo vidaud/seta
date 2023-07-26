@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Text, Popover, Button, Group, createStyles, Tooltip } from '@mantine/core'
 
-import { getMembership } from '../../../../../../../api/communities/membership'
-import { leaveCommunity } from '../../../../../../../api/communities/my-membership'
+import { getMembership, leaveCommunity } from '../../../../../../../api/communities/membership'
 
 const useStyles = createStyles(theme => ({
   form: {

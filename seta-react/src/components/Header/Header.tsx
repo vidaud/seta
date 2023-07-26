@@ -1,4 +1,4 @@
-import { ActionIcon, Flex, Group, Image, Loader, Menu, Tooltip, Badge } from '@mantine/core'
+import { ActionIcon, Flex, Group, Image, Loader, Menu, Tooltip, Badge, Grid } from '@mantine/core'
 import { AiOutlineUser } from 'react-icons/ai'
 import { FaSignInAlt } from 'react-icons/fa'
 import { Link } from 'react-router-dom'
@@ -89,7 +89,7 @@ const Header = () => {
       <SiteHeader />
 
       <Flex css={S.menu} align="center" justify="space-between">
-        <Flex align="center">
+        <Grid align="center">
           <Link to="/" className="mr-5">
             <Image alt="SeTa Logo" src="/img/SeTA-logocut-negative.png" width={120} />
           </Link>
@@ -99,7 +99,7 @@ const Header = () => {
               {label}
             </S.MenuLink>
           ))}
-        </Flex>
+        </Grid>
         <Group>
           {authenticated ? (
             <Group>
