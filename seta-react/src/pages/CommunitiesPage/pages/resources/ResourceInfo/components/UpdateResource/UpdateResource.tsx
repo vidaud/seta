@@ -27,7 +27,7 @@ type Props = {
 const UpdateResource = ({ resource, onChange }: Props) => {
   const { classes } = useStyles()
   const [opened, { open, close }] = useDisclosure(false)
-  const { resource_id } = resource
+  // const { resource_id } = resource
   const theme = useMantineTheme()
 
   return (
