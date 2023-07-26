@@ -6,7 +6,7 @@
 1. From the side menu click on ^^Discovery^^ -> ^^Communities^^.  
 2. You can either use the filters to search the Community or select from the Communities list.             
 3. Click on :octicons-chevron-down-12: at the right side of the Community row.      
-4. In the opened section, click on button ^^New Resource^^ on the right.  
+4. In the opened section, click on button ^^New Resource^^ on the botton left.  
 5. Setup the *Resource ID, Title, Abstract* and click *Save*
 
 <figure markdown>

@@ -116,15 +116,35 @@ Once all the filters are selected, click in the button **Apply Filters** at the 
 
 ### Results
 
-Once the search is finish, we can see in the results section all the related documents. By default they are order in percentage of similarity with the searching input. A brief description of the document is display together with a path that describes the document type including the source and the date of publication.  A link to the document is also included.                 
-If we click in the expand option, it is possible to see the Taxonomy tree and the Text chunk. 
-
+Once the search is finished, we can see in the results section all the related documents. By default, they are order in percentage of similarity with the searching input. A brief description of the document is display together with a path that describes the document type including the source and the date of publication.  Finally, there is a link to the public URL of the document.               
+By clicking in the :octicons-chevron-down-12: at the right side of every result, it is possible to see the Taxonomy tree and the Text chunk.              
 
 <figure markdown>
-  ![Image title](../../img/search_results.png)
+  ![Image title](../../img/results_options.png)
   <figcaption>Search results</figcaption>
 </figure>
 
+ On sections Taxonomy and Chunks when clicking on :fontawesome-solid-expand: the data can be seen in a expanded version.              
+
+#### Taxonomy
+
+<figure markdown>
+  ![Image title](../../img/result_expand_taxonomy.png)
+  <figcaption>Taxonomy tree</figcaption>
+</figure>
+
+#### Chunks
+
+On the Chunks section it is also possible to expand more the view to a full screen view.
+<figure markdown>
+  ![Image title](../../img/result_expand_chunks.png)
+  <figcaption>Chunks inside the document</figcaption>
+</figure>
+
+<figure markdown>
+  ![Image title](../../img/expand_fullscreen.png)
+  <figcaption>Full screen view of Chunks </figcaption>
+</figure>
 ### My Search           
 In this panel, we can see the user's search library.               
 

@@ -90,8 +90,8 @@ const breadcrumbs: Crumb[] = [
 const FaqsPage = () => {
   const { classes } = useStyles()
 
-  const seta_api = 'http://localhost/seta-api/api/v1/doc'
-  const comm_api = 'http://localhost/seta-ui/api/v1/communities/doc'
+  const seta_api = '/seta-api/api/v1/doc'
+  const comm_api = '/seta-ui/api/v1/communities/doc'
 
   return (
     <MantineProvider inherit theme={{ colorScheme: 'light' }}>
