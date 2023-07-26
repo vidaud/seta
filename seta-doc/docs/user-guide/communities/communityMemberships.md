@@ -80,6 +80,8 @@
 </figure>
 
 ## Accept Invitation to Join a Community.
+
+### From the Communities list
 1. You can either use the filters to search the Community or select from the Communities list.             
 2. Click on button ^^INVITED^^.              
 3. From the pop-up window choose from drop-down *Status* the options: *accepted* or *rejected*.                    
@@ -89,3 +91,5 @@
   ![Image title](../../img/list_pending_invites.png)
   <figcaption>Sent Invites</figcaption>
 </figure>
+
+### From Notifications

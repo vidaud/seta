@@ -90,7 +90,14 @@ In the ***.env*** file change the necessary information, where is required, for 
 
 ### Models
 
-Another important setup is the models file, they keep the necessary information to create the related suggestions and the related terms of the words in the text provided. In SeTA this file is called  **json_suggestion.json** and is located in folder **./seta-data/models/**
+Another important setup is the models file, they keep the necessary information to create the related suggestions and the related terms of the words in the text provided. 
+
+Download the file  **json_suggestion.json** from the following repository link:
+
+[json_suggestion.json :material-code-json: ](https://jeodpp.jrc.ec.europa.eu/ftp/jrc-opendata/D4P-Cellar-dump/json_suggestion.json) 
+
+
+and copy into folder **./seta-data/models/**   
 
 
 ### Build
