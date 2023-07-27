@@ -1,12 +1,19 @@
 import { useEffect, useState } from 'react'
-import { Group, Button, useMantineTheme, Modal, Divider } from '@mantine/core'
+import { Group, Button, useMantineTheme, Modal, Divider, createStyles } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 import { IconPlus } from '@tabler/icons-react'
 
 import CreateForm from './components/CreateForm'
 import * as S from './styles'
 
+const useStyles = createStyles({
+  button: {
+    border: 'none'
+  }
+})
+
 const CreateCommunity = ({ system_scopes }) => {
+  const { classes } = useStyles()
   const [scopes, setScopes] = useState<string | undefined>('')
   const [opened, { open, close }] = useDisclosure(false)
   const theme = useMantineTheme()
@@ -33,16 +40,18 @@ const CreateCommunity = ({ system_scopes }) => {
             <CreateForm close={close} />
           </Modal>
           <Group
-            position="right"
+            position="left"
             css={S.root}
             sx={{ width: '100%', border: '1px solid #d0d4d7', borderRadius: '0.25rem' }}
           >
             <Button
+              className={classes.button}
               size="sm"
-              color="green"
+              color="gray"
               onClick={open}
+              variant="outline"
               h="40px"
-              rightIcon={<IconPlus size="1rem" color="white" />}
+              rightIcon={<IconPlus size="1rem" />}
             >
               New Community
             </Button>
