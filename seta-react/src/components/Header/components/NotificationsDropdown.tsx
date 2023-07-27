@@ -23,9 +23,9 @@ const NotificationsDropdown = ({ notifications }: Props) => {
           onClick={() => {
             navigate(
               link.type === 'pending-invite'
-                ? '/invites'
+                ? '/community/invites'
                 : link.type === 'membership-request'
-                ? '/membership-requests'
+                ? '/community/membership-requests'
                 : ''
               // : '/change-request'
             )

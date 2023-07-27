@@ -61,7 +61,7 @@ const routes = createRoutesFromElements(
     <Route path="faqs" element={<FaqsPage />} />
     <Route path="contact" element={<ContactPage />} />
     <Route path="login" element={<LoginPage />} />
-    <Route path="/invites" element={<CommunityLayout />}>
+    <Route path="/community/invites" element={<CommunityLayout />}>
       <Route
         path=""
         element={
@@ -72,7 +72,7 @@ const routes = createRoutesFromElements(
       />
     </Route>
 
-    <Route path="/membership-requests" element={<CommunityLayout />}>
+    <Route path="/community/membership-requests" element={<CommunityLayout />}>
       <Route
         path=""
         element={
