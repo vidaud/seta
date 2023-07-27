@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import type { AxiosRequestConfig } from 'axios'
 
-import type { UserPermissions } from '~/pages/CommunitiesPage/pages/contexts/scope-context'
+import type { UserPermissions } from '~/pages/CommunitiesPage/contexts/scope-context'
 
 import { environment } from '../../environments/environment'
 import api from '../api'

@@ -2,8 +2,8 @@ import { useQuery } from '@tanstack/react-query'
 import type { AxiosRequestConfig } from 'axios'
 import { getCookie } from 'typescript-cookie'
 
-import type { ChangeRequestValues } from '~/pages/CommunitiesPage/pages/contexts/change-request-context'
-import type { ResourceChangeRequestValues } from '~/pages/CommunitiesPage/pages/contexts/resource-change-request-context'
+import type { ChangeRequestValues } from '~/pages/CommunitiesPage/contexts/change-request-context'
+import type { ResourceChangeRequestValues } from '~/pages/CommunitiesPage/contexts/resource-change-request-context'
 
 import { environment } from '../../environments/environment'
 import api from '../api'

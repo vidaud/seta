@@ -6,16 +6,17 @@ import {
   RouterProvider
 } from 'react-router-dom'
 
+import CommunityList from '~/pages/CommunitiesPage/components/communities/CommunityList/CommunityList'
+import CreateContribution from '~/pages/CommunitiesPage/components/contributors/NewContribution/NewContribution'
+import ResourceList from '~/pages/CommunitiesPage/components/resources/ResourceList/ResourceList'
+import InvitesList from '~/pages/CommunitiesPage/components/sidebar/InvitesList/InvitesList'
+import MembersList from '~/pages/CommunitiesPage/components/sidebar/MembersList/MembersList'
+
 import RequireAuth from './components/RequireAuth'
 
 import AppLayout from '../../layouts/AppLayout'
 import CommunityLayout from '../../layouts/CommunityLayout/CommunityLayout'
-import CommunityList from '../../pages/CommunitiesPage/pages/communities/CommunityList/CommunityList'
-import { CommunityListProvider } from '../../pages/CommunitiesPage/pages/contexts/community-list.context'
-import CreateContribution from '../../pages/CommunitiesPage/pages/contributors/NewContribution/NewContribution'
-import ResourceList from '../../pages/CommunitiesPage/pages/resources/ResourceList/ResourceList'
-import InvitesList from '../../pages/CommunitiesPage/pages/sidebar/InvitesList/InvitesList'
-import MembersList from '../../pages/CommunitiesPage/pages/sidebar/MembersList/MembersList'
+import { CommunityListProvider } from '../../pages/CommunitiesPage/contexts/community-list.context'
 import ContactPage from '../../pages/ContactPage'
 import FaqsPage from '../../pages/FaqsPage'
 import HomePage from '../../pages/HomePage'

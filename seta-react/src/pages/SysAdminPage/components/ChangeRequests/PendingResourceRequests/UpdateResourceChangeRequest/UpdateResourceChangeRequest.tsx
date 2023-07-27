@@ -3,11 +3,11 @@ import { Popover, Button, Group, createStyles, Select, ActionIcon } from '@manti
 import { IconEdit } from '@tabler/icons-react'
 
 import { updateResourceChangeRequest } from '../../../../../../api/communities/resource-change-requests'
-import type { ResourceChangeRequestValues } from '../../../../../CommunitiesPage/pages/contexts/resource-change-request-context'
+import type { ResourceChangeRequestValues } from '../../../../../CommunitiesPage/contexts/resource-change-request-context'
 import {
   ResourceChangeRequestFormProvider,
   useResourceChangeRequest
-} from '../../../../../CommunitiesPage/pages/contexts/resource-change-request-context'
+} from '../../../../../CommunitiesPage/contexts/resource-change-request-context'
 
 const useStyles = createStyles({
   form: {

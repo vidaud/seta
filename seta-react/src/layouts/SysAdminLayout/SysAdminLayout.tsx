@@ -2,10 +2,10 @@ import { Box, Flex, Navbar, createStyles, rem } from '@mantine/core'
 import { IconStack, IconStatusChange, IconUsers } from '@tabler/icons-react'
 import { Outlet } from 'react-router-dom'
 
-import Breadcrumbs from '../../components/Breadcrumbs'
-import { LinksGroup } from '../../components/NavbarLinksGroup/NavbarLinksGroup'
-import NavbarNested from '../../components/NavbarNested/NavbarNested'
-import { CommunityListProvider } from '../../pages/CommunitiesPage/pages/contexts/community-list.context'
+import Breadcrumbs from '~/components/Breadcrumbs'
+import { LinksGroup } from '~/components/NavbarLinksGroup/NavbarLinksGroup'
+import NavbarNested from '~/components/NavbarNested'
+import { CommunityListProvider } from '~/pages/CommunitiesPage/contexts/community-list.context'
 
 const mockdata = [
   {
