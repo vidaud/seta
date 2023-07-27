@@ -6,9 +6,9 @@ import {
   RouterProvider
 } from 'react-router-dom'
 
-import CreateContribution from '~/pages/CommunitiesPage/components/contributors/NewContribution/NewContribution'
-import InvitesList from '~/pages/CommunitiesPage/components/sidebar/InvitesList/InvitesList'
-import MembersList from '~/pages/CommunitiesPage/components/sidebar/MembersList/MembersList'
+import CreateContribution from '~/pages/CommunitiesPage/components/contributors/NewContribution'
+import InvitesList from '~/pages/CommunitiesPage/components/notifications/invitesList'
+import MembersList from '~/pages/CommunitiesPage/components/notifications/membersList'
 
 import RequireAuth from './components/RequireAuth'
 
