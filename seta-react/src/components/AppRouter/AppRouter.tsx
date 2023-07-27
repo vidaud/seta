@@ -25,8 +25,8 @@ import ProfilePage from '../../pages/ProfilePage'
 import SearchPageNew from '../../pages/SearchPageNew'
 
 const ROOT_PATH = '/'
-const DISCOVER_COMMUNITY_PATH = '/communities/'
-const DISCOVER_RESOURCE_PATH = '/communities/resources/'
+const DISCOVER_COMMUNITY_PATH = '/community/'
+const DISCOVER_RESOURCE_PATH = '/resources/'
 
 const routes = createRoutesFromElements(
   <Route path={ROOT_PATH} element={<AppLayout />}>
@@ -84,20 +84,21 @@ const routes = createRoutesFromElements(
     </Route>
 
     <Route path={DISCOVER_COMMUNITY_PATH} element={<CommunityLayout />}>
+      {['', 'communities/'].map(path => (
+        <Route
+          key={path}
+          path={path}
+          element={
+            <RequireAuth>
+              <CommunityListProvider>
+                <CommunityList />
+              </CommunityListProvider>
+            </RequireAuth>
+          }
+        />
+      ))}
       <Route
-        path=""
-        element={
-          <RequireAuth>
-            <CommunityListProvider>
-              <CommunityList />
-            </CommunityListProvider>
-          </RequireAuth>
-        }
-      />
-    </Route>
-    <Route path={DISCOVER_RESOURCE_PATH} element={<CommunityLayout />}>
-      <Route
-        path=""
+        path="resources/"
         element={
           <RequireAuth>
             <CommunityListProvider>
@@ -106,6 +107,18 @@ const routes = createRoutesFromElements(
           </RequireAuth>
         }
       />
+    </Route>
+    <Route path={DISCOVER_RESOURCE_PATH} element={<CommunityLayout />}>
+      {/* <Route
+        path=""
+        element={
+          <RequireAuth>
+            <CommunityListProvider>
+              <ResourceList />
+            </CommunityListProvider>
+          </RequireAuth>
+        }
+      /> */}
       <Route
         path=":resourceId/contribution/new"
         element={

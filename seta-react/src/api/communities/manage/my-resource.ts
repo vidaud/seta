@@ -45,7 +45,7 @@ export const createResource = async (id?: string, values?: CreateResourceAPI) =>
     })
     .then(response => {
       if (response.status === 201) {
-        window.location.href = `/communities`
+        window.location.href = `/community/communities/`
       }
     })
 }
@@ -63,7 +63,7 @@ export const updateResource = async (resource_id?: string, values?: UpdateResour
     })
     .then(response => {
       if (response.status === 200) {
-        window.location.href = `/communities/resources/`
+        window.location.href = `/community/resources/`
       }
     })
 }
@@ -81,7 +81,7 @@ export const deleteResourceByID = async (resource_id?: string) => {
     })
     .then(response => {
       if (response.status === 200) {
-        window.location.href = `/communities/resources/`
+        window.location.href = `/community/resources/`
       }
     })
 }

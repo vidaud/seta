@@ -58,7 +58,7 @@ export const createCommunity = async (values?: CreateCommunityAPI) => {
     })
     .then(response => {
       if (response.status === 201) {
-        window.location.href = `/communities`
+        window.location.href = `/community/communities/`
       }
     })
 }
@@ -76,7 +76,7 @@ export const updateCommunity = async (id?: string, values?: UpdateCommunityAPI) 
     })
     .then(response => {
       if (response.status === 200) {
-        window.location.href = `/communities`
+        window.location.href = `/community/communities/`
       }
     })
 }
@@ -94,7 +94,7 @@ export const deleteCommunityByID = async (id?: string) => {
     })
     .then(response => {
       if (response.status === 200) {
-        window.location.href = `/communities`
+        window.location.href = `/community/communities/`
       }
     })
 }

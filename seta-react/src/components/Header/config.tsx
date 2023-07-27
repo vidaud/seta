@@ -26,7 +26,7 @@ export const getMenuItems = (authenticated: boolean): MenuItem[] => [
     hidden: !authenticated
   },
   {
-    to: '/communities',
+    to: '/community',
     label: 'Communities',
     hidden: !authenticated
   },

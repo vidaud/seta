@@ -54,7 +54,7 @@ const CommunityResources = ({ id }) => {
   }
 
   const handleCommunityRedirection = (row: ResourceResponse) => {
-    navigate(`/communities/resources/#${row.resource_id}`)
+    navigate(`/community/resources/#${row.resource_id}`)
   }
 
   const rows =

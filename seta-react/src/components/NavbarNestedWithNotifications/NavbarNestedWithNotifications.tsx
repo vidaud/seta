@@ -1,5 +1,5 @@
 import { Navbar, createStyles } from '@mantine/core'
-import { IconNotes } from '@tabler/icons-react'
+import { IconNotes, IconUsers, IconStack } from '@tabler/icons-react'
 
 import { LinksGroup } from '../NavbarLinksGroup/NavbarLinksGroup'
 import NavbarNested from '../NavbarNested/NavbarNested'
@@ -15,8 +15,8 @@ const mockdata = [
     icon: IconNotes,
     initiallyOpened: true,
     links: [
-      { label: 'Communities', link: '/communities/' },
-      { label: 'Resources', link: '/communities/resources/' }
+      { label: 'Communities', link: '/community/communities/', icon: IconUsers },
+      { label: 'Resources', link: '/community/resources/', icon: IconStack }
     ]
   }
 ]
