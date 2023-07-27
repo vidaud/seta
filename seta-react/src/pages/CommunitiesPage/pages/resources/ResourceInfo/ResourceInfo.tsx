@@ -64,7 +64,7 @@ const ResourceInfo = ({ resource, resource_scopes }: Props) => {
   }, [])
 
   const handleCommunityRedirection = () => {
-    navigate(`/communities/#${community_id}`)
+    navigate(`/community/communities/#${community_id}`)
   }
 
   const handleOutsideClick = value => {

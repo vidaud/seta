@@ -1,5 +1,5 @@
 import { Box, Flex, Navbar, createStyles, rem } from '@mantine/core'
-import { IconStatusChange } from '@tabler/icons-react'
+import { IconStack, IconStatusChange, IconUsers } from '@tabler/icons-react'
 import { Outlet } from 'react-router-dom'
 
 import Breadcrumbs from '../../components/Breadcrumbs'
@@ -13,8 +13,8 @@ const mockdata = [
     icon: IconStatusChange,
     initiallyOpened: true,
     links: [
-      { label: 'Community Change Requests', link: '/communities-requests/' },
-      { label: 'Resource Change Requests', link: '/resources-requests/' }
+      { label: 'Community Change Requests', link: '/communities-requests/', icon: IconUsers },
+      { label: 'Resource Change Requests', link: '/resources-requests/', icon: IconStack }
     ]
   }
 ]
