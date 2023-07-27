@@ -16,8 +16,8 @@ import {
   ComponentError,
   ComponentLoading
 } from '~/pages/CommunitiesPage/components/common'
-import { jobColors } from '~/pages/CommunitiesPage/components/types'
 import { useCommunityListContext } from '~/pages/CommunitiesPage/contexts/community-list.context'
+import { jobColors } from '~/pages/CommunitiesPage/types'
 
 import { useMembershipID } from '~/api/communities/membership'
 

@@ -2,9 +2,9 @@ import { createStyles, Text, rem, UnstyledButton, Group, Center } from '@mantine
 import { keys } from '@mantine/utils'
 import { IconSelector, IconChevronDown, IconChevronUp } from '@tabler/icons-react'
 
-import type { CommunityResponse } from '~/api/types/community-types'
+import type { ResourceResponse } from '~/api/types/resource-types'
 
-import type { ThProps } from '../../../types'
+import type { ThProps } from '../types'
 
 const useStyles = createStyles(theme => ({
   th: {
@@ -47,31 +47,31 @@ export const Th = ({ children, reversed, sorted, onSort }: ThProps) => {
   )
 }
 
-export const filterCommunityData = (data: CommunityResponse[], search: string) => {
+export const filterResourceData = (data: ResourceResponse[], search: string) => {
   const query = search.toLowerCase().trim()
 
   return data?.filter(item =>
-    keys(data[0]).some(key => item[key].toString().toLowerCase().includes(query))
+    keys(data[0]).some(key => item[key]?.toString().toLowerCase().includes(query))
   )
 }
 
-export const sortCommunityData = (
-  data: CommunityResponse[],
-  payload: { sortBy?: keyof CommunityResponse | null; reversed?: boolean; search: string }
+export const sortResourceData = (
+  data: ResourceResponse[],
+  payload: { sortBy?: keyof ResourceResponse | null; reversed?: boolean; search: string }
 ) => {
   const { sortBy } = payload
 
   if (!sortBy) {
-    return filterCommunityData(data, payload.search)
+    return filterResourceData(data, payload.search)
   }
 
-  return filterCommunityData(
+  return filterResourceData(
     [...(data || [])].sort((a, b) => {
       if (payload.reversed) {
         return b[sortBy.toString()].localeCompare(a[sortBy.toString()])
       }
 
-      return a[sortBy.toString()].localeCompare(b[sortBy].toString())
+      return a[sortBy.toString()].localeCompare(b[sortBy]?.toString())
     }),
     payload.search
   )

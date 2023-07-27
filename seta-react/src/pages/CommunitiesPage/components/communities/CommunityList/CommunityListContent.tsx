@@ -71,7 +71,7 @@ const CommunityListContent = forwardRef<HTMLDivElement, Props>(
             message="No communities found."
             secondary="Please create your own community"
           />
-          <Group position="center">
+          <Group position="center" sx={{ paddingTop: '1%' }}>
             <CreateCommunity system_scopes={system_scopes} />
           </Group>
         </>

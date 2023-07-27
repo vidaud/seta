@@ -6,7 +6,7 @@ import {
   ComponentError,
   ComponentLoading
 } from '~/pages/CommunitiesPage/components/common'
-import { statusColors } from '~/pages/CommunitiesPage/components/types'
+import { statusColors } from '~/pages/CommunitiesPage/types'
 
 import { useAllCommunityRequestsID } from '~/api/communities/community-all-requests'
 import type { MembershipRequest } from '~/api/types/membership-types'

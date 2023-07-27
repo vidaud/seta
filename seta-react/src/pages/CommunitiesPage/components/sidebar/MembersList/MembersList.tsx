@@ -12,9 +12,9 @@ import {
 
 import { useMembershipRequests } from '~/api/communities/membership-requests'
 
+import { statusColors } from '../../../types'
 import { ComponentEmpty, ComponentLoading } from '../../common'
 import UpdateMemberRequest from '../../communities/CommunityInfo/components/UpdateMemberRequest'
-import { statusColors } from '../../types'
 
 const useStyles = createStyles(theme => ({
   header: {

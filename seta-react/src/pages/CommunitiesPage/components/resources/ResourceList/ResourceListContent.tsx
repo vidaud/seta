@@ -47,7 +47,7 @@ const ResourceListContent = forwardRef<HTMLDivElement, Props>(
         <SuggestionsError
           size="md"
           mt={MARGIN_TOP}
-          subject="communities"
+          subject="Resources"
           withIcon
           onTryAgain={onTryAgain}
         />
@@ -58,17 +58,17 @@ const ResourceListContent = forwardRef<HTMLDivElement, Props>(
       return <SuggestionsLoading size="lg" mt={MARGIN_TOP} color="blue" variant="bars" />
     }
 
-    const communities = data
+    const resources = data
 
-    if (!communities.length) {
+    if (!resources.length) {
       return (
         <>
           <SuggestionsEmpty
             size="md"
             mt={MARGIN_TOP}
             withIcon
-            message="No communities found."
-            secondary="Please create your own community"
+            message="No resources found."
+            secondary="Please go to communities and create your own resource"
           />
         </>
       )
@@ -82,7 +82,7 @@ const ResourceListContent = forwardRef<HTMLDivElement, Props>(
           </Text>
         </div>
 
-        {communities.map(resource => (
+        {resources.map(resource => (
           <ResourceInfo
             key={resource.resource_id}
             resource={resource}

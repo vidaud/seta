@@ -3,6 +3,7 @@ import { Group, TextInput, createStyles } from '@mantine/core'
 import { IconSearch } from '@tabler/icons-react'
 
 import { useCommunityListContext } from '~/pages/CommunitiesPage/contexts/community-list.context'
+import { sortCommunityData } from '~/pages/CommunitiesPage/utils/community-utils'
 
 import { useAllCommunities } from '~/api/communities/discover/discover-communities'
 import type { CommunityResponse } from '~/api/types/community-types'
@@ -10,7 +11,6 @@ import type { CommunityResponse } from '~/api/types/community-types'
 import CommunityListContent from './CommunityListContent'
 
 import Filters from '../CommunityInfo/components/Filters'
-import { sortCommunityData } from '../CommunityInfo/utils/community-utils'
 
 const useStyles = createStyles({
   search: {

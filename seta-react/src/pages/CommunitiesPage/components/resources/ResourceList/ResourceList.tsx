@@ -3,13 +3,12 @@ import { Group, TextInput, createStyles } from '@mantine/core'
 import { IconSearch } from '@tabler/icons-react'
 
 import { useCommunityListContext } from '~/pages/CommunitiesPage/contexts/community-list.context'
+import { sortResourceData } from '~/pages/CommunitiesPage/utils/resource-utils'
 
 import { useAllResources } from '~/api/communities/discover/discover-resources'
 import type { ResourceResponse } from '~/api/types/resource-types'
 
 import ResourceListContent from './ResourceListContent'
-
-import { sortResourceData } from '../ResourceInfo/utils/resource-utils'
 
 const useStyles = createStyles({
   search: {

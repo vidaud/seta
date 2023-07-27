@@ -6,7 +6,7 @@ import {
   ComponentError,
   ComponentLoading
 } from '~/pages/CommunitiesPage/components/common'
-import { statusColors } from '~/pages/CommunitiesPage/components/types'
+import { statusColors } from '~/pages/CommunitiesPage/types'
 
 import { usePendingChangeRequests } from '~/api/communities/community-change-requests'
 import type { CommunityChangeRequests } from '~/api/types/change-request-types'

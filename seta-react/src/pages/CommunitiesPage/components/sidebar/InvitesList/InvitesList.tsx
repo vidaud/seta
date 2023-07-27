@@ -12,9 +12,9 @@ import {
 
 import { useAllPendingInvites } from '~/api/communities/invite'
 
+import { statusColors } from '../../../types'
 import { ComponentEmpty, ComponentError, ComponentLoading } from '../../common'
 import UpdateInviteRequest from '../../communities/CommunityInfo/components/UpdateInviteRequest'
-import { statusColors } from '../../types'
 
 const useStyles = createStyles(theme => ({
   header: {
