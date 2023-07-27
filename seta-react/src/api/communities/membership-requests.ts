@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query'
 import type { AxiosRequestConfig } from 'axios'
 import { getCookie } from 'typescript-cookie'
 
-import type { MembershipRequestValues } from '~/pages/CommunitiesPage/pages/contexts/membership-request-context'
+import type { MembershipRequestValues } from '~/pages/CommunitiesPage/contexts/membership-request-context'
 
 import { environment } from '../../environments/environment'
 import api from '../api'

@@ -1,7 +1,8 @@
 import { useQuery } from '@tanstack/react-query'
 import type { AxiosRequestConfig } from 'axios'
 
-import { environment } from '../../environments/environment'
+import { environment } from '~/environments/environment'
+
 import api from '../api'
 import type { CatalogueScopesResponse, CategoryScopesResponse } from '../types/catalogue-scopes'
 

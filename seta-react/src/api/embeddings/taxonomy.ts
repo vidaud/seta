@@ -2,7 +2,8 @@ import type { UseQueryOptions } from '@tanstack/react-query'
 import { useQuery } from '@tanstack/react-query'
 import type { AxiosRequestConfig } from 'axios'
 
-import { AggregationType } from '../../types/search/aggregations'
+import { AggregationType } from '~/types/search/aggregations'
+
 import api from '../api'
 import type { DocumentsPayload, DocumentsResponse } from '../types/taxonomy-types'
 

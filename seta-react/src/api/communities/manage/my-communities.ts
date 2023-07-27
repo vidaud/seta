@@ -1,10 +1,9 @@
 import { useQuery } from '@tanstack/react-query'
 import type { AxiosRequestConfig } from 'axios'
 
+import api from '~/api/api'
 import type { CommunityResponse } from '~/api/types/community-types'
-
-import { environment } from '../../../environments/environment'
-import api from '../../api'
+import { environment } from '~/environments/environment'
 
 export const cacheKey = () => ['communities']
 const BASE_URL = environment.baseUrl

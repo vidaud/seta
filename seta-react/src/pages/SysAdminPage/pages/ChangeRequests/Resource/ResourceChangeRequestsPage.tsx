@@ -1,4 +1,4 @@
-import PendingResourceRequests from '../../../components/ChangeRequests/PendingResourceRequests/PendingResourceRequests'
+import PendingResourceRequests from '~/pages/SysAdminPage/components/ChangeRequests/PendingResourceRequests'
 
 const ResourceChangeRequestsPage = () => {
   return <PendingResourceRequests />

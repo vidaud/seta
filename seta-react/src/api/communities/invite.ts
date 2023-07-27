@@ -2,9 +2,10 @@ import { useQuery } from '@tanstack/react-query'
 import type { AxiosRequestConfig } from 'axios'
 import { getCookie } from 'typescript-cookie'
 
-import type { InviteRequestValues } from '~/pages/CommunitiesPage/pages/contexts/invite-request-context'
+import type { InviteRequestValues } from '~/pages/CommunitiesPage/contexts/invite-request-context'
 
-import { environment } from '../../environments/environment'
+import { environment } from '~/environments/environment'
+
 import api from '../api'
 import type { CreateInvitationAPI, InviteResponse } from '../types/invite-types'
 

@@ -1,17 +1,17 @@
 import { useEffect, useState } from 'react'
 import { createStyles, Table, ScrollArea, rem, useMantineTheme, Badge } from '@mantine/core'
 
-import type { CommunityChangeRequests } from '~/api/types/change-request-types'
-
-import UpdateCommunityChangeRequest from './UpdateCommunityChangeRequest/UpdateCommunityChangeRequest'
-
-import { usePendingChangeRequests } from '../../../../../api/communities/community-change-requests'
 import {
   ComponentEmpty,
   ComponentError,
   ComponentLoading
-} from '../../../../CommunitiesPage/pages/common'
-import { statusColors } from '../../../../CommunitiesPage/pages/types'
+} from '~/pages/CommunitiesPage/components/common'
+import { statusColors } from '~/pages/CommunitiesPage/types'
+
+import { usePendingChangeRequests } from '~/api/communities/community-change-requests'
+import type { CommunityChangeRequests } from '~/api/types/change-request-types'
+
+import UpdateCommunityChangeRequest from './UpdateCommunityChangeRequest/UpdateCommunityChangeRequest'
 
 const useStyles = createStyles(theme => ({
   header: {

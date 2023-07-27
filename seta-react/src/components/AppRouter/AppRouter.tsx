@@ -6,16 +6,16 @@ import {
   RouterProvider
 } from 'react-router-dom'
 
+import CreateContribution from '~/pages/CommunitiesPage/components/contributors/NewContribution'
+import InvitesList from '~/pages/CommunitiesPage/components/notifications/invitesList'
+import MembersList from '~/pages/CommunitiesPage/components/notifications/membersList'
+
 import RequireAuth from './components/RequireAuth'
 
 import AppLayout from '../../layouts/AppLayout'
-import CommunityLayout from '../../layouts/CommunityLayout/CommunityLayout'
-import CommunityList from '../../pages/CommunitiesPage/pages/communities/CommunityList/CommunityList'
-import { CommunityListProvider } from '../../pages/CommunitiesPage/pages/contexts/community-list.context'
-import CreateContribution from '../../pages/CommunitiesPage/pages/contributors/NewContribution/NewContribution'
-import ResourceList from '../../pages/CommunitiesPage/pages/resources/ResourceList/ResourceList'
-import InvitesList from '../../pages/CommunitiesPage/pages/sidebar/InvitesList/InvitesList'
-import MembersList from '../../pages/CommunitiesPage/pages/sidebar/MembersList/MembersList'
+import CommunityLayout from '../../layouts/CommunityLayout'
+import CommunitiesPage from '../../pages/CommunitiesPage/CommunitiesPage'
+import ResourcesPage from '../../pages/CommunitiesPage/ResourcesPage'
 import ContactPage from '../../pages/ContactPage'
 import FaqsPage from '../../pages/FaqsPage'
 import HomePage from '../../pages/HomePage'
@@ -61,7 +61,7 @@ const routes = createRoutesFromElements(
     <Route path="faqs" element={<FaqsPage />} />
     <Route path="contact" element={<ContactPage />} />
     <Route path="login" element={<LoginPage />} />
-    <Route path="/invites" element={<CommunityLayout />}>
+    <Route path="/community/invites" element={<CommunityLayout />}>
       <Route
         path=""
         element={
@@ -72,7 +72,7 @@ const routes = createRoutesFromElements(
       />
     </Route>
 
-    <Route path="/membership-requests" element={<CommunityLayout />}>
+    <Route path="/community/membership-requests" element={<CommunityLayout />}>
       <Route
         path=""
         element={
@@ -90,9 +90,7 @@ const routes = createRoutesFromElements(
           path={path}
           element={
             <RequireAuth>
-              <CommunityListProvider>
-                <CommunityList />
-              </CommunityListProvider>
+              <CommunitiesPage />
             </RequireAuth>
           }
         />
@@ -101,9 +99,7 @@ const routes = createRoutesFromElements(
         path="resources/"
         element={
           <RequireAuth>
-            <CommunityListProvider>
-              <ResourceList />
-            </CommunityListProvider>
+            <ResourcesPage />
           </RequireAuth>
         }
       />
