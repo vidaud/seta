@@ -55,7 +55,8 @@ const ResourceDetails = ({ className, open, resource, resource_scopes }: Props) 
           >
             <Tabs.Tab value="limits">Resource Limits</Tabs.Tab>
             <Tabs.Tab value="change_requests">
-              Change Requests <Badge>{nrChangeRequests}</Badge>
+              Change Requests
+              {nrChangeRequests && nrChangeRequests > 0 ? <Badge>{nrChangeRequests}</Badge> : null}
             </Tabs.Tab>
             <Tabs.Tab value="permissions">Permissions</Tabs.Tab>
           </Tabs.List>
