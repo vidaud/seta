@@ -2,12 +2,13 @@ import { useEffect, useState } from 'react'
 import { Popover, Button, Group, createStyles, Select, ActionIcon } from '@mantine/core'
 import { IconEdit } from '@tabler/icons-react'
 
-import { updateCommunityChangeRequest } from '../../../../../../api/communities/community-change-requests'
-import type { CommunityChangeRequestValues } from '../../../../../CommunitiesPage/contexts/community-change-request-context'
+import type { CommunityChangeRequestValues } from '~/pages/CommunitiesPage/contexts/community-change-request-context'
 import {
   CommunityChangeRequestFormProvider,
   useCommunityChangeRequest
-} from '../../../../../CommunitiesPage/contexts/community-change-request-context'
+} from '~/pages/CommunitiesPage/contexts/community-change-request-context'
+
+import { updateCommunityChangeRequest } from '~/api/communities/community-change-requests'
 
 const useStyles = createStyles({
   form: {

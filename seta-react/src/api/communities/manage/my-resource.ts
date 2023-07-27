@@ -2,14 +2,13 @@ import { useQuery } from '@tanstack/react-query'
 import type { AxiosRequestConfig } from 'axios'
 import { getCookie } from 'typescript-cookie'
 
+import api from '~/api/api'
 import type {
   CreateResourceAPI,
   ResourceResponse,
   UpdateResourceAPI
 } from '~/api/types/resource-types'
-
-import { environment } from '../../../environments/environment'
-import api from '../../api'
+import { environment } from '~/environments/environment'
 
 const RESOURCE_API_PATH = '/resources/'
 const BASE_URL = environment.baseUrl

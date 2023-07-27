@@ -1,7 +1,8 @@
 import React, { useContext, useEffect } from 'react'
 import { Button, Group, Text, FileButton, Tabs, createStyles } from '@mantine/core'
 
-import { useFileToText } from '../../../../../../api/embeddings/file-to-text'
+import { useFileToText } from '~/api/embeddings/file-to-text'
+
 import { Context } from '../context/Context'
 
 const useStyles = createStyles({

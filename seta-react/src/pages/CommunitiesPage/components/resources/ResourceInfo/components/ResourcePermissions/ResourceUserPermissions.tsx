@@ -1,10 +1,15 @@
 import { useEffect, useState } from 'react'
 import { Table, Group, Text } from '@mantine/core'
 
-import { useResourcePermissionsID } from '../../../../../../../api/communities/user-resource-permissions'
-import { ComponentEmpty, ComponentError } from '../../../../common'
-import ComponentLoading from '../../../../common/ComponentLoading'
-import ManageResourcePermissions from '../ManageResourcePermissions/ManageResourcePermissions'
+import {
+  ComponentEmpty,
+  ComponentError,
+  ComponentLoading
+} from '~/pages/CommunitiesPage/components/common'
+
+import { useResourcePermissionsID } from '~/api/communities/user-resource-permissions'
+
+import ManageResourcePermissions from '../ManageResourcePermissions'
 
 const ResourceUsersPermissions = ({ id, type }) => {
   const perPage = 1

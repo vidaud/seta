@@ -1,10 +1,9 @@
 import { Flex } from '@mantine/core'
 import { Outlet } from 'react-router-dom'
 
+import Breadcrumbs from '~/components/Breadcrumbs'
 import NavbarNestedWithNotifications from '~/components/NavbarNestedWithNotifications/'
 import { CommunityListProvider } from '~/pages/CommunitiesPage/contexts/community-list.context'
-
-import Breadcrumbs from '../../components/Breadcrumbs'
 
 const CommunityLayout = () => {
   return (

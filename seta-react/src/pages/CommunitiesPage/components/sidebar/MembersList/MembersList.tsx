@@ -10,7 +10,8 @@ import {
   useMantineTheme
 } from '@mantine/core'
 
-import { useMembershipRequests } from '../../../../../api/communities/membership-requests'
+import { useMembershipRequests } from '~/api/communities/membership-requests'
+
 import { ComponentEmpty, ComponentLoading } from '../../common'
 import UpdateMemberRequest from '../../communities/CommunityInfo/components/UpdateMemberRequest'
 import { statusColors } from '../../types'

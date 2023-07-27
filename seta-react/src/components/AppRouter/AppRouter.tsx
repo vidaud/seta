@@ -6,17 +6,16 @@ import {
   RouterProvider
 } from 'react-router-dom'
 
-import CommunityList from '~/pages/CommunitiesPage/components/communities/CommunityList/CommunityList'
 import CreateContribution from '~/pages/CommunitiesPage/components/contributors/NewContribution/NewContribution'
-import ResourceList from '~/pages/CommunitiesPage/components/resources/ResourceList/ResourceList'
 import InvitesList from '~/pages/CommunitiesPage/components/sidebar/InvitesList/InvitesList'
 import MembersList from '~/pages/CommunitiesPage/components/sidebar/MembersList/MembersList'
 
 import RequireAuth from './components/RequireAuth'
 
 import AppLayout from '../../layouts/AppLayout'
-import CommunityLayout from '../../layouts/CommunityLayout/CommunityLayout'
-import { CommunityListProvider } from '../../pages/CommunitiesPage/contexts/community-list.context'
+import CommunityLayout from '../../layouts/CommunityLayout'
+import CommunitiesPage from '../../pages/CommunitiesPage/CommunitiesPage'
+import ResourcesPage from '../../pages/CommunitiesPage/ResourcesPage'
 import ContactPage from '../../pages/ContactPage'
 import FaqsPage from '../../pages/FaqsPage'
 import HomePage from '../../pages/HomePage'
@@ -91,9 +90,7 @@ const routes = createRoutesFromElements(
           path={path}
           element={
             <RequireAuth>
-              <CommunityListProvider>
-                <CommunityList />
-              </CommunityListProvider>
+              <CommunitiesPage />
             </RequireAuth>
           }
         />
@@ -102,9 +99,7 @@ const routes = createRoutesFromElements(
         path="resources/"
         element={
           <RequireAuth>
-            <CommunityListProvider>
-              <ResourceList />
-            </CommunityListProvider>
+            <ResourcesPage />
           </RequireAuth>
         }
       />

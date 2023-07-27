@@ -1,9 +1,12 @@
 import { TextInput, Group, createStyles, Button, Textarea } from '@mantine/core'
 
-import type { ResourceValues } from '~/pages/CommunitiesPage/contexts/resource-context'
+import {
+  useResource,
+  type ResourceValues,
+  ResourceFormProvider
+} from '~/pages/CommunitiesPage/contexts/resource-context'
 
-import { createResource } from '../../../../../../../../../api/communities/manage/my-resource'
-import { ResourceFormProvider, useResource } from '../../../../../../../contexts/resource-context'
+import { createResource } from '~/api/communities/manage/my-resource'
 
 const useStyles = createStyles({
   input: {

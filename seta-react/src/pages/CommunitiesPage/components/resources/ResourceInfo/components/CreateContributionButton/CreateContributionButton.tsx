@@ -2,9 +2,9 @@ import { Group, Button, useMantineTheme, Modal, Divider, createStyles } from '@m
 import { useDisclosure } from '@mantine/hooks'
 import { IconPlus } from '@tabler/icons-react'
 
-import * as S from './styles'
+import CreateContribution from '~/pages/CommunitiesPage/components/contributors/NewContribution'
 
-import CreateContribution from '../../../../contributors/NewContribution/NewContribution'
+import * as S from './styles'
 
 const useStyles = createStyles({
   button: {

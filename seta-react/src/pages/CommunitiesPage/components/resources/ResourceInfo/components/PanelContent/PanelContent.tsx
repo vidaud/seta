@@ -1,14 +1,15 @@
 import { useEffect } from 'react'
 import { Box } from '@mantine/core'
 
-import type { ResourceChangeRequests } from '~/api/types/change-request-types'
+import InfoContainer from '~/pages/SearchPageNew/components/documents/DocumentInfo/components/InfoContainer'
 
-import { useResourcesChangeRequests } from '../../../../../../../api/communities/resource-change-requests'
-import useModalState from '../../../../../../../hooks/use-modal-state'
-import InfoContainer from '../../../../../../SearchPageNew/components/documents/DocumentInfo/components/InfoContainer/InfoContainer'
-import ChangeResourceRequests from '../ChangeResourceRequests/ChangeResourceRequests'
-import ResourcePanelModal from '../PanelModal/PanelModal'
-import ResourceUsersPermissions from '../ResourcePermissions/ResourceUserPermissions'
+import { useResourcesChangeRequests } from '~/api/communities/resource-change-requests'
+import type { ResourceChangeRequests } from '~/api/types/change-request-types'
+import useModalState from '~/hooks/use-modal-state'
+
+import ChangeResourceRequests from '../ChangeResourceRequests'
+import ResourcePanelModal from '../PanelModal'
+import ResourceUsersPermissions from '../ResourcePermissions'
 
 type Props = {
   id: string

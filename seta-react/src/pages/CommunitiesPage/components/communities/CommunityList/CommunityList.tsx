@@ -2,13 +2,14 @@ import { useEffect, useState } from 'react'
 import { Group, TextInput, createStyles } from '@mantine/core'
 import { IconSearch } from '@tabler/icons-react'
 
+import { useCommunityListContext } from '~/pages/CommunitiesPage/contexts/community-list.context'
+
+import { useAllCommunities } from '~/api/communities/discover/discover-communities'
 import type { CommunityResponse } from '~/api/types/community-types'
 
 import CommunityListContent from './CommunityListContent'
 
-import { useAllCommunities } from '../../../../../api/communities/discover/discover-communities'
-import { useCommunityListContext } from '../../../contexts/community-list.context'
-import Filters from '../CommunityInfo/components/Filters/Filters'
+import Filters from '../CommunityInfo/components/Filters'
 import { sortCommunityData } from '../CommunityInfo/utils/community-utils'
 
 const useStyles = createStyles({
@@ -28,8 +29,8 @@ const CommunityList = () => {
   const [sortedData, setSortedData] = useState<CommunityResponse[]>([])
 
   const { data, isLoading, error, refetch } = useAllCommunities()
-  const { membership, status } = useCommunityListContext()
-  const { community_scopes, system_scopes, resource_scopes } = useCommunityListContext()
+  const { membership, status, community_scopes, system_scopes, resource_scopes } =
+    useCommunityListContext()
 
   useEffect(() => {
     if (data) {

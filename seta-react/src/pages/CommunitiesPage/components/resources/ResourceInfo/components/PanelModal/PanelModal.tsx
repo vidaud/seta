@@ -1,10 +1,11 @@
 import { CgFileDocument } from 'react-icons/cg'
 
+import ScrollModal from '~/components/ScrollModal/ScrollModal'
+
 import type { ModalStateProps } from '~/types/lib-props'
 
-import ScrollModal from '../../../../../../../components/ScrollModal/ScrollModal'
-import ChangeResourceRequests from '../ChangeResourceRequests/ChangeResourceRequests'
-import ResourceUsersPermissions from '../ResourcePermissions/ResourceUserPermissions'
+import ChangeResourceRequests from '../ChangeResourceRequests'
+import ResourceUsersPermissions from '../ResourcePermissions'
 
 type Props = {
   title: string

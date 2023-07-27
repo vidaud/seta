@@ -1,13 +1,13 @@
 import { CgFileDocument } from 'react-icons/cg'
 
-import ScrollModal from '~/components/ScrollModal/ScrollModal'
+import ScrollModal from '~/components/ScrollModal'
 
 import type { ModalStateProps } from '~/types/lib-props'
 
-import ChangeCommunityRequests from '../ChangeRequests/ChangeRequests'
-import CommunityInvites from '../CommunityInvites/CommunityInvites'
-import CommunityUsersPermissions from '../CommunityUserPermissions/CommunityUserPermissions'
-import MembershipRequests from '../MembershipRequests/MembershipRequests'
+import ChangeCommunityRequests from '../ChangeRequests'
+import CommunityInvites from '../CommunityInvites'
+import CommunityUsersPermissions from '../CommunityUserPermissions'
+import MembershipRequests from '../MembershipRequests'
 
 type Props = {
   title: string

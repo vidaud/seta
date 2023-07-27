@@ -8,13 +8,13 @@ import { useAllCommunities } from '~/api/communities/discover/discover-communiti
 import type { CommunityResponse } from '~/api/types/community-types'
 import type { ResourceResponse } from '~/api/types/resource-types'
 
-import ChangePrivacy from '../ChangePrivacy/ChangePrivacyRequest'
-import DeleteCommunity from '../DeleteCommunity/DeleteCommunity'
-import InviteMember from '../InviteMemberModal/InviteMemberModal'
-import LeaveCommunity from '../LeaveCommunity/LeaveCommunity'
-import MembershipRequest from '../MembershipRequestModal/MembershipRequestModal'
-import OpenCommunityMember from '../OpenCommunityMember/OpenCommunityMember'
-import UpdateCommunity from '../UpdateCommunity/UpdateCommunity'
+import ChangePrivacy from '../ChangePrivacy'
+import DeleteCommunity from '../DeleteCommunity'
+import InviteMember from '../InviteMemberModal'
+import LeaveCommunity from '../LeaveCommunity'
+import MembershipRequest from '../MembershipRequestModal'
+import OpenCommunityMember from '../OpenCommunityMember'
+import UpdateCommunity from '../UpdateCommunity'
 
 type Props = {
   props: CommunityResponse

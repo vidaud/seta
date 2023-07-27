@@ -2,8 +2,7 @@ import { Flex, Loader } from '@mantine/core'
 import { Navigate } from 'react-router-dom'
 
 import { useCurrentUser } from '~/contexts/user-context'
-
-import type { ChildrenProp } from '../../../types/children-props'
+import type { ChildrenProp } from '~/types/children-props'
 
 // TODO: Get this from an environment variable
 const AUTH_PATH = '/login?redirect=' + window.location.pathname

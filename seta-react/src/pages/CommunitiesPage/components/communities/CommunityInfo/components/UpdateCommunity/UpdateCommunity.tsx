@@ -11,7 +11,7 @@ import {
 import { useDisclosure } from '@mantine/hooks'
 import { IconPencil } from '@tabler/icons-react'
 
-import UpdateForm from './components/UpdateForm/UpdateForm'
+import UpdateForm from './components/UpdateForm'
 
 const useStyles = createStyles({
   button: {

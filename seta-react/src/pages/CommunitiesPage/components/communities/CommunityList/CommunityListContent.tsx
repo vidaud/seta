@@ -17,8 +17,8 @@ import type { DataProps } from '~/types/data-props'
 
 import * as S from './styles'
 
-import CommunityInfo from '../CommunityInfo/CommunityInfo'
-import CreateCommunity from '../CommunityInfo/components/CreateCommunity/CreateCommunity'
+import CommunityInfo from '../CommunityInfo'
+import CreateCommunity from '../CommunityInfo/components/CreateCommunity'
 
 const MARGIN_TOP = '4rem'
 

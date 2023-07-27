@@ -1,18 +1,23 @@
 import { forwardRef } from 'react'
 import { Flex, Text } from '@mantine/core'
 
+import type {
+  CommunityScopes,
+  ResourceScopes,
+  SystemScopes
+} from '~/pages/CommunitiesPage/contexts/community-list.context'
+import {
+  SuggestionsEmpty,
+  SuggestionsError,
+  SuggestionsLoading
+} from '~/pages/SearchPageNew/components/common'
+
 import type { ResourceResponse } from '~/api/types/resource-types'
 import type { DataProps } from '~/types/data-props'
 
 import * as S from './styles'
 
-import {
-  SuggestionsEmpty,
-  SuggestionsError,
-  SuggestionsLoading
-} from '../../../../SearchPageNew/components/common'
-import type { CommunityScopes, ResourceScopes, SystemScopes } from '../../../contexts/scope-context'
-import ResourceInfo from '../ResourceInfo/ResourceInfo'
+import ResourceInfo from '../ResourceInfo'
 
 const MARGIN_TOP = '4rem'
 

@@ -8,8 +8,8 @@ import type { ResourceScopes } from '~/pages/CommunitiesPage/contexts/scope-cont
 import {
   manageRestrictedResources,
   useAllResources
-} from '../../../../../../../api/communities/discover/discover-resources'
-import type { ResourceResponse } from '../../../../../../../api/types/resource-types'
+} from '~/api/communities/discover/discover-resources'
+import type { ResourceResponse } from '~/api/types/resource-types'
 
 const useStyles = createStyles(theme => ({
   form: {

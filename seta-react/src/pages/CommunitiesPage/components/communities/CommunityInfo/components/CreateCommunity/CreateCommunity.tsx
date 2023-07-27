@@ -3,7 +3,7 @@ import { Group, Button, useMantineTheme, Modal, Divider } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 import { IconPlus } from '@tabler/icons-react'
 
-import CreateForm from './components/CreateForm/CreateForm'
+import CreateForm from './components/CreateForm'
 import * as S from './styles'
 
 const CreateCommunity = ({ system_scopes }) => {

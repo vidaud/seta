@@ -1,4 +1,4 @@
-import PendingCommunityRequests from '../../../components/ChangeRequests/PendingCommunityRequests/PendingCommunityRequests'
+import PendingCommunityRequests from '~/pages/SysAdminPage/components/ChangeRequests/PendingCommunityRequests'
 
 const CommunityChangeRequestsPage = () => {
   return <PendingCommunityRequests />

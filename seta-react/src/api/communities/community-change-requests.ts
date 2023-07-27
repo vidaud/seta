@@ -5,7 +5,8 @@ import { getCookie } from 'typescript-cookie'
 import type { ChangeRequestValues } from '~/pages/CommunitiesPage/contexts/change-request-context'
 import type { CommunityChangeRequestValues } from '~/pages/CommunitiesPage/contexts/community-change-request-context'
 
-import { environment } from '../../environments/environment'
+import { environment } from '~/environments/environment'
+
 import api from '../api'
 import type { ChangeRequestResponse, CommunityChangeRequests } from '../types/change-request-types'
 

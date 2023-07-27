@@ -1,8 +1,7 @@
 import { createContext, useContext, useEffect, useState } from 'react'
 
+import { useUserPermissions } from '~/api/communities/user-scopes'
 import type { ChildrenProp } from '~/types/children-props'
-
-import { useUserPermissions } from '../../../api/communities/user-scopes'
 
 export type SystemScopes = {
   area: string

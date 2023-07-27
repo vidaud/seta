@@ -1,7 +1,8 @@
 import { useQuery } from '@tanstack/react-query'
 import type { AxiosRequestConfig } from 'axios'
 
-import { environment } from '../../environments/environment'
+import { environment } from '~/environments/environment'
+
 import api from '../api'
 import type { ChangeRequestResponse } from '../types/change-request-types'
 import type { InviteResponse } from '../types/invite-types'

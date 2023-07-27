@@ -1,9 +1,9 @@
 import { useQuery } from '@tanstack/react-query'
 import type { AxiosRequestConfig } from 'axios'
 
+import { environment } from '~/environments/environment'
 import type { User } from '~/types/user'
 
-import { environment } from '../../environments/environment'
 import api from '../api'
 
 const BASE_URL = environment.baseUrl

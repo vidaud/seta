@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Badge, Collapse, Group, Tabs } from '@mantine/core'
 
-import CreateResource from '~/pages/CommunitiesPage/components/resources/ResourceInfo/components/CreateResource/CreateResource'
+import CreateResource from '~/pages/CommunitiesPage/components/resources/ResourceInfo/components/CreateResource'
 import type {
   CommunityScopes,
   ResourceScopes,
@@ -16,7 +16,7 @@ import type { UserPermissionsResponse } from '~/api/types/user-permissions-types
 import type { ClassNameProp } from '~/types/children-props'
 
 import CommunityResources from '../CommunityResources'
-import PanelContent from '../PanelContent/PanelContent'
+import PanelContent from '../PanelContent'
 
 type Props = ClassNameProp & {
   open: boolean

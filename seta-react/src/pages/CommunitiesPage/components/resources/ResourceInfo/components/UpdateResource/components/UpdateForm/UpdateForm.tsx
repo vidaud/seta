@@ -1,13 +1,14 @@
 import { useEffect } from 'react'
 import { TextInput, Group, createStyles, Button, Textarea } from '@mantine/core'
 
+import { ComponentLoading } from '~/pages/CommunitiesPage/components/common'
+import type { ResourceValues } from '~/pages/CommunitiesPage/contexts/resource-context'
 import {
-  updateResource,
-  useResourceID
-} from '../../../../../../../../../api/communities/manage/my-resource'
-import type { ResourceValues } from '../../../../../../../contexts/resource-context'
-import { ResourceFormProvider, useResource } from '../../../../../../../contexts/resource-context'
-import { ComponentLoading } from '../../../../../../common'
+  ResourceFormProvider,
+  useResource
+} from '~/pages/CommunitiesPage/contexts/resource-context'
+
+import { updateResource, useResourceID } from '~/api/communities/manage/my-resource'
 
 const useStyles = createStyles({
   input: {

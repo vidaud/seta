@@ -1,12 +1,13 @@
 import { useEffect, useState } from 'react'
 import { Popover, Button, Group, createStyles, Text, NumberInput } from '@mantine/core'
 
-import { createResourceChangeRequest } from '../../../../../../../api/communities/resource-change-requests'
-import type { NewValueValues } from '../../../../../contexts/change-request-context'
+import type { NewValueValues } from '~/pages/CommunitiesPage/contexts/change-request-context'
 import {
   ChangeRequestFormProvider,
   useChangeRequest
-} from '../../../../../contexts/change-request-context'
+} from '~/pages/CommunitiesPage/contexts/change-request-context'
+
+import { createResourceChangeRequest } from '~/api/communities/resource-change-requests'
 
 const useStyles = createStyles({
   form: {

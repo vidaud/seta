@@ -2,7 +2,7 @@ import { Group, Button, useMantineTheme, Modal, Divider, createStyles } from '@m
 import { useDisclosure } from '@mantine/hooks'
 import { IconPlus } from '@tabler/icons-react'
 
-import CreateForm from './components/CreateForm/CreateForm'
+import CreateForm from './components/CreateForm'
 import * as S from './styles'
 
 const useStyles = createStyles({

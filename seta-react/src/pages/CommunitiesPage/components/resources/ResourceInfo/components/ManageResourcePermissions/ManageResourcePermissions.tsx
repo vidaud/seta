@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react'
 import { Checkbox } from '@mantine/core'
 
-import { useCategoryCatalogueScopes } from '../../../../../../../api/communities/scope-catalogue-permissions'
-import { manageResourceScopes } from '../../../../../../../api/communities/user-resource-permissions'
+import { useCategoryCatalogueScopes } from '~/api/communities/scope-catalogue-permissions'
+import { manageResourceScopes } from '~/api/communities/user-resource-permissions'
 
 const ManageResourcePermissions = ({ props, id }) => {
   const [value, setValue] = useState<string[]>(props.scopes)

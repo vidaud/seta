@@ -1,10 +1,11 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { Box, Group, Paper, Stack, Text, Title, Tabs, createStyles } from '@mantine/core'
 
+import { useEmbeddings } from '~/api/embeddings/embedding'
+
 import { UploadFile } from './UploadFile'
 import { UploadText } from './UploadText'
 
-import { useEmbeddings } from '../../../../../../api/embeddings/embedding'
 import { Context } from '../context/Context'
 
 const useStyles = createStyles({

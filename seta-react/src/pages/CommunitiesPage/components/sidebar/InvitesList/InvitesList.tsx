@@ -10,7 +10,8 @@ import {
   Group
 } from '@mantine/core'
 
-import { useAllPendingInvites } from '../../../../../api/communities/invite'
+import { useAllPendingInvites } from '~/api/communities/invite'
+
 import { ComponentEmpty, ComponentError, ComponentLoading } from '../../common'
 import UpdateInviteRequest from '../../communities/CommunityInfo/components/UpdateInviteRequest'
 import { statusColors } from '../../types'

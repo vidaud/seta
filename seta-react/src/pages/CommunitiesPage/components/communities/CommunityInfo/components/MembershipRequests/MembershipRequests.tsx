@@ -11,7 +11,7 @@ import { statusColors } from '~/pages/CommunitiesPage/components/types'
 import { useAllCommunityRequestsID } from '~/api/communities/community-all-requests'
 import type { MembershipRequest } from '~/api/types/membership-types'
 
-import UpdateMemberRequest from '../UpdateMemberRequest/UpdateMemberRequest'
+import UpdateMemberRequest from '../UpdateMemberRequest'
 
 const useStyles = createStyles(theme => ({
   header: {

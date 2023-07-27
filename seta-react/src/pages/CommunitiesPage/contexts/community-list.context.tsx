@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useState } from 'react'
 
-import { useUserPermissions } from '../../../api/communities/user-scopes'
+import { useUserPermissions } from '~/api/communities/user-scopes'
 
 export type SystemScopes = {
   area: string

@@ -1,11 +1,15 @@
 import { useEffect, useState } from 'react'
 import { createStyles, Table, rem, useMantineTheme, Badge, Select } from '@mantine/core'
 
-import type { ResourceChangeRequests } from '~/api/types/change-request-types'
+import {
+  ComponentEmpty,
+  ComponentError,
+  ComponentLoading
+} from '~/pages/CommunitiesPage/components/common'
+import { statusColors } from '~/pages/CommunitiesPage/components/types'
 
-import { useResourcesChangeRequests } from '../../../../../../../api/communities/resource-change-requests'
-import { ComponentEmpty, ComponentError, ComponentLoading } from '../../../../common'
-import { statusColors } from '../../../../types'
+import { useResourcesChangeRequests } from '~/api/communities/resource-change-requests'
+import type { ResourceChangeRequests } from '~/api/types/change-request-types'
 
 const useStyles = createStyles(theme => ({
   header: {

@@ -21,8 +21,8 @@ import { useCommunityListContext } from '~/pages/CommunitiesPage/contexts/commun
 
 import { useMembershipID } from '~/api/communities/membership'
 
-import DeleteMembership from './components/DeleteMembership/DeleteMembership'
-import UpdateMembership from './components/UpdateMembership/UpdateMembership'
+import DeleteMembership from './components/DeleteMembership'
+import UpdateMembership from './components/UpdateMembership'
 
 const useStyles = createStyles(theme => ({
   header: {

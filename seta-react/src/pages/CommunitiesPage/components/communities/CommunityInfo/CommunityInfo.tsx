@@ -13,8 +13,8 @@ import type {
 import { useMyCommunityResources } from '~/api/communities/manage/my-community'
 import type { CommunityResponse } from '~/api/types/community-types'
 
-import CommunityButton from './components/CommunityButton/CommunityButton'
-import CommunityDetails from './components/CommunityDetails/CommunityDetails'
+import CommunityButton from './components/CommunityButton'
+import CommunityDetails from './components/CommunityDetails'
 import * as S from './styles'
 
 type Props = {

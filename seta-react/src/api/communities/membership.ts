@@ -4,7 +4,8 @@ import { getCookie } from 'typescript-cookie'
 
 import type { MembershipValues } from '~/pages/CommunitiesPage/contexts/membership-context'
 
-import { environment } from '../../environments/environment'
+import { environment } from '~/environments/environment'
+
 import api from '../api'
 import type {
   CreateMembershipRequestAPI,

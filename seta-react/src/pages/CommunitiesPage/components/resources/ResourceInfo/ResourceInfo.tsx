@@ -7,15 +7,19 @@ import { FaChevronDown } from 'react-icons/fa'
 import { MdOutlineSearchOff } from 'react-icons/md'
 import { useLocation, useNavigate } from 'react-router-dom'
 
+import type {
+  CommunityScopes,
+  ResourceScopes,
+  SystemScopes
+} from '~/pages/CommunitiesPage/contexts/community-list.context'
+
 import type { ResourceResponse } from '~/api/types/resource-types'
 
-import DeleteResource from './components/DeleteResource/DeleteResource'
-import ResourceDetails from './components/ResourceDetails/ResourceDetails'
-import RestrictedResource from './components/RestrictedResources/RestrictedResources'
-import UpdateResource from './components/UpdateResource/UpdateResource'
+import DeleteResource from './components/DeleteResource'
+import ResourceDetails from './components/ResourceDetails'
+import RestrictedResource from './components/RestrictedResources'
+import UpdateResource from './components/UpdateResource'
 import * as S from './styles'
-
-import type { CommunityScopes, ResourceScopes, SystemScopes } from '../../../contexts/scope-context'
 
 type Props = {
   queryTerms: string

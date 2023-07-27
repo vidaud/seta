@@ -3,7 +3,8 @@ import type { AxiosRequestConfig } from 'axios'
 
 import type { UserPermissions } from '~/pages/CommunitiesPage/contexts/scope-context'
 
-import { environment } from '../../environments/environment'
+import { environment } from '~/environments/environment'
+
 import api from '../api'
 import type { MembershipRequest } from '../types/membership-types'
 

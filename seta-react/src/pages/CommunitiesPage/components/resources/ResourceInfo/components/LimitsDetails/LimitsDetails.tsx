@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react'
 import { Group, Text, createStyles } from '@mantine/core'
 
-import { useResourceID } from '../../../../../../../api/communities/manage/my-resource'
-import { ComponentLoading } from '../../../../common'
-import UpdateLimits from '../UpdateLimits/UpdateLimits'
+import { ComponentLoading } from '~/pages/CommunitiesPage/components/common'
+
+import { useResourceID } from '~/api/communities/manage/my-resource'
+
+import UpdateLimits from '../UpdateLimits'
 
 const useStyles = createStyles(theme => ({
   text: {

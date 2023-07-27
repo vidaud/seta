@@ -1,17 +1,18 @@
 import { useEffect, useState } from 'react'
 import { Badge, Collapse, Tabs } from '@mantine/core'
 
-import type { ResourceChangeRequests } from '~/api/types/change-request-types'
-import type { ResourceResponse } from '~/api/types/resource-types'
-import type { ClassNameProp } from '~/types/children-props'
-
 import type {
   CommunityScopes,
   ResourceScopes,
   SystemScopes
-} from '../../../../../contexts/scope-context'
-import LimitsDetails from '../LimitsDetails/LimitsDetails'
-import ResourcePanelContent from '../PanelContent/PanelContent'
+} from '~/pages/CommunitiesPage/contexts/community-list.context'
+
+import type { ResourceChangeRequests } from '~/api/types/change-request-types'
+import type { ResourceResponse } from '~/api/types/resource-types'
+import type { ClassNameProp } from '~/types/children-props'
+
+import LimitsDetails from '../LimitsDetails'
+import ResourcePanelContent from '../PanelContent'
 
 type Props = ClassNameProp & {
   open: boolean

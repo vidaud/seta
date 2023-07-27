@@ -9,7 +9,7 @@ import {
 
 import { useCommunityPermissionsID } from '~/api/communities/user-community-permissions'
 
-import ManagePermissions from '../ManagePermissions/ManagePermissions'
+import ManagePermissions from '../ManagePermissions'
 
 const CommunityUsersPermissions = ({ id, type }) => {
   const perPage = 1
