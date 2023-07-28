@@ -186,7 +186,7 @@ corpus_post_params["date_range"] = fields.List(fields.String, description="examp
                                                                           "gt:yyyy-mm-dd,lt:yyyy-mm-dd")
 corpus_post_params["aggs"] = fields.List(fields.String, description="field to be aggregated, allowed fields are:"
                                                                     '"source", "date_year", "source_collection_reference", '
-                                                                    '"taxonomy:taxonomyname", "taxonomies"')
+                                                                    '"taxonomy:taxonomyname", "taxonomies", "taxonomy_path_years-path:to:taxonomy"')
 corpus_post_params["other"] = None
 
 corpus_delete_id_response = {}
@@ -257,7 +257,9 @@ class Variable:
                            fields.Nested(
                                self.namespace.model("source_collection_reference_agg",
                                                     source_collection_reference_agg))),
-                       "taxonomy": fields.List(fields.Nested(self.taxonomy_agg_model_tree))
+                       "taxonomy": fields.List(fields.Nested(self.taxonomy_agg_model_tree)),
+                       "taxonomies": fields.List(fields.Nested(self.taxonomy_agg_model_tree)),
+                       "taxonomy_path_years": fields.List(fields.Nested(self.namespace.model("date_year_agg", date_year_agg)))
                        }
         post_get_response["aggregations"] = fields.List(fields.Nested(self.namespace.model("aggregation", aggregation)))
         self.post_get_response = post_get_response
