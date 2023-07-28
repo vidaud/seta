@@ -88,19 +88,6 @@
 
 ## Accept Invitation to Join a Community.
 
-### From the Communities list
-1. You can either use the filters to search the Community or select from the Communities list.             
-2. Click on button ^^INVITED^^.              
-3. From the pop-up window choose from drop-down *Status* the options: *accepted* or *rejected*.                    
-4. Click ^^Send^^.      
-
-<figure markdown>
-  ![Image title](../../img/list_pending_invites.png)
-  <figcaption>Sent Invites</figcaption>
-</figure>
-
-### From Notifications
-
 1. On the :material-bell-badge: on top of the page, a number notification appears.             
 2. Click on the icon and click on the number aside ^^Pending invites^^.              
 3. It will open the page with the list of Invites.                    
