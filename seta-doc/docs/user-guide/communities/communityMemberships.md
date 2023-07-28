@@ -45,9 +45,11 @@
 2. Click on :octicons-chevron-down-12: at the right side of the Community row.      
 3. On the opened section, click on tab *Pending Membership Requests*.           
 4. You can see a list of the pending membership requests.            
-5. Click in the ^^:octicons-pencil-24:^^ under column *Actions* to update the status (*pending, approved, rejected*).
+5. Click in the ^^:octicons-pencil-24:^^ under column *Actions* to update the status (*pending, approved, rejected*).     
 6. Click *send*
 7. The request disappear from the Pending Membership Requests list.
+
+> It is possible to enlarge the list and see all the *Pending Membership Requests*, by clicking on :fontawesome-solid-expand:         
 
 <figure markdown>
   ![Image title](../../img/pending_invites_from_main.png)
@@ -80,6 +82,8 @@
 2. Click on :octicons-chevron-down-12: at the right side of the Community row.      
 3. On the opened section, click on tab *Sent Invites*.           
 4. You can see a list of the Invites sent.            
+
+> It is possible to enlarge the list and see all the *Sent Invites*, by clicking on :fontawesome-solid-expand:         
 
 <figure markdown>
   ![Image title](../../img/seta_communities_invites_list.png)
