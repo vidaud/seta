@@ -63,6 +63,10 @@ export const getDropdownItems = ({ isAdmin, onLogout }: DropdownProps): Dropdown
   }
 
   items.push({
+    collapse: true
+  })
+
+  items.push({
     divider: true
   })
 

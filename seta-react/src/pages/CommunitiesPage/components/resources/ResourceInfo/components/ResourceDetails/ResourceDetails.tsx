@@ -22,6 +22,8 @@ type Props = ClassNameProp & {
   system_scopes?: SystemScopes[]
 }
 
+const items = [{ value: 'change_requests' }, { value: 'permissions' }]
+
 const ResourceDetails = ({ className, open, resource, resource_scopes }: Props) => {
   const [activeTab, setActiveTab] = useState<string | null>('limits')
   const { resource_id } = resource
@@ -44,6 +46,12 @@ const ResourceDetails = ({ className, open, resource, resource_scopes }: Props) 
     setData(value)
   }
 
+  const tabs = items?.map(item => (
+    <Tabs.Panel value={item.value} key={item.value}>
+      <ResourcePanelContent id={resource_id} panel={activeTab} onChange={handleData} />
+    </Tabs.Panel>
+  ))
+
   return (
     <Collapse className={className} in={open}>
       {scopes?.includes('/seta/resource/edit') ? (
@@ -64,12 +72,7 @@ const ResourceDetails = ({ className, open, resource, resource_scopes }: Props) 
           <Tabs.Panel value="limits">
             <LimitsDetails id={resource_id} scopes={scopes} />
           </Tabs.Panel>
-          <Tabs.Panel value="change_requests">
-            <ResourcePanelContent id={resource_id} panel={activeTab} onChange={handleData} />
-          </Tabs.Panel>
-          <Tabs.Panel value="permissions">
-            <ResourcePanelContent id={resource_id} panel={activeTab} onChange={handleData} />
-          </Tabs.Panel>
+          {tabs}
         </Tabs>
       ) : null}
     </Collapse>
