@@ -10,6 +10,9 @@ import { statusColors } from '~/pages/CommunitiesPage/types'
 
 import { useCommunityChangeRequests } from '~/api/communities/community-change-requests'
 import type { CommunityChangeRequests } from '~/api/types/change-request-types'
+import useModalState from '~/hooks/use-modal-state'
+
+import MessageModal from '../MessageModal/MessageModal'
 
 const useStyles = createStyles(theme => ({
   header: {
@@ -32,6 +35,18 @@ const useStyles = createStyles(theme => ({
 
   scrolled: {
     boxShadow: theme.shadows.sm
+  },
+
+  td: {
+    whiteSpace: 'nowrap',
+    maxWidth: '10rem',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    '&:hover': {
+      backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.colors.gray[0],
+      color: theme.colorScheme === 'dark' ? theme.white : theme.black,
+      cursor: 'pointer'
+    }
   }
 }))
 
@@ -47,6 +62,7 @@ type Props = {
 }
 
 const ChangeCommunityRequests = ({ id }: Props) => {
+  const { modalOpen, openModal, closeModal } = useModalState()
   const { classes, cx } = useStyles()
   const { data, isLoading, error, refetch } = useCommunityChangeRequests(id)
   const theme = useMantineTheme()
@@ -90,8 +106,30 @@ const ChangeCommunityRequests = ({ id }: Props) => {
     <tr key={row?.request_id}>
       <td>{row?.community_id.charAt(0).toUpperCase() + row?.community_id.slice(1)}</td>
       <td>{row?.field_name.charAt(0).toUpperCase() + row?.field_name.slice(1)}</td>
-      <td>{row?.old_value.charAt(0).toUpperCase() + row?.old_value.slice(1)}</td>
-      <td>{row?.new_value.charAt(0).toUpperCase() + row?.new_value.slice(1)}</td>
+      <td className={classes.td}>
+        <span onClick={openModal}>
+          {row?.old_value.charAt(0).toUpperCase() + row?.old_value.slice(1)}
+        </span>
+        <MessageModal
+          title=" Expand Old Value"
+          type="value"
+          message={row?.old_value.charAt(0).toUpperCase() + row?.old_value.slice(1)}
+          opened={modalOpen}
+          onClose={closeModal}
+        />
+      </td>
+      <td className={classes.td}>
+        <span onClick={openModal}>
+          {row?.new_value.charAt(0).toUpperCase() + row?.new_value.slice(1)}
+        </span>
+        <MessageModal
+          title=" Expand New Value"
+          type="value"
+          message={row?.new_value.charAt(0).toUpperCase() + row?.new_value.slice(1)}
+          opened={modalOpen}
+          onClose={closeModal}
+        />
+      </td>
       <td>{row?.requested_by_info?.full_name}</td>
       <td>{new Date(row?.initiated_date).toDateString()}</td>
       <td>

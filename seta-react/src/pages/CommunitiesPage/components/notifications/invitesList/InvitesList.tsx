@@ -94,6 +94,7 @@ const InvitesList = () => {
         </span>
         <MessageModal
           title="Expand Message"
+          type="message"
           message={row.message.charAt(0).toUpperCase() + row.message.slice(1)}
           opened={modalOpen}
           onClose={closeModal}
