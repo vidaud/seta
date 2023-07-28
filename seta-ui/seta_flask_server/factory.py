@@ -40,7 +40,7 @@ def create_app(config_object):
            
     request_endswith_ignore_list = ['.js', '.css', '.png', '.ico', '.svg', '.map', '.json', 'doc']
     request_starts_with_ignore_list = ['/authorization', '/authentication', '/seta-ui/api/v1/login', 
-                                       '/seta-ui/api/v1/logout', '/seta-ui/api/v1/refresh', '/seta-ui/api/v1/me/user-info']
+                                       '/seta-ui/api/v1/logout', '/seta-ui/api/v1/refresh', '/seta-ui/api/v1/me/user-info', '/seta-ui/api/v1/notifications']
     
     with app.app_context():         
             
@@ -149,20 +149,20 @@ def register_blueprints(app):
     from .blueprints.admin import admin_bp
     from .blueprints.notifications import notifications_bp_v1
     
-    API_ROOT="/seta-ui/api"
+    API_ROOT_V1="/seta-ui/api/v1"
                     
-    app.register_blueprint(profile_bp_v1, url_prefix=f"{API_ROOT}/v1")   
+    app.register_blueprint(profile_bp_v1, url_prefix=API_ROOT_V1)   
     
-    app.register_blueprint(local_auth, url_prefix=f"{API_ROOT}/v1")
-    app.register_blueprint(auth_ecas, url_prefix=f"{API_ROOT}/v1")
-    app.register_blueprint(auth_github, url_prefix=f"{API_ROOT}/v1")
+    app.register_blueprint(local_auth, url_prefix=API_ROOT_V1)
+    app.register_blueprint(auth_ecas, url_prefix=API_ROOT_V1)
+    app.register_blueprint(auth_github, url_prefix=API_ROOT_V1)
 
-    app.register_blueprint(communities_bp_v1, url_prefix=f"{API_ROOT}/v1")
+    app.register_blueprint(communities_bp_v1, url_prefix=API_ROOT_V1)
 
-    app.register_blueprint(catalogue_bp_v1, url_prefix=f"{API_ROOT}/v1")
-    app.register_blueprint(notifications_bp_v1, url_prefix=f"{API_ROOT}/v1")
+    app.register_blueprint(catalogue_bp_v1, url_prefix=API_ROOT_V1)
+    app.register_blueprint(notifications_bp_v1, url_prefix=API_ROOT_V1)
 
-    app.register_blueprint(admin_bp, url_prefix=f"{API_ROOT}")    
+    app.register_blueprint(admin_bp, url_prefix=API_ROOT_V1)    
         
 def register_extensions(app):    
     github.init_app(app)
