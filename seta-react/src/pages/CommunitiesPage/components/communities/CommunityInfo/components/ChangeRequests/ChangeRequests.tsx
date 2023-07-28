@@ -11,6 +11,8 @@ import { statusColors } from '~/pages/CommunitiesPage/types'
 import { useCommunityChangeRequests } from '~/api/communities/community-change-requests'
 import type { CommunityChangeRequests } from '~/api/types/change-request-types'
 
+import ExtendedMessage from '../ExtendedMessage/ExtendedMessage'
+
 const useStyles = createStyles(theme => ({
   header: {
     position: 'sticky',
@@ -32,6 +34,18 @@ const useStyles = createStyles(theme => ({
 
   scrolled: {
     boxShadow: theme.shadows.sm
+  },
+
+  td: {
+    whiteSpace: 'nowrap',
+    maxWidth: '10rem',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    '&:hover': {
+      backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.colors.gray[0],
+      color: theme.colorScheme === 'dark' ? theme.white : theme.black,
+      cursor: 'pointer'
+    }
   }
 }))
 
@@ -90,8 +104,22 @@ const ChangeCommunityRequests = ({ id }: Props) => {
     <tr key={row?.request_id}>
       <td>{row?.community_id.charAt(0).toUpperCase() + row?.community_id.slice(1)}</td>
       <td>{row?.field_name.charAt(0).toUpperCase() + row?.field_name.slice(1)}</td>
-      <td>{row?.old_value.charAt(0).toUpperCase() + row?.old_value.slice(1)}</td>
-      <td>{row?.new_value.charAt(0).toUpperCase() + row?.new_value.slice(1)}</td>
+      <td className={classes.td}>
+        <ExtendedMessage
+          id={row.community_id}
+          message={row.old_value.charAt(0).toUpperCase() + row.old_value.slice(1)}
+          title="Expand Old Value"
+          type="value"
+        />
+      </td>
+      <td className={classes.td}>
+        <ExtendedMessage
+          id={row.community_id}
+          message={row.new_value.charAt(0).toUpperCase() + row.new_value.slice(1)}
+          title="Expand New Value"
+          type="value"
+        />
+      </td>
       <td>{row?.requested_by_info?.full_name}</td>
       <td>{new Date(row?.initiated_date).toDateString()}</td>
       <td>

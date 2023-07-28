@@ -11,11 +11,11 @@ import { statusColors } from '~/pages/CommunitiesPage/types'
 import { useAllCommunityRequestsID } from '~/api/communities/community-all-requests'
 import type { MembershipRequest } from '~/api/types/membership-types'
 
+import ExtendedMessage from '../ExtendedMessage/ExtendedMessage'
 import UpdateMemberRequest from '../UpdateMemberRequest'
 
 const useStyles = createStyles(theme => ({
   header: {
-    position: 'sticky',
     top: 0,
     backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.white,
     transition: 'box-shadow 150ms ease',
@@ -34,6 +34,17 @@ const useStyles = createStyles(theme => ({
 
   scrolled: {
     boxShadow: theme.shadows.sm
+  },
+  td: {
+    whiteSpace: 'nowrap',
+    maxWidth: '10rem',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    '&:hover': {
+      backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.colors.gray[0],
+      color: theme.colorScheme === 'dark' ? theme.white : theme.black,
+      cursor: 'pointer'
+    }
   }
 }))
 
@@ -79,7 +90,14 @@ const MembershipRequests = ({ id, type }) => {
   const rows = items?.map(row => (
     <tr key={row.community_id}>
       <td>{row.requested_by_info.full_name}</td>
-      <td>{row.message.charAt(0).toUpperCase() + row.message.slice(1)}</td>
+      <td className={classes.td}>
+        <ExtendedMessage
+          id={row.community_id}
+          message={row.message.charAt(0).toUpperCase() + row.message.slice(1)}
+          title="Expand Membership Message"
+          type="message"
+        />
+      </td>
       <td>{new Date(row?.initiated_date).toDateString()}</td>
       <td>
         <Badge

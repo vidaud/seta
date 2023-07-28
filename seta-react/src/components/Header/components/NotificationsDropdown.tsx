@@ -26,8 +26,7 @@ const NotificationsDropdown = ({ notifications }: Props) => {
                 ? '/community/invites'
                 : link.type === 'membership-request'
                 ? '/community/membership-requests'
-                : ''
-              // : '/change-request'
+                : '/admin'
             )
           }}
           key={link.label}

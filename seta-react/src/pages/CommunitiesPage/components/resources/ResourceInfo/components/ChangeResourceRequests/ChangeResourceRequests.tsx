@@ -6,6 +6,7 @@ import {
   ComponentError,
   ComponentLoading
 } from '~/pages/CommunitiesPage/components/common'
+import ExtendedMessage from '~/pages/CommunitiesPage/components/communities/CommunityInfo/components/ExtendedMessage/ExtendedMessage'
 import { statusColors } from '~/pages/CommunitiesPage/types'
 
 import { useResourcesChangeRequests } from '~/api/communities/resource-change-requests'
@@ -32,6 +33,18 @@ const useStyles = createStyles(theme => ({
 
   scrolled: {
     boxShadow: theme.shadows.sm
+  },
+
+  td: {
+    whiteSpace: 'nowrap',
+    maxWidth: '10rem',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    '&:hover': {
+      backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.colors.gray[0],
+      color: theme.colorScheme === 'dark' ? theme.white : theme.black,
+      cursor: 'pointer'
+    }
   }
 }))
 
@@ -84,11 +97,22 @@ const ChangeResourceRequests = ({ id }) => {
     <tr key={row?.request_id}>
       <td>{row?.resource_id.charAt(0).toUpperCase() + row?.resource_id.slice(1)}</td>
       <td>{row?.field_name.charAt(0).toUpperCase() + row?.field_name.slice(1)}</td>
-      <td style={{ wordBreak: 'break-word' }}>
-        {row?.old_value.charAt(0).toUpperCase() + row?.old_value.slice(1)}
+
+      <td className={classes.td}>
+        <ExtendedMessage
+          id={row.request_id}
+          message={row.old_value.charAt(0).toUpperCase() + row.old_value.slice(1)}
+          title="Expand Old Value"
+          type="value"
+        />
       </td>
-      <td style={{ wordBreak: 'break-word' }}>
-        {row?.new_value.charAt(0).toUpperCase() + row?.new_value.slice(1)}
+      <td className={classes.td}>
+        <ExtendedMessage
+          id={row.request_id}
+          message={row.new_value.charAt(0).toUpperCase() + row.new_value.slice(1)}
+          title="Expand New Value"
+          type="value"
+        />
       </td>
       <td>{row?.requested_by_info.full_name}</td>
       <td>{new Date(row?.initiated_date).toDateString()}</td>

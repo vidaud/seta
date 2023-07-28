@@ -14,6 +14,7 @@ import { useMembershipRequests } from '~/api/communities/membership-requests'
 
 import { statusColors } from '../../../types'
 import { ComponentEmpty, ComponentLoading } from '../../common'
+import ExtendedMessage from '../../communities/CommunityInfo/components/ExtendedMessage/ExtendedMessage'
 import UpdateMemberRequest from '../../communities/CommunityInfo/components/UpdateMemberRequest'
 
 const useStyles = createStyles(theme => ({
@@ -40,6 +41,17 @@ const useStyles = createStyles(theme => ({
   },
   title: {
     paddingBottom: theme.spacing.xl
+  },
+  td: {
+    whiteSpace: 'nowrap',
+    maxWidth: '10rem',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    '&:hover': {
+      backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.colors.gray[0],
+      color: theme.colorScheme === 'dark' ? theme.white : theme.black,
+      cursor: 'pointer'
+    }
   }
 }))
 
@@ -72,7 +84,14 @@ const MembersList = () => {
                 {row.status.toUpperCase()}
               </Badge>
             </td>
-            <td>{row.message.charAt(0).toUpperCase() + row?.message.slice(1)}</td>
+            <td className={classes.td}>
+              <ExtendedMessage
+                id={row.community_id}
+                message={row.message.charAt(0).toUpperCase() + row.message.slice(1)}
+                title="Expand Members Message"
+                type="message"
+              />
+            </td>
             <td>{new Date(row.initiated_date).toDateString()}</td>
             <td>{row.requested_by_info?.full_name}</td>
             <td>{row.review_date ? new Date(row.review_date).toDateString() : null}</td>

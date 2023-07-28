@@ -9,6 +9,8 @@ import {
 
 import { useInviteID } from '~/api/communities/invite'
 
+import ExtendedMessage from '../ExtendedMessage/ExtendedMessage'
+
 const useStyles = createStyles(theme => ({
   header: {
     position: 'sticky',
@@ -33,6 +35,17 @@ const useStyles = createStyles(theme => ({
   },
   title: {
     paddingBottom: theme.spacing.xl
+  },
+  td: {
+    whiteSpace: 'nowrap',
+    maxWidth: '10rem',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    '&:hover': {
+      backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.colors.gray[0],
+      color: theme.colorScheme === 'dark' ? theme.white : theme.black,
+      cursor: 'pointer'
+    }
   }
 }))
 
@@ -76,7 +89,14 @@ const CommunityInvites = ({ id, type }) => {
     <tr key={row.invite_id}>
       <td>{row.community_id.charAt(0).toUpperCase() + row?.community_id.slice(1)}</td>
       <td>{row.invited_user_info.full_name}</td>
-      <td>{row.message.charAt(0).toUpperCase() + row?.message.slice(1)}</td>
+      <td className={classes.td}>
+        <ExtendedMessage
+          id={row.community_id}
+          message={row.message.charAt(0).toUpperCase() + row.message.slice(1)}
+          title="Expand Invite Message"
+          type="message"
+        />
+      </td>
       <td>{row.status.toUpperCase()}</td>
       <td>{new Date(row.initiated_date).toLocaleDateString()}</td>
       <td>{row.initiated_by_info.full_name}</td>
