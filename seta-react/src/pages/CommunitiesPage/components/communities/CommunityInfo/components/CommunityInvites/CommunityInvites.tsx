@@ -8,6 +8,9 @@ import {
 } from '~/pages/CommunitiesPage/components/common'
 
 import { useInviteID } from '~/api/communities/invite'
+import useModalState from '~/hooks/use-modal-state'
+
+import MessageModal from '../MessageModal/MessageModal'
 
 const useStyles = createStyles(theme => ({
   header: {
@@ -33,10 +36,22 @@ const useStyles = createStyles(theme => ({
   },
   title: {
     paddingBottom: theme.spacing.xl
+  },
+  td: {
+    whiteSpace: 'nowrap',
+    maxWidth: '10rem',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    '&:hover': {
+      backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.colors.gray[0],
+      color: theme.colorScheme === 'dark' ? theme.white : theme.black,
+      cursor: 'pointer'
+    }
   }
 }))
 
 const CommunityInvites = ({ id, type }) => {
+  const { modalOpen, openModal, closeModal } = useModalState()
   const { classes, cx } = useStyles()
   const perPage = 5
   const { data, isLoading, error, refetch } = useInviteID(id)
@@ -76,7 +91,17 @@ const CommunityInvites = ({ id, type }) => {
     <tr key={row.invite_id}>
       <td>{row.community_id.charAt(0).toUpperCase() + row?.community_id.slice(1)}</td>
       <td>{row.invited_user_info.full_name}</td>
-      <td>{row.message.charAt(0).toUpperCase() + row?.message.slice(1)}</td>
+      <td className={classes.td}>
+        <span onClick={openModal}>
+          {row.message.charAt(0).toUpperCase() + row.message.slice(1)}
+        </span>
+        <MessageModal
+          title=" Expand Message"
+          message={row.message.charAt(0).toUpperCase() + row.message.slice(1)}
+          opened={modalOpen}
+          onClose={closeModal}
+        />
+      </td>
       <td>{row.status.toUpperCase()}</td>
       <td>{new Date(row.initiated_date).toLocaleDateString()}</td>
       <td>{row.initiated_by_info.full_name}</td>

@@ -11,9 +11,11 @@ import {
 } from '@mantine/core'
 
 import { useAllPendingInvites } from '~/api/communities/invite'
+import useModalState from '~/hooks/use-modal-state'
 
 import { statusColors } from '../../../types'
 import { ComponentEmpty, ComponentError, ComponentLoading } from '../../common'
+import MessageModal from '../../communities/CommunityInfo/components/MessageModal/MessageModal'
 import UpdateInviteRequest from '../../communities/CommunityInfo/components/UpdateInviteRequest'
 
 const useStyles = createStyles(theme => ({
@@ -39,10 +41,22 @@ const useStyles = createStyles(theme => ({
   },
   title: {
     paddingBottom: theme.spacing.xl
+  },
+  td: {
+    whiteSpace: 'nowrap',
+    maxWidth: '10rem',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    '&:hover': {
+      backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.colors.gray[0],
+      color: theme.colorScheme === 'dark' ? theme.white : theme.black,
+      cursor: 'pointer'
+    }
   }
 }))
 
 const InvitesList = () => {
+  const { modalOpen, openModal, closeModal } = useModalState()
   const { classes, cx } = useStyles()
   const [scrolled, setScrolled] = useState(false)
   const { data, isLoading, error, refetch } = useAllPendingInvites()
@@ -74,7 +88,17 @@ const InvitesList = () => {
       <td>{row.invite_id}</td>
       <td>{row.community_id.charAt(0).toUpperCase() + row?.community_id.slice(1)}</td>
       <td>{row.invited_user_info?.full_name}</td>
-      <td>{row.message.charAt(0).toUpperCase() + row?.message.slice(1)}</td>
+      <td className={classes.td}>
+        <span onClick={openModal}>
+          {row.message.charAt(0).toUpperCase() + row.message.slice(1)}
+        </span>
+        <MessageModal
+          title="Expand Message"
+          message={row.message.charAt(0).toUpperCase() + row.message.slice(1)}
+          opened={modalOpen}
+          onClose={closeModal}
+        />
+      </td>
       <td>
         <Badge
           color={statusColors[row.status.toLowerCase()]}

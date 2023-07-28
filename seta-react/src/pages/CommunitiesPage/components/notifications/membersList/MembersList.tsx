@@ -11,9 +11,11 @@ import {
 } from '@mantine/core'
 
 import { useMembershipRequests } from '~/api/communities/membership-requests'
+import useModalState from '~/hooks/use-modal-state'
 
 import { statusColors } from '../../../types'
 import { ComponentEmpty, ComponentLoading } from '../../common'
+import MessageModal from '../../communities/CommunityInfo/components/MessageModal/MessageModal'
 import UpdateMemberRequest from '../../communities/CommunityInfo/components/UpdateMemberRequest'
 
 const useStyles = createStyles(theme => ({
@@ -40,10 +42,22 @@ const useStyles = createStyles(theme => ({
   },
   title: {
     paddingBottom: theme.spacing.xl
+  },
+  td: {
+    whiteSpace: 'nowrap',
+    maxWidth: '10rem',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    '&:hover': {
+      backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.colors.gray[0],
+      color: theme.colorScheme === 'dark' ? theme.white : theme.black,
+      cursor: 'pointer'
+    }
   }
 }))
 
 const MembersList = () => {
+  const { modalOpen, openModal, closeModal } = useModalState()
   const { classes, cx } = useStyles()
   const [scrolled, setScrolled] = useState(false)
   const { data, refetch } = useMembershipRequests()
@@ -72,7 +86,17 @@ const MembersList = () => {
                 {row.status.toUpperCase()}
               </Badge>
             </td>
-            <td>{row.message.charAt(0).toUpperCase() + row?.message.slice(1)}</td>
+            <td className={classes.td}>
+              <span onClick={openModal}>
+                {row.message.charAt(0).toUpperCase() + row?.message.slice(1)}
+              </span>
+              <MessageModal
+                title=" Expand Message"
+                message={row.message.charAt(0).toUpperCase() + row.message.slice(1)}
+                opened={modalOpen}
+                onClose={closeModal}
+              />
+            </td>
             <td>{new Date(row.initiated_date).toDateString()}</td>
             <td>{row.requested_by_info?.full_name}</td>
             <td>{row.review_date ? new Date(row.review_date).toDateString() : null}</td>
