@@ -186,7 +186,7 @@ corpus_post_params["date_range"] = fields.List(fields.String, description="examp
                                                                           "gt:yyyy-mm-dd,lt:yyyy-mm-dd")
 corpus_post_params["aggs"] = fields.List(fields.String, description="field to be aggregated, allowed fields are:"
                                                                     '"source", "date_year", "source_collection_reference", '
-                                                                    '"taxonomy:taxonomyname", "taxonomies"')
+                                                                    '"taxonomy:taxonomyname", "taxonomies", "taxonomy_path_years-path:to:taxonomy"')
 corpus_post_params["other"] = None
 
 corpus_delete_id_response = {}
