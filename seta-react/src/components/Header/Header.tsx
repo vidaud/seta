@@ -3,6 +3,8 @@ import { AiOutlineUser } from 'react-icons/ai'
 import { FaSignInAlt } from 'react-icons/fa'
 import { Link } from 'react-router-dom'
 
+import { UserRole } from '~/types/user'
+
 import NotificationsMenu from './components/NotificationsMenu'
 import SiteHeader from './components/SiteHeader'
 import { getDropdownItems, getMenuItems, itemIsCollapse, itemIsDivider } from './config'
@@ -16,7 +18,6 @@ const Header = () => {
   const { user, isLoading: isUserLoading, logout, notifications, total } = useCurrentUser()
 
   const authenticated = !!user
-  const role = user?.role === 'Administrator'
 
   const handleLogout = () => {
     logout()
@@ -24,7 +25,10 @@ const Header = () => {
   }
 
   const menuItems = getMenuItems(authenticated)
-  const dropdownItems = getDropdownItems({ role, onLogout: handleLogout })
+  const dropdownItems = getDropdownItems({
+    isAdmin: user?.role.toLowerCase() === UserRole.Administrator,
+    onLogout: handleLogout
+  })
 
   const visibleMenuItems = menuItems.filter(link => !link.hidden && !link.collapse)
 

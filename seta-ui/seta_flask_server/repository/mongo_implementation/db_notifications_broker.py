@@ -6,8 +6,6 @@ from seta_flask_server.repository.interfaces.config import IDbConfig
 from datetime import datetime
 import pytz
 
-from flask import current_app
-
 from seta_flask_server.repository.interfaces import INotificationsBroker
 from seta_flask_server.infrastructure.constants import InviteStatusConstants, RequestStatusConstants
 from seta_flask_server.infrastructure.scope_constants import CommunityScopeConstants

@@ -1,4 +1,4 @@
-import { FaUser } from 'react-icons/fa'
+import { FaUser, FaWrench } from 'react-icons/fa'
 import { FiLogOut } from 'react-icons/fi'
 
 type MenuItem = {
@@ -26,7 +26,7 @@ export const getMenuItems = (authenticated: boolean): MenuItem[] => [
     hidden: !authenticated
   },
   {
-    to: '/communities',
+    to: '/community',
     label: 'Communities',
     hidden: !authenticated
   },
@@ -40,36 +40,40 @@ export const getMenuItems = (authenticated: boolean): MenuItem[] => [
   }
 ]
 
-type DropdownCallbacks = {
-  role?: boolean
+type DropdownProps = {
+  isAdmin?: boolean
   onLogout: () => void
 }
 
-// export const getDropdownItems = ({ role, onLogout }: DropdownCallbacks): DropdownItem[] => [
-export const getDropdownItems = ({ onLogout }: DropdownCallbacks): DropdownItem[] => [
-  {
-    label: 'Profile',
-    icon: <FaUser size="1.1rem" />,
-    url: '/profile'
-  },
-  // {
-  //   label: 'Administrator',
-  //   icon: <FaWrench size="1.1rem" />,
-  //   url: '/panel',
-  //   hidden: !role
-  // },
-  {
-    collapse: true
-  },
-  {
+export const getDropdownItems = ({ isAdmin, onLogout }: DropdownProps): DropdownItem[] => {
+  const items: DropdownItem[] = [
+    {
+      label: 'Profile',
+      icon: <FaUser size="1.1rem" />,
+      url: '/profile'
+    }
+  ]
+
+  if (isAdmin) {
+    items.push({
+      label: 'Administration',
+      icon: <FaWrench size="1.1rem" />,
+      url: '/admin'
+    })
+  }
+
+  items.push({
     divider: true
-  },
-  {
+  })
+
+  items.push({
     label: 'Sign Out',
     icon: <FiLogOut size="1.1rem" />,
     onClick: onLogout
-  }
-]
+  })
+
+  return items
+}
 
 export const itemIsDivider = (item: DropdownItem): item is { divider: true } => 'divider' in item
 

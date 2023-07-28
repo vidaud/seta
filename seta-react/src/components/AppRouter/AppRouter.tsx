@@ -6,16 +6,17 @@ import {
   RouterProvider
 } from 'react-router-dom'
 
+import CreateContribution from '~/pages/CommunitiesPage/components/contributors/NewContribution'
+import InvitesList from '~/pages/CommunitiesPage/components/notifications/invitesList'
+import MembersList from '~/pages/CommunitiesPage/components/notifications/membersList'
+
 import RequireAuth from './components/RequireAuth'
+import AdminRoutes from './routes/AdminRoutes'
 
 import AppLayout from '../../layouts/AppLayout'
-import CommunityLayout from '../../layouts/CommunityLayout/CommunityLayout'
-import CommunityList from '../../pages/CommunitiesPage/pages/communities/CommunityList/CommunityList'
-import { CommunityListProvider } from '../../pages/CommunitiesPage/pages/contexts/community-list.context'
-import CreateContribution from '../../pages/CommunitiesPage/pages/contributors/NewContribution/NewContribution'
-import ResourceList from '../../pages/CommunitiesPage/pages/resources/ResourceList/ResourceList'
-import InvitesList from '../../pages/CommunitiesPage/pages/sidebar/InvitesList/InvitesList'
-import MembersList from '../../pages/CommunitiesPage/pages/sidebar/MembersList/MembersList'
+import CommunityLayout from '../../layouts/CommunityLayout'
+import CommunitiesPage from '../../pages/CommunitiesPage/CommunitiesPage'
+import ResourcesPage from '../../pages/CommunitiesPage/ResourcesPage'
 import ContactPage from '../../pages/ContactPage'
 import FaqsPage from '../../pages/FaqsPage'
 import HomePage from '../../pages/HomePage'
@@ -25,8 +26,8 @@ import ProfilePage from '../../pages/ProfilePage'
 import SearchPageNew from '../../pages/SearchPageNew'
 
 const ROOT_PATH = '/'
-const DISCOVER_COMMUNITY_PATH = '/communities/'
-const DISCOVER_RESOURCE_PATH = '/communities/resources/'
+const DISCOVER_COMMUNITY_PATH = '/community/'
+const DISCOVER_RESOURCE_PATH = '/resources/'
 
 const routes = createRoutesFromElements(
   <Route path={ROOT_PATH} element={<AppLayout />}>
@@ -50,18 +51,10 @@ const routes = createRoutesFromElements(
         </RequireAuth>
       }
     />
-    {/* <Route
-      path="dashboard"
-      element={
-        <RequireAuth>
-          <CommunitiesPage />
-        </RequireAuth>
-      }
-    /> */}
     <Route path="faqs" element={<FaqsPage />} />
     <Route path="contact" element={<ContactPage />} />
     <Route path="login" element={<LoginPage />} />
-    <Route path="/invites" element={<CommunityLayout />}>
+    <Route path="/community/invites" element={<CommunityLayout />}>
       <Route
         path=""
         element={
@@ -72,7 +65,7 @@ const routes = createRoutesFromElements(
       />
     </Route>
 
-    <Route path="/membership-requests" element={<CommunityLayout />}>
+    <Route path="/community/membership-requests" element={<CommunityLayout />}>
       <Route
         path=""
         element={
@@ -84,19 +77,28 @@ const routes = createRoutesFromElements(
     </Route>
 
     <Route path={DISCOVER_COMMUNITY_PATH} element={<CommunityLayout />}>
+      {['', 'communities/'].map(path => (
+        <Route
+          key={path}
+          path={path}
+          element={
+            <RequireAuth>
+              <CommunitiesPage />
+            </RequireAuth>
+          }
+        />
+      ))}
       <Route
-        path=""
+        path="resources/"
         element={
           <RequireAuth>
-            <CommunityListProvider>
-              <CommunityList />
-            </CommunityListProvider>
+            <ResourcesPage />
           </RequireAuth>
         }
       />
     </Route>
     <Route path={DISCOVER_RESOURCE_PATH} element={<CommunityLayout />}>
-      <Route
+      {/* <Route
         path=""
         element={
           <RequireAuth>
@@ -105,7 +107,7 @@ const routes = createRoutesFromElements(
             </CommunityListProvider>
           </RequireAuth>
         }
-      />
+      /> */}
       <Route
         path=":resourceId/contribution/new"
         element={
@@ -115,6 +117,7 @@ const routes = createRoutesFromElements(
         }
       />
     </Route>
+    <Route path="admin" children={AdminRoutes} />
     <Route path="*" element={<NotFoundPage />} />
   </Route>
 )

@@ -50,7 +50,7 @@ const Breadcrumbs = ({ crumbs, readFromPath, excludeHome }: Props) => {
 
     const { icon, path, title } = crumb
 
-    const linkCss = isLast ? S.linkActive : S.link
+    const linkCss = isLast || path === '/community' ? S.linkActive : S.link
 
     return (
       <Link to={path} css={linkCss} key={path}>

@@ -2,14 +2,13 @@ import { useQuery } from '@tanstack/react-query'
 import type { AxiosRequestConfig } from 'axios'
 import { getCookie } from 'typescript-cookie'
 
+import api from '~/api/api'
 import type {
   CreateResourceAPI,
   ResourceResponse,
   UpdateResourceAPI
 } from '~/api/types/resource-types'
-
-import { environment } from '../../../environments/environment'
-import api from '../../api'
+import { environment } from '~/environments/environment'
 
 const RESOURCE_API_PATH = '/resources/'
 const BASE_URL = environment.baseUrl
@@ -45,7 +44,7 @@ export const createResource = async (id?: string, values?: CreateResourceAPI) =>
     })
     .then(response => {
       if (response.status === 201) {
-        window.location.href = `/communities`
+        window.location.href = `/community/communities/`
       }
     })
 }
@@ -63,7 +62,7 @@ export const updateResource = async (resource_id?: string, values?: UpdateResour
     })
     .then(response => {
       if (response.status === 200) {
-        window.location.href = `/communities/resources/`
+        window.location.href = `/community/resources/`
       }
     })
 }
@@ -81,7 +80,7 @@ export const deleteResourceByID = async (resource_id?: string) => {
     })
     .then(response => {
       if (response.status === 200) {
-        window.location.href = `/communities/resources/`
+        window.location.href = `/community/resources/`
       }
     })
 }

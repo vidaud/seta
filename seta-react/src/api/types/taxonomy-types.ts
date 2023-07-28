@@ -1,6 +1,6 @@
-import type { AggregationType, Aggregations } from '~/types/search/aggregations'
+import type { OtherType } from '~/pages/SearchWithFilters/types/other-filter'
 
-import type { OtherType } from '../../pages/SearchWithFilters/types/other-filter'
+import type { AggregationType, Aggregations } from '~/types/search/aggregations'
 
 export type DocumentsPayload = {
   term?: string

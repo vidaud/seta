@@ -2,15 +2,14 @@ import { useQuery } from '@tanstack/react-query'
 import type { AxiosRequestConfig } from 'axios'
 import { getCookie } from 'typescript-cookie'
 
+import api from '~/api/api'
 import type {
   CommunityResponse,
   CreateCommunityAPI,
   UpdateCommunityAPI
 } from '~/api/types/community-types'
 import type { ResourceResponse } from '~/api/types/resource-types'
-
-import { environment } from '../../../environments/environment'
-import api from '../../api'
+import { environment } from '~/environments/environment'
 
 export const cacheKey = (id?: string) => ['communities', id]
 const BASE_URL = environment.baseUrl
@@ -58,7 +57,7 @@ export const createCommunity = async (values?: CreateCommunityAPI) => {
     })
     .then(response => {
       if (response.status === 201) {
-        window.location.href = `/communities`
+        window.location.href = `/community/communities/`
       }
     })
 }
@@ -76,7 +75,7 @@ export const updateCommunity = async (id?: string, values?: UpdateCommunityAPI) 
     })
     .then(response => {
       if (response.status === 200) {
-        window.location.href = `/communities`
+        window.location.href = `/community/communities/`
       }
     })
 }
@@ -94,7 +93,7 @@ export const deleteCommunityByID = async (id?: string) => {
     })
     .then(response => {
       if (response.status === 200) {
-        window.location.href = `/communities`
+        window.location.href = `/community/communities/`
       }
     })
 }

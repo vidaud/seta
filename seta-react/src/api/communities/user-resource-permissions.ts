@@ -2,8 +2,9 @@ import { useQuery } from '@tanstack/react-query'
 import type { AxiosRequestConfig } from 'axios'
 import { getCookie } from 'typescript-cookie'
 
+import { environment } from '~/environments/environment'
+
 import api from '..'
-import { environment } from '../../environments/environment'
 import type { UserPermissionsResponse } from '../types/user-permissions-types'
 
 const PERMISSIONS_API_PATH = '/permissions'

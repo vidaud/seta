@@ -1,9 +1,9 @@
 import { Text, Badge, Box } from '@mantine/core'
 import { useNavigate } from 'react-router-dom'
 
-import type { NotificationsResponse } from '~/api/types/notifications-types'
+import { useStyles } from '~/pages/SearchWithFilters/components/ApplyFilters/styles'
 
-import { useStyles } from '../../../pages/SearchWithFilters/components/ApplyFilters/styles'
+import type { NotificationsResponse } from '~/api/types/notifications-types'
 
 type Props = {
   notifications: NotificationsResponse[]
@@ -23,9 +23,9 @@ const NotificationsDropdown = ({ notifications }: Props) => {
           onClick={() => {
             navigate(
               link.type === 'pending-invite'
-                ? '/invites'
+                ? '/community/invites'
                 : link.type === 'membership-request'
-                ? '/membership-requests'
+                ? '/community/membership-requests'
                 : ''
               // : '/change-request'
             )
