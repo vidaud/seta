@@ -5,3 +5,8 @@ export type User = {
   role: string
   username: string
 }
+
+export enum UserRole {
+  User = 'user',
+  Administrator = 'administrator'
+}

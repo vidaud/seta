@@ -97,3 +97,11 @@ class NotificationPriorityEnum(IntEnum):
     High = 1
     Normal = 2
     Low = 3
+
+class StatsTypeConstants:
+    CommunityChangeRequest = "community-change-request"
+    ResourceChangeRequest = "resource-change-request"
+    OrphanedCommunities ="orphaned-communities"
+    OrphanedResources ="orphaned-resources"    
+
+    LightList=[CommunityChangeRequest, ResourceChangeRequest, OrphanedCommunities, OrphanedResources]

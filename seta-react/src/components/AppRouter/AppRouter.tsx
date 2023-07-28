@@ -11,6 +11,7 @@ import InvitesList from '~/pages/CommunitiesPage/components/notifications/invite
 import MembersList from '~/pages/CommunitiesPage/components/notifications/membersList'
 
 import RequireAuth from './components/RequireAuth'
+import AdminRoutes from './routes/AdminRoutes'
 
 import AppLayout from '../../layouts/AppLayout'
 import CommunityLayout from '../../layouts/CommunityLayout'
@@ -50,14 +51,6 @@ const routes = createRoutesFromElements(
         </RequireAuth>
       }
     />
-    {/* <Route
-      path="dashboard"
-      element={
-        <RequireAuth>
-          <CommunitiesPage />
-        </RequireAuth>
-      }
-    /> */}
     <Route path="faqs" element={<FaqsPage />} />
     <Route path="contact" element={<ContactPage />} />
     <Route path="login" element={<LoginPage />} />
@@ -124,6 +117,7 @@ const routes = createRoutesFromElements(
         }
       />
     </Route>
+    <Route path="admin" children={AdminRoutes} />
     <Route path="*" element={<NotFoundPage />} />
   </Route>
 )
