@@ -1,15 +1,3 @@
-## List of Community Members
-
-1. You can either use the filters to search the Community or select from the Communities list.             
-2. Click on :octicons-chevron-down-12: at the right side of the Community row.      
-3. A new section will appear where you can see different tabs: *Resource List, Sent Invites, My Change Requests, Pending Membership Requests, Permission*.                  
-4. On tab *Permission* you can see a list of the members and their scopes.              
-
-<figure markdown>
-  ![Image title](../../img/communities_members.png)
-  <figcaption>Community Members*</figcaption>
-</figure>
-
 ## Join a Community
 
 1. You can either use the filters to search the Community or select from the Communities list.      
@@ -127,4 +115,31 @@
 <figure markdown>
   ![Image title](../../img/list_invites.png)
   <figcaption>List of Invites</figcaption>
+</figure>
+
+## List of Community Members
+
+1. You can either use the filters to search the Community or select from the Communities list.             
+2. Click on :octicons-chevron-down-12: at the right side of the Community row.      
+3. A new section will appear where you can see different tabs: *Resource List, Sent Invites, My Change Requests, Pending Membership Requests, Permissions*.                  
+4. On tab *Permissions* you can see a list of the members and their scopes.              
+
+<figure markdown>
+  ![Image title](../../img/communities_members.png)
+  <figcaption>Community Members</figcaption>
+</figure>
+
+### Scopes
+
+On tab *Permissions*, it is possible to set-up dynamically the permissions of the users in the Community
+
+1. You can either use the filters to search the Community or select from the Communities list.             
+2. Click on :octicons-chevron-down-12: at the right side of the Community row.      
+3. A new section will appear, click on tab *Permissions* to see a list of the members and their scopes.                  
+4. To enlarge the list and see all the members, click on :fontawesome-solid-expand:         
+5. From here it is possible to set up the permissions by checking or unchecking the permissions.     
+
+<figure markdown>
+  ![Image title](../../img/communities_users_permissions.png)
+  <figcaption>User Permissions</figcaption>
 </figure>
