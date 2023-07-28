@@ -75,9 +75,11 @@ const MembershipRequest = ({ community_id, refetch }) => {
             <Textarea
               label="Message"
               {...form.getInputProps('message')}
-              placeholder="Message"
+              placeholder={'Reason: \nProject: \nOther:'}
               size="xs"
+              minRows={4}
               withAsterisk
+              onClick={e => e.stopPropagation()}
             />
 
             <Group className={cx(classes.form)}>
