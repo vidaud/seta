@@ -163,6 +163,18 @@ def handle_aggs_response(aggs, response, documents, current_app, search_type):
                         count = source["doc_count"]
                     y = {"key": source["key"], "doc_count": count}
                     documents["aggregations"][agg].append(y)
+            case agg if agg.startswith("taxonomy_path_years-"):
+                taxonomy_path = agg.split("-")[1]
+                documents["aggregations"]["taxonomy_path_years"] = []
+                for path in response["aggregations"]["taxonomy_path_years"]["buckets"]:
+                    if path["key"] == taxonomy_path:
+                        for year in path["years"]["buckets"]:
+                            if search_type == "CHUNK_SEARCH":
+                                count = year["unique_values"]["value"]
+                            else:
+                                count = year["doc_count"]
+                            y = {"key": year["key_as_string"], "doc_count": count}
+                            documents["aggregations"]["taxonomy_path_years"].append(y)
     return documents
 
 

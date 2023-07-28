@@ -257,7 +257,9 @@ class Variable:
                            fields.Nested(
                                self.namespace.model("source_collection_reference_agg",
                                                     source_collection_reference_agg))),
-                       "taxonomy": fields.List(fields.Nested(self.taxonomy_agg_model_tree))
+                       "taxonomy": fields.List(fields.Nested(self.taxonomy_agg_model_tree)),
+                       "taxonomies": fields.List(fields.Nested(self.taxonomy_agg_model_tree)),
+                       "taxonomy_path_years": fields.List(fields.Nested(self.namespace.model("date_year_agg", date_year_agg)))
                        }
         post_get_response["aggregations"] = fields.List(fields.Nested(self.namespace.model("aggregation", aggregation)))
         self.post_get_response = post_get_response
