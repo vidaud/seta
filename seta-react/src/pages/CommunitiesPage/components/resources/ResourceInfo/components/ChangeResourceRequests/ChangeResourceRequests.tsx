@@ -6,12 +6,11 @@ import {
   ComponentError,
   ComponentLoading
 } from '~/pages/CommunitiesPage/components/common'
-import MessageModal from '~/pages/CommunitiesPage/components/communities/CommunityInfo/components/MessageModal/MessageModal'
+import ExtendedMessage from '~/pages/CommunitiesPage/components/communities/CommunityInfo/components/ExtendedMessage/ExtendedMessage'
 import { statusColors } from '~/pages/CommunitiesPage/types'
 
 import { useResourcesChangeRequests } from '~/api/communities/resource-change-requests'
 import type { ResourceChangeRequests } from '~/api/types/change-request-types'
-import useModalState from '~/hooks/use-modal-state'
 
 const useStyles = createStyles(theme => ({
   header: {
@@ -57,7 +56,6 @@ const requestStatus = [
 ]
 
 const ChangeResourceRequests = ({ id }) => {
-  const { modalOpen, openModal, closeModal } = useModalState()
   const { classes, cx } = useStyles()
   const { data, isLoading, error, refetch } = useResourcesChangeRequests(id)
   const theme = useMantineTheme()
@@ -101,27 +99,19 @@ const ChangeResourceRequests = ({ id }) => {
       <td>{row?.field_name.charAt(0).toUpperCase() + row?.field_name.slice(1)}</td>
 
       <td className={classes.td}>
-        <span onClick={openModal}>
-          {row?.old_value.charAt(0).toUpperCase() + row?.old_value.slice(1)}
-        </span>
-        <MessageModal
-          title=" Expand Old Value"
+        <ExtendedMessage
+          id={row.request_id}
+          message={row.old_value.charAt(0).toUpperCase() + row.old_value.slice(1)}
+          title="Expand Old Value"
           type="value"
-          message={row?.old_value.charAt(0).toUpperCase() + row?.old_value.slice(1)}
-          opened={modalOpen}
-          onClose={closeModal}
         />
       </td>
       <td className={classes.td}>
-        <span onClick={openModal}>
-          {row?.new_value.charAt(0).toUpperCase() + row?.new_value.slice(1)}
-        </span>
-        <MessageModal
-          title=" Expand New Value"
+        <ExtendedMessage
+          id={row.request_id}
+          message={row.new_value.charAt(0).toUpperCase() + row.new_value.slice(1)}
+          title="Expand New Value"
           type="value"
-          message={row?.new_value.charAt(0).toUpperCase() + row?.new_value.slice(1)}
-          opened={modalOpen}
-          onClose={closeModal}
         />
       </td>
       <td>{row?.requested_by_info.full_name}</td>

@@ -8,9 +8,8 @@ import {
 } from '~/pages/CommunitiesPage/components/common'
 
 import { useInviteID } from '~/api/communities/invite'
-import useModalState from '~/hooks/use-modal-state'
 
-import MessageModal from '../MessageModal/MessageModal'
+import ExtendedMessage from '../ExtendedMessage/ExtendedMessage'
 
 const useStyles = createStyles(theme => ({
   header: {
@@ -51,7 +50,6 @@ const useStyles = createStyles(theme => ({
 }))
 
 const CommunityInvites = ({ id, type }) => {
-  const { modalOpen, openModal, closeModal } = useModalState()
   const { classes, cx } = useStyles()
   const perPage = 5
   const { data, isLoading, error, refetch } = useInviteID(id)
@@ -92,15 +90,11 @@ const CommunityInvites = ({ id, type }) => {
       <td>{row.community_id.charAt(0).toUpperCase() + row?.community_id.slice(1)}</td>
       <td>{row.invited_user_info.full_name}</td>
       <td className={classes.td}>
-        <span onClick={openModal}>
-          {row.message.charAt(0).toUpperCase() + row.message.slice(1)}
-        </span>
-        <MessageModal
-          title=" Expand Message"
-          type="message"
+        <ExtendedMessage
+          id={row.community_id}
           message={row.message.charAt(0).toUpperCase() + row.message.slice(1)}
-          opened={modalOpen}
-          onClose={closeModal}
+          title="Expand Invite Message"
+          type="message"
         />
       </td>
       <td>{row.status.toUpperCase()}</td>

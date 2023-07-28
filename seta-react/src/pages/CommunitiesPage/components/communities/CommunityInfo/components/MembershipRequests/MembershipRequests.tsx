@@ -10,9 +10,8 @@ import { statusColors } from '~/pages/CommunitiesPage/types'
 
 import { useAllCommunityRequestsID } from '~/api/communities/community-all-requests'
 import type { MembershipRequest } from '~/api/types/membership-types'
-import useModalState from '~/hooks/use-modal-state'
 
-import MessageModal from '../MessageModal/MessageModal'
+import ExtendedMessage from '../ExtendedMessage/ExtendedMessage'
 import UpdateMemberRequest from '../UpdateMemberRequest'
 
 const useStyles = createStyles(theme => ({
@@ -50,7 +49,6 @@ const useStyles = createStyles(theme => ({
 }))
 
 const MembershipRequests = ({ id, type }) => {
-  const { modalOpen, openModal, closeModal } = useModalState()
   const { classes, cx } = useStyles()
   const { data, isLoading, error, refetch } = useAllCommunityRequestsID(id)
   const [items, setItems] = useState<MembershipRequest[] | undefined[]>([])
@@ -93,15 +91,11 @@ const MembershipRequests = ({ id, type }) => {
     <tr key={row.community_id}>
       <td>{row.requested_by_info.full_name}</td>
       <td className={classes.td}>
-        <span onClick={openModal}>
-          {row.message.charAt(0).toUpperCase() + row.message.slice(1)}
-        </span>
-        <MessageModal
-          title=" Expand Message"
-          type="message"
+        <ExtendedMessage
+          id={row.community_id}
           message={row.message.charAt(0).toUpperCase() + row.message.slice(1)}
-          opened={modalOpen}
-          onClose={closeModal}
+          title="Expand Membership Message"
+          type="message"
         />
       </td>
       <td>{new Date(row?.initiated_date).toDateString()}</td>

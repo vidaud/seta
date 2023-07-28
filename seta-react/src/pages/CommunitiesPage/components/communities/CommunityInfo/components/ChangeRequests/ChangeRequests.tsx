@@ -10,9 +10,8 @@ import { statusColors } from '~/pages/CommunitiesPage/types'
 
 import { useCommunityChangeRequests } from '~/api/communities/community-change-requests'
 import type { CommunityChangeRequests } from '~/api/types/change-request-types'
-import useModalState from '~/hooks/use-modal-state'
 
-import MessageModal from '../MessageModal/MessageModal'
+import ExtendedMessage from '../ExtendedMessage/ExtendedMessage'
 
 const useStyles = createStyles(theme => ({
   header: {
@@ -62,7 +61,6 @@ type Props = {
 }
 
 const ChangeCommunityRequests = ({ id }: Props) => {
-  const { modalOpen, openModal, closeModal } = useModalState()
   const { classes, cx } = useStyles()
   const { data, isLoading, error, refetch } = useCommunityChangeRequests(id)
   const theme = useMantineTheme()
@@ -107,27 +105,19 @@ const ChangeCommunityRequests = ({ id }: Props) => {
       <td>{row?.community_id.charAt(0).toUpperCase() + row?.community_id.slice(1)}</td>
       <td>{row?.field_name.charAt(0).toUpperCase() + row?.field_name.slice(1)}</td>
       <td className={classes.td}>
-        <span onClick={openModal}>
-          {row?.old_value.charAt(0).toUpperCase() + row?.old_value.slice(1)}
-        </span>
-        <MessageModal
-          title=" Expand Old Value"
+        <ExtendedMessage
+          id={row.community_id}
+          message={row.old_value.charAt(0).toUpperCase() + row.old_value.slice(1)}
+          title="Expand Old Value"
           type="value"
-          message={row?.old_value.charAt(0).toUpperCase() + row?.old_value.slice(1)}
-          opened={modalOpen}
-          onClose={closeModal}
         />
       </td>
       <td className={classes.td}>
-        <span onClick={openModal}>
-          {row?.new_value.charAt(0).toUpperCase() + row?.new_value.slice(1)}
-        </span>
-        <MessageModal
-          title=" Expand New Value"
+        <ExtendedMessage
+          id={row.community_id}
+          message={row.new_value.charAt(0).toUpperCase() + row.new_value.slice(1)}
+          title="Expand New Value"
           type="value"
-          message={row?.new_value.charAt(0).toUpperCase() + row?.new_value.slice(1)}
-          opened={modalOpen}
-          onClose={closeModal}
         />
       </td>
       <td>{row?.requested_by_info?.full_name}</td>

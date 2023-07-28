@@ -11,11 +11,10 @@ import {
 } from '@mantine/core'
 
 import { useMembershipRequests } from '~/api/communities/membership-requests'
-import useModalState from '~/hooks/use-modal-state'
 
 import { statusColors } from '../../../types'
 import { ComponentEmpty, ComponentLoading } from '../../common'
-import MessageModal from '../../communities/CommunityInfo/components/MessageModal/MessageModal'
+import ExtendedMessage from '../../communities/CommunityInfo/components/ExtendedMessage/ExtendedMessage'
 import UpdateMemberRequest from '../../communities/CommunityInfo/components/UpdateMemberRequest'
 
 const useStyles = createStyles(theme => ({
@@ -57,7 +56,6 @@ const useStyles = createStyles(theme => ({
 }))
 
 const MembersList = () => {
-  const { modalOpen, openModal, closeModal } = useModalState()
   const { classes, cx } = useStyles()
   const [scrolled, setScrolled] = useState(false)
   const { data, refetch } = useMembershipRequests()
@@ -87,15 +85,11 @@ const MembersList = () => {
               </Badge>
             </td>
             <td className={classes.td}>
-              <span onClick={openModal}>
-                {row.message.charAt(0).toUpperCase() + row?.message.slice(1)}
-              </span>
-              <MessageModal
-                title=" Expand Message"
-                type="message"
+              <ExtendedMessage
+                id={row.community_id}
                 message={row.message.charAt(0).toUpperCase() + row.message.slice(1)}
-                opened={modalOpen}
-                onClose={closeModal}
+                title="Expand Members Message"
+                type="message"
               />
             </td>
             <td>{new Date(row.initiated_date).toDateString()}</td>

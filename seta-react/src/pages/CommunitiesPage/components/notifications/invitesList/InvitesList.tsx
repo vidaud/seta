@@ -11,11 +11,10 @@ import {
 } from '@mantine/core'
 
 import { useAllPendingInvites } from '~/api/communities/invite'
-import useModalState from '~/hooks/use-modal-state'
 
 import { statusColors } from '../../../types'
 import { ComponentEmpty, ComponentError, ComponentLoading } from '../../common'
-import MessageModal from '../../communities/CommunityInfo/components/MessageModal/MessageModal'
+import ExtendedMessage from '../../communities/CommunityInfo/components/ExtendedMessage/ExtendedMessage'
 import UpdateInviteRequest from '../../communities/CommunityInfo/components/UpdateInviteRequest'
 
 const useStyles = createStyles(theme => ({
@@ -56,7 +55,6 @@ const useStyles = createStyles(theme => ({
 }))
 
 const InvitesList = () => {
-  const { modalOpen, openModal, closeModal } = useModalState()
   const { classes, cx } = useStyles()
   const [scrolled, setScrolled] = useState(false)
   const { data, isLoading, error, refetch } = useAllPendingInvites()
@@ -89,15 +87,11 @@ const InvitesList = () => {
       <td>{row.community_id.charAt(0).toUpperCase() + row?.community_id.slice(1)}</td>
       <td>{row.invited_user_info?.full_name}</td>
       <td className={classes.td}>
-        <span onClick={openModal}>
-          {row.message.charAt(0).toUpperCase() + row.message.slice(1)}
-        </span>
-        <MessageModal
-          title="Expand Message"
-          type="message"
+        <ExtendedMessage
+          id={row.community_id}
           message={row.message.charAt(0).toUpperCase() + row.message.slice(1)}
-          opened={modalOpen}
-          onClose={closeModal}
+          title="Expand Invites Message"
+          type="message"
         />
       </td>
       <td>

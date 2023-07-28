@@ -6,6 +6,7 @@ import ScrollModal from '~/components/ScrollModal/ScrollModal'
 import type { ModalStateProps } from '~/types/lib-props'
 
 type Props = {
+  id?: string
   title: string
   message: string
   type?: string
