@@ -112,9 +112,9 @@ nav:
         - Methodology: user-guide/search/methodology.md
         - Web Interface: user-guide/search/searchWebApp.md
     - APIs: 
-      - SeTA Communities API: apis/seta_communities_api/seta_communities_api.md
-      - SeTA API: apis/seta_api/seta_api.md
       - JWT Token Authentication: apis/jwt_token/jwt_token_api.md
+      - SeTA API: apis/seta_api/seta_api.md
+      - SeTA Communities API: apis/seta_communities_api/seta_communities_api.md
   - Install SeTA:
     - Docker: setup/docker-architecture.md
     - MongoDB Migration: setup/db_migration.md

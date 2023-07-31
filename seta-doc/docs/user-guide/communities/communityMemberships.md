@@ -134,3 +134,24 @@ On tab *Permissions*, it is possible to set-up dynamically the permissions of th
   ![Image title](../../img/communities_users_permissions.png)
   <figcaption>User Permissions</figcaption>
 </figure>
+
+## Administrator
+
+The Administrator profile can handle different options related to the manage of the communities and the users. To access go to the user profile and select from the dropdown menu.       
+
+<figure markdown>
+  ![Image title](../../img/administration_profile_menu.png)
+  <figcaption>Administrator profile</figcaption>
+</figure>
+
+
+### Users
+
+### Change requests
+
+### Orphanes
+
+<figure markdown>
+  ![Image title](../../img/administrator_profile.png)
+  <figcaption>Administration</figcaption>
+</figure>
