@@ -100,13 +100,27 @@
 *	  command line launch the script cordisStats.py with the following command:
 *		py 'UNIT DRIVE:/<working directory>/cordisStats.py'
 *
-*
 *  14) After given :
-* 		A log file will be generated under:
+*       Regarding the different types, from the imported files, a function is called to generate the statistics.
+*           File statsArticle that calls function statisticsArticle
+*           File statsEvent that calls function statisticsEvent
+*           File statsProgramme that calls function statisticsProgramme
+*           File statsProject that calls function statisticsProject
+*           File statsPublication that calls function statisticsPublication
+*           File statsResults that calls function statisticsResults
+*
+*       There is also a file statsFunctions.py that contains support functions to these files:
+*           Convert --  convert a given list to a dictionary
+*           countingFilesTypes -- counts all the different downloaded items (e.g. article, event, programme, project,
+*                                 publication, result), gives some percentage and write it to txt file under folder
+*                                 UNIT DRIVE:\<working directory>\CORDIS\stats\output_lst_cordis_xml_file.txt
+*
+*  16) A log file will be generated under:
 *           UNIT DRIVE:\<working directory>\CORDIS\logs\logStats and from there it can be possible to follow the progress of the execution
 *
 *  15) Once the script is finished, it is possible to find the download files(TXT files) under:
-*           UNIT DRIVE:\<working directory>\CORDIS and starting with name statistics
+*           UNIT DRIVE:\<working directory>\CORDIS and starting with name statistics:
+*
 *
 *  16) The file testProxy.py helps to test the proxy credentials given in some of the scripts used. It is not necessary to launch it alone, is already called from the scripts.
 *
