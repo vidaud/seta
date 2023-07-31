@@ -95,7 +95,7 @@ nav:
   - Introduction: index.md
   - Who should use it and why: general/who_use_it_and_why.md   
   - Using SeTA:
-    - Setup:
+    - Configuration:
       - Web App: user-guide/configuration/webApp.md
       - API's: user-guide/configuration/apis.md
     - Web App:
