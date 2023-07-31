@@ -144,6 +144,7 @@ The Administrator profile can handle different options related to the manage of 
   <figcaption>Administrator profile</figcaption>
 </figure>
 
+On the new page there are the options to handle *Users, Change requests, Orphanes*
 
 ### Users
 
