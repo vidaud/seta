@@ -80,6 +80,7 @@ extra:
     home: /
     apiCommunities: /seta-ui/api/v1/communities/doc
     apiSeta: /seta-api/doc
+    jwtToken: /authentication/v1/doc
     docs: /docs
     login: /login
     auth_decode_Token: /authorization/v1/token_info
@@ -97,7 +98,8 @@ nav:
   - Using SeTA:
     - Configuration:
       - Web App: user-guide/configuration/webApp.md
-      - API's: user-guide/configuration/apis.md
+      - Swagger: user-guide/configuration/swagger.md
+      - APIs: user-guide/configuration/apis.md
     - Web App:
       - Communities: 
         - SeTA Communities: user-guide/communities/communities.md
@@ -112,6 +114,7 @@ nav:
     - APIs: 
       - SeTA Communities API: apis/seta_communities_api/seta_communities_api.md
       - SeTA API: apis/seta_api/seta_api.md
+      - JWT Token Authentication: apis/jwt_token/jwt_token_api.md
   - Install SeTA:
     - Docker: setup/docker-architecture.md
     - MongoDB Migration: setup/db_migration.md
