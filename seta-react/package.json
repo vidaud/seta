@@ -46,6 +46,7 @@
     "embla-carousel-react": "^7.0.0",
     "force": "^0.0.3",
     "html-react-parser": "^3.0.9",
+    "mantine-react-table": "^1.0.0",
     "moment": "^2.29.4",
     "primeflex": "^3.3.0",
     "primeicons": "^6.0.1",

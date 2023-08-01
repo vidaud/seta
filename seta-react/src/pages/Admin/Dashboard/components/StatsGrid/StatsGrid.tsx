@@ -3,8 +3,8 @@ import { IconGitPullRequest, IconAlertOctagon } from '@tabler/icons-react'
 
 import { SuggestionsError, SuggestionsLoading } from '~/pages/SearchPageNew/components/common'
 
+import { StatsType, type LightStatsResponse } from '~/types/admin/stats'
 import type { DataProps } from '~/types/data-props'
-import { StatsType, type LightStatsResponse } from '~/types/stats/stats'
 
 import SimpleStat from '../SimpleStat'
 

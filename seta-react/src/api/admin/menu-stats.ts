@@ -3,8 +3,10 @@ import type { AxiosRequestConfig } from 'axios'
 
 import api from '~/api'
 import { environment } from '~/environments/environment'
-import { StatsType } from '~/types/stats/stats'
-import type { LightStatsResponse, SidebarStats } from '~/types/stats/stats'
+import { StatsType } from '~/types/admin/stats'
+import type { LightStatsResponse, SidebarStats } from '~/types/admin/stats'
+
+import { AdminQueryKeys } from './query-keys'
 
 const STATS_LIGHT_API_PATH = '/admin/stats/light'
 
@@ -46,7 +48,7 @@ const getMenuStats = async (config?: AxiosRequestConfig): Promise<SidebarStats> 
 
 export const useAdminSidebarStats = () => {
   return useQuery({
-    queryKey: ['sidebar-stats'],
+    queryKey: AdminQueryKeys.SidebarQueryKey,
     queryFn: ({ signal }) => getMenuStats({ baseURL: environment.baseUrl, signal })
   })
 }
