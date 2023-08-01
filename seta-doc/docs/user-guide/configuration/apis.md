@@ -1,8 +1,8 @@
 The SeTA APIs provides the functions and procedures to access the data of the Communities and the functionalities from the Search tool, from a developer point of view.
 
-## API's in SeTA
+## APIs in SeTA
 
-In SeTA there are two APIs:   
+In SeTA there the following APIs:   
 - Communities API       
 - JWT Token Authentication                
 - SeTA API - Elastic Search queries                 
@@ -56,7 +56,7 @@ After successful authentication, check that you have the following entries in th
     **user_id** is a randomly generated short guid for each new account
 
 
-Open a new tab in the same browser for the [Community API swagger documentation]({{ setaUrls.apiCommunities }})
+Open a new tab in the same browser for the [SeTA Communities API]({{ setaUrls.apiCommunities }})
 
 <figure markdown>
 ![Image title](../../../img/communities_api.png)

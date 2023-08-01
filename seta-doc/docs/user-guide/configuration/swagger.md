@@ -2,7 +2,7 @@ SeTA APIs use the support of Swagger.  Swagger is an open source repository of s
 Swagger achieves this by requesting a comprehensive YAML or JSON answer from the API that provides a detailed description of the whole API. The resources of the API are listed in this file.      
 In Swagger it is possible to write specifications for the API manually, or have it generated automatically from annotations in the source code.      
 
-> The [open-source-integrations](swagger.io/open-source-integrations) page can be consulted for a list of tools that let generates Swagger from code. 
+> The [open-source-integrations](https://swagger.io/tools/open-source/open-source-integrations/) page can be consulted for a list of tools that let generates Swagger from code. 
 
 Finally, the use of Swagger UI allows to generate interactive API documentation that lets users try out the API calls directly in the browser.
 
