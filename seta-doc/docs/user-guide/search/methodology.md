@@ -133,8 +133,6 @@ The following is an example of how to setup a new taxonomy within a document whe
 }
 ```
 
-
-
 ### Document cleaning pipeline
 The document gathering process is the initial step in the pipeline's overall procedure. 
 
@@ -213,8 +211,7 @@ Once we have the processed data, then is ingested and stored in an **Elasticsear
 
 
 ### Elasticsearch 
-Elasticsearch[^13] is a distributed, free and open search and analytics engine for all types of data, including textual, numerical, geospatial, structured and unstructured. Elasticsearch is built on Apache Lucene and was first released in 2010 by Elasticsearch N.V. (now known as Elastic).  Raw data flows into Elasticsearch from a variety of sources, including logs, system metrics, and web applications. Data ingestion is the process by which this raw data is parsed, normalized, and enriched before it is indexed in Elasticsearch. Once indexed in Elasticsearch, users can run complex queries against their data and use aggregations to retrieve complex summaries of their data.
-
+Elasticsearch[^13] is a distributed, free and open search and analytics engine for all types of data, including textual, numerical, geospatial, structured and unstructured. Elasticsearch is built on Apache Lucene and was first released in 2010 by Elasticsearch N.V. (now known as Elastic).  Raw data flows into Elasticsearch from a variety of sources, including logs, system metrics, and web applications. Data ingestion is the process by which this raw data is parsed, normalized, and enriched before it is indexed in Elasticsearch. Due to the amount of data, the architecture design is a cluster with 3 nodes and the main index has 5 Shards (*building blocks representing a subset of the data stored in the index*). Once indexed in Elasticsearch, users can run complex queries against their data and use aggregations to retrieve complex summaries of their data.
 
 ### Ontology
 An ontology[^14] shows properties and relations between a set of concepts and categories within a subject area or domain. It is a branch of linguistics called semantics, the study of meaning. With an ontology, a machine can accurately interpret the meaning of the word “diamond” in relation to a baseball player, jeweller, or card suit. It can also help interpret the word “chicken” as either food or an animal or differentiate between “bank” as a place of business or land alongside a river or lake.   

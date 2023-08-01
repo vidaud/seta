@@ -1,15 +1,3 @@
-## List of Community Members
-
-1. You can either use the filters to search the Community or select from the Communities list.             
-2. Click on :octicons-chevron-down-12: at the right side of the Community row.      
-3. A new section will appear where you can see different tabs: *Resource List, Sent Invites, My Change Requests, Pending Membership Requests, Permission*.                  
-4. On tab *Permission* you can see a list of the members and their scopes.              
-
-<figure markdown>
-  ![Image title](../../img/communities_members.png)
-  <figcaption>Community Members*</figcaption>
-</figure>
-
 ## Join a Community
 
 1. You can either use the filters to search the Community or select from the Communities list.      
@@ -57,9 +45,11 @@
 2. Click on :octicons-chevron-down-12: at the right side of the Community row.      
 3. On the opened section, click on tab *Pending Membership Requests*.           
 4. You can see a list of the pending membership requests.            
-5. Click in the ^^:octicons-pencil-24:^^ under column *Actions* to update the status (*pending, approved, rejected*).
+5. Click in the ^^:octicons-pencil-24:^^ under column *Actions* to update the status (*pending, approved, rejected*).     
 6. Click *send*
 7. The request disappear from the Pending Membership Requests list.
+
+> It is possible to enlarge the list and see all the *Pending Membership Requests*, by clicking on :fontawesome-solid-expand:         
 
 <figure markdown>
   ![Image title](../../img/pending_invites_from_main.png)
@@ -93,25 +83,14 @@
 3. On the opened section, click on tab *Sent Invites*.           
 4. You can see a list of the Invites sent.            
 
+> It is possible to enlarge the list and see all the *Sent Invites*, by clicking on :fontawesome-solid-expand:         
+
 <figure markdown>
   ![Image title](../../img/seta_communities_invites_list.png)
   <figcaption>Sent Invites</figcaption>
 </figure>
 
 ## Accept Invitation to Join a Community.
-
-### From the Communities list
-1. You can either use the filters to search the Community or select from the Communities list.             
-2. Click on button ^^INVITED^^.              
-3. From the pop-up window choose from drop-down *Status* the options: *accepted* or *rejected*.                    
-4. Click ^^Send^^.      
-
-<figure markdown>
-  ![Image title](../../img/list_pending_invites.png)
-  <figcaption>Sent Invites</figcaption>
-</figure>
-
-### From Notifications
 
 1. On the :material-bell-badge: on top of the page, a number notification appears.             
 2. Click on the icon and click on the number aside ^^Pending invites^^.              
@@ -127,4 +106,53 @@
 <figure markdown>
   ![Image title](../../img/list_invites.png)
   <figcaption>List of Invites</figcaption>
+</figure>
+
+## List of Community Members
+
+1. You can either use the filters to search the Community or select from the Communities list.             
+2. Click on :octicons-chevron-down-12: at the right side of the Community row.      
+3. A new section will appear where you can see different tabs: *Resource List, Sent Invites, My Change Requests, Pending Membership Requests, Permissions*.                  
+4. On tab *Permissions* you can see a list of the members and their scopes.              
+
+<figure markdown>
+  ![Image title](../../img/communities_members.png)
+  <figcaption>Community Members</figcaption>
+</figure>
+
+### Scopes
+
+On tab *Permissions*, it is possible to set-up dynamically the permissions of the users in the Community
+
+1. You can either use the filters to search the Community or select from the Communities list.             
+2. Click on :octicons-chevron-down-12: at the right side of the Community row.      
+3. A new section will appear, click on tab *Permissions* to see a list of the members and their scopes.                  
+4. To enlarge the list and see all the members, click on :fontawesome-solid-expand:         
+5. From here it is possible to set up the permissions by checking or unchecking the permissions.     
+
+<figure markdown>
+  ![Image title](../../img/communities_users_permissions.png)
+  <figcaption>User Permissions</figcaption>
+</figure>
+
+## Administrator
+
+The Administrator profile can handle different options related to the management of the communities and the users. To access go to the user profile and select from the dropdown menu.       
+
+<figure markdown>
+  ![Image title](../../img/administration_profile_menu.png)
+  <figcaption>Administrator profile</figcaption>
+</figure>
+
+On the new page there are the options to handle *Users, Change requests, Orphanes*
+
+### Users
+
+### Change requests
+
+### Orphanes
+
+<figure markdown>
+  ![Image title](../../img/administrator_profile.png)
+  <figcaption>Administration</figcaption>
 </figure>

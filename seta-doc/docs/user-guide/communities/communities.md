@@ -91,11 +91,17 @@ You can filter by the different types display on top of the page: *Select Member
 
 1. You can either use the filters to search the Community or select from the Communities list.      
 2. Click  :material-dots-vertical: at the right side of the Community row selected and scroll to right the option  ^^Switch to Opened Request^^.          
-3. The label of the option will change to ^^Switch to Opened Pending^^.      
+3. The label of the option will change to ^^Switch to Opened Pending^^.        
+4. In the notifications it will appear on ^^Pending change requests^^ a number and by clicking it will open a page to change the request.
 
 <figure markdown>
   ![Image title](../../img/request_switch_opened.png)
   <figcaption>Switch to Open a Community</figcaption>
+</figure>
+
+<figure markdown>
+  ![Image title](../../img/pending_invites.png)
+  <figcaption>Switch to Open a Community on Notifications</figcaption>
 </figure>
 
 ## Delete a Community

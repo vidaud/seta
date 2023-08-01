@@ -117,7 +117,7 @@ In the ***.env*** file change the necessary information, where is required, for 
 
 
     ##### Seta-UI variables  ####
-     # Set-up of the administrators emails, the system create local users. There should be always at least one admin user defined always. It cannot be empty.    
+     # Set-up of the administrators emails, the system create local users. There should be always at least one admin user defined always. It cannot be empty.  The emails - separated by semicolon   
     ROOT_USERS="ROOT_USERS="email@emailDomain"
 ```
 

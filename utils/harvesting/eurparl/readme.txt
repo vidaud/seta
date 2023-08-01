@@ -167,6 +167,12 @@
 *
 *
 * 16) After given :
+*       Regarding the different types, from the imported files, a function is called to generate the statistics.
+*           File adoptedTextsStats that calls function countingFilesTypesA
+*           File plenaryDocumentsStats that calls function countingFilesTypesD
+*           File parliamentaryQuestStats that calls function countingFilesTypesQ
+*           File plenarySessionStats that calls function countingFilesTypesS
+*
 * 		A text file will be generated with the information regarding the number of PDF documents downloaded and the different types of documents and the different language versions.
 *		A log file will be generated under UNIT DRIVE:\<working directory>\logs\logStats and from there it can be possible to follow the progress of the execution
 *
