@@ -9,7 +9,7 @@ import { getSourceLists, getTaxonomyLists, getOtherLists, FilterStatusColors } f
 import { FilterStatus } from '../../types/filter-info'
 import type { FilterStatusInfo } from '../../types/filter-info'
 import type { ClearAction } from '../../types/filters'
-import { ClearCategory, ClearType, TextChunkValues } from '../../types/filters'
+import { ClearCategory, ClearType } from '../../types/filters'
 
 type Props = {
   status?: FilterStatusInfo
@@ -36,9 +36,7 @@ const FilterInfo = ({ status, onClear }: Props) => {
 
   const clearAllDisabled =
     status?.prevStatus === FilterStatus.UNKNOWN ||
-    (status?.prevStatus === FilterStatus.APPLIED &&
-      status?.applied() === 1 &&
-      status?.currentFilter?.chunkValue === TextChunkValues.CHUNK_SEARCH)
+    (status?.prevStatus === FilterStatus.APPLIED && status?.applied() === 0)
   const clearModifiedDisabled = status?.modified() === 0
 
   return (

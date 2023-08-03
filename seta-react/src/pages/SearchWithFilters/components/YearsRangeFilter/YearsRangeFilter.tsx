@@ -96,6 +96,7 @@ const YearsRangeFilter = ({
         disabled={!value}
         onChange={handleCheckboxChange}
         label="Filter by date range"
+        labelPosition="left"
         onLabel="YES"
         offLabel="NO"
         size="md"

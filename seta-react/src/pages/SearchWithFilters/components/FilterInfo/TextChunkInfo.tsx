@@ -2,7 +2,7 @@ import { Grid, Badge, Text } from '@mantine/core'
 
 import { FilterStatusColors } from './utils'
 
-import { TextChunkLabels, TextChunkValues } from '../../types/filters'
+import { TextChunkValues } from '../../types/filters'
 
 type Props = {
   value?: string
@@ -10,16 +10,22 @@ type Props = {
 }
 
 const TextChunkInfo = ({ value, modified }: Props) => {
+  const chunkValue = TextChunkValues[value ?? 'CHUNK_SEARCH']
+
+  if (!modified && chunkValue === TextChunkValues.CHUNK_SEARCH) {
+    return null
+  }
+
   const color = modified ? FilterStatusColors.MODIFIED : FilterStatusColors.APPLIED
 
-  const chunkLabel = TextChunkLabels[TextChunkValues[value ?? 'CHUNK_SEARCH']]
+  const chunkLabel = chunkValue === TextChunkValues.CHUNK_SEARCH ? 'No' : 'Yes'
 
   return (
     <Grid gutter="xs">
-      <Grid.Col span={3}>
-        <Text span>Text chunk: </Text>
+      <Grid.Col span={5}>
+        <Text span>Show multiple chunks: </Text>
       </Grid.Col>
-      <Grid.Col span={9}>
+      <Grid.Col span={7}>
         <Badge
           color={color}
           variant="outline"

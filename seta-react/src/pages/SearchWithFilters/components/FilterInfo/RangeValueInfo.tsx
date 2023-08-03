@@ -30,21 +30,10 @@ const RangeValueInfo = ({ enabled, value, modified }: Props) => {
 
   return (
     <Grid gutter="xs">
-      <Grid.Col span={3}>
+      <Grid.Col span={5}>
         <Text span>Date range: </Text>
       </Grid.Col>
-      <Grid.Col span={9}>
-        {enabled && (
-          <Badge
-            color={color}
-            size="lg"
-            variant="outline"
-            styles={{ root: { textTransform: 'none' } }}
-            mr={5}
-          >
-            Enabled
-          </Badge>
-        )}
+      <Grid.Col span={7}>
         {value && (
           <Badge
             size="lg"
