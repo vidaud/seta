@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { Container, Flex, Accordion, ScrollArea, rem, Text } from '@mantine/core'
 
 import { itemsReducer } from './items-reducer'
+import * as S from './styles'
 import TinyChart from './TinyChart'
 import useClearFilter from './useClearFilter'
 import useFilter from './useFilter'
@@ -165,12 +166,16 @@ const FiltersPanel = ({ queryContract, onApplyFilter, onStatusChange }: Advanced
         onApplyFilters={handleApplyFilters}
         onClear={handleClearFilters}
       />
-      <TextChunkFilter
-        value={chunkText}
-        onChange={handleTextChunkChange}
-        disabled={status?.status === FilterStatus.PROCESSING}
-      />
-      <Container w={rem(350)} mb={rem(10)}>
+
+      <Container w={rem(350)} css={S.chunkFilter}>
+        <TextChunkFilter
+          value={chunkText}
+          onChange={handleTextChunkChange}
+          disabled={status?.status === FilterStatus.PROCESSING}
+        />
+      </Container>
+
+      <Container w={rem(350)} mb={rem(10)} css={S.dateFilter}>
         <YearsRangeFilter
           enableDateFilter={enableDateFilter}
           onEnableDateChanged={handleEnableDateChanged}

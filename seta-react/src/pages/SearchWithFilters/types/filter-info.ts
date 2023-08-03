@@ -1,4 +1,4 @@
-import type { RangeValue } from './filters'
+import { TextChunkValues, type RangeValue } from './filters'
 import type { OtherItem } from './other-filter'
 
 export enum FilterStatus {
@@ -76,7 +76,11 @@ export class FilterStatusInfo {
     let applied = 0
 
     if (this.appliedFilter.chunkValue) {
-      applied++
+      const chunkValue = TextChunkValues[this.appliedFilter.chunkValue ?? 'CHUNK_SEARCH']
+
+      if (chunkValue !== TextChunkValues.CHUNK_SEARCH) {
+        applied++
+      }
     }
 
     if (this.appliedFilter.rangeValueEnabled && this.appliedFilter.rangeValue) {
