@@ -1,5 +1,6 @@
 import type { AxiosRequestConfig } from 'axios'
 import axios from 'axios'
+import { getCookie } from 'typescript-cookie'
 
 import { environment } from '~/environments/environment'
 import errorInterceptor from '~/libs/axios-error-interceptor'
@@ -17,6 +18,13 @@ const instance = axios.create(axiosConfig)
 
 instance.interceptors.request.use(config => {
   config.startTime = new Date().getTime()
+
+  //add cross-domain reference token for each request, if exists
+  const csrf_token = getCookie('csrf_access_token')
+
+  if (csrf_token) {
+    config.headers['X-CSRF-TOKEN'] = csrf_token
+  }
 
   return config
 })

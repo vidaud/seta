@@ -40,10 +40,9 @@ class StatsBroker(implements(IStatsBroker)):
     def count_resource_orphans(self, resource_ids: list[str]) -> int:
 
         if resource_ids:
-            filter = {"community_id": {"$exists" : True}}
-            db_ids = self.db["resources"].find(filter, {"resource_id": 1})
+            db_ids = self.db["resources"].find({"community_id": {"$exists" : True}}, {"resource_id": 1})
 
-            orphans = list(filter(lambda code: not any(db_id["resource_id"].lower() == code.lower() for db_id in db_ids), resource_ids))
+            orphans = list(filter(lambda resource_id: not any(db_id['resource_id'].lower() == resource_id.lower() for db_id in db_ids), resource_ids))
             return len(orphans)
 
         return 0
