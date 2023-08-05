@@ -68,7 +68,7 @@ const AdminCommunityRequests = () => {
   return (
     <Box w="100%" pl="md" pr="md">
       <Title order={3} mb="md" mt="-2rem" color="blue.5">
-        Community Pending Requests
+        Pending Requests for Communities
       </Title>
       <RequestsTable
         data={data}

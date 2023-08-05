@@ -4,22 +4,24 @@ import type { MRT_ColumnDef } from 'mantine-react-table'
 import { MantineReactTable, useMantineReactTable } from 'mantine-react-table'
 
 import ChangedPropertyCell from '~/pages/Admin/common/components/ChangedPropertyCell'
-import DateTimeCell from '~/pages/Admin/common/components/DateTimeCell/DateTimeCell'
+import DateTimeCell from '~/pages/Admin/common/components/DateTimeCell'
 import RowActions from '~/pages/Admin/common/components/RequestRowActions'
-import UserInfo from '~/pages/Admin/common/components/UserInfo/UserInfo'
+import UserInfo from '~/pages/Admin/common/components/UserInfo'
 
-import type { CommunityChangeRequest } from '~/types/admin/change-requests'
+import type { ResourceChangeRequest } from '~/types/admin/change-requests'
 import type { DataProps } from '~/types/data-props'
 
-type Props = DataProps<CommunityChangeRequest[]> & {
-  onApproveRequest?(communityId: string, requestId: string): void
-  onRejectRequest?(communityId: string, requestId: string): void
+import LimitsPropertyCell from '../LimitsPropertyCell/LimitsPropertyCell'
+
+type Props = DataProps<ResourceChangeRequest[]> & {
+  onApproveRequest?(resourceId: string, requestId: string): void
+  onRejectRequest?(resourceId: string, requestId: string): void
 }
 
 const RequestsTable = ({ data, isLoading, error, onApproveRequest, onRejectRequest }: Props) => {
-  const requests: CommunityChangeRequest[] = data ?? []
+  const requests: ResourceChangeRequest[] = data ?? []
 
-  const columns = useMemo<MRT_ColumnDef<CommunityChangeRequest>[]>(
+  const columns = useMemo<MRT_ColumnDef<ResourceChangeRequest>[]>(
     () => [
       {
         accessorKey: 'initiated_date',
@@ -34,8 +36,8 @@ const RequestsTable = ({ data, isLoading, error, onApproveRequest, onRejectReque
         Cell: ({ cell }) => <DateTimeCell dateTime={cell.getValue<Date>()} />
       },
       {
-        accessorKey: 'community_id',
-        header: 'Community',
+        accessorKey: 'resource_id',
+        header: 'Resource',
         mantineTableBodyCellProps: {
           style: {
             width: '1%',
@@ -76,13 +78,27 @@ const RequestsTable = ({ data, isLoading, error, onApproveRequest, onRejectReque
             verticalAlign: 'top'
           }
         },
-        Cell: ({ cell, row }) => (
-          <ChangedPropertyCell
-            fieldName={cell.getValue<string>()}
-            currentValue={row.original.old_value}
-            newValue={row.original.new_value}
-          />
-        )
+        Cell: ({ cell, row }) => {
+          const prop = cell.getValue<string>()
+
+          if (prop.toLowerCase() === 'limits') {
+            return (
+              <LimitsPropertyCell
+                fieldName={cell.getValue<string>()}
+                currentValue={row.original.old_value}
+                newValue={row.original.new_value}
+              />
+            )
+          }
+
+          return (
+            <ChangedPropertyCell
+              fieldName={cell.getValue<string>()}
+              currentValue={row.original.old_value}
+              newValue={row.original.new_value}
+            />
+          )
+        }
       }
     ],
     []
@@ -137,10 +153,10 @@ const RequestsTable = ({ data, isLoading, error, onApproveRequest, onRejectReque
     renderRowActions: ({ row }) => (
       <RowActions
         onApprove={() => {
-          onApproveRequest?.(row.original.community_id, row.original.request_id)
+          onApproveRequest?.(row.original.resource_id, row.original.request_id)
         }}
         onReject={() => {
-          onRejectRequest?.(row.original.community_id, row.original.request_id)
+          onRejectRequest?.(row.original.resource_id, row.original.request_id)
         }}
       />
     )
