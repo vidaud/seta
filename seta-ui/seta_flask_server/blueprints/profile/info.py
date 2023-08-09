@@ -27,7 +27,7 @@ class UserInfo(Resource):
                    int(HTTPStatus.NOT_FOUND): "User not found",},
         
         security='CSRF')
-    @account_info_ns.marshal_list_with(user_info_model, mask="*")
+    @account_info_ns.marshal_with(user_info_model, mask="*")
     @jwt_required()   
     def get(self):
         """ Returns user details"""

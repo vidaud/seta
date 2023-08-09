@@ -16,6 +16,24 @@ class IUsersBroker(Interface):
     
     def get_user_by_email(self, email: str) -> SetaUser:
         pass
+
+    def get_all(self, load_scopes: bool = True) -> list[SetaUser]:
+        """
+        Return the list of all user accounts and their providers
+
+        :param load_scopes:
+            Load permission scopes for each user
+        """
+        pass
+
+    def get_all_by_status(self, status: str) -> list[SetaUser]:
+        """
+        Return the list of all user accounts and their providers by user status ('active', 'blocked', 'deleted')
+
+        :param status:
+            Filter by status
+        """
+        pass
     
     def user_uid_exists(self, user_id: str) -> bool:
         pass

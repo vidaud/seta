@@ -8,6 +8,7 @@ import {
   useUpdateCommunityRequest
 } from '~/api/admin/community-requests'
 import { RequestStatus } from '~/types/admin/change-requests'
+import logger from '~/utils/logger'
 
 import RequestsTable from './components/RequestsTable'
 
@@ -17,48 +18,64 @@ const AdminCommunityRequests = () => {
   const updateRequestMutation = useUpdateCommunityRequest()
 
   const handleApproveRequest = (communityId: string, requestId: string) => {
-    updateRequestMutation.mutate({
-      communityId: communityId,
-      requestId: requestId,
-      status: RequestStatus.Approved
-    })
+    updateRequestMutation.mutate(
+      {
+        communityId: communityId,
+        requestId: requestId,
+        status: RequestStatus.Approved
+      },
+      {
+        onSuccess: () => {
+          logger.log('handleApproveRequest success')
 
-    if (updateRequestMutation.isError) {
-      notifications.show({
-        message: 'The request update failed!',
-        color: 'red',
-        autoClose: 5000
-      })
-    } else {
-      notifications.show({
-        message: 'The request was approved!',
-        color: 'blue',
-        autoClose: 5000
-      })
-    }
+          notifications.show({
+            message: 'The request was approved!',
+            color: 'blue',
+            autoClose: 5000
+          })
+        },
+        onError: () => {
+          logger.log('handleApproveRequest error')
+
+          notifications.show({
+            message: 'The request update failed!',
+            color: 'red',
+            autoClose: 5000
+          })
+        }
+      }
+    )
   }
 
   const handleRejectRequest = (communityId: string, requestId: string) => {
-    updateRequestMutation.mutate({
-      communityId: communityId,
-      requestId: requestId,
-      status: RequestStatus.Rejected
-    })
+    updateRequestMutation.mutate(
+      {
+        communityId: communityId,
+        requestId: requestId,
+        status: RequestStatus.Rejected
+      },
+      {
+        onSuccess: () => {
+          logger.log('handleRejectRequest success')
 
-    if (updateRequestMutation.error) {
-      notifications.show({
-        title: 'Update failed!',
-        message: 'The request update failed. Please try again!',
-        color: 'red',
-        autoClose: 5000
-      })
-    } else {
-      notifications.show({
-        message: 'The request was rejected!',
-        color: 'yellow',
-        autoClose: 5000
-      })
-    }
+          notifications.show({
+            message: 'The request was rejected!',
+            color: 'yellow',
+            autoClose: 5000
+          })
+        },
+        onError: () => {
+          logger.log('handleRejectRequest error')
+
+          notifications.show({
+            title: 'Update failed!',
+            message: 'The request update failed. Please try again!',
+            color: 'red',
+            autoClose: 5000
+          })
+        }
+      }
+    )
   }
 
   if (error) {
