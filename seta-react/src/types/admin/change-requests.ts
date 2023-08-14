@@ -1,8 +1,4 @@
-export type UserInfo = {
-  user_id: string
-  full_name: string
-  email: string
-}
+import type { UserInfo } from './user-info'
 
 export enum RequestStatus {
   Approved = 'approved',

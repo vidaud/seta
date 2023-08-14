@@ -97,6 +97,26 @@ class UsersBroker(implements(IUsersBroker)):
             
         return seta_user
     
+    def get_all(self, load_scopes: bool = False) -> list[SetaUser]:
+        users = self.collection.find({"email": {"$exists" : True}}, {"user_id": 1})
+
+        seta_users = []
+        for user in users:
+            seta_user = self.get_user_by_id(user_id=user["user_id"], load_scopes=load_scopes)
+            seta_users.append(seta_user)
+
+        return seta_users
+
+    def get_all_by_status(self, status: str) -> list[SetaUser]:
+        users = self.collection.find({"email": {"$exists" : True}, "status": status}, {"user_id": 1})
+
+        seta_users = []
+        for user in users:
+            seta_user = self.get_user_by_id(user_id=user["user_id"], load_scopes=False)
+            seta_users.append(seta_user)
+
+        return seta_users
+    
     def user_uid_exists(self, user_id: str) -> bool:        
         filter = {"user_id": user_id, "email": {"$exists" : True}}
                 
