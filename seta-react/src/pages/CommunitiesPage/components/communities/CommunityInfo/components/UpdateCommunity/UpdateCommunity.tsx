@@ -23,7 +23,7 @@ const useStyles = createStyles({
   }
 })
 
-const UpdateCommunity = ({ community, community_scopes, onChange }) => {
+const UpdateCommunity = ({ community, community_scopes, onChange, refetch }) => {
   const { classes } = useStyles()
   const [scopes, setScopes] = useState<string[] | undefined>([])
   const [opened, { open, close }] = useDisclosure(false)
@@ -59,7 +59,7 @@ const UpdateCommunity = ({ community, community_scopes, onChange }) => {
             }}
           >
             <Divider my="xs" label="Update Community" labelPosition="center" />
-            <UpdateForm community={community} close={close} onChange={onChange} />
+            <UpdateForm community={community} close={close} onChange={onChange} refetch={refetch} />
           </Modal>
           <Group>
             <Tooltip label="Update Community" color="gray">

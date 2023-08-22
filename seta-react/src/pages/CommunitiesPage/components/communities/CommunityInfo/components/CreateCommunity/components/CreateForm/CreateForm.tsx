@@ -20,7 +20,7 @@ const useStyles = createStyles({
   }
 })
 
-const CreateForm = ({ close }) => {
+const CreateForm = ({ close, onChangeMessage }) => {
   const { classes, cx } = useStyles()
 
   const form = useCommunity({
@@ -40,7 +40,11 @@ const CreateForm = ({ close }) => {
   })
 
   const handleSubmit = (values: CommunityValues) => {
-    createCommunity(values)
+    createCommunity(values).catch(error => {
+      if (error.response.status === 409) {
+        onChangeMessage(error.response.data.message)
+      }
+    })
   }
 
   return (

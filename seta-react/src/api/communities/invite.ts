@@ -31,8 +31,10 @@ export const useInviteID = (id?: string) =>
 const csrf_token = getCookie('csrf_access_token')
 
 export const createCommunityInvite = async (id?: string, values?: CreateInvitationAPI) => {
-  await api
-    .post<CreateInvitationAPI[]>(`${environment.COMMUNITIES_API_PATH}/${id}/invites`, values, {
+  await api.post<CreateInvitationAPI[]>(
+    `${environment.COMMUNITIES_API_PATH}/${id}/invites`,
+    values,
+    {
       ...apiConfig,
       headers: {
         ...apiConfig?.headers,
@@ -40,12 +42,8 @@ export const createCommunityInvite = async (id?: string, values?: CreateInvitati
         'X-CSRF-TOKEN': csrf_token,
         'Content-Type': 'application/x-www-form-urlencoded'
       }
-    })
-    .then(response => {
-      if (response.status === 200) {
-        // console.log(response)
-      }
-    })
+    }
+  )
 }
 
 export const cacheNoIDKey = () => ['invites']

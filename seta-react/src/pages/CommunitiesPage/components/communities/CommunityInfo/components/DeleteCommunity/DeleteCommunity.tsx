@@ -18,12 +18,15 @@ const useStyles = createStyles(theme => ({
   }
 }))
 
-const DeleteCommunity = ({ props, totalResources }) => {
+const DeleteCommunity = ({ props, totalResources, refetch }) => {
   const { classes, cx } = useStyles()
   const [opened, setOpened] = useState(false)
 
   const deleteCommunity = () => {
-    deleteCommunityByID(props?.community_id)
+    deleteCommunityByID(props?.community_id).then(() => {
+      refetch()
+      setOpened(o => !o)
+    })
   }
 
   return (

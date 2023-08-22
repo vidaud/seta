@@ -63,37 +63,25 @@ export const createCommunity = async (values?: CreateCommunityAPI) => {
 }
 
 export const updateCommunity = async (id?: string, values?: UpdateCommunityAPI) => {
-  await api
-    .put(`${environment.COMMUNITIES_API_PATH}/${id}`, values, {
-      ...apiConfig,
-      headers: {
-        ...apiConfig?.headers,
-        accept: 'application/json',
-        'X-CSRF-TOKEN': csrf_token,
-        'Content-Type': 'application/x-www-form-urlencoded'
-      }
-    })
-    .then(response => {
-      if (response.status === 200) {
-        window.location.href = `/community/communities/`
-      }
-    })
+  await api.put(`${environment.COMMUNITIES_API_PATH}/${id}`, values, {
+    ...apiConfig,
+    headers: {
+      ...apiConfig?.headers,
+      accept: 'application/json',
+      'X-CSRF-TOKEN': csrf_token,
+      'Content-Type': 'application/x-www-form-urlencoded'
+    }
+  })
 }
 
 export const deleteCommunityByID = async (id?: string) => {
-  await api
-    .delete(`${environment.COMMUNITIES_API_PATH}/${id}`, {
-      ...apiConfig,
-      headers: {
-        ...apiConfig?.headers,
-        accept: 'application/json',
-        'X-CSRF-TOKEN': csrf_token,
-        'Content-Type': 'application/x-www-form-urlencoded'
-      }
-    })
-    .then(response => {
-      if (response.status === 200) {
-        window.location.href = `/community/communities/`
-      }
-    })
+  await api.delete(`${environment.COMMUNITIES_API_PATH}/${id}`, {
+    ...apiConfig,
+    headers: {
+      ...apiConfig?.headers,
+      accept: 'application/json',
+      'X-CSRF-TOKEN': csrf_token,
+      'Content-Type': 'application/x-www-form-urlencoded'
+    }
+  })
 }

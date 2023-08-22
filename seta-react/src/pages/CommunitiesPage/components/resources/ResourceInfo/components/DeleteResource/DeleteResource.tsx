@@ -2,8 +2,6 @@ import { useState } from 'react'
 import { Text, Popover, Button, Group, createStyles, UnstyledButton } from '@mantine/core'
 import { IconTrash } from '@tabler/icons-react'
 
-import type { ResourceScopes } from '~/pages/CommunitiesPage/contexts/scope-context'
-
 import { deleteResourceByID } from '~/api/communities/manage/my-resource'
 
 const useStyles = createStyles(theme => ({
@@ -20,23 +18,27 @@ const useStyles = createStyles(theme => ({
   }
 }))
 
-type Props = {
-  id: string
-  resource_scopes?: ResourceScopes[] | undefined
-}
+// type Props = {
+//   id: string
+//   refetch?: () => void
+//   resource_scopes?: ResourceScopes[] | undefined
+// }
 
-const DeleteResource = ({ id }: Props) => {
+const DeleteResource = ({ id, refetch }) => {
   const { classes, cx } = useStyles()
   const [opened, setOpened] = useState(false)
 
   const deleteResource = () => {
-    deleteResourceByID(id)
+    deleteResourceByID(id).then(() => {
+      refetch()
+      setOpened(o => !o)
+    })
   }
 
   return (
     <Popover
       width={300}
-      withinPortal={true}
+      // withinPortal={true}
       trapFocus
       position="bottom"
       withArrow
@@ -71,10 +73,25 @@ const DeleteResource = ({ id }: Props) => {
           Press Confirm to proceed with the deletion or press Cancel to abort
         </Text>
         <Group className={cx(classes.form)} position="right">
-          <Button variant="outline" size="xs" color="blue" onClick={() => setOpened(o => !o)}>
+          <Button
+            variant="outline"
+            size="xs"
+            color="blue"
+            onClick={e => {
+              setOpened(o => !o)
+              e.stopPropagation()
+            }}
+          >
             Cancel
           </Button>
-          <Button size="xs" color="blue" onClick={() => deleteResource()}>
+          <Button
+            size="xs"
+            color="blue"
+            onClick={e => {
+              deleteResource()
+              e.stopPropagation()
+            }}
+          >
             Confirm
           </Button>
         </Group>

@@ -20,7 +20,7 @@ const useStyles = createStyles({
   }
 })
 
-const CreateForm = ({ id, close }) => {
+const CreateForm = ({ id, close, onChangeMessage }) => {
   const { classes, cx } = useStyles()
 
   const form = useResource({
@@ -40,7 +40,11 @@ const CreateForm = ({ id, close }) => {
   })
 
   const handleSubmit = (values: ResourceValues) => {
-    createResource(id, values)
+    createResource(id, values).catch(error => {
+      if (error.response.status === 409) {
+        onChangeMessage(error.response.data.message)
+      }
+    })
   }
 
   return (

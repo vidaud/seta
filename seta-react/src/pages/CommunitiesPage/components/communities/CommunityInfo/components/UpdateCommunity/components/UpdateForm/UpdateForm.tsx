@@ -25,7 +25,7 @@ const useStyles = createStyles({
   }
 })
 
-const UpdateForm = ({ community, close, onChange }) => {
+const UpdateForm = ({ community, close, onChange, refetch }) => {
   const { classes, cx } = useStyles()
 
   const { data, isLoading } = useCommunityID(community.community_id)
@@ -51,14 +51,17 @@ const UpdateForm = ({ community, close, onChange }) => {
     }
     // adding form to useEffect will cause infinite loop call
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [community])
+  }, [community, data])
 
   if (isLoading || !data) {
     return <ComponentLoading />
   }
 
   const handleSubmit = (values: CommunityValues) => {
-    updateCommunity(community.community_id, values)
+    updateCommunity(community.community_id, values).then(() => {
+      refetch()
+      close()
+    })
   }
 
   return (

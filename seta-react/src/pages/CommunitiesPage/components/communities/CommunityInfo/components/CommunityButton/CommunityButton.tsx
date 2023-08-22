@@ -72,9 +72,10 @@ const CommunityButton = ({ props, community_scopes, resources }: Props) => {
                   community={props}
                   community_scopes={community_scopes}
                   onChange={handleOutsideClick}
+                  refetch={refetch}
                 />
                 {scopes?.includes('/seta/community/invite') ? (
-                  <InviteMember id={props.community_id} />
+                  <InviteMember communityId={props.community_id} />
                 ) : null}
 
                 {scopes?.includes('/seta/community/owner') ? (
@@ -82,6 +83,7 @@ const CommunityButton = ({ props, community_scopes, resources }: Props) => {
                     <DeleteCommunity
                       props={props}
                       totalResources={resources ? resources?.length : 0}
+                      refetch={refetch}
                     />
                     <ChangePrivacy community={props} />
                   </>

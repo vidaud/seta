@@ -1,7 +1,15 @@
 import { useEffect, useState } from 'react'
-import { Group, Button, useMantineTheme, Modal, Divider, createStyles } from '@mantine/core'
+import {
+  Group,
+  Button,
+  useMantineTheme,
+  Modal,
+  Divider,
+  createStyles,
+  Notification
+} from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
-import { IconPlus } from '@tabler/icons-react'
+import { IconPlus, IconX } from '@tabler/icons-react'
 
 import CreateForm from './components/CreateForm'
 import * as S from './styles'
@@ -9,12 +17,18 @@ import * as S from './styles'
 const useStyles = createStyles({
   button: {
     border: 'none'
+  },
+  notification: {
+    position: 'absolute',
+    top: 10,
+    right: 0
   }
 })
 
 const CreateCommunity = ({ system_scopes }) => {
   const { classes } = useStyles()
   const [scopes, setScopes] = useState<string | undefined>('')
+  const [notifications, setNotifications] = useState<string>()
   const [opened, { open, close }] = useDisclosure(false)
   const theme = useMantineTheme()
 
@@ -37,7 +51,19 @@ const CreateCommunity = ({ system_scopes }) => {
             }}
           >
             <Divider my="xs" label="Add New Community" labelPosition="center" />
-            <CreateForm close={close} />
+            <CreateForm close={close} onChangeMessage={setNotifications} />
+            {notifications !== undefined ? (
+              <Notification
+                icon={<IconX size="1.1rem" />}
+                color="red"
+                className={classes.notification}
+                onClose={() => {
+                  setNotifications(undefined)
+                }}
+              >
+                {notifications}
+              </Notification>
+            ) : null}
           </Modal>
           <Group
             position="left"

@@ -86,6 +86,7 @@ const ResourceListContent = forwardRef<HTMLDivElement, Props>(
           <ResourceInfo
             key={resource.resource_id}
             resource={resource}
+            refetch={onTryAgain}
             queryTerms={queryTerms}
             community_scopes={community_scopes}
             resource_scopes={resource_scopes}
