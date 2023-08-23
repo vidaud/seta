@@ -124,20 +124,12 @@ const ChangeResourceRequests = ({ id }) => {
           {row?.status.toUpperCase()}
         </Badge>
       </td>
-      {/* <td>
-        <Group spacing={0}>
-          <ActionIcon color="red">
-            <IconTrash size="1rem" stroke={1.5} />
-          </ActionIcon>
-        </Group>
-      </td> */}
     </tr>
   ))
 
   return (
     <>
       <Select
-        // label="Select Status"
         name="requestStatus"
         sx={{ width: 'fit-content', float: 'right', paddingBottom: '1%' }}
         data={requestStatus}

@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Text, Popover, Button, Group, createStyles, UnstyledButton } from '@mantine/core'
+import { notifications } from '@mantine/notifications'
 import { IconTrash } from '@tabler/icons-react'
 
 import { deleteResourceByID } from '~/api/communities/manage/my-resource'
@@ -29,10 +30,47 @@ const DeleteResource = ({ id, refetch }) => {
   const [opened, setOpened] = useState(false)
 
   const deleteResource = () => {
-    deleteResourceByID(id).then(() => {
-      refetch()
-      setOpened(o => !o)
-    })
+    deleteResourceByID(id)
+      .then(() => {
+        refetch()
+        setOpened(o => !o)
+        notifications.show({
+          title: 'Resource Deleted Successfully',
+          message: 'Resource has been deleted successfully',
+          styles: theme => ({
+            root: {
+              backgroundColor: theme.colors.yellow[6],
+              borderColor: theme.colors.yellow[6],
+              '&::before': { backgroundColor: theme.white }
+            },
+            title: { color: theme.white },
+            description: { color: theme.white },
+            closeButton: {
+              color: theme.white,
+              '&:hover': { backgroundColor: theme.colors.yellow[7] }
+            }
+          })
+        })
+      })
+      .catch(error => {
+        notifications.show({
+          title: error.response.statusText,
+          message: error.response.data.message,
+          styles: theme => ({
+            root: {
+              backgroundColor: theme.colors.red[6],
+              borderColor: theme.colors.red[6],
+              '&::before': { backgroundColor: theme.white }
+            },
+            title: { color: theme.white },
+            description: { color: theme.white },
+            closeButton: {
+              color: theme.white,
+              '&:hover': { backgroundColor: theme.colors.red[7] }
+            }
+          })
+        })
+      })
   }
 
   return (

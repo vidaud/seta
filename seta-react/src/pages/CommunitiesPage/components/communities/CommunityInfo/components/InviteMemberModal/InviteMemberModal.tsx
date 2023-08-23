@@ -8,6 +8,7 @@ import {
   Input,
   UnstyledButton
 } from '@mantine/core'
+import { notifications } from '@mantine/notifications'
 import { IconMessages } from '@tabler/icons-react'
 
 import type { InvitationValues } from '~/pages/CommunitiesPage/contexts/invite-context'
@@ -54,11 +55,44 @@ const InviteMember = ({ communityId }) => {
 
   const handleSubmit = (values: InvitationValues) => {
     createCommunityInvite(communityId, values)
-    // .catch(error => {
-    //   if (error.response.status === 400) {
-    //     console.log(error.response.data.message)
-    //   }
-    // })
+      .then(() => {
+        notifications.show({
+          title: 'Invitation Sent',
+          message: 'Your invitation has been sent successfully',
+          styles: theme => ({
+            root: {
+              backgroundColor: theme.colors.teal[6],
+              borderColor: theme.colors.teal[6],
+              '&::before': { backgroundColor: theme.white }
+            },
+            title: { color: theme.white },
+            description: { color: theme.white },
+            closeButton: {
+              color: theme.white,
+              '&:hover': { backgroundColor: theme.colors.teal[7] }
+            }
+          })
+        })
+      })
+      .catch(error => {
+        notifications.show({
+          title: error.response.statusText,
+          message: error.response.data.message,
+          styles: theme => ({
+            root: {
+              backgroundColor: theme.colors.red[6],
+              borderColor: theme.colors.red[6],
+              '&::before': { backgroundColor: theme.white }
+            },
+            title: { color: theme.white },
+            description: { color: theme.white },
+            closeButton: {
+              color: theme.white,
+              '&:hover': { backgroundColor: theme.colors.red[7] }
+            }
+          })
+        })
+      })
 
     setOpened(o => !o)
   }

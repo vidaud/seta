@@ -1,15 +1,7 @@
 import { useEffect, useState } from 'react'
-import {
-  Group,
-  Button,
-  useMantineTheme,
-  Modal,
-  Divider,
-  createStyles,
-  Notification
-} from '@mantine/core'
+import { Group, Button, useMantineTheme, Modal, Divider, createStyles } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
-import { IconPlus, IconX } from '@tabler/icons-react'
+import { IconPlus } from '@tabler/icons-react'
 
 import CreateForm from './components/CreateForm'
 import * as S from './styles'
@@ -25,10 +17,9 @@ const useStyles = createStyles({
   }
 })
 
-const CreateCommunity = ({ system_scopes }) => {
+const CreateCommunity = ({ system_scopes, refetch }) => {
   const { classes } = useStyles()
   const [scopes, setScopes] = useState<string | undefined>('')
-  const [notifications, setNotifications] = useState<string>()
   const [opened, { open, close }] = useDisclosure(false)
   const theme = useMantineTheme()
 
@@ -51,19 +42,7 @@ const CreateCommunity = ({ system_scopes }) => {
             }}
           >
             <Divider my="xs" label="Add New Community" labelPosition="center" />
-            <CreateForm close={close} onChangeMessage={setNotifications} />
-            {notifications !== undefined ? (
-              <Notification
-                icon={<IconX size="1.1rem" />}
-                color="red"
-                className={classes.notification}
-                onClose={() => {
-                  setNotifications(undefined)
-                }}
-              >
-                {notifications}
-              </Notification>
-            ) : null}
+            <CreateForm close={close} refetch={refetch} />
           </Modal>
           <Group
             position="left"

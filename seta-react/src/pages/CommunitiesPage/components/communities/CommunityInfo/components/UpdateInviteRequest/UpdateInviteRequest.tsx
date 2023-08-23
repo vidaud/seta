@@ -10,6 +10,7 @@ import {
   Divider,
   Text
 } from '@mantine/core'
+import { notifications } from '@mantine/notifications'
 import { IconPencil } from '@tabler/icons-react'
 import type { QueryObserverResult, RefetchOptions, RefetchQueryFilters } from '@tanstack/query-core'
 
@@ -66,12 +67,46 @@ const UpdateInviteRequest = ({ props, parent, refetch }: Props) => {
   }, [props])
 
   const handleSubmit = (values: InviteRequestValues) => {
-    updateInviteRequest(props.invite_id, values).then(() => {
-      refetch()
-    })
-    // : updateInviteRequest(props.pending_invite.invite_id, values).then(() => {
-    //     refetch()
-    //   })
+    updateInviteRequest(props.invite_id, values)
+      .then(() => {
+        refetch()
+        notifications.show({
+          title: 'Invitation Request Updated',
+          message: 'Invitation request status has been updated',
+          styles: theme => ({
+            root: {
+              backgroundColor: theme.colors.teal[6],
+              borderColor: theme.colors.teal[6],
+              '&::before': { backgroundColor: theme.white }
+            },
+            title: { color: theme.white },
+            description: { color: theme.white },
+            closeButton: {
+              color: theme.white,
+              '&:hover': { backgroundColor: theme.colors.teal[7] }
+            }
+          })
+        })
+      })
+      .catch(error => {
+        notifications.show({
+          title: error.response.statusText,
+          message: error.response.data.message,
+          styles: theme => ({
+            root: {
+              backgroundColor: theme.colors.red[6],
+              borderColor: theme.colors.red[6],
+              '&::before': { backgroundColor: theme.white }
+            },
+            title: { color: theme.white },
+            description: { color: theme.white },
+            closeButton: {
+              color: theme.white,
+              '&:hover': { backgroundColor: theme.colors.red[7] }
+            }
+          })
+        })
+      })
 
     setOpened(o => !o)
   }

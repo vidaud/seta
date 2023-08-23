@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Text, Popover, Button, Group, createStyles, Tooltip } from '@mantine/core'
+import { notifications } from '@mantine/notifications'
 
 import { getMembership, leaveCommunity } from '~/api/communities/membership'
 
@@ -10,7 +11,7 @@ const useStyles = createStyles(theme => ({
   text: { paddingBottom: theme.spacing.md }
 }))
 
-const LeaveCommunity = ({ props, onChangeMessage, refetch }) => {
+const LeaveCommunity = ({ props, refetch }) => {
   const { classes } = useStyles()
   const [opened, setOpened] = useState(false)
   const [memberNumber, setMemberNumber] = useState<number | undefined>()
@@ -29,12 +30,43 @@ const LeaveCommunity = ({ props, onChangeMessage, refetch }) => {
     leaveCommunity(props.community_id)
       .then(() => {
         refetch()
-        // window.location.reload()
+        notifications.show({
+          title: 'Community Membership Removed',
+          message:
+            'You are no longer member of this community. \nClick Join to send a new membership request.',
+          styles: theme => ({
+            root: {
+              backgroundColor: theme.colors.blue[6],
+              borderColor: theme.colors.blue[6],
+              '&::before': { backgroundColor: theme.white }
+            },
+            title: { color: theme.white },
+            description: { color: theme.white },
+            closeButton: {
+              color: theme.white,
+              '&:hover': { backgroundColor: theme.colors.blue[7] }
+            }
+          })
+        })
       })
       .catch(error => {
-        if (error.response.status === 409) {
-          onChangeMessage(error.response.data.message)
-        }
+        notifications.show({
+          title: error.response.statusText,
+          message: error.response.data.message,
+          styles: theme => ({
+            root: {
+              backgroundColor: theme.colors.red[6],
+              borderColor: theme.colors.red[6],
+              '&::before': { backgroundColor: theme.white }
+            },
+            title: { color: theme.white },
+            description: { color: theme.white },
+            closeButton: {
+              color: theme.white,
+              '&:hover': { backgroundColor: theme.colors.red[7] }
+            }
+          })
+        })
       })
   }
 

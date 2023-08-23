@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Popover, Button, Group, Textarea, createStyles, Tooltip } from '@mantine/core'
+import { notifications } from '@mantine/notifications'
 
 import type { MembershipValues } from '~/pages/CommunitiesPage/contexts/membership-context'
 import {
@@ -29,12 +30,51 @@ const MembershipRequest = ({ community_id, refetch }) => {
   })
 
   const handleSubmit = (values: MembershipValues) => {
-    createMembershipRequest(community_id, values).then(() =>
-      setTimeout(() => {
-        refetch()
-        setOpened(o => !o)
-      }, 100)
-    )
+    createMembershipRequest(community_id, values)
+      .then(() => {
+        setTimeout(() => {
+          refetch()
+          setOpened(o => !o)
+        }, 100)
+
+        notifications.show({
+          title: 'Membership Request Sent',
+          message:
+            'Your membership request has been send to the owner of the community. \nYou need to wait for his approval.',
+          styles: theme => ({
+            root: {
+              backgroundColor: theme.colors.blue[6],
+              borderColor: theme.colors.blue[6],
+              '&::before': { backgroundColor: theme.white }
+            },
+            title: { color: theme.white },
+            description: { color: theme.white },
+            closeButton: {
+              color: theme.white,
+              '&:hover': { backgroundColor: theme.colors.blue[7] }
+            }
+          })
+        })
+      })
+      .catch(error => {
+        notifications.show({
+          title: error.response.statusText,
+          message: error.response.data.message,
+          styles: theme => ({
+            root: {
+              backgroundColor: theme.colors.red[6],
+              borderColor: theme.colors.red[6],
+              '&::before': { backgroundColor: theme.white }
+            },
+            title: { color: theme.white },
+            description: { color: theme.white },
+            closeButton: {
+              color: theme.white,
+              '&:hover': { backgroundColor: theme.colors.red[7] }
+            }
+          })
+        })
+      })
   }
 
   return (

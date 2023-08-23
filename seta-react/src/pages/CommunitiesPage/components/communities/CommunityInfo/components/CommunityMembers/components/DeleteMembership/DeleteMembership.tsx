@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Text, Popover, Button, Group, createStyles, ActionIcon } from '@mantine/core'
+import { notifications } from '@mantine/notifications'
 import { IconTrash } from '@tabler/icons-react'
 
 import { deleteMembershipByID } from '~/api/communities/membership'
@@ -17,6 +18,44 @@ const DeleteMembership = ({ props }) => {
 
   const deleteMembership = () => {
     deleteMembershipByID(props.community_id, props.user_id)
+      .then(() => {
+        notifications.show({
+          title: 'Membership Removed',
+          message: 'You are no longer member of this community.',
+          styles: theme => ({
+            root: {
+              backgroundColor: theme.colors.teal[6],
+              borderColor: theme.colors.teal[6],
+              '&::before': { backgroundColor: theme.white }
+            },
+            title: { color: theme.white },
+            description: { color: theme.white },
+            closeButton: {
+              color: theme.white,
+              '&:hover': { backgroundColor: theme.colors.teal[7] }
+            }
+          })
+        })
+      })
+      .catch(error => {
+        notifications.show({
+          title: error.response.statusText,
+          message: error.response.data.message,
+          styles: theme => ({
+            root: {
+              backgroundColor: theme.colors.red[6],
+              borderColor: theme.colors.red[6],
+              '&::before': { backgroundColor: theme.white }
+            },
+            title: { color: theme.white },
+            description: { color: theme.white },
+            closeButton: {
+              color: theme.white,
+              '&:hover': { backgroundColor: theme.colors.red[7] }
+            }
+          })
+        })
+      })
   }
 
   return (

@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Popover, Button, Group, createStyles, Tooltip, Select, ActionIcon } from '@mantine/core'
+import { notifications } from '@mantine/notifications'
 import { IconPencil } from '@tabler/icons-react'
 
 import type { MembershipRequestValues } from '~/pages/CommunitiesPage/contexts/membership-request-context'
@@ -40,9 +41,46 @@ const UpdateMemberRequest = ({ props, refetch }) => {
   }, [props])
 
   const handleSubmit = (values: MembershipRequestValues) => {
-    updateMembershipRequest(props.community_id, values, props.requested_by).then(() => {
-      refetch()
-    })
+    updateMembershipRequest(props.community_id, values, props.requested_by)
+      .then(() => {
+        refetch()
+        notifications.show({
+          title: 'Membership Request Updated',
+          message: 'Membership request has been updated by the owner/manager',
+          styles: theme => ({
+            root: {
+              backgroundColor: theme.colors.teal[6],
+              borderColor: theme.colors.teal[6],
+              '&::before': { backgroundColor: theme.white }
+            },
+            title: { color: theme.white },
+            description: { color: theme.white },
+            closeButton: {
+              color: theme.white,
+              '&:hover': { backgroundColor: theme.colors.teal[7] }
+            }
+          })
+        })
+      })
+      .catch(error => {
+        notifications.show({
+          title: error.response.statusText,
+          message: error.response.data.message,
+          styles: theme => ({
+            root: {
+              backgroundColor: theme.colors.red[6],
+              borderColor: theme.colors.red[6],
+              '&::before': { backgroundColor: theme.white }
+            },
+            title: { color: theme.white },
+            description: { color: theme.white },
+            closeButton: {
+              color: theme.white,
+              '&:hover': { backgroundColor: theme.colors.red[7] }
+            }
+          })
+        })
+      })
 
     setOpened(o => !o)
   }

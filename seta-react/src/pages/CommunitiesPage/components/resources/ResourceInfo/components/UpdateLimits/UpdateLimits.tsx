@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Popover, Button, Group, createStyles, Text, NumberInput } from '@mantine/core'
+import { notifications } from '@mantine/notifications'
 
 import type { NewValueValues } from '~/pages/CommunitiesPage/contexts/change-request-context'
 import {
@@ -52,6 +53,46 @@ const UpdateLimits = ({ props }) => {
 
     // form.setValues({ new_value: form.values})
     createResourceChangeRequest(props.resource_id, formValues)
+      .then(() => {
+        notifications.show({
+          title: 'Resource Limits Request Created',
+          message:
+            'Resource limits changes request has been send to the owner of the resource. \nYou need to wait for his approval.',
+          styles: theme => ({
+            root: {
+              backgroundColor: theme.colors.blue[6],
+              borderColor: theme.colors.blue[6],
+              '&::before': { backgroundColor: theme.white }
+            },
+            title: { color: theme.white },
+            description: { color: theme.white },
+            closeButton: {
+              color: theme.white,
+              '&:hover': { backgroundColor: theme.colors.blue[7] }
+            }
+          })
+        })
+      })
+      .catch(error => {
+        notifications.show({
+          title: error.response.statusText,
+          message: error.response.data.message,
+          styles: theme => ({
+            root: {
+              backgroundColor: theme.colors.red[6],
+              borderColor: theme.colors.red[6],
+              '&::before': { backgroundColor: theme.white }
+            },
+            title: { color: theme.white },
+            description: { color: theme.white },
+            closeButton: {
+              color: theme.white,
+              '&:hover': { backgroundColor: theme.colors.red[7] }
+            }
+          })
+        })
+      })
+
     setOpened(o => !o)
   }
 

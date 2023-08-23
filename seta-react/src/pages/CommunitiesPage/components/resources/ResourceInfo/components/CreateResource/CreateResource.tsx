@@ -44,7 +44,7 @@ const CreateResource = ({ id }) => {
         }}
       >
         <Divider my="xs" label="Add New Resource" labelPosition="center" />
-        <CreateForm id={id} close={close} onChangeMessage={setNotifications} />
+        <CreateForm id={id} close={close} />
         {notifications !== undefined ? (
           <Notification
             icon={<IconX size="1.1rem" />}

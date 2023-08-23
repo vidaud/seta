@@ -73,7 +73,7 @@ const ChangeCommunityRequests = ({ id }: Props) => {
     if (data) {
       selected === 'all'
         ? setItems(data.community_change_requests)
-        : setItems(data.community_change_requests.filter(item => item.status === selected))
+        : setItems(data.community_change_requests?.filter(item => item?.status === selected))
 
       // setItems(data.community_change_requests)
       timeout = setTimeout(refetch, 1000)

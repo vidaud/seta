@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Popover, Button, Group, Tooltip, Text } from '@mantine/core'
+import { notifications } from '@mantine/notifications'
 
 import { createOpenMembership } from '~/api/communities/membership'
 
@@ -7,12 +8,50 @@ const OpenCommunityMember = ({ community_id, refetch }) => {
   const [opened, setOpened] = useState(false)
 
   const createMember = () => {
-    createOpenMembership(community_id).then(() =>
-      setTimeout(() => {
-        refetch()
-        setOpened(o => !o)
-      }, 100)
-    )
+    createOpenMembership(community_id)
+      .then(() => {
+        setTimeout(() => {
+          refetch()
+          setOpened(o => !o)
+        }, 100)
+
+        notifications.show({
+          title: 'Open Community Joined',
+          message: 'You are now a member of this community',
+          styles: theme => ({
+            root: {
+              backgroundColor: theme.colors.teal[6],
+              borderColor: theme.colors.teal[6],
+              '&::before': { backgroundColor: theme.white }
+            },
+            title: { color: theme.white },
+            description: { color: theme.white },
+            closeButton: {
+              color: theme.white,
+              '&:hover': { backgroundColor: theme.colors.teal[7] }
+            }
+          })
+        })
+      })
+      .catch(error => {
+        notifications.show({
+          title: error.response.statusText,
+          message: error.response.data.message,
+          styles: theme => ({
+            root: {
+              backgroundColor: theme.colors.red[6],
+              borderColor: theme.colors.red[6],
+              '&::before': { backgroundColor: theme.white }
+            },
+            title: { color: theme.white },
+            description: { color: theme.white },
+            closeButton: {
+              color: theme.white,
+              '&:hover': { backgroundColor: theme.colors.red[7] }
+            }
+          })
+        })
+      })
   }
 
   return (

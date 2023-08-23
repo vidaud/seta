@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 import { TextInput, Group, createStyles, Button, Textarea } from '@mantine/core'
+import { notifications } from '@mantine/notifications'
 
 import { ComponentLoading } from '~/pages/CommunitiesPage/components/common'
 import type { CommunityValues } from '~/pages/CommunitiesPage/contexts/community-context'
@@ -58,10 +59,47 @@ const UpdateForm = ({ community, close, onChange, refetch }) => {
   }
 
   const handleSubmit = (values: CommunityValues) => {
-    updateCommunity(community.community_id, values).then(() => {
-      refetch()
-      close()
-    })
+    updateCommunity(community.community_id, values)
+      .then(() => {
+        refetch()
+        close()
+        notifications.show({
+          title: 'Community Updated Successfully',
+          message: 'Community has been updated successfully',
+          styles: theme => ({
+            root: {
+              backgroundColor: theme.colors.teal[6],
+              borderColor: theme.colors.teal[6],
+              '&::before': { backgroundColor: theme.white }
+            },
+            title: { color: theme.white },
+            description: { color: theme.white },
+            closeButton: {
+              color: theme.white,
+              '&:hover': { backgroundColor: theme.colors.teal[7] }
+            }
+          })
+        })
+      })
+      .catch(error => {
+        notifications.show({
+          title: error.response.statusText,
+          message: error.response.data.message,
+          styles: theme => ({
+            root: {
+              backgroundColor: theme.colors.red[6],
+              borderColor: theme.colors.red[6],
+              '&::before': { backgroundColor: theme.white }
+            },
+            title: { color: theme.white },
+            description: { color: theme.white },
+            closeButton: {
+              color: theme.white,
+              '&:hover': { backgroundColor: theme.colors.red[7] }
+            }
+          })
+        })
+      })
   }
 
   return (

@@ -9,13 +9,17 @@ import {
   useMantineTheme,
   Group
 } from '@mantine/core'
+import { notifications } from '@mantine/notifications'
+
+import RowActions from '~/pages/Admin/common/components/RequestRowActions/RowActions'
 
 import { useAllPendingInvites } from '~/api/communities/invite'
+import { useUpdateInvitationRequest } from '~/api/communities/manage/invitation-requests'
+import { InviteRequestStatus } from '~/types/community/invite-requests'
 
 import { statusColors } from '../../../types'
 import { ComponentEmpty, ComponentError, ComponentLoading } from '../../common'
 import ExtendedMessage from '../../communities/CommunityInfo/components/ExtendedMessage/ExtendedMessage'
-import UpdateInviteRequest from '../../communities/CommunityInfo/components/UpdateInviteRequest'
 
 const useStyles = createStyles(theme => ({
   header: {
@@ -60,6 +64,7 @@ const InvitesList = () => {
   const { data, isLoading, error, refetch } = useAllPendingInvites()
   const [items, setItems] = useState(data)
   const theme = useMantineTheme()
+  const updateRequestMutation = useUpdateInvitationRequest()
 
   useEffect(() => {
     if (data) {
@@ -79,6 +84,49 @@ const InvitesList = () => {
 
   if (isLoading || !data) {
     return <ComponentLoading />
+  }
+
+  const handleApproveRequest = (invite_id: string) => {
+    updateRequestMutation.mutate({
+      invite_id: invite_id,
+      status: InviteRequestStatus.Accepted
+    })
+
+    if (updateRequestMutation.isError) {
+      notifications.show({
+        message: 'The invitation request update failed!',
+        color: 'red',
+        autoClose: 5000
+      })
+    } else {
+      notifications.show({
+        message: 'The invitation request was approved!',
+        color: 'teal',
+        autoClose: 5000
+      })
+    }
+  }
+
+  const handleRejectRequest = (invite_id: string) => {
+    updateRequestMutation.mutate({
+      invite_id: invite_id,
+      status: InviteRequestStatus.Rejected
+    })
+
+    if (updateRequestMutation.error) {
+      notifications.show({
+        title: 'Update failed!',
+        message: 'The invitation request update failed. Please try again!',
+        color: 'red',
+        autoClose: 5000
+      })
+    } else {
+      notifications.show({
+        message: 'The invitation request was rejected!',
+        color: 'yellow',
+        autoClose: 5000
+      })
+    }
   }
 
   const rows = items?.map(row => (
@@ -107,7 +155,16 @@ const InvitesList = () => {
       <td>{new Date(row.expire_date).toLocaleDateString()}</td>
       <td>
         <Group spacing={0}>
-          <UpdateInviteRequest props={row} parent="InvitesList" refetch={refetch} />
+          <RowActions
+            onApprove={() => {
+              handleApproveRequest?.(row.invite_id)
+              refetch()
+            }}
+            onReject={() => {
+              handleRejectRequest?.(row.invite_id)
+              refetch()
+            }}
+          />
         </Group>
       </td>
     </tr>

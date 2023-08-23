@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { createStyles, Switch, useMantineTheme } from '@mantine/core'
+import { notifications } from '@mantine/notifications'
 import { FaUsers, FaUsersSlash } from 'react-icons/fa'
 
 import type { CommunityScopes } from '~/pages/CommunitiesPage/contexts/community-list.context'
@@ -60,9 +61,46 @@ const ChangePrivacy = ({ community }: Props) => {
       old_value: community.membership
     }
 
-    createCommunityChangeRequest(id, formValues).then(() => {
-      refetch()
-    })
+    createCommunityChangeRequest(id, formValues)
+      .then(() => {
+        refetch()
+        notifications.show({
+          title: 'Request Created Successfully',
+          message: 'Community privacy change request has been successfully created',
+          styles: () => ({
+            root: {
+              backgroundColor: theme.colors.blue[6],
+              borderColor: theme.colors.blue[6],
+              '&::before': { backgroundColor: theme.white }
+            },
+            title: { color: theme.white },
+            description: { color: theme.white },
+            closeButton: {
+              color: theme.white,
+              '&:hover': { backgroundColor: theme.colors.blue[7] }
+            }
+          })
+        })
+      })
+      .catch(error => {
+        notifications.show({
+          title: error.response.statusText,
+          message: error.response.data.message,
+          styles: () => ({
+            root: {
+              backgroundColor: theme.colors.red[6],
+              borderColor: theme.colors.red[6],
+              '&::before': { backgroundColor: theme.white }
+            },
+            title: { color: theme.white },
+            description: { color: theme.white },
+            closeButton: {
+              color: theme.white,
+              '&:hover': { backgroundColor: theme.colors.red[7] }
+            }
+          })
+        })
+      })
   }
 
   return (

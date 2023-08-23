@@ -100,11 +100,6 @@ const CommunityInvites = ({ id, type }) => {
       <td>{row.status.toUpperCase()}</td>
       <td>{new Date(row.initiated_date).toLocaleDateString()}</td>
       <td>{row.initiated_by_info.full_name}</td>
-      {/* <td>
-        <Group spacing={0}>
-          <UpdateInviteRequest props={row} parent="InvitesList" />
-        </Group>
-      </td> */}
     </tr>
   ))
 

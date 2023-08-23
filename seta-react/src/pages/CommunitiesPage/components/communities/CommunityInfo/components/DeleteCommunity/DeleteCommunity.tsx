@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Text, Popover, Button, Group, createStyles, Title, UnstyledButton } from '@mantine/core'
+import { notifications } from '@mantine/notifications'
 import { IconTrash } from '@tabler/icons-react'
 
 import { deleteCommunityByID } from '~/api/communities/manage/my-community'
@@ -23,10 +24,47 @@ const DeleteCommunity = ({ props, totalResources, refetch }) => {
   const [opened, setOpened] = useState(false)
 
   const deleteCommunity = () => {
-    deleteCommunityByID(props?.community_id).then(() => {
-      refetch()
-      setOpened(o => !o)
-    })
+    deleteCommunityByID(props?.community_id)
+      .then(() => {
+        refetch()
+        setOpened(o => !o)
+        notifications.show({
+          title: 'Community Deleted Successfully',
+          message: 'Community has been deleted successfully',
+          styles: theme => ({
+            root: {
+              backgroundColor: theme.colors.teal[6],
+              borderColor: theme.colors.teal[6],
+              '&::before': { backgroundColor: theme.white }
+            },
+            title: { color: theme.white },
+            description: { color: theme.white },
+            closeButton: {
+              color: theme.white,
+              '&:hover': { backgroundColor: theme.colors.teal[7] }
+            }
+          })
+        })
+      })
+      .catch(error => {
+        notifications.show({
+          title: error.response.statusText,
+          message: error.response.data.message,
+          styles: theme => ({
+            root: {
+              backgroundColor: theme.colors.red[6],
+              borderColor: theme.colors.red[6],
+              '&::before': { backgroundColor: theme.white }
+            },
+            title: { color: theme.white },
+            description: { color: theme.white },
+            closeButton: {
+              color: theme.white,
+              '&:hover': { backgroundColor: theme.colors.red[7] }
+            }
+          })
+        })
+      })
   }
 
   return (

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
-import { ActionIcon, Button, Group, Menu, Notification } from '@mantine/core'
-import { IconDotsVertical, IconX } from '@tabler/icons-react'
+import { ActionIcon, Button, Group, Menu } from '@mantine/core'
+import { IconDotsVertical } from '@tabler/icons-react'
 
 import type { CommunityScopes } from '~/pages/CommunitiesPage/contexts/community-list.context'
 
@@ -25,9 +25,10 @@ type Props = {
 const CommunityButton = ({ props, community_scopes, resources }: Props) => {
   const { refetch } = useAllCommunities()
   const [data, setData] = useState<CommunityResponse>(props)
-  const [message, setMessage] = useState('')
   const [scopes, setScopes] = useState<string[] | undefined>([])
   const [outsideClick, setOutsideClick] = useState(true)
+  const isManager =
+    scopes?.includes('/seta/community/owner') || scopes?.includes('/seta/community/manager')
 
   useEffect(() => {
     if (props) {
@@ -38,10 +39,7 @@ const CommunityButton = ({ props, community_scopes, resources }: Props) => {
 
       findCommunity ? setScopes(findCommunity[0]?.scopes) : setScopes([])
     }
-  }, [props, data, community_scopes])
-
-  const isManager =
-    scopes?.includes('/seta/community/owner') || scopes?.includes('/seta/community/manager')
+  }, [props, data, community_scopes, scopes])
 
   const handleOutsideClick = value => {
     setOutsideClick(value)
@@ -96,17 +94,7 @@ const CommunityButton = ({ props, community_scopes, resources }: Props) => {
         {data.status === 'membership' ? (
           <>
             {' '}
-            <LeaveCommunity props={data} onChangeMessage={setMessage} refetch={refetch} />
-            {message !== '' ? (
-              <Notification
-                title="We notify you that"
-                icon={<IconX size="1.1rem" />}
-                color="red"
-                onClose={() => setMessage('')}
-              >
-                {message}
-              </Notification>
-            ) : null}
+            <LeaveCommunity props={data} refetch={refetch} />
           </>
         ) : data.status === 'pending' ? (
           <Button color="gray" variant="outline" size="xs">

@@ -1,4 +1,5 @@
 import { TextInput, Group, createStyles, Button, Textarea } from '@mantine/core'
+import { notifications } from '@mantine/notifications'
 
 import {
   useResource,
@@ -20,7 +21,7 @@ const useStyles = createStyles({
   }
 })
 
-const CreateForm = ({ id, close, onChangeMessage }) => {
+const CreateForm = ({ id, close }) => {
   const { classes, cx } = useStyles()
 
   const form = useResource({
@@ -40,11 +41,45 @@ const CreateForm = ({ id, close, onChangeMessage }) => {
   })
 
   const handleSubmit = (values: ResourceValues) => {
-    createResource(id, values).catch(error => {
-      if (error.response.status === 409) {
-        onChangeMessage(error.response.data.message)
-      }
-    })
+    createResource(id, values)
+      .then(() => {
+        notifications.show({
+          title: 'New Resource Added Successfully',
+          message: 'New resource has been added to community',
+          styles: theme => ({
+            root: {
+              backgroundColor: theme.colors.teal[6],
+              borderColor: theme.colors.teal[6],
+              '&::before': { backgroundColor: theme.white }
+            },
+            title: { color: theme.white },
+            description: { color: theme.white },
+            closeButton: {
+              color: theme.white,
+              '&:hover': { backgroundColor: theme.colors.teal[7] }
+            }
+          })
+        })
+      })
+      .catch(error => {
+        notifications.show({
+          title: error.response.statusText,
+          message: error.response.data.message,
+          styles: theme => ({
+            root: {
+              backgroundColor: theme.colors.red[6],
+              borderColor: theme.colors.red[6],
+              '&::before': { backgroundColor: theme.white }
+            },
+            title: { color: theme.white },
+            description: { color: theme.white },
+            closeButton: {
+              color: theme.white,
+              '&:hover': { backgroundColor: theme.colors.red[7] }
+            }
+          })
+        })
+      })
   }
 
   return (
