@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Table, Group, Text } from '@mantine/core'
 
+import UserInfo from '~/pages/Admin/common/components/UserInfo/UserInfo'
 import {
   ComponentEmpty,
   ComponentError,
@@ -40,7 +41,11 @@ const ResourceUsersPermissions = ({ id, type }) => {
     <tr key={item.user_id}>
       <td>
         <Group spacing="sm">
-          <Text fz="sm">{item.user_info.full_name}</Text>
+          <UserInfo
+            username={item.user_info?.user_id}
+            fullName={item.user_info?.full_name}
+            email={item.user_info?.email}
+          />
         </Group>
       </td>
       <td>
