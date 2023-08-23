@@ -1,6 +1,9 @@
 import { useEffect, useState } from 'react'
-import { createStyles, Table, rem, useMantineTheme, Badge, Select } from '@mantine/core'
+import { createStyles, Table, rem, useMantineTheme, Badge, Select, Text } from '@mantine/core'
 
+import ChangedPropertyCell from '~/pages/Admin/common/components/ChangedPropertyCell/ChangedPropertyCell'
+import DateTimeCell from '~/pages/Admin/common/components/DateTimeCell/DateTimeCell'
+import UserInfo from '~/pages/Admin/common/components/UserInfo/UserInfo'
 import {
   ComponentEmpty,
   ComponentError,
@@ -10,8 +13,6 @@ import { statusColors } from '~/pages/CommunitiesPage/types'
 
 import { useCommunityChangeRequests } from '~/api/communities/community-change-requests'
 import type { CommunityChangeRequests } from '~/api/types/change-request-types'
-
-import ExtendedMessage from '../ExtendedMessage/ExtendedMessage'
 
 const useStyles = createStyles(theme => ({
   header: {
@@ -102,28 +103,50 @@ const ChangeCommunityRequests = ({ id }: Props) => {
 
   const rows = items?.map(row => (
     <tr key={row?.request_id}>
-      <td>{row?.community_id.charAt(0).toUpperCase() + row?.community_id.slice(1)}</td>
-      <td>{row?.field_name.charAt(0).toUpperCase() + row?.field_name.slice(1)}</td>
-      <td className={classes.td}>
+      <td>
+        <Text color="dark" fw={600} size="md">
+          {row?.community_id.charAt(0).toUpperCase() + row?.community_id.slice(1)}
+        </Text>
+      </td>
+      <td>
+        <ChangedPropertyCell
+          fieldName={row?.field_name}
+          currentValue={row.old_value}
+          newValue={row.new_value}
+        />
+      </td>
+      {/* <td>{row?.field_name.charAt(0).toUpperCase() + row?.field_name.slice(1)}</td> */}
+      {/* <td className={classes.td}>
         <ExtendedMessage
           id={row.community_id}
           message={row.old_value.charAt(0).toUpperCase() + row.old_value.slice(1)}
           title="Expand Old Value"
           type="value"
         />
-      </td>
-      <td className={classes.td}>
+      </td> */}
+
+      {/* <td className={classes.td}>
         <ExtendedMessage
           id={row.community_id}
           message={row.new_value.charAt(0).toUpperCase() + row.new_value.slice(1)}
           title="Expand New Value"
           type="value"
         />
+      </td> */}
+
+      <td>
+        <UserInfo
+          username={row.requested_by_info?.user_id}
+          fullName={row.requested_by_info?.full_name}
+          email={row.requested_by_info?.email}
+        />
       </td>
-      <td>{row?.requested_by_info?.full_name}</td>
-      <td>{new Date(row?.initiated_date).toDateString()}</td>
+      <td>
+        <DateTimeCell dateTime={row?.initiated_date} />
+      </td>
       <td>
         <Badge
+          size="md"
           color={statusColors[row?.status.toLowerCase()]}
           variant={theme.colorScheme === 'dark' ? 'light' : 'outline'}
         >
@@ -147,9 +170,9 @@ const ChangeCommunityRequests = ({ id }: Props) => {
         <thead className={cx(classes.header)}>
           <tr>
             <th>Community</th>
-            <th>Field</th>
-            <th>Old value</th>
-            <th>New value</th>
+            <th>Changed Property</th>
+            {/* <th>Old value</th>
+            <th>New value</th> */}
             <th>Requested by</th>
             <th>Initiated Date</th>
             <th>Status</th>

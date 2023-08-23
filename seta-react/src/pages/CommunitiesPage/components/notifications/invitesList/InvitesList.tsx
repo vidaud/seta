@@ -11,7 +11,9 @@ import {
 } from '@mantine/core'
 import { notifications } from '@mantine/notifications'
 
+import DateTimeCell from '~/pages/Admin/common/components/DateTimeCell/DateTimeCell'
 import RowActions from '~/pages/Admin/common/components/RequestRowActions/RowActions'
+import UserInfo from '~/pages/Admin/common/components/UserInfo/UserInfo'
 
 import { useAllPendingInvites } from '~/api/communities/invite'
 import { useUpdateInvitationRequest } from '~/api/communities/manage/invitation-requests'
@@ -133,7 +135,13 @@ const InvitesList = () => {
     <tr key={row.invite_id}>
       <td>{row.invite_id}</td>
       <td>{row.community_id.charAt(0).toUpperCase() + row?.community_id.slice(1)}</td>
-      <td>{row.invited_user_info?.full_name}</td>
+      <td>
+        <UserInfo
+          username={row.invited_user_info?.user_id}
+          fullName={row.invited_user_info?.full_name}
+          email={row.invited_user_info?.email}
+        />
+      </td>
       <td className={classes.td}>
         <ExtendedMessage
           id={row.community_id}
@@ -150,9 +158,19 @@ const InvitesList = () => {
           {row.status}
         </Badge>
       </td>
-      <td>{new Date(row.initiated_date).toLocaleDateString()}</td>
-      <td>{row.initiated_by_info?.full_name}</td>
-      <td>{new Date(row.expire_date).toLocaleDateString()}</td>
+      <td>
+        <DateTimeCell dateTime={row?.initiated_date} />
+      </td>
+      <td>
+        <UserInfo
+          username={row.initiated_by_info?.user_id}
+          fullName={row.initiated_by_info?.full_name}
+          email={row.initiated_by_info?.email}
+        />
+      </td>
+      <td>
+        <DateTimeCell dateTime={row?.expire_date} />
+      </td>
       <td>
         <Group spacing={0}>
           <RowActions

@@ -11,7 +11,9 @@ import {
 } from '@mantine/core'
 import { notifications } from '@mantine/notifications'
 
+import DateTimeCell from '~/pages/Admin/common/components/DateTimeCell/DateTimeCell'
 import RowActions from '~/pages/Admin/common/components/RequestRowActions/RowActions'
+import UserInfo from '~/pages/Admin/common/components/UserInfo/UserInfo'
 
 import { useUpdateMembershipRequest } from '~/api/communities/manage/membership-requests'
 import { useMembershipRequests } from '~/api/communities/membership-requests'
@@ -142,8 +144,17 @@ const MembersList = () => {
                 type="message"
               />
             </td>
-            <td>{new Date(row.initiated_date).toDateString()}</td>
-            <td>{row.requested_by_info?.full_name}</td>
+            <td>
+              <DateTimeCell dateTime={row?.initiated_date} />
+            </td>
+
+            <td>
+              <UserInfo
+                username={row.requested_by_info?.user_id}
+                fullName={row.requested_by_info?.full_name}
+                email={row.requested_by_info?.email}
+              />
+            </td>
             <td>{row.review_date ? new Date(row.review_date).toDateString() : null}</td>
             <td>{row.reviewed_by_info?.full_name}</td>
             <td>

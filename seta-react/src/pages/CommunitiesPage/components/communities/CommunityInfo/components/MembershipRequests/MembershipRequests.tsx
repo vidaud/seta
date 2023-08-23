@@ -2,7 +2,9 @@ import { useEffect, useState } from 'react'
 import { createStyles, Table, rem, Badge, useMantineTheme, Group, Text } from '@mantine/core'
 import { notifications } from '@mantine/notifications'
 
+import DateTimeCell from '~/pages/Admin/common/components/DateTimeCell/DateTimeCell'
 import RowActions from '~/pages/Admin/common/components/RequestRowActions/RowActions'
+import UserInfo from '~/pages/Admin/common/components/UserInfo/UserInfo'
 import {
   ComponentEmpty,
   ComponentError,
@@ -137,7 +139,13 @@ const MembershipRequests = ({ id, type }) => {
 
   const rows = items?.map(row => (
     <tr key={row.community_id}>
-      <td>{row.requested_by_info.full_name}</td>
+      <td>
+        <UserInfo
+          username={row.requested_by_info?.user_id}
+          fullName={row.requested_by_info?.full_name}
+          email={row.requested_by_info?.email}
+        />
+      </td>
       <td className={classes.td}>
         <ExtendedMessage
           id={row.community_id}
@@ -146,7 +154,9 @@ const MembershipRequests = ({ id, type }) => {
           type="message"
         />
       </td>
-      <td>{new Date(row?.initiated_date).toDateString()}</td>
+      <td>
+        <DateTimeCell dateTime={row?.initiated_date} />
+      </td>
       <td>
         <Badge
           color={statusColors[row.status.toLowerCase()]}

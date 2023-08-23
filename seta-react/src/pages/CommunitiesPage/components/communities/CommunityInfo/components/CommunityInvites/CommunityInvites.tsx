@@ -1,11 +1,14 @@
 import { useEffect, useState } from 'react'
-import { createStyles, Table, rem, Text } from '@mantine/core'
+import { createStyles, Table, rem, Text, Badge, useMantineTheme } from '@mantine/core'
 
+import DateTimeCell from '~/pages/Admin/common/components/DateTimeCell/DateTimeCell'
+import UserInfo from '~/pages/Admin/common/components/UserInfo/UserInfo'
 import {
   ComponentEmpty,
   ComponentError,
   ComponentLoading
 } from '~/pages/CommunitiesPage/components/common'
+import { statusColors } from '~/pages/CommunitiesPage/types'
 
 import { useInviteID } from '~/api/communities/invite'
 
@@ -52,6 +55,7 @@ const useStyles = createStyles(theme => ({
 const CommunityInvites = ({ id, type }) => {
   const { classes, cx } = useStyles()
   const perPage = 5
+  const theme = useMantineTheme()
   const { data, isLoading, error, refetch } = useInviteID(id)
   const [items, setItems] = useState(type === 'container' ? data?.slice(0, perPage) : data)
 
@@ -88,7 +92,13 @@ const CommunityInvites = ({ id, type }) => {
   const rows = items?.map(row => (
     <tr key={row.invite_id}>
       <td>{row.community_id.charAt(0).toUpperCase() + row?.community_id.slice(1)}</td>
-      <td>{row.invited_user_info.full_name}</td>
+      <td>
+        <UserInfo
+          username={row.invited_user_info?.user_id}
+          fullName={row.invited_user_info?.full_name}
+          email={row.invited_user_info?.email}
+        />
+      </td>
       <td className={classes.td}>
         <ExtendedMessage
           id={row.community_id}
@@ -97,9 +107,25 @@ const CommunityInvites = ({ id, type }) => {
           type="message"
         />
       </td>
-      <td>{row.status.toUpperCase()}</td>
-      <td>{new Date(row.initiated_date).toLocaleDateString()}</td>
-      <td>{row.initiated_by_info.full_name}</td>
+
+      <td>
+        <Badge
+          color={statusColors[row.status.toLowerCase()]}
+          variant={theme.colorScheme === 'dark' ? 'light' : 'outline'}
+        >
+          {row.status}
+        </Badge>
+      </td>
+      <td>
+        <DateTimeCell dateTime={row?.initiated_date} />
+      </td>
+      <td>
+        <UserInfo
+          username={row.initiated_by_info?.user_id}
+          fullName={row.initiated_by_info?.full_name}
+          email={row.initiated_by_info?.email}
+        />
+      </td>
     </tr>
   ))
 
