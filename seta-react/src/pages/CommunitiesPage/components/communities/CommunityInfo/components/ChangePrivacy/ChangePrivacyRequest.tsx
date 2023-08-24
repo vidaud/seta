@@ -114,7 +114,7 @@ const ChangePrivacy = ({ community }: Props) => {
           onChange={event => {
             setChecked(event.currentTarget.checked)
             event.stopPropagation()
-            handleSwitch(!event.currentTarget.checked, community.community_id)
+            handleSwitch(event.currentTarget.checked, community.community_id)
           }}
           color="teal"
           size="md"

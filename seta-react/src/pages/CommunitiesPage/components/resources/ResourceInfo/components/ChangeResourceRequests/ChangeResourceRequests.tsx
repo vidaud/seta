@@ -68,7 +68,7 @@ const ChangeResourceRequests = ({ id }) => {
     let timeout: number | null = null
 
     if (data) {
-      selected === 'all' ? setItems(data) : setItems(data.filter(item => item.status === selected))
+      selected === 'all' ? setItems(data) : setItems(data?.filter(item => item.status === selected))
 
       // setItems(data)
       timeout = setTimeout(refetch, 1000)
@@ -109,25 +109,6 @@ const ChangeResourceRequests = ({ id }) => {
           newValue={row.new_value}
         />
       </td>
-      {/* <td>{row?.field_name.charAt(0).toUpperCase() + row?.field_name.slice(1)}</td> */}
-
-      {/* <td className={classes.td}>
-        <ExtendedMessage
-          id={row.request_id}
-          message={row.old_value.charAt(0).toUpperCase() + row.old_value.slice(1)}
-          title="Expand Old Value"
-          type="value"
-        />
-      </td>
-      <td className={classes.td}>
-        <ExtendedMessage
-          id={row.request_id}
-          message={row.new_value.charAt(0).toUpperCase() + row.new_value.slice(1)}
-          title="Expand New Value"
-          type="value"
-        />
-      </td> */}
-
       <td>
         <UserInfo
           username={row.requested_by_info?.user_id}
@@ -164,8 +145,6 @@ const ChangeResourceRequests = ({ id }) => {
           <tr>
             <th>Resource</th>
             <th>Changed Property</th>
-            {/* <th>Old value</th>
-            <th>New value</th> */}
             <th>Requested by</th>
             <th>Initiated Date</th>
             <th>Status</th>

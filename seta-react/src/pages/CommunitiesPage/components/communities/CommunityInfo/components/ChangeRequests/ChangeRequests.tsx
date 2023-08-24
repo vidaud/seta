@@ -115,25 +115,6 @@ const ChangeCommunityRequests = ({ id }: Props) => {
           newValue={row.new_value}
         />
       </td>
-      {/* <td>{row?.field_name.charAt(0).toUpperCase() + row?.field_name.slice(1)}</td> */}
-      {/* <td className={classes.td}>
-        <ExtendedMessage
-          id={row.community_id}
-          message={row.old_value.charAt(0).toUpperCase() + row.old_value.slice(1)}
-          title="Expand Old Value"
-          type="value"
-        />
-      </td> */}
-
-      {/* <td className={classes.td}>
-        <ExtendedMessage
-          id={row.community_id}
-          message={row.new_value.charAt(0).toUpperCase() + row.new_value.slice(1)}
-          title="Expand New Value"
-          type="value"
-        />
-      </td> */}
-
       <td>
         <UserInfo
           username={row.requested_by_info?.user_id}
@@ -171,8 +152,6 @@ const ChangeCommunityRequests = ({ id }: Props) => {
           <tr>
             <th>Community</th>
             <th>Changed Property</th>
-            {/* <th>Old value</th>
-            <th>New value</th> */}
             <th>Requested by</th>
             <th>Initiated Date</th>
             <th>Status</th>
