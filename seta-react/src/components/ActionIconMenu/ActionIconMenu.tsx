@@ -1,31 +1,20 @@
 import { useEffect, useState } from 'react'
-import { Popover, type PopoverProps } from '@mantine/core'
+import type { MenuProps } from '@mantine/core'
+import { Menu } from '@mantine/core'
 
-import type { Action } from '~/components/ActionsGroup'
+import type { ActionWithPopover } from '~/components/ActionIconPopover'
 import ColoredActionIcon from '~/components/ColoredActionIcon'
 
 import type { ClassNameProp } from '~/types/children-props'
 
-export type ActionWithPopover = Pick<
-  Action,
-  'icon' | 'color' | 'loading' | 'disabled' | 'tooltip' | 'onClick'
-> & {
-  active?: boolean
-}
+import * as S from './styles'
 
 type Props = {
   action: ActionWithPopover
-} & PopoverProps &
+} & MenuProps &
   ClassNameProp
 
-const ActionIconPopover = ({
-  action,
-  opened,
-  children,
-  className,
-  onChange,
-  ...popoverProps
-}: Props) => {
+const ActionIconMenu = ({ action, opened, children, className, onChange, ...menuProps }: Props) => {
   const [isOpen, setIsOpen] = useState(opened)
 
   const { icon, active, onClick, color, ...actionProps } = action
@@ -48,14 +37,15 @@ const ActionIconPopover = ({
   const inner = <div onClick={e => e.stopPropagation()}>{children}</div>
 
   return (
-    <Popover
+    <Menu
       shadow="md"
       position="bottom-end"
+      width={240}
       opened={isOpen}
       onChange={handleChange}
-      {...popoverProps}
+      {...menuProps}
     >
-      <Popover.Target>
+      <Menu.Target>
         <ColoredActionIcon
           color={color}
           activeColor={color}
@@ -66,11 +56,13 @@ const ActionIconPopover = ({
         >
           {icon}
         </ColoredActionIcon>
-      </Popover.Target>
+      </Menu.Target>
 
-      <Popover.Dropdown className={className}>{inner}</Popover.Dropdown>
-    </Popover>
+      <Menu.Dropdown className={className} css={S.menu}>
+        {inner}
+      </Menu.Dropdown>
+    </Menu>
   )
 }
 
-export default ActionIconPopover
+export default ActionIconMenu

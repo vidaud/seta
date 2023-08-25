@@ -8,7 +8,7 @@ import * as S from './styles'
 
 type Props = {
   title?: ReactNode
-  text: string
+  description: ReactNode
   secondary?: string
   icon?: ReactNode
   confirmLabel?: string
@@ -22,7 +22,7 @@ type Props = {
 }
 
 const ConfirmModal = ({
-  text,
+  description,
   secondary,
   icon,
   confirmLabel,
@@ -35,6 +35,15 @@ const ConfirmModal = ({
   ...props
 }: Props) => {
   const buttonColor: ButtonProps['color'] = confirmColor ?? 'blue'
+
+  const descriptionElement =
+    typeof description === 'string' ? (
+      <Text color="dark.6" size="lg" maw="32rem">
+        {description}
+      </Text>
+    ) : (
+      description
+    )
 
   return (
     <Modal
@@ -52,9 +61,7 @@ const ConfirmModal = ({
           {icon}
 
           <Stack spacing="xs">
-            <Text color="dark.6" size="lg">
-              {text}
-            </Text>
+            {descriptionElement}
 
             {secondary && <Text color="dimmed">{secondary}</Text>}
           </Stack>

@@ -3,7 +3,6 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import UnderDevelopment from '~/components/UnderDevelopment'
 import { SuggestionsError, SuggestionsLoading } from '~/pages/SearchPageNew/components/common'
 
-import { useCreateNewFolder } from '~/api/search/library'
 import type { ClassNameProp } from '~/types/children-props'
 import type { DataProps } from '~/types/data-props'
 import { LibraryItemType } from '~/types/library/library-item'
@@ -12,6 +11,7 @@ import { getLibraryTree, ROOT_LIBRARY_ITEM_NAME } from '~/utils/library-utils'
 
 import type { DocumentsTreeOptions } from './contexts/documents-tree-context'
 import { DocumentsTreeProvider } from './contexts/documents-tree-context'
+import { TreeActionsProvider } from './contexts/tree-actions-context'
 import DocumentNode from './DocumentNode'
 import * as S from './styles'
 
@@ -35,13 +35,12 @@ const DocumentsTree = ({
 
   const onSelectedChangeRef = useRef(onSelectedChange)
 
-  const { mutateAsync: createNewFolder } = useCreateNewFolder()
-
   const dataTree = useMemo(() => getLibraryTree(data), [data])
 
   const rootNode: LibraryItem = useMemo(
     () => ({
       id: 'root',
+      parentId: null,
       type: LibraryItemType.Folder,
       order: 0,
       title: ROOT_LIBRARY_ITEM_NAME,
@@ -97,12 +96,6 @@ const DocumentsTree = ({
     }
   }
 
-  const handleNewFolder = async (parentId: string | null, title: string): Promise<string> => {
-    const { item } = await createNewFolder({ parentId, title })
-
-    return item.id
-  }
-
   return (
     <div className={className}>
       <UnderDevelopment mb="md" />
@@ -114,9 +107,10 @@ const DocumentsTree = ({
         selected={selected}
         onSelect={handleSelect}
         selectChild={handleSelectChild}
-        createNewFolder={handleNewFolder}
       >
-        <DocumentNode item={rootNode} isRoot css={S.rootNode} />
+        <TreeActionsProvider>
+          <DocumentNode item={rootNode} isRoot css={S.rootNode} />
+        </TreeActionsProvider>
       </DocumentsTreeProvider>
     </div>
   )

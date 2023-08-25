@@ -33,6 +33,7 @@ const NewFolderAction = ({ isLoading, onPopoverChange, onNewFolder }: Props) => 
       setInputValue('')
     }, 200)
 
+    // TODO: Call the mutation here and remove the onNewFolder prop
     onNewFolder?.(value)
   }
 

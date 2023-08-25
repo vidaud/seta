@@ -28,10 +28,6 @@ export const itemContainer: ThemedCSS = theme => css`
 
     & > .seta-Group-root {
       padding: 0;
-
-      & > .seta-ActionIcon-root:first-of-type {
-        margin-left: ${theme.spacing.xs};
-      }
     }
   }
 

@@ -1,6 +1,4 @@
-import { useEffect, useState } from 'react'
-import { Alert, Collapse } from '@mantine/core'
-
+import ClosableAlert from '~/components/ClosableAlert/ClosableAlert'
 import DocumentsTree from '~/pages/SearchPageNew/components/documents/DocumentsTree'
 
 import type { DataProps } from '~/types/data-props'
@@ -14,29 +12,12 @@ type Props = DataProps<LibraryItemRaw[]> & {
 }
 
 const SaveDocumentsContent = ({ saveError, onSelectedChange, ...props }: Props) => {
-  const [errorVisible, setErrorVisible] = useState(!!saveError)
-
-  useEffect(() => {
-    if (saveError) {
-      setErrorVisible(true)
-    }
-  }, [saveError])
-
   const errorAlert = !!saveError && (
-    <Collapse in={errorVisible}>
-      <Alert
-        title="Error saving documents"
-        color="red"
-        variant="outline"
-        withCloseButton
-        mb="sm"
-        onClose={() => setErrorVisible(false)}
-      >
-        {saveError}
-        <br />
-        Please try again.
-      </Alert>
-    </Collapse>
+    <ClosableAlert title="Error saving documents" color="red" variant="outline" mb="sm">
+      {saveError}
+      <br />
+      Please try again.
+    </ClosableAlert>
   )
 
   return (
@@ -47,6 +28,7 @@ const SaveDocumentsContent = ({ saveError, onSelectedChange, ...props }: Props) 
         css={S.tree}
         foldersOnly
         selectable
+        noActionMenu
         autoSelect
         onSelectedChange={onSelectedChange}
         {...props}

@@ -1,6 +1,6 @@
 import type { QueryKey } from '@tanstack/react-query'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import type { AxiosRequestConfig } from 'axios'
+import { AxiosError, type AxiosRequestConfig } from 'axios'
 
 import { mockRawLibraryItems } from '~/api/search/mocks'
 import type { LibraryItemRaw } from '~/types/library/library-item'
@@ -9,7 +9,7 @@ export type LibraryResponse = {
   items: LibraryItemRaw[]
 }
 
-export type NewFolderResponse = {
+export type ItemResponse = {
   item: LibraryItemRaw
 }
 
@@ -27,9 +27,15 @@ export type CreateNewFolderPayload = {
   title: string
 }
 
+export type UpdateItemPayload = LibraryItemRaw & {
+  id: string
+}
+
 const mockData = [...mockRawLibraryItems]
 
 export const libraryQueryKey: QueryKey = ['library']
+
+/* GET ALL ITEMS */
 
 const getLibraryItems = async (config?: AxiosRequestConfig): Promise<LibraryResponse> =>
   // TODO: Replace with real API call
@@ -55,6 +61,8 @@ const getNextId = (data: LibraryItemRaw[]) =>
 
     return idNumber > acc ? idNumber : acc
   }, 0)
+
+/* SAVE DOCUMENTS */
 
 // Returns the library after saving the documents
 const saveDocuments = async (
@@ -116,10 +124,12 @@ export const useSaveDocuments = () => {
   })
 }
 
+/* CREATE NEW FOLDER */
+
 const createNewFolder = async (
   { parentId, title }: CreateNewFolderPayload,
   config?: AxiosRequestConfig
-): Promise<NewFolderResponse> => {
+): Promise<ItemResponse> => {
   const rawData = mockData
   const nextId = getNextId(rawData)
 
@@ -147,6 +157,93 @@ export const useCreateNewFolder = () => {
 
   return useMutation({
     mutationFn: createNewFolder,
+
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: libraryQueryKey })
+    }
+  })
+}
+
+/* UPDATE ITEM */
+
+const updateItem = async (
+  { id, title, order, parentId, type, documentId, link }: UpdateItemPayload,
+  config?: AxiosRequestConfig
+): Promise<ItemResponse> => {
+  const rawData = mockData
+
+  const itemIndex = rawData.findIndex(item => item.id === id)
+
+  if (itemIndex === -1) {
+    throw new AxiosError(`Item with id ${id} not found`, AxiosError.ERR_BAD_REQUEST)
+  }
+
+  rawData[itemIndex] = {
+    id,
+    title,
+    order,
+    parentId,
+    type,
+    documentId,
+    link
+  }
+
+  return new Promise(resolve => {
+    setTimeout(() => {
+      resolve({
+        item: rawData[itemIndex]
+      })
+    }, 500)
+  })
+}
+
+export const useUpdateItem = () => {
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    mutationFn: updateItem,
+
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: libraryQueryKey })
+    }
+  })
+}
+
+/* DELETE ITEM */
+
+const deleteItem = async (id: string, config?: AxiosRequestConfig): Promise<void> => {
+  const rawData = mockData
+
+  const itemIndex = rawData.findIndex(item => item.id === id)
+
+  if (itemIndex === -1) {
+    throw new AxiosError(`Item with id ${id} not found`, AxiosError.ERR_BAD_REQUEST)
+  }
+
+  const item = rawData[itemIndex]
+
+  rawData.splice(itemIndex, 1)
+
+  if (item.type === 'folder') {
+    const children = rawData.filter(child => child.parentId === id)
+
+    children.forEach(child => {
+      deleteItem(child.id)
+    })
+  }
+
+  return new Promise(resolve => {
+    setTimeout(() => {
+      resolve()
+    }, 500)
+  })
+}
+
+export const useDeleteItem = () => {
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    mutationFn: deleteItem,
 
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: libraryQueryKey })

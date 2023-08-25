@@ -130,7 +130,7 @@ const UploadedDocs = ({ className, onAddText }: Props) => {
 
       <ConfirmModal
         icon={<FaRegTrashAlt css={S.removeIcon} />}
-        text={removeModalText}
+        description={removeModalText}
         secondary="This action cannot be undone."
         confirmLabel={`Remove ${removeName}`}
         confirmColor="red"
