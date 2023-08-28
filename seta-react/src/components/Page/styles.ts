@@ -1,6 +1,6 @@
 import { css } from '@emotion/react'
 
-export const root: ThemedCSS = theme => css`
+export const root = css`
   padding: 3rem 0;
   flex: 1;
 
@@ -9,11 +9,10 @@ export const root: ThemedCSS = theme => css`
   }
 `
 
-export const pageWrapper: ThemedCSS = theme => css`
+export const pageWrapper = css`
   flex: 1;
 `
 
-export const contentWrapper: ThemedCSS = theme => css`
+export const contentWrapper = css`
   flex: 1;
-  /* padding-top: 2rem; */
 `

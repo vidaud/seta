@@ -18,3 +18,14 @@ export type SearchValue = {
   enrichedStatus: EnrichedStatus
   embeddings?: EmbeddingInfo[]
 }
+
+export type SearchState = {
+  value: string
+  terms: string[]
+  embeddings?: EmbeddingInfo[]
+} | null
+
+export type StagedDocument = {
+  id: string
+  title: string
+}

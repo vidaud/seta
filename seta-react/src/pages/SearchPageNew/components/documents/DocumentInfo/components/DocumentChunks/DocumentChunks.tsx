@@ -19,16 +19,7 @@ type Props = {
 
 const DocumentChunks = forwardRef<HTMLDivElement, Props>(
   (
-    {
-      currentChunkNumber,
-      currentChunkRef,
-      totalChunks,
-      queryTerms,
-      data,
-      isLoading,
-      error,
-      onTryAgain
-    },
+    { currentChunkNumber, currentChunkRef, queryTerms, data, isLoading, error, onTryAgain },
     ref
   ) => {
     const chunksText = useMemo(

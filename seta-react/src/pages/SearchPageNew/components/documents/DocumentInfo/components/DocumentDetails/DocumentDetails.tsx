@@ -1,4 +1,4 @@
-import { Collapse, Stack } from '@mantine/core'
+import { Stack } from '@mantine/core'
 
 import type { ClassNameProp } from '~/types/children-props'
 import type { Taxonomy } from '~/types/search/documents'
@@ -7,7 +7,6 @@ import ChunkPreview from '../ChunkPreview'
 import TaxonomyInfo from '../TaxonomyInfo'
 
 type Props = ClassNameProp & {
-  open: boolean
   documentTitle: string
   documentId: string
   taxonomy: Taxonomy[] | null
@@ -18,7 +17,6 @@ type Props = ClassNameProp & {
 
 const DocumentDetails = ({
   className,
-  open,
   documentId,
   documentTitle,
   taxonomy,
@@ -39,13 +37,11 @@ const DocumentDetails = ({
   }
 
   return (
-    <Collapse className={className} in={open}>
-      <Stack spacing="sm">
-        {hasTaxonomy && <TaxonomyInfo taxonomy={taxonomy} documentTitle={documentTitle} />}
+    <Stack spacing="sm" className={className}>
+      {hasTaxonomy && <TaxonomyInfo taxonomy={taxonomy} documentTitle={documentTitle} />}
 
-        {chunkText && <ChunkPreview text={chunkText} queryTerms={queryTerms} {...chunkMeta} />}
-      </Stack>
-    </Collapse>
+      {chunkText && <ChunkPreview text={chunkText} queryTerms={queryTerms} {...chunkMeta} />}
+    </Stack>
   )
 }
 

@@ -1,7 +1,13 @@
-import { useMemo } from 'react'
-import { Anchor, Flex, Progress, Text, clsx, Tooltip } from '@mantine/core'
-import { useDisclosure } from '@mantine/hooks'
-import { FaChevronDown } from 'react-icons/fa'
+import { useMemo, useState } from 'react'
+import { Progress, Text, clsx, Tooltip, Flex, Anchor } from '@mantine/core'
+import { IconWallet } from '@tabler/icons-react'
+import { FiCheck } from 'react-icons/fi'
+import { GiSaveArrow } from 'react-icons/gi'
+
+import type { Action } from '~/components/ActionsGroup'
+import TogglePanel from '~/components/TogglePanel'
+import { useStagedDocuments } from '~/pages/SearchPageNew/contexts/staged-documents-context'
+import useSaveDocsModal from '~/pages/SearchPageNew/hooks/use-save-docs-modal'
 
 import useHighlight from '~/hooks/use-highlight'
 import type { Document } from '~/types/search/documents'
@@ -30,17 +36,19 @@ const DocumentInfo = ({ document, queryTerms }: Props) => {
     chunk_number
   } = document
 
-  const [detailsOpen, { toggle }] = useDisclosure()
+  const [detailsOpen, setDetailsOpen] = useState(false)
+
+  const { isStaged, toggleStaged } = useStagedDocuments()
+  const { saveModal, handleSave } = useSaveDocsModal({ selectedDocs: [] })
 
   const path = useMemo(
     () => [source.toUpperCase(), collection, dateFormatted(date)].filter(Boolean).join(' > '),
     [source, collection, date]
   )
 
-  const [titleHl, abstractHl] = useHighlight(queryTerms, title, abstract)
+  const isDocumentStaged = useMemo(() => isStaged(document_id), [document_id, isStaged])
 
-  const chevronClass = clsx({ open: detailsOpen })
-  const openClass = clsx({ open: detailsOpen })
+  const [titleHl, abstractHl] = useHighlight(queryTerms, title, abstract)
 
   const hasDetails = !!taxonomy?.length || !!chunk_text
 
@@ -50,55 +58,84 @@ const DocumentInfo = ({ document, queryTerms }: Props) => {
     maximumFractionDigits: 2
   })
 
-  const toggleIcon = hasDetails && (
-    <div css={S.chevron} className={chevronClass}>
-      <FaChevronDown />
+  const actions: Action[] = [
+    {
+      name: 'save-doc',
+      icon: <IconWallet size={22} />,
+      color: 'orange',
+      tooltip: 'Save to my documents',
+      onClick: () => handleSave([{ id: document_id, title }])
+    },
+    {
+      name: 'stage-doc',
+      icon: <GiSaveArrow size={20} />,
+      color: 'blue',
+      tooltip: 'Stage document',
+      toggleable: true,
+      toggled: isDocumentStaged,
+      toggledColor: 'teal',
+      toggledTooltip: 'Remove from staged documents',
+      toggledIcon: <FiCheck size={22} style={{ marginTop: 2 }} />,
+      onToggle: staged => toggleStaged(document_id, title, staged)
+    }
+  ]
+
+  const header = (
+    <div css={S.header}>
+      <Progress size="xl" value={score * 100} color="teal" />
+
+      <Tooltip label="Match score" position="bottom">
+        <div className={clsx('score', { visible: detailsOpen })}>{scorePercent}</div>
+      </Tooltip>
+
+      <div css={S.title}>
+        <Text fz="xl" fw={600} truncate={detailsOpen ? undefined : 'end'} data-title>
+          {titleHl}
+        </Text>
+      </div>
     </div>
   )
 
+  const details = hasDetails && (
+    <DocumentDetails
+      css={S.details}
+      documentId={document_id}
+      documentTitle={title}
+      taxonomy={taxonomy}
+      chunkText={chunk_text}
+      chunkNumber={chunk_number}
+      queryTerms={queryTerms}
+    />
+  )
+
   return (
-    <div css={S.root} className={openClass}>
-      <div css={S.header} data-details={hasDetails} data-open={detailsOpen} onClick={toggle}>
-        <Progress size="xl" value={score * 100} color="teal" />
+    <>
+      <TogglePanel
+        open={detailsOpen}
+        onChange={setDetailsOpen}
+        header={header}
+        actions={actions}
+        details={details}
+      >
+        <Flex direction="column" gap="xs" css={[S.info, detailsOpen && S.infoOpen]}>
+          <div>
+            <div>{abstractHl}</div>
 
-        <Tooltip className="score" label="Match score" position="bottom">
-          <div>{scorePercent}</div>
-        </Tooltip>
+            <div css={S.path}>{path}</div>
 
-        <div css={S.title}>
-          <Text fz="xl" fw={600} truncate={detailsOpen ? undefined : 'end'}>
-            {titleHl}
-          </Text>
-        </div>
+            {link_origin && (
+              <div>
+                <Anchor href={link_origin} target="_blank">
+                  {link_origin}
+                </Anchor>
+              </div>
+            )}
+          </div>
+        </Flex>
+      </TogglePanel>
 
-        {toggleIcon}
-      </div>
-
-      <Flex direction="column" gap="xs" data-info css={S.info}>
-        <div>{abstractHl}</div>
-
-        <div css={S.path}>{path}</div>
-
-        <div>
-          <Anchor href={link_origin ?? '#'} target="_blank">
-            {link_origin}
-          </Anchor>
-        </div>
-      </Flex>
-
-      {hasDetails && (
-        <DocumentDetails
-          css={S.details}
-          open={detailsOpen}
-          documentId={document_id}
-          documentTitle={title}
-          taxonomy={taxonomy}
-          chunkText={chunk_text}
-          chunkNumber={chunk_number}
-          queryTerms={queryTerms}
-        />
-      )}
-    </div>
+      {saveModal}
+    </>
   )
 }
 

@@ -1,7 +1,7 @@
-import type { UserRole } from './user'
+import type { CSSProperties, ReactNode } from 'react'
 
 export type ChildrenProp = {
-  children: React.ReactElement
+  children: ReactNode
 }
 
 export type PropsWithChildren<P> = P & ChildrenProp
@@ -12,4 +12,6 @@ export type ClassNameProp = {
 
 export type ClassAndChildrenProps = ClassNameProp & ChildrenProp
 
-export type AllowedRolesAndChildrenProps = { allowedRoles?: UserRole[] } & ChildrenProp
+export type ClassAndStyleProps = ClassNameProp & {
+  style?: CSSProperties
+}

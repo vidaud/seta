@@ -4,6 +4,7 @@ import { Button, Group, Stack, Text, Textarea } from '@mantine/core'
 import { GrTextAlignLeft } from 'react-icons/gr'
 import { HiUpload } from 'react-icons/hi'
 
+import CancelButton from '~/components/CancelButton'
 import { useUploadDocuments } from '~/pages/SearchPageNew/contexts/upload-documents-context'
 
 import useSpacebarAction from '~/hooks/use-spacebar-action'
@@ -75,6 +76,8 @@ const TextUpload = ({ className, editing, onEdit, onCancel }: Props) => {
         />
 
         <Group spacing="sm" css={S.actions} data-loading={isLoading}>
+          <CancelButton onClick={onCancel} data-cancel />
+
           <Button
             color="teal"
             variant="filled"
@@ -83,10 +86,6 @@ const TextUpload = ({ className, editing, onEdit, onCancel }: Props) => {
             onClick={handleUpload}
           >
             {isLoading ? 'Uploading...' : 'Upload Text'}
-          </Button>
-
-          <Button color="gray.7" variant="light" onClick={onCancel} data-cancel>
-            Cancel
           </Button>
         </Group>
       </Stack>

@@ -10,15 +10,18 @@ import { AdminQueryKeys } from './query-keys'
 const ORPHAN_API_PATH = '/admin/orphan/communities'
 
 const getOrphans = async (config?: AxiosRequestConfig): Promise<Community[]> => {
-  const { data } = await api.get<Community[]>(ORPHAN_API_PATH, config)
+  const { data } = await api.get<Community[]>(ORPHAN_API_PATH, {
+    baseURL: environment.baseUrl,
+    ...config
+  })
 
   return data
 }
 
 export const useOrphanedCommunities = () => {
   return useQuery({
-    queryKey: AdminQueryKeys.OphanedCommunitiesQueryKey,
-    queryFn: ({ signal }) => getOrphans({ baseURL: environment.baseUrl, signal })
+    queryKey: AdminQueryKeys.OrphanedCommunitiesQueryKey,
+    queryFn: ({ signal }) => getOrphans({ signal })
   })
 }
 
@@ -49,10 +52,10 @@ export const useSetCommunityOwner = () => {
   return useMutation({
     mutationFn: (request: Request) => setCommunityOwner(request),
     onMutate: async () => {
-      await client.cancelQueries(AdminQueryKeys.OphanedCommunitiesQueryKey)
+      await client.cancelQueries(AdminQueryKeys.OrphanedCommunitiesQueryKey)
     },
     onSuccess: () => {
-      client.invalidateQueries(AdminQueryKeys.OphanedCommunitiesQueryKey)
+      client.invalidateQueries(AdminQueryKeys.OrphanedCommunitiesQueryKey)
       client.invalidateQueries(AdminQueryKeys.SidebarQueryKey)
     }
   })

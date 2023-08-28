@@ -23,7 +23,11 @@ const getUserInfos = async (
       }
     : undefined
 
-  const { data } = await api.get<SetaUserInfo[]>(USER_INFOS_API_PATH, { params, ...config })
+  const { data } = await api.get<SetaUserInfo[]>(USER_INFOS_API_PATH, {
+    params,
+    baseURL: environment.baseUrl,
+    ...config
+  })
 
   return data
 }
@@ -31,7 +35,6 @@ const getUserInfos = async (
 export const useActiveUserInfos = () => {
   return useQuery({
     queryKey: queryKey.userInfos(AccountStatus.Active),
-    queryFn: ({ signal }) =>
-      getUserInfos(AccountStatus.Active, { baseURL: environment.baseUrl, signal })
+    queryFn: ({ signal }) => getUserInfos(AccountStatus.Active, { signal })
   })
 }

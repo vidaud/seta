@@ -1,10 +1,14 @@
 import { useState } from 'react'
 import type { DefaultMantineColor } from '@mantine/core'
-import { Alert, Box } from '@mantine/core'
-import { IconAlertCircle, IconListSearch, IconSearch, IconWallet } from '@tabler/icons-react'
+import { Box } from '@mantine/core'
+import { IconListSearch, IconSearch, IconWallet } from '@tabler/icons-react'
 
 import ToggleSection from '~/components/ToggleSection'
+import UnderDevelopment from '~/components/UnderDevelopment/UnderDevelopment'
+import DocumentsTree from '~/pages/SearchPageNew/components/documents/DocumentsTree'
 import { FilterStatus } from '~/pages/SearchWithFilters/types/filter-info'
+
+import { useLibrary } from '~/api/search/library'
 
 import type { AdvancedFilterProps } from '../../types/contracts'
 import FiltersPanel from '../FiltersPanel'
@@ -23,6 +27,8 @@ const SidePanel = ({
   filtersDisabled
 }: AdvancedFilterProps) => {
   const [filtersStatus, setFiltersStatus] = useState<FilterStatus | null>(null)
+
+  const { data: libraryData, isLoading, error, refetch } = useLibrary()
 
   const marker = markerColor[filtersStatus ?? FilterStatus.UNKNOWN]
 
@@ -44,15 +50,16 @@ const SidePanel = ({
       </ToggleSection>
 
       <ToggleSection icon={<IconSearch size={20} />} color="grape" title="My Search">
-        <Alert icon={<IconAlertCircle size="1rem" />} title="Not implemented yet!" color="red">
-          This panel will contain my search library.
-        </Alert>
+        <UnderDevelopment variant="coming-soon" />
       </ToggleSection>
 
       <ToggleSection icon={<IconWallet size={20} />} color="orange" title="My Documents">
-        <Alert icon={<IconAlertCircle size="1rem" />} title="Not implemented yet!" color="red">
-          This panel will contain my documents library.
-        </Alert>
+        <DocumentsTree
+          data={libraryData?.items}
+          isLoading={isLoading}
+          error={error}
+          onTryAgain={refetch}
+        />
       </ToggleSection>
     </Box>
   )

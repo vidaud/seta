@@ -2,6 +2,10 @@ import type { ReactNode } from 'react'
 import type { ButtonProps } from '@mantine/core'
 import { Button, Divider, Flex, Group, Modal, Stack, Text } from '@mantine/core'
 
+import CancelButton from '~/components/CancelButton/CancelButton'
+
+import * as S from './styles'
+
 type Props = {
   title?: ReactNode
   text: string
@@ -11,6 +15,8 @@ type Props = {
   confirmColor?: ButtonProps['color']
   loading?: boolean
   opened: boolean
+  withinPortal?: boolean
+  zIndex?: number
   onClose: () => void
   onConfirm: () => void
 }
@@ -22,6 +28,8 @@ const ConfirmModal = ({
   confirmLabel,
   confirmColor,
   loading,
+  withinPortal,
+  zIndex = 300,
   onConfirm,
   onClose,
   ...props
@@ -29,7 +37,16 @@ const ConfirmModal = ({
   const buttonColor: ButtonProps['color'] = confirmColor ?? 'blue'
 
   return (
-    <Modal centered size="auto" zIndex={300} withCloseButton={false} onClose={onClose} {...props}>
+    <Modal
+      centered
+      size="auto"
+      zIndex={zIndex}
+      withCloseButton={false}
+      withinPortal={withinPortal}
+      onClose={onClose}
+      css={S.root}
+      {...props}
+    >
       <Stack>
         <Flex align="center" justify="center" gap="xl" p="3rem">
           {icon}
@@ -46,12 +63,10 @@ const ConfirmModal = ({
         <Divider />
 
         <Group position="right" spacing="sm">
+          <CancelButton onClick={onClose} />
+
           <Button color={buttonColor} loading={loading} onClick={onConfirm}>
             {confirmLabel ?? 'Confirm'}
-          </Button>
-
-          <Button color="gray.8" variant="light" onClick={onClose}>
-            Cancel
           </Button>
         </Group>
       </Stack>

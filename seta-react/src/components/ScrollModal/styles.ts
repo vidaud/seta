@@ -41,6 +41,10 @@ export const modalStyles = createStyles(theme => ({
 }))
 
 export const root = css`
+  .seta-Modal-inner {
+    left: 0;
+  }
+
   &[data-fullscreen='true'] {
     .seta-Modal-body {
       max-height: 100vh;

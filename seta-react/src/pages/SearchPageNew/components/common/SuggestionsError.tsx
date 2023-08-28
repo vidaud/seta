@@ -39,7 +39,14 @@ const SuggestionsError = ({
   )
 
   return (
-    <Flex align="center" justify="center" gap="sm" mt={mt} {...styles}>
+    <Flex
+      className="seta-SuggestionsError-root"
+      align="center"
+      justify="center"
+      gap="sm"
+      mt={mt}
+      {...styles}
+    >
       {icon}
 
       <Text fz={size} color="red.6">

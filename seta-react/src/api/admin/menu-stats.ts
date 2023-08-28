@@ -11,13 +11,16 @@ import { AdminQueryKeys } from './query-keys'
 const STATS_LIGHT_API_PATH = '/admin/stats/light'
 
 const getStatsLight = async (config?: AxiosRequestConfig): Promise<LightStatsResponse[]> => {
-  const { data } = await api.get<LightStatsResponse[]>(STATS_LIGHT_API_PATH, config)
+  const { data } = await api.get<LightStatsResponse[]>(STATS_LIGHT_API_PATH, {
+    baseURL: environment.baseUrl,
+    ...config
+  })
 
   return data
 }
 
 const getMenuStats = async (config?: AxiosRequestConfig): Promise<SidebarStats> => {
-  const data = await getStatsLight(config)
+  const data = await getStatsLight({ baseURL: environment.baseUrl, ...config })
 
   return {
     totalChangeRequests: data
@@ -49,13 +52,13 @@ const getMenuStats = async (config?: AxiosRequestConfig): Promise<SidebarStats> 
 export const useAdminSidebarStats = () => {
   return useQuery({
     queryKey: AdminQueryKeys.SidebarQueryKey,
-    queryFn: ({ signal }) => getMenuStats({ baseURL: environment.baseUrl, signal })
+    queryFn: ({ signal }) => getMenuStats({ signal })
   })
 }
 
 export const useAdminStatsLight = () => {
   return useQuery({
     queryKey: ['stats-light'],
-    queryFn: ({ signal }) => getStatsLight({ baseURL: environment.baseUrl, signal })
+    queryFn: ({ signal }) => getStatsLight({ signal })
   })
 }

@@ -1,5 +1,7 @@
 import { css } from '@emotion/react'
 
+import { CONTENT_MAX_WIDTH } from '~/styles'
+
 const POPUP_HEIGHT = '500px'
 
 export const popup: ThemedCSS = theme => css`
@@ -40,6 +42,6 @@ export const closeButton = css`
 `
 
 export const inputWrapper = css`
-  width: 66vw;
+  width: ${CONTENT_MAX_WIDTH};
   padding: 0;
 `

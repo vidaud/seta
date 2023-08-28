@@ -1,9 +1,8 @@
-import { useEffect, useMemo, useState } from 'react'
-import { Flex, Stack, Text } from '@mantine/core'
-import { BiSearchAlt } from 'react-icons/bi'
+import { useEffect, useState } from 'react'
+import { Flex } from '@mantine/core'
 
-import Page from '~/components/Page/Page'
-import { SuggestionsLoading } from '~/pages/SearchPageNew/components/common'
+import Page from '~/components/Page'
+import { StagedDocumentsProvider } from '~/pages/SearchPageNew/contexts/staged-documents-context'
 import SidePanel from '~/pages/SearchWithFilters/components/SidePanel'
 import type {
   AdvancedFiltersContract,
@@ -12,25 +11,19 @@ import type {
 
 import { useDocuments, type DocumentsOptions, type DocumentsResponse } from '~/api/search/documents'
 import type { Crumb } from '~/types/breadcrumbs'
-import type { EmbeddingInfo } from '~/types/embeddings'
 import { getSearchQueryAndTerms } from '~/utils/search-utils'
 import { storage } from '~/utils/storage-utils'
 
-import DocumentsList from './components/documents/DocumentsList'
+import SearchResults from './components/SearchResults'
+import { DocumentsTab } from './components/SearchResultsTabs'
 import SearchSuggestionInput from './components/SearchSuggestionInput'
 import { EnrichLoadingProvider } from './contexts/enrich-loading-context'
 import * as S from './styles'
-import type { SearchValue } from './types/search'
+import type { SearchState, SearchValue } from './types/search'
 import { STORAGE_KEY } from './utils/constants'
 
 const searchStorage = storage<string>(STORAGE_KEY.SEARCH)
 const uploadsStorage = storage<unknown[]>(STORAGE_KEY.UPLOADS)
-
-type SearchState = {
-  value: string
-  terms: string[]
-  embeddings?: EmbeddingInfo[]
-} | null
 
 const SearchPageNew = () => {
   const [query, setQuery] = useState<SearchState>(null)
@@ -47,12 +40,6 @@ const SearchPageNew = () => {
       handleDocumentsChanged(docs)
     }
   })
-
-  // If there is a saved search, prepare the loading state
-  const initialLoading = useMemo(
-    () => !query && (!!searchStorage.read() || !!uploadsStorage.read()?.length),
-    [query]
-  )
 
   useEffect(() => {
     const savedSearch = searchStorage.read()
@@ -92,32 +79,6 @@ const SearchPageNew = () => {
 
   const sidebar = <SidePanel queryContract={queryContract} onApplyFilter={handleApplyFilter} />
 
-  const documentsList = query && (
-    <DocumentsList
-      query={query.value}
-      terms={query.terms}
-      embeddings={query.embeddings}
-      searchOptions={searchOptions}
-      onDocumentsChanged={handleDocumentsChanged}
-    />
-  )
-
-  const noDocuments =
-    !query &&
-    (initialLoading ? (
-      // Replicate the loading state without rendering the DocumentsList
-      // if there are documents to load based on the saved search
-      <SuggestionsLoading size="lg" mt="5rem" color="blue" variant="bars" />
-    ) : (
-      <Stack align="center" css={S.noDocuments}>
-        <BiSearchAlt className="icon" />
-
-        <Text mt="md" align="center" fz="lg" color="dimmed" lh={1.6}>
-          Enter a few terms and press <strong>Search</strong> to find documents.
-        </Text>
-      </Stack>
-    ))
-
   const breadcrumbs: Crumb[] = [
     {
       title: 'Search',
@@ -131,8 +92,15 @@ const SearchPageNew = () => {
         <Flex direction="column" align="center" css={S.searchWrapper}>
           <SearchSuggestionInput onSearch={handleSearch} />
 
-          {documentsList}
-          {noDocuments}
+          <StagedDocumentsProvider>
+            <SearchResults>
+              <DocumentsTab
+                query={query}
+                searchOptions={searchOptions}
+                onDocumentsChanged={handleDocumentsChanged}
+              />
+            </SearchResults>
+          </StagedDocumentsProvider>
         </Flex>
       </EnrichLoadingProvider>
     </Page>

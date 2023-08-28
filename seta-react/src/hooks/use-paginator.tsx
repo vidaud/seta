@@ -13,6 +13,7 @@ type Args = {
   resetPageDependencies?: unknown[]
   scrollDependencies?: unknown[]
   scrollOnPageChange?: boolean
+  scrollOffset?: number
   onPageChange: (page: number) => void
 }
 
@@ -46,6 +47,7 @@ const usePaginator = <TScrollable extends HTMLElement | null = null>({
   resetPageDependencies,
   scrollDependencies,
   scrollOnPageChange = true,
+  scrollOffset = 40,
   onPageChange
 }: Args) => {
   const {
@@ -54,7 +56,7 @@ const usePaginator = <TScrollable extends HTMLElement | null = null>({
     scrollableRef
   } = useScrollIntoView<HTMLDivElement, TScrollable>({
     duration: 200,
-    offset: 40
+    offset: scrollOffset
   })
 
   const prevPageRef = useRef(page)
