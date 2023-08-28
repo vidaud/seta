@@ -1,12 +1,10 @@
 import { Group, createStyles } from '@mantine/core'
 import { notifications } from '@mantine/notifications'
 
-import { useCommunityChangeRequests } from '~/api/communities/community-change-requests'
 import { useSetChangeMembershipRequest } from '~/api/communities/manage/membership-change-requests'
 import type { CommunityResponse } from '~/api/types/community-types'
 import { ChangeMembershipRequestStatus } from '~/types/community/change-membership-requests'
 
-import PendingRequest from './components/PendingRequest'
 import RowActions from './components/RowActions'
 
 type Props = {
@@ -29,7 +27,6 @@ const useStyles = createStyles(() => ({
 const ChangePrivacyRequestActions = ({ props }: Props) => {
   const { classes } = useStyles()
   const setChangeRequestMutation = useSetChangeMembershipRequest()
-  const { data } = useCommunityChangeRequests(props.community_id)
 
   const handleOpenedRequest = (community_id: string) => {
     setChangeRequestMutation.mutate({
@@ -79,25 +76,17 @@ const ChangePrivacyRequestActions = ({ props }: Props) => {
 
   return (
     <>
-      {data?.community_change_requests.filter(
-        item => item.status === 'pending' && item.field_name === 'membership'
-      ).length === 0 ? (
-        <Group spacing={0} className={classes.button}>
-          <RowActions
-            onApprove={() => {
-              handleOpenedRequest?.(props.community_id)
-            }}
-            onReject={() => {
-              handleClosedRequest?.(props.community_id)
-            }}
-            community={props}
-          />
-        </Group>
-      ) : (
-        <Group spacing={0} className={classes.button}>
-          <PendingRequest community={props} />
-        </Group>
-      )}
+      <Group spacing={0} className={classes.button}>
+        <RowActions
+          onApprove={() => {
+            handleOpenedRequest?.(props.community_id)
+          }}
+          onReject={() => {
+            handleClosedRequest?.(props.community_id)
+          }}
+          community={props}
+        />
+      </Group>
     </>
   )
 }

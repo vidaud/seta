@@ -87,7 +87,7 @@ const CommunityButton = ({ props, community_scopes, resources }: Props) => {
                     />
                     <Divider sx={{ marginTop: '0.25rem' }} />
                     <Text sx={{ paddingLeft: '0.75rem' }} color="#868e96" size="sm">
-                      Membership Request
+                      Membership
                     </Text>
                     <ChangePrivacyRequestActions props={props} />
                   </>

@@ -1,6 +1,8 @@
-import { Tooltip, ActionIcon, Group, createStyles } from '@mantine/core'
+import { useState } from 'react'
+import { Group, Switch, useMantineTheme } from '@mantine/core'
 import { FaUsers, FaUsersSlash } from 'react-icons/fa'
 
+import { useCommunityChangeRequests } from '~/api/communities/community-change-requests'
 import type { CommunityResponse } from '~/api/types/community-types'
 
 type Props = {
@@ -9,60 +11,72 @@ type Props = {
   community: CommunityResponse
 }
 
-const useStyles = createStyles(() => ({
-  button: {
-    padding: 2
-  }
-}))
-
 const RowActions = ({ onApprove, onReject, community }: Props) => {
-  const { classes } = useStyles()
   const activeLink = community.membership
+  const [checked, setChecked] = useState(community.membership === 'opened')
+  const theme = useMantineTheme()
+  const { data } = useCommunityChangeRequests(community.community_id)
 
   return (
     <>
-      <Group noWrap sx={{ gap: 0 }}>
-        <Tooltip
-          label={activeLink === 'opened' ? 'Opened Community' : 'Restricted Community'}
-          color="teal"
-        >
-          <ActionIcon
-            w={70}
-            sx={{ borderRadius: '0.25rem 0 0 0.25rem' }}
-            style={activeLink === 'opened' ? {} : { borderRight: 'none' }}
-            variant={activeLink === 'opened' ? 'filled' : 'outline'}
-            color="teal"
-            onClick={() => {
+      <Group noWrap>
+        {data?.community_change_requests.filter(
+          item => item.status === 'pending' && item.field_name === 'membership'
+        ).length === 0 ? (
+          <Switch
+            checked={checked}
+            onChange={event => {
+              setChecked(event.currentTarget.checked)
+
               if (activeLink !== 'opened') {
                 onApprove()
-              }
-            }}
-          >
-            <FaUsers stroke="1.5" size="md" className={classes.button} />
-          </ActionIcon>
-        </Tooltip>
-        <Tooltip
-          label={
-            activeLink === 'closed' ? 'Restricted Community' : 'Opened Community'
-            // : 'Switch to Restricted Community Request'
-          }
-          color="yellow"
-        >
-          <ActionIcon
-            w={70}
-            sx={{ borderRadius: '0 0.25rem 0.25rem 0' }}
-            style={activeLink === 'closed' ? {} : { borderLeft: 'none' }}
-            variant={activeLink === 'closed' ? 'filled' : 'outline'}
-            color="yellow"
-            onClick={() => {
-              if (activeLink !== 'closed') {
+              } else {
                 onReject()
               }
             }}
-          >
-            <FaUsersSlash stroke="1.5" size="md" className={classes.button} />
-          </ActionIcon>
-        </Tooltip>
+            color="teal"
+            size="md"
+            label={activeLink === 'closed' ? 'Restricted Community' : 'Opened Community'}
+            thumbIcon={
+              checked ? (
+                <FaUsers
+                  size="0.8rem"
+                  color={theme.colors.teal[theme.fn.primaryShade()]}
+                  stroke="3"
+                />
+              ) : (
+                <FaUsersSlash
+                  size="0.8rem"
+                  color={theme.colors.orange[theme.fn.primaryShade()]}
+                  stroke="3"
+                />
+              )
+            }
+          />
+        ) : (
+          <Switch
+            checked={community.membership !== 'opened'}
+            disabled={true}
+            color="teal"
+            size="md"
+            label="Request Pending"
+            thumbIcon={
+              checked ? (
+                <FaUsers
+                  size="0.8rem"
+                  color={theme.colors.gray[theme.fn.primaryShade()]}
+                  stroke="3"
+                />
+              ) : (
+                <FaUsersSlash
+                  size="0.8rem"
+                  color={theme.colors.gray[theme.fn.primaryShade()]}
+                  stroke="3"
+                />
+              )
+            }
+          />
+        )}
       </Group>
     </>
   )
