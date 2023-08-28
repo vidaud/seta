@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { ActionIcon, Button, Group, Menu } from '@mantine/core'
+import { ActionIcon, Button, Divider, Group, Menu, Text } from '@mantine/core'
 import { IconDotsVertical } from '@tabler/icons-react'
 
 import type { CommunityScopes } from '~/pages/CommunitiesPage/contexts/community-list.context'
@@ -8,7 +8,7 @@ import { useAllCommunities } from '~/api/communities/discover/discover-communiti
 import type { CommunityResponse } from '~/api/types/community-types'
 import type { ResourceResponse } from '~/api/types/resource-types'
 
-import ChangePrivacy from '../ChangePrivacy'
+import ChangePrivacyRequestActions from '../ChangePrivacy/ChangePrivacyRequestActions'
 import DeleteCommunity from '../DeleteCommunity'
 import InviteMember from '../InviteMemberModal'
 import LeaveCommunity from '../LeaveCommunity'
@@ -51,9 +51,11 @@ const CommunityButton = ({ props, community_scopes, resources }: Props) => {
         {isManager ? (
           <>
             <Menu
+              withinPortal={true}
               transitionProps={{ transition: 'pop' }}
               withArrow
-              position="left"
+              position="bottom"
+              shadow="xs"
               closeOnClickOutside={outsideClick}
             >
               <Menu.Target>
@@ -83,7 +85,11 @@ const CommunityButton = ({ props, community_scopes, resources }: Props) => {
                       totalResources={resources ? resources?.length : 0}
                       refetch={refetch}
                     />
-                    <ChangePrivacy community={props} />
+                    <Divider sx={{ marginTop: '0.25rem' }} />
+                    <Text sx={{ paddingLeft: '0.75rem' }} color="#868e96" size="sm">
+                      Membership Request
+                    </Text>
+                    <ChangePrivacyRequestActions props={props} />
                   </>
                 ) : null}
               </Menu.Dropdown>

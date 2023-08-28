@@ -1,1 +1,1 @@
-export { default } from './ChangePrivacyRequest'
+export { default } from './ChangePrivacyRequestActions'
