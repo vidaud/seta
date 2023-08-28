@@ -167,7 +167,6 @@ const SuggestionsPopup = ({ opened, enrichQuery, onOpenChange, onEnrichToggle }:
       arrowSize={16}
       shadow="sm"
       offset={10}
-      closeOnClickOutside={false}
     >
       <Popover.Target>
         <SearchInput
