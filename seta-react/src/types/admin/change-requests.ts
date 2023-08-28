@@ -3,7 +3,8 @@ import type { UserInfo } from './user-info'
 export enum RequestStatus {
   Approved = 'approved',
   Pending = 'pending',
-  Rejected = 'rejected'
+  Rejected = 'rejected',
+  Accepted = 'accepted'
 }
 
 export enum CommunityField {

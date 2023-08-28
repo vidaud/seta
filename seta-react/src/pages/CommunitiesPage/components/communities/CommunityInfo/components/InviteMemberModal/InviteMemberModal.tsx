@@ -8,6 +8,7 @@ import {
   Input,
   UnstyledButton
 } from '@mantine/core'
+import { notifications } from '@mantine/notifications'
 import { IconMessages } from '@tabler/icons-react'
 
 import type { InvitationValues } from '~/pages/CommunitiesPage/contexts/invite-context'
@@ -17,6 +18,7 @@ import {
 } from '~/pages/CommunitiesPage/contexts/invite-context'
 
 import { createCommunityInvite } from '~/api/communities/invite'
+import { useCurrentUser } from '~/contexts/user-context'
 
 const useStyles = createStyles({
   form: {
@@ -31,22 +33,67 @@ const useStyles = createStyles({
   }
 })
 
-const InviteMember = communityId => {
+const InviteMember = ({ communityId }) => {
+  const { user } = useCurrentUser()
   const [opened, setOpened] = useState(false)
   const { classes, cx } = useStyles()
+  const [defaultMessage] = useState(
+    `This is an invitation to join ${
+      communityId.charAt(0).toUpperCase() + communityId.slice(1)
+    } Community. \nRegards ${user?.firstName} ${user?.lastName}`
+  )
 
   const form = useInvitation({
     initialValues: {
       email: [],
-      message: ''
-    }
-    // validate: {
-    //   email: value => (/^\S+@\S+$/.test(value) ? null : 'Invalid email')
-    // }
+      message: defaultMessage
+    },
+    validate: values => ({
+      email: values.email && values.email.length < 2 ? 'ID must have at least 2 letters' : null
+    })
   })
 
   const handleSubmit = (values: InvitationValues) => {
-    createCommunityInvite(communityId.id, values)
+    createCommunityInvite(communityId, values)
+      .then(() => {
+        notifications.show({
+          title: 'Invitation Sent',
+          message: 'Your invitation has been sent successfully',
+          styles: theme => ({
+            root: {
+              backgroundColor: theme.colors.teal[6],
+              borderColor: theme.colors.teal[6],
+              '&::before': { backgroundColor: theme.white }
+            },
+            title: { color: theme.white },
+            description: { color: theme.white },
+            closeButton: {
+              color: theme.white,
+              '&:hover': { backgroundColor: theme.colors.teal[7] }
+            }
+          })
+        })
+      })
+      .catch(error => {
+        notifications.show({
+          title: error.response.statusText,
+          message: error.response.data.message,
+          styles: theme => ({
+            root: {
+              backgroundColor: theme.colors.red[6],
+              borderColor: theme.colors.red[6],
+              '&::before': { backgroundColor: theme.white }
+            },
+            title: { color: theme.white },
+            description: { color: theme.white },
+            closeButton: {
+              color: theme.white,
+              '&:hover': { backgroundColor: theme.colors.red[7] }
+            }
+          })
+        })
+      })
+
     setOpened(o => !o)
   }
 
@@ -101,6 +148,7 @@ const InviteMember = communityId => {
               {...form.getInputProps('message')}
               placeholder="Message"
               size="xs"
+              // defaultValue={defaultMessage}
               withAsterisk
               onClick={e => e.stopPropagation()}
             />

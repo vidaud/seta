@@ -9,13 +9,19 @@ import {
   useMantineTheme,
   Group
 } from '@mantine/core'
+import { notifications } from '@mantine/notifications'
+
+import DateTimeCell from '~/pages/Admin/common/components/DateTimeCell/DateTimeCell'
+import RowActions from '~/pages/Admin/common/components/RequestRowActions/RowActions'
+import UserInfo from '~/pages/Admin/common/components/UserInfo/UserInfo'
 
 import { useAllPendingInvites } from '~/api/communities/invite'
+import { useUpdateInvitationRequest } from '~/api/communities/manage/invitation-requests'
+import { InviteRequestStatus } from '~/types/community/invite-requests'
 
 import { statusColors } from '../../../types'
 import { ComponentEmpty, ComponentError, ComponentLoading } from '../../common'
 import ExtendedMessage from '../../communities/CommunityInfo/components/ExtendedMessage/ExtendedMessage'
-import UpdateInviteRequest from '../../communities/CommunityInfo/components/UpdateInviteRequest'
 
 const useStyles = createStyles(theme => ({
   header: {
@@ -60,6 +66,7 @@ const InvitesList = () => {
   const { data, isLoading, error, refetch } = useAllPendingInvites()
   const [items, setItems] = useState(data)
   const theme = useMantineTheme()
+  const updateRequestMutation = useUpdateInvitationRequest()
 
   useEffect(() => {
     if (data) {
@@ -81,11 +88,60 @@ const InvitesList = () => {
     return <ComponentLoading />
   }
 
+  const handleApproveRequest = (invite_id: string) => {
+    updateRequestMutation.mutate({
+      invite_id: invite_id,
+      status: InviteRequestStatus.Accepted
+    })
+
+    if (updateRequestMutation.isError) {
+      notifications.show({
+        message: 'The invitation request update failed!',
+        color: 'red',
+        autoClose: 5000
+      })
+    } else {
+      notifications.show({
+        message: 'The invitation request was approved!',
+        color: 'teal',
+        autoClose: 5000
+      })
+    }
+  }
+
+  const handleRejectRequest = (invite_id: string) => {
+    updateRequestMutation.mutate({
+      invite_id: invite_id,
+      status: InviteRequestStatus.Rejected
+    })
+
+    if (updateRequestMutation.error) {
+      notifications.show({
+        title: 'Update failed!',
+        message: 'The invitation request update failed. Please try again!',
+        color: 'red',
+        autoClose: 5000
+      })
+    } else {
+      notifications.show({
+        message: 'The invitation request was rejected!',
+        color: 'yellow',
+        autoClose: 5000
+      })
+    }
+  }
+
   const rows = items?.map(row => (
     <tr key={row.invite_id}>
       <td>{row.invite_id}</td>
       <td>{row.community_id.charAt(0).toUpperCase() + row?.community_id.slice(1)}</td>
-      <td>{row.invited_user_info?.full_name}</td>
+      <td>
+        <UserInfo
+          username={row.invited_user_info?.user_id}
+          fullName={row.invited_user_info?.full_name}
+          email={row.invited_user_info?.email}
+        />
+      </td>
       <td className={classes.td}>
         <ExtendedMessage
           id={row.community_id}
@@ -102,12 +158,31 @@ const InvitesList = () => {
           {row.status}
         </Badge>
       </td>
-      <td>{new Date(row.initiated_date).toLocaleDateString()}</td>
-      <td>{row.initiated_by_info?.full_name}</td>
-      <td>{new Date(row.expire_date).toLocaleDateString()}</td>
+      <td>
+        <DateTimeCell dateTime={row?.initiated_date} />
+      </td>
+      <td>
+        <UserInfo
+          username={row.initiated_by_info?.user_id}
+          fullName={row.initiated_by_info?.full_name}
+          email={row.initiated_by_info?.email}
+        />
+      </td>
+      <td>
+        <DateTimeCell dateTime={row?.expire_date} />
+      </td>
       <td>
         <Group spacing={0}>
-          <UpdateInviteRequest props={row} parent="InvitesList" refetch={refetch} />
+          <RowActions
+            onApprove={() => {
+              handleApproveRequest?.(row.invite_id)
+              refetch()
+            }}
+            onReject={() => {
+              handleRejectRequest?.(row.invite_id)
+              refetch()
+            }}
+          />
         </Group>
       </td>
     </tr>

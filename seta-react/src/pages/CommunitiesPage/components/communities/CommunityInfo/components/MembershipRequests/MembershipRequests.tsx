@@ -1,6 +1,10 @@
 import { useEffect, useState } from 'react'
 import { createStyles, Table, rem, Badge, useMantineTheme, Group, Text } from '@mantine/core'
+import { notifications } from '@mantine/notifications'
 
+import DateTimeCell from '~/pages/Admin/common/components/DateTimeCell/DateTimeCell'
+import RowActions from '~/pages/Admin/common/components/RequestRowActions/RowActions'
+import UserInfo from '~/pages/Admin/common/components/UserInfo/UserInfo'
 import {
   ComponentEmpty,
   ComponentError,
@@ -9,10 +13,11 @@ import {
 import { statusColors } from '~/pages/CommunitiesPage/types'
 
 import { useAllCommunityRequestsID } from '~/api/communities/community-all-requests'
+import { useUpdateMembershipRequest } from '~/api/communities/manage/membership-requests'
 import type { MembershipRequest } from '~/api/types/membership-types'
+import { MembershipRequestStatus } from '~/types/community/membership-requests'
 
 import ExtendedMessage from '../ExtendedMessage/ExtendedMessage'
-import UpdateMemberRequest from '../UpdateMemberRequest'
 
 const useStyles = createStyles(theme => ({
   header: {
@@ -31,7 +36,6 @@ const useStyles = createStyles(theme => ({
       }`
     }
   },
-
   scrolled: {
     boxShadow: theme.shadows.sm
   },
@@ -54,6 +58,7 @@ const MembershipRequests = ({ id, type }) => {
   const [items, setItems] = useState<MembershipRequest[] | undefined[]>([])
   const theme = useMantineTheme()
   const perPage = 5
+  const updateRequestMutation = useUpdateMembershipRequest()
 
   useEffect(() => {
     let timeout: number | null = null
@@ -87,9 +92,60 @@ const MembershipRequests = ({ id, type }) => {
     return <ComponentLoading />
   }
 
+  const handleApproveRequest = (community_id: string, user_id: string) => {
+    updateRequestMutation.mutate({
+      community_id: community_id,
+      user_id: user_id,
+      status: MembershipRequestStatus.Approved
+    })
+
+    if (updateRequestMutation.isError) {
+      notifications.show({
+        message: 'The membership request update failed!',
+        color: 'red',
+        autoClose: 5000
+      })
+    } else {
+      notifications.show({
+        message: 'The membership request was approved!',
+        color: 'teal',
+        autoClose: 5000
+      })
+    }
+  }
+
+  const handleRejectRequest = (community_id: string, user_id: string) => {
+    updateRequestMutation.mutate({
+      community_id: community_id,
+      user_id: user_id,
+      status: MembershipRequestStatus.Rejected
+    })
+
+    if (updateRequestMutation.error) {
+      notifications.show({
+        title: 'Update failed!',
+        message: 'The membership request update failed. Please try again!',
+        color: 'red',
+        autoClose: 5000
+      })
+    } else {
+      notifications.show({
+        message: 'The membership request was rejected!',
+        color: 'yellow',
+        autoClose: 5000
+      })
+    }
+  }
+
   const rows = items?.map(row => (
     <tr key={row.community_id}>
-      <td>{row.requested_by_info.full_name}</td>
+      <td>
+        <UserInfo
+          username={row.requested_by_info?.user_id}
+          fullName={row.requested_by_info?.full_name}
+          email={row.requested_by_info?.email}
+        />
+      </td>
       <td className={classes.td}>
         <ExtendedMessage
           id={row.community_id}
@@ -98,7 +154,9 @@ const MembershipRequests = ({ id, type }) => {
           type="message"
         />
       </td>
-      <td>{new Date(row?.initiated_date).toDateString()}</td>
+      <td>
+        <DateTimeCell dateTime={row?.initiated_date} />
+      </td>
       <td>
         <Badge
           color={statusColors[row.status.toLowerCase()]}
@@ -109,10 +167,16 @@ const MembershipRequests = ({ id, type }) => {
       </td>
       <td>
         <Group spacing={0}>
-          <UpdateMemberRequest props={row} refetch={refetch} />
-          {/* <ActionIcon color="red">
-            <IconTrash size="1rem" stroke={1.5} />
-          </ActionIcon> */}
+          <RowActions
+            onApprove={() => {
+              handleApproveRequest?.(row.community_id, row.requested_by)
+              refetch()
+            }}
+            onReject={() => {
+              handleRejectRequest?.(row.community_id, row.requested_by)
+              refetch()
+            }}
+          />
         </Group>
       </td>
     </tr>

@@ -9,10 +9,15 @@ import * as S from './styles'
 const useStyles = createStyles({
   button: {
     border: 'none'
+  },
+  notification: {
+    position: 'absolute',
+    top: 10,
+    right: 0
   }
 })
 
-const CreateCommunity = ({ system_scopes }) => {
+const CreateCommunity = ({ system_scopes, refetch }) => {
   const { classes } = useStyles()
   const [scopes, setScopes] = useState<string | undefined>('')
   const [opened, { open, close }] = useDisclosure(false)
@@ -37,7 +42,7 @@ const CreateCommunity = ({ system_scopes }) => {
             }}
           >
             <Divider my="xs" label="Add New Community" labelPosition="center" />
-            <CreateForm close={close} />
+            <CreateForm close={close} refetch={refetch} />
           </Modal>
           <Group
             position="left"

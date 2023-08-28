@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
-import { ActionIcon, Button, Group, Menu, Notification } from '@mantine/core'
-import { IconDotsVertical, IconX } from '@tabler/icons-react'
+import { ActionIcon, Button, Divider, Group, Menu, Text } from '@mantine/core'
+import { IconDotsVertical } from '@tabler/icons-react'
 
 import type { CommunityScopes } from '~/pages/CommunitiesPage/contexts/community-list.context'
 
@@ -8,7 +8,7 @@ import { useAllCommunities } from '~/api/communities/discover/discover-communiti
 import type { CommunityResponse } from '~/api/types/community-types'
 import type { ResourceResponse } from '~/api/types/resource-types'
 
-import ChangePrivacy from '../ChangePrivacy'
+import ChangePrivacyRequestActions from '../ChangePrivacy/ChangePrivacyRequestActions'
 import DeleteCommunity from '../DeleteCommunity'
 import InviteMember from '../InviteMemberModal'
 import LeaveCommunity from '../LeaveCommunity'
@@ -25,9 +25,10 @@ type Props = {
 const CommunityButton = ({ props, community_scopes, resources }: Props) => {
   const { refetch } = useAllCommunities()
   const [data, setData] = useState<CommunityResponse>(props)
-  const [message, setMessage] = useState('')
   const [scopes, setScopes] = useState<string[] | undefined>([])
   const [outsideClick, setOutsideClick] = useState(true)
+  const isManager =
+    scopes?.includes('/seta/community/owner') || scopes?.includes('/seta/community/manager')
 
   useEffect(() => {
     if (props) {
@@ -38,10 +39,7 @@ const CommunityButton = ({ props, community_scopes, resources }: Props) => {
 
       findCommunity ? setScopes(findCommunity[0]?.scopes) : setScopes([])
     }
-  }, [props, data, community_scopes])
-
-  const isManager =
-    scopes?.includes('/seta/community/owner') || scopes?.includes('/seta/community/manager')
+  }, [props, data, community_scopes, scopes])
 
   const handleOutsideClick = value => {
     setOutsideClick(value)
@@ -53,9 +51,11 @@ const CommunityButton = ({ props, community_scopes, resources }: Props) => {
         {isManager ? (
           <>
             <Menu
+              withinPortal={true}
               transitionProps={{ transition: 'pop' }}
               withArrow
-              position="left"
+              position="bottom"
+              shadow="xs"
               closeOnClickOutside={outsideClick}
             >
               <Menu.Target>
@@ -72,9 +72,10 @@ const CommunityButton = ({ props, community_scopes, resources }: Props) => {
                   community={props}
                   community_scopes={community_scopes}
                   onChange={handleOutsideClick}
+                  refetch={refetch}
                 />
                 {scopes?.includes('/seta/community/invite') ? (
-                  <InviteMember id={props.community_id} />
+                  <InviteMember communityId={props.community_id} />
                 ) : null}
 
                 {scopes?.includes('/seta/community/owner') ? (
@@ -82,8 +83,13 @@ const CommunityButton = ({ props, community_scopes, resources }: Props) => {
                     <DeleteCommunity
                       props={props}
                       totalResources={resources ? resources?.length : 0}
+                      refetch={refetch}
                     />
-                    <ChangePrivacy community={props} />
+                    <Divider sx={{ marginTop: '0.25rem' }} />
+                    <Text sx={{ paddingLeft: '0.75rem' }} color="#868e96" size="sm">
+                      Membership
+                    </Text>
+                    <ChangePrivacyRequestActions props={props} />
                   </>
                 ) : null}
               </Menu.Dropdown>
@@ -94,17 +100,7 @@ const CommunityButton = ({ props, community_scopes, resources }: Props) => {
         {data.status === 'membership' ? (
           <>
             {' '}
-            <LeaveCommunity props={data} onChangeMessage={setMessage} refetch={refetch} />
-            {message !== '' ? (
-              <Notification
-                title="We notify you that"
-                icon={<IconX size="1.1rem" />}
-                color="red"
-                onClose={() => setMessage('')}
-              >
-                {message}
-              </Notification>
-            ) : null}
+            <LeaveCommunity props={data} refetch={refetch} />
           </>
         ) : data.status === 'pending' ? (
           <Button color="gray" variant="outline" size="xs">

@@ -4,6 +4,7 @@ import { ImBlocked } from 'react-icons/im'
 import { VscLayersActive } from 'react-icons/vsc'
 import { useNavigate } from 'react-router-dom'
 
+import DateTimeCell from '~/pages/Admin/common/components/DateTimeCell/DateTimeCell'
 import {
   ComponentEmpty,
   ComponentError,
@@ -75,7 +76,7 @@ const CommunityResources = ({ id }) => {
               <Text size="md">{row?.title.charAt(0).toUpperCase() + row?.title.slice(1)}</Text>
             </Text>
             <Group>
-              <Text size="xs">{new Date(row?.created_at).toDateString()}</Text>
+              <DateTimeCell dateTime={row?.created_at} />
               {row.status === 'active' ? (
                 <Tooltip label="Active" color="green">
                   <Badge variant="outline" color="green" w="min-content" className={classes.badge}>

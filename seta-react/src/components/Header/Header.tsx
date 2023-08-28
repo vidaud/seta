@@ -107,7 +107,11 @@ const Header = () => {
         <Group>
           {authenticated ? (
             <Group>
-              <NotificationsMenu dropdownItems={dropdownItems} notifications={notifications} />
+              <NotificationsMenu
+                dropdownItems={dropdownItems}
+                notifications={notifications}
+                total={total}
+              />
               {total > 0 ? (
                 <Badge variant="filled" size="xs" css={S.badge}>
                   {total}

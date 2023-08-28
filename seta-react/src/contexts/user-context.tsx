@@ -76,9 +76,13 @@ export const UserProvider = ({ children }: ChildrenProp) => {
     let count = 0
     const result = await api.get<NotificationsResponse[]>(NOTIFICATIONS_API_PATH, apiConfig)
 
-    result.data.forEach(element => {
-      count += element.count
-    })
+    if (result.data.length > 0) {
+      result.data.forEach(element => {
+        count += element.count
+      })
+    } else {
+      count = result.data.length
+    }
 
     setTotal(count)
     setNotifications(result.data)

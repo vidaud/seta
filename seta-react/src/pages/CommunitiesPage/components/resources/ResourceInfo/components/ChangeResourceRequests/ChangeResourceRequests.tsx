@@ -1,12 +1,14 @@
 import { useEffect, useState } from 'react'
-import { createStyles, Table, rem, useMantineTheme, Badge, Select } from '@mantine/core'
+import { createStyles, Table, rem, useMantineTheme, Badge, Select, Text } from '@mantine/core'
 
+import DateTimeCell from '~/pages/Admin/common/components/DateTimeCell/DateTimeCell'
+import UserInfo from '~/pages/Admin/common/components/UserInfo/UserInfo'
+import LimitsPropertyCell from '~/pages/Admin/ResourceRequests/components/LimitsPropertyCell/LimitsPropertyCell'
 import {
   ComponentEmpty,
   ComponentError,
   ComponentLoading
 } from '~/pages/CommunitiesPage/components/common'
-import ExtendedMessage from '~/pages/CommunitiesPage/components/communities/CommunityInfo/components/ExtendedMessage/ExtendedMessage'
 import { statusColors } from '~/pages/CommunitiesPage/types'
 
 import { useResourcesChangeRequests } from '~/api/communities/resource-change-requests'
@@ -66,7 +68,7 @@ const ChangeResourceRequests = ({ id }) => {
     let timeout: number | null = null
 
     if (data) {
-      selected === 'all' ? setItems(data) : setItems(data.filter(item => item.status === selected))
+      selected === 'all' ? setItems(data) : setItems(data?.filter(item => item.status === selected))
 
       // setItems(data)
       timeout = setTimeout(refetch, 1000)
@@ -95,49 +97,43 @@ const ChangeResourceRequests = ({ id }) => {
 
   const rows = items?.map(row => (
     <tr key={row?.request_id}>
-      <td>{row?.resource_id.charAt(0).toUpperCase() + row?.resource_id.slice(1)}</td>
-      <td>{row?.field_name.charAt(0).toUpperCase() + row?.field_name.slice(1)}</td>
-
-      <td className={classes.td}>
-        <ExtendedMessage
-          id={row.request_id}
-          message={row.old_value.charAt(0).toUpperCase() + row.old_value.slice(1)}
-          title="Expand Old Value"
-          type="value"
+      <td>
+        <Text color="dark" fw={600} size="md">
+          {row?.resource_id.charAt(0).toUpperCase() + row?.resource_id.slice(1)}
+        </Text>
+      </td>
+      <td>
+        <LimitsPropertyCell
+          fieldName={row?.field_name}
+          currentValue={row.old_value}
+          newValue={row.new_value}
         />
       </td>
-      <td className={classes.td}>
-        <ExtendedMessage
-          id={row.request_id}
-          message={row.new_value.charAt(0).toUpperCase() + row.new_value.slice(1)}
-          title="Expand New Value"
-          type="value"
+      <td>
+        <UserInfo
+          username={row.requested_by_info?.user_id}
+          fullName={row.requested_by_info?.full_name}
+          email={row.requested_by_info?.email}
         />
       </td>
-      <td>{row?.requested_by_info.full_name}</td>
-      <td>{new Date(row?.initiated_date).toDateString()}</td>
+      <td>
+        <DateTimeCell dateTime={row?.initiated_date} />
+      </td>
       <td>
         <Badge
+          size="md"
           color={statusColors[row?.status.toLowerCase()]}
           variant={theme.colorScheme === 'dark' ? 'light' : 'outline'}
         >
           {row?.status.toUpperCase()}
         </Badge>
       </td>
-      {/* <td>
-        <Group spacing={0}>
-          <ActionIcon color="red">
-            <IconTrash size="1rem" stroke={1.5} />
-          </ActionIcon>
-        </Group>
-      </td> */}
     </tr>
   ))
 
   return (
     <>
       <Select
-        // label="Select Status"
         name="requestStatus"
         sx={{ width: 'fit-content', float: 'right', paddingBottom: '1%' }}
         data={requestStatus}
@@ -148,9 +144,7 @@ const ChangeResourceRequests = ({ id }) => {
         <thead className={cx(classes.header)}>
           <tr>
             <th>Resource</th>
-            <th>Field</th>
-            <th>Old value</th>
-            <th>New value</th>
+            <th>Changed Property</th>
             <th>Requested by</th>
             <th>Initiated Date</th>
             <th>Status</th>

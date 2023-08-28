@@ -1,4 +1,5 @@
 import { TextInput, Group, createStyles, Button, Textarea } from '@mantine/core'
+import { notifications } from '@mantine/notifications'
 
 import type { CommunityValues } from '~/pages/CommunitiesPage/contexts/community-context'
 import {
@@ -20,7 +21,7 @@ const useStyles = createStyles({
   }
 })
 
-const CreateForm = ({ close }) => {
+const CreateForm = ({ close, refetch }) => {
   const { classes, cx } = useStyles()
 
   const form = useCommunity({
@@ -41,6 +42,46 @@ const CreateForm = ({ close }) => {
 
   const handleSubmit = (values: CommunityValues) => {
     createCommunity(values)
+      .then(() => {
+        close()
+        refetch()
+        notifications.show({
+          title: 'New Community Added Successfully',
+          message: 'New community has been added to the list',
+          styles: theme => ({
+            root: {
+              backgroundColor: theme.colors.teal[6],
+              borderColor: theme.colors.teal[6],
+              '&::before': { backgroundColor: theme.white }
+            },
+            title: { color: theme.white },
+            description: { color: theme.white },
+            closeButton: {
+              color: theme.white,
+              '&:hover': { backgroundColor: theme.colors.teal[7] }
+            }
+          })
+        })
+      })
+      .catch(error => {
+        notifications.show({
+          title: error.response.statusText,
+          message: error.response.data.message,
+          styles: theme => ({
+            root: {
+              backgroundColor: theme.colors.red[6],
+              borderColor: theme.colors.red[6],
+              '&::before': { backgroundColor: theme.white }
+            },
+            title: { color: theme.white },
+            description: { color: theme.white },
+            closeButton: {
+              color: theme.white,
+              '&:hover': { backgroundColor: theme.colors.red[7] }
+            }
+          })
+        })
+      })
   }
 
   return (
@@ -65,14 +106,6 @@ const CreateForm = ({ close }) => {
             className={cx(classes.input)}
             withAsterisk
           />
-          {/* <Group spacing={100} display="flex">
-              <Radio.Group name="data_type" label="Data Type" {...form.getInputProps('data_type')}>
-                <Group mt="xs">
-                  <Radio value="representative" label="Representative" />
-                  <Radio value="evidence" label="Evidence" />
-                </Group>
-              </Radio.Group>
-            </Group> */}
           <Group position="right">
             <Button
               variant="outline"

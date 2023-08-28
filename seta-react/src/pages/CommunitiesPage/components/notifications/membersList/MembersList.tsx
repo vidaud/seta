@@ -9,13 +9,19 @@ import {
   Group,
   useMantineTheme
 } from '@mantine/core'
+import { notifications } from '@mantine/notifications'
 
+import DateTimeCell from '~/pages/Admin/common/components/DateTimeCell/DateTimeCell'
+import RowActions from '~/pages/Admin/common/components/RequestRowActions/RowActions'
+import UserInfo from '~/pages/Admin/common/components/UserInfo/UserInfo'
+
+import { useUpdateMembershipRequest } from '~/api/communities/manage/membership-requests'
 import { useMembershipRequests } from '~/api/communities/membership-requests'
+import { MembershipRequestStatus } from '~/types/community/membership-requests'
 
 import { statusColors } from '../../../types'
 import { ComponentEmpty, ComponentLoading } from '../../common'
 import ExtendedMessage from '../../communities/CommunityInfo/components/ExtendedMessage/ExtendedMessage'
-import UpdateMemberRequest from '../../communities/CommunityInfo/components/UpdateMemberRequest'
 
 const useStyles = createStyles(theme => ({
   header: {
@@ -60,6 +66,7 @@ const MembersList = () => {
   const [scrolled, setScrolled] = useState(false)
   const { data, refetch } = useMembershipRequests()
   const theme = useMantineTheme()
+  const updateRequestMutation = useUpdateMembershipRequest()
 
   if (data) {
     if (data.length === 0) {
@@ -69,6 +76,51 @@ const MembersList = () => {
 
   if (!data) {
     return <ComponentLoading />
+  }
+
+  const handleApproveRequest = (community_id: string, user_id: string) => {
+    updateRequestMutation.mutate({
+      community_id: community_id,
+      user_id: user_id,
+      status: MembershipRequestStatus.Approved
+    })
+
+    if (updateRequestMutation.isError) {
+      notifications.show({
+        message: 'The membership request update failed!',
+        color: 'red',
+        autoClose: 5000
+      })
+    } else {
+      notifications.show({
+        message: 'The membership request was approved!',
+        color: 'teal',
+        autoClose: 5000
+      })
+    }
+  }
+
+  const handleRejectRequest = (community_id: string, user_id: string) => {
+    updateRequestMutation.mutate({
+      community_id: community_id,
+      user_id: user_id,
+      status: MembershipRequestStatus.Rejected
+    })
+
+    if (updateRequestMutation.error) {
+      notifications.show({
+        title: 'Update failed!',
+        message: 'The membership request update failed. Please try again!',
+        color: 'red',
+        autoClose: 5000
+      })
+    } else {
+      notifications.show({
+        message: 'The membership request was rejected!',
+        color: 'yellow',
+        autoClose: 5000
+      })
+    }
   }
 
   const rows =
@@ -92,13 +144,31 @@ const MembersList = () => {
                 type="message"
               />
             </td>
-            <td>{new Date(row.initiated_date).toDateString()}</td>
-            <td>{row.requested_by_info?.full_name}</td>
+            <td>
+              <DateTimeCell dateTime={row?.initiated_date} />
+            </td>
+
+            <td>
+              <UserInfo
+                username={row.requested_by_info?.user_id}
+                fullName={row.requested_by_info?.full_name}
+                email={row.requested_by_info?.email}
+              />
+            </td>
             <td>{row.review_date ? new Date(row.review_date).toDateString() : null}</td>
             <td>{row.reviewed_by_info?.full_name}</td>
             <td>
               <Group spacing={0}>
-                <UpdateMemberRequest props={row} refetch={refetch} />
+                <RowActions
+                  onApprove={() => {
+                    handleApproveRequest?.(row.community_id, row.requested_by)
+                    refetch()
+                  }}
+                  onReject={() => {
+                    handleRejectRequest?.(row.community_id, row.requested_by)
+                    refetch()
+                  }}
+                />
               </Group>
             </td>
           </tr>

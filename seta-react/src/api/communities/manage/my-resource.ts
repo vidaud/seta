@@ -50,37 +50,25 @@ export const createResource = async (id?: string, values?: CreateResourceAPI) =>
 }
 
 export const updateResource = async (resource_id?: string, values?: UpdateResourceAPI) => {
-  await api
-    .put(`${RESOURCE_API_PATH}${resource_id}`, values, {
-      ...apiConfig,
-      headers: {
-        ...apiConfig?.headers,
-        accept: 'application/json',
-        'X-CSRF-TOKEN': csrf_token,
-        'Content-Type': 'application/x-www-form-urlencoded'
-      }
-    })
-    .then(response => {
-      if (response.status === 200) {
-        window.location.href = `/community/resources/`
-      }
-    })
+  await api.put(`${RESOURCE_API_PATH}${resource_id}`, values, {
+    ...apiConfig,
+    headers: {
+      ...apiConfig?.headers,
+      accept: 'application/json',
+      'X-CSRF-TOKEN': csrf_token,
+      'Content-Type': 'application/x-www-form-urlencoded'
+    }
+  })
 }
 
 export const deleteResourceByID = async (resource_id?: string) => {
-  await api
-    .delete(`${RESOURCE_API_PATH}${resource_id}`, {
-      ...apiConfig,
-      headers: {
-        ...apiConfig?.headers,
-        accept: 'application/json',
-        'X-CSRF-TOKEN': csrf_token,
-        'Content-Type': 'application/x-www-form-urlencoded'
-      }
-    })
-    .then(response => {
-      if (response.status === 200) {
-        window.location.href = `/community/resources/`
-      }
-    })
+  await api.delete(`${RESOURCE_API_PATH}${resource_id}`, {
+    ...apiConfig,
+    headers: {
+      ...apiConfig?.headers,
+      accept: 'application/json',
+      'X-CSRF-TOKEN': csrf_token,
+      'Content-Type': 'application/x-www-form-urlencoded'
+    }
+  })
 }

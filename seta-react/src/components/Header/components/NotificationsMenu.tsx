@@ -12,9 +12,10 @@ import * as S from '../styles'
 type Props = {
   dropdownItems: DropdownItem[]
   notifications: NotificationsResponse[]
+  total: number
 }
 
-const NotificationsMenu = ({ dropdownItems, notifications }: Props) => {
+const NotificationsMenu = ({ dropdownItems, notifications, total }: Props) => {
   // FIXME: This needs to be fixed - Array.map should always return a value
   const notificationsMenuItems = dropdownItems.map((item, index) => {
     if (itemIsCollapse(item)) {
@@ -36,7 +37,7 @@ const NotificationsMenu = ({ dropdownItems, notifications }: Props) => {
         </ActionIcon>
       </Menu.Target>
 
-      <Menu.Dropdown css={S.dropdown}>{notificationsMenuItems}</Menu.Dropdown>
+      {total > 0 ? <Menu.Dropdown css={S.dropdown}>{notificationsMenuItems}</Menu.Dropdown> : null}
     </Menu>
   )
 }
