@@ -135,6 +135,7 @@ const UploadedDocs = ({ className, onAddText }: Props) => {
         confirmLabel={`Remove ${removeName}`}
         confirmColor="red"
         opened={removeModalOpen}
+        withinPortal={false}
         onClose={closeRemoveModal}
         onConfirm={handleRemove}
       />

@@ -26,7 +26,14 @@ const ChunkDetailsModal = ({ chunk, ...props }: Props) => {
   )
 
   return (
-    <ScrollModal title={title} icon={<ImEmbed />} zIndex={300} fullScreenToggle {...props}>
+    <ScrollModal
+      title={title}
+      icon={<ImEmbed />}
+      fullScreenToggle
+      withinPortal={false}
+      zIndex={300}
+      {...props}
+    >
       <div css={S.textView}>{text}</div>
     </ScrollModal>
   )
