@@ -84,12 +84,9 @@ If we don't want to search with this option, it is always possible to cancel the
 ### Filters         
 There are some filters that can be applied to refine the search of the results:
 
-`Text chunk`   
-: Chunking is a process of extracting phrases from unstructured text, in our case, it is possible to filter the results by:                
-  1. First chunk of the text                  
-  2. Single chunk only                     
-  3. Any chunks              
-
+`Show multiple chunks`   
+: Chunking is a process of extracting phrases from unstructured text, in our case, it is possible to filter the results by switching to show multiple chunks or not.                
+  
 `Filter by date range`
 : If this option is switched on, then the time range bar below, can be adjust to the custom year range.        
 
@@ -103,13 +100,11 @@ There are some filters that can be applied to refine the search of the results:
 : In this section it is possible to filter the results with an extra parameter, this parameter can be any of the tags that appears in tag ^^Other^^ from the uploaded documents (e.g. *crc, project_piknus, regions, identifiers*).
 
 
-
-
 Once all the filters are selected, click in the button **Apply Filters** at the top of the section to apply them.
 
 
 <figure markdown>
-  ![Image title](../../img/search_results_filters.png){ width="300" }
+  ![Image title](../../img/search_results_filters.png)
   <figcaption>Filters</figcaption>
 </figure>
 
