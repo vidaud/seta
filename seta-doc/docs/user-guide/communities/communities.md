@@ -83,25 +83,25 @@ You can filter by the different types display on top of the page: *Select Member
 </figure>
 
 
-## Request Switch to Open a Community                
+## Membership Restricted Community                
 
 !!! info 
 
-    To be able to switch to Open Community, you need to have the rights to do so.
+    To be able to switch the membership of a Community, you need to have the rights to do so.
 
 1. You can either use the filters to search the Community or select from the Communities list.      
-2. Click  :material-dots-vertical: at the right side of the Community row selected and scroll to right the option  ^^Switch to Opened Request^^.          
-3. The label of the option will change to ^^Switch to Opened Pending^^.        
+2. Click  :material-dots-vertical: at the right side of the Community row selected and on section *Membership* scroll on option ^^Restricted Community^^.          
+3. The label of the option will change to ^^Request Pending^^.        
 4. In the notifications it will appear on ^^Pending change requests^^ a number and by clicking it will open a page to change the request.
 
 <figure markdown>
   ![Image title](../../img/request_switch_opened.png)
-  <figcaption>Switch to Open a Community</figcaption>
+  <figcaption>Switch Restricted Community</figcaption>
 </figure>
 
 <figure markdown>
-  ![Image title](../../img/pending_invites.png)
-  <figcaption>Switch to Open a Community on Notifications</figcaption>
+  ![Image title](../../img/request_switch_pending.png)
+  <figcaption>Switch Restricted Community on Notifications</figcaption>
 </figure>
 
 ## Delete a Community
