@@ -92,7 +92,7 @@ You can filter by the different types display on top of the page: *Select Member
 1. You can either use the filters to search the Community or select from the Communities list.      
 2. Click  :material-dots-vertical: at the right side of the Community row selected and on section *Membership* scroll on option ^^Restricted Community^^.          
 3. The label of the option will change to ^^Request Pending^^.        
-4. In the notifications it will appear on ^^Pending change requests^^ a number and by clicking it will open a page to change the request.
+4. In the Administrator profile, on the notifications it will appear on ^^Pending change requests^^ a number and by clicking it will open the administration page where it is possible to manage the request.
 
 <figure markdown>
   ![Image title](../../img/request_switch_opened.png)
@@ -102,6 +102,11 @@ You can filter by the different types display on top of the page: *Select Member
 <figure markdown>
   ![Image title](../../img/request_switch_pending.png)
   <figcaption>Switch Restricted Community on Notifications</figcaption>
+</figure>
+
+<figure markdown>
+  ![Image title](../../img/pending_requests_communities.png)
+  <figcaption>Community requests</figcaption>
 </figure>
 
 ## Delete a Community
