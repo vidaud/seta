@@ -10,7 +10,6 @@ import { LibraryItemType } from '~/types/library/library-item'
 import NodeActions from './components/NodeActions'
 import { ROOT_ICON, FOLDER_ICON_OPEN, FOLDER_ICON, FILE_ICON } from './constants'
 import { useDocumentsTree } from './contexts/documents-tree-context'
-import { useTreeActions } from './contexts/tree-actions-context'
 import * as S from './styles'
 
 type Props = {
@@ -18,7 +17,7 @@ type Props = {
   isRoot?: boolean
 } & ClassNameProp
 
-const DocumentNode = ({ className, item, isRoot }: Props) => {
+const LibraryNode = ({ className, item, isRoot }: Props) => {
   const [isExpanded, setIsExpanded] = useState(isRoot ?? false)
   const [isEditing, setIsEditing] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
@@ -28,8 +27,6 @@ const DocumentNode = ({ className, item, isRoot }: Props) => {
 
   const { foldersOnly, selectable, toggleable, noActionMenu, selected, onSelect, selectChild } =
     useDocumentsTree()
-
-  const { createNewFolder } = useTreeActions()
 
   const selectChildRef = useRef(selectChild)
 
@@ -70,20 +67,20 @@ const DocumentNode = ({ className, item, isRoot }: Props) => {
     }
   }
 
-  const handleNewFolder = async (name: string) => {
+  const handleCreatingNewFolder = () => {
+    setIsLoading(true)
+
     if (isExpanded && !children.length) {
       setIsExpanded(false)
     }
+  }
 
-    setIsLoading(true)
-
-    const newId = await createNewFolder?.(item.id === 'root' ? null : item.id, name)
-
+  const handleNewFolderCreated = (folderId: string) => {
     setIsLoading(false)
     setIsExpanded(true)
 
     if (selectable) {
-      setWillSelectId(newId)
+      setWillSelectId(folderId)
     }
   }
 
@@ -100,7 +97,7 @@ const DocumentNode = ({ className, item, isRoot }: Props) => {
   const content = isFolder && (
     <Collapse in={isExpanded}>
       {children.map(child => (
-        <DocumentNode key={child.id} item={child} />
+        <LibraryNode key={child.id} item={child} />
       ))}
     </Collapse>
   )
@@ -122,10 +119,10 @@ const DocumentNode = ({ className, item, isRoot }: Props) => {
       item={item}
       isRoot={isRoot}
       noActionsMenu={noActionMenu}
-      isNewFolderLoading={isLoading}
+      onCreatingNewFolder={handleCreatingNewFolder}
+      onNewFolderCreated={handleNewFolderCreated}
       onNewFolderPopoverChange={setIsEditing}
       onOptionsMenuChange={setIsEditing}
-      onNewFolder={handleNewFolder}
     />
   )
 
@@ -155,4 +152,4 @@ const DocumentNode = ({ className, item, isRoot }: Props) => {
   )
 }
 
-export default DocumentNode
+export default LibraryNode

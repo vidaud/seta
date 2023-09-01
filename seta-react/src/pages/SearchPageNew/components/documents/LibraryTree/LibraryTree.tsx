@@ -1,31 +1,36 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { Suspense, lazy, useEffect, useMemo, useRef, useState } from 'react'
 
 import UnderDevelopment from '~/components/UnderDevelopment'
-import { SuggestionsError, SuggestionsLoading } from '~/pages/SearchPageNew/components/common'
 
 import type { ClassNameProp } from '~/types/children-props'
 import type { DataProps } from '~/types/data-props'
-import { LibraryItemType } from '~/types/library/library-item'
 import type { LibraryItem, LibraryItemRaw } from '~/types/library/library-item'
-import { getLibraryTree, ROOT_LIBRARY_ITEM_NAME } from '~/utils/library-utils'
+import { getLibraryTree } from '~/utils/library-utils'
 
+import { ErrorState, LoadingState, onSelectChild } from './common'
+import { ROOT_NODE } from './constants'
 import type { DocumentsTreeOptions } from './contexts/documents-tree-context'
 import { DocumentsTreeProvider } from './contexts/documents-tree-context'
-import { TreeActionsProvider } from './contexts/tree-actions-context'
-import DocumentNode from './DocumentNode'
+import LibraryNode from './LibraryNode'
 import * as S from './styles'
 
+// Lazy load the tree actions provider to avoid circular dependency when rendering the Move action
+const TreeActionsProviderLazy = lazy(() => import('./contexts/tree-actions-context'))
+
 type Props = DataProps<LibraryItemRaw[]> & {
+  excludeItem?: LibraryItem
   onSelectedChange?: (item?: LibraryItem) => void
 } & DocumentsTreeOptions &
   ClassNameProp
 
-const DocumentsTree = ({
+const LibraryTree = ({
   data = [],
+  excludeItem,
   isLoading,
   error,
   selectable,
   autoSelect,
+  noActionMenu,
   onSelectedChange,
   onTryAgain,
   className,
@@ -35,16 +40,11 @@ const DocumentsTree = ({
 
   const onSelectedChangeRef = useRef(onSelectedChange)
 
-  const dataTree = useMemo(() => getLibraryTree(data), [data])
+  const dataTree = useMemo(() => getLibraryTree(data, excludeItem), [data, excludeItem])
 
   const rootNode: LibraryItem = useMemo(
     () => ({
-      id: 'root',
-      parentId: null,
-      type: LibraryItemType.Folder,
-      order: 0,
-      title: ROOT_LIBRARY_ITEM_NAME,
-      path: [ROOT_LIBRARY_ITEM_NAME],
+      ...ROOT_NODE,
       children: dataTree
     }),
     [dataTree]
@@ -60,19 +60,11 @@ const DocumentsTree = ({
   }, [canAutoSelect, rootNode])
 
   if (error) {
-    return (
-      <SuggestionsError
-        size="md"
-        mt={0}
-        subject="the library folders"
-        withIcon
-        onTryAgain={onTryAgain}
-      />
-    )
+    return <ErrorState onTryAgain={onTryAgain} />
   }
 
   if (isLoading || !data) {
-    return <SuggestionsLoading size="md" mt={0} color="blue" variant="bars" />
+    return <LoadingState />
   }
 
   const handleSelect = (item?: LibraryItem) => {
@@ -85,16 +77,19 @@ const DocumentsTree = ({
   }
 
   const handleSelectChild = (parent: LibraryItem, childId: string) => {
-    if (parent.type !== LibraryItemType.Folder) {
-      return
-    }
-
-    const child = parent.children.find(({ id }) => id === childId)
-
-    if (child) {
-      handleSelect(child)
-    }
+    onSelectChild(parent, childId, handleSelect)
   }
+
+  const node = <LibraryNode item={rootNode} isRoot css={S.rootNode} />
+
+  // Only render the actions provider if the action menu is enabled
+  const content = noActionMenu ? (
+    node
+  ) : (
+    <Suspense fallback={null}>
+      <TreeActionsProviderLazy>{node}</TreeActionsProviderLazy>
+    </Suspense>
+  )
 
   return (
     <div className={className}>
@@ -103,17 +98,16 @@ const DocumentsTree = ({
       <DocumentsTreeProvider
         {...options}
         rootNode={rootNode}
+        noActionMenu={noActionMenu}
         selectable={selectable}
         selected={selected}
         onSelect={handleSelect}
         selectChild={handleSelectChild}
       >
-        <TreeActionsProvider>
-          <DocumentNode item={rootNode} isRoot css={S.rootNode} />
-        </TreeActionsProvider>
+        {content}
       </DocumentsTreeProvider>
     </div>
   )
 }
 
-export default DocumentsTree
+export default LibraryTree

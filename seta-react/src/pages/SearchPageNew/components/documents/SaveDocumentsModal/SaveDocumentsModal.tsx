@@ -16,16 +16,31 @@ import SaveDocumentsContent from './SaveDocumentsContent'
 const pathToString = (path: string[] = []): string => path.join(' / ')
 
 type Props = ModalProps & {
-  documents: Document[] | StagedDocument[]
+  // Save documents
+  documents?: Document[] | StagedDocument[]
+  // Or move a library item
+  libraryItem?: LibraryItem
   saving?: boolean
   saveError?: string
   onSave?: (target: LibraryItem) => void
 }
 
-const SaveDocumentsModal = ({ documents, saving, saveError, onSave, onClose, ...props }: Props) => {
+const SaveDocumentsModal = ({
+  documents,
+  libraryItem,
+  saving,
+  saveError,
+  onSave,
+  onClose,
+  ...props
+}: Props) => {
   const [selectedTarget, setSelectedTarget] = useState<LibraryItem | undefined>()
 
   const { data, error, isLoading } = useLibrary()
+
+  if (!libraryItem && (!documents || !documents.length)) {
+    return null
+  }
 
   const handleSelectedChange = (item?: LibraryItem) => {
     setSelectedTarget(item)
@@ -37,12 +52,19 @@ const SaveDocumentsModal = ({ documents, saving, saveError, onSave, onClose, ...
     }
   }
 
-  const hasOneDocument = documents.length === 1
+  const operation = libraryItem ? 'Move' : 'Save'
+  const subject = libraryItem && libraryItem.type === 'folder' ? 'folder' : 'document'
+  const target: Document | StagedDocument | LibraryItem | undefined = libraryItem ?? documents?.[0]
 
-  const pluralizedSave = `Save ${documents.length} ${pluralize('document', documents.length)}`
+  const hasOneDocument = !!libraryItem || documents?.length === 1
 
-  const title = hasOneDocument ? `Save "${documents[0].title}"` : pluralizedSave
-  const saveLabel = hasOneDocument ? 'Save document' : pluralizedSave
+  const pluralizedSave = `Save ${documents?.length} ${pluralize(
+    'document',
+    documents?.length ?? 0
+  )}`
+
+  const title = hasOneDocument ? `${operation} "${target?.title}"` : pluralizedSave
+  const saveLabel = hasOneDocument ? `${operation} ${subject}` : pluralizedSave
 
   const titleEl = (
     <Stack spacing={4}>
@@ -75,6 +97,7 @@ const SaveDocumentsModal = ({ documents, saving, saveError, onSave, onClose, ...
     <ScrollModal {...props} icon={icon} title={titleEl} actions={actions} onClose={onClose}>
       <SaveDocumentsContent
         data={data?.items}
+        libraryItem={libraryItem}
         isLoading={isLoading}
         error={error}
         saveError={saveError}

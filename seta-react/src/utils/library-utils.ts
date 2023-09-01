@@ -32,9 +32,13 @@ const itemFromRaw = (item: LibraryItemRaw): LibraryItem => {
 /**
  * Converts a flat array of `LibraryItemRaw` elements into a tree structure made of `LibraryItem` values
  * @param items The flat array to convert
+ * @param excludeItem An item to exclude from the tree (together with its children)
  * @returns The tree structure with multiple roots
  */
-export const getLibraryTree = (items: LibraryItemRaw[]): LibraryItem[] => {
+export const getLibraryTree = (
+  items: LibraryItemRaw[],
+  excludeItem?: LibraryItem
+): LibraryItem[] => {
   const map = new Map<string, LibraryItem>()
   const roots: LibraryItem[] = []
 
@@ -43,6 +47,10 @@ export const getLibraryTree = (items: LibraryItemRaw[]): LibraryItem[] => {
   }
 
   for (const item of items) {
+    if (item.id === excludeItem?.id) {
+      continue
+    }
+
     // The map.get() call is safe because we've just set the value
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const mappedItem = map.get(item.id)!
