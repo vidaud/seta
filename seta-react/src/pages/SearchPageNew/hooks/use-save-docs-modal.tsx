@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 import SaveDocumentsModal from '~/pages/SearchPageNew/components/documents/SaveDocumentsModal'
 import type { StagedDocument } from '~/pages/SearchPageNew/types/search'
@@ -22,6 +22,13 @@ const useSaveDocsModal = ({ selectedDocs, clearSelectedDocs, removeStaged }: Arg
   const lastTargetRef = useRef<LibraryItem | undefined>()
 
   const { mutate, isLoading } = useSaveDocuments()
+
+  // Reset the error state when closing the modal
+  useEffect(() => {
+    if (!modalOpen) {
+      setHasError(false)
+    }
+  }, [modalOpen])
 
   const handleSave = (docs?: StagedDocument[]) => {
     // Prevent default event argument from being passed using Array.isArray check
@@ -51,6 +58,7 @@ const useSaveDocsModal = ({ selectedDocs, clearSelectedDocs, removeStaged }: Arg
           removeStaged?.(docs.map(({ id }) => id))
           clearSelectedDocs?.()
         },
+
         onError: () => {
           setHasError(true)
         }

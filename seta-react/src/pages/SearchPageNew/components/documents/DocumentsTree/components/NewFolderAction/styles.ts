@@ -18,7 +18,7 @@ export const input: ThemedCSS = theme => css`
   }
 `
 
-export const saveButton: ThemedCSS = theme => css`
+export const saveButton = css`
   position: absolute;
-  right: ${theme.spacing.xs};
+  right: 0.5rem;
 `
