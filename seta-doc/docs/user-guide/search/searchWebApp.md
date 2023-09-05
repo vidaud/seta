@@ -15,12 +15,10 @@ Within the search page the options to search are:
     2. one section with a map of the *related terms* to search (right side). In this section, it is possible to choose for *Related Terms Clusters* or *Related Terms*.
 3. After selecting the term to search, click in button *search*
 
-
 <figure markdown>
   ![Image title](../../img/search_term.png)
   <figcaption>Search by term</figcaption>
 </figure>
-
 
 ### Search by phrase
 
@@ -29,7 +27,6 @@ Within the search page the options to search are:
     1. one section with a list of *autocomplete* words (left side), 
     2. one section with a map of the *related terms* to search (right side). In this section, it is possible to choose for *Related Terms Clusters* or *Related Terms*.
 3. After selecting the term to search, click in button :octicons-search-16: Search
-
 
 <figure markdown>
   ![Image title](../../img/search_phrase.png)
@@ -45,7 +42,6 @@ In the search by terms or phrase it is possible to apply a wizard so the search 
   <figcaption>Enrich query automatically</figcaption>
 </figure>
 
-
 ### Search by document or text
 
 #### Search by document
@@ -56,14 +52,12 @@ In the search by terms or phrase it is possible to apply a wizard so the search 
 1. Click in the :material-cloud-arrow-up-outline: and a pop-up window will appear.                    
 2. In the lower section of the pop-up paste the text you want to search. 
 
-
 If we don't want to search with this option, it is always possible to cancel the search with the :octicons-x-circle-16: button at the bottom of the pop up, and the pop-up window will close.
 
 <figure markdown>
   ![Image title](../../img/upload.png)
   <figcaption>Search by document or text</figcaption>
 </figure>
-
 
 <figure markdown>
   ![Image title](../../img/upload_txt_doc.png)
@@ -80,16 +74,12 @@ If we don't want to search with this option, it is always possible to cancel the
   <figcaption>Remove document or text from Search</figcaption>
 </figure>
 
-
 ### Filters         
 There are some filters that can be applied to refine the search of the results:
 
-`Text chunk`   
-: Chunking is a process of extracting phrases from unstructured text, in our case, it is possible to filter the results by:                
-  1. First chunk of the text                  
-  2. Single chunk only                     
-  3. Any chunks              
-
+`Show multiple chunks`   
+: Chunking is a process of extracting phrases from unstructured text, in our case, it is possible to filter the results by switching to show multiple chunks or not.                
+  
 `Filter by date range`
 : If this option is switched on, then the time range bar below, can be adjust to the custom year range.        
 
@@ -102,17 +92,12 @@ There are some filters that can be applied to refine the search of the results:
 `Other`
 : In this section it is possible to filter the results with an extra parameter, this parameter can be any of the tags that appears in tag ^^Other^^ from the uploaded documents (e.g. *crc, project_piknus, regions, identifiers*).
 
-
-
-
 Once all the filters are selected, click in the button **Apply Filters** at the top of the section to apply them.
 
-
 <figure markdown>
-  ![Image title](../../img/search_results_filters.png){ width="300" }
+  ![Image title](../../img/search_results_filters.png)
   <figcaption>Filters</figcaption>
 </figure>
-
 
 ### Results
 
@@ -124,7 +109,7 @@ By clicking in the :octicons-chevron-down-12: at the right side of every result,
   <figcaption>Search results</figcaption>
 </figure>
 
- On sections Taxonomy and Chunks when clicking on :fontawesome-solid-expand: the data can be seen in a expanded version.              
+ On sections Taxonomy and Chunks when clicking on :fontawesome-solid-expand: the data can be seen in an expanded version.              
 
 #### Taxonomy
 
@@ -143,11 +128,36 @@ On the Chunks section it is also possible to expand more the view to a full scre
 
 <figure markdown>
   ![Image title](../../img/expand_fullscreen.png)
-  <figcaption>Full screen view of Chunks </figcaption>
+  <figcaption>Full screen view of Chunks</figcaption>
 </figure>
+
+### Save to My Documents
+It is possible to save the results by clicking on :material-wallet-outline:. This will open a dialog window to select where to save the document.
+
+<figure markdown>
+  ![Image title](../../img/save_myDocs.png)
+  <figcaption>Save My Documents</figcaption>
+</figure>
+
+After saving the document, it is possible to find it on panel My Documents :material-wallet-outline: on the sidebar.
+
+### Stage document
+It also possible stage a document in its current version just click on :material-arrow-collapse-down:. You can remove from stage by clicking on :octicons-checkbox-24: that appears. Another option to remove from stage is to click on :material-arrow-collapse-down: that appears on top right of the screen. This will open a pop-up window where it is possible to perform bulk actions.
+
+<figure markdown>
+  ![Image title](../../img/remove_stage.png)
+  <figcaption>Remove Stage</figcaption>
+</figure>
+
 ### My Search           
 In this panel, we can see the user's search library.               
 
-
 ### My Documents         
-In this panel we can see the user's documents library.                 
+In this panel we can see the documents the user has saved during the searching.                 
+
+<figure markdown>
+  ![Image title](../../img/my_documents.png)
+  <figcaption>My Documents</figcaption>
+</figure>
+
+

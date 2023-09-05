@@ -28,7 +28,7 @@ const ActionIconPopover = ({
 }: Props) => {
   const [isOpen, setIsOpen] = useState(opened)
 
-  const { icon, tooltip, active, onClick, color, ...actionProps } = action
+  const { icon, active, onClick, color, ...actionProps } = action
 
   const handleIconClick = () => {
     setIsOpen(prev => !prev)
@@ -44,7 +44,8 @@ const ActionIconPopover = ({
     setIsOpen(opened)
   }, [opened])
 
-  // TODO: Add a tooltip to the popover target
+  // Create a wrapper to prevent the click event from bubbling up to the parent
+  const inner = <div onClick={e => e.stopPropagation()}>{children}</div>
 
   return (
     <Popover
@@ -67,7 +68,7 @@ const ActionIconPopover = ({
         </ColoredActionIcon>
       </Popover.Target>
 
-      <Popover.Dropdown className={className}>{children}</Popover.Dropdown>
+      <Popover.Dropdown className={className}>{inner}</Popover.Dropdown>
     </Popover>
   )
 }

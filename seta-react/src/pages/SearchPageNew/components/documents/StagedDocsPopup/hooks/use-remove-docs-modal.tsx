@@ -131,7 +131,7 @@ const useRemoveDocsModal = ({
   const confirmRemoveModal = (
     <ConfirmModal
       icon={<CgRemoveR css={removeIconStyle} />}
-      text={removeModalText}
+      description={removeModalText}
       secondary={`You can add ${removeSecondary} back later from the search results.`}
       confirmLabel={`Remove ${removeName}`}
       confirmColor="red"

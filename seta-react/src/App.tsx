@@ -18,6 +18,7 @@ const App = () => {
   return (
     <MantineProvider withGlobalStyles withNormalizeCSS emotionCache={emotionCache} theme={theme}>
       <Notifications position="top-right" zIndex={2077} />
+
       <ModalsProvider>
         <QueryClientProvider client={queryClient}>
           <UserProvider>

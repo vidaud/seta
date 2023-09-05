@@ -63,7 +63,6 @@ const SaveDocumentsModal = ({ documents, saving, saveError, onSave, onClose, ...
         onClick={handleSaveClick}
         disabled={isLoading || !!error}
         loading={saving}
-        loaderPosition="center"
       >
         {saveLabel}
       </Button>

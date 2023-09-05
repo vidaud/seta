@@ -6,12 +6,16 @@ export enum LibraryItemType {
 export type LibraryItemBase = {
   id: string
   title: string
+  parentId: string | null
 }
 
-export type LibraryItemRaw = LibraryItemBase & {
+type LibraryFolderRaw = LibraryItemBase & {
   order: number
-  parentId: string | null
+
   type: string
+}
+
+export type LibraryItemRaw = LibraryFolderRaw & {
   documentId?: string
   link?: string | null
 }

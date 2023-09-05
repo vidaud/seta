@@ -8,6 +8,7 @@ export type DocumentsTreeOptions = {
   selectable?: boolean
   autoSelect?: boolean
   toggleable?: boolean
+  noActionMenu?: boolean
 }
 
 type DocumentsTreeProviderProps = DocumentsTreeOptions & {
@@ -15,8 +16,6 @@ type DocumentsTreeProviderProps = DocumentsTreeOptions & {
   selected: LibraryItem | undefined
   onSelect: (value?: LibraryItem) => void
   selectChild: (parent: LibraryItem, childId: string) => void
-  // Returns the new folder's id
-  createNewFolder: (parentId: string | null, title: string) => Promise<string>
 }
 
 type DocumentsTreeContextProps = DocumentsTreeProviderProps

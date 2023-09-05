@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { Collapse, Flex, Group, Tooltip } from '@mantine/core'
+import { Collapse, Flex, Tooltip } from '@mantine/core'
 
 import ChevronToggleIcon from '~/components/ChevronToggleIcon'
 
@@ -7,9 +7,10 @@ import type { ClassNameProp } from '~/types/children-props'
 import type { LibraryItem } from '~/types/library/library-item'
 import { LibraryItemType } from '~/types/library/library-item'
 
-import NewFolderAction from './components/NewFolderAction'
+import NodeActions from './components/NodeActions'
 import { ROOT_ICON, FOLDER_ICON_OPEN, FOLDER_ICON, FILE_ICON } from './constants'
 import { useDocumentsTree } from './contexts/documents-tree-context'
+import { useTreeActions } from './contexts/tree-actions-context'
 import * as S from './styles'
 
 type Props = {
@@ -25,8 +26,10 @@ const DocumentNode = ({ className, item, isRoot }: Props) => {
   // Store the id of the newly created folder to select after a rerender
   const [willSelectId, setWillSelectId] = useState<string | null>(null)
 
-  const { foldersOnly, selectable, toggleable, selected, onSelect, selectChild, createNewFolder } =
+  const { foldersOnly, selectable, toggleable, noActionMenu, selected, onSelect, selectChild } =
     useDocumentsTree()
+
+  const { createNewFolder } = useTreeActions()
 
   const selectChildRef = useRef(selectChild)
 
@@ -115,15 +118,15 @@ const DocumentNode = ({ className, item, isRoot }: Props) => {
     : FILE_ICON
 
   const actionsGroup = (
-    <Group spacing="xs" ml="sm" data-actions>
-      {isFolder && (
-        <NewFolderAction
-          isLoading={isLoading}
-          onPopoverChange={setIsEditing}
-          onNewFolder={handleNewFolder}
-        />
-      )}
-    </Group>
+    <NodeActions
+      item={item}
+      isRoot={isRoot}
+      noActionsMenu={noActionMenu}
+      isNewFolderLoading={isLoading}
+      onNewFolderPopoverChange={setIsEditing}
+      onOptionsMenuChange={setIsEditing}
+      onNewFolder={handleNewFolder}
+    />
   )
 
   return (
