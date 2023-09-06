@@ -9,7 +9,6 @@ import { queryClientOptions } from '~/config/query-client-config'
 import { UserProvider } from '~/contexts/user-context'
 
 import AppRouter from './components/AppRouter'
-import CookiesBanner from './components/Cookies/Cookies'
 import { emotionCache, theme } from './styles'
 
 const App = () => {
@@ -23,7 +22,7 @@ const App = () => {
         <QueryClientProvider client={queryClient}>
           <UserProvider>
             <AppRouter />
-            <CookiesBanner />
+            {/* <CookiesBanner /> */}
           </UserProvider>
 
           <ReactQueryDevtools initialIsOpen={false} />

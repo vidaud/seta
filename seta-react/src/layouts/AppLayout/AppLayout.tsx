@@ -1,7 +1,8 @@
 import { Flex } from '@mantine/core'
 import { Outlet } from 'react-router-dom'
 
-import Footer from '../../components/Footer'
+import FooterWithCookies from '~/components/FooterWithCookies/FooterWithCookies'
+
 import Header from '../../components/Header'
 
 const AppLayout = () => (
@@ -12,7 +13,7 @@ const AppLayout = () => (
       <Outlet />
     </Flex>
 
-    <Footer />
+    <FooterWithCookies />
   </Flex>
 )
 

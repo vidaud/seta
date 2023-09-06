@@ -35,7 +35,7 @@ const NavbarNestedWithNotifications = () => {
 
   return (
     <Navbar
-      height={800}
+      height="auto"
       sx={theme => ({
         marginBottom: theme.spacing.xs,
         [`@media (max-width: 89em)`]: {

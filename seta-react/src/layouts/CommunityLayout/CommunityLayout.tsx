@@ -12,7 +12,7 @@ const CommunityLayout = () => {
         {/* <Breadcrumbs readFromPath includeCom /> */}
         <Breadcrumbs readFromPath />
 
-        <Flex sx={{ marginTop: '-3rem', zIndex: 100 }}>
+        <Flex sx={{ marginTop: '-3rem', zIndex: 10 }}>
           <CommunityListProvider>
             <NavbarNestedWithNotifications />
           </CommunityListProvider>
