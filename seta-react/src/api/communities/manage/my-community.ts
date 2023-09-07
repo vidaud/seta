@@ -11,6 +11,7 @@ import { environment } from '~/environments/environment'
 
 import { CommunityQueryKeys } from './community-query-keys'
 
+const CREATE_COMMUNITY_API_PATH = (): string => `/communities`
 const UPDATE_COMMUNITY_API_PATH = (id: string): string => `/communities/${id}`
 const DELETE_COMMUNITY_API_PATH = (id: string): string => `/communities/${id}`
 
@@ -63,6 +64,24 @@ export const createCommunity = async (values?: CreateCommunityAPI) => {
       accept: 'application/json',
       'X-CSRF-TOKEN': csrf_token,
       'Content-Type': 'application/x-www-form-urlencoded'
+    }
+  })
+}
+
+export const setCreateCommunity = async (request: CommunityValues) => {
+  return await api.post(CREATE_COMMUNITY_API_PATH(), request, config)
+}
+
+export const useCreateCommunity = () => {
+  const client = useQueryClient()
+
+  return useMutation({
+    mutationFn: (request: CommunityValues) => setCreateCommunity(request),
+    onMutate: async () => {
+      await client.cancelQueries(CommunityQueryKeys.CommunitiesQueryKey)
+    },
+    onSuccess: () => {
+      client.invalidateQueries(CommunityQueryKeys.CommunitiesQueryKey)
     }
   })
 }

@@ -72,7 +72,7 @@ const CommunityListContent = forwardRef<HTMLDivElement, Props>(
             secondary="Please create your own community"
           />
           <Group position="center" sx={{ paddingTop: '1%' }}>
-            <CreateCommunity system_scopes={system_scopes} refetch={onTryAgain} />
+            <CreateCommunity system_scopes={system_scopes} />
           </Group>
         </>
       )
@@ -96,7 +96,7 @@ const CommunityListContent = forwardRef<HTMLDivElement, Props>(
         ))}
         {/* <Divider size="xs" /> */}
         <Group position="right">
-          <CreateCommunity system_scopes={system_scopes} refetch={onTryAgain} />
+          <CreateCommunity system_scopes={system_scopes} />
         </Group>
       </Flex>
     )

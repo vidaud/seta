@@ -17,7 +17,7 @@ const useStyles = createStyles({
   }
 })
 
-const CreateCommunity = ({ system_scopes, refetch }) => {
+const CreateCommunity = ({ system_scopes }) => {
   const { classes } = useStyles()
   const [scopes, setScopes] = useState<string | undefined>('')
   const [opened, { open, close }] = useDisclosure(false)
@@ -42,7 +42,7 @@ const CreateCommunity = ({ system_scopes, refetch }) => {
             }}
           >
             <Divider my="xs" label="Add New Community" labelPosition="center" />
-            <CreateForm close={close} refetch={refetch} />
+            <CreateForm close={close} />
           </Modal>
           <Group
             position="left"
