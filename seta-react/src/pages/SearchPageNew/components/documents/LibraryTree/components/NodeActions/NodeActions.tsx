@@ -1,18 +1,20 @@
+import { Suspense, lazy } from 'react'
 import { Group, Tooltip } from '@mantine/core'
 
 import { LibraryItemType } from '~/types/library/library-item'
 import type { LibraryItem } from '~/types/library/library-item'
 
 import NewFolderAction from '../NewFolderAction'
-import OptionsMenuAction from '../OptionsMenuAction'
+
+// Lazy load the options menu action to avoid rendering it and the confirmation modals when not needed
+const OptionsMenuActionLazy = lazy(() => import('../OptionsMenuAction'))
 
 type Props = {
   item: LibraryItem
   isRoot?: boolean
   noActionsMenu?: boolean
-  isNewFolderLoading?: boolean
-  isOptionsMenuLoading?: boolean
-  onNewFolder?: (name: string) => void
+  onCreatingNewFolder?: () => void
+  onNewFolderCreated?: (folderId: string) => void
   onNewFolderPopoverChange?: (open: boolean) => void
   onOptionsMenuChange?: (open: boolean) => void
 }
@@ -21,10 +23,10 @@ const NodeActions = ({
   item,
   isRoot,
   noActionsMenu,
-  isNewFolderLoading,
   onNewFolderPopoverChange,
   onOptionsMenuChange,
-  onNewFolder
+  onCreatingNewFolder,
+  onNewFolderCreated
 }: Props) => {
   const hasActionMenu = !isRoot && !noActionsMenu
   const isFolder = item.type === LibraryItemType.Folder
@@ -35,13 +37,18 @@ const NodeActions = ({
         <Tooltip.Group openDelay={300} closeDelay={200}>
           {isFolder && (
             <NewFolderAction
-              isLoading={isNewFolderLoading}
+              parent={item}
               onPopoverChange={onNewFolderPopoverChange}
-              onNewFolder={onNewFolder}
+              onCreatingNewFolder={onCreatingNewFolder}
+              onNewFolderCreated={onNewFolderCreated}
             />
           )}
 
-          {hasActionMenu && <OptionsMenuAction item={item} onMenuChange={onOptionsMenuChange} />}
+          {hasActionMenu && (
+            <Suspense fallback={null}>
+              <OptionsMenuActionLazy item={item} onMenuChange={onOptionsMenuChange} />
+            </Suspense>
+          )}
         </Tooltip.Group>
       </Group>
     </div>

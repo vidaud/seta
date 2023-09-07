@@ -4,27 +4,50 @@ import { Group, TextInput, ActionIcon } from '@mantine/core'
 import { FaPlus, FaCheck } from 'react-icons/fa'
 
 import ActionIconPopover from '~/components/ActionIconPopover'
+import { ROOT_NODE_ID } from '~/pages/SearchPageNew/components/documents/LibraryTree/constants'
+
+import { useCreateNewFolder } from '~/api/search/library'
+import type { LibraryItem } from '~/types/library/library-item'
 
 import * as S from './styles'
 
 type Props = {
-  isLoading?: boolean
+  parent: LibraryItem
   onPopoverChange?: (open: boolean) => void
-  onNewFolder?: (name: string) => void
+  onCreatingNewFolder?: () => void
+  onNewFolderCreated?: (folderId: string) => void
 }
 
-const NewFolderAction = ({ isLoading, onPopoverChange, onNewFolder }: Props) => {
+const NewFolderAction = ({
+  parent,
+  onPopoverChange,
+  onCreatingNewFolder,
+  onNewFolderCreated
+}: Props) => {
   const [isOpen, setIsOpen] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
   const [inputValue, setInputValue] = useState('')
 
+  const { mutateAsync: createNewFolderAsync } = useCreateNewFolder()
+
   const isValid = inputValue.trim().length > 0
+
+  const createNewFolder = async () => {
+    onCreatingNewFolder?.()
+    setIsLoading(true)
+
+    const parentId = parent.id === ROOT_NODE_ID ? null : parent.id
+
+    const { item } = await createNewFolderAsync({ parentId, title: inputValue.trim() })
+
+    setIsLoading(false)
+    onNewFolderCreated?.(item.id)
+  }
 
   const submitNewFolder = () => {
     if (!isValid) {
       return
     }
-
-    const value = inputValue.trim()
 
     setIsOpen(false)
 
@@ -33,8 +56,7 @@ const NewFolderAction = ({ isLoading, onPopoverChange, onNewFolder }: Props) => 
       setInputValue('')
     }, 200)
 
-    // TODO: Call the mutation here and remove the onNewFolder prop
-    onNewFolder?.(value)
+    createNewFolder()
   }
 
   const handleSaveClick: MouseEventHandler<HTMLButtonElement> = e => {

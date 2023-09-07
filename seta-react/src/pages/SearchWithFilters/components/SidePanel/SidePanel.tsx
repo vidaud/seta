@@ -5,7 +5,7 @@ import { IconListSearch, IconSearch, IconWallet } from '@tabler/icons-react'
 
 import ToggleSection from '~/components/ToggleSection'
 import UnderDevelopment from '~/components/UnderDevelopment/UnderDevelopment'
-import DocumentsTree from '~/pages/SearchPageNew/components/documents/DocumentsTree'
+import LibraryTree from '~/pages/SearchPageNew/components/documents/LibraryTree'
 import { FilterStatus } from '~/pages/SearchWithFilters/types/filter-info'
 
 import { useLibrary } from '~/api/search/library'
@@ -54,7 +54,7 @@ const SidePanel = ({
       </ToggleSection>
 
       <ToggleSection icon={<IconWallet size={20} />} color="orange" title="My Documents">
-        <DocumentsTree
+        <LibraryTree
           data={libraryData?.items}
           isLoading={isLoading}
           error={error}

@@ -5,7 +5,7 @@ import { BsBoxArrowInUpRight, BsThreeDotsVertical } from 'react-icons/bs'
 import { FiCornerUpRight } from 'react-icons/fi'
 
 import ActionIconMenu from '~/components/ActionIconMenu/ActionIconMenu'
-import { useTreeActions } from '~/pages/SearchPageNew/components/documents/DocumentsTree/contexts/tree-actions-context'
+import { useTreeActions } from '~/pages/SearchPageNew/components/documents/LibraryTree/contexts/tree-actions-context'
 
 import type { LibraryItem } from '~/types/library/library-item'
 import { LibraryItemType } from '~/types/library/library-item'
@@ -19,7 +19,7 @@ type Props = {
 const OptionsMenuAction = ({ item, isLoading, onMenuChange }: Props) => {
   const [isOpen, setIsOpen] = useState(false)
 
-  const { renameFolder, confirmDelete } = useTreeActions()
+  const { renameFolder, confirmDelete, moveItem } = useTreeActions()
 
   const isFolder = item.type === LibraryItemType.Folder
   const subject = isFolder ? 'folder' : 'document'
@@ -45,7 +45,10 @@ const OptionsMenuAction = ({ item, isLoading, onMenuChange }: Props) => {
         </Menu.Item>
       )}
 
-      <Menu.Item icon={<BsBoxArrowInUpRight strokeWidth={0.5} size={16} />}>
+      <Menu.Item
+        icon={<BsBoxArrowInUpRight strokeWidth={0.5} size={16} />}
+        onClick={() => moveItem(item)}
+      >
         Move {subject}
       </Menu.Item>
 
