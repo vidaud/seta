@@ -136,7 +136,12 @@
         }
       }
     ],
-    "import/no-cycle": "error",
+    "import/no-cycle": [
+      "error",
+      {
+        "allowUnsafeDynamicCyclicDependency": true
+      }
+    ],
     "import/first": "error",
     "import/no-useless-path-segments": "error",
     "import/no-duplicates": "error",

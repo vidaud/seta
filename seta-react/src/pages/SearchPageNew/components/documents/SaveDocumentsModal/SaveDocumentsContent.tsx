@@ -1,5 +1,5 @@
 import ClosableAlert from '~/components/ClosableAlert/ClosableAlert'
-import DocumentsTree from '~/pages/SearchPageNew/components/documents/DocumentsTree'
+import LibraryTree from '~/pages/SearchPageNew/components/documents/LibraryTree'
 
 import type { DataProps } from '~/types/data-props'
 import type { LibraryItem, LibraryItemRaw } from '~/types/library/library-item'
@@ -7,11 +7,12 @@ import type { LibraryItem, LibraryItemRaw } from '~/types/library/library-item'
 import * as S from './styles'
 
 type Props = DataProps<LibraryItemRaw[]> & {
+  libraryItem?: LibraryItem
   saveError?: string
   onSelectedChange?: (value?: LibraryItem) => void
 }
 
-const SaveDocumentsContent = ({ saveError, onSelectedChange, ...props }: Props) => {
+const SaveDocumentsContent = ({ libraryItem, saveError, onSelectedChange, ...props }: Props) => {
   const errorAlert = !!saveError && (
     <ClosableAlert title="Error saving documents" color="red" variant="outline" mb="sm">
       {saveError}
@@ -24,12 +25,13 @@ const SaveDocumentsContent = ({ saveError, onSelectedChange, ...props }: Props) 
     <div css={S.contentRoot}>
       {errorAlert}
 
-      <DocumentsTree
+      <LibraryTree
         css={S.tree}
         foldersOnly
         selectable
         noActionMenu
         autoSelect
+        excludeItem={libraryItem}
         onSelectedChange={onSelectedChange}
         {...props}
       />
