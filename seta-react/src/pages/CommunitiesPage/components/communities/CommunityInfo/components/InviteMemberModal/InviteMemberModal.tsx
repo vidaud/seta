@@ -17,7 +17,7 @@ import {
   useInvitation
 } from '~/pages/CommunitiesPage/contexts/invite-context'
 
-import { createCommunityInvite } from '~/api/communities/invite'
+import { useNewCommunityInvite } from '~/api/communities/invite'
 import { useCurrentUser } from '~/contexts/user-context'
 
 const useStyles = createStyles({
@@ -37,6 +37,7 @@ const InviteMember = ({ communityId }) => {
   const { user } = useCurrentUser()
   const [opened, setOpened] = useState(false)
   const { classes, cx } = useStyles()
+  const setNewCommunityInviteMutation = useNewCommunityInvite(communityId)
   const [defaultMessage] = useState(
     `This is an invitation to join ${
       communityId.charAt(0).toUpperCase() + communityId.slice(1)
@@ -54,47 +55,24 @@ const InviteMember = ({ communityId }) => {
   })
 
   const handleSubmit = (values: InvitationValues) => {
-    createCommunityInvite(communityId, values)
-      .then(() => {
+    setNewCommunityInviteMutation.mutate(values, {
+      onSuccess: () => {
         notifications.show({
-          title: 'Invitation Sent',
-          message: 'Your invitation has been sent successfully',
-          styles: theme => ({
-            root: {
-              backgroundColor: theme.colors.teal[6],
-              borderColor: theme.colors.teal[6],
-              '&::before': { backgroundColor: theme.white }
-            },
-            title: { color: theme.white },
-            description: { color: theme.white },
-            closeButton: {
-              color: theme.white,
-              '&:hover': { backgroundColor: theme.colors.teal[7] }
-            }
-          })
+          message: `Invitation Sent Successfully!`,
+          color: 'blue',
+          autoClose: 5000
         })
-      })
-      .catch(error => {
-        notifications.show({
-          title: error.response.statusText,
-          message: error.response.data.message,
-          styles: theme => ({
-            root: {
-              backgroundColor: theme.colors.red[6],
-              borderColor: theme.colors.red[6],
-              '&::before': { backgroundColor: theme.white }
-            },
-            title: { color: theme.white },
-            description: { color: theme.white },
-            closeButton: {
-              color: theme.white,
-              '&:hover': { backgroundColor: theme.colors.red[7] }
-            }
-          })
-        })
-      })
 
-    setOpened(o => !o)
+        setOpened(o => !o)
+      },
+      onError: () => {
+        notifications.show({
+          message: 'Invitation sent failed!',
+          color: 'red',
+          autoClose: 5000
+        })
+      }
+    })
   }
 
   return (

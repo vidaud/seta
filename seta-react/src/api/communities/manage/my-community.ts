@@ -1,15 +1,28 @@
-import { useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import type { AxiosRequestConfig } from 'axios'
 import { getCookie } from 'typescript-cookie'
 
+import type { CommunityValues } from '~/pages/CommunitiesPage/contexts/community-context'
+
 import api from '~/api/api'
-import type {
-  CommunityResponse,
-  CreateCommunityAPI,
-  UpdateCommunityAPI
-} from '~/api/types/community-types'
+import type { CommunityResponse, CreateCommunityAPI } from '~/api/types/community-types'
 import type { ResourceResponse } from '~/api/types/resource-types'
 import { environment } from '~/environments/environment'
+
+import { CommunityQueryKeys } from './community-query-keys'
+
+const UPDATE_COMMUNITY_API_PATH = (id: string): string => `/communities/${id}`
+const DELETE_COMMUNITY_API_PATH = (id: string): string => `/communities/${id}`
+
+const csrf_token = getCookie('csrf_access_token')
+const config = {
+  baseURL: environment.baseUrl,
+  headers: {
+    'Content-Type': 'application/x-www-form-urlencoded',
+    accept: 'application/json',
+    'X-CSRF-TOKEN': csrf_token
+  }
+}
 
 export const cacheKey = (id?: string) => ['communities', id]
 const BASE_URL = environment.baseUrl
@@ -42,8 +55,6 @@ const getMyCommunityResources = async (id?: string): Promise<ResourceResponse[]>
 export const useMyCommunityResources = (id?: string) =>
   useQuery({ queryKey: cacheKey(id), queryFn: () => getMyCommunityResources(id) })
 
-const csrf_token = getCookie('csrf_access_token')
-
 export const createCommunity = async (values?: CreateCommunityAPI) => {
   await api.post<CreateCommunityAPI[]>(`${environment.COMMUNITIES_API_PATH}`, values, {
     ...apiConfig,
@@ -54,33 +65,40 @@ export const createCommunity = async (values?: CreateCommunityAPI) => {
       'Content-Type': 'application/x-www-form-urlencoded'
     }
   })
-  // .then(response => {
-  //   if (response.status === 201) {
-  //     window.location.href = `/community/communities/`
-  //   }
-  // })
 }
 
-export const updateCommunity = async (id?: string, values?: UpdateCommunityAPI) => {
-  await api.put(`${environment.COMMUNITIES_API_PATH}/${id}`, values, {
-    ...apiConfig,
-    headers: {
-      ...apiConfig?.headers,
-      accept: 'application/json',
-      'X-CSRF-TOKEN': csrf_token,
-      'Content-Type': 'application/x-www-form-urlencoded'
+export const setUpdateCommunity = async (request: CommunityValues, id: string) => {
+  return await api.put(UPDATE_COMMUNITY_API_PATH(id), request, config)
+}
+
+export const useSetUpdateCommunity = (id: string) => {
+  const client = useQueryClient()
+
+  return useMutation({
+    mutationFn: (request: CommunityValues) => setUpdateCommunity(request, id),
+    onMutate: async () => {
+      await client.cancelQueries(CommunityQueryKeys.CommunitiesQueryKey)
+    },
+    onSuccess: () => {
+      client.invalidateQueries(CommunityQueryKeys.CommunitiesQueryKey)
     }
   })
 }
 
-export const deleteCommunityByID = async (id?: string) => {
-  await api.delete(`${environment.COMMUNITIES_API_PATH}/${id}`, {
-    ...apiConfig,
-    headers: {
-      ...apiConfig?.headers,
-      accept: 'application/json',
-      'X-CSRF-TOKEN': csrf_token,
-      'Content-Type': 'application/x-www-form-urlencoded'
+export const setDeleteCommunity = async (id: string) => {
+  return await api.delete(DELETE_COMMUNITY_API_PATH(id), config)
+}
+
+export const useDeleteCommunity = (id: string) => {
+  const client = useQueryClient()
+
+  return useMutation({
+    mutationFn: () => setDeleteCommunity(id),
+    onMutate: async () => {
+      await client.cancelQueries(CommunityQueryKeys.CommunitiesQueryKey)
+    },
+    onSuccess: () => {
+      client.invalidateQueries(CommunityQueryKeys.CommunitiesQueryKey)
     }
   })
 }

@@ -1,13 +1,20 @@
-import { useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import type { AxiosRequestConfig } from 'axios'
 import { getCookie } from 'typescript-cookie'
 
-import type { InviteRequestValues } from '~/pages/CommunitiesPage/contexts/invite-request-context'
-
 import { environment } from '~/environments/environment'
+
+import { CommunityQueryKeys } from './manage/community-query-keys'
 
 import api from '../api'
 import type { CreateInvitationAPI, InviteResponse } from '../types/invite-types'
+
+const INVITE_API_PATH = (id: string): string => `/communities/${id}/invites`
+
+const config = {
+  baseURL: environment.baseUrl,
+  headers: { 'Content-Type': 'application/x-www-form-urlencoded', accept: 'application/json' }
+}
 
 export const cacheKey = (id?: string) => ['invites', id]
 const BASE_URL = environment.baseUrl
@@ -46,6 +53,25 @@ export const createCommunityInvite = async (id?: string, values?: CreateInvitati
   )
 }
 
+const setNewCommunityInvite = async (id: string, request: CreateInvitationAPI) => {
+  return await api.post(INVITE_API_PATH(id), request, config)
+}
+
+export const useNewCommunityInvite = (id: string) => {
+  const client = useQueryClient()
+
+  return useMutation({
+    mutationFn: (request: CreateInvitationAPI) => setNewCommunityInvite(id, request),
+    onMutate: async () => {
+      await client.cancelQueries(CommunityQueryKeys.InvitationsRequestsQueryKey)
+    },
+    onSuccess: () => {
+      client.invalidateQueries(CommunityQueryKeys.InvitationsRequestsQueryKey)
+      client.invalidateQueries(CommunityQueryKeys.CommunitiesQueryKey)
+    }
+  })
+}
+
 export const cacheNoIDKey = () => ['invites']
 
 export const pendingInvites = async (): Promise<InviteResponse[]> => {
@@ -56,15 +82,3 @@ export const pendingInvites = async (): Promise<InviteResponse[]> => {
 
 export const useAllPendingInvites = () =>
   useQuery({ queryKey: cacheNoIDKey(), queryFn: () => pendingInvites() })
-
-export const updateInviteRequest = async (id?: string, values?: InviteRequestValues) => {
-  await api.put(`/invites/${id}`, values, {
-    ...apiConfig,
-    headers: {
-      ...apiConfig?.headers,
-      accept: 'application/json',
-      'X-CSRF-TOKEN': csrf_token,
-      'Content-Type': 'application/x-www-form-urlencoded'
-    }
-  })
-}

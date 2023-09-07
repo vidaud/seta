@@ -4,7 +4,6 @@ import { IconDotsVertical } from '@tabler/icons-react'
 
 import type { CommunityScopes } from '~/pages/CommunitiesPage/contexts/community-list.context'
 
-import { useAllCommunities } from '~/api/communities/discover/discover-communities'
 import type { CommunityResponse } from '~/api/types/community-types'
 import type { ResourceResponse } from '~/api/types/resource-types'
 
@@ -23,7 +22,6 @@ type Props = {
 }
 
 const CommunityButton = ({ props, community_scopes, resources }: Props) => {
-  const { refetch } = useAllCommunities()
   const [data, setData] = useState<CommunityResponse>(props)
   const [scopes, setScopes] = useState<string[] | undefined>([])
   const [outsideClick, setOutsideClick] = useState(true)
@@ -72,7 +70,6 @@ const CommunityButton = ({ props, community_scopes, resources }: Props) => {
                   community={props}
                   community_scopes={community_scopes}
                   onChange={handleOutsideClick}
-                  refetch={refetch}
                 />
                 {scopes?.includes('/seta/community/invite') ? (
                   <InviteMember communityId={props.community_id} />
@@ -83,7 +80,6 @@ const CommunityButton = ({ props, community_scopes, resources }: Props) => {
                     <DeleteCommunity
                       props={props}
                       totalResources={resources ? resources?.length : 0}
-                      refetch={refetch}
                     />
                     <Divider sx={{ marginTop: '0.25rem' }} />
                     <Text sx={{ paddingLeft: '0.75rem' }} color="#868e96" size="sm">
@@ -100,7 +96,7 @@ const CommunityButton = ({ props, community_scopes, resources }: Props) => {
         {data.status === 'membership' ? (
           <>
             {' '}
-            <LeaveCommunity props={data} refetch={refetch} />
+            <LeaveCommunity props={data} />
           </>
         ) : data.status === 'pending' ? (
           <Button color="gray" variant="outline" size="xs">
@@ -111,9 +107,9 @@ const CommunityButton = ({ props, community_scopes, resources }: Props) => {
             INVITED
           </Button>
         ) : data.status === 'unknown' && data.membership === 'closed' ? (
-          <MembershipRequest community_id={data.community_id} refetch={refetch} />
+          <MembershipRequest community_id={data.community_id} />
         ) : data.status === 'unknown' && data.membership === 'opened' ? (
-          <OpenCommunityMember community_id={data.community_id} refetch={refetch} />
+          <OpenCommunityMember community_id={data.community_id} />
         ) : data.status === 'rejected' ? (
           <Button variant="filled" size="xs" color="red">
             REJECTED

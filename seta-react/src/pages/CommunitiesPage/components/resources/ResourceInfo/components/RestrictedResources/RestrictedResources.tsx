@@ -1,14 +1,13 @@
 import { useEffect, useState } from 'react'
 import { createStyles, Switch, useMantineTheme } from '@mantine/core'
+import { notifications } from '@mantine/notifications'
 import { CgSearchFound } from 'react-icons/cg'
 import { MdOutlineSearchOff } from 'react-icons/md'
 
 import type { ResourceScopes } from '~/pages/CommunitiesPage/contexts/scope-context'
 
-import {
-  manageRestrictedResources,
-  useAllResources
-} from '~/api/communities/discover/discover-resources'
+import { useAllResources } from '~/api/communities/discover/discover-resources'
+import { useRestrictedResource } from '~/api/communities/manage/restricted-resources'
 import type { ResourceResponse } from '~/api/types/resource-types'
 
 const useStyles = createStyles(theme => ({
@@ -39,10 +38,11 @@ type Props = {
 }
 
 const RestrictedResource = ({ resource }: Props) => {
-  const { data, refetch } = useAllResources()
+  const { data } = useAllResources()
   const { classes } = useStyles()
   const theme = useMantineTheme()
   const [checked, setChecked] = useState(resource.searchable)
+  const setRestrictedResourceMutation = useRestrictedResource()
 
   useEffect(() => {
     if (resource) {
@@ -60,8 +60,21 @@ const RestrictedResource = ({ resource }: Props) => {
 
       index?.forEach(element => form.append('resource', element))
       form.append('resource', id)
-      manageRestrictedResources(form).then(() => {
-        refetch()
+      setRestrictedResourceMutation.mutate(form, {
+        onSuccess: () => {
+          notifications.show({
+            message: `Resource is now not searchable!`,
+            color: 'blue',
+            autoClose: 5000
+          })
+        },
+        onError: () => {
+          notifications.show({
+            message: 'The resource update failed!',
+            color: 'red',
+            autoClose: 5000
+          })
+        }
       })
     } else {
       const form = new FormData()
@@ -72,8 +85,21 @@ const RestrictedResource = ({ resource }: Props) => {
 
       index?.forEach(element => form.append('resource', element))
 
-      manageRestrictedResources(form).then(() => {
-        refetch()
+      setRestrictedResourceMutation.mutate(form, {
+        onSuccess: () => {
+          notifications.show({
+            message: `Resource is now searchable!`,
+            color: 'blue',
+            autoClose: 5000
+          })
+        },
+        onError: () => {
+          notifications.show({
+            message: 'The resource update failed!',
+            color: 'red',
+            autoClose: 5000
+          })
+        }
       })
     }
   }

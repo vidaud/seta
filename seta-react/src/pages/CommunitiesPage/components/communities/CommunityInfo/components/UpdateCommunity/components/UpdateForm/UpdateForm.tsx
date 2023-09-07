@@ -9,7 +9,7 @@ import {
   useCommunity
 } from '~/pages/CommunitiesPage/contexts/community-context'
 
-import { updateCommunity, useCommunityID } from '~/api/communities/manage/my-community'
+import { useCommunityID, useSetUpdateCommunity } from '~/api/communities/manage/my-community'
 
 const useStyles = createStyles({
   input: {
@@ -26,10 +26,11 @@ const useStyles = createStyles({
   }
 })
 
-const UpdateForm = ({ community, close, onChange, refetch }) => {
+const UpdateForm = ({ community, close, onChange }) => {
   const { classes, cx } = useStyles()
 
   const { data, isLoading } = useCommunityID(community.community_id)
+  const setUpdateCommunityMutation = useSetUpdateCommunity(community.community_id)
 
   const form = useCommunity({
     initialValues: {
@@ -59,47 +60,24 @@ const UpdateForm = ({ community, close, onChange, refetch }) => {
   }
 
   const handleSubmit = (values: CommunityValues) => {
-    updateCommunity(community.community_id, values)
-      .then(() => {
-        refetch()
+    setUpdateCommunityMutation.mutate(values, {
+      onSuccess: () => {
+        notifications.show({
+          message: `Community Updated Successfully!`,
+          color: 'blue',
+          autoClose: 5000
+        })
+
         close()
+      },
+      onError: () => {
         notifications.show({
-          title: 'Community Updated Successfully',
-          message: 'Community has been updated successfully',
-          styles: theme => ({
-            root: {
-              backgroundColor: theme.colors.teal[6],
-              borderColor: theme.colors.teal[6],
-              '&::before': { backgroundColor: theme.white }
-            },
-            title: { color: theme.white },
-            description: { color: theme.white },
-            closeButton: {
-              color: theme.white,
-              '&:hover': { backgroundColor: theme.colors.teal[7] }
-            }
-          })
+          message: 'Community update failed!',
+          color: 'red',
+          autoClose: 5000
         })
-      })
-      .catch(error => {
-        notifications.show({
-          title: error.response.statusText,
-          message: error.response.data.message,
-          styles: theme => ({
-            root: {
-              backgroundColor: theme.colors.red[6],
-              borderColor: theme.colors.red[6],
-              '&::before': { backgroundColor: theme.white }
-            },
-            title: { color: theme.white },
-            description: { color: theme.white },
-            closeButton: {
-              color: theme.white,
-              '&:hover': { backgroundColor: theme.colors.red[7] }
-            }
-          })
-        })
-      })
+      }
+    })
   }
 
   return (

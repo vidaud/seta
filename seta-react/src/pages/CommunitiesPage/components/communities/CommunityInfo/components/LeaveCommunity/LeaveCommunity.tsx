@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { Text, Popover, Button, Group, createStyles, Tooltip } from '@mantine/core'
 import { notifications } from '@mantine/notifications'
 
-import { getMembership, leaveCommunity } from '~/api/communities/membership'
+import { getMembership, useRemoveCommunityMembership } from '~/api/communities/membership'
 
 const useStyles = createStyles(theme => ({
   form: {
@@ -11,10 +11,11 @@ const useStyles = createStyles(theme => ({
   text: { paddingBottom: theme.spacing.md }
 }))
 
-const LeaveCommunity = ({ props, refetch }) => {
+const LeaveCommunity = ({ props }) => {
   const { classes } = useStyles()
   const [opened, setOpened] = useState(false)
   const [memberNumber, setMemberNumber] = useState<number | undefined>()
+  const setRemoveCommunityMembershipMutation = useRemoveCommunityMembership()
 
   useEffect(() => {
     getMembership(props.community_id).then(response => {
@@ -27,47 +28,24 @@ const LeaveCommunity = ({ props, refetch }) => {
   }, [props])
 
   const deleteMembership = () => {
-    leaveCommunity(props.community_id)
-      .then(() => {
-        refetch()
+    setRemoveCommunityMembershipMutation.mutate(props.community_id, {
+      onSuccess: () => {
         notifications.show({
-          title: 'Community Membership Removed',
-          message:
-            'You are no longer member of this community. \nClick Join to send a new membership request.',
-          styles: theme => ({
-            root: {
-              backgroundColor: theme.colors.blue[6],
-              borderColor: theme.colors.blue[6],
-              '&::before': { backgroundColor: theme.white }
-            },
-            title: { color: theme.white },
-            description: { color: theme.white },
-            closeButton: {
-              color: theme.white,
-              '&:hover': { backgroundColor: theme.colors.blue[7] }
-            }
-          })
+          message: `Community Membership Removed!`,
+          color: 'blue',
+          autoClose: 5000
         })
-      })
-      .catch(error => {
+
+        setOpened(o => !o)
+      },
+      onError: () => {
         notifications.show({
-          title: error.response.statusText,
-          message: error.response.data.message,
-          styles: theme => ({
-            root: {
-              backgroundColor: theme.colors.red[6],
-              borderColor: theme.colors.red[6],
-              '&::before': { backgroundColor: theme.white }
-            },
-            title: { color: theme.white },
-            description: { color: theme.white },
-            closeButton: {
-              color: theme.white,
-              '&:hover': { backgroundColor: theme.colors.red[7] }
-            }
-          })
+          message: 'Leave Community Failed!',
+          color: 'red',
+          autoClose: 5000
         })
-      })
+      }
+    })
   }
 
   return (
@@ -82,7 +60,7 @@ const LeaveCommunity = ({ props, refetch }) => {
       onChange={setOpened}
     >
       <Popover.Target>
-        <Tooltip label="Remove Community Membership" color="blue">
+        <Tooltip label="Remove Community Membership">
           <Button
             variant="filled"
             size="xs"

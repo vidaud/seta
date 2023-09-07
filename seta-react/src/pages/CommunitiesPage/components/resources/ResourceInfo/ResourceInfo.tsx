@@ -124,7 +124,7 @@ const ResourceInfo = ({ resource, resource_scopes, refetch }: Props) => {
                   onChange={handleOutsideClick}
                   refetch={refetch}
                 />
-                <DeleteResource id={resource_id} refetch={refetch} />
+                <DeleteResource id={resource_id} />
               </Menu.Dropdown>
             </Menu>
           </>

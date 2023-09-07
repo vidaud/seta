@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import type { AxiosRequestConfig } from 'axios'
 import { getCookie } from 'typescript-cookie'
 
@@ -10,7 +10,21 @@ import type {
 } from '~/api/types/resource-types'
 import { environment } from '~/environments/environment'
 
+import { ResourceQueryKeys } from './resource-query-keys'
+
 const RESOURCE_API_PATH = '/resources/'
+const UPDATE_RESOURCE_API_PATH = (id: string): string => `/resources/${id}`
+const DELETE_RESOURCE_API_PATH = (id: string): string => `/resources/${id}`
+const csrf_token = getCookie('csrf_access_token')
+const config = {
+  baseURL: environment.baseUrl,
+  headers: {
+    'Content-Type': 'application/x-www-form-urlencoded',
+    accept: 'application/json',
+    'X-CSRF-TOKEN': csrf_token
+  }
+}
+
 const BASE_URL = environment.baseUrl
 
 const apiConfig: AxiosRequestConfig = {
@@ -28,8 +42,6 @@ export const getResource = async (id?: string): Promise<ResourceResponse> => {
 
 export const useResourceID = (id?: string) =>
   useQuery({ queryKey: cacheKey(id), queryFn: () => getResource(id) })
-
-const csrf_token = getCookie('csrf_access_token')
 
 export const createResource = async (id?: string, values?: CreateResourceAPI) => {
   await api
@@ -49,14 +61,20 @@ export const createResource = async (id?: string, values?: CreateResourceAPI) =>
     })
 }
 
-export const updateResource = async (resource_id?: string, values?: UpdateResourceAPI) => {
-  await api.put(`${RESOURCE_API_PATH}${resource_id}`, values, {
-    ...apiConfig,
-    headers: {
-      ...apiConfig?.headers,
-      accept: 'application/json',
-      'X-CSRF-TOKEN': csrf_token,
-      'Content-Type': 'application/x-www-form-urlencoded'
+export const setUpdateResource = async (id: string, request?: UpdateResourceAPI) => {
+  return await api.put(UPDATE_RESOURCE_API_PATH(id), request, config)
+}
+
+export const useSetUpdateResource = (id: string) => {
+  const client = useQueryClient()
+
+  return useMutation({
+    mutationFn: (request: UpdateResourceAPI) => setUpdateResource(id, request),
+    onMutate: async () => {
+      await client.cancelQueries(ResourceQueryKeys.ResourcesQueryKey)
+    },
+    onSuccess: () => {
+      client.invalidateQueries(ResourceQueryKeys.ResourcesQueryKey)
     }
   })
 }
@@ -69,6 +87,24 @@ export const deleteResourceByID = async (resource_id?: string) => {
       accept: 'application/json',
       'X-CSRF-TOKEN': csrf_token,
       'Content-Type': 'application/x-www-form-urlencoded'
+    }
+  })
+}
+
+export const setDeleteResource = async (id: string) => {
+  return await api.delete(DELETE_RESOURCE_API_PATH(id), config)
+}
+
+export const useDeleteResource = (id: string) => {
+  const client = useQueryClient()
+
+  return useMutation({
+    mutationFn: () => setDeleteResource(id),
+    onMutate: async () => {
+      await client.cancelQueries(ResourceQueryKeys.ResourcesQueryKey)
+    },
+    onSuccess: () => {
+      client.invalidateQueries(ResourceQueryKeys.ResourcesQueryKey)
     }
   })
 }

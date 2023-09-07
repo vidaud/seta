@@ -43,8 +43,9 @@ const CreateForm = ({ close, refetch }) => {
   const handleSubmit = (values: CommunityValues) => {
     createCommunity(values)
       .then(() => {
-        close()
         refetch()
+        close()
+
         notifications.show({
           title: 'New Community Added Successfully',
           message: 'New community has been added to the list',

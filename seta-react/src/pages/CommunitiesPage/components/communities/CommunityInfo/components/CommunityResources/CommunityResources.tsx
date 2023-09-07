@@ -78,13 +78,13 @@ const CommunityResources = ({ id }) => {
             <Group>
               <DateTimeCell dateTime={row?.created_at} />
               {row.status === 'active' ? (
-                <Tooltip label="Active" color="green">
+                <Tooltip label="Active">
                   <Badge variant="outline" color="green" w="min-content" className={classes.badge}>
                     <VscLayersActive />
                   </Badge>
                 </Tooltip>
               ) : (
-                <Tooltip label="Blocked" color="red">
+                <Tooltip label="Blocked">
                   <Badge variant="outline" color="red" w="min-content" className={classes.badge}>
                     <ImBlocked />
                   </Badge>

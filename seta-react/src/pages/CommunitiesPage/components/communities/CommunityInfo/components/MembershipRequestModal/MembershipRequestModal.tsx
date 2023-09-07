@@ -8,7 +8,7 @@ import {
   useMembership
 } from '~/pages/CommunitiesPage/contexts/membership-context'
 
-import { createMembershipRequest } from '~/api/communities/membership'
+import { useNewCommunityMembership } from '~/api/communities/membership'
 
 const useStyles = createStyles({
   form: {
@@ -16,9 +16,10 @@ const useStyles = createStyles({
   }
 })
 
-const MembershipRequest = ({ community_id, refetch }) => {
+const MembershipRequest = ({ community_id }) => {
   const [opened, setOpened] = useState(false)
   const { classes, cx } = useStyles()
+  const setNewCommunityMembershipMutation = useNewCommunityMembership(community_id)
 
   const form = useMembership({
     initialValues: {
@@ -30,51 +31,24 @@ const MembershipRequest = ({ community_id, refetch }) => {
   })
 
   const handleSubmit = (values: MembershipValues) => {
-    createMembershipRequest(community_id, values)
-      .then(() => {
-        setTimeout(() => {
-          refetch()
-          setOpened(o => !o)
-        }, 100)
+    setNewCommunityMembershipMutation.mutate(values, {
+      onSuccess: () => {
+        notifications.show({
+          message: `Membership Request Sent Successfully!`,
+          color: 'blue',
+          autoClose: 5000
+        })
 
+        setOpened(o => !o)
+      },
+      onError: () => {
         notifications.show({
-          title: 'Membership Request Sent',
-          message:
-            'Your membership request has been send to the owner of the community. \nYou need to wait for his approval.',
-          styles: theme => ({
-            root: {
-              backgroundColor: theme.colors.blue[6],
-              borderColor: theme.colors.blue[6],
-              '&::before': { backgroundColor: theme.white }
-            },
-            title: { color: theme.white },
-            description: { color: theme.white },
-            closeButton: {
-              color: theme.white,
-              '&:hover': { backgroundColor: theme.colors.blue[7] }
-            }
-          })
+          message: 'Membership Request Failed!',
+          color: 'red',
+          autoClose: 5000
         })
-      })
-      .catch(error => {
-        notifications.show({
-          title: error.response.statusText,
-          message: error.response.data.message,
-          styles: theme => ({
-            root: {
-              backgroundColor: theme.colors.red[6],
-              borderColor: theme.colors.red[6],
-              '&::before': { backgroundColor: theme.white }
-            },
-            title: { color: theme.white },
-            description: { color: theme.white },
-            closeButton: {
-              color: theme.white,
-              '&:hover': { backgroundColor: theme.colors.red[7] }
-            }
-          })
-        })
-      })
+      }
+    })
   }
 
   return (
@@ -90,7 +64,7 @@ const MembershipRequest = ({ community_id, refetch }) => {
     >
       <Popover.Target>
         <Group position="right">
-          <Tooltip label="Send Join Request" color="orange">
+          <Tooltip label="Send Join Request">
             <Button
               variant="filled"
               color="orange"
