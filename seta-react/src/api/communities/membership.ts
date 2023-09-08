@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import type { AxiosRequestConfig } from 'axios'
 import { getCookie } from 'typescript-cookie'
 
@@ -6,12 +6,25 @@ import type { MembershipValues } from '~/pages/CommunitiesPage/contexts/membersh
 
 import { environment } from '~/environments/environment'
 
+import { CommunityQueryKeys } from './manage/community-query-keys'
+
 import api from '../api'
 import type {
   CreateMembershipRequestAPI,
   MembershipResponse,
   Memberships
 } from '../types/membership-types'
+
+const MEMBERSHIP_API_PATH = (id: string): string => `/communities/${id}/requests`
+const OPEN_MEMBERSHIP_API_PATH = (id: string): string => `/communities/${id}/memberships`
+const REMOVE_MEMBERSHIP_API_PATH = (id: string): string => `/communities/${id}/membership`
+
+const csrf_token = getCookie('csrf_access_token')
+
+const config = {
+  baseURL: environment.baseUrl,
+  headers: { 'Content-Type': 'application/x-www-form-urlencoded', accept: 'application/json' }
+}
 
 export const cacheKey = (id?: string) => ['memberships', id]
 const BASE_URL = environment.baseUrl
@@ -37,50 +50,61 @@ export const getMembership = async (id?: string): Promise<Memberships> => {
 export const useMembershipID = (id?: string) =>
   useQuery({ queryKey: cacheKey(id), queryFn: () => getMembership(id) })
 
-const csrf_token = getCookie('csrf_access_token')
-
-export const createMembershipRequest = async (id?: string, values?: CreateMembershipRequestAPI) => {
-  await api
-    .post<CreateMembershipRequestAPI[]>(
-      `${environment.COMMUNITIES_API_PATH}/${id}/requests`,
-      values,
-      {
-        ...apiConfig,
-        headers: {
-          ...apiConfig?.headers,
-          accept: 'application/json',
-          'X-CSRF-TOKEN': csrf_token,
-          'Content-Type': 'application/x-www-form-urlencoded'
-        }
-      }
-    )
-    .then(response => {
-      if (response.status === 200) {
-        // console.log(response)
-      }
-    })
+const setNewCommunityMembership = async (id: string, request: CreateMembershipRequestAPI) => {
+  return await api.post(MEMBERSHIP_API_PATH(id), request, config)
 }
 
-export const createOpenMembership = async (id?: string) => {
-  await api
-    .post<CreateMembershipRequestAPI[]>(
-      `${environment.COMMUNITIES_API_PATH}/${id}/memberships`,
-      null,
-      {
-        ...apiConfig,
-        headers: {
-          ...apiConfig?.headers,
-          accept: 'application/json',
-          'X-CSRF-TOKEN': csrf_token,
-          'Content-Type': 'application/x-www-form-urlencoded'
-        }
-      }
-    )
-    .then(response => {
-      if (response.status === 200) {
-        // console.log(response)
-      }
-    })
+export const useNewCommunityMembership = (id: string) => {
+  const client = useQueryClient()
+
+  return useMutation({
+    mutationFn: (request: CreateMembershipRequestAPI) => setNewCommunityMembership(id, request),
+    onMutate: async () => {
+      await client.cancelQueries(CommunityQueryKeys.MembershipRequestsQueryKey)
+    },
+    onSuccess: () => {
+      client.invalidateQueries(CommunityQueryKeys.MembershipRequestsQueryKey)
+      client.invalidateQueries(CommunityQueryKeys.CommunitiesQueryKey)
+    }
+  })
+}
+
+const setOpenCommunityMembership = async (id: string, request?: null) => {
+  return await api.post(OPEN_MEMBERSHIP_API_PATH(id), request, config)
+}
+
+export const useOpenCommunityMembership = (id: string) => {
+  const client = useQueryClient()
+
+  return useMutation({
+    mutationFn: (request?: null) => setOpenCommunityMembership(id, request),
+    onMutate: async () => {
+      await client.cancelQueries(CommunityQueryKeys.OpenMembershipRequestsQueryKey)
+    },
+    onSuccess: () => {
+      client.invalidateQueries(CommunityQueryKeys.OpenMembershipRequestsQueryKey)
+      client.invalidateQueries(CommunityQueryKeys.CommunitiesQueryKey)
+    }
+  })
+}
+
+const seRemoveCommunityMembership = async (id: string) => {
+  return await api.delete(REMOVE_MEMBERSHIP_API_PATH(id), config)
+}
+
+export const useRemoveCommunityMembership = () => {
+  const client = useQueryClient()
+
+  return useMutation({
+    mutationFn: (id: string) => seRemoveCommunityMembership(id),
+    onMutate: async () => {
+      await client.cancelQueries(CommunityQueryKeys.RemoveMembershipQueryKey)
+    },
+    onSuccess: () => {
+      client.invalidateQueries(CommunityQueryKeys.RemoveMembershipQueryKey)
+      client.invalidateQueries(CommunityQueryKeys.CommunitiesQueryKey)
+    }
+  })
 }
 
 export const updateCommunityMembership = async (
@@ -119,24 +143,6 @@ export const deleteMembershipByID = async (id?: string, userId?: string) => {
     .then(response => {
       if (response.status === 200) {
         window.location.href = `/community/communities//${id}/members`
-      }
-    })
-}
-
-export const leaveCommunity = async (id?: string) => {
-  await api
-    .delete(`${environment.COMMUNITIES_API_PATH}/${id}/membership`, {
-      ...apiConfig,
-      headers: {
-        ...apiConfig?.headers,
-        accept: 'application/json',
-        'X-CSRF-TOKEN': csrf_token,
-        'Content-Type': 'application/x-www-form-urlencoded'
-      }
-    })
-    .then(response => {
-      if (response.status === 200) {
-        // window.location.reload()
       }
     })
 }

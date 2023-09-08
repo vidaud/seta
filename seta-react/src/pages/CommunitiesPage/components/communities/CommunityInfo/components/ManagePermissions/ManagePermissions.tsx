@@ -1,12 +1,14 @@
 import { useEffect, useState } from 'react'
 import { Checkbox } from '@mantine/core'
+import { notifications } from '@mantine/notifications'
 
 import { useCategoryCatalogueScopes } from '~/api/communities/scope-catalogue-permissions'
-import { manageCommunityScopes } from '~/api/communities/user-community-permissions'
+import { useCommunityScopes } from '~/api/communities/user-community-permissions'
 
 const ManagePermissions = ({ props, id }) => {
   const [value, setValue] = useState<string[]>(props.scopes)
   const { data } = useCategoryCatalogueScopes('community')
+  const setCommunityScopesMutation = useCommunityScopes(id, props.user_id)
 
   useEffect(() => {
     if (props) {
@@ -19,7 +21,22 @@ const ManagePermissions = ({ props, id }) => {
     const form = new FormData()
 
     values?.forEach(element => form.append('scope', element))
-    manageCommunityScopes(id, props.user_id, form)
+    setCommunityScopesMutation.mutate(form, {
+      onSuccess: () => {
+        notifications.show({
+          message: `Permissions updated successfully!`,
+          color: 'blue',
+          autoClose: 5000
+        })
+      },
+      onError: () => {
+        notifications.show({
+          message: 'Permissions update failed!',
+          color: 'red',
+          autoClose: 5000
+        })
+      }
+    })
   }
 
   return (

@@ -3,7 +3,6 @@ import type { AxiosRequestConfig } from 'axios'
 import { getCookie } from 'typescript-cookie'
 
 import type { ChangeRequestValues } from '~/pages/CommunitiesPage/contexts/change-request-context'
-import type { ResourceChangeRequestValues } from '~/pages/CommunitiesPage/contexts/resource-change-request-context'
 
 import { environment } from '~/environments/environment'
 
@@ -55,26 +54,4 @@ export const createResourceChangeRequest = async (id?: string, values?: ChangeRe
       'Content-Type': 'application/x-www-form-urlencoded'
     }
   })
-}
-
-export const updateResourceChangeRequest = async (
-  id?: string,
-  requestId?: string,
-  values?: ResourceChangeRequestValues
-) => {
-  await api
-    .put(`/resources/${id}/change-requests/${requestId}`, values, {
-      ...apiConfig,
-      headers: {
-        ...apiConfig?.headers,
-        accept: 'application/json',
-        'X-CSRF-TOKEN': csrf_token,
-        'Content-Type': 'application/x-www-form-urlencoded'
-      }
-    })
-    .then(response => {
-      if (response.status === 200) {
-        // window.location.reload()
-      }
-    })
 }

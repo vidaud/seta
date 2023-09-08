@@ -3,7 +3,7 @@ import { Text, Popover, Button, Group, createStyles, Title, UnstyledButton } fro
 import { notifications } from '@mantine/notifications'
 import { IconTrash } from '@tabler/icons-react'
 
-import { deleteCommunityByID } from '~/api/communities/manage/my-community'
+import { useDeleteCommunity } from '~/api/communities/manage/my-community'
 
 const useStyles = createStyles(theme => ({
   form: {
@@ -19,52 +19,30 @@ const useStyles = createStyles(theme => ({
   }
 }))
 
-const DeleteCommunity = ({ props, totalResources, refetch }) => {
+const DeleteCommunity = ({ props, totalResources }) => {
   const { classes, cx } = useStyles()
   const [opened, setOpened] = useState(false)
+  const setDeleteCommunityMutation = useDeleteCommunity(props?.community_id)
 
   const deleteCommunity = () => {
-    deleteCommunityByID(props?.community_id)
-      .then(() => {
-        refetch()
+    setDeleteCommunityMutation.mutate(props?.community_id, {
+      onSuccess: () => {
+        notifications.show({
+          message: `Community deleted successfully!`,
+          color: 'blue',
+          autoClose: 5000
+        })
+
         setOpened(o => !o)
+      },
+      onError: () => {
         notifications.show({
-          title: 'Community Deleted Successfully',
-          message: 'Community has been deleted successfully',
-          styles: theme => ({
-            root: {
-              backgroundColor: theme.colors.teal[6],
-              borderColor: theme.colors.teal[6],
-              '&::before': { backgroundColor: theme.white }
-            },
-            title: { color: theme.white },
-            description: { color: theme.white },
-            closeButton: {
-              color: theme.white,
-              '&:hover': { backgroundColor: theme.colors.teal[7] }
-            }
-          })
+          message: 'Delete community failed!',
+          color: 'red',
+          autoClose: 5000
         })
-      })
-      .catch(error => {
-        notifications.show({
-          title: error.response.statusText,
-          message: error.response.data.message,
-          styles: theme => ({
-            root: {
-              backgroundColor: theme.colors.red[6],
-              borderColor: theme.colors.red[6],
-              '&::before': { backgroundColor: theme.white }
-            },
-            title: { color: theme.white },
-            description: { color: theme.white },
-            closeButton: {
-              color: theme.white,
-              '&:hover': { backgroundColor: theme.colors.red[7] }
-            }
-          })
-        })
-      })
+      }
+    })
   }
 
   return (

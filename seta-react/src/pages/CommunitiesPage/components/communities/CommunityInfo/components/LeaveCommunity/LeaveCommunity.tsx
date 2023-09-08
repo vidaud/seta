@@ -2,7 +2,8 @@ import { useEffect, useState } from 'react'
 import { Text, Popover, Button, Group, createStyles, Tooltip } from '@mantine/core'
 import { notifications } from '@mantine/notifications'
 
-import { getMembership, leaveCommunity } from '~/api/communities/membership'
+import { getMembership, useRemoveCommunityMembership } from '~/api/communities/membership'
+import { useCurrentUser } from '~/contexts/user-context'
 
 const useStyles = createStyles(theme => ({
   form: {
@@ -11,63 +12,44 @@ const useStyles = createStyles(theme => ({
   text: { paddingBottom: theme.spacing.md }
 }))
 
-const LeaveCommunity = ({ props, refetch }) => {
+const LeaveCommunity = ({ props }) => {
   const { classes } = useStyles()
   const [opened, setOpened] = useState(false)
   const [memberNumber, setMemberNumber] = useState<number | undefined>()
+  const { user } = useCurrentUser()
+  const setRemoveCommunityMembershipMutation = useRemoveCommunityMembership()
 
   useEffect(() => {
     getMembership(props.community_id).then(response => {
       setMemberNumber(
         response?.members.filter(
-          item => item.role === 'CommunityOwner' || item.role === 'CommunityManager'
+          item =>
+            (item.role === 'CommunityOwner' || item.role === 'CommunityManager') &&
+            user?.username === item.user_id
         )?.length
       )
     })
-  }, [props])
+  }, [props, user])
 
   const deleteMembership = () => {
-    leaveCommunity(props.community_id)
-      .then(() => {
-        refetch()
+    setRemoveCommunityMembershipMutation.mutate(props.community_id, {
+      onSuccess: () => {
         notifications.show({
-          title: 'Community Membership Removed',
-          message:
-            'You are no longer member of this community. \nClick Join to send a new membership request.',
-          styles: theme => ({
-            root: {
-              backgroundColor: theme.colors.blue[6],
-              borderColor: theme.colors.blue[6],
-              '&::before': { backgroundColor: theme.white }
-            },
-            title: { color: theme.white },
-            description: { color: theme.white },
-            closeButton: {
-              color: theme.white,
-              '&:hover': { backgroundColor: theme.colors.blue[7] }
-            }
-          })
+          message: `Community Membership Removed!`,
+          color: 'blue',
+          autoClose: 5000
         })
-      })
-      .catch(error => {
+
+        setOpened(o => !o)
+      },
+      onError: () => {
         notifications.show({
-          title: error.response.statusText,
-          message: error.response.data.message,
-          styles: theme => ({
-            root: {
-              backgroundColor: theme.colors.red[6],
-              borderColor: theme.colors.red[6],
-              '&::before': { backgroundColor: theme.white }
-            },
-            title: { color: theme.white },
-            description: { color: theme.white },
-            closeButton: {
-              color: theme.white,
-              '&:hover': { backgroundColor: theme.colors.red[7] }
-            }
-          })
+          message: 'Leave Community Failed!',
+          color: 'red',
+          autoClose: 5000
         })
-      })
+      }
+    })
   }
 
   return (
@@ -82,32 +64,39 @@ const LeaveCommunity = ({ props, refetch }) => {
       onChange={setOpened}
     >
       <Popover.Target>
-        <Tooltip label="Remove Community Membership" color="blue">
+        <Tooltip label="Remove Community Membership">
           <Button
             variant="filled"
             size="xs"
             onClick={e => {
               e.stopPropagation()
-              memberNumber === 1 ? setOpened(o => !o) : deleteMembership()
+              setOpened(o => !o)
             }}
-            // onClick={() => deleteMembership()}
           >
             LEAVE
           </Button>
         </Tooltip>
       </Popover.Target>
       <Popover.Dropdown>
-        <Text weight={500} className={classes.form}>
-          You are the only owner of this community!
-        </Text>
-        <Text weight={500} className={classes.form}>
-          By leaving, all resources will be allocated as orphan and could not be reused by other
-          users
-        </Text>
+        {memberNumber === 1 ? (
+          <>
+            <Text weight={500} className={classes.form}>
+              You are the only owner of this community!
+            </Text>
+            <Text weight={500} className={classes.form}>
+              By leaving, all resources will be allocated as orphan and could not be reused by other
+              users
+            </Text>
+          </>
+        ) : (
+          <Text weight={500} className={classes.form}>
+            Are you sure you want to leave this community?
+          </Text>
+        )}
         <Text size="sm" className={classes.form}>
-          Press Confirm to proceed with the deletion or press Cancel to abort
+          Press Confirm to proceed or press Cancel to abort
         </Text>
-        <Group position="right">
+        <Group position="right" sx={{ paddingTop: '5%' }}>
           <Button
             variant="outline"
             size="xs"

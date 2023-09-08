@@ -3,7 +3,7 @@ import { Text, Popover, Button, Group, createStyles, UnstyledButton } from '@man
 import { notifications } from '@mantine/notifications'
 import { IconTrash } from '@tabler/icons-react'
 
-import { deleteResourceByID } from '~/api/communities/manage/my-resource'
+import { useDeleteResource } from '~/api/communities/manage/my-resource'
 
 const useStyles = createStyles(theme => ({
   form: {
@@ -25,52 +25,30 @@ const useStyles = createStyles(theme => ({
 //   resource_scopes?: ResourceScopes[] | undefined
 // }
 
-const DeleteResource = ({ id, refetch }) => {
+const DeleteResource = ({ id }) => {
   const { classes, cx } = useStyles()
   const [opened, setOpened] = useState(false)
+  const setDeleteResourceMutation = useDeleteResource(id)
 
   const deleteResource = () => {
-    deleteResourceByID(id)
-      .then(() => {
-        refetch()
+    setDeleteResourceMutation.mutate(id, {
+      onSuccess: () => {
+        notifications.show({
+          message: `Resource deleted successfully!`,
+          color: 'blue',
+          autoClose: 5000
+        })
+
         setOpened(o => !o)
+      },
+      onError: () => {
         notifications.show({
-          title: 'Resource Deleted Successfully',
-          message: 'Resource has been deleted successfully',
-          styles: theme => ({
-            root: {
-              backgroundColor: theme.colors.yellow[6],
-              borderColor: theme.colors.yellow[6],
-              '&::before': { backgroundColor: theme.white }
-            },
-            title: { color: theme.white },
-            description: { color: theme.white },
-            closeButton: {
-              color: theme.white,
-              '&:hover': { backgroundColor: theme.colors.yellow[7] }
-            }
-          })
+          message: 'Delete resource failed!',
+          color: 'red',
+          autoClose: 5000
         })
-      })
-      .catch(error => {
-        notifications.show({
-          title: error.response.statusText,
-          message: error.response.data.message,
-          styles: theme => ({
-            root: {
-              backgroundColor: theme.colors.red[6],
-              borderColor: theme.colors.red[6],
-              '&::before': { backgroundColor: theme.white }
-            },
-            title: { color: theme.white },
-            description: { color: theme.white },
-            closeButton: {
-              color: theme.white,
-              '&:hover': { backgroundColor: theme.colors.red[7] }
-            }
-          })
-        })
-      })
+      }
+    })
   }
 
   return (

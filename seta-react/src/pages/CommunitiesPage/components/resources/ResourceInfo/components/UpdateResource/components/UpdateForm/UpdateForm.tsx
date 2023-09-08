@@ -9,7 +9,7 @@ import {
   useResource
 } from '~/pages/CommunitiesPage/contexts/resource-context'
 
-import { updateResource, useResourceID } from '~/api/communities/manage/my-resource'
+import { useResourceID, useSetUpdateResource } from '~/api/communities/manage/my-resource'
 
 const useStyles = createStyles({
   input: {
@@ -30,6 +30,7 @@ const UpdateForm = ({ resource, close, onChange, refetch }) => {
   const { classes, cx } = useStyles()
 
   const { data, isLoading } = useResourceID(resource.resource_id)
+  const setUpdateResourceMutation = useSetUpdateResource(resource.resource_id)
 
   const form = useResource({
     initialValues: {
@@ -59,47 +60,24 @@ const UpdateForm = ({ resource, close, onChange, refetch }) => {
   }
 
   const handleSubmit = (values: ResourceValues) => {
-    updateResource(resource.resource_id, values)
-      .then(() => {
-        refetch()
+    setUpdateResourceMutation.mutate(values, {
+      onSuccess: () => {
+        notifications.show({
+          message: `Resource Updated Successfully!`,
+          color: 'blue',
+          autoClose: 5000
+        })
+
         close()
+      },
+      onError: () => {
         notifications.show({
-          title: 'Resource Updated Successfully',
-          message: 'Resource has been updated successfully',
-          styles: theme => ({
-            root: {
-              backgroundColor: theme.colors.teal[6],
-              borderColor: theme.colors.teal[6],
-              '&::before': { backgroundColor: theme.white }
-            },
-            title: { color: theme.white },
-            description: { color: theme.white },
-            closeButton: {
-              color: theme.white,
-              '&:hover': { backgroundColor: theme.colors.teal[7] }
-            }
-          })
+          message: 'Resource update failed!',
+          color: 'red',
+          autoClose: 5000
         })
-      })
-      .catch(error => {
-        notifications.show({
-          title: error.response.statusText,
-          message: error.response.data.message,
-          styles: theme => ({
-            root: {
-              backgroundColor: theme.colors.red[6],
-              borderColor: theme.colors.red[6],
-              '&::before': { backgroundColor: theme.white }
-            },
-            title: { color: theme.white },
-            description: { color: theme.white },
-            closeButton: {
-              color: theme.white,
-              '&:hover': { backgroundColor: theme.colors.red[7] }
-            }
-          })
-        })
-      })
+      }
+    })
   }
 
   return (

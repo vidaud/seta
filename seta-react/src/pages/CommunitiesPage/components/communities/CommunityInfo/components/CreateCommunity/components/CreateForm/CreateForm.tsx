@@ -7,7 +7,8 @@ import {
   useCommunity
 } from '~/pages/CommunitiesPage/contexts/community-context'
 
-import { createCommunity } from '~/api/communities/manage/my-community'
+import { useCreateCommunity } from '~/api/communities/manage/my-community'
+import { useUserPermissions } from '~/api/communities/user-scopes'
 
 const useStyles = createStyles({
   input: {
@@ -21,8 +22,10 @@ const useStyles = createStyles({
   }
 })
 
-const CreateForm = ({ close, refetch }) => {
+const CreateForm = ({ close }) => {
   const { classes, cx } = useStyles()
+  const { refetch } = useUserPermissions()
+  const setCreateCommunityMutation = useCreateCommunity()
 
   const form = useCommunity({
     initialValues: {
@@ -41,47 +44,25 @@ const CreateForm = ({ close, refetch }) => {
   })
 
   const handleSubmit = (values: CommunityValues) => {
-    createCommunity(values)
-      .then(() => {
-        close()
+    setCreateCommunityMutation.mutate(values, {
+      onSuccess: () => {
+        notifications.show({
+          message: `Community Created Successfully!`,
+          color: 'blue',
+          autoClose: 5000
+        })
+
         refetch()
+        close()
+      },
+      onError: () => {
         notifications.show({
-          title: 'New Community Added Successfully',
-          message: 'New community has been added to the list',
-          styles: theme => ({
-            root: {
-              backgroundColor: theme.colors.teal[6],
-              borderColor: theme.colors.teal[6],
-              '&::before': { backgroundColor: theme.white }
-            },
-            title: { color: theme.white },
-            description: { color: theme.white },
-            closeButton: {
-              color: theme.white,
-              '&:hover': { backgroundColor: theme.colors.teal[7] }
-            }
-          })
+          message: 'Create community failed!',
+          color: 'red',
+          autoClose: 5000
         })
-      })
-      .catch(error => {
-        notifications.show({
-          title: error.response.statusText,
-          message: error.response.data.message,
-          styles: theme => ({
-            root: {
-              backgroundColor: theme.colors.red[6],
-              borderColor: theme.colors.red[6],
-              '&::before': { backgroundColor: theme.white }
-            },
-            title: { color: theme.white },
-            description: { color: theme.white },
-            closeButton: {
-              color: theme.white,
-              '&:hover': { backgroundColor: theme.colors.red[7] }
-            }
-          })
-        })
-      })
+      }
+    })
   }
 
   return (

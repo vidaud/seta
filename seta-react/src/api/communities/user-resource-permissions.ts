@@ -1,11 +1,26 @@
-import { useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import type { AxiosRequestConfig } from 'axios'
 import { getCookie } from 'typescript-cookie'
 
 import { environment } from '~/environments/environment'
 
+import { ResourceQueryKeys } from './manage/resource-query-keys'
+
 import api from '..'
 import type { UserPermissionsResponse } from '../types/user-permissions-types'
+
+const RESOURCE_PERMISSIONS_API_PATH = (id?: string, userId?: string): string =>
+  `/permissions/resource/${id}/user/${userId}`
+
+const csrf_token = getCookie('csrf_access_token')
+const config = {
+  baseURL: environment.baseUrl,
+  headers: {
+    'Content-Type': 'application/x-www-form-urlencoded',
+    accept: 'application/json',
+    'X-CSRF-TOKEN': csrf_token
+  }
+}
 
 const PERMISSIONS_API_PATH = '/permissions'
 
@@ -30,22 +45,21 @@ export const getResourcePermissions = async (
 export const useResourcePermissionsID = (id?: string) =>
   useQuery({ queryKey: cacheKey(id), queryFn: () => getResourcePermissions(id) })
 
-const csrf_token = getCookie('csrf_access_token')
+const setResourceScopes = async (id?: string, userId?: string, request?: FormData) => {
+  return await api.post(RESOURCE_PERMISSIONS_API_PATH(id, userId), request, config)
+}
 
-export const manageResourceScopes = async (id?: string, userId?: string, values?: FormData) => {
-  await api
-    .post(`/permissions/resource/${id}/user/${userId}`, values, {
-      ...apiConfig,
-      headers: {
-        ...apiConfig?.headers,
-        accept: 'application/json',
-        'X-CSRF-TOKEN': csrf_token,
-        'Content-Type': 'application/x-www-form-urlencoded'
-      }
-    })
-    .then(response => {
-      if (response.status === 200) {
-        // window.location.reload()
-      }
-    })
+export const useResourceScopes = (id?: string, userId?: string) => {
+  const client = useQueryClient()
+
+  return useMutation({
+    mutationFn: (request?: FormData) => setResourceScopes(id, userId, request),
+    onMutate: async () => {
+      await client.cancelQueries(ResourceQueryKeys.ResourcePermissionsQueryKey)
+    },
+    onSuccess: () => {
+      client.invalidateQueries(ResourceQueryKeys.ResourcePermissionsQueryKey)
+      client.invalidateQueries(ResourceQueryKeys.ResourcesQueryKey)
+    }
+  })
 }
