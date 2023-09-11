@@ -15,5 +15,5 @@ export const createScript = function (id: string, innerHTML: string) {
   script.type = 'application/json'
   script.innerHTML = innerHTML
 
-  document.body.appendChild(script)
+  document.head.appendChild(script)
 }
