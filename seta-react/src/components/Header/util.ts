@@ -1,4 +1,4 @@
-export const loadCookie = function (src: string) {
+export const loadWebTool = function (src: string) {
   const script = document.createElement('script')
 
   script.defer = true
@@ -8,7 +8,7 @@ export const loadCookie = function (src: string) {
   document.head.appendChild(script)
 }
 
-export const createCookie = function (id: string, innerHTML: string) {
+export const createScript = function (id: string, innerHTML: string) {
   const script = document.createElement('script')
 
   script.id = id
