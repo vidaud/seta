@@ -19,6 +19,7 @@
  <!-- Update scripts inside cookies block or simply remove the block (the scripts will not be included)  -->
  {% block scripts %}
   <!-- Add scripts that need to run before here -->
+  {% if config.has_cookies %}
   <script defer src="https://europa.eu/webtools/load.js" type="text/javascript"></script>
   {{ super() }}
   <!-- Add scripts that need to run afterwards here -->
@@ -30,5 +31,6 @@
     "utility" : "analytics",
     "siteID": "{{ config.EU_Analytics_SiteID }}", "instance": "europa.eu", "explicit": true
   }</script>
+  {% endif %}  
 
 {% endblock %}
