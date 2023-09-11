@@ -6,7 +6,8 @@ export const ROOT_LIBRARY_ITEM_NAME = 'My Library'
 const itemFromRaw = (item: LibraryItemRaw): LibraryItem => {
   const base = {
     ...item,
-    path: [ROOT_LIBRARY_ITEM_NAME, item.title]
+    path: [ROOT_LIBRARY_ITEM_NAME, item.title],
+    pathIds: [item.id]
   }
 
   if (item.type === LibraryItemType.Folder) {
@@ -62,6 +63,7 @@ export const getLibraryTree = (
         parent.children.push(mappedItem)
 
         mappedItem.parent = parent
+
         mappedItem.path = [...parent.path, mappedItem.title]
       }
     } else {

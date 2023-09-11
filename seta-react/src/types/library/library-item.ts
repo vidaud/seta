@@ -1,3 +1,4 @@
+// TODO: Change this to a numeric enum, where Folder = 0 and Document = 1
 export enum LibraryItemType {
   Document = 'document',
   Folder = 'folder'
@@ -9,13 +10,9 @@ export type LibraryItemBase = {
   parentId: string | null
 }
 
-type LibraryFolderRaw = LibraryItemBase & {
+export type LibraryItemRaw = LibraryItemBase & {
   order: number
-
   type: string
-}
-
-export type LibraryItemRaw = LibraryFolderRaw & {
   documentId?: string
   link?: string | null
 }

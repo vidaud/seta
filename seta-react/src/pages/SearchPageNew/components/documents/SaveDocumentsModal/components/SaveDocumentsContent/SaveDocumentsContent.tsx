@@ -1,18 +1,29 @@
 import ClosableAlert from '~/components/ClosableAlert/ClosableAlert'
 import LibraryTree from '~/pages/SearchPageNew/components/documents/LibraryTree'
+import type { StagedDocument } from '~/pages/SearchPageNew/types/search'
 
 import type { DataProps } from '~/types/data-props'
 import type { LibraryItem, LibraryItemRaw } from '~/types/library/library-item'
+import type { Document } from '~/types/search/documents'
 
 import * as S from './styles'
 
+import SaveSource from '../SaveSource'
+
 type Props = DataProps<LibraryItemRaw[]> & {
+  documents?: Document[] | StagedDocument[]
   libraryItem?: LibraryItem
   saveError?: string
   onSelectedChange?: (value?: LibraryItem) => void
 }
 
-const SaveDocumentsContent = ({ libraryItem, saveError, onSelectedChange, ...props }: Props) => {
+const SaveDocumentsContent = ({
+  documents,
+  libraryItem,
+  saveError,
+  onSelectedChange,
+  ...props
+}: Props) => {
   const errorAlert = !!saveError && (
     <ClosableAlert title="Error saving documents" color="red" variant="outline" mb="sm">
       {saveError}
@@ -25,13 +36,16 @@ const SaveDocumentsContent = ({ libraryItem, saveError, onSelectedChange, ...pro
     <div css={S.contentRoot}>
       {errorAlert}
 
+      <SaveSource libraryItem={libraryItem} documents={documents} />
+
       <LibraryTree
         css={S.tree}
         foldersOnly
         selectable
         noActionMenu
-        autoSelect
-        excludeItem={libraryItem}
+        autoSelectRoot
+        disabledIds={libraryItem ? [libraryItem.id] : undefined}
+        disabledBadge="Moving this"
         onSelectedChange={onSelectedChange}
         {...props}
       />

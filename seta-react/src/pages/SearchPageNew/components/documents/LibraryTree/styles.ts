@@ -57,6 +57,13 @@ export const selected: ThemedCSS = theme => css`
   border: 1px solid ${theme.colors.blue[2]};
 `
 
+export const disabled: ThemedCSS = theme => css`
+  color: ${theme.colors.gray[7]};
+  border: 1px dashed ${theme.colors.gray[5]};
+  opacity: 0.5;
+  pointer-events: none;
+`
+
 export const toggleIcon = css`
   grid-column: 1;
 `
@@ -77,12 +84,14 @@ export const fileIcon: ThemedCSS = theme => css`
 
 export const folderIcon = css`
   height: ${FOLDER_ICON_HEIGHT};
+  margin-top: -1px;
 `
 
 export const folderOpenIcon = css`
   height: ${FOLDER_ICON_HEIGHT};
   font-size: 1.3rem;
   margin-left: 3px;
+  margin-top: -1px;
 `
 
 export const titleContainer = css`

@@ -6,8 +6,10 @@ import type { LibraryItem } from '~/types/library/library-item'
 export type DocumentsTreeOptions = {
   foldersOnly?: boolean
   selectable?: boolean
-  autoSelect?: boolean
+  autoSelectRoot?: boolean
   toggleable?: boolean
+  disabledIds?: string[]
+  disabledBadge?: string
   noActionMenu?: boolean
 }
 

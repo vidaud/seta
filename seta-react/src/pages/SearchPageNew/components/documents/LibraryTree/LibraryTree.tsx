@@ -29,7 +29,7 @@ const LibraryTree = ({
   isLoading,
   error,
   selectable,
-  autoSelect,
+  autoSelectRoot,
   noActionMenu,
   onSelectedChange,
   onTryAgain,
@@ -50,7 +50,7 @@ const LibraryTree = ({
     [dataTree]
   )
 
-  const canAutoSelect = autoSelect && !selected && !isLoading && !error
+  const canAutoSelect = autoSelectRoot && !selected && !isLoading && !error
 
   useEffect(() => {
     if (canAutoSelect) {
