@@ -1,5 +1,8 @@
 site_name: SeTA Documentation
 site_description: SeTA - Semantic Text Analyser
+# site_id for analytics
+EU_Analytics_SiteID: b240c41b-yyyyy-40af-96ef-xxxxxxxx
+has_cookies: true
 theme:
   name: material
   custom_dir: overrides
