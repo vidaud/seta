@@ -1,7 +1,30 @@
+import { useEffect } from 'react'
 import { Button } from 'primereact/button'
 import { InputText } from 'primereact/inputtext'
 
+import { createScript, loadWebTool } from '~/components/Header/util'
+
+import { environment } from '~/environments/environment'
+
 const SiteHeader = () => {
+  const existingScript = document.getElementById('header')
+
+  useEffect(() => {
+    if (!existingScript) {
+      loadWebTool('https://europa.eu/webtools/load.js')
+
+      createScript(
+        'cookie',
+        '{"utility" : "cck", "url": {"en": "https://commission.europa.eu/cookies-policy_en"}}'
+      )
+
+      createScript(
+        'analytic',
+        `{"utility" : "analytics", "siteID": ${environment.EU_Analytics_Site_ID}, "instance": "europa.eu", "explicit": true}`
+      )
+    }
+  }, [existingScript])
+
   return (
     <div className="site-header">
       <div className="container-fluid">

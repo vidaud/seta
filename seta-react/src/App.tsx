@@ -22,6 +22,7 @@ const App = () => {
         <QueryClientProvider client={queryClient}>
           <UserProvider>
             <AppRouter />
+            {/* <CookiesBanner /> */}
           </UserProvider>
 
           <ReactQueryDevtools initialIsOpen={false} />

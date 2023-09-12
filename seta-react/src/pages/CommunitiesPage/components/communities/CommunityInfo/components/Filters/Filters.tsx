@@ -6,7 +6,7 @@ const useStyles = createStyles({
   filters: {
     marginBottom: '1rem',
     [`@media (max-width: 89em) and (min-width: 48em)`]: {
-      width: '40%'
+      width: '50%'
     }
   },
   select: {
