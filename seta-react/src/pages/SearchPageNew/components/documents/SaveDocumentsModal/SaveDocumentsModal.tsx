@@ -11,7 +11,7 @@ import type { LibraryItem } from '~/types/library/library-item'
 import type { Document } from '~/types/search/documents'
 import { pluralize } from '~/utils/string-utils'
 
-import SaveDocumentsContent from './SaveDocumentsContent'
+import SaveDocumentsContent from './components/SaveDocumentsContent'
 
 const pathToString = (path: string[] = []): string => path.join(' / ')
 
@@ -97,6 +97,7 @@ const SaveDocumentsModal = ({
     <ScrollModal {...props} icon={icon} title={titleEl} actions={actions} onClose={onClose}>
       <SaveDocumentsContent
         data={data?.items}
+        documents={documents}
         libraryItem={libraryItem}
         isLoading={isLoading}
         error={error}

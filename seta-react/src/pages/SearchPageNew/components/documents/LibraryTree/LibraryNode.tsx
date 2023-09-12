@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { Collapse, Flex, Tooltip } from '@mantine/core'
+import { Badge, Collapse, Flex, Tooltip } from '@mantine/core'
 
 import ChevronToggleIcon from '~/components/ChevronToggleIcon'
 
@@ -25,18 +25,31 @@ const LibraryNode = ({ className, item, isRoot }: Props) => {
   // Store the id of the newly created folder to select after a rerender
   const [willSelectId, setWillSelectId] = useState<string | null>(null)
 
-  const { foldersOnly, selectable, toggleable, noActionMenu, selected, onSelect, selectChild } =
-    useDocumentsTree()
+  const {
+    foldersOnly,
+    selectable,
+    toggleable,
+    disabledIds,
+    disabledBadge,
+    noActionMenu,
+    selected,
+    onSelect,
+    selectChild
+  } = useDocumentsTree()
 
   const selectChildRef = useRef(selectChild)
 
   const { title, type, path } = item
 
+  const isDisabled = useMemo(() => disabledIds?.includes(item.id), [disabledIds, item.id])
+
   const isFolder = type === LibraryItemType.Folder
 
   const selectedStyle = selected?.id === item.id && S.selected
   const editingStyle = (isEditing || isLoading) && S.editing
-  const itemStyle = [S.itemContainer, selectedStyle, editingStyle]
+  const disabledStyle = isDisabled && S.disabled
+
+  const itemStyle = [S.itemContainer, selectedStyle, editingStyle, disabledStyle]
 
   useEffect(() => {
     if (willSelectId) {
@@ -47,6 +60,10 @@ const LibraryNode = ({ className, item, isRoot }: Props) => {
   }, [willSelectId, item, type])
 
   const handleTitleClick = () => {
+    if (isDisabled) {
+      return
+    }
+
     if (isFolder) {
       setIsExpanded(prev => !prev)
     }
@@ -84,15 +101,17 @@ const LibraryNode = ({ className, item, isRoot }: Props) => {
     }
   }
 
-  const children = useMemo(
-    () =>
-      isFolder
-        ? foldersOnly
-          ? item.children.filter(({ type: t }) => t === LibraryItemType.Folder)
-          : item.children
-        : [],
-    [item, isFolder, foldersOnly]
-  )
+  const children = useMemo(() => {
+    if (isDisabled) {
+      return []
+    }
+
+    return isFolder
+      ? foldersOnly
+        ? item.children.filter(({ type: t }) => t === LibraryItemType.Folder)
+        : item.children
+      : []
+  }, [item, isFolder, isDisabled, foldersOnly])
 
   const content = isFolder && (
     <Collapse in={isExpanded}>
@@ -126,6 +145,12 @@ const LibraryNode = ({ className, item, isRoot }: Props) => {
     />
   )
 
+  const movingThis = isDisabled && !!disabledBadge && (
+    <Badge color="teal" radius="sm" variant="filled">
+      {disabledBadge}
+    </Badge>
+  )
+
   return (
     <div css={S.node} className={className}>
       <Tooltip
@@ -143,6 +168,7 @@ const LibraryNode = ({ className, item, isRoot }: Props) => {
             <div css={S.title}>{title}</div>
 
             {actionsGroup}
+            {movingThis}
           </Flex>
         </div>
       </Tooltip>
