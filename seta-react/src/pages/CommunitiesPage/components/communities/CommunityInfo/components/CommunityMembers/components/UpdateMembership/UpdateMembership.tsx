@@ -17,7 +17,7 @@ import {
   useMembership
 } from '~/pages/CommunitiesPage/contexts/membership-context'
 
-import { updateCommunityMembership } from '~/api/communities/membership'
+import { updateCommunityMembership } from '~/api/communities/memberships/membership'
 
 const useStyles = createStyles({
   form: {

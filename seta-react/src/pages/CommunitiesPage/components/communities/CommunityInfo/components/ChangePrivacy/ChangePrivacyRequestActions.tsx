@@ -1,7 +1,7 @@
 import { Group, createStyles } from '@mantine/core'
 import { notifications } from '@mantine/notifications'
 
-import { useSetChangeMembershipRequest } from '~/api/communities/manage/membership-change-requests'
+import { useSetChangeMembershipRequest } from '~/api/communities/memberships/membership-requests'
 import type { CommunityResponse } from '~/api/types/community-types'
 import { ChangeMembershipRequestStatus } from '~/types/community/change-membership-requests'
 

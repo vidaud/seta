@@ -9,7 +9,7 @@ import {
   useResource
 } from '~/pages/CommunitiesPage/contexts/resource-context'
 
-import { useResourceID, useSetUpdateResource } from '~/api/communities/manage/my-resource'
+import { useResourceID, useSetUpdateResource } from '~/api/communities/resources/my-resource'
 
 const useStyles = createStyles({
   input: {

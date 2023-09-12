@@ -2,12 +2,11 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import type { AxiosRequestConfig } from 'axios'
 import { getCookie } from 'typescript-cookie'
 
+import api from '~/api/api'
+import type { UserPermissionsResponse } from '~/api/types/user-permissions-types'
 import { environment } from '~/environments/environment'
 
-import { CommunityQueryKeys } from './manage/community-query-keys'
-
-import api from '..'
-import type { UserPermissionsResponse } from '../types/user-permissions-types'
+import { CommunityQueryKeys } from './community-query-keys'
 
 const COMMUNITY_PERMISSIONS_API_PATH = (id?: string, userId?: string): string =>
   `/permissions/community/${id}/user/${userId}`

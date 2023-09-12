@@ -10,7 +10,7 @@ import {
 } from '~/pages/CommunitiesPage/components/common'
 import { statusColors } from '~/pages/CommunitiesPage/types'
 
-import { useInviteID } from '~/api/communities/invite'
+import { useInviteID } from '~/api/communities/invites/invite'
 
 import ExtendedMessage from '../ExtendedMessage/ExtendedMessage'
 

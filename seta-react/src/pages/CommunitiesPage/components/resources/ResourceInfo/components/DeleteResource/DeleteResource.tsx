@@ -3,7 +3,7 @@ import { Text, Popover, Button, Group, createStyles, UnstyledButton } from '@man
 import { notifications } from '@mantine/notifications'
 import { IconTrash } from '@tabler/icons-react'
 
-import { useDeleteResource } from '~/api/communities/manage/my-resource'
+import { useDeleteResource } from '~/api/communities/resources/my-resource'
 
 const useStyles = createStyles(theme => ({
   form: {

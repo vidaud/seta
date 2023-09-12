@@ -19,7 +19,7 @@ import {
 import { useCommunityListContext } from '~/pages/CommunitiesPage/contexts/community-list.context'
 import { jobColors } from '~/pages/CommunitiesPage/types'
 
-import { useMembershipID } from '~/api/communities/membership'
+import { useMembershipID } from '~/api/communities/memberships/membership'
 
 import DeleteMembership from './components/DeleteMembership'
 import UpdateMembership from './components/UpdateMembership'

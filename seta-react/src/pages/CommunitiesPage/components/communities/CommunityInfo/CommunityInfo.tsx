@@ -10,7 +10,7 @@ import type {
   SystemScopes
 } from '~/pages/CommunitiesPage/contexts/scope-context'
 
-import { useMyCommunityResources } from '~/api/communities/manage/my-community'
+import { useMyCommunityResources } from '~/api/communities/communities/my-community'
 import type { CommunityResponse } from '~/api/types/community-types'
 
 import CommunityButton from './components/CommunityButton'

@@ -14,12 +14,14 @@ import { notifications } from '@mantine/notifications'
 import DateTimeCell from '~/pages/Admin/common/components/DateTimeCell/DateTimeCell'
 import RowActions from '~/pages/Admin/common/components/RequestRowActions/RowActions'
 import UserInfo from '~/pages/Admin/common/components/UserInfo/UserInfo'
+import { statusColors } from '~/pages/CommunitiesPage/types'
 
-import { useUpdateMembershipRequest } from '~/api/communities/manage/membership-requests'
-import { useMembershipRequests } from '~/api/communities/membership-requests'
+import {
+  useMembershipRequests,
+  useUpdateMembershipRequest
+} from '~/api/communities/memberships/membership-requests'
 import { MembershipRequestStatus } from '~/types/community/membership-requests'
 
-import { statusColors } from '../../../types'
 import { ComponentEmpty, ComponentLoading } from '../../common'
 import ExtendedMessage from '../../communities/CommunityInfo/components/ExtendedMessage/ExtendedMessage'
 

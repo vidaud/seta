@@ -5,7 +5,7 @@ import { IconSearch } from '@tabler/icons-react'
 import { useCommunityListContext } from '~/pages/CommunitiesPage/contexts/community-list.context'
 import { sortCommunityData } from '~/pages/CommunitiesPage/utils/community-utils'
 
-import { useAllCommunities } from '~/api/communities/discover/discover-communities'
+import { useAllCommunities } from '~/api/communities/communities/discover-communities'
 import type { CommunityResponse } from '~/api/types/community-types'
 
 import CommunityListContent from './CommunityListContent'

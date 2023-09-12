@@ -11,7 +11,7 @@ import {
 } from '~/pages/CommunitiesPage/components/common'
 import { statusColors } from '~/pages/CommunitiesPage/types'
 
-import { useResourcesChangeRequests } from '~/api/communities/resource-change-requests'
+import { useResourcesChangeRequests } from '~/api/communities/resources/resource-change-requests'
 import type { ResourceChangeRequests } from '~/api/types/change-request-types'
 
 const useStyles = createStyles(theme => ({

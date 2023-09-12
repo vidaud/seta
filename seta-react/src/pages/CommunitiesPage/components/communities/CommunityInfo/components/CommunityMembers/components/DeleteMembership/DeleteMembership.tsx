@@ -3,7 +3,7 @@ import { Text, Popover, Button, Group, createStyles, ActionIcon } from '@mantine
 import { notifications } from '@mantine/notifications'
 import { IconTrash } from '@tabler/icons-react'
 
-import { deleteMembershipByID } from '~/api/communities/membership'
+import { deleteMembershipByID } from '~/api/communities/memberships/membership'
 
 const useStyles = createStyles(theme => ({
   form: {

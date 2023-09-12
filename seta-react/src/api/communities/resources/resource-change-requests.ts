@@ -4,10 +4,9 @@ import { getCookie } from 'typescript-cookie'
 
 import type { ChangeRequestValues } from '~/pages/CommunitiesPage/contexts/change-request-context'
 
+import api from '~/api/api'
+import type { ResourceChangeRequests } from '~/api/types/change-request-types'
 import { environment } from '~/environments/environment'
-
-import api from '../api'
-import type { ResourceChangeRequests } from '../types/change-request-types'
 
 export const cacheKey = (id?: string) => ['change-requests', id]
 const BASE_URL = environment.baseUrl
@@ -29,18 +28,6 @@ export const getResourcesChangeRequests = async (
 
 export const useResourcesChangeRequests = (id?: string) =>
   useQuery({ queryKey: cacheKey(id), queryFn: () => getResourcesChangeRequests(id) })
-
-export const getPendingChangeRequests = async (): Promise<ResourceChangeRequests[]> => {
-  const { data } = await api.get<ResourceChangeRequests[]>(
-    `/resources/change-requests/pending`,
-    apiConfig
-  )
-
-  return data
-}
-
-export const usePendingChangeRequests = () =>
-  useQuery({ queryKey: cacheKey(), queryFn: () => getPendingChangeRequests() })
 
 const csrf_token = getCookie('csrf_access_token')
 

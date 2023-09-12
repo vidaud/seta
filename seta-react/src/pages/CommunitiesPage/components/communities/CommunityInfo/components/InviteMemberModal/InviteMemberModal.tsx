@@ -17,7 +17,7 @@ import {
   useInvitation
 } from '~/pages/CommunitiesPage/contexts/invite-context'
 
-import { useNewCommunityInvite } from '~/api/communities/invite'
+import { useNewCommunityInvite } from '~/api/communities/invites/invite'
 import { useCurrentUser } from '~/contexts/user-context'
 
 const useStyles = createStyles({

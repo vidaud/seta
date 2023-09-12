@@ -8,7 +8,7 @@ import {
   ComponentLoading
 } from '~/pages/CommunitiesPage/components/common'
 
-import { useCommunityPermissionsID } from '~/api/communities/user-community-permissions'
+import { useCommunityPermissionsID } from '~/api/communities/communities/user-community-permissions'
 
 import ManagePermissions from '../ManagePermissions'
 

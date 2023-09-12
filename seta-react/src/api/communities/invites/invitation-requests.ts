@@ -4,7 +4,7 @@ import api from '~/api'
 import { environment } from '~/environments/environment'
 import type { InviteRequestStatus } from '~/types/community/invite-requests'
 
-import { CommunityQueryKeys } from './community-query-keys'
+import { CommunityQueryKeys } from '../communities/community-query-keys'
 
 const REQUEST_API_PATH = (invite_id: string): string => `/invites/${invite_id}`
 

@@ -42,6 +42,7 @@ const items = [
 
 const CommunityDetails = ({ className, open, community, community_scopes }: Props) => {
   const [activeTab, setActiveTab] = useState<string | null>('resources')
+  const [selected] = useState<string | null>('pending')
   const [scopes, setScopes] = useState<string[] | undefined>([])
   const { community_id } = community
   const [data, setData] = useState<DataResponse | undefined>()
@@ -60,10 +61,14 @@ const CommunityDetails = ({ className, open, community, community_scopes }: Prop
 
     if (data) {
       setNrInvites(data?.invites.length)
-      setNrChangeRequests(data?.changeRequests.community_change_requests.length)
+      setNrChangeRequests(
+        data?.changeRequests.community_change_requests.filter(item => item.status === selected)
+          .length
+      )
+
       setNrMembershipRequests(data?.memberships.length)
     }
-  }, [community_scopes, community_id, data])
+  }, [community_scopes, community_id, data, selected])
 
   const isManager =
     scopes?.includes('/seta/community/owner') || scopes?.includes('/seta/community/manager')

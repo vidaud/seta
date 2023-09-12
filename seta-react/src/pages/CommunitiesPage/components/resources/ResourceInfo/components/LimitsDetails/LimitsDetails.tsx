@@ -3,7 +3,7 @@ import { Group, Table, Badge } from '@mantine/core'
 
 import { ComponentLoading } from '~/pages/CommunitiesPage/components/common'
 
-import { useResourceID } from '~/api/communities/manage/my-resource'
+import { useResourceID } from '~/api/communities/resources/my-resource'
 
 import UpdateLimits from '../UpdateLimits'
 
