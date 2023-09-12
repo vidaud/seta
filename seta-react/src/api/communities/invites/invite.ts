@@ -4,10 +4,9 @@ import { getCookie } from 'typescript-cookie'
 
 import { environment } from '~/environments/environment'
 
-import { CommunityQueryKeys } from './manage/community-query-keys'
-
-import api from '../api'
-import type { CreateInvitationAPI, InviteResponse } from '../types/invite-types'
+import api from '../../api'
+import type { CreateInvitationAPI, InviteResponse } from '../../types/invite-types'
+import { CommunityQueryKeys } from '../communities/community-query-keys'
 
 const INVITE_API_PATH = (id: string): string => `/communities/${id}/invites`
 

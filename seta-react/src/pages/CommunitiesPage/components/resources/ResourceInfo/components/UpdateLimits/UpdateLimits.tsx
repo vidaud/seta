@@ -8,7 +8,7 @@ import {
   useChangeRequest
 } from '~/pages/CommunitiesPage/contexts/change-request-context'
 
-import { createResourceChangeRequest } from '~/api/communities/resource-change-requests'
+import { createResourceChangeRequest } from '~/api/communities/resources/resource-change-requests'
 
 const useStyles = createStyles({
   form: {

@@ -8,7 +8,7 @@ import {
   useMembership
 } from '~/pages/CommunitiesPage/contexts/membership-context'
 
-import { useNewCommunityMembership } from '~/api/communities/membership'
+import { useNewCommunityMembership } from '~/api/communities/memberships/membership'
 
 const useStyles = createStyles({
   form: {

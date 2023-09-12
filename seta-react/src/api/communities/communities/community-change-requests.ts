@@ -3,8 +3,11 @@ import type { AxiosRequestConfig } from 'axios'
 
 import { environment } from '~/environments/environment'
 
-import api from '../api'
-import type { ChangeRequestResponse, CommunityChangeRequests } from '../types/change-request-types'
+import api from '../../api'
+import type {
+  ChangeRequestResponse,
+  CommunityChangeRequests
+} from '../../types/change-request-types'
 
 export const cacheKey = (id?: string) => ['change-requests', id]
 

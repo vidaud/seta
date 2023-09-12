@@ -3,7 +3,7 @@ import { Box } from '@mantine/core'
 
 import InfoContainer from '~/pages/SearchPageNew/components/documents/DocumentInfo/components/InfoContainer'
 
-import { useAllCommunityRequestsID } from '~/api/communities/community-all-requests'
+import { useAllCommunityRequestsID } from '~/api/communities/communities/community-all-requests'
 import useModalState from '~/hooks/use-modal-state'
 
 import ChangeCommunityRequests from '../ChangeRequests'

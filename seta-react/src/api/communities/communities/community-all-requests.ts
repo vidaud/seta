@@ -3,11 +3,11 @@ import type { AxiosRequestConfig } from 'axios'
 
 import { environment } from '~/environments/environment'
 
-import api from '../api'
-import type { ChangeRequestResponse } from '../types/change-request-types'
-import type { InviteResponse } from '../types/invite-types'
-import type { MembershipRequest } from '../types/membership-types'
-import type { UserPermissionsResponse } from '../types/user-permissions-types'
+import api from '../../api'
+import type { ChangeRequestResponse } from '../../types/change-request-types'
+import type { InviteResponse } from '../../types/invite-types'
+import type { MembershipRequest } from '../../types/membership-types'
+import type { UserPermissionsResponse } from '../../types/user-permissions-types'
 
 export const cacheKey = (id?: string) => ['requests', id]
 const BASE_URL = environment.baseUrl

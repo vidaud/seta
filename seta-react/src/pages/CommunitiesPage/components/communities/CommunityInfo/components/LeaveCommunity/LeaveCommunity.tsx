@@ -2,7 +2,10 @@ import { useEffect, useState } from 'react'
 import { Text, Popover, Button, Group, createStyles, Tooltip } from '@mantine/core'
 import { notifications } from '@mantine/notifications'
 
-import { getMembership, useRemoveCommunityMembership } from '~/api/communities/membership'
+import {
+  getMembership,
+  useRemoveCommunityMembership
+} from '~/api/communities/memberships/membership'
 import { useCurrentUser } from '~/contexts/user-context'
 
 const useStyles = createStyles(theme => ({

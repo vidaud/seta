@@ -15,8 +15,10 @@ import DateTimeCell from '~/pages/Admin/common/components/DateTimeCell/DateTimeC
 import RowActions from '~/pages/Admin/common/components/RequestRowActions/RowActions'
 import UserInfo from '~/pages/Admin/common/components/UserInfo/UserInfo'
 
-import { useUpdateMembershipRequest } from '~/api/communities/manage/membership-requests'
-import { useMembershipRequests } from '~/api/communities/membership-requests'
+import {
+  useMembershipRequests,
+  useUpdateMembershipRequest
+} from '~/api/communities/memberships/membership-requests'
 import { MembershipRequestStatus } from '~/types/community/membership-requests'
 
 import { statusColors } from '../../../types'

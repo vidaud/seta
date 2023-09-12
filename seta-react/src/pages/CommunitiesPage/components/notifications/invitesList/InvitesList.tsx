@@ -15,8 +15,8 @@ import DateTimeCell from '~/pages/Admin/common/components/DateTimeCell/DateTimeC
 import RowActions from '~/pages/Admin/common/components/RequestRowActions/RowActions'
 import UserInfo from '~/pages/Admin/common/components/UserInfo/UserInfo'
 
-import { useAllPendingInvites } from '~/api/communities/invite'
-import { useUpdateInvitationRequest } from '~/api/communities/manage/invitation-requests'
+import { useUpdateInvitationRequest } from '~/api/communities/invites/invitation-requests'
+import { useAllPendingInvites } from '~/api/communities/invites/invite'
 import { InviteRequestStatus } from '~/types/community/invite-requests'
 
 import { statusColors } from '../../../types'

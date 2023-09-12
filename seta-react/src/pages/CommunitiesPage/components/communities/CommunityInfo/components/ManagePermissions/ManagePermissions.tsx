@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react'
 import { Checkbox } from '@mantine/core'
 import { notifications } from '@mantine/notifications'
 
+import { useCommunityScopes } from '~/api/communities/communities/user-community-permissions'
 import { useCategoryCatalogueScopes } from '~/api/communities/scope-catalogue-permissions'
-import { useCommunityScopes } from '~/api/communities/user-community-permissions'
 
 const ManagePermissions = ({ props, id }) => {
   const [value, setValue] = useState<string[]>(props.scopes)

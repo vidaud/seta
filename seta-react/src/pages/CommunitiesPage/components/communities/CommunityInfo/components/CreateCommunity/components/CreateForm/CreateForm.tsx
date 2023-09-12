@@ -7,7 +7,7 @@ import {
   useCommunity
 } from '~/pages/CommunitiesPage/contexts/community-context'
 
-import { useCreateCommunity } from '~/api/communities/manage/my-community'
+import { useCreateCommunity } from '~/api/communities/communities/my-community'
 import { useUserPermissions } from '~/api/communities/user-scopes'
 
 const useStyles = createStyles({

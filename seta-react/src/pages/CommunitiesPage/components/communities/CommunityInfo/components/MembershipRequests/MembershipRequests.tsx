@@ -12,8 +12,8 @@ import {
 } from '~/pages/CommunitiesPage/components/common'
 import { statusColors } from '~/pages/CommunitiesPage/types'
 
-import { useAllCommunityRequestsID } from '~/api/communities/community-all-requests'
-import { useUpdateMembershipRequest } from '~/api/communities/manage/membership-requests'
+import { useAllCommunityRequestsID } from '~/api/communities/communities/community-all-requests'
+import { useUpdateMembershipRequest } from '~/api/communities/memberships/membership-requests'
 import type { MembershipRequest } from '~/api/types/membership-types'
 import { MembershipRequestStatus } from '~/types/community/membership-requests'
 

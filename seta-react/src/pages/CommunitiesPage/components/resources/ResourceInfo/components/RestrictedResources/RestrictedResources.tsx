@@ -6,8 +6,8 @@ import { MdOutlineSearchOff } from 'react-icons/md'
 
 import type { ResourceScopes } from '~/pages/CommunitiesPage/contexts/scope-context'
 
-import { useAllResources } from '~/api/communities/discover/discover-resources'
-import { useRestrictedResource } from '~/api/communities/manage/restricted-resources'
+import { useAllResources } from '~/api/communities/resources/discover-resources'
+import { useRestrictedResource } from '~/api/communities/resources/restricted-resources'
 import type { ResourceResponse } from '~/api/types/resource-types'
 
 const useStyles = createStyles(theme => ({

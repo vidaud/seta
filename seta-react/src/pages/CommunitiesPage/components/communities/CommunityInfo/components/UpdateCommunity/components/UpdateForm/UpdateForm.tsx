@@ -9,7 +9,7 @@ import {
   useCommunity
 } from '~/pages/CommunitiesPage/contexts/community-context'
 
-import { useCommunityID, useSetUpdateCommunity } from '~/api/communities/manage/my-community'
+import { useCommunityID, useSetUpdateCommunity } from '~/api/communities/communities/my-community'
 
 const useStyles = createStyles({
   input: {

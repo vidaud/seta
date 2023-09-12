@@ -7,7 +7,7 @@ import {
   ResourceFormProvider
 } from '~/pages/CommunitiesPage/contexts/resource-context'
 
-import { createResource } from '~/api/communities/manage/my-resource'
+import { createResource } from '~/api/communities/resources/my-resource'
 
 const useStyles = createStyles({
   input: {

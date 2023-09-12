@@ -11,7 +11,7 @@ import {
   ComponentLoading
 } from '~/pages/CommunitiesPage/components/common'
 
-import { useMyCommunityResources } from '~/api/communities/manage/my-community'
+import { useMyCommunityResources } from '~/api/communities/communities/my-community'
 import type { ResourceResponse } from '~/api/types/resource-types'
 
 const useStyles = createStyles(theme => ({

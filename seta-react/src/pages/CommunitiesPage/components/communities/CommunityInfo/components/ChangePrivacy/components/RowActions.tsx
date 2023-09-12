@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Group, Switch, useMantineTheme } from '@mantine/core'
 import { FaUsers, FaUsersSlash } from 'react-icons/fa'
 
-import { useCommunityChangeRequests } from '~/api/communities/community-change-requests'
+import { useCommunityChangeRequests } from '~/api/communities/communities/community-change-requests'
 import type { CommunityResponse } from '~/api/types/community-types'
 
 type Props = {

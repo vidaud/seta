@@ -3,7 +3,7 @@ import { Text, Popover, Button, Group, createStyles, Title, UnstyledButton } fro
 import { notifications } from '@mantine/notifications'
 import { IconTrash } from '@tabler/icons-react'
 
-import { useDeleteCommunity } from '~/api/communities/manage/my-community'
+import { useDeleteCommunity } from '~/api/communities/communities/my-community'
 
 const useStyles = createStyles(theme => ({
   form: {

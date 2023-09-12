@@ -6,14 +6,13 @@ import type { MembershipValues } from '~/pages/CommunitiesPage/contexts/membersh
 
 import { environment } from '~/environments/environment'
 
-import { CommunityQueryKeys } from './manage/community-query-keys'
-
-import api from '../api'
+import api from '../../api'
 import type {
   CreateMembershipRequestAPI,
   MembershipResponse,
   Memberships
-} from '../types/membership-types'
+} from '../../types/membership-types'
+import { CommunityQueryKeys } from '../communities/community-query-keys'
 
 const MEMBERSHIP_API_PATH = (id: string): string => `/communities/${id}/requests`
 const OPEN_MEMBERSHIP_API_PATH = (id: string): string => `/communities/${id}/memberships`

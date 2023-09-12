@@ -1,7 +1,7 @@
 import { Button, Group, Tooltip } from '@mantine/core'
 import { notifications } from '@mantine/notifications'
 
-import { useOpenCommunityMembership } from '~/api/communities/membership'
+import { useOpenCommunityMembership } from '~/api/communities/memberships/membership'
 
 const OpenCommunityMember = ({ community_id }) => {
   const setOpenCommunityMembershipMutation = useOpenCommunityMembership(community_id)

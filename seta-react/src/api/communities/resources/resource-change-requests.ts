@@ -6,8 +6,8 @@ import type { ChangeRequestValues } from '~/pages/CommunitiesPage/contexts/chang
 
 import { environment } from '~/environments/environment'
 
-import api from '../api'
-import type { ResourceChangeRequests } from '../types/change-request-types'
+import api from '../../api'
+import type { ResourceChangeRequests } from '../../types/change-request-types'
 
 export const cacheKey = (id?: string) => ['change-requests', id]
 const BASE_URL = environment.baseUrl

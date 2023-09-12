@@ -4,10 +4,10 @@ import { getCookie } from 'typescript-cookie'
 
 import { environment } from '~/environments/environment'
 
-import { ResourceQueryKeys } from './manage/resource-query-keys'
+import { ResourceQueryKeys } from './resource-query-keys'
 
-import api from '..'
-import type { UserPermissionsResponse } from '../types/user-permissions-types'
+import api from '../..'
+import type { UserPermissionsResponse } from '../../types/user-permissions-types'
 
 const RESOURCE_PERMISSIONS_API_PATH = (id?: string, userId?: string): string =>
   `/permissions/resource/${id}/user/${userId}`
