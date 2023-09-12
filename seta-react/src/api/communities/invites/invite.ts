@@ -1,6 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import type { AxiosRequestConfig } from 'axios'
-import { getCookie } from 'typescript-cookie'
 
 import { environment } from '~/environments/environment'
 
@@ -33,24 +32,6 @@ export const getInvite = async (id?: string): Promise<InviteResponse[]> => {
 
 export const useInviteID = (id?: string) =>
   useQuery({ queryKey: cacheKey(id), queryFn: () => getInvite(id) })
-
-const csrf_token = getCookie('csrf_access_token')
-
-export const createCommunityInvite = async (id?: string, values?: CreateInvitationAPI) => {
-  await api.post<CreateInvitationAPI[]>(
-    `${environment.COMMUNITIES_API_PATH}/${id}/invites`,
-    values,
-    {
-      ...apiConfig,
-      headers: {
-        ...apiConfig?.headers,
-        accept: 'application/json',
-        'X-CSRF-TOKEN': csrf_token,
-        'Content-Type': 'application/x-www-form-urlencoded'
-      }
-    }
-  )
-}
 
 const setNewCommunityInvite = async (id: string, request: CreateInvitationAPI) => {
   return await api.post(INVITE_API_PATH(id), request, config)

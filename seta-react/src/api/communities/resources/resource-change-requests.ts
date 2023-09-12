@@ -30,18 +30,6 @@ export const getResourcesChangeRequests = async (
 export const useResourcesChangeRequests = (id?: string) =>
   useQuery({ queryKey: cacheKey(id), queryFn: () => getResourcesChangeRequests(id) })
 
-export const getPendingChangeRequests = async (): Promise<ResourceChangeRequests[]> => {
-  const { data } = await api.get<ResourceChangeRequests[]>(
-    `/resources/change-requests/pending`,
-    apiConfig
-  )
-
-  return data
-}
-
-export const usePendingChangeRequests = () =>
-  useQuery({ queryKey: cacheKey(), queryFn: () => getPendingChangeRequests() })
-
 const csrf_token = getCookie('csrf_access_token')
 
 export const createResourceChangeRequest = async (id?: string, values?: ChangeRequestValues) => {
