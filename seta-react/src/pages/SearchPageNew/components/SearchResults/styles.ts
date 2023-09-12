@@ -4,5 +4,5 @@ export const root: ThemedCSS = theme => css`
   align-self: stretch;
   position: sticky;
   top: ${theme.spacing.sm};
-  z-index: 100;
+  z-index: 10;
 `
