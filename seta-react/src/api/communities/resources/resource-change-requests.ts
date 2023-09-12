@@ -4,10 +4,9 @@ import { getCookie } from 'typescript-cookie'
 
 import type { ChangeRequestValues } from '~/pages/CommunitiesPage/contexts/change-request-context'
 
+import api from '~/api/api'
+import type { ResourceChangeRequests } from '~/api/types/change-request-types'
 import { environment } from '~/environments/environment'
-
-import api from '../../api'
-import type { ResourceChangeRequests } from '../../types/change-request-types'
 
 export const cacheKey = (id?: string) => ['change-requests', id]
 const BASE_URL = environment.baseUrl

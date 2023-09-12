@@ -1,10 +1,10 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import type { AxiosRequestConfig } from 'axios'
 
+import api from '~/api/api'
+import type { CreateInvitationAPI, InviteResponse } from '~/api/types/invite-types'
 import { environment } from '~/environments/environment'
 
-import api from '../../api'
-import type { CreateInvitationAPI, InviteResponse } from '../../types/invite-types'
 import { CommunityQueryKeys } from '../communities/community-query-keys'
 
 const INVITE_API_PATH = (id: string): string => `/communities/${id}/invites`

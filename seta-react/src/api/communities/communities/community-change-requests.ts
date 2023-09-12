@@ -1,13 +1,12 @@
 import { useQuery } from '@tanstack/react-query'
 import type { AxiosRequestConfig } from 'axios'
 
-import { environment } from '~/environments/environment'
-
-import api from '../../api'
+import api from '~/api/api'
 import type {
   ChangeRequestResponse,
   CommunityChangeRequests
-} from '../../types/change-request-types'
+} from '~/api/types/change-request-types'
+import { environment } from '~/environments/environment'
 
 export const cacheKey = (id?: string) => ['change-requests', id]
 

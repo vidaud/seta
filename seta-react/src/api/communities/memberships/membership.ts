@@ -4,14 +4,14 @@ import { getCookie } from 'typescript-cookie'
 
 import type { MembershipValues } from '~/pages/CommunitiesPage/contexts/membership-context'
 
-import { environment } from '~/environments/environment'
-
-import api from '../../api'
+import api from '~/api/api'
 import type {
   CreateMembershipRequestAPI,
   MembershipResponse,
   Memberships
-} from '../../types/membership-types'
+} from '~/api/types/membership-types'
+import { environment } from '~/environments/environment'
+
 import { CommunityQueryKeys } from '../communities/community-query-keys'
 
 const MEMBERSHIP_API_PATH = (id: string): string => `/communities/${id}/requests`

@@ -1,13 +1,12 @@
 import { useQuery } from '@tanstack/react-query'
 import type { AxiosRequestConfig } from 'axios'
 
+import api from '~/api/api'
+import type { ChangeRequestResponse } from '~/api/types/change-request-types'
+import type { InviteResponse } from '~/api/types/invite-types'
+import type { MembershipRequest } from '~/api/types/membership-types'
+import type { UserPermissionsResponse } from '~/api/types/user-permissions-types'
 import { environment } from '~/environments/environment'
-
-import api from '../../api'
-import type { ChangeRequestResponse } from '../../types/change-request-types'
-import type { InviteResponse } from '../../types/invite-types'
-import type { MembershipRequest } from '../../types/membership-types'
-import type { UserPermissionsResponse } from '../../types/user-permissions-types'
 
 export const cacheKey = (id?: string) => ['requests', id]
 const BASE_URL = environment.baseUrl
