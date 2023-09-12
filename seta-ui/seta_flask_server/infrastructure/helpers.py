@@ -2,16 +2,13 @@ from bson import json_util, SON
 from flask import json as flask_json, Flask
 from six import iteritems, string_types
 from bson.json_util import RELAXED_JSON_OPTIONS
-from Crypto.Hash import SHA256
-from Crypto.PublicKey import RSA
-from Crypto.Signature import pkcs1_15
-import binascii
 import typing as t
 
 from flask import Response
 from flask.json.provider import JSONProvider, _default
 from flask_jwt_extended import decode_token, verify_jwt_in_request
 from flask_jwt_extended.config import config as jwt_config
+from flask_restx import fields
 from functools import reduce
 
 class MongodbJSONProvider(JSONProvider):
@@ -66,6 +63,11 @@ class JSONEncoder(flask_json.JSONEncoder):
                 return json_util.default(obj, **self._default_kwargs)
             except TypeError:
                 return obj
+            
+class NullableString(fields.String):
+    __schema_type__ = ['string', 'null']
+    __schema_example__ = 'nullable string'
+
     
 def set_app_cookie(
     response: Response, key: str, value: str, max_age=None, domain=None

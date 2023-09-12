@@ -14,3 +14,4 @@ from .user_profile import IUserProfile
 from .catalogue_broker import ICatalogueBroker
 from .notifications_broker import INotificationsBroker
 from .stats_broker import IStatsBroker
+from .library_broker import ILibraryBroker
