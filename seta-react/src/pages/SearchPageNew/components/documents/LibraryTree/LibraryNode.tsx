@@ -10,6 +10,7 @@ import { LibraryItemType } from '~/types/library/library-item'
 import NodeActions from './components/NodeActions'
 import { ROOT_ICON, FOLDER_ICON_OPEN, FOLDER_ICON, FILE_ICON } from './constants'
 import { useDocumentsTree } from './contexts/documents-tree-context'
+import { useRootActions } from './contexts/root-actions-context'
 import * as S from './styles'
 
 type Props = {
@@ -39,7 +40,10 @@ const LibraryNode = ({ className, item, isRoot }: Props) => {
 
   const selectChildRef = useRef(selectChild)
 
-  const { title, type, path } = item
+  const { registerIsExpandedSetter, unregisterIsExpandedSetter, collapseAllFolders } =
+    useRootActions()
+
+  const { id, title, type, path } = item
 
   const isDisabled = useMemo(() => disabledIds?.includes(item.id), [disabledIds, item.id])
 
@@ -50,6 +54,19 @@ const LibraryNode = ({ className, item, isRoot }: Props) => {
   const disabledStyle = isDisabled && S.disabled
 
   const itemStyle = [S.itemContainer, selectedStyle, editingStyle, disabledStyle]
+
+  useEffect(() => {
+    if (isRoot) {
+      return
+    }
+
+    // Register/unregister the isExpanded setter when the node is expanded/collapsed
+    if (isExpanded) {
+      registerIsExpandedSetter(id, setIsExpanded)
+    } else {
+      unregisterIsExpandedSetter(id)
+    }
+  }, [isExpanded, id, isRoot, registerIsExpandedSetter, unregisterIsExpandedSetter])
 
   useEffect(() => {
     if (willSelectId) {
@@ -101,6 +118,12 @@ const LibraryNode = ({ className, item, isRoot }: Props) => {
     }
   }
 
+  const handleCollapseAllFolders = () => {
+    if (isRoot) {
+      collapseAllFolders()
+    }
+  }
+
   const children = useMemo(() => {
     if (isDisabled) {
       return []
@@ -142,6 +165,7 @@ const LibraryNode = ({ className, item, isRoot }: Props) => {
       onNewFolderCreated={handleNewFolderCreated}
       onNewFolderPopoverChange={setIsEditing}
       onOptionsMenuChange={setIsEditing}
+      onCollapseAllFolders={handleCollapseAllFolders}
     />
   )
 
