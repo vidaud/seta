@@ -1,7 +1,6 @@
 import { createContext, useContext, useEffect, useRef, useState } from 'react'
 import { isAxiosError } from 'axios'
 
-import { useCommunitiesNotifications } from '~/api/communities/notifications'
 import type { User } from '~/types/user'
 
 import { logout, useUserInfo } from '../api/auth'
@@ -19,7 +18,7 @@ const UserContext = createContext<UserContextProps | undefined>(undefined)
 export const UserProvider = ({ children }: ChildrenProp) => {
   const [user, setUser] = useState<User | null>(null)
   const [loading, setLoading] = useState(true)
-  const { refetch } = useCommunitiesNotifications()
+  // const { refetch } = useCommunitiesNotifications()
 
   const prevUserRef = useRef<User | null>(null)
 
@@ -58,20 +57,20 @@ export const UserProvider = ({ children }: ChildrenProp) => {
     getUser()
   }, [user, verifyUser])
 
-  useEffect(() => {
-    let timeout: number | null = null
+  // useEffect(() => {
+  //   let timeout: number | null = null
 
-    if (user) {
-      timeout = setTimeout(refetch, 30000)
+  //   if (user) {
+  //     timeout = setTimeout(refetch, 30000)
 
-      return () => {
-        if (timeout) {
-          clearTimeout(timeout)
-        }
-      }
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user])
+  //     return () => {
+  //       if (timeout) {
+  //         clearTimeout(timeout)
+  //       }
+  //     }
+  //   }
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [user])
 
   // Delay the loading state to allow the user to be set first
   useEffect(() => {
