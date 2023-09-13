@@ -7,7 +7,7 @@ import {
   ResourceFormProvider
 } from '~/pages/CommunitiesPage/contexts/resource-context'
 
-import { createResource } from '~/api/communities/resources/my-resource'
+import { useCreateResource } from '~/api/communities/resources/my-resource'
 
 const useStyles = createStyles({
   input: {
@@ -23,6 +23,7 @@ const useStyles = createStyles({
 
 const CreateForm = ({ id, close }) => {
   const { classes, cx } = useStyles()
+  const setNewResourceMutation = useCreateResource(id)
 
   const form = useResource({
     initialValues: {
@@ -41,45 +42,24 @@ const CreateForm = ({ id, close }) => {
   })
 
   const handleSubmit = (values: ResourceValues) => {
-    createResource(id, values)
-      .then(() => {
+    setNewResourceMutation.mutate(values, {
+      onSuccess: () => {
         notifications.show({
-          title: 'New Resource Added Successfully',
-          message: 'New resource has been added to community',
-          styles: theme => ({
-            root: {
-              backgroundColor: theme.colors.teal[6],
-              borderColor: theme.colors.teal[6],
-              '&::before': { backgroundColor: theme.white }
-            },
-            title: { color: theme.white },
-            description: { color: theme.white },
-            closeButton: {
-              color: theme.white,
-              '&:hover': { backgroundColor: theme.colors.teal[7] }
-            }
-          })
+          message: `New Resource Added Successfully!`,
+          color: 'blue',
+          autoClose: 5000
         })
-      })
-      .catch(error => {
+
+        close()
+      },
+      onError: () => {
         notifications.show({
-          title: error.response.statusText,
-          message: error.response.data.message,
-          styles: theme => ({
-            root: {
-              backgroundColor: theme.colors.red[6],
-              borderColor: theme.colors.red[6],
-              '&::before': { backgroundColor: theme.white }
-            },
-            title: { color: theme.white },
-            description: { color: theme.white },
-            closeButton: {
-              color: theme.white,
-              '&:hover': { backgroundColor: theme.colors.red[7] }
-            }
-          })
+          message: 'Create New Resource Failed!',
+          color: 'red',
+          autoClose: 5000
         })
-      })
+      }
+    })
   }
 
   return (

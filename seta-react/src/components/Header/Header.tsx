@@ -3,6 +3,7 @@ import { AiOutlineUser } from 'react-icons/ai'
 import { FaSignInAlt } from 'react-icons/fa'
 import { Link } from 'react-router-dom'
 
+import { useCommunitiesNotifications } from '~/api/communities/notifications'
 import { UserRole } from '~/types/user'
 
 import NotificationsMenu from './components/NotificationsMenu'
@@ -15,7 +16,8 @@ import { useCurrentUser } from '../../contexts/user-context'
 import './style.css'
 
 const Header = () => {
-  const { user, isLoading: isUserLoading, logout, notifications, total } = useCurrentUser()
+  const { user, isLoading: isUserLoading, logout } = useCurrentUser()
+  const { data } = useCommunitiesNotifications()
 
   const authenticated = !!user
 
@@ -109,12 +111,12 @@ const Header = () => {
             <Group>
               <NotificationsMenu
                 dropdownItems={dropdownItems}
-                notifications={notifications}
-                total={total}
+                notifications={data?.notifications}
+                total={data?.totalNotifications}
               />
-              {total > 0 ? (
+              {data?.totalNotifications && data?.totalNotifications > 0 ? (
                 <Badge variant="filled" size="xs" css={S.badge}>
-                  {total}
+                  {data?.totalNotifications}
                 </Badge>
               ) : null}
             </Group>

@@ -7,6 +7,8 @@ import type { ResourceChangeRequest, RequestStatus } from '~/types/admin/change-
 
 import { AdminQueryKeys } from './query-keys'
 
+import { CommunityQueryKeys } from '../communities/communities/community-query-keys'
+
 const RESOURCE_REQUESTS_API_PATH = '/admin/resources/change-requests'
 
 const getPendingRequests = async (
@@ -60,6 +62,8 @@ export const useUpdateResourceRequest = () => {
     onSuccess: () => {
       client.invalidateQueries(AdminQueryKeys.ResourceRequestsQueryKey)
       client.invalidateQueries(AdminQueryKeys.SidebarQueryKey)
+      client.invalidateQueries(CommunityQueryKeys.CommunitiesQueryKey)
+      client.invalidateQueries(CommunityQueryKeys.NotificationsQueryKey)
     }
   })
 }

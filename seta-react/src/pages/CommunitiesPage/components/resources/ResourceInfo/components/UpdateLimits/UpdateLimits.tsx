@@ -8,7 +8,7 @@ import {
   useChangeRequest
 } from '~/pages/CommunitiesPage/contexts/change-request-context'
 
-import { createResourceChangeRequest } from '~/api/communities/resources/resource-change-requests'
+import { useResourceChangeRequest } from '~/api/communities/resources/resource-change-requests'
 
 const useStyles = createStyles({
   form: {
@@ -19,6 +19,7 @@ const useStyles = createStyles({
 const UpdateLimits = ({ props }) => {
   const [opened, setOpened] = useState(false)
   const { classes, cx } = useStyles()
+  const setNewChangeRequestMutation = useResourceChangeRequest(props?.resource_id)
 
   const form = useChangeRequest({
     initialValues: {
@@ -52,48 +53,24 @@ const UpdateLimits = ({ props }) => {
     }
 
     // form.setValues({ new_value: form.values})
-    createResourceChangeRequest(props.resource_id, formValues)
-      .then(() => {
+    setNewChangeRequestMutation.mutate(formValues, {
+      onSuccess: () => {
         notifications.show({
-          title: 'Resource Limits Request Created',
-          message:
-            'Resource limits changes request has been send to the owner of the resource. \nYou need to wait for his approval.',
-          styles: theme => ({
-            root: {
-              backgroundColor: theme.colors.blue[6],
-              borderColor: theme.colors.blue[6],
-              '&::before': { backgroundColor: theme.white }
-            },
-            title: { color: theme.white },
-            description: { color: theme.white },
-            closeButton: {
-              color: theme.white,
-              '&:hover': { backgroundColor: theme.colors.blue[7] }
-            }
-          })
+          message: `Resource Limits Request Created!`,
+          color: 'blue',
+          autoClose: 5000
         })
-      })
-      .catch(error => {
-        notifications.show({
-          title: error.response.statusText,
-          message: error.response.data.message,
-          styles: theme => ({
-            root: {
-              backgroundColor: theme.colors.red[6],
-              borderColor: theme.colors.red[6],
-              '&::before': { backgroundColor: theme.white }
-            },
-            title: { color: theme.white },
-            description: { color: theme.white },
-            closeButton: {
-              color: theme.white,
-              '&:hover': { backgroundColor: theme.colors.red[7] }
-            }
-          })
-        })
-      })
 
-    setOpened(o => !o)
+        setOpened(o => !o)
+      },
+      onError: () => {
+        notifications.show({
+          message: 'Change Request Failed!',
+          color: 'red',
+          autoClose: 5000
+        })
+      }
+    })
   }
 
   return (

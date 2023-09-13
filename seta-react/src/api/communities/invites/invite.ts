@@ -48,6 +48,7 @@ export const useNewCommunityInvite = (id: string) => {
     onSuccess: () => {
       client.invalidateQueries(CommunityQueryKeys.InvitationsRequestsQueryKey)
       client.invalidateQueries(CommunityQueryKeys.CommunitiesQueryKey)
+      client.invalidateQueries(CommunityQueryKeys.NotificationsQueryKey)
     }
   })
 }

@@ -1,13 +1,10 @@
-import { createContext, useCallback, useContext, useEffect, useRef, useState } from 'react'
-import type { AxiosRequestConfig } from 'axios'
+import { createContext, useContext, useEffect, useRef, useState } from 'react'
 import { isAxiosError } from 'axios'
 
-import type { NotificationsResponse } from '~/api/types/notifications-types'
+import { useCommunitiesNotifications } from '~/api/communities/notifications'
 import type { User } from '~/types/user'
 
-import api from '../api/api'
 import { logout, useUserInfo } from '../api/auth'
-import { environment } from '../environments/environment'
 import type { ChildrenProp } from '../types/children-props'
 
 type UserContextProps = {
@@ -15,16 +12,6 @@ type UserContextProps = {
   isLoading: boolean
   verify: () => void
   logout: () => Promise<unknown>
-  notifications: NotificationsResponse[]
-  total: number
-  getNotificationRequests: () => void
-}
-
-const BASE_URL = environment.baseUrl
-const NOTIFICATIONS_API_PATH = '/notifications/'
-
-const apiConfig: AxiosRequestConfig = {
-  baseURL: BASE_URL
 }
 
 const UserContext = createContext<UserContextProps | undefined>(undefined)
@@ -32,8 +19,7 @@ const UserContext = createContext<UserContextProps | undefined>(undefined)
 export const UserProvider = ({ children }: ChildrenProp) => {
   const [user, setUser] = useState<User | null>(null)
   const [loading, setLoading] = useState(true)
-  const [notifications, setNotifications] = useState<NotificationsResponse[]>([])
-  const [total, setTotal] = useState(0)
+  const { refetch } = useCommunitiesNotifications()
 
   const prevUserRef = useRef<User | null>(null)
 
@@ -72,30 +58,11 @@ export const UserProvider = ({ children }: ChildrenProp) => {
     getUser()
   }, [user, verifyUser])
 
-  const getNotificationRequests = useCallback(async () => {
-    let count = 0
-    const result = await api.get<NotificationsResponse[]>(NOTIFICATIONS_API_PATH, apiConfig)
-
-    if (result.data.length > 0) {
-      result.data.forEach(element => {
-        count += element.count
-      })
-    } else {
-      count = result.data.length
-    }
-
-    setTotal(count)
-    setNotifications(result.data)
-
-    return result.data
-    // Allow the 100% step to be shown for 10 seconds
-  }, [])
-
   useEffect(() => {
     let timeout: number | null = null
 
     if (user) {
-      timeout = setTimeout(getNotificationRequests, 30000)
+      timeout = setTimeout(refetch, 30000)
 
       return () => {
         if (timeout) {
@@ -103,27 +70,22 @@ export const UserProvider = ({ children }: ChildrenProp) => {
         }
       }
     }
-  }, [user, getNotificationRequests, notifications])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user])
 
   // Delay the loading state to allow the user to be set first
   useEffect(() => {
     if (user?.username !== prevUserRef.current?.username) {
       prevUserRef.current = user
       setLoading(false)
-      getNotificationRequests().then(response => {
-        setNotifications(response)
-      })
     }
-  }, [user, getNotificationRequests])
+  }, [user])
 
   const value: UserContextProps = {
     user,
     isLoading: loading,
     verify: verifyUser,
-    logout,
-    notifications,
-    total,
-    getNotificationRequests
+    logout
   }
 
   return <UserContext.Provider value={value}>{children}</UserContext.Provider>

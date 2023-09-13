@@ -7,6 +7,8 @@ import type { CommunityChangeRequest, RequestStatus } from '~/types/admin/change
 
 import { AdminQueryKeys } from './query-keys'
 
+import { CommunityQueryKeys } from '../communities/communities/community-query-keys'
+
 const COMMUNITY_REQUESTS_API_PATH = '/admin/communities/change-requests'
 
 const getPendingRequests = async (
@@ -60,6 +62,9 @@ export const useUpdateCommunityRequest = () => {
     onSuccess: () => {
       client.invalidateQueries(AdminQueryKeys.CommunityRequestsQueryKey)
       client.invalidateQueries(AdminQueryKeys.SidebarQueryKey)
+      client.invalidateQueries(CommunityQueryKeys.MembershipChangeRequestsQueryKey)
+      client.invalidateQueries(CommunityQueryKeys.CommunitiesQueryKey)
+      client.invalidateQueries(CommunityQueryKeys.NotificationsQueryKey)
     }
   })
 }

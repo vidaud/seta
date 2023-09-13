@@ -33,6 +33,7 @@ export const useUpdateInvitationRequest = () => {
     onSuccess: () => {
       client.invalidateQueries(CommunityQueryKeys.InvitationsRequestsQueryKey)
       client.invalidateQueries(CommunityQueryKeys.CommunitiesQueryKey)
+      client.invalidateQueries(CommunityQueryKeys.NotificationsQueryKey)
     }
   })
 }
