@@ -1,12 +1,11 @@
-import { ActionIcon, Flex, Group, Image, Loader, Menu, Tooltip, Badge, Grid } from '@mantine/core'
+import { ActionIcon, Flex, Group, Image, Loader, Menu, Tooltip, Grid } from '@mantine/core'
 import { AiOutlineUser } from 'react-icons/ai'
 import { FaSignInAlt } from 'react-icons/fa'
 import { Link } from 'react-router-dom'
 
-import { useCommunitiesNotifications } from '~/api/communities/notifications'
 import { UserRole } from '~/types/user'
 
-import NotificationsMenu from './components/NotificationsMenu'
+import NotificationsButton from './components/NotificationsButton'
 import SiteHeader from './components/SiteHeader'
 import { getDropdownItems, getMenuItems, itemIsCollapse, itemIsDivider } from './config'
 import * as S from './styles'
@@ -17,8 +16,6 @@ import './style.css'
 
 const Header = () => {
   const { user, isLoading: isUserLoading, logout } = useCurrentUser()
-  const { data } = useCommunitiesNotifications()
-
   const authenticated = !!user
 
   const handleLogout = () => {
@@ -107,20 +104,7 @@ const Header = () => {
           ))}
         </Grid>
         <Group>
-          {authenticated ? (
-            <Group>
-              <NotificationsMenu
-                dropdownItems={dropdownItems}
-                notifications={data?.notifications}
-                total={data?.totalNotifications}
-              />
-              {data?.totalNotifications && data?.totalNotifications > 0 ? (
-                <Badge variant="filled" size="xs" css={S.badge}>
-                  {data?.totalNotifications}
-                </Badge>
-              ) : null}
-            </Group>
-          ) : null}
+          {authenticated ? <NotificationsButton dropdownItems={dropdownItems} /> : null}
           {authenticated ? dropdownMenu : loginButton}
         </Group>
       </Flex>
