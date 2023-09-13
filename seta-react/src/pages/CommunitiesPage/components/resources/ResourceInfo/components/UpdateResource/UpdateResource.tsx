@@ -22,10 +22,9 @@ type Props = {
   resource: ResourceResponse
   resource_scopes?: ResourceScopes[] | undefined
   onChange: (value: boolean) => void
-  refetch?: () => void
 }
 
-const UpdateResource = ({ resource, onChange, refetch }: Props) => {
+const UpdateResource = ({ resource, onChange }: Props) => {
   const { classes } = useStyles()
   const [opened, { open, close }] = useDisclosure(false)
   // const { resource_id } = resource
@@ -49,7 +48,7 @@ const UpdateResource = ({ resource, onChange, refetch }: Props) => {
           }}
         >
           <Divider my="xs" label="Update Resource" labelPosition="center" />
-          <UpdateForm resource={resource} close={close} onChange={onChange} refetch={refetch} />
+          <UpdateForm resource={resource} close={close} onChange={onChange} />
         </Modal>
 
         <Group>

@@ -19,12 +19,6 @@ const useStyles = createStyles(theme => ({
   }
 }))
 
-// type Props = {
-//   id: string
-//   refetch?: () => void
-//   resource_scopes?: ResourceScopes[] | undefined
-// }
-
 const DeleteResource = ({ id }) => {
   const { classes, cx } = useStyles()
   const [opened, setOpened] = useState(false)

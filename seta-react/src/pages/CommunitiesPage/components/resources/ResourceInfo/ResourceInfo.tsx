@@ -24,13 +24,12 @@ import * as S from './styles'
 type Props = {
   queryTerms: string
   resource: ResourceResponse
-  refetch?: () => void
   community_scopes?: CommunityScopes[]
   resource_scopes?: ResourceScopes[]
   system_scopes?: SystemScopes[]
 }
 
-const ResourceInfo = ({ resource, resource_scopes, refetch }: Props) => {
+const ResourceInfo = ({ resource, resource_scopes }: Props) => {
   const [scopes, setScopes] = useState<string[] | undefined>([])
   const [outsideClick, setOutsideClick] = useState(true)
   const theme = useMantineTheme()
@@ -119,11 +118,7 @@ const ResourceInfo = ({ resource, resource_scopes, refetch }: Props) => {
                 }}
               >
                 {/* <RestrictedResource resource={resource} /> */}
-                <UpdateResource
-                  resource={resource}
-                  onChange={handleOutsideClick}
-                  refetch={refetch}
-                />
+                <UpdateResource resource={resource} onChange={handleOutsideClick} />
                 <DeleteResource id={resource_id} />
               </Menu.Dropdown>
             </Menu>
