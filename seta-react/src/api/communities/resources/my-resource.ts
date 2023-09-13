@@ -13,6 +13,7 @@ import { environment } from '~/environments/environment'
 import { ResourceQueryKeys } from './resource-query-keys'
 
 const RESOURCE_API_PATH = '/resources/'
+const CREATE_RESOURCE_API_PATH = (id: string): string => `/communities/${id}/resources`
 const UPDATE_RESOURCE_API_PATH = (id: string): string => `/resources/${id}`
 const DELETE_RESOURCE_API_PATH = (id: string): string => `/resources/${id}`
 const csrf_token = getCookie('csrf_access_token')
@@ -43,22 +44,23 @@ export const getResource = async (id?: string): Promise<ResourceResponse> => {
 export const useResourceID = (id?: string) =>
   useQuery({ queryKey: cacheKey(id), queryFn: () => getResource(id) })
 
-export const createResource = async (id?: string, values?: CreateResourceAPI) => {
-  await api
-    .post<CreateResourceAPI[]>(`${environment.COMMUNITIES_API_PATH}/${id}/resources`, values, {
-      ...apiConfig,
-      headers: {
-        ...apiConfig?.headers,
-        accept: 'application/json',
-        'X-CSRF-TOKEN': csrf_token,
-        'Content-Type': 'application/x-www-form-urlencoded'
-      }
-    })
-    .then(response => {
-      if (response.status === 201) {
-        window.location.href = `/community/communities/`
-      }
-    })
+export const setCreateResource = async (id: string, request?: CreateResourceAPI) => {
+  return await api.post(CREATE_RESOURCE_API_PATH(id), request, config)
+}
+
+export const useCreateResource = (id: string) => {
+  const client = useQueryClient()
+
+  return useMutation({
+    mutationFn: (request: CreateResourceAPI) => setCreateResource(id, request),
+    onMutate: async () => {
+      await client.cancelQueries(ResourceQueryKeys.ResourcesQueryKey)
+    },
+    onSuccess: () => {
+      client.invalidateQueries(ResourceQueryKeys.ResourcesQueryKey)
+      client.invalidateQueries(ResourceQueryKeys.CommunitiesQueryKey)
+    }
+  })
 }
 
 export const setUpdateResource = async (id: string, request?: UpdateResourceAPI) => {
@@ -75,18 +77,6 @@ export const useSetUpdateResource = (id: string) => {
     },
     onSuccess: () => {
       client.invalidateQueries(ResourceQueryKeys.ResourcesQueryKey)
-    }
-  })
-}
-
-export const deleteResourceByID = async (resource_id?: string) => {
-  await api.delete(`${RESOURCE_API_PATH}${resource_id}`, {
-    ...apiConfig,
-    headers: {
-      ...apiConfig?.headers,
-      accept: 'application/json',
-      'X-CSRF-TOKEN': csrf_token,
-      'Content-Type': 'application/x-www-form-urlencoded'
     }
   })
 }

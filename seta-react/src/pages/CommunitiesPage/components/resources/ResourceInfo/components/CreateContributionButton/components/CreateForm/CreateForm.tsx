@@ -1,4 +1,5 @@
 import { TextInput, Group, createStyles, Button, Textarea } from '@mantine/core'
+import { notifications } from '@mantine/notifications'
 
 import {
   useResource,
@@ -6,7 +7,7 @@ import {
   ResourceFormProvider
 } from '~/pages/CommunitiesPage/contexts/resource-context'
 
-import { createResource } from '~/api/communities/resources/my-resource'
+import { useCreateResource } from '~/api/communities/resources/my-resource'
 
 const useStyles = createStyles({
   input: {
@@ -22,6 +23,7 @@ const useStyles = createStyles({
 
 const CreateForm = ({ id, close }) => {
   const { classes, cx } = useStyles()
+  const setNewResourceMutation = useCreateResource(id)
 
   const form = useResource({
     initialValues: {
@@ -40,7 +42,24 @@ const CreateForm = ({ id, close }) => {
   })
 
   const handleSubmit = (values: ResourceValues) => {
-    createResource(id, values)
+    setNewResourceMutation.mutate(values, {
+      onSuccess: () => {
+        notifications.show({
+          message: `New Resource Added Successfully!`,
+          color: 'blue',
+          autoClose: 5000
+        })
+
+        close()
+      },
+      onError: () => {
+        notifications.show({
+          message: 'Create New Resource Failed!',
+          color: 'red',
+          autoClose: 5000
+        })
+      }
+    })
   }
 
   return (

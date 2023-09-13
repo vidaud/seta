@@ -87,7 +87,7 @@ export const useOpenCommunityMembership = (id: string) => {
   })
 }
 
-const seRemoveCommunityMembership = async (id: string) => {
+const setRemoveCommunityMembership = async (id: string) => {
   return await api.delete(REMOVE_MEMBERSHIP_API_PATH(id), config)
 }
 
@@ -95,7 +95,7 @@ export const useRemoveCommunityMembership = () => {
   const client = useQueryClient()
 
   return useMutation({
-    mutationFn: (id: string) => seRemoveCommunityMembership(id),
+    mutationFn: (id: string) => setRemoveCommunityMembership(id),
     onMutate: async () => {
       await client.cancelQueries(CommunityQueryKeys.RemoveMembershipQueryKey)
     },

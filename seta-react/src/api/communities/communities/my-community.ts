@@ -5,7 +5,7 @@ import { getCookie } from 'typescript-cookie'
 import type { CommunityValues } from '~/pages/CommunitiesPage/contexts/community-context'
 
 import api from '~/api/api'
-import type { CommunityResponse, CreateCommunityAPI } from '~/api/types/community-types'
+import type { CommunityResponse } from '~/api/types/community-types'
 import type { ResourceResponse } from '~/api/types/resource-types'
 import { environment } from '~/environments/environment'
 
@@ -55,18 +55,6 @@ const getMyCommunityResources = async (id?: string): Promise<ResourceResponse[]>
 
 export const useMyCommunityResources = (id?: string) =>
   useQuery({ queryKey: cacheKey(id), queryFn: () => getMyCommunityResources(id) })
-
-export const createCommunity = async (values?: CreateCommunityAPI) => {
-  await api.post<CreateCommunityAPI[]>(`${environment.COMMUNITIES_API_PATH}`, values, {
-    ...apiConfig,
-    headers: {
-      ...apiConfig?.headers,
-      accept: 'application/json',
-      'X-CSRF-TOKEN': csrf_token,
-      'Content-Type': 'application/x-www-form-urlencoded'
-    }
-  })
-}
 
 export const setCreateCommunity = async (request: CommunityValues) => {
   return await api.post(CREATE_COMMUNITY_API_PATH(), request, config)

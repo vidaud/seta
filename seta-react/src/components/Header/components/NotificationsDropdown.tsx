@@ -6,7 +6,7 @@ import { useStyles } from '~/pages/SearchWithFilters/components/ApplyFilters/sty
 import type { NotificationsResponse } from '~/api/types/notifications-types'
 
 type Props = {
-  notifications: NotificationsResponse[]
+  notifications?: NotificationsResponse[]
 }
 
 const NotificationsDropdown = ({ notifications }: Props) => {
@@ -14,7 +14,7 @@ const NotificationsDropdown = ({ notifications }: Props) => {
   const navigate = useNavigate()
 
   const items = notifications
-    .sort((a, b) => a.priority - b.priority)
+    ?.sort((a, b) => a.priority - b.priority)
     .map(link => (
       <div key={link.label} className={classes.group}>
         <Text<'a'>

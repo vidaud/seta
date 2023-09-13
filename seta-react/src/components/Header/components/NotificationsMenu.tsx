@@ -11,8 +11,8 @@ import * as S from '../styles'
 
 type Props = {
   dropdownItems: DropdownItem[]
-  notifications: NotificationsResponse[]
-  total: number
+  notifications?: NotificationsResponse[]
+  total?: number
 }
 
 const NotificationsMenu = ({ dropdownItems, notifications, total }: Props) => {
@@ -37,7 +37,9 @@ const NotificationsMenu = ({ dropdownItems, notifications, total }: Props) => {
         </ActionIcon>
       </Menu.Target>
 
-      {total > 0 ? <Menu.Dropdown css={S.dropdown}>{notificationsMenuItems}</Menu.Dropdown> : null}
+      {total && total > 0 ? (
+        <Menu.Dropdown css={S.dropdown}>{notificationsMenuItems}</Menu.Dropdown>
+      ) : null}
     </Menu>
   )
 }

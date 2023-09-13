@@ -26,11 +26,14 @@ const items = [{ value: 'change_requests' }, { value: 'permissions' }]
 
 const ResourceDetails = ({ className, open, resource, resource_scopes }: Props) => {
   const [activeTab, setActiveTab] = useState<string | null>('limits')
+  const [selected] = useState<string | null>('pending')
   const { resource_id } = resource
   const [data, setData] = useState<ResourceChangeRequests[] | undefined>()
 
   const [scopes, setScopes] = useState<string[] | undefined>([])
-  const [nrChangeRequests, setNrChangeRequests] = useState<number | undefined>(data?.length)
+  const [nrChangeRequests, setNrChangeRequests] = useState<number | undefined>(
+    data?.filter(item => item.status === selected).length
+  )
 
   useEffect(() => {
     const findResource = resource_scopes?.filter(scope => scope.resource_id === resource_id)
@@ -38,9 +41,9 @@ const ResourceDetails = ({ className, open, resource, resource_scopes }: Props) 
     findResource ? setScopes(findResource[0]?.scopes) : setScopes([])
 
     if (data) {
-      setNrChangeRequests(data?.length)
+      setNrChangeRequests(data?.filter(item => item.status === selected).length)
     }
-  }, [resource_scopes, resource_id, data])
+  }, [resource_scopes, resource_id, data, selected])
 
   const handleData = (value: ResourceChangeRequests[]) => {
     setData(value)
