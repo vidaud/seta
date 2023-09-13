@@ -15,3 +15,4 @@ from .application import SetaApplication
 from .user_profile import UserProfileResources
 from .catalogue_scope import CatalogueScope, ScopeCatalogues, ScopeCategory
 from .catalogue_role import CatalogueRole, RoleCatalogues, RoleCategory
+from .library import LibraryItem, LibraryItemType
