@@ -57,6 +57,7 @@ export const useResourceChangeRequest = (id: string) => {
       client.invalidateQueries(ResourceQueryKeys.ResourcesQueryKey)
       client.invalidateQueries(CommunityQueryKeys.NotificationsQueryKey)
       client.invalidateQueries(AdminQueryKeys.SidebarQueryKey)
+      client.invalidateQueries(AdminQueryKeys.ResourceRequestsQueryKey)
     }
   })
 }
