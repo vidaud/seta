@@ -79,6 +79,7 @@ export const useSetChangeMembershipRequest = () => {
       client.invalidateQueries(CommunityQueryKeys.CommunitiesQueryKey)
       client.invalidateQueries(CommunityQueryKeys.NotificationsQueryKey)
       client.invalidateQueries(AdminQueryKeys.SidebarQueryKey)
+      client.invalidateQueries(AdminQueryKeys.CommunityRequestsQueryKey)
     }
   })
 }

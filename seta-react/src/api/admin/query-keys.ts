@@ -8,4 +8,6 @@ export class AdminQueryKeys {
   public static readonly OrphanedCommunitiesQueryKey = ['admin-orphaned-communities']
 
   public static readonly OrphanedResourcesQueryKey = ['admin-orphaned-resources']
+
+  public static readonly AllUsers = ['admin-all-users']
 }

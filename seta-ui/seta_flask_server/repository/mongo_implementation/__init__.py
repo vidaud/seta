@@ -16,3 +16,4 @@ from .db_user_profile import UserProfile
 from .db_catalogue_broker import CatalogueBroker
 from .db_notifications_broker import NotificationsBroker
 from .db_stats_broker import StatsBroker
+from .db_library_broker import LibraryBroker
