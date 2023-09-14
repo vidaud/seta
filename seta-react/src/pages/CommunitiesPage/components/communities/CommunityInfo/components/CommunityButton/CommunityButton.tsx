@@ -1,27 +1,26 @@
-import { useEffect, useState } from 'react'
+import { Suspense, lazy, useEffect, useState } from 'react'
 import { ActionIcon, Button, Divider, Group, Menu, Text } from '@mantine/core'
 import { IconDotsVertical } from '@tabler/icons-react'
 
 import type { CommunityScopes } from '~/pages/CommunitiesPage/contexts/community-list.context'
 
 import type { CommunityResponse } from '~/api/types/community-types'
-import type { ResourceResponse } from '~/api/types/resource-types'
 
 import ChangePrivacyRequestActions from '../ChangePrivacy/ChangePrivacyRequestActions'
-import DeleteCommunity from '../DeleteCommunity'
 import InviteMember from '../InviteMemberModal'
 import LeaveCommunity from '../LeaveCommunity'
 import MembershipRequest from '../MembershipRequestModal'
 import OpenCommunityMember from '../OpenCommunityMember'
-import UpdateCommunity from '../UpdateCommunity'
+
+const DeleteCommunity = lazy(() => import('../DeleteCommunity'))
+const UpdateCommunity = lazy(() => import('../UpdateCommunity'))
 
 type Props = {
   props: CommunityResponse
   community_scopes?: CommunityScopes[]
-  resources?: ResourceResponse[]
 }
 
-const CommunityButton = ({ props, community_scopes, resources }: Props) => {
+const CommunityButton = ({ props, community_scopes }: Props) => {
   const [data, setData] = useState<CommunityResponse>(props)
   const [scopes, setScopes] = useState<string[] | undefined>([])
   const [outsideClick, setOutsideClick] = useState(true)
@@ -66,21 +65,22 @@ const CommunityButton = ({ props, community_scopes, resources }: Props) => {
                   e.stopPropagation()
                 }}
               >
-                <UpdateCommunity
-                  community={props}
-                  community_scopes={community_scopes}
-                  onChange={handleOutsideClick}
-                />
+                <Suspense fallback={null}>
+                  <UpdateCommunity
+                    community={props}
+                    community_scopes={community_scopes}
+                    onChange={handleOutsideClick}
+                  />
+                </Suspense>
                 {scopes?.includes('/seta/community/invite') ? (
                   <InviteMember communityId={props.community_id} />
                 ) : null}
 
                 {scopes?.includes('/seta/community/owner') ? (
                   <>
-                    <DeleteCommunity
-                      props={props}
-                      totalResources={resources ? resources?.length : 0}
-                    />
+                    <Suspense fallback={null}>
+                      <DeleteCommunity props={props} />
+                    </Suspense>
                     <Divider sx={{ marginTop: '0.25rem' }} />
                     <Text sx={{ paddingLeft: '0.75rem' }} color="#868e96" size="sm">
                       Membership

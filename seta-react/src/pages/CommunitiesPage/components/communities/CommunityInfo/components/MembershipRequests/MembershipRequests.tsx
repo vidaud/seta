@@ -10,10 +10,13 @@ import {
   ComponentError,
   ComponentLoading
 } from '~/pages/CommunitiesPage/components/common'
+import { usePanelNotifications } from '~/pages/CommunitiesPage/contexts/panel-context'
 import { statusColors } from '~/pages/CommunitiesPage/types'
 
-import { useAllCommunityRequestsID } from '~/api/communities/communities/community-all-requests'
-import { useUpdateMembershipRequest } from '~/api/communities/memberships/membership-requests'
+import {
+  useMembershipRequestsByID,
+  useUpdateMembershipRequest
+} from '~/api/communities/memberships/membership-requests'
 import type { MembershipRequest } from '~/api/types/membership-types'
 import { MembershipRequestStatus } from '~/types/community/membership-requests'
 
@@ -54,26 +57,30 @@ const useStyles = createStyles(theme => ({
 
 const MembershipRequests = ({ id, type }) => {
   const { classes, cx } = useStyles()
-  const { data, isLoading, error, refetch } = useAllCommunityRequestsID(id)
+  const { data, isLoading, error, refetch } = useMembershipRequestsByID(id)
+
   const [items, setItems] = useState<MembershipRequest[] | undefined[]>([])
   const theme = useMantineTheme()
   const perPage = 5
   const updateRequestMutation = useUpdateMembershipRequest()
+  const { handleNrMembershipRequests } = usePanelNotifications()
 
   useEffect(() => {
     if (data) {
+      type === 'container' ? setItems(data.slice(0, perPage)) : setItems(data)
+
       type === 'container'
-        ? setItems(data.memberships.slice(0, perPage))
-        : setItems(data.memberships)
+        ? handleNrMembershipRequests(data.slice(0, perPage).length)
+        : handleNrMembershipRequests(data.length)
     }
-  }, [data, type])
+  }, [data, type, handleNrMembershipRequests])
 
   if (error) {
     return <ComponentError onTryAgain={refetch} />
   }
 
   if (data) {
-    if (data.memberships.length === 0) {
+    if (data.length === 0) {
       return <ComponentEmpty />
     }
   }
@@ -160,11 +167,9 @@ const MembershipRequests = ({ id, type }) => {
           <RowActions
             onApprove={() => {
               handleApproveRequest?.(row.community_id, row.requested_by)
-              // refetch()
             }}
             onReject={() => {
               handleRejectRequest?.(row.community_id, row.requested_by)
-              // refetch()
             }}
           />
         </Group>
@@ -186,7 +191,7 @@ const MembershipRequests = ({ id, type }) => {
         </thead>
         <tbody>{rows}</tbody>
       </Table>
-      {data.memberships.length > perPage && type === 'container' ? (
+      {data.length > perPage && type === 'container' ? (
         <Text color="gray.5" size="sm" sx={{ float: 'right' }}>
           Expand to see full list ...
         </Text>

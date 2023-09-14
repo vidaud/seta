@@ -8,6 +8,7 @@ import {
   ComponentError,
   ComponentLoading
 } from '~/pages/CommunitiesPage/components/common'
+import { usePanelNotifications } from '~/pages/CommunitiesPage/contexts/panel-context'
 import { statusColors } from '~/pages/CommunitiesPage/types'
 
 import { useInviteID } from '~/api/communities/invites/invite'
@@ -58,12 +59,16 @@ const CommunityInvites = ({ id, type }) => {
   const theme = useMantineTheme()
   const { data, isLoading, error, refetch } = useInviteID(id)
   const [items, setItems] = useState(type === 'container' ? data?.slice(0, perPage) : data)
+  const { handleNrInvites } = usePanelNotifications()
 
   useEffect(() => {
     if (data) {
       type === 'container' ? setItems(data.slice(0, perPage)) : setItems(data)
+      type === 'container'
+        ? handleNrInvites(data.slice(0, perPage).length)
+        : handleNrInvites(data.length)
     }
-  }, [data, type])
+  }, [data, type, handleNrInvites])
 
   if (error) {
     return <ComponentError onTryAgain={refetch} />

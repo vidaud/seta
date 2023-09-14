@@ -153,11 +153,9 @@ const MembersList = () => {
                 <RowActions
                   onApprove={() => {
                     handleApproveRequest?.(row.community_id, row.requested_by)
-                    // refetch()
                   }}
                   onReject={() => {
                     handleRejectRequest?.(row.community_id, row.requested_by)
-                    // refetch()
                   }}
                 />
               </Group>

@@ -3,7 +3,10 @@ import { Text, Popover, Button, Group, createStyles, Title, UnstyledButton } fro
 import { notifications } from '@mantine/notifications'
 import { IconTrash } from '@tabler/icons-react'
 
-import { useDeleteCommunity } from '~/api/communities/communities/my-community'
+import {
+  useDeleteCommunity,
+  useMyCommunityResources
+} from '~/api/communities/communities/my-community'
 
 const useStyles = createStyles(theme => ({
   form: {
@@ -19,9 +22,10 @@ const useStyles = createStyles(theme => ({
   }
 }))
 
-const DeleteCommunity = ({ props, totalResources }) => {
+const DeleteCommunity = ({ props }) => {
   const { classes, cx } = useStyles()
   const [opened, setOpened] = useState(false)
+  const { data } = useMyCommunityResources(props?.community_id)
   const setDeleteCommunityMutation = useDeleteCommunity(props?.community_id)
 
   const deleteCommunity = () => {
@@ -70,7 +74,7 @@ const DeleteCommunity = ({ props, totalResources }) => {
           </UnstyledButton>
         </Group>
       </Popover.Target>
-      {totalResources === 0 ? (
+      {data?.length === 0 ? (
         <Popover.Dropdown
           sx={theme => ({
             background: theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.white
@@ -116,7 +120,7 @@ const DeleteCommunity = ({ props, totalResources }) => {
             Warning!
           </Title>
           <Text size="sm" className={cx(classes.form)}>
-            {props?.community_id} community has {totalResources} remaining resources which should be
+            {props?.community_id} community has {data?.length} remaining resources which should be
             deleted first to allow the community to be deleted.
           </Text>
 

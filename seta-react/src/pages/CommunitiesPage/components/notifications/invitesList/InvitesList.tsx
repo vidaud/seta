@@ -166,11 +166,9 @@ const InvitesList = () => {
           <RowActions
             onApprove={() => {
               handleApproveRequest?.(row.invite_id)
-              refetch()
             }}
             onReject={() => {
               handleRejectRequest?.(row.invite_id)
-              refetch()
             }}
           />
         </Group>

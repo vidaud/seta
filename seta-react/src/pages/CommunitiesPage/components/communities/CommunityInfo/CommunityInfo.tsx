@@ -4,13 +4,13 @@ import { useDisclosure } from '@mantine/hooks'
 import { FaChevronDown, FaUsers, FaUsersSlash } from 'react-icons/fa'
 import { useLocation } from 'react-router-dom'
 
+import { PanelProvider } from '~/pages/CommunitiesPage/contexts/panel-context'
 import type {
   CommunityScopes,
   ResourceScopes,
   SystemScopes
 } from '~/pages/CommunitiesPage/contexts/scope-context'
 
-import { useMyCommunityResources } from '~/api/communities/communities/my-community'
 import type { CommunityResponse } from '~/api/types/community-types'
 
 import CommunityButton from './components/CommunityButton'
@@ -27,7 +27,6 @@ type Props = {
 
 const CommunityInfo = ({ community, community_scopes }: Props) => {
   const { title, community_id, description, membership, created_at } = community
-  const { data } = useMyCommunityResources(community_id)
   const theme = useMantineTheme()
   const location = useLocation()
   const ref = createRef<HTMLDivElement>()
@@ -74,7 +73,7 @@ const CommunityInfo = ({ community, community_scopes }: Props) => {
             {title.charAt(0).toUpperCase() + title.slice(1)}
           </Text>
         </div>
-        <CommunityButton props={community} community_scopes={community_scopes} resources={data} />
+        <CommunityButton props={community} community_scopes={community_scopes} />
         {toggleIcon}
       </div>
 
@@ -89,12 +88,14 @@ const CommunityInfo = ({ community, community_scopes }: Props) => {
       </Flex>
 
       {hasDetails && (
-        <CommunityDetails
-          css={S.details}
-          open={detailsOpen}
-          community={community}
-          community_scopes={community_scopes}
-        />
+        <PanelProvider>
+          <CommunityDetails
+            css={S.details}
+            open={detailsOpen}
+            community={community}
+            community_scopes={community_scopes}
+          />
+        </PanelProvider>
       )}
     </div>
   )
