@@ -1,14 +1,5 @@
 import { useEffect, useState } from 'react'
-import {
-  createStyles,
-  Table,
-  ScrollArea,
-  rem,
-  Title,
-  Badge,
-  useMantineTheme,
-  Group
-} from '@mantine/core'
+import { createStyles, Table, rem, Title, Badge, useMantineTheme, Group } from '@mantine/core'
 import { notifications } from '@mantine/notifications'
 
 import DateTimeCell from '~/pages/Admin/common/components/DateTimeCell/DateTimeCell'
@@ -62,7 +53,6 @@ const useStyles = createStyles(theme => ({
 
 const InvitesList = () => {
   const { classes, cx } = useStyles()
-  const [scrolled, setScrolled] = useState(false)
   const { data, isLoading, error, refetch } = useAllPendingInvites()
   const [items, setItems] = useState(data)
   const theme = useMantineTheme()
@@ -176,11 +166,9 @@ const InvitesList = () => {
           <RowActions
             onApprove={() => {
               handleApproveRequest?.(row.invite_id)
-              refetch()
             }}
             onReject={() => {
               handleRejectRequest?.(row.invite_id)
-              refetch()
             }}
           />
         </Group>
@@ -193,24 +181,22 @@ const InvitesList = () => {
       <Title className={cx(classes.title)} order={3}>
         List of Invites
       </Title>
-      <ScrollArea h={220} onScrollPositionChange={({ y }) => setScrolled(y !== 0)}>
-        <Table miw={500}>
-          <thead className={cx(classes.header, { [classes.scrolled]: scrolled })}>
-            <tr>
-              <th>Invite</th>
-              <th>Community</th>
-              <th>Invited User</th>
-              <th>Message</th>
-              <th>Status</th>
-              <th>Initiated Date</th>
-              <th>Initiated By</th>
-              <th>Expire Date</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>{rows}</tbody>
-        </Table>
-      </ScrollArea>
+      <Table miw={500}>
+        <thead className={cx(classes.header)}>
+          <tr>
+            <th>Invite</th>
+            <th>Community</th>
+            <th>Invited User</th>
+            <th>Message</th>
+            <th>Status</th>
+            <th>Initiated Date</th>
+            <th>Initiated By</th>
+            <th>Expire Date</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>{rows}</tbody>
+      </Table>
     </>
   )
 }

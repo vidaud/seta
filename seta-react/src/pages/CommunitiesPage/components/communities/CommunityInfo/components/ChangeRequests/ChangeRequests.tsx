@@ -9,6 +9,7 @@ import {
   ComponentError,
   ComponentLoading
 } from '~/pages/CommunitiesPage/components/common'
+import { usePanelNotifications } from '~/pages/CommunitiesPage/contexts/panel-context'
 import { statusColors } from '~/pages/CommunitiesPage/types'
 
 import { useCommunityChangeRequests } from '~/api/communities/communities/community-change-requests'
@@ -67,25 +68,21 @@ const ChangeCommunityRequests = ({ id }: Props) => {
   const theme = useMantineTheme()
   const [items, setItems] = useState<CommunityChangeRequests[]>()
   const [selected, setSelected] = useState<string | null>('pending')
+  const { handleNrChangeRequests } = usePanelNotifications()
 
   useEffect(() => {
-    let timeout: number | null = null
-
     if (data) {
       selected === 'all'
         ? setItems(data.community_change_requests)
         : setItems(data.community_change_requests?.filter(item => item?.status === selected))
 
-      // setItems(data.community_change_requests)
-      timeout = setTimeout(refetch, 1000)
-
-      return () => {
-        if (timeout) {
-          clearTimeout(timeout)
-        }
-      }
+      selected === 'all'
+        ? handleNrChangeRequests(data.community_change_requests.length)
+        : handleNrChangeRequests(
+            data.community_change_requests?.filter(item => item?.status === selected).length
+          )
     }
-  }, [data, selected, refetch])
+  }, [data, selected, handleNrChangeRequests])
 
   if (error) {
     return <ComponentError onTryAgain={refetch} />

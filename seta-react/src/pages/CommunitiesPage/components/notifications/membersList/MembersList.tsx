@@ -1,14 +1,4 @@
-import { useState } from 'react'
-import {
-  createStyles,
-  Table,
-  ScrollArea,
-  rem,
-  Title,
-  Badge,
-  Group,
-  useMantineTheme
-} from '@mantine/core'
+import { createStyles, Table, rem, Title, Badge, Group, useMantineTheme } from '@mantine/core'
 import { notifications } from '@mantine/notifications'
 
 import DateTimeCell from '~/pages/Admin/common/components/DateTimeCell/DateTimeCell'
@@ -65,8 +55,7 @@ const useStyles = createStyles(theme => ({
 
 const MembersList = () => {
   const { classes, cx } = useStyles()
-  const [scrolled, setScrolled] = useState(false)
-  const { data, refetch } = useMembershipRequests()
+  const { data } = useMembershipRequests()
   const theme = useMantineTheme()
   const updateRequestMutation = useUpdateMembershipRequest()
 
@@ -164,11 +153,9 @@ const MembersList = () => {
                 <RowActions
                   onApprove={() => {
                     handleApproveRequest?.(row.community_id, row.requested_by)
-                    refetch()
                   }}
                   onReject={() => {
                     handleRejectRequest?.(row.community_id, row.requested_by)
-                    refetch()
                   }}
                 />
               </Group>
@@ -182,23 +169,21 @@ const MembersList = () => {
       <Title className={cx(classes.title)} order={3}>
         List of Members
       </Title>
-      <ScrollArea h={300} onScrollPositionChange={({ y }) => setScrolled(y !== 0)}>
-        <Table miw={500}>
-          <thead className={cx(classes.header, { [classes.scrolled]: scrolled })}>
-            <tr>
-              <th>Community</th>
-              <th>Status</th>
-              <th>Message</th>
-              <th>Initiated Date</th>
-              <th>Requested By</th>
-              <th>Review Date</th>
-              <th>Reviewed By</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>{rows}</tbody>
-        </Table>
-      </ScrollArea>
+      <Table miw={500}>
+        <thead className={cx(classes.header)}>
+          <tr>
+            <th>Community</th>
+            <th>Status</th>
+            <th>Message</th>
+            <th>Initiated Date</th>
+            <th>Requested By</th>
+            <th>Review Date</th>
+            <th>Reviewed By</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>{rows}</tbody>
+      </Table>
     </>
   )
 }

@@ -26,7 +26,7 @@ const useStyles = createStyles({
   }
 })
 
-const UpdateForm = ({ resource, close, onChange, refetch }) => {
+const UpdateForm = ({ resource, close, onChange }) => {
   const { classes, cx } = useStyles()
 
   const { data, isLoading } = useResourceID(resource.resource_id)
@@ -53,7 +53,7 @@ const UpdateForm = ({ resource, close, onChange, refetch }) => {
     }
     // adding form to useEffect will cause infinite loop call
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [resource, data, refetch])
+  }, [resource, data])
 
   if (isLoading || !data) {
     return <ComponentLoading />

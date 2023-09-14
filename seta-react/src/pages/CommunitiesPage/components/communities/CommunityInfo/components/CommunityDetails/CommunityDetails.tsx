@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { Suspense, lazy, useEffect, useState } from 'react'
 import { Badge, Collapse, Group, Tabs } from '@mantine/core'
 
 import CreateResource from '~/pages/CommunitiesPage/components/resources/ResourceInfo/components/CreateResource'
@@ -7,6 +7,7 @@ import type {
   ResourceScopes,
   SystemScopes
 } from '~/pages/CommunitiesPage/contexts/community-list.context'
+import { usePanelNotifications } from '~/pages/CommunitiesPage/contexts/panel-context'
 
 import type { ChangeRequestResponse } from '~/api/types/change-request-types'
 import type { CommunityResponse } from '~/api/types/community-types'
@@ -15,8 +16,9 @@ import type { MembershipRequest } from '~/api/types/membership-types'
 import type { UserPermissionsResponse } from '~/api/types/user-permissions-types'
 import type { ClassNameProp } from '~/types/children-props'
 
-import CommunityResources from '../CommunityResources'
 import PanelContent from '../PanelContent'
+
+const CommunityResources = lazy(() => import('../CommunityResources'))
 
 type Props = ClassNameProp & {
   open: boolean
@@ -45,43 +47,22 @@ const CommunityDetails = ({ className, open, community, community_scopes }: Prop
   const [selected] = useState<string | null>('pending')
   const [scopes, setScopes] = useState<string[] | undefined>([])
   const { community_id } = community
-  const [data, setData] = useState<DataResponse | undefined>()
-  const [nrInvites, setNrInvites] = useState<number | undefined>(data?.invites.length)
-  const [nrChangeRequests, setNrChangeRequests] = useState<number | undefined>(
-    data?.changeRequests.community_change_requests.length
-  )
-  const [nrMembershipRequests, setNrMembershipRequests] = useState<number | undefined>(
-    data?.memberships.length
-  )
+  const { nrInvites, nrChangeRequests, nrMembershipRequests } = usePanelNotifications()
 
   useEffect(() => {
     const findCommunity = community_scopes?.filter(scope => scope.community_id === community_id)
 
     findCommunity ? setScopes(findCommunity[0]?.scopes) : setScopes([])
-
-    if (data) {
-      setNrInvites(data?.invites.length)
-      setNrChangeRequests(
-        data?.changeRequests.community_change_requests.filter(item => item.status === selected)
-          .length
-      )
-
-      setNrMembershipRequests(data?.memberships.length)
-    }
-  }, [community_scopes, community_id, data, selected])
+  }, [community_scopes, community_id, selected, open])
 
   const isManager =
     scopes?.includes('/seta/community/owner') || scopes?.includes('/seta/community/manager')
   const invite = scopes?.includes('/seta/community/invite')
   const approve = scopes?.includes('seta/community/membership/approve')
 
-  const handleData = (value: DataResponse) => {
-    setData(value)
-  }
-
   const tabs = items?.map(item => (
     <Tabs.Panel value={item.value} key={item.value}>
-      <PanelContent id={community_id} panel={activeTab} onChange={handleData} />
+      <PanelContent id={community_id} panel={activeTab} />
     </Tabs.Panel>
   ))
 
@@ -121,8 +102,11 @@ const CommunityDetails = ({ className, open, community, community_scopes }: Prop
 
         <Tabs.Panel value="resources">
           {/* {scopes?.includes('/seta/resource/create') ? ( */}
-          <CommunityResources id={community_id} />
-
+          {open ? (
+            <Suspense fallback={null}>
+              <CommunityResources id={community_id} />
+            </Suspense>
+          ) : null}
           {isManager ? (
             <>
               <Group position="right" sx={{ marginTop: '1rem', marginBottom: '1rem' }}>
