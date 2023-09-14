@@ -1,17 +1,16 @@
-from flask_restx import Api, Resource, fields, reqparse
+from flask_restx import Api, Resource, reqparse
 
 from flask import jsonify, abort, Blueprint
 from flask_jwt_extended import decode_token
-from flask_jwt_extended.exceptions import JWTExtendedException
 from flask import current_app as app
 
 from http import HTTPStatus
-from werkzeug.exceptions import HTTPException
 
 from seta_auth.repository.interfaces import IUsersBroker, IResourcesBroker, ISessionsBroker
 from injector import inject
 
 from seta_auth.infrastructure.constants import ResourceScopeConstants, AuthorizedArea, UserStatusConstants
+from .logic.token_info_logic import get_resource_permissions
 
 
 token_info = Blueprint("token_info", __name__)
@@ -76,21 +75,8 @@ class TokenInfo(Resource):
                     user = self.usersBroker.get_user_by_id(seta_id["user_id"])
                     if user.status != UserStatusConstants.Active:
                         abort(HTTPStatus.UNAUTHORIZED, "User inactive!")
-                    
-                    permissions = {"add": [], "delete": [], "view": []}  
-                                
-                    if user is not None:
-                        if user.resource_scopes is not None:
-                            data_add_resources = filter(lambda r: r.scope.lower() == ResourceScopeConstants.DataAdd.lower(), user.resource_scopes)                        
-                            permissions["add"] = [obj.id for obj in data_add_resources]
-                            
-                            data_delete_resources = filter(lambda r: r.scope.lower() == ResourceScopeConstants.DataDelete.lower(), user.resource_scopes)                        
-                            permissions["delete"] = [obj.id for obj in data_delete_resources]
-
-                        #get queryable resource
-                        permissions["view"] = self.resourcesBroker.get_all_queryable_by_user_id(user.user_id)
                         
-                    decoded_token["resource_permissions"] = permissions
+                    decoded_token["resource_permissions"] = get_resource_permissions(user=user, resourcesBroker=self.resourcesBroker)
         
         except Exception as e:
             message = str(e)
