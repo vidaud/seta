@@ -1,5 +1,5 @@
 from flask import current_app as app, jsonify
-from flask_jwt_extended import get_jwt_identity
+from flask_jwt_extended import get_jwt_identity, jwt_required
 from werkzeug.exceptions import HTTPException
 
 from flask_restx import Namespace, Resource, abort
@@ -7,13 +7,16 @@ from flask_restx import Namespace, Resource, abort
 from injector import inject
 
 from seta_flask_server.repository.interfaces import IResourcesBroker, IUsersBroker, ICommunitiesBroker
-from seta_flask_server.repository.models import ResourceModel, EntityScope
+from seta_flask_server.repository.models import ResourceModel, EntityScope, ResourceLimitsModel
 from seta_flask_server.infrastructure.decorators import auth_validator
 from seta_flask_server.infrastructure.scope_constants import ResourceScopeConstants, CommunityScopeConstants
+from seta_flask_server.infrastructure.constants import ResourceStatusConstants
 from seta_flask_server.infrastructure.clients.private_api_client import PrivateResourceClient
 
 from http import HTTPStatus
 from .models.resource_dto import (new_resource_parser, resource_model, resource_limits_model, user_info_model)
+
+from .logic.community_resources_logic import parse_args_new_resource
 
 community_resources_ns = Namespace('Community Resources', description='SETA Community Resources')
 community_resources_ns.models[user_info_model.name] = user_info_model
@@ -38,7 +41,7 @@ class CommunityResourceList(Resource):
                    int(HTTPStatus.NOT_FOUND): "Community not found"},
         security='CSRF')
     @community_resources_ns.marshal_list_with(resource_model, mask="*")
-    @auth_validator()    
+    @jwt_required()    
     def get(self, community_id):
         '''Retrieve community resources, available to any user'''
 
@@ -95,18 +98,9 @@ class CommunityResourceList(Resource):
             
             if id_exists:
                 error = f"Resource id '{resource_id}' already exists, must be unique."
-                abort(HTTPStatus.CONFLICT, error, status="fail")           
-            
-            model = ResourceModel(resource_id=resource_id, community_id=community_id, 
-                                title=resource_dict["title"], abstract=resource_dict["abstract"],
-                                creator_id=identity["user_id"])
+                abort(HTTPStatus.CONFLICT, error, status="fail")    
 
-                #set resouce scopes for the creator_id
-            scopes = [
-                EntityScope(user_id=model.creator_id,  id=model.resource_id, scope=ResourceScopeConstants.Edit).to_resource_json(),
-                EntityScope(user_id=model.creator_id,  id=model.resource_id, scope=ResourceScopeConstants.DataAdd).to_resource_json(),
-                EntityScope(user_id=model.creator_id,  id=model.resource_id, scope=ResourceScopeConstants.DataDelete).to_resource_json()
-                        ]
+            model, scopes = parse_args_new_resource(creator_id=auth_id, community_id=community_id, resource_dict=resource_dict)
             
             self.resourcesBroker.create(model=model,scopes=scopes)
         except HTTPException:

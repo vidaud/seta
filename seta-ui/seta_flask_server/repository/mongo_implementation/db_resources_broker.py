@@ -23,10 +23,10 @@ class ResourcesBroker(implements(IResourcesBroker)):
         if not self.resource_id_exists(model.resource_id):
             now = datetime.now(tz=pytz.utc)
 
-            with self.db.client.start_session(causal_consistency=True) as session:
-                model.status = ResourceStatusConstants.Active
+            with self.db.client.start_session(causal_consistency=True) as session:                
                 #keep default limits
-                model.limits = ResourceLimitsModel()
+                if model.limits is None:
+                    model.limits = ResourceLimitsModel()
 
                 model.created_at = now
 

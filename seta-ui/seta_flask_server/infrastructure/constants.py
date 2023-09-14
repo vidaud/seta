@@ -85,6 +85,12 @@ class ResourceStatusConstants:
     
     List = [Active, Blocked]
 
+class ResourceTypeConstants:
+    Discoverable = "discoverable"
+    Representative = "representative"    
+    
+    List = [Discoverable, Representative]
+
 class NotificationTypeConstants:
     PendingInvite = "pending-invite"
     MembershipRequest = "membership-request"

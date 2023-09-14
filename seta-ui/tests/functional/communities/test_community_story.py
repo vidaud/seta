@@ -171,9 +171,29 @@ def test_create_resource(client: FlaskClient, authentication_url:str, user_id: s
     assert "access_token" in response_json
     access_token = response_json["access_token"]
 
-    response = create_resource(client=client, access_token=access_token, community_id=community_id,
-                    resource_id="ocean", title="Ocean", abstract="Ocean resource for test")
+    resource = {
+        "resource_id": "ocean",
+        "title": "Ocean",
+        "abstract": "Ocean resource for test",
+        "status": "active",
+        "type": "discoverable"
+    }
+    response = create_resource(client=client, access_token=access_token, 
+                               community_id=community_id,
+                                resource_id=resource["resource_id"], 
+                                title=resource["title"], 
+                                abstract=resource["abstract"],
+                                type=resource["type"])
     assert response.status_code == HTTPStatus.CREATED
+
+    response = get_resource(client=client, access_token=access_token, resource_id=resource["resource_id"])
+    assert response.status_code == HTTPStatus.OK
+   
+    resource_json = response.json
+    assert resource_json["community_id"] == community_id
+    assert resource_json["title"] == resource["title"]
+    assert resource_json["abstract"] == resource["abstract"]
+    assert resource_json["type"] == resource["type"]
 
 
 @pytest.mark.parametrize("user_id, community_id", [("seta_admin", "blue")])
