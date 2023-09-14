@@ -160,6 +160,7 @@ corpus_chunk_post_params["taxonomy"] = None
 corpus_chunk_post_params["keywords"] = None
 corpus_chunk_post_params["other"] = None
 corpus_chunk_post_params["chunk_text"] = fields.String()
+corpus_chunk_post_params["chunk_number"] = fields.String()
 corpus_chunk_post_params["sbert_embedding"] = fields.List(fields.Float)
 
 corpus_post_params = {}
