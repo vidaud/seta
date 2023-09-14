@@ -1,3 +1,4 @@
+from seta_flask_server.infrastructure.constants import ResourceTypeConstants
 from .util import auth_headers
 from flask.testing import FlaskClient
 
@@ -13,10 +14,10 @@ def get_accessible_resources(client: FlaskClient, access_token:str):
 
     return client.get(url, content_type='application/json', headers=auth_headers(access_token))
 
-def create_resource(client: FlaskClient, access_token:str, community_id: str, resource_id: str, title: str, abstract: str):
+def create_resource(client: FlaskClient, access_token:str, community_id: str, resource_id: str, title: str, abstract: str, type: str = ResourceTypeConstants.Discoverable):
     url = f"{API_V1}/communities/{community_id}/resources"
 
-    data=f"resource_id={resource_id}&title={title}&abstract={abstract}" 
+    data=f"resource_id={resource_id}&title={title}&abstract={abstract}&type={type}" 
     return client.post(url, data=data, content_type="application/x-www-form-urlencoded", headers=auth_headers(access_token))
 
 def update_resource(client: FlaskClient, access_token:str, resource_id: str, title: str, abstract: str, status: str):

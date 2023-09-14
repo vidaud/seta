@@ -1,6 +1,7 @@
 from datetime import datetime
 from dataclasses import dataclass, asdict
 from .user_info import UserInfo
+from seta_flask_server.infrastructure.constants import ResourceTypeConstants, ResourceStatusConstants
 
 @dataclass(kw_only=True)
 class ResourceLimitsModel:
@@ -21,10 +22,11 @@ class ResourceLimitsModel:
 class ResourceModel:
     resource_id: str = None,
     community_id: str = None,
-    title: str = None,
+    title: str = None,    
     abstract: str = None,
+    type: str = ResourceTypeConstants.Discoverable,
     limits: ResourceLimitsModel = None,
-    status: str = None,
+    status: str = ResourceStatusConstants.Active,
     creator_id: str = None,
     created_at: datetime = None,
     modified_at: datetime = None
@@ -59,10 +61,11 @@ class ResourceModel:
                    community_id=json_dict["community_id"],
                    title=json_dict["title"],
                    abstract=json_dict["abstract"],
-                   status=json_dict["status"],
+                   status=json_dict["status"],                   
                    creator_id=json_dict["creator_id"],
                    created_at=json_dict["created_at"],
                    modified_at=json_dict.get("modified_at"),
+                   type=json_dict.get("type", ResourceTypeConstants.Discoverable),
                    limits=limits)
 
 @dataclass
