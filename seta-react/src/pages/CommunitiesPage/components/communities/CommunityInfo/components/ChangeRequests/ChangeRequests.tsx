@@ -69,23 +69,12 @@ const ChangeCommunityRequests = ({ id }: Props) => {
   const [selected, setSelected] = useState<string | null>('pending')
 
   useEffect(() => {
-    let timeout: number | null = null
-
     if (data) {
       selected === 'all'
         ? setItems(data.community_change_requests)
         : setItems(data.community_change_requests?.filter(item => item?.status === selected))
-
-      // setItems(data.community_change_requests)
-      timeout = setTimeout(refetch, 1000)
-
-      return () => {
-        if (timeout) {
-          clearTimeout(timeout)
-        }
-      }
     }
-  }, [data, selected, refetch])
+  }, [data, selected])
 
   if (error) {
     return <ComponentError onTryAgain={refetch} />

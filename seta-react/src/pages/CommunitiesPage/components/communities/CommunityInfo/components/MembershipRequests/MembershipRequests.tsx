@@ -61,22 +61,12 @@ const MembershipRequests = ({ id, type }) => {
   const updateRequestMutation = useUpdateMembershipRequest()
 
   useEffect(() => {
-    let timeout: number | null = null
-
     if (data) {
       type === 'container'
         ? setItems(data.memberships.slice(0, perPage))
         : setItems(data.memberships)
-
-      timeout = setTimeout(refetch, 1000)
-
-      return () => {
-        if (timeout) {
-          clearTimeout(timeout)
-        }
-      }
     }
-  }, [data, refetch, type])
+  }, [data, type])
 
   if (error) {
     return <ComponentError onTryAgain={refetch} />
@@ -170,11 +160,11 @@ const MembershipRequests = ({ id, type }) => {
           <RowActions
             onApprove={() => {
               handleApproveRequest?.(row.community_id, row.requested_by)
-              refetch()
+              // refetch()
             }}
             onReject={() => {
               handleRejectRequest?.(row.community_id, row.requested_by)
-              refetch()
+              // refetch()
             }}
           />
         </Group>

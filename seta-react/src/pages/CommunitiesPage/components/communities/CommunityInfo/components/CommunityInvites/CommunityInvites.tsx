@@ -60,20 +60,10 @@ const CommunityInvites = ({ id, type }) => {
   const [items, setItems] = useState(type === 'container' ? data?.slice(0, perPage) : data)
 
   useEffect(() => {
-    let timeout: number | null = null
-
     if (data) {
       type === 'container' ? setItems(data.slice(0, perPage)) : setItems(data)
     }
-
-    timeout = setTimeout(refetch, 1000)
-
-    return () => {
-      if (timeout) {
-        clearTimeout(timeout)
-      }
-    }
-  }, [data, refetch, type])
+  }, [data, type])
 
   if (error) {
     return <ComponentError onTryAgain={refetch} />
