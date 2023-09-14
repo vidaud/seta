@@ -1,5 +1,5 @@
 from interface import Interface
-from seta_flask_server.repository.models import SetaUser
+from seta_flask_server.repository.models import SetaUser, AccountInfo
 
 class IUsersBroker(Interface):
     
@@ -32,6 +32,12 @@ class IUsersBroker(Interface):
 
         :param status:
             Filter by status
+        """
+        pass
+
+    def get_account_details(self) -> list[AccountInfo]:
+        """
+        Return details for seta accounts
         """
         pass
     
