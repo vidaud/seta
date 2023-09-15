@@ -38,7 +38,8 @@ const NewFolderAction = ({
 
     const parentId = parent.id === ROOT_NODE_ID ? null : parent.id
 
-    const { item } = await createNewFolderAsync({ parentId, title: inputValue.trim() })
+    // Destructure the first item from the array
+    const [item] = await createNewFolderAsync({ parentId, title: inputValue.trim() })
 
     setIsLoading(false)
     onNewFolderCreated?.(item.id)
