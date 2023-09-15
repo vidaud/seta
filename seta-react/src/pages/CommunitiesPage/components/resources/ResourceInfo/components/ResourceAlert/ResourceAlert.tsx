@@ -15,7 +15,7 @@ const ResourceAlert = ({ variant = 'resource-type', text = TEXT[variant], ...pro
   const title = TITLE[variant]
 
   return (
-    <Alert icon={icon} color={color} radius="md" title={title} {...props}>
+    <Alert icon={icon} color={color} radius="md" title={title} {...props} sx={{ width: '75%' }}>
       <Text color="dark.4">{text}</Text>
     </Alert>
   )

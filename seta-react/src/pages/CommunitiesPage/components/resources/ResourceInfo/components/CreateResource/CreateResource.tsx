@@ -6,7 +6,8 @@ import {
   Modal,
   Divider,
   createStyles,
-  Notification
+  Notification,
+  ScrollArea
 } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 import { IconPlus, IconX } from '@tabler/icons-react'
@@ -38,6 +39,8 @@ const CreateResource = ({ id }) => {
         onClose={close}
         withCloseButton={false}
         size="lg"
+        scrollAreaComponent={ScrollArea.Autosize}
+        lockScroll={false}
         overlayProps={{
           color: theme.colorScheme === 'dark' ? theme.colors.dark[9] : theme.colors.gray[2],
           opacity: 0.55,
