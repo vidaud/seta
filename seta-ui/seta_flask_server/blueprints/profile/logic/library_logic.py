@@ -50,12 +50,7 @@ def build_library_tree(user_id: str, libraryBroker: ILibraryBroker, parent: dict
     library_items = []
 
     for item in items:
-        lib_item = {
-            "id": item.id,
-            "title": item.title,
-            "parent_id": parent_id,
-            "type": item.type
-        }
+        lib_item = item.to_json_api()
 
         #construct the path for this item   
 
@@ -65,11 +60,7 @@ def build_library_tree(user_id: str, libraryBroker: ILibraryBroker, parent: dict
             item_path = []
         item_path.append(item.title)
 
-        lib_item["path"] = item_path
-
-        if item.type == LibraryItemType.Document:
-            lib_item["document_id"] = item.document_id
-            lib_item["link"] = item.link
+        lib_item["path"] = item_path        
 
         library_items.append(lib_item)
 
