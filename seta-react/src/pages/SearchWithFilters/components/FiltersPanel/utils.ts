@@ -6,7 +6,6 @@ import type { OtherItem } from '../../types/other-filter'
 
 type Props = {
   chunkText: TextChunkValues
-  enableDateFilter: boolean
   rangeValue?: RangeValue
   resourceSelectedKeys?: SelectionKeys | null
   taxonomySelectedKeys?: SelectionKeys | null
@@ -17,7 +16,6 @@ type Props = {
 
 export const buildFilterInfo = ({
   chunkText,
-  enableDateFilter,
   rangeValue,
   resourceSelectedKeys,
   taxonomySelectedKeys,
@@ -28,8 +26,7 @@ export const buildFilterInfo = ({
   const fi = new ViewFilterInfo()
 
   fi.chunkValue = TextChunkValues[chunkText]
-  fi.rangeValueEnabled = enableDateFilter && !!rangeValue
-  fi.rangeValue = enableDateFilter && !!rangeValue ? { ...rangeValue } : undefined
+  fi.rangeValue = !!rangeValue ? { ...rangeValue } : undefined
 
   if (resourceSelectedKeys) {
     fi.sourceValues = []

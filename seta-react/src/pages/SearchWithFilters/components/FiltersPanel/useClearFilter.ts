@@ -19,7 +19,7 @@ type Props = {
   handleSourceSelectionChange?(value: SelectionKeys | null): void
   handleTaxonomySelectionChange?(value: SelectionKeys | null): void
   handleItemChange?(type, item): void
-  handleRangeChange?(value: RangeValue): void
+  handleRangeChange?(value: RangeValue | null): void
 }
 
 // eslint-disable-next-line max-lines-per-function
@@ -31,7 +31,6 @@ const useClearFilter = ({
   dispatchStatus,
   dispatchOtherItems,
   handleTextChunkChange,
-  handleEnableDateChanged,
   handleSourceSelectionChange,
   handleTaxonomySelectionChange,
   handleItemChange,
@@ -40,8 +39,8 @@ const useClearFilter = ({
   const clearAll = () => {
     //reset chunk text
     handleTextChunkChange?.(TextChunkValues.CHUNK_SEARCH)
-    //disable date filter
-    handleEnableDateChanged?.(false)
+    //reset date filter
+    handleRangeChange?.(null)
     //reset resources
     handleSourceSelectionChange?.(null)
     //reset taxonomies
@@ -52,6 +51,14 @@ const useClearFilter = ({
       .forEach(item => {
         handleItemChange?.('deleted', item)
       })
+  }
+
+  const clearModifiedDate = (): void => {
+    if (status.appliedFilter?.rangeValue) {
+      handleRangeChange?.(status.appliedFilter?.rangeValue)
+    } else {
+      handleRangeChange?.(null)
+    }
   }
 
   const clearModifiedSources = (): void => {
@@ -214,13 +221,7 @@ const useClearFilter = ({
           handleTextChunkChange?.(TextChunkValues[status.appliedFilter?.chunkValue])
         }
 
-        if (status.appliedFilter?.rangeValueEnabled !== undefined) {
-          handleEnableDateChanged?.(status.appliedFilter?.rangeValueEnabled)
-        }
-
-        if (status.appliedFilter?.rangeValue) {
-          handleRangeChange?.(status.appliedFilter?.rangeValue)
-        }
+        clearModifiedDate()
 
         clearModifiedSources()
         clearModifiedTaxonomies()
@@ -243,6 +244,10 @@ const useClearFilter = ({
           case ClearCategory.OTHER:
             clearOther('delete-applied')
             break
+
+          case ClearCategory.DATE:
+            handleRangeChange?.(null)
+            break
         }
 
         break
@@ -260,6 +265,10 @@ const useClearFilter = ({
 
           case ClearCategory.OTHER:
             clearOther('clear-modified')
+            break
+
+          case ClearCategory.DATE:
+            clearModifiedDate()
             break
         }
 

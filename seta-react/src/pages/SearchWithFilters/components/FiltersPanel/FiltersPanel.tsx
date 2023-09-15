@@ -33,8 +33,6 @@ const FiltersPanel = ({ queryContract, onApplyFilter, onStatusChange }: Advanced
   const {
     chunkText,
     setChunkText,
-    enableDateFilter,
-    setEnableDateFilter,
     rangeBoundaries,
     rangeValue,
     setRangeValue,
@@ -54,7 +52,7 @@ const FiltersPanel = ({ queryContract, onApplyFilter, onStatusChange }: Advanced
   const handleApplyFilters = () => {
     const contract = buildFiltersContract({
       searchType: chunkText,
-      yearsRange: enableDateFilter ? rangeValue : undefined,
+      yearsRange: rangeValue,
       selectedResources: resourceSelectedKeys,
       selectedTaxonomies: taxonomySelectedKeys,
       otherItems: otherItems
@@ -73,6 +71,8 @@ const FiltersPanel = ({ queryContract, onApplyFilter, onStatusChange }: Advanced
 
   const handleRangeChange = (value: RangeValue) => {
     dispatchStatus({ type: 'range_changed', value: value })
+
+    setRangeValue(value)
   }
 
   const handleSourceSelectionChange = (value: SelectionKeys | null) => {
@@ -123,15 +123,6 @@ const FiltersPanel = ({ queryContract, onApplyFilter, onStatusChange }: Advanced
     setTaxonomySelectedKeys(value)
   }
 
-  const handleEnableDateChanged = (value: boolean): void => {
-    dispatchStatus({
-      type: 'enable_range',
-      value: { enabled: value, range: value ? rangeValue : undefined }
-    })
-
-    setEnableDateFilter(value)
-  }
-
   const handleItemChange = (type, item) => {
     dispatchOtherItems({ type: type, value: item })
 
@@ -152,7 +143,6 @@ const FiltersPanel = ({ queryContract, onApplyFilter, onStatusChange }: Advanced
     dispatchStatus: dispatchStatus,
     dispatchOtherItems: dispatchOtherItems,
     handleTextChunkChange: handleTextChunkChange,
-    handleEnableDateChanged: handleEnableDateChanged,
     handleSourceSelectionChange: handleSourceSelectionChange,
     handleTaxonomySelectionChange: handleTaxonomySelectionChange,
     handleItemChange: handleItemChange,
@@ -177,8 +167,6 @@ const FiltersPanel = ({ queryContract, onApplyFilter, onStatusChange }: Advanced
 
       <Container w={rem(350)} mb={rem(10)} css={S.dateFilter}>
         <YearsRangeFilter
-          enableDateFilter={enableDateFilter}
-          onEnableDateChanged={handleEnableDateChanged}
           value={rangeValue}
           rangeBoundaries={rangeBoundaries}
           chartData={filterData?.current?.years}
