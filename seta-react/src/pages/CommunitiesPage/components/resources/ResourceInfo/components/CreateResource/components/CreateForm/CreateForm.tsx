@@ -1,5 +1,7 @@
+import { useState } from 'react'
 import { TextInput, Group, createStyles, Button, Textarea, Radio } from '@mantine/core'
 import { notifications } from '@mantine/notifications'
+import { IoIosInformationCircle } from 'react-icons/io'
 
 import {
   useResource,
@@ -26,6 +28,7 @@ const useStyles = createStyles({
 const CreateForm = ({ id, close }) => {
   const { classes, cx } = useStyles()
   const setNewResourceMutation = useCreateResource(id)
+  const [opened, setOpened] = useState<boolean>(false)
 
   const form = useResource({
     initialValues: {
@@ -96,13 +99,35 @@ const CreateForm = ({ id, close }) => {
           />
           <Group spacing={100} display="flex" mb="md">
             <Radio.Group name="type" label="Type" {...form.getInputProps('type')}>
-              <Group mt="xs">
-                <Radio value="discoverable" label="Discoverable" />
-                <Radio value="representative" label="Representative" />
+              <IoIosInformationCircle
+                size={20}
+                color="gray"
+                onClick={() => {
+                  setOpened(o => !o)
+                }}
+              />
+              <Group>
+                <Group mt="xs" sx={{ display: 'grid' }}>
+                  <Radio
+                    value="discoverable"
+                    label="Discoverable"
+                    onClick={() => {
+                      setOpened(false)
+                    }}
+                  />
+                  <Radio
+                    value="representative"
+                    label="Representative"
+                    onClick={() => {
+                      setOpened(true)
+                    }}
+                  />
+                </Group>
+                {opened ? <ResourceAlert variant="resource-type" /> : null}
               </Group>
             </Radio.Group>
           </Group>
-          <ResourceAlert variant="resource-type" />
+
           <Group position="right" mt="md">
             <Button
               variant="outline"

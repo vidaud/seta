@@ -1,4 +1,4 @@
-import { Suspense, lazy, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { ActionIcon, Button, Divider, Group, Menu, Text } from '@mantine/core'
 import { IconDotsVertical } from '@tabler/icons-react'
 
@@ -7,13 +7,12 @@ import type { CommunityScopes } from '~/pages/CommunitiesPage/contexts/community
 import type { CommunityResponse } from '~/api/types/community-types'
 
 import ChangePrivacyRequestActions from '../ChangePrivacy/ChangePrivacyRequestActions'
+import DeleteCommunity from '../DeleteCommunity'
 import InviteMember from '../InviteMemberModal'
 import LeaveCommunity from '../LeaveCommunity'
 import MembershipRequest from '../MembershipRequestModal'
 import OpenCommunityMember from '../OpenCommunityMember'
-
-const DeleteCommunity = lazy(() => import('../DeleteCommunity'))
-const UpdateCommunity = lazy(() => import('../UpdateCommunity'))
+import UpdateCommunity from '../UpdateCommunity'
 
 type Props = {
   props: CommunityResponse
@@ -65,22 +64,18 @@ const CommunityButton = ({ props, community_scopes }: Props) => {
                   e.stopPropagation()
                 }}
               >
-                <Suspense fallback={null}>
-                  <UpdateCommunity
-                    community={props}
-                    community_scopes={community_scopes}
-                    onChange={handleOutsideClick}
-                  />
-                </Suspense>
+                <UpdateCommunity
+                  community={props}
+                  community_scopes={community_scopes}
+                  onChange={handleOutsideClick}
+                />
                 {scopes?.includes('/seta/community/invite') ? (
                   <InviteMember communityId={props.community_id} />
                 ) : null}
 
                 {scopes?.includes('/seta/community/owner') ? (
                   <>
-                    <Suspense fallback={null}>
-                      <DeleteCommunity props={props} />
-                    </Suspense>
+                    <DeleteCommunity props={props} />
                     <Divider sx={{ marginTop: '0.25rem' }} />
                     <Text sx={{ paddingLeft: '0.75rem' }} color="#868e96" size="sm">
                       Membership

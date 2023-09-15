@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react'
 import type { DefaultMantineColor } from '@mantine/core'
-import { IoIosWarning } from 'react-icons/io'
+import { IoIosInformationCircle } from 'react-icons/io'
 
 export type Variant = 'resource-type'
 
@@ -10,13 +10,13 @@ export const TITLE: Record<Variant, string> = {
 
 export const TEXT: Record<Variant, string> = {
   'resource-type':
-    'This field can not be reverted once you create the resource. \n Make sure you selected the right option. Default value is "Discoverable".'
+    'This field can not be reverted once you create the resource. \n Make sure you selected the right option.'
 }
 
 export const COLOR: Record<Variant, DefaultMantineColor> = {
-  'resource-type': 'pink'
+  'resource-type': 'orange'
 }
 
 export const ICON: Record<Variant, ReactNode> = {
-  'resource-type': <IoIosWarning size={20} />
+  'resource-type': <IoIosInformationCircle size={20} />
 }
