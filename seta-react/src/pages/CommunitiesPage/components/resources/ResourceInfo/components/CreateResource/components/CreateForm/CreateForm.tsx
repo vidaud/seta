@@ -1,4 +1,4 @@
-import { TextInput, Group, createStyles, Button, Textarea } from '@mantine/core'
+import { TextInput, Group, createStyles, Button, Textarea, Radio } from '@mantine/core'
 import { notifications } from '@mantine/notifications'
 
 import {
@@ -9,12 +9,14 @@ import {
 
 import { useCreateResource } from '~/api/communities/resources/my-resource'
 
+import ResourceAlert from '../../../ResourceAlert'
+
 const useStyles = createStyles({
   input: {
     marginBottom: '20px'
   },
   sized: {
-    width: '30%'
+    width: '50%'
   },
   form: {
     textAlign: 'left'
@@ -29,7 +31,8 @@ const CreateForm = ({ id, close }) => {
     initialValues: {
       resource_id: '',
       title: '',
-      abstract: ''
+      abstract: '',
+      type: 'discoverable'
     },
     validate: values => ({
       resource_id:
@@ -88,9 +91,19 @@ const CreateForm = ({ id, close }) => {
             label="Abstract"
             {...form.getInputProps('abstract')}
             className={cx(classes.input)}
+            autosize
             withAsterisk
           />
-          <Group position="right">
+          <Group spacing={100} display="flex" mb="md">
+            <Radio.Group name="type" label="Type" {...form.getInputProps('type')}>
+              <Group mt="xs">
+                <Radio value="discoverable" label="Discoverable" />
+                <Radio value="representative" label="Representative" />
+              </Group>
+            </Radio.Group>
+          </Group>
+          <ResourceAlert variant="resource-type" />
+          <Group position="right" mt="md">
             <Button
               variant="outline"
               size="xs"

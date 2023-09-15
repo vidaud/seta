@@ -36,7 +36,8 @@ const UpdateForm = ({ resource, close, onChange }) => {
     initialValues: {
       title: '',
       abstract: '',
-      status: 'active'
+      status: 'active',
+      type: 'discoverable'
     },
     validate: values => ({
       title: values.title.length < 2 ? 'Too short title' : null,
@@ -48,7 +49,8 @@ const UpdateForm = ({ resource, close, onChange }) => {
     if (resource) {
       form.setValues({
         title: resource.title,
-        abstract: resource.abstract
+        abstract: resource.abstract,
+        type: resource.type
       })
     }
     // adding form to useEffect will cause infinite loop call

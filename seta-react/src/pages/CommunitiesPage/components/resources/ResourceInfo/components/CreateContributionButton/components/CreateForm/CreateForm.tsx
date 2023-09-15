@@ -29,7 +29,8 @@ const CreateForm = ({ id, close }) => {
     initialValues: {
       resource_id: '',
       title: '',
-      abstract: ''
+      abstract: '',
+      type: 'discoverable'
     },
     validate: values => ({
       resource_id:
