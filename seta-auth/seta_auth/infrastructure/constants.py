@@ -13,6 +13,10 @@ class CommunityStatusConstants:
 class ResourceStatusConstants:
     Active = "active"
     Blocked = "blocked" 
+
+class ResourceTypeConstants:
+    Discoverable = "discoverable"
+    Representative = "representative" 
     
 class AuthorizedArea:
     Resources = "resources"    
