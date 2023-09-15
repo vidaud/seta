@@ -6,6 +6,7 @@ export type ResourceValues = {
   title: string
   abstract: string
   status?: string
+  type: string
   limits?: {
     total_files_no?: number
     total_storage_mb?: number

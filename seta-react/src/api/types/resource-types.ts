@@ -25,6 +25,7 @@ export type CreateResourceAPI = {
   resource_id?: string
   title: string
   abstract: string
+  type?: string
 }
 
 export type UpdateResourceAPI = {
@@ -33,6 +34,7 @@ export type UpdateResourceAPI = {
   title: string
   abstract: string
   status?: string
+  type?: string
 }
 
 export type RestrictedResource = {
