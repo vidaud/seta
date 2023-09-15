@@ -28,6 +28,20 @@ class LibraryItem:
         
         return json
     
+    def to_json_api(self) -> dict:
+        json = {
+            "id": self.id,
+            "title": self.title,
+            "parentId": self.parent_id,
+            "type": self.type
+        }
+
+        if self.type == LibraryItemType.Document:
+            json["documentId"] = self.document_id
+            json["link"] = self.link
+
+        return json
+    
     @classmethod 
     def from_db_json(cls, json_dict: dict):
         return cls(user_id=json_dict["user_id"],

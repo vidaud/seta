@@ -47,6 +47,7 @@ class LiraryItemsResource(Resource):
         responses={int(HTTPStatus.CREATED): "Items added."},
         security='CSRF')
     @library_ns.expect([library_model])
+    @library_ns.response(int(HTTPStatus.CREATED), "Success", [library_model])
     @jwt_required()
     def post(self):
         '''Create library items'''
@@ -54,17 +55,20 @@ class LiraryItemsResource(Resource):
         identity = get_jwt_identity()
         user_id = identity["user_id"]
 
-        data = library_ns.payload        
+        data = library_ns.payload 
+        response_data = []       
 
         try:
-            library_items = parse_args_new_library_items(user_id, data)
+            items = parse_args_new_library_items(user_id, data)
 
-            self.libraryBroker.create(library_items)
+            self.libraryBroker.create(items)
+
+            response_data = [item.to_json_api() for item in items]                
         except:
             current_app.logger.exception("LiraryItemsResource->post")
             abort(HTTPStatus.INTERNAL_SERVER_ERROR)   
         
-        response = jsonify(status="success", message="Items added in library")
+        response = jsonify(response_data)
         response.status_code = HTTPStatus.CREATED
         
         return response
