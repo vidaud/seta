@@ -44,7 +44,10 @@ export const useActiveUserInfos = () => {
 }
 
 const getAllAccounts = async (config?: AxiosRequestConfig): Promise<SetaAccount[]> => {
-  const { data } = await api.get<SetaAccount[]>(USERS_API_PATH, config)
+  const { data } = await api.get<SetaAccount[]>(USERS_API_PATH, {
+    baseURL: environment.baseUrl,
+    ...config
+  })
 
   return data
 }
@@ -52,6 +55,6 @@ const getAllAccounts = async (config?: AxiosRequestConfig): Promise<SetaAccount[
 export const useAllAccounts = () => {
   return useQuery({
     queryKey: AdminQueryKeys.AllUsers,
-    queryFn: ({ signal }) => getAllAccounts({ baseURL: environment.baseUrl, signal })
+    queryFn: ({ signal }) => getAllAccounts({ signal })
   })
 }

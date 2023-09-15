@@ -11,6 +11,7 @@ import { ErrorState, LoadingState, onSelectChild } from './common'
 import { ROOT_NODE } from './constants'
 import type { DocumentsTreeOptions } from './contexts/documents-tree-context'
 import { DocumentsTreeProvider } from './contexts/documents-tree-context'
+import { RootActionsProvider } from './contexts/root-actions-context'
 import LibraryNode from './LibraryNode'
 import * as S from './styles'
 
@@ -104,7 +105,7 @@ const LibraryTree = ({
         onSelect={handleSelect}
         selectChild={handleSelectChild}
       >
-        {content}
+        <RootActionsProvider>{content}</RootActionsProvider>
       </DocumentsTreeProvider>
     </div>
   )
