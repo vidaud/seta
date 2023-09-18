@@ -27,7 +27,6 @@ def parse_args_new_library_items(user_id: str, data: list[dict]) -> list[Library
 def parse_args_update_library_item(item: LibraryItem, args: dict):
     item.parent_id = args["parentId"]
     item.title = args["title"]
-    item.type = args["type"]
     item.document_id = args["documentId"]
     item.link = args["link"]
     item.modified_at = datetime.now(tz=pytz.utc)

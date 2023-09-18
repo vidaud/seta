@@ -32,6 +32,11 @@ class LibraryBroker(implements(ILibraryBroker)):
     
     def update(self, item: LibraryItem):
         filter = {"user_id": item.user_id, "id": item.id}
+
+        json = item.to_json()
+        #!don not update 'type' property
+        del json["type"]
+
         set = {"$set": item.to_json()}
         
         self.collection.update_one(filter, set)
