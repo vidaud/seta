@@ -30,6 +30,7 @@ export enum ClearType {
 }
 
 export enum ClearCategory {
+  DATE = 'date',
   SOURCE = 'source',
   TAXONOMY = 'taxonomy',
   OTHER = 'other'

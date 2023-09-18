@@ -25,7 +25,6 @@ const useFilter = (
   const [taxonomyNodes, setTaxonomyNodes] = useState(taxonomies)
   const filterData = useRef(data)
 
-  const [enableDateFilter, setEnableDateFilter] = useState(false)
   const [rangeBoundaries, setRangeBoundaries] = useState({ min: rangeVal?.[0], max: rangeVal?.[1] })
 
   const filterStatusInfo = new FilterStatusInfo()
@@ -51,7 +50,6 @@ const useFilter = (
 
       newStatus.appliedFilter = buildFilterInfo({
         chunkText,
-        enableDateFilter,
         rangeValue,
         resourceSelectedKeys,
         taxonomySelectedKeys,
@@ -68,10 +66,6 @@ const useFilter = (
     }
 
     setPrevContract(queryContract)
-
-    if (!rangeVal) {
-      setEnableDateFilter(false)
-    }
 
     setRangeValue(rangeVal)
     setRangeBoundaries({ min: rangeVal?.[0], max: rangeVal?.[1] })
@@ -90,8 +84,6 @@ const useFilter = (
   return {
     chunkText,
     setChunkText,
-    enableDateFilter,
-    setEnableDateFilter,
     rangeBoundaries,
     rangeValue,
     setRangeValue,

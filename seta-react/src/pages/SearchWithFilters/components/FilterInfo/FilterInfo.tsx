@@ -22,14 +22,6 @@ const FilterInfo = ({ status, onClear }: Props) => {
     ? status?.currentFilter?.chunkValue
     : status?.appliedFilter?.chunkValue
 
-  const rangeModified = !!status?.rangeModified
-  const rangeValue = rangeModified
-    ? status?.currentFilter?.rangeValue ?? status?.appliedFilter?.rangeValue
-    : status?.appliedFilter?.rangeValue
-  const rangeEnabled = rangeModified
-    ? status?.currentFilter?.rangeValueEnabled
-    : status?.appliedFilter?.rangeValueEnabled
-
   const { sourceApplied, sourceDeleted, sourceAdded } = getSourceLists(status)
   const { taxonomyApplied, taxonomyDeleted, taxonomyAdded } = getTaxonomyLists(status)
   const { otherApplied, otherDeleted, otherAdded } = getOtherLists(status)
@@ -75,7 +67,12 @@ const FilterInfo = ({ status, onClear }: Props) => {
 
         <TextChunkInfo value={chunkValue} modified={chunkModified} />
 
-        <RangeValueInfo value={rangeValue} modified={rangeModified} enabled={rangeEnabled} />
+        <RangeValueInfo
+          current={status?.currentFilter?.rangeValue}
+          applied={status?.appliedFilter?.rangeValue}
+          modified={!!status?.rangeModified}
+          onClear={onClear}
+        />
 
         <MultipleValuesInfo
           title="Data sources"

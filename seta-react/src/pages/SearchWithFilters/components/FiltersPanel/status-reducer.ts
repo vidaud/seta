@@ -89,19 +89,6 @@ export const statusReducer = (status: FilterStatusInfo, action: any): FilterStat
       break
     }
 
-    case 'enable_range': {
-      info.rangeModified =
-        status.appliedFilter?.rangeValueEnabled === action.value.enabled &&
-        compareRanges(action.value?.range, status.appliedFilter?.rangeValue)
-          ? 0
-          : 1
-
-      info.currentFilter.rangeValueEnabled = action.value?.enabled
-      info.currentFilter.rangeValue = action.value?.range
-
-      break
-    }
-
     case 'range_changed': {
       info.rangeModified = compareRanges(action.value, status.appliedFilter?.rangeValue) ? 0 : 1
       info.currentFilter.rangeValue = action.value

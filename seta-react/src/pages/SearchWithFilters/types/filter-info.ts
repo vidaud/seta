@@ -16,7 +16,6 @@ export type NodeInfo = {
 
 export class ViewFilterInfo {
   chunkValue?: string
-  rangeValueEnabled = false
   rangeValue?: RangeValue
   sourceValues?: NodeInfo[] | null
   taxonomyValues?: NodeInfo[] | null
@@ -26,7 +25,6 @@ export class ViewFilterInfo {
     const cpy = new ViewFilterInfo()
 
     cpy.chunkValue = this.chunkValue
-    cpy.rangeValueEnabled = this.rangeValueEnabled
     cpy.rangeValue = this.rangeValue
 
     cpy.sourceValues = this.sourceValues?.map(s => {
@@ -83,7 +81,7 @@ export class FilterStatusInfo {
       }
     }
 
-    if (this.appliedFilter.rangeValueEnabled && this.appliedFilter.rangeValue) {
+    if (this.appliedFilter.rangeValue) {
       applied++
     }
 
