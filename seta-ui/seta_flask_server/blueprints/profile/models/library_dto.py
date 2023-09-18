@@ -23,28 +23,22 @@ library_items = Model("LibraryItems",
 
 update_item_parser = RequestParser(bundle_errors=True)
 update_item_parser.add_argument("title",
-                            location="form",
+                            location="json",
                             required=True,
                             nullable=False,
                             help="Title")
 update_item_parser.add_argument("parentId",
-                            location="form",
+                            location="json",
                             required=False,                                
                             nullable=True,
                             help="Parent identifier")
-update_item_parser.add_argument("type",
-                            location="form",
-                            type=int,
-                            required=True,                            
-                            choices=[LibraryItemType.Folder, LibraryItemType.Document],
-                            help="Item type")
 update_item_parser.add_argument("documentId",
-                            location="form",
+                            location="json",
                             required=False,                                
                             nullable=True,
                             help="Document id")
 update_item_parser.add_argument("link",
-                            location="form",
+                            location="json",
                             required=False,                                
                             nullable=True,
                             help="Link")
