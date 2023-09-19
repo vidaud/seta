@@ -26,11 +26,7 @@ export const getProps = (
 
   const rangeValue = getRangeValue(value, rangeBoundaries)
 
-  let color = 'gray'
-
-  if (rangeValue && (rangeValue[0] !== (_min ?? 0) || rangeValue[1] !== (_max ?? 0))) {
-    color = 'blue'
-  }
+  const color = value ? 'blue' : 'gray'
 
   const marks: { value: number; label?: string }[] | undefined = []
 
