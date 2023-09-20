@@ -1,17 +1,27 @@
 import type { QueryKey } from '@tanstack/react-query'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { AxiosError, type AxiosRequestConfig } from 'axios'
+import { type AxiosRequestConfig } from 'axios'
 
-import { mockRawLibraryItems } from '~/api/search/mocks'
-import type { LibraryItemRaw } from '~/types/library/library-item'
+import api from '~/api'
+import { environment } from '~/environments/environment'
+import { LibraryItemType } from '~/types/library/library-item'
+import type {
+  LibraryItem,
+  LibraryItemCreate,
+  LibraryItemUpdate
+} from '~/types/library/library-item'
+
+const defaultConfig: AxiosRequestConfig = {
+  baseURL: environment.baseUrl
+}
+
+const LIBRARY_API_PATH = '/me/library'
 
 export type LibraryResponse = {
-  items: LibraryItemRaw[]
+  items: LibraryItem[]
 }
 
-export type ItemResponse = {
-  item: LibraryItemRaw
-}
+export type ItemsResponse = LibraryItem[]
 
 export type SaveDocumentsPayload = {
   parentId: string | null
@@ -22,30 +32,18 @@ export type SaveDocumentsPayload = {
   }[]
 }
 
-export type CreateNewFolderPayload = {
-  parentId: string | null
-  title: string
-}
-
-export type UpdateItemPayload = LibraryItemRaw & {
-  id: string
-}
-
-const mockData = [...mockRawLibraryItems]
-
 export const libraryQueryKey: QueryKey = ['library']
 
 /* GET ALL ITEMS */
 
-const getLibraryItems = async (config?: AxiosRequestConfig): Promise<LibraryResponse> =>
-  // TODO: Replace with real API call
-  new Promise(resolve => {
-    setTimeout(() => {
-      resolve({
-        items: [...mockData]
-      })
-    }, 500)
+const getLibraryItems = async (config?: AxiosRequestConfig): Promise<LibraryResponse> => {
+  const { data } = await api.get<LibraryResponse>(LIBRARY_API_PATH, {
+    ...defaultConfig,
+    ...config
   })
+
+  return data
+}
 
 export const useLibrary = () => {
   return useQuery({
@@ -54,61 +52,23 @@ export const useLibrary = () => {
   })
 }
 
-const getNextId = (data: LibraryItemRaw[]) =>
-  1 +
-  data.reduce((acc, { id }) => {
-    const idNumber = parseInt(id)
-
-    return idNumber > acc ? idNumber : acc
-  }, 0)
-
 /* SAVE DOCUMENTS */
 
-// Returns the library after saving the documents
 const saveDocuments = async (
   { parentId, documents }: SaveDocumentsPayload,
   config?: AxiosRequestConfig
-): Promise<LibraryResponse> => {
-  // TODO: Replace the code below with the real API call
+): Promise<void> => {
+  const newDocuments: LibraryItemCreate[] = documents.map(({ documentId, title, link }) => ({
+    type: LibraryItemType.Document,
+    title,
+    documentId,
+    link,
+    parentId
+  }))
 
-  const rawData = mockData
-  const nextId = getNextId(rawData)
-
-  if (!parentId) {
-    const rootItems = rawData.filter(item => !item.parentId)
-    const lastItem = rootItems[rootItems.length - 1]
-
-    rawData.push(
-      ...documents.map<LibraryItemRaw>(({ documentId, title, link }, index) => ({
-        id: `${nextId + index}`,
-        order: lastItem.order + 1,
-        parentId: null,
-        type: 'document',
-        title,
-        documentId,
-        link
-      }))
-    )
-  } else {
-    rawData.push(
-      ...documents.map<LibraryItemRaw>(({ documentId, title, link }, index) => ({
-        id: `${nextId + index}`,
-        order: 0,
-        parentId,
-        type: 'document',
-        title,
-        documentId,
-        link
-      }))
-    )
-  }
-
-  return new Promise(resolve => {
-    setTimeout(() => {
-      resolve({
-        items: rawData
-      })
-    }, 500)
+  await api.post<void, LibraryItemCreate[]>(LIBRARY_API_PATH, newDocuments, {
+    ...defaultConfig,
+    ...config
   })
 }
 
@@ -127,29 +87,21 @@ export const useSaveDocuments = () => {
 /* CREATE NEW FOLDER */
 
 const createNewFolder = async (
-  { parentId, title }: CreateNewFolderPayload,
+  { parentId, title }: Omit<LibraryItemCreate, 'type'>,
   config?: AxiosRequestConfig
-): Promise<ItemResponse> => {
-  const rawData = mockData
-  const nextId = getNextId(rawData)
-
-  const newFolder: LibraryItemRaw = {
-    id: `${nextId}`,
-    order: -1,
+): Promise<ItemsResponse> => {
+  const newFolder = {
+    type: LibraryItemType.Folder,
     parentId,
-    type: 'folder',
     title
   }
 
-  rawData.push(newFolder)
-
-  return new Promise(resolve => {
-    setTimeout(() => {
-      resolve({
-        item: newFolder
-      })
-    }, 500)
+  const { data } = await api.post<ItemsResponse>(LIBRARY_API_PATH, [newFolder], {
+    ...defaultConfig,
+    ...config
   })
+
+  return data
 }
 
 export const useCreateNewFolder = () => {
@@ -167,33 +119,21 @@ export const useCreateNewFolder = () => {
 /* UPDATE ITEM */
 
 const updateItem = async (
-  { id, title, order, parentId, type, documentId, link }: UpdateItemPayload,
+  { id, title, parentId, type, documentId, link }: LibraryItem,
   config?: AxiosRequestConfig
-): Promise<ItemResponse> => {
-  const rawData = mockData
-
-  const itemIndex = rawData.findIndex(item => item.id === id)
-
-  if (itemIndex === -1) {
-    throw new AxiosError(`Item with id ${id} not found`, AxiosError.ERR_BAD_REQUEST)
-  }
-
-  rawData[itemIndex] = {
+): Promise<void> => {
+  const updatedItem: LibraryItemUpdate = {
     id,
     title,
-    order,
     parentId,
     type,
     documentId,
     link
   }
 
-  return new Promise(resolve => {
-    setTimeout(() => {
-      resolve({
-        item: rawData[itemIndex]
-      })
-    }, 500)
+  await api.put<void, LibraryItemUpdate>(`${LIBRARY_API_PATH}/${id}`, updatedItem, {
+    ...defaultConfig,
+    ...config
   })
 }
 
@@ -212,30 +152,9 @@ export const useUpdateItem = () => {
 /* DELETE ITEM */
 
 const deleteItem = async (id: string, config?: AxiosRequestConfig): Promise<void> => {
-  const rawData = mockData
-
-  const itemIndex = rawData.findIndex(item => item.id === id)
-
-  if (itemIndex === -1) {
-    throw new AxiosError(`Item with id ${id} not found`, AxiosError.ERR_BAD_REQUEST)
-  }
-
-  const item = rawData[itemIndex]
-
-  rawData.splice(itemIndex, 1)
-
-  if (item.type === 'folder') {
-    const children = rawData.filter(child => child.parentId === id)
-
-    children.forEach(child => {
-      deleteItem(child.id)
-    })
-  }
-
-  return new Promise(resolve => {
-    setTimeout(() => {
-      resolve()
-    }, 500)
+  await api.delete<void>(`${LIBRARY_API_PATH}/${id}`, {
+    ...defaultConfig,
+    ...config
   })
 }
 

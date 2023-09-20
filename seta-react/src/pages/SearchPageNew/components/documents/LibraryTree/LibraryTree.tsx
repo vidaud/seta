@@ -4,8 +4,7 @@ import UnderDevelopment from '~/components/UnderDevelopment'
 
 import type { ClassNameProp } from '~/types/children-props'
 import type { DataProps } from '~/types/data-props'
-import type { LibraryItem, LibraryItemRaw } from '~/types/library/library-item'
-import { getLibraryTree } from '~/utils/library-utils'
+import type { LibraryItem } from '~/types/library/library-item'
 
 import { ErrorState, LoadingState, onSelectChild } from './common'
 import { ROOT_NODE } from './constants'
@@ -18,15 +17,13 @@ import * as S from './styles'
 // Lazy load the tree actions provider to avoid circular dependency when rendering the Move action
 const TreeActionsProviderLazy = lazy(() => import('./contexts/tree-actions-context'))
 
-type Props = DataProps<LibraryItemRaw[]> & {
-  excludeItem?: LibraryItem
+type Props = DataProps<LibraryItem[]> & {
   onSelectedChange?: (item?: LibraryItem) => void
 } & DocumentsTreeOptions &
   ClassNameProp
 
 const LibraryTree = ({
   data = [],
-  excludeItem,
   isLoading,
   error,
   selectable,
@@ -41,14 +38,12 @@ const LibraryTree = ({
 
   const onSelectedChangeRef = useRef(onSelectedChange)
 
-  const dataTree = useMemo(() => getLibraryTree(data, excludeItem), [data, excludeItem])
-
   const rootNode: LibraryItem = useMemo(
     () => ({
       ...ROOT_NODE,
-      children: dataTree
+      children: data
     }),
-    [dataTree]
+    [data]
   )
 
   const canAutoSelect = autoSelectRoot && !selected && !isLoading && !error

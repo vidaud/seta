@@ -15,7 +15,7 @@ library_ns.models[library_model.name] = library_model
 library_ns.models[library_items.name] = library_items
 
 @library_ns.route('/library', endpoint="library_tree", methods=['GET', 'POST'])
-class LiraryItemsResource(Resource):
+class LibraryItemsResource(Resource):
     '''Get a list of library items of the authorized user and expose POST for new application'''
     
     @inject
@@ -31,14 +31,14 @@ class LiraryItemsResource(Resource):
     @library_ns.response(int(HTTPStatus.OK), "Success", library_items)
     @jwt_required()    
     def get(self):
-        '''Retrive user library tree'''
+        '''Retrieve user library tree'''
         
         identity = get_jwt_identity()
 
         try:
             library_items = get_library_tree(user_id=identity["user_id"], libraryBroker=self.libraryBroker)
         except:
-            current_app.logger.exception("LiraryItemsResource->get")
+            current_app.logger.exception("LibraryItemsResource->get")
             abort(HTTPStatus.INTERNAL_SERVER_ERROR)  
 
         return jsonify(library_items)
@@ -65,7 +65,7 @@ class LiraryItemsResource(Resource):
 
             response_data = [item.to_json_api() for item in items]                
         except:
-            current_app.logger.exception("LiraryItemsResource->post")
+            current_app.logger.exception("LibraryItemsResource->post")
             abort(HTTPStatus.INTERNAL_SERVER_ERROR)   
         
         response = jsonify(response_data)
@@ -75,7 +75,7 @@ class LiraryItemsResource(Resource):
     
 @library_ns.route('/library/<string:id>', endpoint="library_item", methods=['PUT', 'DELETE'])
 @library_ns.param("id", "Item identifier")    
-class LiraryItemResource(Resource):
+class LibraryItemResource(Resource):
     """Handles HTTP requests to URL: /me/library/{id}."""
     
     @inject
@@ -108,7 +108,7 @@ class LiraryItemResource(Resource):
 
             self.libraryBroker.update(item)
         except:
-            current_app.logger.exception("LiraryItemResource->put")
+            current_app.logger.exception("LibraryItemResource->put")
             abort(HTTPStatus.INTERNAL_SERVER_ERROR)   
             
         
@@ -136,7 +136,7 @@ class LiraryItemResource(Resource):
         try:                
             self.libraryBroker.delete(user_id=user_id, id=id)
         except:
-            current_app.logger.exception("LiraryItemResource->delete")
+            current_app.logger.exception("LibraryItemResource->delete")
             abort(HTTPStatus.INTERNAL_SERVER_ERROR)  
         
         return jsonify(status="success", message="Item deleted")

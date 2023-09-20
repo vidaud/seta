@@ -7,7 +7,7 @@ import { buildFilterInfo } from './utils'
 import { parseQueryContract } from '../../custom/map-filters'
 import type { QueryAggregationContract } from '../../types/contracts'
 import { FilterStatus, FilterStatusInfo, ViewFilterInfo } from '../../types/filter-info'
-import type { SelectionKeys } from '../../types/filters'
+import type { RangeValue, SelectionKeys } from '../../types/filters'
 import { TextChunkValues } from '../../types/filters'
 
 const useFilter = (
@@ -20,7 +20,7 @@ const useFilter = (
   const [prevContract, setPrevContract] = useState(queryContract)
   const [chunkText, setChunkText] = useState<TextChunkValues>(TextChunkValues.CHUNK_SEARCH)
 
-  const [rangeValue, setRangeValue] = useState(rangeVal)
+  const [rangeValue, setRangeValue] = useState<RangeValue | undefined>(undefined)
   const [resourceNodes, setResourceNodes] = useState(resources)
   const [taxonomyNodes, setTaxonomyNodes] = useState(taxonomies)
   const filterData = useRef(data)
@@ -67,7 +67,6 @@ const useFilter = (
 
     setPrevContract(queryContract)
 
-    setRangeValue(rangeVal)
     setRangeBoundaries({ min: rangeVal?.[0], max: rangeVal?.[1] })
 
     setResourceNodes(resources)

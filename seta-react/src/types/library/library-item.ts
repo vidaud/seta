@@ -1,31 +1,25 @@
-// TODO: Change this to a numeric enum, where Folder = 0 and Document = 1
 export enum LibraryItemType {
-  Document = 'document',
-  Folder = 'folder'
+  Folder = 0,
+  Document = 1
 }
 
-export type LibraryItemBase = {
-  id: string
-  title: string
+export type LibraryItemCreate = {
+  type: LibraryItemType
   parentId: string | null
-}
-
-export type LibraryItemRaw = LibraryItemBase & {
-  order: number
-  type: string
+  title: string
   documentId?: string
   link?: string | null
 }
 
-export type LibraryItem = LibraryItemBase & {
-  order: number
-  parent?: LibraryItem | null
+export type LibraryItemUpdate = LibraryItemCreate & {
+  id: string
+}
+
+export type LibraryItem = LibraryItemUpdate & {
   path: string[]
-} & (
+} & ( // Discriminated union to only allow children on folders
     | {
         type: LibraryItemType.Document
-        documentId: string
-        link: string | null
       }
     | {
         type: LibraryItemType.Folder

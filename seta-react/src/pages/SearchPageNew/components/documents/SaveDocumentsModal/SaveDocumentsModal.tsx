@@ -7,7 +7,7 @@ import ScrollModal from '~/components/ScrollModal'
 import type { StagedDocument } from '~/pages/SearchPageNew/types/search'
 
 import { useLibrary } from '~/api/search/library'
-import type { LibraryItem } from '~/types/library/library-item'
+import { LibraryItemType, type LibraryItem } from '~/types/library/library-item'
 import type { Document } from '~/types/search/documents'
 import { pluralize } from '~/utils/string-utils'
 
@@ -53,7 +53,7 @@ const SaveDocumentsModal = ({
   }
 
   const operation = libraryItem ? 'Move' : 'Save'
-  const subject = libraryItem && libraryItem.type === 'folder' ? 'folder' : 'document'
+  const subject = libraryItem && libraryItem.type === LibraryItemType.Folder ? 'folder' : 'document'
   const target: Document | StagedDocument | LibraryItem | undefined = libraryItem ?? documents?.[0]
 
   const hasOneDocument = !!libraryItem || documents?.length === 1
@@ -66,12 +66,14 @@ const SaveDocumentsModal = ({
   const title = hasOneDocument ? `${operation} "${target?.title}"` : pluralizedSave
   const saveLabel = hasOneDocument ? `${operation} ${subject}` : pluralizedSave
 
+  const path = selectedTarget ? ['My Library', ...selectedTarget.path] : undefined
+
   const titleEl = (
     <Stack spacing={4}>
       <Text lh={1.3}>{title} to:</Text>
 
       <Text size="sm" color="gray">
-        {pathToString(selectedTarget?.path) || '...'}
+        {pathToString(path) || '...'}
       </Text>
     </Stack>
   )

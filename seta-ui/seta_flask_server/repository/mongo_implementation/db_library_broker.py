@@ -17,7 +17,7 @@ class LibraryBroker(implements(ILibraryBroker)):
 
 
     def get_all_by_parent(self, user_id: str, parent_id: str) -> list[LibraryItem]:
-        items =  self.collection.find({"user_id": user_id, "parent_id": parent_id}).sort("type").sort("title")
+        items =  self.collection.find({"user_id": user_id, "parent_id": parent_id}).sort([("type",1), ("title",1)])
 
         return [LibraryItem.from_db_json(item) for item in items]
     
@@ -54,15 +54,4 @@ class LibraryBroker(implements(ILibraryBroker)):
         for item in children:
             self._construct_cascade_ids(user_id=user_id, parent_id=item["id"], _ids=_ids)
 
-        _ids.append(parent_id)
-
-'''
-    def _delete_cascade(self, user_id: str, parent_id: str, session):
-        children =  self.collection.find({"user_id": user_id, "parent_id": parent_id}, {"id": 1})
-
-        if children is None or len(children) == 0:
-            self.collection.delete({"user_id": user_id, "id": parent_id}, session = session)
-
-        for item in children:
-            self._delete_cascade(user_id=user_id, parent_id=item["id"], session = session)
-'''        
+        _ids.append(parent_id)    

@@ -12,9 +12,8 @@ export const ROOT_NODE: LibraryItem = {
   id: ROOT_NODE_ID,
   parentId: null,
   type: LibraryItemType.Folder,
-  order: 0,
   title: ROOT_LIBRARY_ITEM_NAME,
-  path: [ROOT_LIBRARY_ITEM_NAME],
+  path: [],
   children: []
 }
 
