@@ -29,7 +29,7 @@ type Props = {
   system_scopes?: SystemScopes[]
 }
 
-const ResourceInfo = ({ resource, resource_scopes }: Props) => {
+const ResourceInfo = ({ resource, resource_scopes, community_scopes }: Props) => {
   const [scopes, setScopes] = useState<string[] | undefined>([])
   const [outsideClick, setOutsideClick] = useState(true)
   const theme = useMantineTheme()
@@ -58,8 +58,8 @@ const ResourceInfo = ({ resource, resource_scopes }: Props) => {
       ref.current?.scrollIntoView()
     }
 
-    const findResource = resource_scopes?.filter(
-      scope => scope.resource_id === resource.resource_id
+    const findResource = community_scopes?.filter(
+      scope => scope.community_id === resource.community_id
     )
 
     findResource ? setScopes(findResource[0]?.scopes) : setScopes([])
@@ -94,7 +94,7 @@ const ResourceInfo = ({ resource, resource_scopes }: Props) => {
             {title.charAt(0).toUpperCase() + title.slice(1)}
           </Text>
         </div>
-        {scopes?.includes('/seta/resource/edit') ? (
+        {scopes?.includes('/seta/resource/create') ? (
           <>
             <RestrictedResource resource={resource} />
             <Menu

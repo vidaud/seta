@@ -6,6 +6,7 @@ import {
   getMembership,
   useRemoveCommunityMembership
 } from '~/api/communities/memberships/membership'
+import { useUserPermissions } from '~/api/communities/user-scopes'
 import { useCurrentUser } from '~/contexts/user-context'
 
 const useStyles = createStyles(theme => ({
@@ -20,6 +21,7 @@ const LeaveCommunity = ({ props }) => {
   const [opened, setOpened] = useState(false)
   const [memberNumber, setMemberNumber] = useState<number | undefined>()
   const { user } = useCurrentUser()
+  const { refetch } = useUserPermissions()
   const setRemoveCommunityMembershipMutation = useRemoveCommunityMembership()
 
   useEffect(() => {
@@ -43,6 +45,7 @@ const LeaveCommunity = ({ props }) => {
           autoClose: 5000
         })
 
+        refetch()
         setOpened(o => !o)
       },
       onError: () => {
