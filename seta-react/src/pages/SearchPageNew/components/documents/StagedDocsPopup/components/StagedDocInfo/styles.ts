@@ -48,3 +48,7 @@ export const icon: ThemedCSS = theme => css`
   color: ${theme.colors.gray[5]};
   font-size: 1.5rem;
 `
+
+export const title = css`
+  overflow: hidden;
+`
