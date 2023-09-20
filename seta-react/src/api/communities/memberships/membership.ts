@@ -13,6 +13,7 @@ import type {
 import { environment } from '~/environments/environment'
 
 import { CommunityQueryKeys } from '../communities/community-query-keys'
+import { ResourceQueryKeys } from '../resources/resource-query-keys'
 
 const MEMBERSHIP_API_PATH = (id: string): string => `/communities/${id}/requests`
 const OPEN_MEMBERSHIP_API_PATH = (id: string): string => `/communities/${id}/memberships`
@@ -63,6 +64,7 @@ export const useNewCommunityMembership = (id: string) => {
     },
     onSuccess: () => {
       client.invalidateQueries(CommunityQueryKeys.MembershipRequestsQueryKey)
+      client.invalidateQueries(ResourceQueryKeys.ResourcesQueryKey)
       client.invalidateQueries(CommunityQueryKeys.CommunitiesQueryKey)
     }
   })
@@ -82,6 +84,7 @@ export const useOpenCommunityMembership = (id: string) => {
     },
     onSuccess: () => {
       client.invalidateQueries(CommunityQueryKeys.OpenMembershipRequestsQueryKey)
+      client.invalidateQueries(ResourceQueryKeys.ResourcesQueryKey)
       client.invalidateQueries(CommunityQueryKeys.CommunitiesQueryKey)
     }
   })
@@ -101,6 +104,7 @@ export const useRemoveCommunityMembership = () => {
     },
     onSuccess: () => {
       client.invalidateQueries(CommunityQueryKeys.RemoveMembershipQueryKey)
+      client.invalidateQueries(ResourceQueryKeys.ResourcesQueryKey)
       client.invalidateQueries(CommunityQueryKeys.CommunitiesQueryKey)
     }
   })
