@@ -201,7 +201,7 @@ class CorpusDocument(Resource):
 
             source = is_field_in_doc(args, 'source')
             if not validate_add_permission(source):
-                abort(HTTPStatus.FORBIDDEN, "User does not have add document permission for the resource")
+                raise ForbiddenResourceError(resource_id=source)
 
             validate(instance=args, schema=document_post_schema)
 
@@ -218,7 +218,7 @@ class CorpusDocument(Resource):
             abort(500, "Internal server error")
 
 
-@corpus_api.route("corpus", methods=['POST', 'GET'])
+@corpus_api.route("corpus", methods=['POST'])
 class CorpusQuery(Resource):
     @auth_validator()
     @corpus_api.doc(description='Retrieve documents related to a term from EU corpus.'
@@ -252,8 +252,8 @@ class CorpusQuery(Resource):
                                is_field_in_doc(args, 'date_range'), is_field_in_doc(args, 'aggs'),
                                is_field_in_doc(args, 'search_type'), is_field_in_doc(args, 'other'), current_app=app)
             return jsonify(documents)
-        except ForbiddenResourceError as fre:
-            abort(HTTPStatus.FORBIDDEN, fre.message)
+        except ForbiddenResourceError:
+            return {"total_docs": None, "documents": []}
         except jsonschema.ValidationError as err:
             abort(404, str(err))
         except ApiLogicError as aex:
