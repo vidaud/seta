@@ -6,7 +6,7 @@ import type { LibraryItem } from '~/types/library/library-item'
  * @returns The last two elements of the folder path, preceded by an ellipsis if the path is longer than 2 elements
  */
 export const getFolderPath = (folder?: LibraryItem) => {
-  const path = folder?.path ?? []
+  const path = ['My Library', ...(folder?.path ?? [])]
 
   // Take the last two elements of the path
   // eslint-disable-next-line react/no-array-index-key

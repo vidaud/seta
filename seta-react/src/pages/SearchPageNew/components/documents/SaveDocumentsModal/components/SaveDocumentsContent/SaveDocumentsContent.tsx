@@ -3,14 +3,14 @@ import LibraryTree from '~/pages/SearchPageNew/components/documents/LibraryTree'
 import type { StagedDocument } from '~/pages/SearchPageNew/types/search'
 
 import type { DataProps } from '~/types/data-props'
-import type { LibraryItem, LibraryItemRaw } from '~/types/library/library-item'
+import type { LibraryItem } from '~/types/library/library-item'
 import type { Document } from '~/types/search/documents'
 
 import * as S from './styles'
 
 import SaveSource from '../SaveSource'
 
-type Props = DataProps<LibraryItemRaw[]> & {
+type Props = DataProps<LibraryItem[]> & {
   documents?: Document[] | StagedDocument[]
   libraryItem?: LibraryItem
   saveError?: string
