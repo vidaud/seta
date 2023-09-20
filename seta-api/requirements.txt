@@ -4,7 +4,7 @@ flask==2.2.3
 flask-cors==3.0.10
 python-secrets==22.6.1
 flask_jwt_extended==4.4.4
-flask-restx==1.0.5
+flask-restx==1.1.0
 numpy==1.24.2
 scipy==1.10.1
 pandas==1.5.3
