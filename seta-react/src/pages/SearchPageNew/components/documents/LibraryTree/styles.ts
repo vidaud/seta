@@ -42,6 +42,10 @@ export const itemContainer: ThemedCSS = theme => css`
   &:active:not(:focus-within) {
     transform: translateY(1px);
   }
+
+  &[data-top-actions] [data-actions] {
+    display: block;
+  }
 `
 
 export const editing: ThemedCSS = theme => css`
@@ -62,10 +66,6 @@ export const disabled: ThemedCSS = theme => css`
   border: 1px dashed ${theme.colors.gray[5]};
   opacity: 0.5;
   pointer-events: none;
-`
-
-export const toggleIcon = css`
-  grid-column: 1;
 `
 
 export const icon: ThemedCSS = theme => css`
@@ -112,5 +112,3 @@ export const tooltipStyles = createStyles(() => ({
     whiteSpace: 'normal'
   }
 }))
-
-export const editField = css``

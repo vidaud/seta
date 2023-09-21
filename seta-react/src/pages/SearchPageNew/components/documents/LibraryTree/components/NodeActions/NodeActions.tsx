@@ -33,8 +33,12 @@ const NodeActions = ({
 }: Props) => {
   const hasActionMenu = !isRoot && !noActionsMenu
   const isFolder = item.type === LibraryItemType.Folder
+  const children = (item.type === LibraryItemType.Folder && item.children) || []
+  const isLibraryEmpty = isRoot && !children.length
 
-  const rootActions = isRoot && <RootActions onCollapseAll={onCollapseAllFolders} />
+  const rootActions = isRoot && (
+    <RootActions isLibraryEmpty={isLibraryEmpty} onCollapseAll={onCollapseAllFolders} />
+  )
 
   const folderActions = isFolder && (
     <NewFolderAction
