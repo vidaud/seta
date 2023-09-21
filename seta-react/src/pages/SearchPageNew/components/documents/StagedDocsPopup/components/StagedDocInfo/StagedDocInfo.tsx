@@ -30,7 +30,7 @@ const StagedDocInfo = ({ document, selected, onSelectChange, onRemove }: Props) 
     <div css={S.root} onClick={handleSelect}>
       <Checkbox css={S.checkbox} color="teal" checked={selected} onChange={handleSelect} />
 
-      <Group spacing="xs">
+      <Group spacing="xs" css={S.title}>
         <CgFileDocument css={S.icon} />
 
         <Text size="lg" style={{ flex: 1 }} truncate>
