@@ -64,8 +64,9 @@ const ModalPage = () => {
           onClick={() =>
             modals.openConfirmModal({
               closeOnConfirm: false,
-              withCloseButton: false,
+              withCloseButton: true,
               closeOnClickOutside: true,
+              onClose: modals.closeAll,
               labels: { confirm: 'Next', cancel: 'Skip' },
               size: '70%',
               children: (
@@ -78,7 +79,8 @@ const ModalPage = () => {
               onConfirm: () =>
                 modals.openConfirmModal({
                   closeOnConfirm: false,
-                  withCloseButton: false,
+                  withCloseButton: true,
+                  onClose: modals.closeAll,
                   closeOnClickOutside: true,
                   labels: { confirm: 'Next', cancel: 'Skip' },
                   size: '70%',
@@ -94,7 +96,8 @@ const ModalPage = () => {
                       labels: { confirm: 'Next', cancel: 'Skip' },
                       size: '70%',
                       closeOnConfirm: false,
-                      withCloseButton: false,
+                      withCloseButton: true,
+                      onClose: modals.closeAll,
                       closeOnClickOutside: true,
                       children: (
                         <>
@@ -108,7 +111,8 @@ const ModalPage = () => {
                           labels: { confirm: 'Next', cancel: 'Skip' },
                           size: '70%',
                           closeOnConfirm: false,
-                          withCloseButton: false,
+                          withCloseButton: true,
+                          onClose: modals.closeAll,
                           closeOnClickOutside: true,
                           children: (
                             <>
@@ -123,7 +127,8 @@ const ModalPage = () => {
                               labels: { confirm: 'Next', cancel: 'Skip' },
                               size: '70%',
                               closeOnConfirm: false,
-                              withCloseButton: false,
+                              withCloseButton: true,
+                              onClose: modals.closeAll,
                               children: (
                                 <>
                                   <SearchPage />
@@ -136,7 +141,8 @@ const ModalPage = () => {
                                   labels: { confirm: 'Next', cancel: 'Skip' },
                                   size: '70%',
                                   closeOnConfirm: false,
-                                  withCloseButton: false,
+                                  withCloseButton: true,
+                                  onClose: modals.closeAll,
                                   closeOnClickOutside: true,
                                   children: (
                                     <>
@@ -150,7 +156,8 @@ const ModalPage = () => {
                                       labels: { confirm: 'Next', cancel: 'Skip' },
                                       size: '70%',
                                       closeOnConfirm: false,
-                                      withCloseButton: false,
+                                      withCloseButton: true,
+                                      onClose: modals.closeAll,
                                       closeOnClickOutside: true,
                                       children: (
                                         <>
@@ -169,7 +176,8 @@ const ModalPage = () => {
                                           },
                                           size: '70%',
                                           closeOnConfirm: false,
-                                          withCloseButton: false,
+                                          withCloseButton: true,
+                                          onClose: modals.closeAll,
                                           closeOnClickOutside: true,
                                           children: (
                                             <>
