@@ -81,14 +81,15 @@ class UserPermissionsBroker(implements(IUserPermissionsBroker)):
     def replace_all_user_system_scopes(self, user_id: str, scopes: list[SystemScope]) -> None:
         ''' Replace all system scopes for 'user_id' '''
 
-        cFilter = {"user_id": user_id, "system_scope":{"$exists" : True}, "area":{"$exists" : True}}
+        cFilter = {"user_id": user_id, "system_scope":{"$exists" : True}}
         sList = [s.to_json() for s in scopes]
         
         with self.db.client.start_session(causal_consistency=True) as session:
             #delete existing system scopes
             self.collection.delete_many(cFilter, session=session)  
             #insert new scopes          
-            self.collection.insert_many(sList, session=session)
+            if len(sList) > 0:
+                self.collection.insert_many(sList, session=session)
 
     def replace_all_user_community_scopes(self, user_id: str, community_id: str, scopes: list[str]) -> None:
         ''' Replace all community scopes for 'user_id' and 'community_id' '''

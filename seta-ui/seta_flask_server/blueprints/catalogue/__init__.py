@@ -30,7 +30,7 @@ catalogue_api = Api(catalogue_bp_v1,
             description='Catalogue API',
             doc=doc,
             authorizations=authorizations,
-            default_swagger_filename="catalogue/swagger_profile.json"
+            default_swagger_filename="catalogue/swagger_catalogue.json"
          )
 
 catalogue_api.add_namespace(scope_catalogue_ns, path="/catalogue")

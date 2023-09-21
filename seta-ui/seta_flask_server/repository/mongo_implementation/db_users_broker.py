@@ -3,9 +3,10 @@ from injector import inject
 
 from seta_flask_server.repository.interfaces import IDbConfig, IUsersBroker
 from .db_user_permissions import UserPermissionsBroker
+from .db_external_provider_broker import ExternalProviderBroker
 
-from seta_flask_server.repository.models import SetaUser, SetaUserExt, ExternalProvider, UserClaim, AccountInfo
-from seta_flask_server.infrastructure.constants import UserStatusConstants
+from seta_flask_server.repository.models import SetaUser, SetaUserExt, ExternalProvider, UserClaim
+from seta_flask_server.infrastructure.constants import ClaimTypeConstants, UserStatusConstants
 
 from datetime import datetime
 import pytz
@@ -16,6 +17,8 @@ class UsersBroker(implements(IUsersBroker)):
         self.config = config
         self.db = config.get_db()
         self.collection = self.db["users"]
+
+        self.providerBroker = ExternalProviderBroker(config)
     
     #---------------- Public methods ----------------#
     
@@ -27,20 +30,21 @@ class UsersBroker(implements(IUsersBroker)):
                 return None
             
             provider_uid = auth_user.authenticated_provider.provider_uid
-            provider = auth_user.authenticated_provider.provider
+            provider_name = auth_user.authenticated_provider.provider
             
-            seta_user.authenticated_provider = next(filter(lambda p: p.provider_uid == provider_uid and p.provider == provider, 
+            seta_user.authenticated_provider = next(filter(lambda p: p.provider_uid == provider_uid and p.provider == provider_name, 
                                                            seta_user.external_providers), None)
                     
             if seta_user.authenticated_provider is None:
-                seta_user.authenticated_provider = ExternalProvider(user_id=seta_user.user_id, 
+                auth_provider = ExternalProvider(user_id=seta_user.user_id, 
                                      provider_uid=auth_user.authenticated_provider.provider_uid,
                                      provider=auth_user.authenticated_provider.provider,
                                      first_name=auth_user.authenticated_provider.first_name,
                                      last_name=auth_user.authenticated_provider.last_name,
                                      domain=auth_user.authenticated_provider.domain)
                 
-                self._create_external_provider(seta_user.authenticated_provider)
+                seta_user.authenticated_provider = auth_provider
+                self.collection.insert_one(auth_provider.to_json())
         else:
             seta_user = self._create_new_user(auth_user)
             
@@ -54,9 +58,7 @@ class UsersBroker(implements(IUsersBroker)):
             return None
         
         seta_user.authenticated_provider = next(filter(lambda p: p.provider_uid == provider_uid.lower() and p.provider == provider.lower(), 
-                                                           seta_user.external_providers), None)
-        
-        #seta_user.authenticated_provider = self._get_external_provider(user_id, provider_uid, provider)
+                                                           seta_user.external_providers), None)        
                 
         if seta_user.authenticated_provider is None:
             return None
@@ -72,7 +74,7 @@ class UsersBroker(implements(IUsersBroker)):
             return None
         
         seta_user = SetaUser.from_db_json(user)
-        seta_user.external_providers = self._get_user_providers_from_db(seta_user.user_id)            
+        seta_user.external_providers = self.providerBroker.get_by_user(seta_user.user_id)            
         seta_user.claims = self._get_user_claims_from_db(seta_user.user_id)
 
         if load_scopes:
@@ -92,85 +94,32 @@ class UsersBroker(implements(IUsersBroker)):
             return None
         
         seta_user = SetaUser.from_db_json(user)
-        seta_user.external_providers = self._get_user_providers_from_db(seta_user.user_id)            
+        seta_user.external_providers = self.providerBroker.get_by_user(seta_user.user_id)            
         seta_user.claims = self._get_user_claims_from_db(seta_user.user_id)
             
         return seta_user
-    
-    def get_all(self, load_scopes: bool = False) -> list[SetaUser]:
-        users = self.collection.find({"email": {"$exists" : True}}, {"user_id": 1})
-
-        seta_users = []
-        for user in users:
-            seta_user = self.get_user_by_id(user_id=user["user_id"], load_scopes=load_scopes)
-            seta_users.append(seta_user)
-
-        return seta_users
-
-    def get_all_by_status(self, status: str) -> list[SetaUser]:
-        users = self.collection.find({"email": {"$exists" : True}, "status": status}, {"user_id": 1})
-
-        seta_users = []
-        for user in users:
-            seta_user = self.get_user_by_id(user_id=user["user_id"], load_scopes=False)
-            seta_users.append(seta_user)
-
-        return seta_users
-    
-    def get_account_details(self) -> list[AccountInfo]:
-        users = self.collection.find({"email": {"$exists" : True}}, {"user_id": 1})
-        rsa_keys =  [entry["user_id"] for entry in self.collection.find({"rsa_value": {"$exists" : True}}, {"user_id": 1})]
-
-        app_pipeline = [
-            {"$match":{ "app_name": {"$exists" : 1}}},
-            {"$group" : { "_id" : "$user_id" , "count": {"$sum":1}}}
-        ]
-        apps = self.collection.aggregate(app_pipeline)
-
-        session_pipeline = [
-            {"$group" : { "_id" : "$user_id" , "last_active": {"$max": "$created_at"}}}
-        ]
-        sessions = self.db["sessions"].aggregate(session_pipeline)
-
-        infos = []
-
-        for user in users:
-            user_id = user["user_id"]
-
-            app_count = 0
-            for app in apps:
-                if user_id == app["_id"]:
-                    app_count = app["count"]
-                    break
-
-            last_active = None
-            for session in sessions:
-                if user_id == session["_id"]:
-                    last_active = session["last_active"]
-                    break
-            
-            info = AccountInfo(user_id=user_id, 
-                               has_rsa_key=(user_id in rsa_keys), 
-                               applications_count=app_count,
-                               last_active=last_active)
-
-            infos.append(info)
-
-        return infos
     
     def user_uid_exists(self, user_id: str) -> bool:        
         filter = {"user_id": user_id, "email": {"$exists" : True}}
                 
         return self.collection.count_documents(filter, limit = 1) > 0
     
-    def delete(self, user_id: str):
+    def update_status(self, user_id: str, status: str):
         now_date = datetime.now(tz=pytz.utc)
         
         filter = {"user_id": user_id, "email": {"$exists" : True}}
-        set = {"$set": {"status": UserStatusConstants.Deleted, "modified_at": now_date}}
+        set = {"$set": {"status": status, "modified_at": now_date}}
         
         self.collection.update_one(filter, set)
-  
+
+    def update_role(self, user_id: str, role: str):        
+        filter = {"user_id": user_id, "claim_type": ClaimTypeConstants.RoleClaimType}
+        set = {"$set": {"claim_value": role}}
+        
+        self.collection.update_one(filter, set)
+    
+    def delete(self, user_id: str):
+        pass
     
     #-------------------------------------------------------#
     
@@ -187,7 +136,7 @@ class UsersBroker(implements(IUsersBroker)):
                     user.user_id = SetaUserExt.generate_uuid()
                     uid_exists = self.user_uid_exists(user.user_id)
                 
-                #inser user record
+                #insert user record
                 self.collection.insert_one(user.to_json(), session=session)       
         
                 #insert provider records
@@ -203,30 +152,7 @@ class UsersBroker(implements(IUsersBroker)):
                     self.collection.insert_many(user.system_scopes, session=session)
 
         
-        return user        
-    
-    def _create_external_provider(self, provider: ExternalProvider):         
-        self.collection.insert_one(provider.to_json())    
-    
-    def _get_external_provider(self, user_id: str, provider_uid: str, provider: str) -> ExternalProvider:
-        pFilter = {"user_id": user_id, "provider_uid": provider_uid, "provider": provider}
-        provider = self.collection.find_one(pFilter)
-        
-        if provider is None:
-            return None
-        
-        return ExternalProvider.from_db_json(provider)
-        
-    def _get_user_providers_from_db(self, user_id: str) -> list[ExternalProvider]:
-        user_providers = []
-        
-        pFilter = {"user_id": user_id, "provider":{"$exists" : True}}
-        providers = self.collection.find(pFilter)
-        
-        for provider in providers:
-            user_providers.append(ExternalProvider.from_db_json(provider))
-            
-        return user_providers
+        return user
     
     def _get_user_claims_from_db(self, user_id: str) -> list[UserClaim]:
         user_claims = []

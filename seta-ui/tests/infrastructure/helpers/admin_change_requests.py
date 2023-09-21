@@ -1,7 +1,7 @@
 from .util import auth_headers
 from flask.testing import FlaskClient
 
-API_ADMIN = "/seta-ui/api/admin"
+API_ADMIN = "/seta-ui/api/v1/admin"
 
 def get_community_pending_change_requests(client: FlaskClient, access_token:str):
     url = f"{API_ADMIN}/communities/change-requests"

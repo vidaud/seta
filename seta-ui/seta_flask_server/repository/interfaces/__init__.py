@@ -15,3 +15,5 @@ from .catalogue_broker import ICatalogueBroker
 from .notifications_broker import INotificationsBroker
 from .stats_broker import IStatsBroker
 from .library_broker import ILibraryBroker
+from .users_query_broker import IUsersQueryBroker
+from .external_provider_broker import IExternalProviderBroker

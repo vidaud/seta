@@ -15,6 +15,15 @@ class UserRoleConstants:
     User = "User"
     
     List = [Admin, User]
+
+    @staticmethod
+    def parse_role(role: str) -> str:
+        if role.lower() == UserRoleConstants.Admin.lower():
+            return UserRoleConstants.Admin
+        elif role.lower() == UserRoleConstants.User.lower():
+            return UserRoleConstants.User
+        
+        return None
     
 class UserStatusConstants:
     Active = "active"

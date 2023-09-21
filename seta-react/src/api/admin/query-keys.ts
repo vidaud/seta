@@ -9,5 +9,5 @@ export class AdminQueryKeys {
 
   public static readonly OrphanedResourcesQueryKey = ['admin-orphaned-resources']
 
-  public static readonly AllUsers = ['admin-all-users']
+  public static readonly SetaUsers = ['seta-users']
 }

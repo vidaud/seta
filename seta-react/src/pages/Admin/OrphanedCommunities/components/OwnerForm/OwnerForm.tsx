@@ -50,7 +50,7 @@ const OwnerForm = ({ communityId, onSubmit }: Props) => {
   })
 
   if (error) {
-    return <SuggestionsError onTryAgain={refetch} />
+    return <SuggestionsError subject="users" onTryAgain={refetch} />
   }
 
   const handleSubmit = (values: { username: string }) => {
