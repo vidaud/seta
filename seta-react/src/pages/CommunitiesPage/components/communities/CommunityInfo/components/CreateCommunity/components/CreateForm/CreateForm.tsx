@@ -15,7 +15,7 @@ const useStyles = createStyles({
     marginBottom: '20px'
   },
   sized: {
-    width: '30%'
+    width: '60%'
   },
   form: {
     textAlign: 'left'
@@ -80,6 +80,7 @@ const CreateForm = ({ close }) => {
             {...form.getInputProps('title')}
             className={cx(classes.input)}
             withAsterisk
+            data-autofocus
           />
           <Textarea
             label="Description"
