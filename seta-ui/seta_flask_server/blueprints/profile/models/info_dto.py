@@ -7,6 +7,7 @@ provider_model = Model("ExternalProvider",
                            "provider": fields.String(description="External provider", enum=ExternalProviderConstants.List),
                            "firstName": fields.String(description="User first name"),
                            "lastName": fields.String(description="User last name"),
+                           "domain": fields.String(description="Domain on the external provider"),
                            "is_current_auth": fields.Boolean(description="Authenticates current user")
                        })
 
@@ -23,6 +24,7 @@ user_info_model = Model("UserInfo",
                     "username": fields.String(description="Internal SETA user identifier"),
                     "firstName": fields.String(description="User first name"),
                     "lastName": fields.String(description="User last name"),
+                    "domain": fields.String(description="Domain on the external provider"),
                     "email": fields.String(description="User email address"),
                     "role": fields.String(description="User role", enum=UserRoleConstants.List)
                 })
