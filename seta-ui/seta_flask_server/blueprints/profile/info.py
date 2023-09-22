@@ -51,7 +51,8 @@ class UserInfo(Resource):
                 "firstName": user.authenticated_provider.first_name, 
                 "lastName": user.authenticated_provider.last_name,
                 "email": user.email,
-                "role": user.role
+                "role": user.role,
+                "domain": user.authenticated_provider.domain
                 }
     
     
@@ -73,7 +74,7 @@ class SetaAccount(Resource):
     @account_info_ns.marshal_with(account_model, mask="*") 
     @jwt_required()
     def get(self):
-        """Retrive account details"""
+        """Retrieve account details"""
 
         identity = get_jwt_identity()        
         
@@ -102,6 +103,7 @@ class SetaAccount(Resource):
                 "provider": provider.provider,
                 "firstName": provider.first_name,
                 "lastName": provider.last_name,
+                "domain": provider.domain,
                 "is_current_auth": provider.provider == user.authenticated_provider.provider
             }
             
