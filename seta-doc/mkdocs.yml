@@ -38,7 +38,7 @@ theme:
         example: octicons/beaker-16
         quote: octicons/quote-16
     logo: material/book-open-variant
-    favicon: img/favicon.png
+    favicon: img/SeTA-logo.png
   palette:
     - scheme: seta
 plugins:
