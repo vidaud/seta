@@ -15,7 +15,6 @@ import { TextChunkValues } from '../../types/filters'
 import ApplyFilters from '../ApplyFilters'
 import DataSourceFilter from '../DataSourceFilter'
 import OtherFilter from '../OtherFilter/OtherFilter'
-import TaxonomyFilter from '../TaxonomyFilter'
 import TextChunkFilter from '../TextChunkFilter'
 import YearsRangeFilter from '../YearsRangeFilter'
 
@@ -37,7 +36,6 @@ const FiltersPanel = ({ queryContract, onApplyFilter, onStatusChange }: Advanced
     rangeValue,
     setRangeValue,
     resourceNodes,
-    taxonomyNodes,
     status,
     dispatchStatus,
     otherItems,
@@ -201,7 +199,8 @@ const FiltersPanel = ({ queryContract, onApplyFilter, onStatusChange }: Advanced
           </Accordion.Panel>
         </Accordion.Item>
 
-        <Accordion.Item value="taxonomy-tree">
+        {/* TODO: Re-enable this once the taxonomy aggregations are fixed */}
+        {/* <Accordion.Item value="taxonomy-tree">
           <Accordion.Control>
             <Text span>Taxonomies</Text>
           </Accordion.Control>
@@ -218,7 +217,7 @@ const FiltersPanel = ({ queryContract, onApplyFilter, onStatusChange }: Advanced
               selectedKeys={taxonomySelectedKeys}
             />
           </Accordion.Panel>
-        </Accordion.Item>
+        </Accordion.Item> */}
 
         <Accordion.Item value="other">
           <Accordion.Control>

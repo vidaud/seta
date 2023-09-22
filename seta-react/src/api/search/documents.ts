@@ -61,8 +61,9 @@ const getDocuments = async (
   const defaultPayload: DocumentsPayload = {
     aggs: [
       AggregationType.DateYear,
-      AggregationType.CollectionReference,
-      AggregationType.Taxonomies
+      AggregationType.CollectionReference
+      // TODO: Re-enable this when the taxonomy aggregations are fixed
+      // AggregationType.Taxonomies
     ],
     n_docs: 100
   }
