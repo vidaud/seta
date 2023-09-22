@@ -1,70 +1,87 @@
+import { RiShareBoxFill } from 'react-icons/ri'
+import { useNavigate } from 'react-router-dom'
+
 import * as S from './styles'
 
 const Footer = () => {
+  const navigate = useNavigate()
+
   return (
     <div css={S.footer}>
       <div className="flex">
         <ul css={S.section}>
-          <li className="title">SeTA JRC</li>
-          <li className="description">
-            This site is managed by the Directorate-General for "DG identification"
-          </li>
+          <li className="title">Joint Research Centre Semantic Text Analysis (SeTA)</li>
+          <li />
+          <li className="description">This site is managed by the Joint Research Centre</li>
         </ul>
 
         <ul css={S.section}>
           <li className="header">Contact Us</li>
-          <li>Contact information of the DG</li>
-          <li>Accessibility</li>
+          <li className="link" onClick={() => navigate(`/contact`)}>
+            Contact information
+          </li>
         </ul>
 
         <ul css={S.section}>
           <li className="header">About Us</li>
-          <li>Information about the DG</li>
+          <li>
+            <a href="https://joint-research-centre.ec.europa.eu/select-language?destination=/node/1">
+              EU Science Hub
+            </a>
+          </li>
+
+          <li className="column">Related Sites</li>
+          <li>
+            <a href="https://data.jrc.ec.europa.eu/">JRC Data Catalogue</a>
+          </li>
         </ul>
       </div>
 
       <div className="flex">
         <ul css={[S.section, S.withDivider]}>
           <li>
-            <img
-              alt="logo"
-              src="https://ec.europa.eu/component-library/playground/ec/static/media/logo-ec--en.4369895b.svg"
-              height="40"
-              className="mr-2"
-            />
+            <a href="https://commission.europa.eu/index_en">
+              <img
+                alt="logo"
+                src="https://ec.europa.eu/component-library/playground/ec/static/media/logo-ec--en.4369895b.svg"
+                height="40"
+                className="mr-2"
+              />
+            </a>
           </li>
         </ul>
 
         <ul css={[S.section, S.withDivider]}>
           <li>
-            <a href="https://ec.europa.eu/info/about-european-commission/contact_en">
+            <a href="https://commission.europa.eu/about-european-commission/contact_en">
               Contact the European Commission
             </a>
           </li>
           <li>
-            <a href="https://european-union.europa.eu/contact-eu/social-media-channels_en#/search?page=0&institutions=european_commission">
-              Follow the European Commission on social media
+            <a href="https://european-union.europa.eu/contact-eu/social-media-channels_en">
+              Follow the European Commission on social media{' '}
+              <RiShareBoxFill size={20} color="white" />
             </a>
           </li>
           <li>
-            <a href="https://ec.europa.eu/info/resources-partners_en">Resources for partners</a>
+            <a href="https://commission.europa.eu/resources-partners_en">Resources for partners</a>
           </li>
         </ul>
 
         <ul css={[S.section, S.withDivider]}>
           <li>
-            <a href="https://ec.europa.eu/info/languages-our-websites_en">
-              Languages on our website
+            <a href="https://commission.europa.eu/languages-our-websites_en">Language policy</a>
+          </li>
+          <li>
+            <a href="https://commission.europa.eu/cookies-policy_en">Cookies</a>
+          </li>
+          <li>
+            <a href="https://commission.europa.eu/privacy-policy-websites-managed-european-commission_en">
+              Privacy Policy
             </a>
           </li>
           <li>
-            <a href="https://ec.europa.eu/info/cookies_en">Cookies</a>
-          </li>
-          <li>
-            <a href="https://ec.europa.eu/info/privacy-policy_en">Privacy Policy</a>
-          </li>
-          <li>
-            <a href="https://ec.europa.eu/info/legal-notice_en">Legal notice</a>
+            <a href="https://commission.europa.eu/legal-notice_en">Legal notice</a>
           </li>
         </ul>
       </div>

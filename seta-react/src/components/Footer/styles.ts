@@ -30,6 +30,10 @@ export const section: ThemedCSS = theme => css`
     }
   }
 
+  .link {
+    cursor: pointer;
+  }
+
   .title,
   .description,
   .header {
@@ -53,6 +57,16 @@ export const section: ThemedCSS = theme => css`
     color: white;
     border-bottom-width: 2px;
     border-bottom: 1px solid ${theme.colors.gray[0]};
+    padding-bottom: 0.5rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .column {
+    ${sectionFont}
+    font-weight: 700;
+    color: white;
+    border-bottom: 1px solid ${theme.colors.gray[0]};
+    padding-top: 0.5rem;
     padding-bottom: 0.5rem;
     margin-bottom: 0.75rem;
   }
