@@ -81,6 +81,7 @@ extra:
   homepage: /docs
   setaUrls: 
     home: /
+    contact: /contact
     apiCommunities: /seta-ui/api/v1/communities/doc
     apiSeta: /seta-api/doc
     jwtToken: /authentication/v1/doc
