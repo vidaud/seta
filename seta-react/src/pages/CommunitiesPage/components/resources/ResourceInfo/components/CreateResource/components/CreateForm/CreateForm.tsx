@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { TextInput, Group, createStyles, Button, Textarea, Radio } from '@mantine/core'
 import { notifications } from '@mantine/notifications'
+import type { AxiosError } from 'axios'
 import { IoIosInformationCircle } from 'react-icons/io'
 
 import {
@@ -58,9 +59,10 @@ const CreateForm = ({ id, close }) => {
 
         close()
       },
-      onError: () => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      onError: (error: AxiosError | any) => {
         notifications.show({
-          message: 'Create New Resource Failed!',
+          message: error?.response?.data?.message,
           color: 'red',
           autoClose: 5000
         })

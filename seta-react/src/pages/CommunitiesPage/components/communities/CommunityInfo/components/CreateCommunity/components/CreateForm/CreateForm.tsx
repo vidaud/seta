@@ -1,5 +1,7 @@
+import { useEffect } from 'react'
 import { TextInput, Group, createStyles, Button, Textarea } from '@mantine/core'
 import { notifications } from '@mantine/notifications'
+import type { AxiosError } from 'axios'
 
 import type { CommunityValues } from '~/pages/CommunitiesPage/contexts/community-context'
 import {
@@ -9,6 +11,9 @@ import {
 
 import { useCreateCommunity } from '~/api/communities/communities/my-community'
 import { useUserPermissions } from '~/api/communities/user-scopes'
+import { useCurrentUser } from '~/contexts/user-context'
+
+import { getCommunityID } from '../../utils'
 
 const useStyles = createStyles({
   input: {
@@ -26,10 +31,18 @@ const CreateForm = ({ close }) => {
   const { classes, cx } = useStyles()
   const { refetch } = useUserPermissions()
   const setCreateCommunityMutation = useCreateCommunity()
+  const { user } = useCurrentUser()
+
+  useEffect(() => {
+    form.setValues({
+      community_id: getCommunityID(user)
+    })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const form = useCommunity({
     initialValues: {
-      community_id: '',
+      community_id: getCommunityID(user),
       title: '',
       description: ''
     },
@@ -55,9 +68,10 @@ const CreateForm = ({ close }) => {
         refetch()
         close()
       },
-      onError: () => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      onError: (error: AxiosError | any) => {
         notifications.show({
-          message: 'Create community failed!',
+          message: error?.response?.data?.message,
           color: 'red',
           autoClose: 5000
         })
