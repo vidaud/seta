@@ -19,7 +19,7 @@ const useStyles = createStyles({
     marginBottom: '20px'
   },
   sized: {
-    width: '50%'
+    width: '80%'
   },
   form: {
     textAlign: 'left'
@@ -76,19 +76,24 @@ const CreateForm = ({ id, close }) => {
         <form className={cx(classes.form)} onSubmit={form.onSubmit(handleSubmit)}>
           <TextInput
             label="Community ID"
+            description="Community ID is unique. You are not able to update it anymore."
             value={id}
             className={cx(classes.input, classes.sized)}
             disabled={true}
           />
           <TextInput
             label="Resource ID"
+            description="Resource ID should be unique. Once saved, you will not be able to update it."
             {...form.getInputProps('resource_id')}
+            placeholder="Enter resource ID ..."
             className={cx(classes.input, classes.sized)}
             withAsterisk
           />
           <TextInput
             label="Title"
+            description="This field should be unique. Once saved, the title can still be updated"
             {...form.getInputProps('title')}
+            placeholder="Enter title ..."
             className={cx(classes.input)}
             withAsterisk
           />
@@ -96,6 +101,7 @@ const CreateForm = ({ id, close }) => {
             label="Abstract"
             {...form.getInputProps('abstract')}
             className={cx(classes.input)}
+            placeholder="Enter abstract ..."
             autosize
             withAsterisk
           />

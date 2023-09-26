@@ -1,7 +1,7 @@
-import { useEffect } from 'react'
-import { TextInput, Group, createStyles, Button, Textarea } from '@mantine/core'
+import { TextInput, Group, createStyles, Button, Textarea, Tooltip } from '@mantine/core'
 import { notifications } from '@mantine/notifications'
 import type { AxiosError } from 'axios'
+import { MdSettingsEthernet } from 'react-icons/md'
 
 import type { CommunityValues } from '~/pages/CommunitiesPage/contexts/community-context'
 import {
@@ -20,7 +20,7 @@ const useStyles = createStyles({
     marginBottom: '20px'
   },
   sized: {
-    width: '60%'
+    width: '80%'
   },
   form: {
     textAlign: 'left'
@@ -33,16 +33,9 @@ const CreateForm = ({ close }) => {
   const setCreateCommunityMutation = useCreateCommunity()
   const { user } = useCurrentUser()
 
-  useEffect(() => {
-    form.setValues({
-      community_id: getCommunityID(user)
-    })
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
-
   const form = useCommunity({
     initialValues: {
-      community_id: getCommunityID(user),
+      community_id: '',
       title: '',
       description: ''
     },
@@ -83,22 +76,41 @@ const CreateForm = ({ close }) => {
     <>
       <CommunityFormProvider form={form}>
         <form className={cx(classes.form)} onSubmit={form.onSubmit(handleSubmit)}>
-          <TextInput
-            label="ID"
-            {...form.getInputProps('community_id')}
-            className={cx(classes.input, classes.sized)}
-            withAsterisk
-          />
+          <Group>
+            <TextInput
+              label="ID"
+              description="ID should be unique. Once saved, you will not be able to update it. You can generate a random ID by clicking on <...>"
+              {...form.getInputProps('community_id')}
+              className={cx(classes.input, classes.sized)}
+              placeholder="Example: institution-user-randomId ..."
+              withAsterisk
+              data-autofocus
+            />
+            <Tooltip label="Generate Community ID">
+              <Button
+                sx={{ marginTop: '9%' }}
+                onClick={() => {
+                  form.setValues({
+                    community_id: getCommunityID(user)
+                  })
+                }}
+              >
+                <MdSettingsEthernet size={24} />
+              </Button>
+            </Tooltip>
+          </Group>
           <TextInput
             label="Title"
+            description="This field should be unique. Once saved, the title can still be updated"
             {...form.getInputProps('title')}
+            placeholder="Enter title ..."
             className={cx(classes.input)}
             withAsterisk
-            data-autofocus
           />
           <Textarea
             label="Description"
             {...form.getInputProps('description')}
+            placeholder="Enter description ..."
             className={cx(classes.input)}
             withAsterisk
           />
