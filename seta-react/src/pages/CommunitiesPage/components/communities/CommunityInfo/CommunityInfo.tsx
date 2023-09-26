@@ -79,7 +79,7 @@ const CommunityInfo = ({ community, community_scopes }: Props) => {
 
       <Flex direction="column" gap="xs" data-info css={S.info}>
         <Group sx={{ gap: '0.4rem' }}>
-          <Text size="sm">ID: {community_id.charAt(0).toUpperCase() + community_id.slice(1)}</Text>
+          <Text size="sm">ID: {community_id}</Text>
           <Text size="sm">
             {'>'} Created at: {new Date(created_at).toDateString()}
           </Text>

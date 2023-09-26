@@ -16,7 +16,7 @@ const useStyles = createStyles({
     marginBottom: '20px'
   },
   sized: {
-    width: '30%'
+    width: '80%'
   },
   link: {
     color: '#228be6'
@@ -89,6 +89,7 @@ const UpdateForm = ({ resource, close, onChange }) => {
           <TextInput
             label="ID"
             {...form.getInputProps('resource_id')}
+            description="ID is unique. You are not able to update it anymore."
             value={resource.resource_id}
             className={cx(classes.input, classes.sized)}
             disabled={true}
@@ -97,13 +98,16 @@ const UpdateForm = ({ resource, close, onChange }) => {
           <TextInput
             label="Title"
             {...form.getInputProps('title')}
+            description="This field should be unique. Once saved, the title can still be updated"
             className={cx(classes.input)}
+            placeholder="Enter title ..."
             withAsterisk
           />
           <Textarea
             label="Abstract"
             {...form.getInputProps('abstract')}
             className={cx(classes.input)}
+            placeholder="Enter abstract ..."
             withAsterisk
           />
           <Group position="right">

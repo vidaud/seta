@@ -36,7 +36,7 @@ const UpdateResource = ({ resource, onChange }: Props) => {
         <Modal
           opened={opened}
           onClose={close}
-          withCloseButton={true}
+          withCloseButton={false}
           overlayProps={{
             color: theme.colorScheme === 'dark' ? theme.colors.dark[9] : theme.colors.gray[2],
             opacity: 0.55,

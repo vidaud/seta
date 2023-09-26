@@ -16,7 +16,7 @@ const useStyles = createStyles({
     marginBottom: '20px'
   },
   sized: {
-    width: '30%'
+    width: '80%'
   },
   link: {
     color: '#228be6'
@@ -86,6 +86,7 @@ const UpdateForm = ({ community, close, onChange }) => {
         <form className={cx(classes.form)} onSubmit={form.onSubmit(handleSubmit)}>
           <TextInput
             label="ID"
+            description="ID is unique. You are not able to update it anymore."
             value={community.community_id}
             className={cx(classes.input, classes.sized)}
             disabled={true}
@@ -93,13 +94,16 @@ const UpdateForm = ({ community, close, onChange }) => {
           />
           <TextInput
             label="Title"
+            description="This field should be unique. Once saved, the title can still be updated"
             {...form.getInputProps('title')}
+            placeholder="Enter title ..."
             className={cx(classes.input)}
             withAsterisk
           />
           <Textarea
             label="Description"
             {...form.getInputProps('description')}
+            placeholder="Enter description ..."
             className={cx(classes.input)}
             withAsterisk
           />
