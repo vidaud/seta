@@ -1,16 +1,15 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
-import { Badge, Collapse, Flex, Tooltip } from '@mantine/core'
-
-import ChevronToggleIcon from '~/components/ChevronToggleIcon'
+import { Badge, Flex, Tooltip } from '@mantine/core'
 
 import type { ClassNameProp } from '~/types/children-props'
 import type { LibraryItem } from '~/types/library/library-item'
 import { LibraryItemType } from '~/types/library/library-item'
 
 import NodeActions from './components/NodeActions'
-import { ROOT_ICON, FOLDER_ICON_OPEN, FOLDER_ICON, FILE_ICON } from './constants'
 import { useDocumentsTree } from './contexts/documents-tree-context'
 import { useRootActions } from './contexts/root-actions-context'
+import useNodeContent from './hooks/use-node-content'
+import useNodeEvents from './hooks/use-node-events'
 import * as S from './styles'
 
 type Props = {
@@ -55,6 +54,52 @@ const LibraryNode = ({ className, item, isRoot }: Props) => {
 
   const itemStyle = [S.itemContainer, selectedStyle, editingStyle, disabledStyle]
 
+  const children = useMemo(() => {
+    if (isDisabled) {
+      return []
+    }
+
+    return isFolder
+      ? foldersOnly
+        ? item.children.filter(({ type: t }) => t === LibraryItemType.Folder)
+        : item.children
+      : []
+  }, [item, isFolder, isDisabled, foldersOnly])
+
+  const showTopActions = !!isRoot && isExpanded && !children.length
+
+  const folderContent = children.map(child => <LibraryNode key={child.id} item={child} />)
+
+  const {
+    handleTitleClick,
+    handleCreatingNewFolder,
+    handleNewFolderCreated,
+    handleCollapseAllFolders
+  } = useNodeEvents({
+    item,
+    children,
+    selectable,
+    toggleable,
+    isRoot,
+    isFolder,
+    isDisabled,
+    isExpanded,
+    selected,
+    onSelect,
+    setWillSelectId,
+    setIsExpanded,
+    setIsLoading,
+    collapseAllFolders
+  })
+
+  const { content, icon, toggleIcon } = useNodeContent({
+    isFolder,
+    isRoot,
+    isExpanded,
+    foldersOnly,
+    folderContent
+  })
+
   useEffect(() => {
     if (isRoot) {
       return
@@ -75,86 +120,6 @@ const LibraryNode = ({ className, item, isRoot }: Props) => {
       setWillSelectId(null)
     }
   }, [willSelectId, item, type])
-
-  const handleTitleClick = () => {
-    if (isDisabled) {
-      return
-    }
-
-    if (isFolder) {
-      setIsExpanded(prev => !prev)
-    }
-
-    if (selectable) {
-      if (toggleable) {
-        const isAlreadySelected = selected?.id === item.id
-        const itemValue = isAlreadySelected ? undefined : item
-
-        onSelect?.(itemValue)
-
-        return
-      }
-
-      if (selected?.id !== item.id) {
-        onSelect?.(item)
-      }
-    }
-  }
-
-  const handleCreatingNewFolder = () => {
-    setIsLoading(true)
-
-    if (isExpanded && !children.length) {
-      setIsExpanded(false)
-    }
-  }
-
-  const handleNewFolderCreated = (folderId: string) => {
-    setIsLoading(false)
-    setIsExpanded(true)
-
-    if (selectable) {
-      setWillSelectId(folderId)
-    }
-  }
-
-  const handleCollapseAllFolders = () => {
-    if (isRoot) {
-      collapseAllFolders()
-    }
-  }
-
-  const children = useMemo(() => {
-    if (isDisabled) {
-      return []
-    }
-
-    return isFolder
-      ? foldersOnly
-        ? item.children.filter(({ type: t }) => t === LibraryItemType.Folder)
-        : item.children
-      : []
-  }, [item, isFolder, isDisabled, foldersOnly])
-
-  const content = isFolder && (
-    <Collapse in={isExpanded}>
-      {children.map(child => (
-        <LibraryNode key={child.id} item={child} />
-      ))}
-    </Collapse>
-  )
-
-  const toggleIcon = isFolder && (
-    <ChevronToggleIcon start="right" end="down" size="sm" toggled={isExpanded} css={S.toggleIcon} />
-  )
-
-  const icon = isRoot
-    ? ROOT_ICON
-    : isFolder
-    ? isExpanded
-      ? FOLDER_ICON_OPEN
-      : FOLDER_ICON
-    : FILE_ICON
 
   const actionsGroup = (
     <NodeActions
@@ -184,7 +149,11 @@ const LibraryNode = ({ className, item, isRoot }: Props) => {
         classNames={S.tooltipStyles().classes}
         disabled
       >
-        <div css={itemStyle} onClick={handleTitleClick}>
+        <div
+          css={itemStyle}
+          data-top-actions={showTopActions || undefined}
+          onClick={handleTitleClick}
+        >
           {toggleIcon}
           <div css={S.icon}>{icon}</div>
 

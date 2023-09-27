@@ -49,7 +49,7 @@ const SidePanel = ({
         />
       </ToggleSection>
 
-      <ToggleSection icon={<IconSearch size={20} />} color="grape" title="My Search">
+      <ToggleSection icon={<IconSearch size={20} />} color="grape" title="My Searches">
         <UnderDevelopment variant="coming-soon" />
       </ToggleSection>
 
