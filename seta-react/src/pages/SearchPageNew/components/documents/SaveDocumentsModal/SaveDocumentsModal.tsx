@@ -4,6 +4,7 @@ import { IconWallet } from '@tabler/icons-react'
 
 import CancelButton from '~/components/CancelButton'
 import ScrollModal from '~/components/ScrollModal'
+import { ROOT_NODE_ID } from '~/pages/SearchPageNew/components/documents/LibraryTree/constants'
 import type { StagedDocument } from '~/pages/SearchPageNew/types/search'
 
 import { useLibrary } from '~/api/search/library'
@@ -14,6 +15,27 @@ import { pluralize } from '~/utils/string-utils'
 import SaveDocumentsContent from './components/SaveDocumentsContent'
 
 const pathToString = (path: string[] = []): string => path.join(' / ')
+
+const getTitleAndLabel = (
+  libraryItem: LibraryItem | undefined,
+  documents: Document[] | StagedDocument[] | undefined
+) => {
+  const subject = libraryItem && libraryItem.type === LibraryItemType.Folder ? 'folder' : 'document'
+  const target: Document | StagedDocument | LibraryItem | undefined = libraryItem ?? documents?.[0]
+  const operation = libraryItem ? 'Move' : 'Save'
+
+  const hasOneDocument = !!libraryItem || documents?.length === 1
+
+  const pluralizedSave = `Save ${documents?.length} ${pluralize(
+    'document',
+    documents?.length ?? 0
+  )}`
+
+  const title = hasOneDocument ? `${operation} "${target?.title}"` : pluralizedSave
+  const saveLabel = hasOneDocument ? `${operation} ${subject}` : pluralizedSave
+
+  return { title, saveLabel }
+}
 
 type Props = ModalProps & {
   // Save documents
@@ -52,21 +74,14 @@ const SaveDocumentsModal = ({
     }
   }
 
-  const operation = libraryItem ? 'Move' : 'Save'
-  const subject = libraryItem && libraryItem.type === LibraryItemType.Folder ? 'folder' : 'document'
-  const target: Document | StagedDocument | LibraryItem | undefined = libraryItem ?? documents?.[0]
-
-  const hasOneDocument = !!libraryItem || documents?.length === 1
-
-  const pluralizedSave = `Save ${documents?.length} ${pluralize(
-    'document',
-    documents?.length ?? 0
-  )}`
-
-  const title = hasOneDocument ? `${operation} "${target?.title}"` : pluralizedSave
-  const saveLabel = hasOneDocument ? `${operation} ${subject}` : pluralizedSave
+  const { title, saveLabel } = getTitleAndLabel(libraryItem, documents)
 
   const path = selectedTarget ? ['My Library', ...selectedTarget.path] : undefined
+
+  // Disable the save button if the target is the same as the source
+  // and we are moving a library item
+  const targetSameAsSource =
+    !!libraryItem && selectedTarget?.id === (libraryItem.parentId ?? ROOT_NODE_ID)
 
   const titleEl = (
     <Stack spacing={4}>
@@ -85,7 +100,7 @@ const SaveDocumentsModal = ({
       <Button
         color="blue"
         onClick={handleSaveClick}
-        disabled={isLoading || !!error}
+        disabled={isLoading || !!error || targetSameAsSource}
         loading={saving}
       >
         {saveLabel}

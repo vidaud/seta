@@ -5,7 +5,9 @@ import SaveDocumentsModal from '~/pages/SearchPageNew/components/documents/SaveD
 
 import { useUpdateItem } from '~/api/search/library'
 import useComplexModalState from '~/hooks/use-complex-modal-state'
+import { LibraryItemType } from '~/types/library/library-item'
 import type { LibraryItem } from '~/types/library/library-item'
+import { notifications } from '~/utils/notifications'
 
 const useMoveModal = () => {
   const {
@@ -44,6 +46,12 @@ const useMoveModal = () => {
       {
         onSuccess: () => {
           closeModal()
+
+          notifications.showSuccess(
+            `The ${
+              libraryItem.type === LibraryItemType.Folder ? 'folder' : 'document'
+            } was moved successfully.`
+          )
         },
 
         onError: () => {

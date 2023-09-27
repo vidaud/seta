@@ -5,6 +5,7 @@ import type { StagedDocument } from '~/pages/SearchPageNew/types/search'
 
 import { useSaveDocuments } from '~/api/search/library'
 import type { LibraryItem } from '~/types/library/library-item'
+import { notifications } from '~/utils/notifications'
 
 type Args = {
   selectedDocs: StagedDocument[]
@@ -57,6 +58,13 @@ const useSaveDocsModal = ({ selectedDocs, clearSelectedDocs, removeStaged }: Arg
 
           removeStaged?.(docs.map(({ id }) => id))
           clearSelectedDocs?.()
+
+          const message =
+            docs.length === 1
+              ? 'The document was saved to your library.'
+              : `${docs.length} documents were saved to your library.`
+
+          notifications.showSuccess(message)
         },
 
         onError: () => {
