@@ -17,7 +17,7 @@ const CommunityLayout = () => {
             <NavbarNestedWithNotifications />
           </CommunityListProvider>
 
-          <Flex direction="column" align="center" sx={{ width: '100%', padding: '2rem' }}>
+          <Flex direction="column" align="center" sx={{ width: '85%', padding: '2rem' }}>
             <Outlet />
           </Flex>
         </Flex>

@@ -62,7 +62,7 @@
     .tab-filter > .card > .p-tabmenu .p-tabmenu-nav .p-tabmenuitem {
         width: auto;
     }
-    .site-header {padding: 1%; }
+    .site-header {padding: 0.5%; }
 }
 .hero-links__text.site-header>div, .site-header>.container-fluid, .site-header>.hero-links__items {
     -webkit-box-align: end;
