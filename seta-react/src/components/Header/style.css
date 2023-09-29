@@ -62,7 +62,7 @@
     .tab-filter > .card > .p-tabmenu .p-tabmenu-nav .p-tabmenuitem {
         width: auto;
     }
-    .site-header {padding: 1%; }
+    .site-header {padding: 0.5%; }
 }
 .hero-links__text.site-header>div, .site-header>.container-fluid, .site-header>.hero-links__items {
     -webkit-box-align: end;
@@ -80,9 +80,19 @@
     padding-left: 15px;
     padding-right: 15px;
 }
+
+@media (min-width: 90em), print {
+.container-fluid, .section__group--full-width>* {
+    max-width: 1520px;
+}
+}
+
+@media only screen and (max-width: 1280px) and (orientation : landscape) { 
 .container-fluid, .section__group--full-width>* {
     max-width: 1170px;
+} 
 }
+
 .container-fluid, .section__group--full-width>* {
     margin-left: auto;
     margin-right: auto;

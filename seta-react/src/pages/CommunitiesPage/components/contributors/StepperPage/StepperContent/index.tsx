@@ -11,6 +11,9 @@ const useStyles = createStyles({
   container: {
     textAlign: 'left',
     justifyContent: 'left',
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    marginBottom: 20,
     marginTop: 220,
 
     '@media (min-width: 748px)': {

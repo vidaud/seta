@@ -32,7 +32,7 @@ const ResourcePanelContent = ({ id, panel, onChange }: Props) => {
   return (
     <>
       <InfoContainer expandable expandTitle={`Expand ${title.toLowerCase()}`} onExpand={openModal}>
-        <Box sx={{ paddingTop: ' 4%' }}>
+        <Box>
           {panel === 'change_requests' ? (
             <ChangeResourceRequests id={id} />
           ) : (

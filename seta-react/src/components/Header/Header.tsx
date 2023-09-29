@@ -92,7 +92,7 @@ const Header = () => {
       <SiteHeader />
 
       <Flex css={S.menu} align="center" justify="space-between">
-        <Grid align="center">
+        <Grid align="center" pl="2.8%">
           <Link to="/" className="mr-5">
             <Image alt="SeTa Logo" src="/img/SeTA-logocut-negative.png" width={120} />
           </Link>

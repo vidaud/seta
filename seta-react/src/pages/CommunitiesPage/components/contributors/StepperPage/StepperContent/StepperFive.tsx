@@ -11,7 +11,7 @@ export const StepperFive = () => {
             Contribution Created
           </Title>
           <Text align="center" color="hsl(231, 11%, 63%)" fz={{ base: 16, md: 13.5 }}>
-            Go back to the list of resources in your community to see the new contribution listed
+            Go back to the list of resources to see the new contribution listed
           </Text>
         </Stack>
       </Flex>

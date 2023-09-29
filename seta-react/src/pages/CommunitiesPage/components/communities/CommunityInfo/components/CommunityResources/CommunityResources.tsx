@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Badge, Text, Grid, Paper, Group, Tooltip, createStyles } from '@mantine/core'
+import { Badge, Text, Grid, Paper, Group, Tooltip } from '@mantine/core'
 import { ImBlocked } from 'react-icons/im'
 import { VscLayersActive } from 'react-icons/vsc'
 import { useNavigate } from 'react-router-dom'
@@ -14,22 +14,7 @@ import {
 import { useMyCommunityResources } from '~/api/communities/communities/my-community'
 import type { ResourceResponse } from '~/api/types/resource-types'
 
-const useStyles = createStyles(theme => ({
-  row: {
-    '&:hover': {
-      background: '#f8f9fa',
-      cursor: 'pointer'
-    }
-  },
-  badge: {
-    '&:hover': {
-      color: 'green'
-    }
-  },
-  button: {
-    marginBottom: theme.spacing.xs
-  }
-}))
+import { useStyles } from './style'
 
 const CommunityResources = ({ id }) => {
   const { data, isLoading, error, refetch } = useMyCommunityResources(id)
@@ -72,7 +57,7 @@ const CommunityResources = ({ id }) => {
       >
         <Paper withBorder p="md" radius="md" className={classes.row}>
           <Group>
-            <Text sx={{ width: '73%' }}>
+            <Text className={classes.text}>
               <Text size="md">{row?.title.charAt(0).toUpperCase() + row?.title.slice(1)}</Text>
             </Text>
             <Group>

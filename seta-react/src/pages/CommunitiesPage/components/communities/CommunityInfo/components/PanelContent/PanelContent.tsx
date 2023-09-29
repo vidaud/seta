@@ -32,7 +32,7 @@ const PanelContent = ({ id, panel }: Props) => {
   return (
     <>
       <InfoContainer expandable expandTitle={`Expand ${title.toLowerCase()}`} onExpand={openModal}>
-        <Box sx={{ paddingTop: ' 4%' }}>
+        <Box>
           {panel === 'change_requests' ? (
             <Suspense fallback={null}>
               <ChangeCommunityRequests id={id} />

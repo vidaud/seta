@@ -177,11 +177,11 @@ const InvitesList = () => {
   ))
 
   return (
-    <>
+    <div style={{ overflowX: 'auto', width: '100%' }}>
       <Title className={cx(classes.title)} order={3}>
         List of Invites
       </Title>
-      <Table miw={500}>
+      <Table>
         <thead className={cx(classes.header)}>
           <tr>
             <th>Invite</th>
@@ -197,7 +197,7 @@ const InvitesList = () => {
         </thead>
         <tbody>{rows}</tbody>
       </Table>
-    </>
+    </div>
   )
 }
 
