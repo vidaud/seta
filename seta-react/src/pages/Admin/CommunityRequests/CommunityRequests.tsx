@@ -79,7 +79,7 @@ const AdminCommunityRequests = () => {
   }
 
   if (error) {
-    return <SuggestionsError onTryAgain={refetch} />
+    return <SuggestionsError subject="change requests" onTryAgain={refetch} />
   }
 
   return (

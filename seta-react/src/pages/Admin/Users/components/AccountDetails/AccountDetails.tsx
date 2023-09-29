@@ -1,4 +1,4 @@
-import { Badge, Box, Group, Space, Text } from '@mantine/core'
+import { Badge, Center, Group, Text } from '@mantine/core'
 import moment from 'moment'
 
 import type { AccountDetail } from '~/types/admin/user-info'
@@ -16,22 +16,26 @@ const AccountDetails = ({ details }: Props) => {
   const dateStr = moment.utc(lastActive).local().format('YYYY-MM-DD HH:mm')
 
   return (
-    <Box>
-      <Group>
-        <Text fw={500}>Rsa key?:</Text>
-        <Text fw={700}>{rsaKey}</Text>
+    <Center>
+      <Group p={10} position="center">
+        <Text fw={500} c="dimmed" size="sm">
+          Rsa key?
+        </Text>
+        <Text fw={600}>{rsaKey}</Text>
       </Group>
-      <Space h="sm" />
-      <Group>
-        <Text fw={500}>Applications:</Text>
-        <Text fw={700}>{details?.appsCount}</Text>
+      <Group p={10} position="center">
+        <Text fw={500} c="dimmed" size="sm">
+          Applications
+        </Text>
+        <Text fw={600}>{details?.appsCount}</Text>
       </Group>
-      <Space h="sm" />
-      <Group>
-        <Text fw={500}>Last active:</Text>
-        <Text fw={700}>{details?.lastActive ? dateStr : 'Unknown'}</Text>
+      <Group p={10} position="center">
+        <Text fw={500} c="dimmed" size="sm">
+          Last active
+        </Text>
+        <Text fw={600}>{details?.lastActive ? dateStr : 'Unknown'}</Text>
       </Group>
-    </Box>
+    </Center>
   )
 }
 

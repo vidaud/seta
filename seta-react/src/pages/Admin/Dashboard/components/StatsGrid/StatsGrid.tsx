@@ -24,7 +24,7 @@ const labels = new Map([
 
 const StatsGrid = ({ data, isLoading, error, onTryAgain }: DataProps<LightStatsResponse[]>) => {
   if (error) {
-    return <SuggestionsError onTryAgain={onTryAgain} />
+    return <SuggestionsError subject="stats" onTryAgain={onTryAgain} />
   }
 
   if (isLoading || !data) {

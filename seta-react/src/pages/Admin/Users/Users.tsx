@@ -10,7 +10,7 @@ const AdminUsers = () => {
   const { data, isLoading, error, refetch } = useAllAccounts()
 
   if (error) {
-    return <SuggestionsError onTryAgain={refetch} />
+    return <SuggestionsError subject="Users" onTryAgain={refetch} />
   }
 
   return (

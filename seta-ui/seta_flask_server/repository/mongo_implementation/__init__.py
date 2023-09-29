@@ -17,3 +17,5 @@ from .db_catalogue_broker import CatalogueBroker
 from .db_notifications_broker import NotificationsBroker
 from .db_stats_broker import StatsBroker
 from .db_library_broker import LibraryBroker
+from .db_users_query_broker import UsersQueryBroker
+from .db_external_provider_broker import ExternalProviderBroker

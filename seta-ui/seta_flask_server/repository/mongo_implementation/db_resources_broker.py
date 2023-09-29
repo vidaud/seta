@@ -114,7 +114,7 @@ class ResourcesBroker(implements(IResourcesBroker)):
         return [ResourceModel.from_db_json(c) for c in resources]
 
     def resource_id_exists(self, id: str) -> bool:
-        '''Check if a resouce id exists'''
+        '''Check if a resource id exists'''
               
         exists_count = self.collection.count_documents(self._filter_resource_by_id(id))
         return exists_count > 0
