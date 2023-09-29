@@ -47,6 +47,36 @@ const useStyles = createStyles(theme => ({
       color: theme.colorScheme === 'dark' ? theme.white : theme.black,
       cursor: 'pointer'
     }
+  },
+  table: {
+    [`@media only screen and (max-width: 912px) and (orientation: portrait)`]: {
+      marginTop: '5%'
+    },
+    [`@media only screen and (min-device-width: 1024px) and (max-device-width: 1366px) and (orientation: portrait) and (-webkit-min-device-pixel-ratio: 2)`]:
+      {
+        marginTop: '2%'
+      },
+    [`@media only screen and (max-width: 712px) and (orientation: portrait)`]: {
+      marginTop: '11%'
+    },
+    [`@media only screen and (max-width: 590px) and (orientation: portrait)`]: {
+      marginTop: '20%'
+    },
+    [`@media only screen and (max-width: 1024px) and (orientation : landscape)`]: {
+      marginTop: '4%'
+    },
+    [`@media only screen and (max-width: 640px) and (orientation : landscape)`]: {
+      marginTop: '10%'
+    },
+    [`@media only screen and (min-width: 642px) and (max-width: 1280px) and (orientation: landscape)`]:
+      {
+        marginTop: '2%'
+      }
+  },
+  input: {
+    [`@media only screen and (max-width: 640px)`]: {
+      width: '70%'
+    }
   }
 }))
 
@@ -121,15 +151,16 @@ const ChangeResourceRequests = ({ id }) => {
   ))
 
   return (
-    <>
+    <div style={{ overflowX: 'auto', marginTop: '4% ' }}>
       <Select
         name="requestStatus"
-        sx={{ width: 'fit-content', float: 'right', paddingBottom: '1%' }}
+        sx={{ width: 'fit-content', top: 0, position: 'absolute' }}
         data={requestStatus}
         value={selected}
+        className={cx(classes.input)}
         onChange={setSelected}
       />
-      <Table miw={500}>
+      <Table className={cx(classes.table)}>
         <thead className={cx(classes.header)}>
           <tr>
             <th>Resource</th>
@@ -142,7 +173,7 @@ const ChangeResourceRequests = ({ id }) => {
         </thead>
         <tbody>{rows}</tbody>
       </Table>
-    </>
+    </div>
   )
 }
 

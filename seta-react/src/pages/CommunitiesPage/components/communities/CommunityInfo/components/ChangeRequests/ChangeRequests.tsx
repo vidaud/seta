@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { createStyles, Table, rem, useMantineTheme, Badge, Select, Text } from '@mantine/core'
+import { Table, useMantineTheme, Badge, Select, Text } from '@mantine/core'
 
 import ChangedPropertyCell from '~/pages/Admin/common/components/ChangedPropertyCell/ChangedPropertyCell'
 import DateTimeCell from '~/pages/Admin/common/components/DateTimeCell/DateTimeCell'
@@ -15,41 +15,7 @@ import { statusColors } from '~/pages/CommunitiesPage/types'
 import { useCommunityChangeRequests } from '~/api/communities/communities/community-change-requests'
 import type { CommunityChangeRequests } from '~/api/types/change-request-types'
 
-const useStyles = createStyles(theme => ({
-  header: {
-    position: 'sticky',
-    top: 0,
-    backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.white,
-    transition: 'box-shadow 150ms ease',
-
-    '&::after': {
-      content: '""',
-      position: 'absolute',
-      left: 0,
-      right: 0,
-      bottom: 0,
-      borderBottom: `${rem(1)} solid ${
-        theme.colorScheme === 'dark' ? theme.colors.dark[3] : theme.colors.gray[2]
-      }`
-    }
-  },
-
-  scrolled: {
-    boxShadow: theme.shadows.sm
-  },
-
-  td: {
-    whiteSpace: 'nowrap',
-    maxWidth: '10rem',
-    overflow: 'hidden',
-    textOverflow: 'ellipsis',
-    '&:hover': {
-      backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.colors.gray[0],
-      color: theme.colorScheme === 'dark' ? theme.white : theme.black,
-      cursor: 'pointer'
-    }
-  }
-}))
+import { useStyles } from './style'
 
 const requestStatus = [
   { label: 'All', value: 'all' },
@@ -135,16 +101,17 @@ const ChangeCommunityRequests = ({ id }: Props) => {
   ))
 
   return (
-    <>
+    <div style={{ overflowX: 'auto', marginTop: '4% ' }}>
       <Select
         // label="Select Status"
         name="requestStatus"
-        sx={{ width: 'fit-content', float: 'right', paddingBottom: '1%' }}
+        sx={{ width: 'fit-content', top: 0, position: 'absolute' }}
         data={requestStatus}
         value={selected}
+        className={cx(classes.input)}
         onChange={setSelected}
       />
-      <Table miw={500}>
+      <Table className={cx(classes.table)}>
         <thead className={cx(classes.header)}>
           <tr>
             <th>Community</th>
@@ -156,7 +123,7 @@ const ChangeCommunityRequests = ({ id }: Props) => {
         </thead>
         <tbody>{rows}</tbody>
       </Table>
-    </>
+    </div>
   )
 }
 
