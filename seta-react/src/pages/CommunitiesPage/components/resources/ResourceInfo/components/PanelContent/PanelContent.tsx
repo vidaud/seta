@@ -1,33 +1,28 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { Box } from '@mantine/core'
 
 import InfoContainer from '~/pages/SearchPageNew/components/documents/DocumentInfo/components/InfoContainer'
 
-import { useResourcesChangeRequests } from '~/api/communities/resources/resource-change-requests'
-import type { ResourceChangeRequests } from '~/api/types/change-request-types'
 import useModalState from '~/hooks/use-modal-state'
 
 import ChangeResourceRequests from '../ChangeResourceRequests'
 import ResourcePanelModal from '../PanelModal'
-import ResourceUsersPermissions from '../ResourcePermissions'
+import ResourceUsersPermissions from '../ResourcePermissions/ResourceUserPermissions'
 
 type Props = {
   id: string
   panel: string | null
-  onChange: (value: ResourceChangeRequests[]) => void
 }
 
-const ResourcePanelContent = ({ id, panel, onChange }: Props) => {
+const ResourcePanelContent = ({ id, panel }: Props) => {
   const { modalOpen, openModal, closeModal } = useModalState()
-  const { data } = useResourcesChangeRequests(id)
+  const [title, setTitle] = useState('Limits')
 
   useEffect(() => {
-    if (data) {
-      onChange(data)
+    if (panel) {
+      setTitle(panel === 'change_requests' ? 'Change Requests' : 'User Permissions')
     }
-  }, [data, onChange])
-
-  const title = panel === 'change_requests' ? 'Change Requests' : 'User Permissions'
+  }, [panel, title])
 
   return (
     <>
@@ -35,9 +30,9 @@ const ResourcePanelContent = ({ id, panel, onChange }: Props) => {
         <Box>
           {panel === 'change_requests' ? (
             <ChangeResourceRequests id={id} />
-          ) : (
+          ) : panel === 'permissions' ? (
             <ResourceUsersPermissions id={id} type="container" />
-          )}
+          ) : null}
         </Box>
       </InfoContainer>
 

@@ -4,9 +4,9 @@ import ScrollModal from '~/components/ScrollModal'
 
 import type { ModalStateProps } from '~/types/lib-props'
 
-import ChangeCommunityRequests from '../ChangeRequests'
+import ChangeCommunityRequests from '../ChangeRequests/ChangeRequests'
 import CommunityInvites from '../CommunityInvites'
-import CommunityUsersPermissions from '../CommunityUserPermissions'
+import CommunityUsersPermissions from '../CommunityUserPermissions/CommunityUserPermissions'
 import MembershipRequests from '../MembershipRequests'
 
 type Props = {

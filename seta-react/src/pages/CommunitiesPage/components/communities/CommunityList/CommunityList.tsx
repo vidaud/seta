@@ -14,7 +14,10 @@ import Filters from '../CommunityInfo/components/Filters'
 
 const useStyles = createStyles({
   search: {
-    [`@media (max-width: 89em) and (min-width: 48em)`]: {
+    [`@media (max-width: 67em) and (min-width: 48em)`]: {
+      width: '40%'
+    },
+    [`@media (max-width: 89em) and (min-width: 68em)`]: {
       width: '58%'
     },
     [`@media (min-width: 90em)`]: {

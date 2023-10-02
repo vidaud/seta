@@ -2,14 +2,13 @@ import { useEffect } from 'react'
 import { TextInput, Group, createStyles, Button, Textarea } from '@mantine/core'
 import { notifications } from '@mantine/notifications'
 
-import { ComponentLoading } from '~/pages/CommunitiesPage/components/common'
 import type { CommunityValues } from '~/pages/CommunitiesPage/contexts/community-context'
 import {
   CommunityFormProvider,
   useCommunity
 } from '~/pages/CommunitiesPage/contexts/community-context'
 
-import { useCommunityID, useSetUpdateCommunity } from '~/api/communities/communities/my-community'
+import { useSetUpdateCommunity } from '~/api/communities/communities/my-community'
 
 const useStyles = createStyles({
   input: {
@@ -28,8 +27,6 @@ const useStyles = createStyles({
 
 const UpdateForm = ({ community, close, onChange }) => {
   const { classes, cx } = useStyles()
-
-  const { data, isLoading } = useCommunityID(community.community_id)
   const setUpdateCommunityMutation = useSetUpdateCommunity(community.community_id)
 
   const form = useCommunity({
@@ -53,11 +50,7 @@ const UpdateForm = ({ community, close, onChange }) => {
     }
     // adding form to useEffect will cause infinite loop call
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [community, data])
-
-  if (isLoading || !data) {
-    return <ComponentLoading />
-  }
+  }, [community])
 
   const handleSubmit = (values: CommunityValues) => {
     setUpdateCommunityMutation.mutate(values, {
@@ -107,14 +100,6 @@ const UpdateForm = ({ community, close, onChange }) => {
             className={cx(classes.input)}
             withAsterisk
           />
-          {/* <Group spacing={100} display="flex">
-              <Radio.Group name="data_type" label="Data Type" {...form.getInputProps('data_type')}>
-                <Group mt="xs">
-                  <Radio value="representative" label="Representative" />
-                  <Radio value="evidence" label="Evidence" />
-                </Group>
-              </Radio.Group>
-            </Group> */}
           <Group position="right">
             <Button
               variant="outline"

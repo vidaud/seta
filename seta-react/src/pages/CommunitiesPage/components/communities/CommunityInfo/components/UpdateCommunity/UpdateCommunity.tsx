@@ -1,4 +1,4 @@
-import { lazy, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import {
   useMantineTheme,
   Modal,
@@ -11,7 +11,7 @@ import {
 import { useDisclosure } from '@mantine/hooks'
 import { IconPencil } from '@tabler/icons-react'
 
-const UpdateForm = lazy(() => import('./components/UpdateForm'))
+import UpdateForm from './components/UpdateForm'
 
 const useStyles = createStyles({
   button: {
