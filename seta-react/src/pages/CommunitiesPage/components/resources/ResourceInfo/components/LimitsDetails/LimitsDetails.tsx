@@ -22,7 +22,7 @@ const LimitsDetails = ({ id, scopes }) => {
   }
 
   return (
-    <>
+    <div style={{ overflowX: 'auto' }}>
       <Group align="flex-start">
         <Table>
           <thead>
@@ -57,7 +57,7 @@ const LimitsDetails = ({ id, scopes }) => {
           <UpdateLimits props={rows} />
         </Group>
       ) : null}
-    </>
+    </div>
   )
 }
 

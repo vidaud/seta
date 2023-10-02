@@ -1,14 +1,5 @@
 import { useEffect, useState } from 'react'
-import {
-  createStyles,
-  Table,
-  ScrollArea,
-  rem,
-  Title,
-  Badge,
-  useMantineTheme,
-  Group
-} from '@mantine/core'
+import { Table, ScrollArea, Title, Badge, useMantineTheme, Group } from '@mantine/core'
 import { useParams } from 'react-router-dom'
 
 import {
@@ -23,33 +14,7 @@ import { useMembershipID } from '~/api/communities/memberships/membership'
 
 import DeleteMembership from './components/DeleteMembership'
 import UpdateMembership from './components/UpdateMembership'
-
-const useStyles = createStyles(theme => ({
-  header: {
-    position: 'sticky',
-    top: 0,
-    backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.white,
-    transition: 'box-shadow 150ms ease',
-
-    '&::after': {
-      content: '""',
-      position: 'absolute',
-      left: 0,
-      right: 0,
-      bottom: 0,
-      borderBottom: `${rem(1)} solid ${
-        theme.colorScheme === 'dark' ? theme.colors.dark[3] : theme.colors.gray[2]
-      }`
-    }
-  },
-
-  scrolled: {
-    boxShadow: theme.shadows.sm
-  },
-  title: {
-    paddingBottom: theme.spacing.xl
-  }
-}))
+import { useStyles } from './style'
 
 const CommunityMembers = () => {
   const { classes, cx } = useStyles()
@@ -119,12 +84,12 @@ const CommunityMembers = () => {
       : []
 
   return (
-    <>
+    <div style={{ overflowX: 'auto' }}>
       <Title className={cx(classes.title)} order={3}>
         List of Members
       </Title>
       <ScrollArea h={300} onScrollPositionChange={({ y }) => setScrolled(y !== 0)}>
-        <Table miw={500}>
+        <Table>
           <thead className={cx(classes.header, { [classes.scrolled]: scrolled })}>
             <tr>
               <th>User</th>
@@ -138,7 +103,7 @@ const CommunityMembers = () => {
           <tbody>{rows}</tbody>
         </Table>
       </ScrollArea>
-    </>
+    </div>
   )
 }
 

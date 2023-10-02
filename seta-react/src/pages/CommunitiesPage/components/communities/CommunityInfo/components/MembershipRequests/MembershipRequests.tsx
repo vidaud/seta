@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { createStyles, Table, rem, Badge, useMantineTheme, Group, Text } from '@mantine/core'
+import { Table, Badge, useMantineTheme, Group, Text } from '@mantine/core'
 import { notifications } from '@mantine/notifications'
 
 import DateTimeCell from '~/pages/Admin/common/components/DateTimeCell/DateTimeCell'
@@ -20,40 +20,9 @@ import {
 import type { MembershipRequest } from '~/api/types/membership-types'
 import { MembershipRequestStatus } from '~/types/community/membership-requests'
 
+import { useStyles } from './style'
+
 import ExtendedMessage from '../ExtendedMessage/ExtendedMessage'
-
-const useStyles = createStyles(theme => ({
-  header: {
-    top: 0,
-    backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.white,
-    transition: 'box-shadow 150ms ease',
-
-    '&::after': {
-      content: '""',
-      position: 'absolute',
-      left: 0,
-      right: 0,
-      bottom: 0,
-      borderBottom: `${rem(1)} solid ${
-        theme.colorScheme === 'dark' ? theme.colors.dark[3] : theme.colors.gray[2]
-      }`
-    }
-  },
-  scrolled: {
-    boxShadow: theme.shadows.sm
-  },
-  td: {
-    whiteSpace: 'nowrap',
-    maxWidth: '10rem',
-    overflow: 'hidden',
-    textOverflow: 'ellipsis',
-    '&:hover': {
-      backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.colors.gray[0],
-      color: theme.colorScheme === 'dark' ? theme.white : theme.black,
-      cursor: 'pointer'
-    }
-  }
-}))
 
 const MembershipRequests = ({ id, type }) => {
   const { classes, cx } = useStyles()
@@ -178,8 +147,8 @@ const MembershipRequests = ({ id, type }) => {
   ))
 
   return (
-    <>
-      <Table miw={500}>
+    <div style={{ overflowX: 'auto' }}>
+      <Table className={cx(classes.table)}>
         <thead className={cx(classes.header)}>
           <tr>
             <th>Requested By</th>
@@ -196,7 +165,7 @@ const MembershipRequests = ({ id, type }) => {
           Expand to see full list ...
         </Text>
       ) : null}
-    </>
+    </div>
   )
 }
 

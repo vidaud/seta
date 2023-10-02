@@ -1,6 +1,4 @@
 import { useEffect } from 'react'
-import { Button } from 'primereact/button'
-import { InputText } from 'primereact/inputtext'
 
 import { createScript, loadWebTool } from '~/components/Header/util'
 
@@ -32,12 +30,12 @@ const SiteHeader = () => {
           <img
             alt="EC Logo"
             src="https://commission.europa.eu/themes/contrib/oe_theme/dist/ec/images/logo/positive/logo-ec--en.svg"
-            height="40"
+            height="50"
             className="mr-2"
           />
         </a>
 
-        <div className="p-inputgroup searches">
+        {/* <div className="p-inputgroup searches">
           <InputText placeholder="Search" type="text" className="search-form" />
           <Button
             label="Search"
@@ -45,7 +43,7 @@ const SiteHeader = () => {
             tooltip="Search on the website"
             tooltipOptions={{ className: 'blue-tooltip', position: 'right' }}
           />
-        </div>
+        </div> */}
       </div>
     </div>
   )

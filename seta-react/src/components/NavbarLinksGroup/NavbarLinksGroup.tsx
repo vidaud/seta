@@ -1,5 +1,14 @@
 import { useEffect, useState } from 'react'
-import { Box, Collapse, Text, UnstyledButton, createStyles, rem, getStylesRef } from '@mantine/core'
+import {
+  Box,
+  Collapse,
+  Text,
+  UnstyledButton,
+  createStyles,
+  rem,
+  getStylesRef,
+  Tooltip
+} from '@mantine/core'
 import type { TablerIconsProps } from '@tabler/icons-react'
 import { useLocation, useNavigate } from 'react-router-dom'
 
@@ -84,7 +93,9 @@ export const LinksGroup = ({ initiallyOpened, links }: LinksGroupProps) => {
       }}
       key={link.label}
     >
-      <link.icon className={classes.linkIcon} stroke={1.5} />
+      <Tooltip label={link.label}>
+        <link.icon className={classes.linkIcon} stroke={1.5} />
+      </Tooltip>
       {link.label}
     </Text>
   ))
