@@ -9,7 +9,14 @@ import { storage } from '~/utils/storage-utils'
 
 type StagedDocumentsContextProps = {
   isStaged: (documentId: string) => boolean
-  toggleStaged: (documentId: string, documentTitle: string, staged: boolean) => void
+
+  toggleStaged: (
+    documentId: string,
+    documentTitle: string,
+    link: string | undefined | null,
+    staged: boolean
+  ) => void
+
   removeStaged: (documentId: string | string[]) => void
   clearStaged: () => void
   stagedDocuments: StagedDocument[]
@@ -41,10 +48,11 @@ export const StagedDocumentsProvider = ({ children }: ChildrenProp) => {
   )
 
   const toggleStaged: StagedDocumentsContextProps['toggleStaged'] = useCallback(
-    (documentId, documentTitle, staged) => {
+    (documentId, documentTitle, link, staged) => {
       const doc: StagedDocument = {
         id: documentId,
-        title: documentTitle
+        title: documentTitle,
+        link
       }
 
       const newStagedDocs = toggleArrayValue(stagedDocuments, doc, staged, 'id')
