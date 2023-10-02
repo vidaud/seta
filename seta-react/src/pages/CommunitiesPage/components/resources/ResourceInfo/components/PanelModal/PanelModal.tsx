@@ -1,11 +1,12 @@
+import { Suspense, lazy } from 'react'
 import { CgFileDocument } from 'react-icons/cg'
 
 import ScrollModal from '~/components/ScrollModal/ScrollModal'
 
 import type { ModalStateProps } from '~/types/lib-props'
 
-import ChangeResourceRequests from '../ChangeResourceRequests'
-import ResourceUsersPermissions from '../ResourcePermissions'
+const ChangeResourceRequests = lazy(() => import('../ChangeResourceRequests'))
+const ResourceUsersPermissions = lazy(() => import('../ResourcePermissions'))
 
 type Props = {
   title: string
@@ -17,9 +18,13 @@ type Props = {
 const ResourcePanelModal = ({ title, id, panel, type, ...props }: Props) => (
   <ScrollModal title={title} icon={<CgFileDocument />} {...props}>
     {panel === 'change_requests' ? (
-      <ChangeResourceRequests id={id} />
+      <Suspense fallback={null}>
+        <ChangeResourceRequests id={id} />
+      </Suspense>
     ) : (
-      <ResourceUsersPermissions id={id} type={type} />
+      <Suspense fallback={null}>
+        <ResourceUsersPermissions id={id} type={type} />
+      </Suspense>
     )}
   </ScrollModal>
 )

@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, Suspense, lazy } from 'react'
 import { Box } from '@mantine/core'
 
 import InfoContainer from '~/pages/SearchPageNew/components/documents/DocumentInfo/components/InfoContainer'
@@ -7,9 +7,10 @@ import { useResourcesChangeRequests } from '~/api/communities/resources/resource
 import type { ResourceChangeRequests } from '~/api/types/change-request-types'
 import useModalState from '~/hooks/use-modal-state'
 
-import ChangeResourceRequests from '../ChangeResourceRequests'
 import ResourcePanelModal from '../PanelModal'
-import ResourceUsersPermissions from '../ResourcePermissions'
+
+const ChangeResourceRequests = lazy(() => import('../ChangeResourceRequests'))
+const ResourceUsersPermissions = lazy(() => import('../ResourcePermissions'))
 
 type Props = {
   id: string
@@ -34,9 +35,13 @@ const ResourcePanelContent = ({ id, panel, onChange }: Props) => {
       <InfoContainer expandable expandTitle={`Expand ${title.toLowerCase()}`} onExpand={openModal}>
         <Box>
           {panel === 'change_requests' ? (
-            <ChangeResourceRequests id={id} />
+            <Suspense fallback={null}>
+              <ChangeResourceRequests id={id} />
+            </Suspense>
           ) : (
-            <ResourceUsersPermissions id={id} type="container" />
+            <Suspense fallback={null}>
+              <ResourceUsersPermissions id={id} type="container" />
+            </Suspense>
           )}
         </Box>
       </InfoContainer>

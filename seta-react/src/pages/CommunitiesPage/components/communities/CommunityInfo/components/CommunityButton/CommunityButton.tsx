@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, lazy } from 'react'
 import { ActionIcon, Button, Divider, Group, Menu, Text } from '@mantine/core'
 import { IconDotsVertical } from '@tabler/icons-react'
 
@@ -9,10 +9,11 @@ import type { CommunityResponse } from '~/api/types/community-types'
 import ChangePrivacyRequestActions from '../ChangePrivacy/ChangePrivacyRequestActions'
 import DeleteCommunity from '../DeleteCommunity'
 import InviteMember from '../InviteMemberModal'
-import LeaveCommunity from '../LeaveCommunity'
 import MembershipRequest from '../MembershipRequestModal'
 import OpenCommunityMember from '../OpenCommunityMember'
 import UpdateCommunity from '../UpdateCommunity'
+
+const LeaveCommunity = lazy(() => import('../LeaveCommunity'))
 
 type Props = {
   props: CommunityResponse

@@ -5,11 +5,7 @@ import { getCookie } from 'typescript-cookie'
 import type { MembershipValues } from '~/pages/CommunitiesPage/contexts/membership-context'
 
 import api from '~/api/api'
-import type {
-  CreateMembershipRequestAPI,
-  MembershipResponse,
-  Memberships
-} from '~/api/types/membership-types'
+import type { CreateMembershipRequestAPI, MembershipResponse } from '~/api/types/membership-types'
 import { environment } from '~/environments/environment'
 
 import { CommunityQueryKeys } from '../communities/community-query-keys'
@@ -33,21 +29,13 @@ const apiConfig: AxiosRequestConfig = {
   baseURL: BASE_URL
 }
 
-export const getMembership = async (id?: string): Promise<Memberships> => {
-  const members = await api
-    .get<MembershipResponse[]>(`${environment.COMMUNITIES_API_PATH}/${id}/memberships`, apiConfig)
-    .then(result => {
-      return result
-    })
-
-  const data = {
-    members: members ? members?.data : []
-  }
+export const getMembership = async (id: string): Promise<MembershipResponse[]> => {
+  const { data } = await api.get<MembershipResponse[]>(OPEN_MEMBERSHIP_API_PATH(id), apiConfig)
 
   return data
 }
 
-export const useMembershipID = (id?: string) =>
+export const useMembershipID = (id: string) =>
   useQuery({ queryKey: cacheKey(id), queryFn: () => getMembership(id) })
 
 const setNewCommunityMembership = async (id: string, request: CreateMembershipRequestAPI) => {

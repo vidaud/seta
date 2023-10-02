@@ -3,7 +3,7 @@ import { Text, Popover, Button, Group, createStyles, Tooltip } from '@mantine/co
 import { notifications } from '@mantine/notifications'
 
 import {
-  getMembership,
+  useMembershipID,
   useRemoveCommunityMembership
 } from '~/api/communities/memberships/membership'
 import { useUserPermissions } from '~/api/communities/user-scopes'
@@ -23,18 +23,17 @@ const LeaveCommunity = ({ props }) => {
   const { user } = useCurrentUser()
   const { refetch } = useUserPermissions()
   const setRemoveCommunityMembershipMutation = useRemoveCommunityMembership()
+  const { data } = useMembershipID(props.community_id)
 
   useEffect(() => {
-    getMembership(props.community_id).then(response => {
-      setMemberNumber(
-        response?.members.filter(
-          item =>
-            (item.role === 'CommunityOwner' || item.role === 'CommunityManager') &&
-            user?.username === item.user_id
-        )?.length
-      )
-    })
-  }, [props, user])
+    setMemberNumber(
+      data?.filter(
+        item =>
+          (item.role === 'CommunityOwner' || item.role === 'CommunityManager') &&
+          user?.username === item.user_id
+      )?.length
+    )
+  }, [props, user, data])
 
   const deleteMembership = () => {
     setRemoveCommunityMembershipMutation.mutate(props.community_id, {

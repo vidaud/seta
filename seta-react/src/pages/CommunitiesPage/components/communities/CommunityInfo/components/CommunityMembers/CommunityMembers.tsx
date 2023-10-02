@@ -20,7 +20,7 @@ const CommunityMembers = () => {
   const { classes, cx } = useStyles()
   const [scrolled, setScrolled] = useState(false)
   const { id } = useParams()
-  const { data, isLoading, error, refetch } = useMembershipID(id)
+  const { data, isLoading, error, refetch } = useMembershipID(id ? id : '')
   const { community_scopes } = useCommunityListContext()
   const [scopes, setScopes] = useState<string[] | undefined>([])
   const [items, setItems] = useState(data)
@@ -44,7 +44,7 @@ const CommunityMembers = () => {
   }
 
   if (data) {
-    if (data?.members.length === 0) {
+    if (data?.length === 0) {
       return <ComponentEmpty />
     }
   }
@@ -54,8 +54,8 @@ const CommunityMembers = () => {
   }
 
   const rows =
-    items && items?.members.length > 0
-      ? items?.members.map(row => (
+    items && items?.length > 0
+      ? items?.map(row => (
           <tr key={row.user_id}>
             <td>{row?.user_info?.full_name}</td>
             <td>
