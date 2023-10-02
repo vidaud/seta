@@ -1,6 +1,7 @@
 import type { Dispatch, SetStateAction } from 'react'
 
 import type { LibraryItem } from '~/types/library/library-item'
+import { notifications } from '~/utils/notifications'
 
 type Args = {
   item: LibraryItem
@@ -75,6 +76,8 @@ const useNodeEvents = ({
 
     if (selectable) {
       setWillSelectId(folderId)
+    } else {
+      notifications.showSuccess('The folder was created successfully.')
     }
   }
 
