@@ -9,6 +9,7 @@ import {
   ComponentError,
   ComponentLoading
 } from '~/pages/CommunitiesPage/components/common'
+import { usePanelNotifications } from '~/pages/CommunitiesPage/contexts/panel-context'
 import { statusColors } from '~/pages/CommunitiesPage/types'
 
 import { useResourcesChangeRequests } from '~/api/communities/resources/resource-change-requests'
@@ -29,12 +30,16 @@ const ChangeResourceRequests = ({ id }) => {
   const theme = useMantineTheme()
   const [items, setItems] = useState<ResourceChangeRequests[]>()
   const [selected, setSelected] = useState<string | null>('pending')
+  const { handleNrResourcesChangeRequests } = usePanelNotifications()
 
   useEffect(() => {
     if (data) {
       selected === 'all' ? setItems(data) : setItems(data?.filter(item => item.status === selected))
+      selected === 'all'
+        ? handleNrResourcesChangeRequests(data.length)
+        : handleNrResourcesChangeRequests(data?.filter(item => item.status === selected).length)
     }
-  }, [data, selected])
+  }, [data, selected, handleNrResourcesChangeRequests])
 
   if (error) {
     return <ComponentError onTryAgain={refetch} />

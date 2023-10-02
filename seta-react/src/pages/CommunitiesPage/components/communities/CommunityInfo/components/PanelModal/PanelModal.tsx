@@ -1,14 +1,13 @@
-import { Suspense, lazy } from 'react'
 import { CgFileDocument } from 'react-icons/cg'
 
 import ScrollModal from '~/components/ScrollModal'
 
 import type { ModalStateProps } from '~/types/lib-props'
 
-const ChangeCommunityRequests = lazy(() => import('../ChangeRequests'))
-const CommunityInvites = lazy(() => import('../CommunityInvites'))
-const CommunityUsersPermissions = lazy(() => import('../CommunityUserPermissions'))
-const MembershipRequests = lazy(() => import('../MembershipRequests'))
+import ChangeCommunityRequests from '../ChangeRequests/ChangeRequests'
+import CommunityInvites from '../CommunityInvites'
+import CommunityUsersPermissions from '../CommunityUserPermissions/CommunityUserPermissions'
+import MembershipRequests from '../MembershipRequests'
 
 type Props = {
   title: string
@@ -20,17 +19,11 @@ type Props = {
 const PanelModal = ({ title, id, panel, type, ...props }: Props) => (
   <ScrollModal title={title} icon={<CgFileDocument />} {...props}>
     {panel === 'change_requests' ? (
-      <Suspense fallback={null}>
-        <ChangeCommunityRequests id={id} />
-      </Suspense>
+      <ChangeCommunityRequests id={id} />
     ) : panel === 'membership_requests' ? (
-      <Suspense fallback={null}>
-        <MembershipRequests id={id} type={type} />
-      </Suspense>
+      <MembershipRequests id={id} type={type} />
     ) : panel === 'invites' ? (
-      <Suspense fallback={null}>
-        <CommunityInvites id={id} type={type} />
-      </Suspense>
+      <CommunityInvites id={id} type={type} />
     ) : (
       <CommunityUsersPermissions id={id} type={type} />
     )}

@@ -91,7 +91,6 @@ const CommunityButton = ({ props, community_scopes }: Props) => {
 
         {data.status === 'membership' ? (
           <>
-            {' '}
             <LeaveCommunity props={data} />
           </>
         ) : data.status === 'pending' ? (
