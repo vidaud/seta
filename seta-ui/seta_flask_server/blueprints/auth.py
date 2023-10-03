@@ -55,7 +55,7 @@ class SetaLogoutCallback(Resource):
         self.sessionsBroker = sessionsBroker
         super().__init__(api, *args, **kwargs)
     
-    @ns_auth.doc(description="Thid-party provider callback for local logout",
+    @ns_auth.doc(description="Third-party provider callback for local logout",
             responses={int(HTTPStatus.FOUND): 'Redirect to home route'  })    
     def get(self):
         """ 

@@ -1,6 +1,7 @@
-from seta_auth.infrastructure.constants import ResourceScopeConstants, ResourceTypeConstants
-from seta_auth.repository.models import SetaUser
-from seta_auth.repository.interfaces import IResourcesBroker
+from seta_flask_server.infrastructure.constants import ResourceTypeConstants
+from seta_flask_server.infrastructure.scope_constants import ResourceScopeConstants
+from seta_flask_server.repository.models import SetaUser
+from seta_flask_server.repository.interfaces import IResourcesBroker
 
 
 def get_resource_permissions(user: SetaUser, resourcesBroker: IResourcesBroker) -> dict:
@@ -15,9 +16,10 @@ def get_resource_permissions(user: SetaUser, resourcesBroker: IResourcesBroker) 
             permissions["delete"] = [obj.id for obj in data_delete_resources]
 
         #get queryable resource
-        permissions["view"] = resourcesBroker.get_all_queryable_by_user_id(user.user_id)        
+        queryable_resources = resourcesBroker.get_all_queryable_by_user_id(user.user_id)
+        permissions["view"] = [qr.resource_id for qr in queryable_resources]
 
         #get representative resources
-        permissions["representatives"] = resourcesBroker.get_all_by_user_id_and_type(user_id=user.user_id, type=ResourceTypeConstants.Representative)
+        permissions["representatives"] = resourcesBroker.get_ids_by_member_id_and_type(user_id=user.user_id, type=ResourceTypeConstants.Representative)
 
     return permissions

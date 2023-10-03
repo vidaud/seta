@@ -29,6 +29,7 @@ services:
       - ingest.geoip.downloader.enabled=false
       - bootstrap.memory_lock=true
       - cluster.name=docker-cluster
+      - logger.level=INFO
     ulimits:
       memlock:
         soft: -1
@@ -122,7 +123,7 @@ services:
   auth:
     restart: always
     build:
-      context: ../seta-auth
+      context: ../seta-ui
       args:
         - HTTP_PROXY=${HTTP_PROXY}
         - HTTPS_PROXY=${HTTPS_PROXY}

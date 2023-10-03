@@ -1,5 +1,5 @@
-from seta_auth.config import TestConfig
-from seta_auth.factory import create_app
+from seta_flask_server.config import TestConfig
+from seta_flask_server.factory_auth import create_app
 
 configuration = TestConfig()  
 app = create_app(configuration)

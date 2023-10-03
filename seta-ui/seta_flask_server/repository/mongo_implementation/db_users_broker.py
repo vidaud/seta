@@ -50,18 +50,18 @@ class UsersBroker(implements(IUsersBroker)):
             
         return seta_user  
     
-    def get_user_by_id_and_provider(self, user_id: str, provider_uid: str, provider: str, load_scopes: bool = False) -> SetaUser:       
-               
-        seta_user = self.get_user_by_id(user_id=user_id, load_scopes=load_scopes)
+    def get_user_by_provider(self, provider_uid: str, provider: str, load_scopes: bool = False) -> SetaUser:  
+
+        external_provider = self.providerBroker.get_by_uid(provider_uid=provider_uid, provider=provider)
+        if external_provider is None:
+            return None
+                       
+        seta_user = self.get_user_by_id(user_id=external_provider.user_id, load_scopes=load_scopes)
         
         if seta_user is None:
             return None
         
-        seta_user.authenticated_provider = next(filter(lambda p: p.provider_uid == provider_uid.lower() and p.provider == provider.lower(), 
-                                                           seta_user.external_providers), None)        
-                
-        if seta_user.authenticated_provider is None:
-            return None
+        seta_user.authenticated_provider = external_provider
         
         return seta_user
        

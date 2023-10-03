@@ -9,7 +9,7 @@ import pytz
 from seta_flask_server.repository.interfaces.resources_broker import IResourcesBroker
 from seta_flask_server.repository.models import ResourceModel, ResourceLimitsModel, UserProfileResources
 
-from seta_flask_server.infrastructure.constants import (ResourceStatusConstants, CommunityStatusConstants)
+from seta_flask_server.infrastructure.constants import (ResourceStatusConstants, CommunityStatusConstants, ResourceTypeConstants)
 
 class ResourcesBroker(implements(IResourcesBroker)):
     @inject
@@ -86,14 +86,14 @@ class ResourcesBroker(implements(IResourcesBroker)):
         '''Retrieve all resources that can be queried by user id'''
         
         #get active memberships
-        community_collection = self.db["communities"]
-        
-        memberships_filter =  {"user_id": user_id, "status": CommunityStatusConstants.Active, "join_date":{"$exists" : 1}}        
-        memberships = community_collection.find(memberships_filter, {"community_id": 1})        
-        community_ids = [i["community_id"] for i in memberships]
+        community_ids = self._get_membership_communities(user_id)
                 
         #get active resources
-        filter = {"community_id": {"$in": community_ids}, "status": ResourceStatusConstants.Active, "community_id":{"$exists" : 1}}        
+        filter = {
+                  "community_id": {"$in": community_ids}, 
+                  "status": ResourceStatusConstants.Active, 
+                  "type": ResourceTypeConstants.Discoverable
+                }        
 
         profile =  self.db["user-profiles"].find_one({"user_id": user_id, 
                                                      "profile": UserProfileResources.UNSEARCHABLE_PROFILE_ID}
@@ -104,6 +104,19 @@ class ResourcesBroker(implements(IResourcesBroker)):
         
         resources = self.collection.find(filter)
         return [ResourceModel.from_db_json(c) for c in resources]
+    
+    def get_ids_by_member_id_and_type(self, user_id:str, type: str) -> list[str]:
+        community_ids = self._get_membership_communities(user_id)
+
+        filter = {
+                    "community_id": {"$in": community_ids}, 
+                    "status": ResourceStatusConstants.Active, 
+                    "type": type
+                }
+        
+        resources = self.collection.find(filter, {"resource_id": 1})
+        #return resource ids
+        return [c["resource_id"] for c in resources]
 
     def get_all_by_community_id(self, community_id:str) -> list[ResourceModel]:
         '''Retrieve all resources belonging to the community id'''
@@ -131,5 +144,13 @@ class ResourcesBroker(implements(IResourcesBroker)):
     def _filter_resource_by_id(self, id: str):
         '''Get filter dict for a resource'''
         return {"resource_id": id, "community_id": {"$exists" : True}}
+    
+    def _get_membership_communities(self, user_id:str)  -> list[str]:
+         #get active memberships
+        community_collection = self.db["communities"]
+        
+        memberships_filter =  {"user_id": user_id, "status": CommunityStatusConstants.Active, "join_date":{"$exists" : 1}}        
+        memberships = community_collection.find(memberships_filter, {"community_id": 1})        
+        return [i["community_id"] for i in memberships]
     
     #------------------------#

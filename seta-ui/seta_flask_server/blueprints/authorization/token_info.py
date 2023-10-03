@@ -6,10 +6,10 @@ from flask import current_app as app
 
 from http import HTTPStatus
 
-from seta_auth.repository.interfaces import IUsersBroker, IResourcesBroker, ISessionsBroker
+from seta_flask_server.repository.interfaces import IUsersBroker, IResourcesBroker, ISessionsBroker
 from injector import inject
 
-from seta_auth.infrastructure.constants import ResourceScopeConstants, AuthorizedArea, UserStatusConstants
+from seta_flask_server.infrastructure.constants import AuthorizedArea, UserStatusConstants
 from .logic.token_info_logic import get_resource_permissions
 
 
@@ -53,7 +53,7 @@ class TokenInfo(Resource):
                        })
     @ns_authorization.expect(request_parser, validate=True)
     def post(self):
-        '''Decods the token and builds the community scopes for the user identity'''
+        '''Decodes the token and builds the community scopes for the user identity'''
         
         r = authorization_api.payload
         token = r["token"]

@@ -18,6 +18,18 @@ class IResourcesBroker(Interface):
         pass
     
     def get_all_queryable_by_user_id(self, user_id:str) -> list[ResourceModel]:
+        '''Retrieve all resource ids that can be queried by user id'''
+        pass
+
+    def get_ids_by_member_id_and_type(self, user_id:str, type: str) -> list[str]:
+        '''
+        Retrieve all resource ids within user memberships filter by type
+
+        :param user_id:
+            User identifier
+        :param type: 
+            Resource type, see ResourceTypeConstants
+        '''
         pass
 
     def get_all_by_community_id(self, community_id:str) -> list[ResourceModel]:
