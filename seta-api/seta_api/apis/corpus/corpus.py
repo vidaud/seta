@@ -1,6 +1,10 @@
+import json
+
 from flask import current_app as app
 from flask import jsonify, request
 from flask_restx import Namespace, Resource, abort
+import yaml
+import xmltodict
 
 from seta_api.infrastructure.ApiLogicError import ApiLogicError, ForbiddenResourceError
 from seta_api.infrastructure.auth_validator import auth_validator, validate_view_permissions, validate_add_permission, validate_delete_permission
@@ -188,23 +192,64 @@ class CorpusDocumentId(Resource):
             abort(500, "Internal server error")
 
 
+def read_json(req):
+    try:
+        return req.get_json(force=True)
+    except:
+        abort(404, "Invalid json")
+
+
+def read_xml(req):
+    try:
+        xml_string = req.get_data().decode()
+        xml_obj = xmltodict.parse(xml_string)
+        json_string = json.dumps(xml_obj)
+        json_obj = json.loads(json_string)
+        #todo insert taxonomies
+        if "taxonomy" in json_obj["document"]:
+            del json_obj["document"]["taxonomy"]
+        if "link_related" in json_obj["document"]:
+            if isinstance(json_obj["document"]["link_related"], str):
+                arr = [json_obj["document"]["link_related"]]
+                json_obj["document"]["link_related"] = arr
+        return json_obj["document"]
+    except:
+        abort(404, "Invalid xml")
+
+
+def read_yaml(req):
+    try:
+        yaml_string = req.get_data().decode()
+        yaml_obj = yaml.safe_load(yaml_string)
+        json_string = json.dumps(yaml_obj)
+        json_obj = json.loads(json_string)
+        return json_obj
+    except:
+        abort(404, "invalid yaml")
+
+
 @corpus_api.route("corpus/document", methods=['POST'])
 class CorpusDocument(Resource):
     @auth_validator()
     @corpus_api.doc(description='Put a document into corpus index.', security='apikey')
     @corpus_api.response(200, 'Success', swagger_doc.get_put_doc_chunk_response_model())
     @corpus_api.response(401, 'Forbbiden access to the resource')
-    @corpus_api.expect(swagger_doc.get_put_request_model())
+    @corpus_api.expect(swagger_doc.get_put_request_model(), validate=False)
     def post(self):
+        if request.content_type == "application/json":
+            args = read_json(request)
+        elif request.content_type == "application/xml":
+            args = read_xml(request)
+        elif request.content_type == "application/yaml":
+            args = read_yaml(request)
+        else:
+            raise ApiLogicError('Invalid content-type. Must be application/json or '
+                                'application/xml or application/yaml.')
         try:
-            args = request.get_json(force=True)
-
             source = is_field_in_doc(args, 'source')
             if not validate_add_permission(source):
                 raise ForbiddenResourceError(resource_id=source)
-
             validate(instance=args, schema=document_post_schema)
-
             doc_id = insert_doc(args, es=app.es, index=app.config["INDEX_PUBLIC"])
             return jsonify({"_id": doc_id})
         except jsonschema.ValidationError as err:
