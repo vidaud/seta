@@ -1,5 +1,7 @@
-import { Navbar, createStyles } from '@mantine/core'
+import { Navbar } from '@mantine/core'
 import { IconNotes, IconUsers, IconStack } from '@tabler/icons-react'
+
+import { useStyles } from './style'
 
 import { LinksGroup } from '../NavbarLinksGroup/NavbarLinksGroup'
 import NavbarNested from '../NavbarNested/NavbarNested'
@@ -21,13 +23,6 @@ const mockdata = [
   }
 ]
 
-const useStyles = createStyles(theme => ({
-  navbar: {
-    backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.white,
-    paddingBottom: 0
-  }
-}))
-
 const NavbarNestedWithNotifications = () => {
   const { classes } = useStyles()
 
@@ -37,13 +32,7 @@ const NavbarNestedWithNotifications = () => {
     <Navbar
       height="auto"
       sx={theme => ({
-        marginBottom: theme.spacing.xs,
-        [`@media (max-width: 89em)`]: {
-          width: 'auto'
-        },
-        [`@media (min-width: 90em)`]: {
-          width: 300
-        }
+        marginBottom: theme.spacing.xs
       })}
       p="md"
       className={classes.navbar}

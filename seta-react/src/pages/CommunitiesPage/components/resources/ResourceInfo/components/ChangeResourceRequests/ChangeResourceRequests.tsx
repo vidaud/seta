@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { createStyles, Table, rem, useMantineTheme, Badge, Select, Text } from '@mantine/core'
+import { Table, useMantineTheme, Badge, Select, Text } from '@mantine/core'
 
 import DateTimeCell from '~/pages/Admin/common/components/DateTimeCell/DateTimeCell'
 import UserInfo from '~/pages/Admin/common/components/UserInfo/UserInfo'
@@ -9,46 +9,13 @@ import {
   ComponentError,
   ComponentLoading
 } from '~/pages/CommunitiesPage/components/common'
+import { usePanelNotifications } from '~/pages/CommunitiesPage/contexts/panel-context'
 import { statusColors } from '~/pages/CommunitiesPage/types'
 
 import { useResourcesChangeRequests } from '~/api/communities/resources/resource-change-requests'
 import type { ResourceChangeRequests } from '~/api/types/change-request-types'
 
-const useStyles = createStyles(theme => ({
-  header: {
-    position: 'sticky',
-    top: 0,
-    backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.white,
-    transition: 'box-shadow 150ms ease',
-
-    '&::after': {
-      content: '""',
-      position: 'absolute',
-      left: 0,
-      right: 0,
-      bottom: 0,
-      borderBottom: `${rem(1)} solid ${
-        theme.colorScheme === 'dark' ? theme.colors.dark[3] : theme.colors.gray[2]
-      }`
-    }
-  },
-
-  scrolled: {
-    boxShadow: theme.shadows.sm
-  },
-
-  td: {
-    whiteSpace: 'nowrap',
-    maxWidth: '10rem',
-    overflow: 'hidden',
-    textOverflow: 'ellipsis',
-    '&:hover': {
-      backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.colors.gray[0],
-      color: theme.colorScheme === 'dark' ? theme.white : theme.black,
-      cursor: 'pointer'
-    }
-  }
-}))
+import { useStyles } from './style'
 
 const requestStatus = [
   { label: 'All', value: 'all' },
@@ -63,12 +30,16 @@ const ChangeResourceRequests = ({ id }) => {
   const theme = useMantineTheme()
   const [items, setItems] = useState<ResourceChangeRequests[]>()
   const [selected, setSelected] = useState<string | null>('pending')
+  const { handleNrResourcesChangeRequests } = usePanelNotifications()
 
   useEffect(() => {
     if (data) {
       selected === 'all' ? setItems(data) : setItems(data?.filter(item => item.status === selected))
+      selected === 'all'
+        ? handleNrResourcesChangeRequests(data.length)
+        : handleNrResourcesChangeRequests(data?.filter(item => item.status === selected).length)
     }
-  }, [data, selected])
+  }, [data, selected, handleNrResourcesChangeRequests])
 
   if (error) {
     return <ComponentError onTryAgain={refetch} />
@@ -121,15 +92,16 @@ const ChangeResourceRequests = ({ id }) => {
   ))
 
   return (
-    <>
+    <div style={{ overflowX: 'auto', marginTop: '4% ' }}>
       <Select
         name="requestStatus"
-        sx={{ width: 'fit-content', float: 'right', paddingBottom: '1%' }}
+        sx={{ width: 'fit-content', top: 0, position: 'absolute' }}
         data={requestStatus}
         value={selected}
+        className={cx(classes.input)}
         onChange={setSelected}
       />
-      <Table miw={500}>
+      <Table className={cx(classes.table)}>
         <thead className={cx(classes.header)}>
           <tr>
             <th>Resource</th>
@@ -142,7 +114,7 @@ const ChangeResourceRequests = ({ id }) => {
         </thead>
         <tbody>{rows}</tbody>
       </Table>
-    </>
+    </div>
   )
 }
 

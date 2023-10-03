@@ -13,8 +13,7 @@ const USER_INFOS_API_PATH = '/admin/users/infos'
 const USERS_API_PATH = '/admin/users'
 
 const queryKey = {
-  root: 'user-infos',
-  userInfos: (status: string | undefined) => [queryKey.root, { status }]
+  userList: (status: string | undefined) => [...AdminQueryKeys.SetaUsers, { status }]
 }
 
 const getUserInfos = async (
@@ -38,7 +37,7 @@ const getUserInfos = async (
 
 export const useActiveUserInfos = () => {
   return useQuery({
-    queryKey: queryKey.userInfos(AccountStatus.Active),
+    queryKey: queryKey.userList(AccountStatus.Active),
     queryFn: ({ signal }) => getUserInfos(AccountStatus.Active, { signal })
   })
 }
@@ -54,7 +53,7 @@ const getAllAccounts = async (config?: AxiosRequestConfig): Promise<SetaAccount[
 
 export const useAllAccounts = () => {
   return useQuery({
-    queryKey: AdminQueryKeys.AllUsers,
+    queryKey: AdminQueryKeys.SetaUsers,
     queryFn: ({ signal }) => getAllAccounts({ signal })
   })
 }

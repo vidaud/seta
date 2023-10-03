@@ -1,4 +1,4 @@
-import { Suspense, lazy, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Badge, Collapse, Group, Tabs } from '@mantine/core'
 
 import CreateResource from '~/pages/CommunitiesPage/components/resources/ResourceInfo/components/CreateResource'
@@ -16,9 +16,8 @@ import type { MembershipRequest } from '~/api/types/membership-types'
 import type { UserPermissionsResponse } from '~/api/types/user-permissions-types'
 import type { ClassNameProp } from '~/types/children-props'
 
+import CommunityResources from '../CommunityResources'
 import PanelContent from '../PanelContent'
-
-const CommunityResources = lazy(() => import('../CommunityResources'))
 
 type Props = ClassNameProp & {
   open: boolean
@@ -102,11 +101,7 @@ const CommunityDetails = ({ className, open, community, community_scopes }: Prop
 
         <Tabs.Panel value="resources">
           {/* {scopes?.includes('/seta/resource/create') ? ( */}
-          {open ? (
-            <Suspense fallback={null}>
-              <CommunityResources id={community_id} />
-            </Suspense>
-          ) : null}
+          {open ? <CommunityResources id={community_id} /> : null}
           {isManager ? (
             <>
               <Group position="right" sx={{ marginTop: '1rem', marginBottom: '1rem' }}>

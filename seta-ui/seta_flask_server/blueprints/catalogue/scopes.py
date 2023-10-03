@@ -12,7 +12,7 @@ from .models.scopes_dto import scope_model, scopes_model
 from seta_flask_server.repository.interfaces import ICatalogueBroker
 from seta_flask_server.repository.models import ScopeCategory
 
-scope_catalogue_ns = Namespace('Scopes Catalogue', description='SETA Scopes Catagloue')
+scope_catalogue_ns = Namespace('Scopes Catalogue', description='SETA Scopes Catalogue')
 scope_catalogue_ns.models[scope_model.name] = scope_model
 scope_catalogue_ns.models[scopes_model.name] = scopes_model
 
@@ -40,7 +40,7 @@ class ScopeCatalogue(Resource):
 CATEGORIES = [str(s) for s in ScopeCategory]
 
 @scope_catalogue_ns.route('/scopes/<string:category>', endpoint="scope_category_catalogue", methods=['GET'])
-@scope_catalogue_ns.param("category", f"Category, one of {str(CATEGORIES)}")
+@scope_catalogue_ns.param("category", f"Scopes category", enum=CATEGORIES)
 class ScopeCatalogueByCategory(Resource):
 
     @inject

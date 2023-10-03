@@ -2,14 +2,13 @@ import { useEffect } from 'react'
 import { TextInput, Group, createStyles, Button, Textarea } from '@mantine/core'
 import { notifications } from '@mantine/notifications'
 
-import { ComponentLoading } from '~/pages/CommunitiesPage/components/common'
 import type { ResourceValues } from '~/pages/CommunitiesPage/contexts/resource-context'
 import {
   ResourceFormProvider,
   useResource
 } from '~/pages/CommunitiesPage/contexts/resource-context'
 
-import { useResourceID, useSetUpdateResource } from '~/api/communities/resources/my-resource'
+import { useSetUpdateResource } from '~/api/communities/resources/my-resource'
 
 const useStyles = createStyles({
   input: {
@@ -29,7 +28,6 @@ const useStyles = createStyles({
 const UpdateForm = ({ resource, close, onChange }) => {
   const { classes, cx } = useStyles()
 
-  const { data, isLoading } = useResourceID(resource.resource_id)
   const setUpdateResourceMutation = useSetUpdateResource(resource.resource_id)
 
   const form = useResource({
@@ -55,11 +53,7 @@ const UpdateForm = ({ resource, close, onChange }) => {
     }
     // adding form to useEffect will cause infinite loop call
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [resource, data])
-
-  if (isLoading || !data) {
-    return <ComponentLoading />
-  }
+  }, [resource])
 
   const handleSubmit = (values: ResourceValues) => {
     setUpdateResourceMutation.mutate(values, {

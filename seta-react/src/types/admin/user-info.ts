@@ -1,18 +1,18 @@
+import type { UserScopeList } from './scopes'
+
+import type { UserRole } from '../user'
+
 export type UserInfo = {
   user_id: string
   full_name: string
   email: string
 }
 
-export enum UserRole {
-  Administrator = 'Administrator',
-  User = 'User'
-}
-
 export enum AccountStatus {
   Active = 'active',
   Disabled = 'disabled',
-  Blocked = 'blocked'
+  Blocked = 'blocked',
+  Deleted = 'deleted'
 }
 
 export enum ThirdPartyProvider {
@@ -48,6 +48,8 @@ export type SetaAccount = {
   role: UserRole
   status: AccountStatus
   createdAt: Date
+  lastModifiedAt?: Date
   externalProviders: ExternalProvider[]
   details?: AccountDetail
+  scopes?: UserScopeList
 }

@@ -7,7 +7,7 @@ scope_model = Model("Scope",{
                     "elevated": fields.Boolean(description="Indicates higher access")
                 })
 
-scopes_model = Model("ScopesCatalgoue", {
+scopes_model = Model("ScopesCatalogue", {
     "system": fields.List(fields.Nested(model=scope_model), description="List of the systems scopes"),
     "community": fields.List(fields.Nested(model=scope_model), description="List of the community scopes"),
     "resource": fields.List(fields.Nested(model=scope_model), description="List of the resource scopes"),

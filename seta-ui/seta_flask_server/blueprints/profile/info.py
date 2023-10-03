@@ -6,6 +6,7 @@ from flask_restx import Namespace, Resource, abort
 from http import HTTPStatus
 from injector import inject
 
+from seta_flask_server.infrastructure.constants import UserStatusConstants
 from seta_flask_server.repository.interfaces import IUsersBroker, ISessionsBroker
 from .models.info_dto import(user_info_model, account_model, provider_model)
 
@@ -42,8 +43,7 @@ class UserInfo(Resource):
             user = self.usersBroker.get_user_by_id(user_id=identity["user_id"], load_scopes=False)
             user.authenticated_provider = user.external_providers[0]
         
-        if user is None or user.is_not_active():
-            app.logger.error(f"User {str(identity)} not found in the database!")
+        if user is None or user.is_not_active():            
             abort(HTTPStatus.NOT_FOUND, "User not found in the database!")
 
         return {
@@ -118,7 +118,7 @@ class SetaAccount(Resource):
         security='CSRF')
     @jwt_required()   
     def delete(self):
-        """ Delete user account """
+        """ Mark user account as deleted """
         
         identity = get_jwt_identity()
         user_id=identity["user_id"]
@@ -126,7 +126,7 @@ class SetaAccount(Resource):
         if not self.usersBroker.user_uid_exists(user_id):
             abort(HTTPStatus.NOT_FOUND, "User id not found")
             
-        self.usersBroker.delete(user_id)
+        self.usersBroker.update_status(user_id=user_id, status=UserStatusConstants.Deleted)
         
         #destroy session token and cookies
         session_id = session.get("session_id")

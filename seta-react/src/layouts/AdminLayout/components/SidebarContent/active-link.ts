@@ -13,7 +13,7 @@ export const getActiveLink = (path: string): ActiveLink => {
     case '/admin':
       return ActiveLink.DASHBOARD
 
-    case '/admin/users':
+    case path.startsWith('/admin/users') ? path : '':
       return ActiveLink.USERS
 
     case '/admin/community-requests':

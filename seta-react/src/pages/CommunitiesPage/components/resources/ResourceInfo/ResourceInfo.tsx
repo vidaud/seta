@@ -12,6 +12,7 @@ import type {
   ResourceScopes,
   SystemScopes
 } from '~/pages/CommunitiesPage/contexts/community-list.context'
+import { PanelProvider } from '~/pages/CommunitiesPage/contexts/panel-context'
 
 import type { ResourceResponse } from '~/api/types/resource-types'
 
@@ -117,7 +118,6 @@ const ResourceInfo = ({ resource, resource_scopes, community_scopes }: Props) =>
                   e.stopPropagation()
                 }}
               >
-                {/* <RestrictedResource resource={resource} /> */}
                 <UpdateResource resource={resource} onChange={handleOutsideClick} />
                 <DeleteResource id={resource_id} />
               </Menu.Dropdown>
@@ -157,12 +157,14 @@ const ResourceInfo = ({ resource, resource_scopes, community_scopes }: Props) =>
       </Flex>
 
       {hasDetails && (
-        <ResourceDetails
-          css={S.details}
-          open={detailsOpen}
-          resource={resource}
-          resource_scopes={resource_scopes}
-        />
+        <PanelProvider>
+          <ResourceDetails
+            css={S.details}
+            open={detailsOpen}
+            resource={resource}
+            resource_scopes={resource_scopes}
+          />
+        </PanelProvider>
       )}
     </div>
   )

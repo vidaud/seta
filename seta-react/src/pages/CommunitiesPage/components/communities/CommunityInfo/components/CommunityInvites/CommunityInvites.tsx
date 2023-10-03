@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { createStyles, Table, rem, Text, Badge, useMantineTheme } from '@mantine/core'
+import { Table, Text, Badge, useMantineTheme } from '@mantine/core'
 
 import DateTimeCell from '~/pages/Admin/common/components/DateTimeCell/DateTimeCell'
 import UserInfo from '~/pages/Admin/common/components/UserInfo/UserInfo'
@@ -13,45 +13,9 @@ import { statusColors } from '~/pages/CommunitiesPage/types'
 
 import { useInviteID } from '~/api/communities/invites/invite'
 
+import { useStyles } from './style'
+
 import ExtendedMessage from '../ExtendedMessage/ExtendedMessage'
-
-const useStyles = createStyles(theme => ({
-  header: {
-    position: 'sticky',
-    top: 0,
-    backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.white,
-    transition: 'box-shadow 150ms ease',
-
-    '&::after': {
-      content: '""',
-      position: 'absolute',
-      left: 0,
-      right: 0,
-      bottom: 0,
-      borderBottom: `${rem(1)} solid ${
-        theme.colorScheme === 'dark' ? theme.colors.dark[3] : theme.colors.gray[2]
-      }`
-    }
-  },
-
-  scrolled: {
-    boxShadow: theme.shadows.sm
-  },
-  title: {
-    paddingBottom: theme.spacing.xl
-  },
-  td: {
-    whiteSpace: 'nowrap',
-    maxWidth: '10rem',
-    overflow: 'hidden',
-    textOverflow: 'ellipsis',
-    '&:hover': {
-      backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.colors.gray[0],
-      color: theme.colorScheme === 'dark' ? theme.white : theme.black,
-      cursor: 'pointer'
-    }
-  }
-}))
 
 const CommunityInvites = ({ id, type }) => {
   const { classes, cx } = useStyles()
@@ -125,8 +89,8 @@ const CommunityInvites = ({ id, type }) => {
   ))
 
   return (
-    <>
-      <Table miw={500}>
+    <div style={{ overflowX: 'auto', marginTop: '4%' }}>
+      <Table className={cx(classes.table)}>
         <thead className={cx(classes.header)}>
           <tr>
             <th>Community</th>
@@ -135,7 +99,6 @@ const CommunityInvites = ({ id, type }) => {
             <th>Status</th>
             <th>Initiated Date</th>
             <th>Initiated By</th>
-            {/* <th>Actions</th> */}
           </tr>
         </thead>
         <tbody>{rows}</tbody>
@@ -145,7 +108,7 @@ const CommunityInvites = ({ id, type }) => {
           Expand to see full list ...
         </Text>
       ) : null}
-    </>
+    </div>
   )
 }
 

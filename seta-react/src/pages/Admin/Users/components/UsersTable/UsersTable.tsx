@@ -1,13 +1,14 @@
 import { useMemo } from 'react'
 import { ActionIcon, Anchor, Badge, Group, Tooltip, Text } from '@mantine/core'
-import { IconUserCircle } from '@tabler/icons-react'
+import { IconUserEdit } from '@tabler/icons-react'
 import { useMantineReactTable, type MRT_ColumnDef, MantineReactTable } from 'mantine-react-table'
 import moment from 'moment'
 import { Link } from 'react-router-dom'
 
 import type { SetaAccount } from '~/types/admin/user-info'
-import { AccountStatus, UserRole } from '~/types/admin/user-info'
+import { AccountStatus } from '~/types/admin/user-info'
 import type { DataProps } from '~/types/data-props'
+import { UserRole } from '~/types/user'
 
 import DetailPanel from '../DetailPanel'
 
@@ -38,13 +39,9 @@ const UsersTable = ({ data, isLoading, error }: DataProps<SetaAccount[]>) => {
         },
         Cell: ({ cell }) => {
           const val = cell.getValue<UserRole>()
-          const color = val === UserRole.Administrator ? 'orange' : 'cyan'
+          const color = val === UserRole.Administrator ? 'orange.4' : 'cyan.3'
 
-          return (
-            <Badge color={color} variant="outline">
-              {val}
-            </Badge>
-          )
+          return <Badge color={color}>{val}</Badge>
         }
       },
       {
@@ -59,7 +56,7 @@ const UsersTable = ({ data, isLoading, error }: DataProps<SetaAccount[]>) => {
         },
         Cell: ({ cell }) => {
           const val = cell.getValue<AccountStatus>()
-          const color = val === AccountStatus.Active ? 'blue' : 'gray'
+          const color = val === AccountStatus.Active ? 'blue.3' : 'dark.3'
 
           return <Badge color={color}>{val}</Badge>
         }
@@ -122,7 +119,7 @@ const UsersTable = ({ data, isLoading, error }: DataProps<SetaAccount[]>) => {
       w: '100%'
     },
     mantineTableProps: {
-      striped: true
+      striped: false
     },
     mantineTableHeadCellProps: {
       style: {
@@ -166,12 +163,12 @@ const UsersTable = ({ data, isLoading, error }: DataProps<SetaAccount[]>) => {
     renderRowActions: ({ row }) => (
       <Tooltip label="Manage account">
         <ActionIcon
-          variant="outline"
-          color="blue"
+          variant="light"
+          color="indigo.3"
           component={Link}
           to={`/admin/users/${row.original.username}`}
         >
-          <IconUserCircle stroke={1.5} size="sm" />
+          <IconUserEdit stroke={1.5} size="sm" />
         </ActionIcon>
       </Tooltip>
     ),

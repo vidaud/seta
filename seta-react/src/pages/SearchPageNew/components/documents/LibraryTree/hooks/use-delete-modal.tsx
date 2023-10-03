@@ -1,6 +1,5 @@
 import { css } from '@emotion/react'
 import { Text } from '@mantine/core'
-import { notifications } from '@mantine/notifications'
 import { FaRegTrashAlt } from 'react-icons/fa'
 
 import ConfirmModal from '~/components/ConfirmModal'
@@ -8,6 +7,7 @@ import ConfirmModal from '~/components/ConfirmModal'
 import { useDeleteItem } from '~/api/search/library'
 import useComplexModalState from '~/hooks/use-complex-modal-state'
 import { LibraryItemType, type LibraryItem } from '~/types/library/library-item'
+import { notifications } from '~/utils/notifications'
 
 const removeIconStyle: ThemedCSS = theme => css`
   color: ${theme.colors.red[5]};
@@ -28,29 +28,6 @@ const useDeleteModal = () => {
 
   const isFolder = type === LibraryItemType.Folder
 
-  // TODO: Create helper functions for preset notifications settings
-  const showErrorNotification = () => {
-    notifications.show({
-      title: `Unable to remove ${isFolder ? 'folder' : 'document'}`,
-      message: (
-        <div>
-          Something went wrong {isFolder ? 'deleting the folder' : 'removing the document'}.
-          <br /> Please try again later.
-        </div>
-      ),
-      color: 'red',
-      autoClose: false,
-      styles: theme => ({
-        root: {
-          borderColor: theme.colors.gray[4]
-        },
-        title: {
-          fontSize: theme.fontSizes.md
-        }
-      })
-    })
-  }
-
   const confirmDelete = (target: LibraryItem) => {
     openModal(target)
   }
@@ -63,11 +40,20 @@ const useDeleteModal = () => {
     mutate(id, {
       onSuccess: () => {
         closeModal()
+
+        notifications.showInfo(
+          `The ${isFolder ? 'folder was deleted' : 'document was removed'} from your library.`,
+          { description: !isFolder ? 'You can add it back from the search results.' : undefined }
+        )
       },
 
       onError: () => {
         closeModal()
-        showErrorNotification()
+
+        notifications.showError(
+          `Something went wrong ${isFolder ? 'deleting the folder' : 'removing the document'}.`,
+          { description: 'Please try again later.' }
+        )
       }
     })
   }

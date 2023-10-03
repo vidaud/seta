@@ -10,7 +10,7 @@ const AdminOrphanedResources = () => {
   const resources = data ?? []
 
   if (error) {
-    return <SuggestionsError onTryAgain={refetch} />
+    return <SuggestionsError subject="orphans" onTryAgain={refetch} />
   }
 
   if (isLoading) {

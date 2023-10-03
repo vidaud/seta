@@ -13,7 +13,7 @@ const AdminOrphanedCommunities = () => {
   const setCommunityOwnerMutation = useSetCommunityOwner()
 
   if (error) {
-    return <SuggestionsError onTryAgain={refetch} />
+    return <SuggestionsError subject="orphans" onTryAgain={refetch} />
   }
 
   const handleCommunityOwnerSubmit = (communityId: string, ownerId: string) => {

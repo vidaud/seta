@@ -1,40 +1,16 @@
-import { useEffect, useState } from 'react'
-import { Text, Popover, Button, Group, createStyles, Tooltip } from '@mantine/core'
+import { useState } from 'react'
+import { Popover, Button, Group, Tooltip } from '@mantine/core'
 import { notifications } from '@mantine/notifications'
 
-import {
-  getMembership,
-  useRemoveCommunityMembership
-} from '~/api/communities/memberships/membership'
+import { useRemoveCommunityMembership } from '~/api/communities/memberships/membership'
 import { useUserPermissions } from '~/api/communities/user-scopes'
-import { useCurrentUser } from '~/contexts/user-context'
 
-const useStyles = createStyles(theme => ({
-  form: {
-    marginTop: '20px'
-  },
-  text: { paddingBottom: theme.spacing.md }
-}))
+import ConfirmationModal from './components/ConfirmationModal'
 
 const LeaveCommunity = ({ props }) => {
-  const { classes } = useStyles()
   const [opened, setOpened] = useState(false)
-  const [memberNumber, setMemberNumber] = useState<number | undefined>()
-  const { user } = useCurrentUser()
   const { refetch } = useUserPermissions()
   const setRemoveCommunityMembershipMutation = useRemoveCommunityMembership()
-
-  useEffect(() => {
-    getMembership(props.community_id).then(response => {
-      setMemberNumber(
-        response?.members.filter(
-          item =>
-            (item.role === 'CommunityOwner' || item.role === 'CommunityManager') &&
-            user?.username === item.user_id
-        )?.length
-      )
-    })
-  }, [props, user])
 
   const deleteMembership = () => {
     setRemoveCommunityMembershipMutation.mutate(props.community_id, {
@@ -84,24 +60,8 @@ const LeaveCommunity = ({ props }) => {
         </Tooltip>
       </Popover.Target>
       <Popover.Dropdown>
-        {memberNumber === 1 ? (
-          <>
-            <Text weight={500} className={classes.form}>
-              You are the only owner of this community!
-            </Text>
-            <Text weight={500} className={classes.form}>
-              By leaving, all resources will be allocated as orphan and could not be reused by other
-              users
-            </Text>
-          </>
-        ) : (
-          <Text weight={500} className={classes.form}>
-            Are you sure you want to leave this community?
-          </Text>
-        )}
-        <Text size="sm" className={classes.form}>
-          Press Confirm to proceed or press Cancel to abort
-        </Text>
+        <ConfirmationModal props={props} />
+
         <Group position="right" sx={{ paddingTop: '5%' }}>
           <Button
             variant="outline"

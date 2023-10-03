@@ -5,7 +5,7 @@ import ScrollModal from '~/components/ScrollModal/ScrollModal'
 import type { ModalStateProps } from '~/types/lib-props'
 
 import ChangeResourceRequests from '../ChangeResourceRequests'
-import ResourceUsersPermissions from '../ResourcePermissions'
+import ResourceUsersPermissions from '../ResourcePermissions/ResourceUserPermissions'
 
 type Props = {
   title: string

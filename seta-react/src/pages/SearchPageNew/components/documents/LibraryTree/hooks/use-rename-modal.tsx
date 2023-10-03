@@ -7,6 +7,7 @@ import PromptModal from '~/components/PromptModal'
 import { useUpdateItem } from '~/api/search/library'
 import useComplexModalState from '~/hooks/use-complex-modal-state'
 import type { LibraryItem } from '~/types/library/library-item'
+import { notifications } from '~/utils/notifications'
 
 import { getFolderPath } from '../utils'
 
@@ -69,6 +70,7 @@ const useRenameModal = () => {
       {
         onSuccess: () => {
           closeModal()
+          notifications.showSuccess(`The folder was renamed successfully.`)
         },
 
         onError: () => {

@@ -5,12 +5,12 @@ import { useCommunityListContext } from '~/pages/CommunitiesPage/contexts/commun
 const useStyles = createStyles({
   filters: {
     marginBottom: '1rem',
-    [`@media (max-width: 89em) and (min-width: 48em)`]: {
-      width: '50%'
+    [`@media (max-width: 89em) and (min-width: 68em)`]: {
+      width: '40%'
     }
   },
   select: {
-    [`@media (max-width: 89em) and (min-width: 48em)`]: {
+    [`@media (max-width: 89em) and (min-width: 68em)`]: {
       width: '45%'
     }
   }

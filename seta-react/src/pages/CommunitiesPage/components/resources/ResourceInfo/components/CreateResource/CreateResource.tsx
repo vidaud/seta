@@ -37,10 +37,21 @@ const CreateResource = ({ id }) => {
       <Modal
         opened={opened}
         onClose={close}
+        styles={{
+          body: {
+            [`@media only screen and (max-width: 1280px) and (orientation: landscape)`]: {
+              maxHeight: '550px',
+              overflowY: 'auto'
+            },
+            [`@media only screen and (max-width: 1024px) and (orientation: landscape)`]: {
+              maxHeight: '430px',
+              overflowY: 'auto'
+            }
+          }
+        }}
         withCloseButton={false}
         size="lg"
         scrollAreaComponent={ScrollArea.Autosize}
-        lockScroll={false}
         overlayProps={{
           color: theme.colorScheme === 'dark' ? theme.colors.dark[9] : theme.colors.gray[2],
           opacity: 0.55,

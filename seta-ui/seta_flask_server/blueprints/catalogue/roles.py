@@ -1,4 +1,5 @@
 from crypt import methods
+import enum
 from injector import inject
 from http import HTTPStatus
 
@@ -24,8 +25,7 @@ class RoleCatalogue(Resource):
         super().__init__(api, *args, **kwargs)
     
     @role_catalogue_ns.doc(description='Retrieve roles catalogue.',        
-        responses={int(HTTPStatus.OK): "'Retrieved roles.",
-                   int(HTTPStatus.BAD_REQUEST): "Invalid category; if set, then must be one of 'application', 'community'."},
+        responses={int(HTTPStatus.OK): "'Retrieved roles."},
         security='CSRF')
     @role_catalogue_ns.marshal_with(roles_model, mask="*", skip_none=True)
     @jwt_required()
@@ -39,7 +39,7 @@ class RoleCatalogue(Resource):
 CATEGORIES = [str(s) for s in RoleCategory]
 
 @role_catalogue_ns.route('/roles/<string:category>', endpoint="roles_category_catalogue", methods=['GET'])
-@role_catalogue_ns.param("category", f"Category, one of {str(CATEGORIES)}")
+@role_catalogue_ns.param("category", f"Roles category", enum=CATEGORIES)
 class RoleCatalogueByCategory(Resource):
 
     @inject
