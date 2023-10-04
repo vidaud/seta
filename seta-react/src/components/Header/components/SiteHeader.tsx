@@ -5,10 +5,8 @@ import { createScript, loadWebTool } from '~/components/Header/util'
 import { environment } from '~/environments/environment'
 
 const SiteHeader = () => {
-  const existingScript = document.getElementById('header')
-
   useEffect(() => {
-    if (!existingScript) {
+    if (!document.getElementById('analytic') && !document.getElementById('cookie')) {
       loadWebTool('https://europa.eu/webtools/load.js')
 
       createScript(
@@ -21,7 +19,7 @@ const SiteHeader = () => {
         `{"utility" : "analytics", "siteID": ${environment.EU_Analytics_Site_ID}, "instance": "europa.eu", "explicit": true}`
       )
     }
-  }, [existingScript])
+  }, [])
 
   return (
     <div className="site-header">

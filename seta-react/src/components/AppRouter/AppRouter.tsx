@@ -9,7 +9,9 @@ import {
 import CreateContribution from '~/pages/CommunitiesPage/components/contributors/NewContribution'
 import InvitesList from '~/pages/CommunitiesPage/components/notifications/invitesList'
 import MembersList from '~/pages/CommunitiesPage/components/notifications/membersList'
+import LoginWithGitHubPage from '~/pages/LoginPage/LoginWithGitHubPage'
 
+import LoginAuth from './components/LoginAuth'
 import RequireAuth from './components/RequireAuth'
 import AdminRoutes from './routes/AdminRoutes'
 
@@ -20,7 +22,6 @@ import ResourcesPage from '../../pages/CommunitiesPage/ResourcesPage'
 import ContactPage from '../../pages/ContactPage'
 import FaqsPage from '../../pages/FaqsPage'
 import HomePage from '../../pages/HomePage'
-import LoginPage from '../../pages/LoginPage'
 import NotFoundPage from '../../pages/NotFoundPage'
 import ProfilePage from '../../pages/ProfilePage'
 import SearchPageNew from '../../pages/SearchPageNew'
@@ -53,7 +54,15 @@ const routes = createRoutesFromElements(
     />
     <Route path="faqs" element={<FaqsPage />} />
     <Route path="contact" element={<ContactPage />} />
-    <Route path="login" element={<LoginPage />} />
+    <Route
+      path="login"
+      element={
+        <LoginAuth>
+          {/* <LoginPage /> */}
+          <LoginWithGitHubPage />
+        </LoginAuth>
+      }
+    />
     <Route path="/community/invites" element={<CommunityLayout />}>
       <Route
         path=""

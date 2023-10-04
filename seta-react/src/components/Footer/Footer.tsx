@@ -5,6 +5,7 @@ import * as S from './styles'
 
 const Footer = () => {
   const navigate = useNavigate()
+  const doc_link = window.location.origin + '/docs/'
 
   return (
     <div css={S.footer}>
@@ -19,6 +20,11 @@ const Footer = () => {
           <li className="header">Contact Us</li>
           <li className="link" onClick={() => navigate(`/contact`)}>
             Contact information
+          </li>
+
+          <li className="column">Documentation</li>
+          <li>
+            <a href={doc_link}>SeTA Docs</a>
           </li>
         </ul>
 
