@@ -64,7 +64,7 @@ const DocumentInfo = ({ document, queryTerms }: Props) => {
       icon: <IconWallet size={22} />,
       color: 'orange',
       tooltip: 'Save to my documents',
-      onClick: () => handleSave([{ id: document_id, title }])
+      onClick: () => handleSave([{ id: document_id, title, link: link_origin }])
     },
     {
       name: 'stage-doc',
@@ -76,7 +76,7 @@ const DocumentInfo = ({ document, queryTerms }: Props) => {
       toggledColor: 'teal',
       toggledTooltip: 'Remove from staged documents',
       toggledIcon: <FiCheck size={22} style={{ marginTop: 2 }} />,
-      onToggle: staged => toggleStaged(document_id, title, staged)
+      onToggle: staged => toggleStaged(document_id, title, link_origin, staged)
     }
   ]
 

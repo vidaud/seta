@@ -28,7 +28,7 @@ export type SaveDocumentsPayload = {
   documents: {
     documentId: string
     title: string
-    link?: string
+    link?: string | null
   }[]
 }
 
