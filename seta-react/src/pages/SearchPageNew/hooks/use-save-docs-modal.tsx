@@ -50,7 +50,7 @@ const useSaveDocsModal = ({ selectedDocs, clearSelectedDocs, removeStaged }: Arg
     mutate(
       {
         parentId: target.id === 'root' ? null : target.id,
-        documents: docs.map(({ id, title }) => ({ documentId: id, title }))
+        documents: docs.map(({ id, title, link }) => ({ documentId: id, title, link }))
       },
       {
         onSuccess: () => {

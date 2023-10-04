@@ -28,4 +28,5 @@ export type SearchState = {
 export type StagedDocument = {
   id: string
   title: string
+  link?: string | null
 }

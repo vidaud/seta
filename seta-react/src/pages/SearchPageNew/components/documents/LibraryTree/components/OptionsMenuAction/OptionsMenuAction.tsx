@@ -29,7 +29,7 @@ const OptionsMenuAction = ({ item, isLoading, onMenuChange }: Props) => {
       action={{
         icon: <BsThreeDotsVertical size={18} strokeWidth={0.5} />,
         color: 'gray.7',
-        tooltip: isFolder ? 'Other actions' : 'Actions',
+        tooltip: 'Actions',
         loading: isLoading,
         active: isLoading,
         onClick: () => setIsOpen(true)

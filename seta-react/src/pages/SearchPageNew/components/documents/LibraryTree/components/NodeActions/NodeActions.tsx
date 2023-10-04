@@ -4,6 +4,7 @@ import { Group, Tooltip } from '@mantine/core'
 import { LibraryItemType } from '~/types/library/library-item'
 import type { LibraryItem } from '~/types/library/library-item'
 
+import DocumentLinkAction from '../DocumentLinkAction'
 import NewFolderAction from '../NewFolderAction'
 import RootActions from '../RootActions'
 
@@ -49,12 +50,15 @@ const NodeActions = ({
     />
   )
 
+  const documentActions = !isFolder && <DocumentLinkAction item={item} />
+
   return (
     <div data-actions>
       <Group spacing={2} ml="sm">
         <Tooltip.Group openDelay={300} closeDelay={200}>
           {rootActions}
           {folderActions}
+          {documentActions}
 
           {hasActionMenu && (
             <Suspense fallback={null}>
