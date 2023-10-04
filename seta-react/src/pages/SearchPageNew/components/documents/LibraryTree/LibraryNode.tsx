@@ -140,8 +140,10 @@ const LibraryNode = ({ className, item, isRoot }: Props) => {
     </Badge>
   )
 
+  const nodeStyle = [S.node, isFolder && !foldersOnly && isExpanded && S.expanded]
+
   return (
-    <div css={S.node} className={className}>
+    <div css={nodeStyle} className={className} data-root={isRoot ? true : undefined} data-node>
       <Tooltip
         label={path.join(' / ')}
         openDelay={1000}

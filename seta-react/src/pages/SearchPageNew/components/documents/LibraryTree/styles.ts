@@ -10,6 +10,24 @@ export const rootNode = css`
 export const node: ThemedCSS = theme => css`
   margin-left: ${theme.spacing.sm};
   white-space: nowrap;
+  position: relative;
+`
+
+export const expanded: ThemedCSS = theme => css`
+  &:not([data-root])::before {
+    content: '';
+    position: absolute;
+    left: 1px;
+    top: 3.3rem;
+    bottom: 0.2rem;
+    width: 1px;
+    background-color: ${theme.colors.gray[3]};
+    transition: background-color 200ms ease;
+  }
+
+  & [data-node]:hover::before {
+    background-color: ${theme.colors.blue[3]};
+  }
 `
 
 export const itemContainer: ThemedCSS = theme => css`
