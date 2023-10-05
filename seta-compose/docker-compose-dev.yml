@@ -37,6 +37,8 @@ services:
     environment:
       - NODE_ENV=development
       - CHOKIDAR_USEPOLLING=true
+      - VITE_IDENTITY_PROVIDERS=['ECAS']
+      # - VITE_IDENTITY_PROVIDERS=['ECAS','GitHub']
 
   seta-doc:
     build:       
