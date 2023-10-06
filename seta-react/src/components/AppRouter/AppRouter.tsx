@@ -30,7 +30,7 @@ import SearchPageNew from '../../pages/SearchPageNew'
 const ROOT_PATH = '/'
 const DISCOVER_COMMUNITY_PATH = '/community/'
 const DISCOVER_RESOURCE_PATH = '/community/resources/'
-const hasGitBub = import.meta.env.VITE_IDENTITY_PROVIDERS.includes('GitHub')
+const hasGitHub = import.meta.env.VITE_IDENTITY_PROVIDERS.includes('GitHub')
 
 const routes = createRoutesFromElements(
   <Route path={ROOT_PATH} element={<AppLayout />}>
@@ -58,7 +58,7 @@ const routes = createRoutesFromElements(
     <Route path="contact" element={<ContactPage />} />
     <Route
       path="login"
-      element={<LoginAuth>{hasGitBub ? <LoginWithGitHubPage /> : <LoginPage />}</LoginAuth>}
+      element={<LoginAuth>{hasGitHub ? <LoginWithGitHubPage /> : <LoginPage />}</LoginAuth>}
     />
     <Route path="/community/invites" element={<CommunityLayout />}>
       <Route
