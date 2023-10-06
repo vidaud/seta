@@ -91,6 +91,7 @@ services:
       args:
         - HTTP_PROXY=${HTTP_PROXY}
         - HTTPS_PROXY=${HTTPS_PROXY}
+        - VITE_IDENTITY_PROVIDERS=${VITE_IDENTITY_PROVIDERS}
     expose:
       - "3000"
     environment:

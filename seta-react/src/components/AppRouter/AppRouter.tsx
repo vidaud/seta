@@ -9,6 +9,7 @@ import {
 import CreateContribution from '~/pages/CommunitiesPage/components/contributors/NewContribution'
 import InvitesList from '~/pages/CommunitiesPage/components/notifications/invitesList'
 import MembersList from '~/pages/CommunitiesPage/components/notifications/membersList'
+import LoginPage from '~/pages/LoginPage'
 import LoginWithGitHubPage from '~/pages/LoginPage/LoginWithGitHubPage'
 
 import LoginAuth from './components/LoginAuth'
@@ -29,6 +30,7 @@ import SearchPageNew from '../../pages/SearchPageNew'
 const ROOT_PATH = '/'
 const DISCOVER_COMMUNITY_PATH = '/community/'
 const DISCOVER_RESOURCE_PATH = '/community/resources/'
+const hasGitHub = import.meta.env.VITE_IDENTITY_PROVIDERS.includes('GitHub')
 
 const routes = createRoutesFromElements(
   <Route path={ROOT_PATH} element={<AppLayout />}>
@@ -56,12 +58,7 @@ const routes = createRoutesFromElements(
     <Route path="contact" element={<ContactPage />} />
     <Route
       path="login"
-      element={
-        <LoginAuth>
-          {/* <LoginPage /> */}
-          <LoginWithGitHubPage />
-        </LoginAuth>
-      }
+      element={<LoginAuth>{hasGitHub ? <LoginWithGitHubPage /> : <LoginPage />}</LoginAuth>}
     />
     <Route path="/community/invites" element={<CommunityLayout />}>
       <Route
