@@ -1,6 +1,6 @@
 import './style.css'
-import LoginPage from './LoginPage'
-import LoginWithGitHubPage from './LoginWithGitHubPage'
+import LoginPage from './component/LoginPage'
+import LoginWithGitHubPage from './component/LoginWithGitHubPage/LoginWithGitHubPage'
 
 const Login = () => {
   const hasGitHub = import.meta.env.VITE_IDENTITY_PROVIDERS?.split(',').includes('GitHub')
