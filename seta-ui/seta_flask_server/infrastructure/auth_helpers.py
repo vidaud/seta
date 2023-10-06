@@ -7,7 +7,7 @@ from datetime import timezone
 
 import re
 
-from flask import Response, make_response, redirect, session
+from flask import Flask, Response, make_response, redirect, session
 
 from flask_jwt_extended import create_access_token, create_refresh_token
 from flask_jwt_extended import set_access_cookies, set_refresh_cookies
@@ -22,11 +22,11 @@ from Crypto.PublicKey import RSA
 from Crypto.Signature import pkcs1_15
 import binascii
 
-def refresh_expiring_jwts(app, response):
+def refresh_expiring_jwts(app: Flask, response):
     new_access_token = None
     
     try:
-        token_expires = app.config['JWT_ACCESS_TOKEN_EXPIRES']
+        token_expires = app.config.get('JWT_ACCESS_TOKEN_EXPIRES')
                 
         if token_expires is None:
             app.logger.debug("set token_expires to 15 min")

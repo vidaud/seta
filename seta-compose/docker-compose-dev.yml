@@ -5,12 +5,15 @@ services:
 
   seta-es:
     mem_limit: "6g"
+    environment:
+    - logger.level=INFO
 
   seta-api:
     build:
-      dockerfile: Dockerfile-dev-flask
+      dockerfile: seta-api/Dockerfile-dev
     volumes:
       - ../seta-api:/home/seta
+      - ../seta-config:/etc/seta
       - /home/seta/tika
 
   seta-nginx:
@@ -20,11 +23,12 @@ services:
 
   seta-ui:
     build:
-       dockerfile: dockerfiles/Dockerfile-ui-dev
+       dockerfile: seta-ui/dockerfiles/Dockerfile-ui-dev
     ports:
       - "5678:5678"
     volumes:
       - ../seta-ui:/home/seta
+      - ../seta-config:/etc/seta
 
   seta-ui-react:
     build:
@@ -48,6 +52,7 @@ services:
 
   seta-auth:
     build:
-       dockerfile: dockerfiles/Dockerfile-auth-dev
+       dockerfile: seta-ui/dockerfiles/Dockerfile-auth-dev
     volumes:
       - ../seta-ui:/home/seta
+      - ../seta-config:/etc/seta

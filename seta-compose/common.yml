@@ -28,8 +28,7 @@ services:
       - xpack.security.transport.ssl.enabled=false
       - ingest.geoip.downloader.enabled=false
       - bootstrap.memory_lock=true
-      - cluster.name=docker-cluster
-      - logger.level=INFO
+      - cluster.name=docker-cluster      
     ulimits:
       memlock:
         soft: -1
@@ -38,7 +37,7 @@ services:
   api:
     restart: always
     build:
-      context: ../seta-api
+      context: ../
       args:
         - HTTP_PROXY=${HTTP_PROXY}
         - HTTPS_PROXY=${HTTPS_PROXY}
@@ -52,6 +51,7 @@ services:
       - DB_HOST
       - DB_PORT
       - DB_NAME
+      - STAGE
 
   nginx:
     restart: always
@@ -67,7 +67,7 @@ services:
   ui:
     restart: always
     build:
-      context: ../seta-ui
+      context: ../
       args:
         - HTTP_PROXY=${HTTP_PROXY}
         - HTTPS_PROXY=${HTTPS_PROXY}
@@ -83,6 +83,7 @@ services:
       - DB_HOST
       - DB_PORT
       - DB_NAME
+      - STAGE
 
   ui-react:
     restart: always
@@ -97,6 +98,7 @@ services:
       - NO_PROXY=${NO_PROXY}
       - no_proxy=${NO_PROXY}
       - VITE_IDENTITY_PROVIDERS=${SETA_IDENTITY_PROVIDERS}
+
   doc:
     restart: always
     build:
@@ -111,7 +113,8 @@ services:
 
   data:
     build:
-      context: ../seta-data
+      context: ../
+      dockerfile: seta-data/Dockerfile
       args:
         - HTTP_PROXY=${HTTP_PROXY}
         - HTTPS_PROXY=${HTTPS_PROXY}
@@ -119,11 +122,12 @@ services:
       - NO_PROXY=${NO_PROXY}
       - no_proxy=${NO_PROXY}
       - ES_HOST
+      - STAGE
 
   auth:
     restart: always
     build:
-      context: ../seta-ui
+      context: ../
       args:
         - HTTP_PROXY=${HTTP_PROXY}
         - HTTPS_PROXY=${HTTPS_PROXY}
@@ -136,3 +140,4 @@ services:
       - DB_HOST
       - DB_PORT
       - DB_NAME
+      - STAGE

@@ -25,24 +25,23 @@ def create_app(config_object):
     app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_host=1)
     
     app.config.from_object(config_object)    
-    app.home_route = app.config["HOME_ROUTE"]
+    app.home_route = app.config.get("HOME_ROUTE")
         
     #use flask.json in all modules instead of python built-in json
     app.json_provider_class = MongodbJSONProvider
         
-    
-    register_extensions(app)
+    register_extensions(app)   
     
     with app.app_context():
         register_blueprints(app)
-        
+
     register_cas_client(app)
            
     request_endswith_ignore_list = ['.js', '.css', '.png', '.ico', '.svg', '.map', '.json', 'doc']
     request_starts_with_ignore_list = ['/authorization', '/authentication', '/seta-ui/api/v1/login', 
                                        '/seta-ui/api/v1/logout', '/seta-ui/api/v1/refresh', '/seta-ui/api/v1/me/user-info', '/seta-ui/api/v1/notifications']
     
-    with app.app_context():         
+    with app.app_context():
             
         @app.after_request
         def refresh_jwts(response):
@@ -127,7 +126,7 @@ def create_app(config_object):
         sessionsBroker = app_injector.injector.get(ISessionsBroker)        
         return sessionsBroker.session_token_is_blocked(jti)
      
-    if app.config['SCHEDULER_ENABLED']:            
+    if app.config.get('SCHEDULER_ENABLED', False):            
         from seta_flask_server.infrastructure.scheduler import (tasks, events)            
         scheduler.start()   
         
@@ -164,7 +163,7 @@ def register_blueprints(app):
 
     app.register_blueprint(admin_bp, url_prefix=API_ROOT_V1)    
         
-def register_extensions(app):    
+def register_extensions(app: Flask):    
     github.init_app(app)
     scheduler.init_app(app)
     jwt.init_app(app)
@@ -174,15 +173,15 @@ def register_extensions(app):
     except:
         app.logger.error("logs config failed")
         
-def register_cas_client(app):
+def register_cas_client(app: Flask):
     with app.app_context(), app.test_request_context():
         ecas_login_callback_url = url_for("auth_ecas.login_callback_ecas", _external=True)
         
-    app.logger.debug("Auth ECAS login callback: " + ecas_login_callback_url)
+    #app.logger.debug("Auth ECAS login callback: " + ecas_login_callback_url)
     
     #the service_url will be changed before ECAS redirect with 'request.url'
     app.cas_client = SetaCasClient(
         #version=3,
         service_url = ecas_login_callback_url,
-        server_url = app.config["AUTH_CAS_URL"],
+        server_url = app.config.get("AUTH_CAS_URL"),
     )    

@@ -1,7 +1,9 @@
 from logging.config import dictConfig
 
+from flask import Flask
+
 """
-We have options in python for stdout (streamhandling) and file logging
+We have options in python for stdout (StreamHandling) and file logging
 File logging has options for a Rotating file based on size or time (daily)
 or a watched file, which supports logrotate style rotation
 """
@@ -11,11 +13,11 @@ class LogSetup(object):
         if app is not None:
             self.init_app(app, **kwargs)
 
-    def init_app(self, app):
-        log_type = app.config["LOG_TYPE"]
-        logging_level = app.config["LOG_LEVEL"]
-        db_host = app.config["DB_HOST"]
-        db_port = app.config["DB_PORT"]
+    def init_app(self, app: Flask):
+        log_type = app.config.get("LOG_TYPE", "stream")
+        logging_level = app.config.get("LOG_LEVEL", "DEBUG")
+        db_host = app.config.get("DB_HOST")
+        db_port = app.config.get("DB_PORT")
 
         if log_type != "stream":
             try:

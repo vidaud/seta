@@ -25,7 +25,7 @@ RUN apt-get install -yq tzdata && \
     ln -fs /usr/share/zoneinfo/UTC /etc/localtime && \
     dpkg-reconfigure -f noninteractive tzdata
 
-COPY ./requirements.txt $ROOT/requirements.txt
+COPY ./seta-ui/requirements.txt $ROOT/requirements.txt
 WORKDIR $ROOT
 RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
@@ -35,5 +35,5 @@ ENV PYTHONDONTWRITEBYTECODE 1
 # Turns off buffering for easier container logging
 ENV PYTHONUNBUFFERED 1
 
-#CMD ["gunicorn", "--conf", "/home/seta/app_ui/gunicorn_conf.py", "--bind", "0.0.0.0:8080", "--capture-output" , "--access-logformat", "[seta.ui] %(h)s %(l)s %(u)s %(t)s. %(r)s. %(s)s %(b)s. %(f)s. %(a)s", "--chdir", "/home/seta/app_ui", "app_ui_dev:app"]
-CMD flask --app app_ui/app_ui_dev --debug run -h "0.0.0.0" --port 8080
+#CMD ["gunicorn", "--conf", "/home/seta/app_ui/gunicorn_conf.py", "--bind", "0.0.0.0:8080", "--capture-output" , "--access-logformat", "[seta.ui] %(h)s %(l)s %(u)s %(t)s. %(r)s. %(s)s %(b)s. %(f)s. %(a)s", "--chdir", "/home/seta/app_ui", "app:app"]
+CMD flask --app app_ui/app --debug run -h "0.0.0.0" --port 8080

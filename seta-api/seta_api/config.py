@@ -1,220 +1,113 @@
-"""seta-ui flask configuration."""
+"""seta-api web server configuration."""
+import configparser
 import os
     
 class Config:
-    """Base class for common configuration"""
-    
-    #============Seta Configuration ========#
+    """Seta-api configuration"""
+
+    CONFIG_APP_FILE = "/etc/seta/api.conf"
+    CONFIG_LOGS_FILE = "/etc/seta/logs.conf"
      
-    #database host - docker container for mongo
-    DB_HOST="seta-mongo"
-    
-    #database port
-    DB_PORT=27017
-    
-    #database name
-    DB_NAME="seta"
-    
-    #corpus
-    DEFAULT_SUGGESTION = 6
-    DEFAULT_TERM_NUMBER = 20
-    DEFAULT_DOCS_NUMBER = 10
-    DEFAULT_FROM_DOC_NUMBER = 0
-    PAGINATION_DOC_LIMIT = 10000
-    SEARCH_TYPES = ["DOCUMENT_SEARCH", "CHUNK_SEARCH", "ALL_CHUNKS_SEARCH"]
-    AGG_MISSING_NAME = "NO_CLASS"
-    KNN_SEARCH_K = 5000
-    KNN_SEARCH_NUM_CANDIDATES = 10000
-    SIMILARITY_THRESHOLD = 0.35
-
-    #term enrichment
-    DEFAULT_ENRICHMENT_TYPE = "similar"
-
-    ES_HOST = "seta-es:9200"
-    ES_INIT_DATA_DUMP_FILE = "seta-public-000001-8.2-data.zip"
-    ES_UPDATE_DATA_DUMP_FILE = "dump10000_up.zip"
-    ES_INIT_DATA_CONFIG_FILE = "seta-public-000001-8.2-mapping.json"
-    
-    INDEX = ["seta-public-000001", "seta-private-000001"]
-    INDEX_SUGGESTION = "seta-suggestion-000001"
-    INDEX_PUBLIC = "seta-public-000001"
-    INDEX_PRIVATE = "seta-private-000001"
-
-    EXAMPLE_GUEST = "example_get-token_guest.py"
-    EXAMPLE_USER = "example_get-token_user.py"
-    JRCBOX_ID = "DbdH9B1dc5hD0TM"
-    JRCBOX_PATH = "https://jrcbox.jrc.ec.europa.eu/index.php/s/"
-    JRCBOX_PASS = "Op-next-seta-2022-14-14"
-    JRCBOX_WEBDAV = "https://jrcbox.jrc.ec.europa.eu/public.php/webdav/"
-
-    TIKA_PATH = "tika/tika-app-2.4.1.jar"
-    #======================================#
-    
-    #===========Flask-PyMongo Configuration========#
-    #https://flask-pymongo.readthedocs.io/en/latest/
-    
-    #MONGO_URI = f"mongodb://{DB_HOST}:{DB_PORT}/{DB_NAME}"
     @property
     def MONGO_URI(self):
-        return f"mongodb://{self.DB_HOST}:{self.DB_PORT}/{self.DB_NAME}"
+        return f"mongodb://{Config.DB_HOST}:{Config.DB_PORT}/{Config.DB_NAME}"
     
-    #======================================#  
-    
-    #============Flask Configuration========#
-    #https://flask.palletsprojects.com/en/2.1.x/config/
-    
-    #Exceptions are re-raised rather than being handled by the app's error handlers.     
-    PROPAGATE_EXCEPTIONS = True
-    
-    #A secret key that will be used for securely signing the session cookie
-    SECRET_KEY = "no-need-for-secret"
-    
-    MAX_CONTENT_LENGTH = 50 * 1000 * 1000  # 50M 
-    
-    #======================================#
-    
-    #===========Flask-RESTX Configuration========#
-    #https://flask-restx.readthedocs.io/en/latest/configuration.html
-    
-    #disable the mask documentation in swagger
-    RESTX_MASK_SWAGGER=False    
-    
-    #no info about this one!
-    SWAGGER_UI_JSONEDITOR = True
-    #======================================# 
-    
+    def __init__(self, section_name: str) -> None:
+
+        config = configparser.ConfigParser()
+        config.read([Config.CONFIG_LOGS_FILE, Config.CONFIG_APP_FILE])
+
+        sections = config.sections()
+        if len(sections) == 0:
+            message = f"No configuration section found in the config files ('{Config.CONFIG_LOGS_FILE}','{Config.CONFIG_APP_FILE}')"
+            raise Exception(message)
+
+        if section_name not in sections:
+            raise Exception("section_name parameter must be one of " + str(sections))
         
-    #============Flask-JWT-Extended Configuration========#
-    #https://flask-jwt-extended.readthedocs.io/en/stable/options/
-    
-    #The secret key used to encode and decode JWTs    
-    JWT_SECRET_KEY = "no-need-for-secret"
-    
-    #The claim in a JWT that is used as the source of identity
-    JWT_IDENTITY_CLAIM="seta_id"
-    
-    #Enable Cross Site Request Forgery (CSRF) protection
-    JWT_COOKIE_CSRF_PROTECT = False
-    
-    #Where to look for a JWT when processing a request in the specified order.
-    JWT_TOKEN_LOCATION=["headers", "cookies"]
-    
-    #api endpoint to decode the JWT token
-    JWT_TOKEN_INFO_URL="http://seta-auth:8082/authorization/v1/token_info"
-    #======================================#
-    
-    #============Flask-APScheduler Configuration========#
-    #https://viniciuschiele.github.io/flask-apscheduler/rst/configuration.html
-    
-    #enable Flask-APScheduler build-in API
-    SCHEDULER_API_ENABLED = True
-    SCHEDULER_API_PREFIX = "/seta-api/scheduler"
-    #======================================#        
-    
-    #===========LogSetup Configuration========#
-    #https://medium.com/tenable-techblog/the-boring-stuff-flask-logging-21c3a5dd0392
-    #https://github.com/tenable/flask-logging-demo
-    
-    #These configs are read from Docker ENV variables
-    
-    # Logging Setup
-    LOG_TYPE = "stream"
-    LOG_LEVEL = "INFO"
-    
-    # File Logging Setup
-    LOG_DIR = "/var/log"
-    APP_LOG_NAME = "app.log"
-    WWW_LOG_NAME = "www.log"
-    SCHEDULER_LOG_NAME = "sched.log"
-    LOG_MAX_BYTES = "100_000" # 10MB in bytes
-    LOG_COPIES = "5" 
-    #======================================#     
-    
-    
-   
-        
-    def __init__(self) -> None:             
-        """Read environment variables"""         
-                
+        config_section = config[section_name]    
+
+        Config._init_config_section(config_section)
+        Config._init_env_variables()   
+
+
+    @staticmethod
+    def _init_config_section(config_section: configparser.SectionProxy):
+        #========= Read config section =========#
+        #check the seta_config/*.conf files for documentation
+
+        #flask
+        Config.SECRET_KEY = config_section.get("SECRET_KEY", fallback="no-need-for-secret")
+        Config.PROPAGATE_EXCEPTIONS = config_section.getboolean("PROPAGATE_EXCEPTIONS", fallback=True)        
+        Config.TESTING = config_section.getboolean("TESTING", fallback=False)
+        Config.MAX_CONTENT_LENGTH = config_section.getint("MAX_CONTENT_LENGTH", fallback=52_428_800)
+
+        #JWT Extended
+        Config.JWT_SECRET_KEY = Config.SECRET_KEY
+        Config.JWT_IDENTITY_CLAIM = config_section.get("JWT_IDENTITY_CLAIM", fallback="seta_id")
+        Config.JWT_COOKIE_CSRF_PROTECT = config_section.getboolean("JWT_COOKIE_CSRF_PROTECT", fallback=True)
+        Config.JWT_COOKIE_SECURE = config_section.getboolean("JWT_COOKIE_SECURE", fallback=False)
+
+        token_location = config_section.get("JWT_TOKEN_LOCATION", fallback="headers,cookies")
+        Config.JWT_TOKEN_LOCATION = token_location.split(sep=",")
+
+        Config.JWT_TOKEN_INFO_URL = config_section.get("JWT_TOKEN_INFO_URL")
+
+        #restx
+        Config.RESTX_MASK_SWAGGER = config_section.getboolean("RESTX_MASK_SWAGGER", fallback=False)
+        Config.SWAGGER_UI_JSONEDITOR = config_section.getboolean("SWAGGER_UI_JSONEDITOR", fallback=False)
+
+        #custom
+        Config.DEFAULT_SUGGESTION = config_section.getint("DEFAULT_SUGGESTION", fallback=6)
+        Config.DEFAULT_TERM_NUMBER = config_section.getint("DEFAULT_TERM_NUMBER", fallback=20)
+        Config.DEFAULT_DOCS_NUMBER = config_section.getint("DEFAULT_DOCS_NUMBER", fallback=10)
+        Config.DEFAULT_FROM_DOC_NUMBER = config_section.getint("DEFAULT_FROM_DOC_NUMBER", fallback=0)
+        Config.PAGINATION_DOC_LIMIT = config_section.getint("PAGINATION_DOC_LIMIT", fallback=0)
+        Config.KNN_SEARCH_K = config_section.getint("KNN_SEARCH_K", fallback=5000)
+        Config.KNN_SEARCH_NUM_CANDIDATES = config_section.getint("KNN_SEARCH_NUM_CANDIDATES", fallback=5000)
+        Config.SIMILARITY_THRESHOLD = config_section.getfloat("SIMILARITY_THRESHOLD", fallback=0)
+        Config.AGG_MISSING_NAME = config_section.get("AGG_MISSING_NAME", fallback="NO_CLASS")
+
+        search_types = config_section.get("SEARCH_TYPES", fallback="DOCUMENT_SEARCH,CHUNK_SEARCH,ALL_CHUNKS_SEARCH")
+        Config.SEARCH_TYPES = search_types.split(sep=",")
+
+        Config.DEFAULT_ENRICHMENT_TYPE = config_section.get("DEFAULT_ENRICHMENT_TYPE", fallback="similar")
+
+        Config.ES_INIT_DATA_DUMP_FILE = config_section.get("ES_INIT_DATA_DUMP_FILE")
+        Config.ES_UPDATE_DATA_DUMP_FILE = config_section.get("ES_UPDATE_DATA_DUMP_FILE")
+        Config.ES_INIT_DATA_CONFIG_FILE = config_section.get("ES_INIT_DATA_CONFIG_FILE")
+
+        index = config_section.get("INDEX", fallback="")
+        Config.INDEX = index.split(sep=",")
+
+        Config.INDEX_SUGGESTION = config_section.get("INDEX_SUGGESTION")
+        Config.INDEX_PUBLIC = config_section.get("INDEX_PUBLIC")
+        Config.INDEX_PRIVATE = config_section.get("INDEX_PRIVATE")
+
+        Config.EXAMPLE_GUEST = config_section.get("EXAMPLE_GUEST")
+        Config.EXAMPLE_USER = config_section.get("EXAMPLE_USER")
+
+        Config.TIKA_PATH = config_section.get("TIKA_PATH")
+
         #Read logging environment variables
-        Config.LOG_TYPE = os.environ.get("LOG_TYPE", "stream")
-        Config.LOG_LEVEL = os.environ.get("LOG_LEVEL", "INFO")
-        Config.LOG_DIR = os.environ.get("LOG_DIR", "/var/log")
-        Config.APP_LOG_NAME = os.environ.get("APP_LOG_NAME", "app.log")
-        Config.WWW_LOG_NAME = os.environ.get("WWW_LOG_NAME", "www.log")
-        Config.LOG_MAX_BYTES = os.environ.get("LOG_MAX_BYTES", 100_000_000)  # 100MB in bytes
-        Config.LOG_COPIES = os.environ.get("LOG_COPIES", 5)   
-             
-        #read services env variables
-        Config.ES_HOST = os.environ.get("ES_HOST")
-        
-        Config.DB_HOST = os.environ.get("DB_HOST")        
+        Config.LOG_TYPE = config_section.get("LOG_TYPE", "stream")
+        Config.LOG_LEVEL = config_section.get("LOG_LEVEL", "INFO")
+        Config.LOG_DIR = config_section.get("LOG_DIR", "/var/log")
+        Config.APP_LOG_NAME = config_section.get("APP_LOG_NAME", "app.log")
+        Config.WWW_LOG_NAME = config_section.get("WWW_LOG_NAME", "www.log")
+        Config.SCHEDULER_LOG_NAME = config_section.get("SCHEDULER_LOG_NAME", "sched.log")
+        Config.LOG_MAX_BYTES = config_section.getint("LOG_MAX_BYTES", 100_000_000)  # 100MB in bytes
+        Config.LOG_COPIES = config_section.getint("LOG_COPIES", 5)
+
+    @staticmethod
+    def _init_env_variables():
+        #===== Read environment variables ======#
+
+        Config.ES_HOST = os.environ.get("ES_HOST")        
+        Config.DB_HOST = os.environ.get("DB_HOST")
         Config.DB_NAME = os.environ.get("DB_NAME")
-        
+        Config.DB_PORT = 27017
+
         port = os.environ.get("DB_PORT")
         if port:
             Config.DB_PORT = int(port)
-            
-class DevConfig(Config):  
-    """Development config"""
-    
-    def __init__(self) -> None:
-        super().__init__()        
-    
-    #============Seta Configuration ========#
-    
-    #disable scheduler
-    SCHEDULER_ENABLED = False
-    
-    #======================================#    
-    
-class ProdConfig(Config):
-    """Production config"""
-    
-    def __init__(self) -> None:
-        super().__init__()    
-    
-    #============Seta Configuration ========#
-    
-    #disable scheduler tasks
-    SCHEDULER_ENABLED = False
-    
-    #======================================#
-    
-class TestConfig(Config):
-    """Testing configuration"""
-    
-    def __init__(self) -> None:
-        super().__init__()
-        
-        if Config.ES_HOST is None:
-            Config.ES_HOST = "seta-es-test:9200"
-            
-        if Config.DB_HOST is None:
-            Config.DB_HOST = "seta-mongo-test"
-            
-        if Config.DB_PORT is None:
-            Config.DB_PORT = 27017
-            
-        if Config.DB_NAME is None:
-            Config.DB_NAME = "seta-test"
-    
-    #============Seta Configuration ========#
-    
-    #disable scheduler tasks
-    SCHEDULER_ENABLED = False   
-    
-    
-    #======================================#
-    
-    #============Flask Configuration========#
-        
-    #Enable testing mode
-    TESTING = True
-    
-    #======================================#    
-    
-    #============Flask-APScheduler Configuration========#
-    #disable Flask-APScheduler build-in API
-    SCHEDULER_API_ENABLED = False
-    #======================================#  
