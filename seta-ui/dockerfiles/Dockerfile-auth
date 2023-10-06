@@ -9,10 +9,9 @@ ENV http_proxy=$HTTP_PROXY
 ENV HTTPS_PROXY=$HTTPS_PROXY
 ENV HTTP_PROXY=$HTTP_PROXY
 
-RUN apt update -y
+RUN apt update -y 
 RUN apt install -y  --no-install-recommends curl
 RUN apt install -y  --no-install-recommends wget
-RUN apt install -y  --no-install-recommends gnupg
 RUN apt install -y  --no-install-recommends python3-pip
 RUN pip install --upgrade pip
 
@@ -26,14 +25,12 @@ RUN apt-get install -yq tzdata && \
     dpkg-reconfigure -f noninteractive tzdata
 
 COPY ./requirements.txt $ROOT/requirements.txt
+
 WORKDIR $ROOT
 RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
 
-# Keeps Python from generating .pyc files in the container
-ENV PYTHONDONTWRITEBYTECODE 1
-# Turns off buffering for easier container logging
-ENV PYTHONUNBUFFERED 1
+COPY ./app_auth $ROOT/app_auth
+COPY ./seta_flask_server $ROOT/seta_flask_server
 
-#CMD ["gunicorn", "--conf", "/home/seta/gunicorn_conf.py", "--bind", "0.0.0.0:8080", "--capture-output" , "--access-logformat", "[seta.ui] %(h)s %(l)s %(u)s %(t)s. %(r)s. %(s)s %(b)s. %(f)s. %(a)s", "--chdir", "/home/seta", "app_dev:app"]
-CMD flask --app app_dev --debug run -h "0.0.0.0" --port 8080
+CMD ["gunicorn", "--conf", "/home/seta/app_auth/gunicorn_conf.py", "--bind", "0.0.0.0:8082", "--capture-output" , "--access-logformat", "[seta.auth] %(h)s %(l)s %(u)s %(t)s %(r)s %(s)s %(b)s | %(f)s | %(a)s", "--chdir", "/home/seta/app_auth", "app_auth:app"]

@@ -7,7 +7,7 @@ from flask_jwt_extended import get_jwt_identity
 from .infrastructure.extensions import (scheduler, jwt, logs, github)
 from .infrastructure.auth_helpers import refresh_expiring_jwts
 
-from .infrastructure.helpers import JSONEncoder, MongodbJSONProvider
+from .infrastructure.helpers import MongodbJSONProvider
 from seta_flask_server.repository.interfaces import ISessionsBroker
 from seta_flask_server.infrastructure.auth_helpers import create_session_token
 

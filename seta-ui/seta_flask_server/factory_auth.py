@@ -1,13 +1,13 @@
-from flask import (Flask, request)
+from flask import Flask
 from werkzeug.middleware.proxy_fix import ProxyFix
 
-from .infrastructure.extensions import (jwt, logs)
+from seta_flask_server.infrastructure.extensions import (jwt, logs)
 
-from .infrastructure.helpers import MongodbJSONProvider
+from seta_flask_server.infrastructure.helpers import MongodbJSONProvider
 
 from flask_injector import FlaskInjector
-from .infrastructure.mongo_dependency import MongoDbClientModule
-from seta_auth.repository.interfaces import ISessionsBroker
+from seta_flask_server.dependency import MongoDbClientModule
+from seta_flask_server.repository.interfaces import ISessionsBroker
 
 def create_app(config_object):
     """Main app factory"""
@@ -33,7 +33,7 @@ def create_app(config_object):
         }
         return additional_claims
     
-     # Callback function to check if a JWT exists in the database blocklist
+     # Callback function to check if a JWT exists in the database block list
     @jwt.token_in_blocklist_loader
     def check_if_token_revoked(jwt_header, jwt_payload: dict) -> bool:
         jti = jwt_payload["jti"]
@@ -48,14 +48,14 @@ def create_app(config_object):
     
     return app
     
-def register_blueprints(app):
-    from .blueprints.token_auth import token_auth
-    from .blueprints.token_info import token_info  
+def register_blueprints(app: Flask):
+    from seta_flask_server.blueprints.authorization.token_auth import token_auth
+    from seta_flask_server.blueprints.authorization.token_info import token_info  
     
     app.register_blueprint(token_auth, url_prefix="/authentication/v1")
     app.register_blueprint(token_info, url_prefix="/authorization/v1")
     
-def register_extensions(app): 
+def register_extensions(app: Flask): 
     jwt.init_app(app)
     
     try:

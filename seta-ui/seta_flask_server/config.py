@@ -19,7 +19,7 @@ class Config:
     #database port
     DB_PORT=27017
 
-    #databse name
+    #database name
     DB_NAME="seta"
 
     #administrators email list - new user is set as admin if email present in this list

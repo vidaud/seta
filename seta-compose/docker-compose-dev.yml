@@ -20,7 +20,7 @@ services:
 
   seta-ui:
     build:
-       dockerfile: Dockerfile-dev-flask
+       dockerfile: dockerfiles/Dockerfile-ui-dev
     ports:
       - "5678:5678"
     volumes:
@@ -48,6 +48,6 @@ services:
 
   seta-auth:
     build:
-       dockerfile: Dockerfile-dev
+       dockerfile: dockerfiles/Dockerfile-auth-dev
     volumes:
-      - ../seta-auth:/home/seta
+      - ../seta-ui:/home/seta

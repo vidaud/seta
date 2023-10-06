@@ -5,11 +5,11 @@ from flask_jwt_extended import get_jwt_identity, jwt_required
 from flask_cors import CORS
 from flask import current_app
 
-from seta_auth.infrastructure.helpers import validate_public_key
-from seta_auth.infrastructure.constants import UserStatusConstants
+from seta_flask_server.infrastructure.auth_helpers import validate_public_key
+from seta_flask_server.infrastructure.constants import UserStatusConstants
 
 from injector import inject
-from seta_auth.repository.interfaces import IUsersBroker, IRsaKeysBroker
+from seta_flask_server.repository.interfaces import IUsersBroker, IRsaKeysBroker
 
 from http import HTTPStatus
 
@@ -20,7 +20,7 @@ auth_api = Api(token_auth,
                version="1.0",
                title="JWT token authentication",
                doc="/doc",
-               description="JWT authetication for user and guests"
+               description="JWT authentication for user and guests"
                )
 ns_auth = auth_api.namespace("", "Authentication endpoints")
 

@@ -13,8 +13,8 @@ class ExternalProviderBroker(implements(IExternalProviderBroker)):
         self.db = config.get_db()
         self.collection = self.db["users"]
 
-    def get_by_user_and_uid(self, user_id: str, provider_uid: str, provider: str) -> ExternalProvider:
-        pFilter = {"user_id": user_id, "provider_uid": provider_uid, "provider": provider}
+    def get_by_uid(self, provider_uid: str, provider: str) -> ExternalProvider:
+        pFilter = {"provider_uid": provider_uid, "provider": provider}
         provider = self.collection.find_one(pFilter)
         
         if provider is None:

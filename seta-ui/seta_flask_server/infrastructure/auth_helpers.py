@@ -17,6 +17,11 @@ from seta_flask_server.repository.models import SetaUser, UserSession, SessionTo
 from seta_flask_server.repository.interfaces import ISessionsBroker
 from .helpers import set_token_info_cookies
 
+from Crypto.Hash import SHA256
+from Crypto.PublicKey import RSA
+from Crypto.Signature import pkcs1_15
+import binascii
+
 def refresh_expiring_jwts(app, response):
     new_access_token = None
     
@@ -67,7 +72,7 @@ def refresh_expiring_jwts(app, response):
 
 def create_login_response(seta_user: SetaUser, sessionBroker: ISessionsBroker, next: str) -> Response:
     '''
-    Common part after third-party succesful authentication
+    Common part after third-party successful authentication
     
     :param auth_user:
         The SetaUser object created after third-party response
@@ -149,3 +154,12 @@ def validate_next_url(next: str) -> bool:
         return bool(match)
 
     return False
+
+def validate_public_key(public, message, signature):
+    try:
+        public_key = RSA.import_key(public)
+        digest = SHA256.new(message.encode())
+        pkcs1_15.new(public_key).verify(digest, binascii.unhexlify(signature))
+    except Exception as e:
+        return False
+    return True    
