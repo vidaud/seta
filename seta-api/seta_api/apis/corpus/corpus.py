@@ -223,12 +223,10 @@ class CorpusDocument(Resource):
 
 
 @corpus_api.route("corpus/translate_yaml", methods=['POST'])
-class CorpusDocument(Resource):
+class CorpusTranslateYaml(Resource):
     @auth_validator()
     @corpus_api.doc(description='Given corpus/document POST input in yaml file, json format is return.',
                     security='apikey')
-    @corpus_api.response(200, 'Success', swagger_doc.get_put_doc_chunk_response_model())
-    @corpus_api.expect(swagger_doc.get_put_request_model(), validate=False)
     def post(self):
         try:
             if not request.content_type == "application/yaml":
@@ -243,11 +241,9 @@ class CorpusDocument(Resource):
 
 
 @corpus_api.route("corpus/translate_xml", methods=['POST'])
-class CorpusDocument(Resource):
+class CorpusTranslateXml(Resource):
     @auth_validator()
     @corpus_api.doc(description='Given corpus/document POST input in xml file, json format is return', security='apikey')
-    @corpus_api.response(200, 'Success', swagger_doc.get_put_doc_chunk_response_model())
-    @corpus_api.expect(swagger_doc.get_put_request_model(), validate=False)
     def post(self):
         try:
             if not request.content_type == "application/xml":
