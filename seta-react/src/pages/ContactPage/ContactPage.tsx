@@ -6,7 +6,7 @@ import type { Crumb } from '~/types/breadcrumbs'
 
 import { ContactIconsList } from './components/ContactIcons/ContactIcons'
 
-import image from '../../images/contact.jpg'
+import image from '../../images/contact1.jpg'
 
 const useStyles = createStyles(theme => ({
   wrapper: {

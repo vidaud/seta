@@ -120,3 +120,7 @@ class StatsTypeConstants:
     OrphanedResources ="orphaned-resources"    
 
     LightList=[CommunityChangeRequest, ResourceChangeRequest, OrphanedCommunities, OrphanedResources]
+
+class AuthorizedArea:
+    Resources = "resources"    
+    List=[Resources]

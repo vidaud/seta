@@ -9,7 +9,7 @@ import {
 import CreateContribution from '~/pages/CommunitiesPage/components/contributors/NewContribution'
 import InvitesList from '~/pages/CommunitiesPage/components/notifications/invitesList'
 import MembersList from '~/pages/CommunitiesPage/components/notifications/membersList'
-import LoginWithGitHubPage from '~/pages/LoginPage/LoginWithGitHubPage'
+import Login from '~/pages/LoginPage/Login'
 
 import LoginAuth from './components/LoginAuth'
 import RequireAuth from './components/RequireAuth'
@@ -58,8 +58,7 @@ const routes = createRoutesFromElements(
       path="login"
       element={
         <LoginAuth>
-          {/* <LoginPage /> */}
-          <LoginWithGitHubPage />
+          <Login />
         </LoginAuth>
       }
     />

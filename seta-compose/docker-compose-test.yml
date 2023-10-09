@@ -29,6 +29,7 @@ services:
       - xpack.security.http.ssl.enabled=false
       - xpack.security.transport.ssl.enabled=false
       - ingest.geoip.downloader.enabled=false
+      - logger.level=WARN
     expose:
       - "9200"
       - "9300"
@@ -79,7 +80,7 @@ services:
       service: ui
     restart: "no"
     build: 
-      dockerfile: Dockerfile-test
+      dockerfile: dockerfiles/Dockerfile-ui-test
     depends_on:
       - "seta-api-test"
     networks:
@@ -107,7 +108,7 @@ services:
       service: auth
     restart: "no"
     build:
-      dockerfile: Dockerfile-test
+      dockerfile: dockerfiles/Dockerfile-auth-test
     networks:
       - seta-network-test
     depends_on:

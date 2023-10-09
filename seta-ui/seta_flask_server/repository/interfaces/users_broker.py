@@ -8,7 +8,7 @@ class IUsersBroker(Interface):
     def authenticate_user(self, auth_user: SetaUser) -> SetaUser:
         pass
     
-    def get_user_by_id_and_provider(self, user_id: str, provider_uid: str, provider: str, load_scopes: bool = False) -> SetaUser:
+    def get_user_by_provider(self, provider_uid: str, provider: str, load_scopes: bool = False) -> SetaUser:
         pass
     
     def get_user_by_id(self, user_id: str, load_scopes: bool = True) -> SetaUser:

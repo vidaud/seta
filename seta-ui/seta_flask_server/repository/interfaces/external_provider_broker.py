@@ -3,12 +3,10 @@ from seta_flask_server.repository.models import ExternalProvider
 
 class IExternalProviderBroker(Interface):
 
-    def get_by_user_and_uid(self, user_id: str, provider_uid: str, provider: str) -> ExternalProvider:
+    def get_by_uid(self, provider_uid: str, provider: str) -> ExternalProvider:
         """
-        Returns an external provider for user id
-
-        :param user_id:
-            Seta User identifier
+        Returns an external provider
+        
         :param provider_uid:
             User id in provider
         :param provider:

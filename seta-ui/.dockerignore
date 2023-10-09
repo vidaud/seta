@@ -5,5 +5,4 @@ __pychache__
 .gitignore
 changelog.txt
 README.md
-tests/
-models/
+dockerfiles/

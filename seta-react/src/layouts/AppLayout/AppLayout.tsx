@@ -9,7 +9,7 @@ const AppLayout = () => (
   <Flex direction="column" className="min-h-screen">
     <Header />
 
-    <Flex direction="column" mih="600px" sx={{ flexGrow: 1 }}>
+    <Flex direction="column" mih="600px" sx={{ display: 'grid', flexGrow: 1 }}>
       <Outlet />
     </Flex>
 
