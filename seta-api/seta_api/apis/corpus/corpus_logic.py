@@ -9,6 +9,7 @@ from .variables import xsd_string
 
 import yaml
 import json
+import lxml
 from lxml import etree
 import xmltodict
 
@@ -223,7 +224,8 @@ def translate_from_yaml_to_json(yaml_string):
 
 def validate_xml(xml_string):
     try:
-        xml_tree = etree.fromstring(xml_string)
+        parser = lxml.etree.XMLParser(resolve_entities=False)
+        xml_tree = etree.fromstring(xml_string, parser=parser)
         xsd_schema = etree.XMLSchema(etree.fromstring(bytes(xsd_string, 'utf-8')))
         xsd_schema.assertValid(xml_tree)
     except etree.XMLSyntaxError as e:
