@@ -90,7 +90,7 @@ class CommunityChangeRequests(Resource):
 
         message = "New change request added"
 
-        if app.config["AUTO_APPROVE_CHANGE_REQUEST"]:
+        if app.config.get("AUTO_APPROVE_CHANGE_REQUEST", False):
             try:  
                 model.status = RequestStatusConstants.Approved
                 model.reviewed_by = 'system'

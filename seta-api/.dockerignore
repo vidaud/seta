@@ -5,6 +5,5 @@ __pychache__
 .gitignore
 changelog.txt
 README.md
-tests/
 results/
 models/

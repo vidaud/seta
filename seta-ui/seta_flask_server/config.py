@@ -1,124 +1,75 @@
-"""seta-ui flask configuration."""
-
-from datetime import timedelta
+"""flask server configuration."""
 import os
-
+import configparser
 
 class Config:
-    """Base class for common configuration"""
+    """Application configuration"""
 
-    #============Seta Configuration ========#
-
-    #EU LOGIN authentication url
-    #AUTH_CAS_URL = "https://ecas.ec.europa.eu/cas/"
-    AUTH_CAS_URL = "https://webgate.ec.europa.eu/cas/"
-
-    #database host - docker container for mongo
-    DB_HOST="seta-mongo"
-
-    #database port
-    DB_PORT=27017
-
-    #database name
-    DB_NAME="seta"
-
-    #administrators email list - new user is set as admin if email present in this list
-    #set from docker ENV variable
-    ROOT_USERS = []
-
-    #disable scheduler
-    SCHEDULER_ENABLED = False
-
-    #web application home url
-    HOME_ROUTE = "/"
-
-    #seta-api url for internal docker LAN calls
-    PRIVATE_API_URL = "http://seta-api:8081/seta-api-private/v1/"
-
-    #disable swagger for internal apis
-    DISABLE_SWAGGER_DOCUMENTATION = False
-
-    #automatic approval of community/resource change requests
-    AUTO_APPROVE_CHANGE_REQUEST = False
-
-    #======================================#
-
-
-    #===========Flask-PyMongo Configuration========#
-    #https://flask-pymongo.readthedocs.io/en/latest/
+    CONFIG_APP_FILE = "/etc/seta/ui.conf"
+    CONFIG_LOGS_FILE = "/etc/seta/logs.conf"
 
     @property
     def MONGO_URI(self):
-        return f"mongodb://{self.DB_HOST}:{self.DB_PORT}/{self.DB_NAME}"
+        return f"mongodb://{Config.DB_HOST}:{Config.DB_PORT}/{Config.DB_NAME}"
 
-    #======================================#
+    def __init__(self, section_name: str) -> None:
 
+        config = configparser.ConfigParser()
+        config.read([Config.CONFIG_LOGS_FILE, Config.CONFIG_APP_FILE])
 
-    #============Flask-JWT-Extended Configuration========#
-    #https://flask-jwt-extended.readthedocs.io/en/stable/options/
+        sections = config.sections()
+        if len(sections) == 0:
+            message = f"No configuration section found in the config files ('{Config.CONFIG_LOGS_FILE}','{Config.CONFIG_APP_FILE}')"
+            raise Exception(message)
 
-    #The secret key used to encode and decode JWTs
-    #set from file at SECRET_KEY_PATH
-    JWT_SECRET_KEY = ""
+        if section_name not in sections:
+            raise Exception("section_name parameter must be one of " + str(sections))
+        
+        config_section = config[section_name]    
 
-    #The claim in a JWT that is used as the source of identity
-    JWT_IDENTITY_CLAIM="seta_id"
+        Config._init_config_section(config_section)
+        Config._init_env_variables()        
 
-    #Enable Cross Site Request Forgery (CSRF) protection
-    JWT_COOKIE_CSRF_PROTECT = True
+    @staticmethod
+    def _init_config_section(config_section: configparser.SectionProxy):
+        #========= Read config section =========#
+        #check the seta_config/*.conf files for documentation
+        
+        Config.AUTH_CAS_URL = config_section.get("AUTH_CAS_URL")
+        Config.HOME_ROUTE = config_section.get("HOME_ROUTE", fallback="/")
+        Config.PRIVATE_API_URL = config_section["PRIVATE_API_URL"]
 
-    #Where to look for a JWT when processing a request in the specified order.
-    JWT_TOKEN_LOCATION=["headers", "cookies"]
-    #======================================#
+        Config.SCHEDULER_ENABLED = config_section.getboolean("SCHEDULER_ENABLED", fallback=False)        
+        Config.DISABLE_SWAGGER_DOCUMENTATION = config_section.getboolean("DISABLE_SWAGGER_DOCUMENTATION", fallback=True)
+        Config.AUTO_APPROVE_CHANGE_REQUEST = config_section.getboolean("AUTO_APPROVE_CHANGE_REQUEST", fallback=False)        
 
-    #============Flask-APScheduler Configuration========#
-    #https://viniciuschiele.github.io/flask-apscheduler/rst/configuration.html
+        Config.JWT_IDENTITY_CLAIM = config_section.get("JWT_IDENTITY_CLAIM", fallback="seta_id")
+        Config.JWT_COOKIE_CSRF_PROTECT = config_section.getboolean("JWT_COOKIE_CSRF_PROTECT", fallback=True)
+        Config.JWT_COOKIE_SECURE = config_section.getboolean("JWT_COOKIE_SECURE", fallback=False)
 
-    #disable Flask-APScheduler build-in API
-    SCHEDULER_API_ENABLED = False
-    #======================================#
+        token_location = config_section.get("JWT_TOKEN_LOCATION", fallback="headers,cookies")
+        Config.JWT_TOKEN_LOCATION = token_location.split(sep=",")
 
-    #============Flask Configuration========#
-    #https://flask.palletsprojects.com/en/2.2.x/config/
+        Config.SCHEDULER_API_ENABLED = config_section.getboolean("SCHEDULER_API_ENABLED", fallback=False)
+        Config.RESTX_MASK_SWAGGER = config_section.getboolean("RESTX_MASK_SWAGGER", fallback=False)
 
-    #Exceptions are re-raised rather than being handled by the app's error handlers.
-    PROPAGATE_EXCEPTIONS = True
+        Config.PROPAGATE_EXCEPTIONS = config_section.getboolean("PROPAGATE_EXCEPTIONS", fallback=True)
+        Config.TESTING = config_section.getboolean("TESTING", fallback=False)
+        #=======================================#
 
-    #A secret key that will be used for securely signing the session cookie
-    #set from file at SECRET_KEY_PATH
-    SECRET_KEY = ""
+        #Read logging environment variables
+        Config.LOG_TYPE = config_section.get("LOG_TYPE", "stream")
+        Config.LOG_LEVEL = config_section.get("LOG_LEVEL", "INFO")
+        Config.LOG_DIR = config_section.get("LOG_DIR", "/var/log")
+        Config.APP_LOG_NAME = config_section.get("APP_LOG_NAME", "app.log")
+        Config.WWW_LOG_NAME = config_section.get("WWW_LOG_NAME", "www.log")
+        Config.SCHEDULER_LOG_NAME = config_section.get("SCHEDULER_LOG_NAME", "sched.log")
+        Config.LOG_MAX_BYTES = config_section.getint("LOG_MAX_BYTES", 100_000_000)  # 100MB in bytes
+        Config.LOG_COPIES = config_section.getint("LOG_COPIES", 5)
 
-    #======================================#
-
-    #===========LogSetup Configuration========#
-    #https://medium.com/tenable-techblog/the-boring-stuff-flask-logging-21c3a5dd0392
-    #https://github.com/tenable/flask-logging-demo
-
-    #These configs are read from Docker ENV variables
-
-    # Logging Setup
-    LOG_TYPE = "stream"
-    LOG_LEVEL = "INFO"
-
-    # File Logging Setup
-    LOG_DIR = "/var/log"
-    APP_LOG_NAME = "app.log"
-    WWW_LOG_NAME = "www.log"
-    SCHEDULER_LOG_NAME = "sched.log"
-    LOG_MAX_BYTES = "100_000" # 10MB in bytes
-    LOG_COPIES = "5"
-    #======================================#
-
-
-    #===========Flask-RESTX Configuration========#
-    #https://flask-restx.readthedocs.io/en/latest/configuration.html
-
-    #disable the mask documentation in swagger
-    RESTX_MASK_SWAGGER=False
-    #======================================#
-
-    def __init__(self) -> None:
-        """Read environment variables"""
+    @staticmethod
+    def _init_env_variables():
+        #===== Read environment variables ======#
 
         Config.SECRET_KEY = os.environ.get("API_SECRET_KEY")
         Config.JWT_SECRET_KEY = Config.SECRET_KEY
@@ -129,19 +80,11 @@ class Config:
             admins = root_users.split(sep=";")
             Config.ROOT_USERS = list(map(str.lower,admins))
 
-        #Read logging environment variables
-        Config.LOG_TYPE = os.environ.get("LOG_TYPE", "stream")
-        Config.LOG_LEVEL = os.environ.get("LOG_LEVEL", "INFO")
-        Config.LOG_DIR = os.environ.get("LOG_DIR", "/var/log")
-        Config.APP_LOG_NAME = os.environ.get("APP_LOG_NAME", "app.log")
-        Config.WWW_LOG_NAME = os.environ.get("WWW_LOG_NAME", "www.log")
-        Config.SCHEDULER_LOG_NAME = os.environ.get("SCHEDULER_LOG_NAME", "sched.log")
-        Config.LOG_MAX_BYTES = os.environ.get("LOG_MAX_BYTES", 100_000_000)  # 100MB in bytes
-        Config.LOG_COPIES = os.environ.get("LOG_COPIES", 5)
-
         #read database env variables
         Config.DB_HOST = os.environ.get("DB_HOST")
         Config.DB_NAME = os.environ.get("DB_NAME")
+        Config.DB_PORT = 27017
+
         port = os.environ.get("DB_PORT")
         if port:
             Config.DB_PORT = int(port)
@@ -151,109 +94,4 @@ class Config:
 
         Config.GITHUB_CLIENT_ID = os.environ.get("GITHUB_CLIENT_ID")
         Config.GITHUB_CLIENT_SECRET = os.environ.get("GITHUB_CLIENT_SECRET")
-
-        #======================================#
-
-
-class DevConfig(Config):
-    """Development config"""
-
-    def __init__(self) -> None:
-        super().__init__()
-
-    #============Flask-JWT-Extended Configuration========#
-    #https://flask-jwt-extended.readthedocs.io/en/stable/options/
-
-    #How long an access token should be valid before it expires.
-    JWT_ACCESS_TOKEN_EXPIRES = timedelta(minutes=60)
-
-    #How long a refresh token should be valid before it expires.
-    JWT_REFRESH_TOKEN_EXPIRES = timedelta(hours=2)
-
-    #Controls if the secure flag should be placed on cookies
-    JWT_COOKIE_SECURE = False
-
-    #======================================#
-
-
-class ProdConfig(Config):
-    """Production config"""
-
-    def __init__(self) -> None:
-        super().__init__()
-
-    #============Seta Configuration ========#
-
-    #enable scheduler tasks
-    SCHEDULER_ENABLED = True
-
-    #disable swagger for internal apis
-    DISABLE_SWAGGER_DOCUMENTATION = True
-
-    #automatic approval of community/resource change requests
-    AUTO_APPROVE_CHANGE_REQUEST = False
-
-    #======================================#
-
-
-    #============Flask-JWT-Extended Configuration========#
-    #https://flask-jwt-extended.readthedocs.io/en/stable/options/
-
-    #How long an access token should be valid before it expires.
-    JWT_ACCESS_TOKEN_EXPIRES = timedelta(minutes=60)
-
-    #How long a refresh token should be valid before it expires.
-    JWT_REFRESH_TOKEN_EXPIRES = timedelta(days=2)
-
-    #Controls if the secure flag should be placed on cookies
-    JWT_COOKIE_SECURE = True
-
-    #======================================#
-
-class TestConfig(Config):
-    """Test config"""
-
-    def __init__(self) -> None:
-        super().__init__()
-
-        if Config.DB_HOST is None:
-            Config.DB_HOST = "seta-mongo-test"
-
-        if Config.DB_PORT is None:
-            Config.DB_PORT = 27017
-
-        if Config.DB_NAME is None:
-            Config.DB_NAME = "seta-test"
-
-    #============Seta Configuration ========#
-
-    PRIVATE_API_URL = "http://seta-api-test:8081/seta-api-private/v1/"
-
-    #======================================#
-
-    #============Flask Configuration========#
-    #https://flask.palletsprojects.com/en/2.2.x/config/
-
-    #Enable testing mode
-    TESTING = True
-
-    #Exceptions are re-raised rather than being handled by the app's error handlers.
-    PROPAGATE_EXCEPTIONS = True
-
-    #ALLOWED_HOSTS = ['*']
-
-    #======================================#
-
-     #============Flask-JWT-Extended Configuration========#
-    #https://flask-jwt-extended.readthedocs.io/en/stable/options/
-
-    #How long an access token should be valid before it expires.
-    JWT_ACCESS_TOKEN_EXPIRES = timedelta(minutes=15)
-
-    #How long a refresh token should be valid before it expires.
-    JWT_REFRESH_TOKEN_EXPIRES = timedelta(hours=24)
-
-    #Controls if the secure flag should be placed on cookies
-    JWT_COOKIE_SECURE = False
-
-    #======================================#
+        #=======================================#

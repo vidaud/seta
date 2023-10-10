@@ -21,13 +21,16 @@ RUN useradd seta
 ARG ROOT=/home/seta
 
 WORKDIR $ROOT
-COPY requirements.txt $ROOT/requirements.txt
+COPY ./seta-data/requirements.txt $ROOT/requirements.txt
 RUN pip install --upgrade pip
 RUN pip install -r $ROOT/requirements.txt 
 
-COPY src/* $ROOT/
+COPY ./seta-data/src $ROOT
 RUN mkdir $ROOT/models_docker
-COPY models/* $ROOT/models_docker/
+COPY ./seta-data/models $ROOT/models_docker
+
+#copy configuration file
+COPY ./seta-config/data.conf /etc/seta/
 
 #CMD "ls -l /home/seta &&  python /home/seta/app.py"
 CMD ["python3", "/home/seta/app.py"]

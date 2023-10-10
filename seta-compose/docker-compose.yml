@@ -67,6 +67,8 @@ services:
     extends:
       file: common.yml
       service: api
+    build:
+       dockerfile: seta-api/Dockerfile
     networks:
       - seta-network
     depends_on:
@@ -95,7 +97,7 @@ services:
       file: common.yml
       service: ui
     build:
-       dockerfile: dockerfiles/Dockerfile-ui
+       dockerfile: seta-ui/dockerfiles/Dockerfile-ui
     depends_on:
       - "seta-api"
     networks:
@@ -142,7 +144,7 @@ services:
       file: common.yml
       service: auth
     build:
-       dockerfile: dockerfiles/Dockerfile-auth
+       dockerfile: seta-ui/dockerfiles/Dockerfile-auth
     depends_on:
       - "seta-mongo"
     networks:
