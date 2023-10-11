@@ -5,7 +5,13 @@ from seta_api.infrastructure.ApiLogicError import ApiLogicError
 from .corpus_build import build_corpus_request, compose_request_for_msearch
 from .corpus_response import handle_corpus_response
 from .taxonomy import Taxonomy
+from .variables import xsd_string
 
+import yaml
+import json
+import lxml
+from lxml import etree
+import xmltodict
 
 def chunk_by_id(doc_id, es, index):
     tax = Taxonomy()
@@ -178,3 +184,53 @@ def get_source_from_chunk_list(chunk_list):
     for doc in chunk_list:
         if "source" in doc:
             return doc["source"]
+
+
+def from_xml_to_json(xml_string):
+    xml_obj = xmltodict.parse(xml_string)
+    adjust_list_field(xml_obj["document"], "link_related")
+    adjust_list_field(xml_obj["document"], "link_alias")
+    adjust_list_field(xml_obj["document"], "link_reference")
+    adjust_list_field(xml_obj["document"], "author")
+    adjust_list_field(xml_obj["document"], "taxonomy")
+    adjust_list_field(xml_obj["document"], "keywords")
+    return xml_obj["document"]
+
+
+def adjust_list_field(xml_obj, field):
+    if field in xml_obj:
+        if isinstance(xml_obj[field]["item"], list):
+            xml_obj[field] = xml_obj[field]["item"]
+        else:
+            element = xml_obj[field]["item"]
+            xml_obj[field] = []
+            xml_obj[field].append(element)
+
+
+def translate_from_xml_to_json(xml_string):
+    validate_xml(xml_string)
+    return from_xml_to_json(xml_string)
+
+
+def translate_from_yaml_to_json(yaml_string):
+    try:
+        yaml_obj = yaml.safe_load(yaml_string)
+        json_string = json.dumps(yaml_obj)
+        json_obj = json.loads(json_string)
+        return json_obj
+    except:
+        raise ApiLogicError("Invalid yaml")
+
+
+def validate_xml(xml_string):
+    try:
+        parser = lxml.etree.XMLParser(resolve_entities=False)
+        xml_tree = etree.fromstring(xml_string, parser=parser)
+        xsd_schema = etree.XMLSchema(etree.fromstring(bytes(xsd_string, 'utf-8')))
+        xsd_schema.assertValid(xml_tree)
+    except etree.XMLSyntaxError as e:
+        raise ApiLogicError(f"XML Syntax Error: {e}")
+    except etree.DocumentInvalid as e:
+        raise ApiLogicError(404, f"Document Invalid: {e}")
+    except Exception as e:
+        raise ApiLogicError(404, f"Validation Error: {e}")

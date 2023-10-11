@@ -11,7 +11,7 @@ from .models.roles_dto import role_model, roles_model
 from seta_flask_server.repository.interfaces import ICatalogueBroker
 from seta_flask_server.repository.models import RoleCategory
 
-role_catalogue_ns = Namespace('Roles Catalogue', description='SETA Roles Catagloue')
+role_catalogue_ns = Namespace('Roles Catalogue', description='SETA Roles Catalogue')
 role_catalogue_ns.models[role_model.name] = role_model
 role_catalogue_ns.models[roles_model.name] = roles_model
 

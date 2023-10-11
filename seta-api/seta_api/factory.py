@@ -126,7 +126,7 @@ def wait_for_es(app):
         time.sleep(5)
         wait_for_es(app)
     except Exception as e:
-        app.logger.error("ES not ready yet")
+        app.logger.exception("ES not ready yet")
         
         time.sleep(5)
         wait_for_es(app)

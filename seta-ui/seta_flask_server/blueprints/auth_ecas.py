@@ -57,7 +57,7 @@ def login_callback_ecas(userBroker: IUsersBroker, sessionBroker: ISessionsBroker
         abort(HTTPStatus.UNAUTHORIZED, "Failed to verify ticket.")
     
     # Login successful, redirect according to `next` query parameter. 
-    admins = app.config["ROOT_USERS"]
+    admins = app.config.get("ROOT_USERS", [])
     email = str(attributes["email"]).lower()
     attributes["is_admin"] = email in admins
     

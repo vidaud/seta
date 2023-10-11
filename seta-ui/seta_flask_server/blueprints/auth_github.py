@@ -56,7 +56,7 @@ def login_callback_github(access_token, userBroker: IUsersBroker, sessionBroker:
     if github_user["email"] is None:
         github_user["email"] = github_user["login"] + "_no_reply@github.com"
         
-    admins = app.config["ROOT_USERS"]
+    admins = app.config.get("ROOT_USERS", [])
     email = str(github_user["email"]).lower()
     github_user["is_admin"] = email in admins
         

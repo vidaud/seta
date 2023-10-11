@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="utf-8"?>
+<document>
+    <source>cordis</source>
+    <mime_type>URL</mime_type>
+    <language>en</language>
+    <id>cordis:project:96956</id>
+    <id_alias>CORDIS:project:96956</id_alias>
+    <title>ULTRAVEG: Development of a high power ultrasound system for the low-cost, fast, effective and quality drying
+        of fruit and vegetables
+    </title>
+    <abstract>Dried food is a major element in modern food processing and a staple ingredient for an increasing variety
+        of foodstuffs. Dried food offers many advantages for the mass production of commercially prepared goods, not
+        least cheaper transportation costs, longer storage life and e...
+    </abstract>
+    <text>Dried food is a major element in modern food processing and a staple ingredient for an increasing variety of
+        foodstuffs. Dried food offers many advantages for the mass production of commercially prepared goods, not least
+        cheaper transportation costs, longer storage life and ease of use. However modern drying methods, such as
+        Accelerated Freeze-Drying, prove costly, time consuming, labour and energy intensive, limitations which can
+        prove more crippling for SMEs. There is a need to provide EU dried food SMEs with a technology which will help
+        to remain competitive in the EU and global dried food sectors. Preliminary research conducted to date suggests
+        that the application of high power ultrasound (HPU) for the dehydration of porous materials may be very
+        effective in processes in which heat-sensitive materials such as foodstuff have to be treated. HPU is a powerful
+        technology that is safe and environmentally friendly, efficient and economical. High-intensity ultrasonic
+        vibrations are capable of affecting mass transfer processes with the result of increasing the drying rate of
+        materials, thereby permitting the use of lower temperatures or shorter treatment times. This process thus shows
+        promise for assisting the dehydration of fruits, vegetables and other foods, preserving the quality attributes
+        of the food products and during this project a HPU based pre-treatment method will be developed. A prototype
+        will be built and tested prior to conventional drying processes to improve the added value of the dried product
+        and enable faster, more cost effective and energy efficient drying of food, which will empower and equip SMEs
+        from the European dried food industry to compete against the growing threat of global competition and large
+        multinationals. It will also result in increased sales of high powered ultrasound components and equipment. The
+        project holds benefits for European competitiveness and innovation, employment, the environment and society at
+        large.
+    </text>
+    <date>2019-08-01</date>
+    <link_related>
+        <item>https://cordis.europa.eu/article/rcn/92388</item>
+    </link_related>
+    <author>
+        <item>HEBOLD MIXING &amp; MORE GMBH</item>
+        <item>Gefriertrocknung Greven GmbH</item>
+        <item>VEREIN ZUR FORDERUNG DES TECHNOLOGIETRANSFERS AN DER HOCHSCHULE BREMERHAVEN EV</item>
+        <item>TECHNISCHE UNIVERSITAT BERLIN</item>
+        <item>FULLWELL MILL LIMITED</item>
+        <item>AKTIVE ARC SARL</item>
+        <item>GOKSER MAKINA SANAYI VE TICARET LIMITED SIRKETI</item>
+        <item>IRIS TECHNOLOGY SOLUTIONS, SOCIEDAD LIMITADA</item>
+    </author>
+
+    <collection>project;Project</collection>
+    <taxonomy>
+        <item>
+            <classifier>cordis</classifier>
+            <code>00</code>
+            <label>euro_sci_voc</label>
+            <longLabel>euro_sci_voc</longLabel>
+            <name_in_path>euro_sci_voc</name_in_path>
+            <validated>true</validated>
+            <version>1</version>
+            <subcategories>
+                <classifier>cordis</classifier>
+                <code>/27</code>
+                <label>agricultural sciences</label>
+                <longLabel>/agricultural sciences</longLabel>
+                <name_in_path>agricultural_sciences</name_in_path>
+                <subcategories>
+                    <classifier>cordis</classifier>
+                    <code>/27/81</code>
+                    <label>agriculture, forestry, and fisheries</label>
+                    <longLabel>/agricultural sciences/agriculture, forestry, and fisheries</longLabel>
+                    <name_in_path>agriculture_forestry_and_fisheries</name_in_path>
+                    <subcategories>
+                        <classifier>cordis</classifier>
+                        <code>/27/81/30021</code>
+                        <label>agriculture</label>
+                        <longLabel>/agricultural sciences/agriculture, forestry, and fisheries/agriculture</longLabel>
+                        <name_in_path>agriculture</name_in_path>
+                        <subcategories>
+                            <classifier>cordis</classifier>
+                            <code>/27/81/30021/499</code>
+                            <label>horticulture</label>
+                            <longLabel>/agricultural sciences/agriculture, forestry, and
+                                fisheries/agriculture/horticulture
+                            </longLabel>
+                            <name_in_path>horticulture</name_in_path>
+                            <subcategories>
+                                <classifier>cordis</classifier>
+                                <code>/27/81/30021/499/1287</code>
+                                <label>fruit growing</label>
+                                <longLabel>/agricultural sciences/agriculture, forestry, and
+                                    fisheries/agriculture/horticulture/fruit growing
+                                </longLabel>
+                                <name_in_path>fruit_growing</name_in_path>
+                                <validated>true</validated>
+                                <version>1</version>
+                            </subcategories>
+                            <subcategories>
+                                <classifier>cordis</classifier>
+                                <code>/27/81/30021/499/69103681</code>
+                                <label>vegetable growing</label>
+                                <longLabel>/agricultural sciences/agriculture, forestry, and
+                                    fisheries/agriculture/horticulture/vegetable growing
+                                </longLabel>
+                                <name_in_path>vegetable_growing</name_in_path>
+                                <validated>true</validated>
+                                <version>1</version>
+                            </subcategories>
+                            <validated>true</validated>
+                            <version>1</version>
+                        </subcategories>
+                        <validated>true</validated>
+                        <version>1</version>
+                    </subcategories>
+                    <validated>true</validated>
+                    <version>1</version>
+                </subcategories>
+                <validated>true</validated>
+                <version>1</version>
+            </subcategories>
+            <subcategories>
+                <classifier>cordis</classifier>
+                <code>/25</code>
+                <label>engineering and technology</label>
+                <longLabel>/engineering and technology</longLabel>
+                <name_in_path>engineering_and_technology</name_in_path>
+                <subcategories>
+                    <classifier>cordis</classifier>
+                    <code>/25/59</code>
+                    <label>other engineering and technologies</label>
+                    <longLabel>/engineering and technology/other engineering and technologies</longLabel>
+                    <name_in_path>other_engineering_and_technologies</name_in_path>
+                    <subcategories>
+                        <classifier>cordis</classifier>
+                        <code>/25/59/377</code>
+                        <label>food technology</label>
+                        <longLabel>/engineering and technology/other engineering and technologies/food technology
+                        </longLabel>
+                        <name_in_path>food_technology</name_in_path>
+                        <validated>true</validated>
+                        <version>1</version>
+                    </subcategories>
+                    <validated>true</validated>
+                    <version>1</version>
+                </subcategories>
+                <validated>true</validated>
+                <version>1</version>
+            </subcategories>
+            <subcategories>
+                <classifier>cordis</classifier>
+                <code>/23</code>
+                <label>natural sciences</label>
+                <longLabel>/natural sciences</longLabel>
+                <name_in_path>natural_sciences</name_in_path>
+                <subcategories>
+                    <classifier>cordis</classifier>
+                    <code>/23/43</code>
+                    <label>physical sciences</label>
+                    <longLabel>/natural sciences/physical sciences</longLabel>
+                    <name_in_path>physical_sciences</name_in_path>
+                    <subcategories>
+                        <classifier>cordis</classifier>
+                        <code>/23/43/273</code>
+                        <label>acoustics</label>
+                        <longLabel>/natural sciences/physical sciences/acoustics</longLabel>
+                        <name_in_path>acoustics</name_in_path>
+                        <subcategories>
+                            <classifier>cordis</classifier>
+                            <code>/23/43/273/813</code>
+                            <label>ultrasound</label>
+                            <longLabel>/natural sciences/physical sciences/acoustics/ultrasound</longLabel>
+                            <name_in_path>ultrasound</name_in_path>
+                            <validated>true</validated>
+                            <version>1</version>
+                        </subcategories>
+                        <validated>true</validated>
+                        <version>1</version>
+                    </subcategories>
+                    <validated>true</validated>
+                    <version>1</version>
+                </subcategories>
+                <validated>true</validated>
+                <version>1</version>
+            </subcategories>
+            <subcategories>
+                <classifier>cordis</classifier>
+                <code>/29</code>
+                <label>social sciences</label>
+                <longLabel>/social sciences</longLabel>
+                <name_in_path>social_sciences</name_in_path>
+                <subcategories>
+                    <classifier>cordis</classifier>
+                    <code>/29/91</code>
+                    <label>economics and business</label>
+                    <longLabel>/social sciences/economics and business</longLabel>
+                    <name_in_path>economics_and_business</name_in_path>
+                    <subcategories>
+                        <classifier>cordis</classifier>
+                        <code>/29/91/523</code>
+                        <label>business and management</label>
+                        <longLabel>/social sciences/economics and business/business and management</longLabel>
+                        <name_in_path>business_and_management</name_in_path>
+                        <subcategories>
+                            <classifier>cordis</classifier>
+                            <code>/29/91/523/1313</code>
+                            <label>employment</label>
+                            <longLabel>/social sciences/economics and business/business and management/employment
+                            </longLabel>
+                            <name_in_path>employment</name_in_path>
+                            <validated>true</validated>
+                            <version>1</version>
+                        </subcategories>
+                        <validated>true</validated>
+                        <version>1</version>
+                    </subcategories>
+                    <validated>true</validated>
+                    <version>1</version>
+                </subcategories>
+                <validated>true</validated>
+                <version>1</version>
+            </subcategories>
+        </item>
+    </taxonomy>
+    <link_origin>https://cordis.europa.eu/project/rcn/96956</link_origin>
+    <other>
+        <crc>7d00d817122f4f22ec8beed3a05fcd297a610938883625d6d136ea0e374871e6</crc>
+        <project_piknus>true</project_piknus>
+    </other>
+</document>

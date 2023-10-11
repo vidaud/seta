@@ -224,7 +224,101 @@ corpus_get_id_response["source"] = fields.String()
 corpus_get_id_response["abstract"] = fields.String()
 corpus_get_id_response["sbert_embedding"] = fields.List(fields.Float)
 
-
+xsd_string = """<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="document" type="documentType"/>
+  <xs:complexType name="subcategoriesType">
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element type="xs:string" name="classifier"/>
+      <xs:element type="xs:string" name="code"/>
+      <xs:element type="xs:string" name="label"/>
+      <xs:element type="xs:string" name="longLabel"/>
+      <xs:element type="xs:string" name="name_in_path"/>
+      <xs:element type="subcategoriesType" name="subcategories" maxOccurs="unbounded" minOccurs="0"/>
+      <xs:element type="xs:string" name="validated"/>
+      <xs:element type="xs:string" name="version"/>
+    </xs:choice>
+  </xs:complexType>
+  <xs:complexType name="taxonomyType">
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element type="xs:string" name="classifier"/>
+      <xs:element type="xs:string" name="code"/>
+      <xs:element type="xs:string" name="label"/>
+      <xs:element type="xs:string" name="longLabel"/>
+      <xs:element type="xs:string" name="name_in_path"/>
+      <xs:element type="xs:string" name="validated"/>
+      <xs:element type="xs:string" name="version"/>
+      <xs:element type="subcategoriesType" name="subcategories" maxOccurs="unbounded" minOccurs="0"/>
+    </xs:choice>
+  </xs:complexType>
+  <xs:complexType name="documentType">
+    <xs:choice minOccurs="0" maxOccurs="unbounded">
+      <xs:element type="xs:string" name="id"/>
+      <xs:element type="xs:string" name="id_alias"/>
+      <xs:element type="xs:string" name="source" minOccurs="1"/>
+      <xs:element type="xs:string" name="title"/>
+      <xs:element type="xs:string" name="mime_type"/>
+      <xs:element type="xs:string" name="language"/>
+      <xs:element type="xs:string" name="abstract"/>
+      <xs:element type="xs:string" name="text"/>
+      <xs:element type="xs:string" name="date"/>
+      <xs:element type="xs:string" name="collection"/>
+      <xs:element type="xs:string" name="reference"/>
+      <xs:element type="xs:string" name="in_force"/>
+      <xs:element name="author">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="item" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+            </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="taxonomy">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="item" type="taxonomyType" minOccurs="0" maxOccurs="unbounded"/>
+            </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element type="xs:string" name="link_origin"/>
+      <xs:element name="link_related">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="item" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+            </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="link_reference">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="item" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+            </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="link_alias">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="item" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+            </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="other">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:any minOccurs="0" maxOccurs="unbounded" processContents="lax"/>
+            </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="keywords">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:any minOccurs="0" maxOccurs="unbounded" processContents="lax"/>
+            </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:choice>
+  </xs:complexType>
+  
+</xs:schema>"""
 
 
 

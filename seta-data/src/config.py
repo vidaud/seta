@@ -1,37 +1,53 @@
-"""seta-ui flask configuration."""
+"""seta-data configuration."""
+
 import os
+import configparser
     
 class Config:
-    
-    ES_HOST = None
-    ES_INIT_DATA_CONFIG_FILE = "data-mapping.json"
-    CRC_ES_INIT_DATA_CONFIG_FILE = "data-mapping.crc"
-    ES_SUGGESTION_INIT_DATA_CONFIG_FILE = "suggestion-data-mapping.json"
-    CRC_ES_SUGGESTION_INIT_DATA_CONFIG_FILE = "suggestion-data-mapping.crc"
-    DELETE_INDEX_ON_CRC_CHECK = False
 
-    INDEX = ["seta-public-000001", "seta-private-000001"]
-    INDEX_SUGGESTION = "seta-suggestion-000001"
-    INDEX_PUBLIC = "seta-public-000001"
-    INDEX_PRIVATE = "seta-private-000001"
-
-    MODELS_DOCKER_PATH = "/home/seta/models_docker/"    
-    MODELS_PATH = "/home/seta/models/"
-    WORD2VEC_JSON_EXPORT = "json_suggestion.json"
-    WORD2VEC_JSON_EXPORT_CRC = "json_suggestion.crc"  
+    CONFIG_APP_FILE = "/etc/seta/data.conf"
     
-    def __init__(self) -> None:             
-        """Read environment variables"""   
+    def __init__(self, section_name: str) -> None:
+        config = configparser.ConfigParser()
+        config.read(Config.CONFIG_APP_FILE)
+
+        sections = config.sections()
+        if len(sections) == 0:
+            message = f"No configuration section found in the config file ('{Config.CONFIG_APP_FILE}')"
+            raise Exception(message)
+
+        if section_name not in sections:
+            raise Exception("section_name parameter must be one of " + str(sections))
         
+        config_section = config[section_name]
+        
+        Config._init_env_variables()
+        Config._init_config_section(config_section)
+        
+
+    @staticmethod
+    def _init_config_section(config_section: configparser.SectionProxy):
+        #========= Read config section =========#
+        #check the seta_config/data.conf file for documentation
+        Config.ES_INIT_DATA_CONFIG_FILE = config_section["ES_INIT_DATA_CONFIG_FILE"]
+        Config.CRC_ES_INIT_DATA_CONFIG_FILE = config_section["CRC_ES_INIT_DATA_CONFIG_FILE"]
+        Config.ES_SUGGESTION_INIT_DATA_CONFIG_FILE = config_section["ES_SUGGESTION_INIT_DATA_CONFIG_FILE"]
+        Config.CRC_ES_SUGGESTION_INIT_DATA_CONFIG_FILE = config_section["CRC_ES_SUGGESTION_INIT_DATA_CONFIG_FILE"]
+        Config.DELETE_INDEX_ON_CRC_CHECK = config_section.getboolean("DELETE_INDEX_ON_CRC_CHECK", False)
+
+        index = config_section.get("INDEX", fallback="")
+        Config.INDEX = index.split(sep=",")
+
+        Config.INDEX_SUGGESTION = config_section["INDEX_SUGGESTION"]
+        Config.INDEX_PUBLIC = config_section["INDEX_PUBLIC"]
+        Config.INDEX_PRIVATE = config_section["INDEX_PRIVATE"]
+
+        Config.MODELS_DOCKER_PATH = config_section["MODELS_DOCKER_PATH"]
+        Config.MODELS_PATH = config_section["MODELS_PATH"]
+        Config.WORD2VEC_JSON_EXPORT = config_section["WORD2VEC_JSON_EXPORT"]
+        Config.WORD2VEC_JSON_EXPORT_CRC = config_section["WORD2VEC_JSON_EXPORT_CRC"]
+
+    @staticmethod
+    def _init_env_variables():
+        #===== Read environment variables ======#
         Config.ES_HOST = os.environ.get("ES_HOST")
-    
-class TestConfig(Config):
-    
-    def __init__(self) -> None:
-        super().__init__()
-        
-        if Config.ES_HOST is None:
-            Config.ES_HOST = "seta-es-test:9200"
-    
-    WORD2VEC_JSON_EXPORT = "json_suggestion_samples.json"
-    WORD2VEC_JSON_EXPORT_CRC = "json_suggestion_samples.crc"

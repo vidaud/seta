@@ -1,17 +1,18 @@
+import React from 'react'
 import { Route } from 'react-router-dom'
-
-import AdminCommunityRequests from '~/pages/Admin/CommunityRequests/CommunityRequests'
-import AdminDashboard from '~/pages/Admin/Dashboard'
-import AdminOrphanedCommunities from '~/pages/Admin/OrphanedCommunities/OrphanedCommunities'
-import AdminOrphanedResources from '~/pages/Admin/OrphanedResources/OrpahnedResources'
-import AdminResourceRequests from '~/pages/Admin/ResourceRequests/ResourceRequests'
-import ManageUser from '~/pages/Admin/Users/ManageUser/ManageUser'
-import AdminUsers from '~/pages/Admin/Users/Users'
 
 import AdminLayout from '~/layouts/AdminLayout'
 import { UserRole } from '~/types/user'
 
 import RequireAuth from '../components/RequireAuth'
+
+const AdminCommunityRequests = React.lazy(() => import('~/pages/Admin/CommunityRequests'))
+const AdminDashboard = React.lazy(() => import('~/pages/Admin/Dashboard'))
+const AdminOrphanedCommunities = React.lazy(() => import('~/pages/Admin/OrphanedCommunities'))
+const AdminOrphanedResources = React.lazy(() => import('~/pages/Admin/OrphanedResources'))
+const AdminResourceRequests = React.lazy(() => import('~/pages/Admin/ResourceRequests'))
+const ManageUser = React.lazy(() => import('~/pages/Admin/Users/ManageUser'))
+const AdminUsers = React.lazy(() => import('~/pages/Admin/Users/Users'))
 
 const AdminRoutes = (
   <Route
