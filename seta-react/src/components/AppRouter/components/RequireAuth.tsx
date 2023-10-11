@@ -1,6 +1,7 @@
 import type { ReactElement } from 'react'
-import { Flex, Loader } from '@mantine/core'
 import { Navigate } from 'react-router-dom'
+
+import PageLoader from '~/components/PageLoader'
 
 import { useCurrentUser } from '~/contexts/user-context'
 import type { UserRole } from '~/types/user'
@@ -18,11 +19,7 @@ const RequireAuth = ({ children, allowedRoles }: Props) => {
   const { user, isLoading } = useCurrentUser()
 
   if (isLoading) {
-    return (
-      <Flex align="center" justify="center" m="auto" h="100vh">
-        <Loader size="xl" />
-      </Flex>
-    )
+    return <PageLoader />
   }
 
   if (!user) {
