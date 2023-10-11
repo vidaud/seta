@@ -1,1 +1,1 @@
-export { default } from './OrpahnedResources'
+export { default } from './OrphanedResources'
