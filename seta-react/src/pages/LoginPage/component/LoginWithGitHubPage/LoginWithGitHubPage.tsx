@@ -29,7 +29,7 @@ const useStyles = createStyles(() => ({
 const LoginWithGitHubPage = () => {
   const { classes } = useStyles()
   const loginEcas = () => {
-    login('/seta-ui/api/v1/login/ecas')
+    login('/authentication/v1/login/ecas')
   }
 
   const login = (url: string) => {

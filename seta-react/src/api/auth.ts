@@ -6,8 +6,8 @@ import api from '~/api'
 import { environment } from '~/environments/environment'
 import type { User } from '~/types/user'
 
-const BASE_URL = environment.baseUrl
-const USER_INFO_API_PATH = '/me/user-info'
+const BASE_URL = environment.authenticationUrl
+const USER_INFO_API_PATH = '/user-info'
 const REFRESH_TOKEN_API_PATH = '/refresh'
 
 const apiConfig: AxiosRequestConfig = {

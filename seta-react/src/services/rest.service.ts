@@ -24,12 +24,6 @@ class RestService {
   private httpGetCall(url) {
     return axios.get(url)
   }
-
-  public getUserData(username) {
-    const url = this.baseUrl + '/me/user-info'
-
-    return this.httpGetCall(url)
-  }
   // HTTP POST:
 
   private httpPostCall(url, body) {
