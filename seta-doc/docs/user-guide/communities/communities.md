@@ -48,7 +48,7 @@ You can filter by the different types display on top of the page: *Select Member
 
 
 <figure markdown>
-  ![Image title](../../img/communities_new_resource_manage.png)
+  ![Image title](../../img/community_details.png)
   <figcaption>Community Details</figcaption>
 </figure>
 

@@ -7,7 +7,7 @@
 2. You can either use the filters to search the Community or select from the Communities list.             
 3. Click on :octicons-chevron-down-12: at the right side of the Community row.      
 4. In the opened section, click on button ^^New Resource^^ on the botton left.  
-5. Setup the *Resource ID, Title, Abstract* and click *Save*
+5. Setup the *Resource ID, Title, Abstract, Type* and click *Save*
 
 <figure markdown>
   ![Image title](../../img/communities_new_resource_manage.png)
@@ -67,7 +67,7 @@
 3. Click on :material-dots-vertical: at the right side of each Resource and scroll to enable the option ^^Switch to Not Searchable / Switch to Searchable^^.  
 
 <figure markdown>
-  ![Image title](../../img/resource_searchable.png)
+  ![Image title](../../img/resource_details.png)
   <figcaption>Searchable Resource</figcaption>
 </figure>
 

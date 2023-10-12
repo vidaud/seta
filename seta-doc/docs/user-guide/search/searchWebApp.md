@@ -81,13 +81,13 @@ There are some filters that can be applied to refine the search of the results:
 : Chunking is a process of extracting phrases from unstructured text, in our case, it is possible to filter the results by switching to show multiple chunks or not.                
   
 `Filter by date range`
-: If this option is switched on, then the time range bar below, can be adjust to the custom year range.        
+: The time range bar, can be adjust to the custom year range.        
 
 `Data sources`        
 : In this section it is possible to select from the different sources available a more specific source topic.
 
-`Taxonomies`                
-: From the different taxonomies proposed in this section, it can be possible to select only the results with a specific group of interest.
+<!-- `Taxonomies`                
+: From the different taxonomies proposed in this section, it can be possible to select only the results with a specific group of interest. -->
 
 `Other`
 : In this section it is possible to filter the results with an extra parameter, this parameter can be any of the tags that appears in tag ^^Other^^ from the uploaded documents (e.g. *crc, project_piknus, regions, identifiers*).
