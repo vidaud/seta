@@ -39,7 +39,7 @@ class Export(Resource):
             export_formats = ["application/json", "text/csv"]
             if export_format not in export_formats:
                 raise ApiLogicError("Invalid Accept_mimetypes, it must be application/json or text/csv")
-            resp = export(args["ids"], args["fields"], app.es, app.config["INDEX"], export_format)
+            resp = export(args["ids"], args["fields"], app, export_format)
             if export_format == "text/csv":
                 return Response(resp, mimetype="text/csv")
             if export_format == "application/json":

@@ -1,6 +1,6 @@
 # sample-texts 📓 
 
-The **sample-texts** folder contains some json files used to train the Elasticsearch engine.
+The **sample-texts** folder contains documents to be indexed in elasitcsearch in json, yaml and xml format.
 
 
 ## Contributing

@@ -57,7 +57,7 @@ catalog = [
     },
     {
         "name": "sbert_embedding",
-        "description": "Chunk embedding."
+        "description": "Embedding vector of the chunk."
     },
     {
         "name": "source",
@@ -69,7 +69,7 @@ catalog = [
     },
     {
         "name": "in_force",
-        "description": "This field define if the document id in force."
+        "description": "Report if the document is in force or not."
     },
     {
         "name": "collection",
@@ -89,7 +89,11 @@ catalog = [
     },
     {
         "name": "other",
-        "description": "Other fields that che describe the document, user can add its own fields."
+        "description": "Other fields that describe the document, user can add its own fields."
+    },
+    {
+        "name": "community_id",
+        "description": "The id of the community"
     }
 ]
 

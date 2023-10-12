@@ -41,10 +41,11 @@ def get_doc_from_es(id, fields, es, index):
     return doc, source_id
 
 
-def export(ids, fields, es, index, export_format):
+def export(ids, fields, app, export_format):
     documents = []
-    for id in ids:
-        doc, source = get_doc_from_es(id, fields, es, index)
+    unique_ids = set(ids[:app.config["EXPORT_DOCUMENT_LIMIT"]])
+    for id in unique_ids:
+        doc, source = get_doc_from_es(id, fields, app.es, app.config["INDEX"])
         try:
             validate_view_permissions([source])
         except ForbiddenResourceError:
