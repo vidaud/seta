@@ -45,7 +45,7 @@
 2. Click on :octicons-chevron-down-12: at the right side of the Community row.      
 3. On the opened section, click on tab *Pending Membership Requests*.           
 4. You can see a list of the pending membership requests.            
-5. Click in the ^^:octicons-pencil-24:^^ under column *Actions* to update the status (*pending, approved, rejected*).     
+5. Click in the ^^:octicons-check-24:^^ or ^^:octicons-circle-slash-24:^^ under column *Actions* to update the status (*approved, rejected*).     
 6. Click *send*
 7. The request disappear from the Pending Membership Requests list.
 
@@ -63,7 +63,7 @@
 1. On the :material-bell-badge: on top of the page, a number notification appears.             
 2. Click on the icon and click on the number aside ^^Pending membership requests^^.              
 3. It will open the page with the list of Members asking to join.                    
-4. Click in the ^^:octicons-pencil-24:^^ under column *Actions* to update the status (*pending, approved, rejected*).
+4. Click in the ^^:octicons-check-24:^^ or ^^:octicons-circle-slash-24:^^ under column *Actions* to update the status (*approved, rejected*).
 5. Click *send*     
 
 <figure markdown>
@@ -95,7 +95,7 @@
 1. On the :material-bell-badge: on top of the page, a number notification appears.             
 2. Click on the icon and click on the number aside ^^Pending invites^^.              
 3. It will open the page with the list of Invites.                    
-4. Click in the ^^:octicons-pencil-24:^^ under column *Actions* to update the status (*accepted, rejected*).
+4. Click in the ^^:octicons-check-24:^^ or ^^:octicons-circle-slash-24:^^ under column *Actions* to update the status (*accepted, rejected*).
 5. Click *send*     
 
 <figure markdown>

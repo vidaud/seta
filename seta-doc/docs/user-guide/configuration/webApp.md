@@ -21,6 +21,11 @@ To access these features, you need to login either with an EU login[^1] account 
 <figcaption>Login</figcaption>
 </figure>
 
+<figure markdown>
+![Image title](../../img/login_with_git.png)
+<figcaption>Login with GitHub</figcaption>
+</figure>
+
 
 
 Once you are logged in, you can see in the top menu the link to the Search and to the Communities:
