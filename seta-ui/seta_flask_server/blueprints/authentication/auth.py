@@ -1,7 +1,7 @@
 from http import HTTPStatus
 from injector import inject
 
-from flask import current_app as app
+from flask import abort, current_app as app, url_for
 from flask import (jsonify, redirect, make_response, session, Blueprint)
 
 from flask_jwt_extended import create_access_token
@@ -11,41 +11,29 @@ from flask_jwt_extended import get_jwt_identity, get_jwt
 
 from flask_restx import Api, Resource, fields
 
-from seta_flask_server.infrastructure.constants import ExternalProviderConstants
+from seta_flask_server.infrastructure.constants import ExternalProviderConstants, UserRoleConstants
 from seta_flask_server.infrastructure.helpers import set_token_info_cookies, unset_token_info_cookies
 from seta_flask_server.infrastructure.auth_helpers import create_session_token
 
-from seta_flask_server.repository.interfaces import ISessionsBroker
+from seta_flask_server.repository.interfaces import ISessionsBroker, IUsersBroker
 
-doc='/login/doc'
+from .models.auth_dto import (status_model, user_info_model, authenticators_model, auth_models)
+
+doc='/web/doc'
 if app.config.get("DISABLE_SWAGGER_DOCUMENTATION"):
     doc = False
 
 local_auth = Blueprint("auth", __name__)
-local_auth_api = Api( local_auth,
+local_auth_api = Api(local_auth,
                version="1.0",
                title="SeTA Authentication",
                doc=doc,
-               description="Local authentication methods",
-               default_swagger_filename="login/swagger_auth.json",
-               )
+               description="Authentication methods for the web application",
+               default_swagger_filename="swagger_auth.json")
+
+local_auth_api.models.update(auth_models)
+
 ns_auth = local_auth_api.namespace("", "SETA Authentication Endpoints")
-
-status_model = ns_auth.model(
-    "Status",
-    {
-        'status': fields.String(required=True, description="Returned status for the requested operation", enum=["success", "fail"])
-     }
-)
-
-
-login_info_model = ns_auth.model("LoginInfo", {
-    "access_token_exp": fields.DateTime(description="Access token expiration date"),
-    "refresh_token_exp": fields.DateTime(description="Refresh token expiration date"),
-    "user_id": fields.String(description="Seta User Identifier"),
-    "auth_provider": fields.String(description="Third-party authentication provider", enum=ExternalProviderConstants.List),
-    "logout_url": fields.String(description="Logout url to be used by the web client")
-})
 
 @ns_auth.route("/logout/callback", methods=['GET'])
 class SetaLogoutCallback(Resource):
@@ -74,7 +62,7 @@ class SetaLogoutCallback(Resource):
         
         return response
 
-@ns_auth.route("/logout", methods=["POST","GET"],
+@ns_auth.route("/logout", methods=["POST"],
                doc={"description": "Local logout"})
 @ns_auth.response(int(HTTPStatus.OK), 'Remove tokens from local domain cookies', status_model)
 class SetaLogout(Resource):    
@@ -84,16 +72,8 @@ class SetaLogout(Resource):
         self.sessionsBroker = sessionsBroker
         super().__init__(api, *args, **kwargs)
     
-    #@ns_auth.marshal_with(status_model)
-    def get(self):
-        app.logger.debug("Local logout")
-        return self.logout_local()
-    
-    #@ns_auth.marshal_with(status_model)
+    @ns_auth.marshal_with(status_model)
     def post(self):
-        return self.logout_local()
-
-    def logout_local(self):
         """
         Remove tokens from cookies, but third-party cookies will remain
         """
@@ -124,14 +104,13 @@ class SetaRefresh(Resource):
     
     @jwt_required(refresh=True)
     def get(self):
-        return self.refresh()
+        return self._refresh()
     
     @jwt_required(refresh=True)
-    def get(self):
-        return self.refresh()
+    def post(self):
+        return self._refresh()
 
-
-    def refresh(self):
+    def _refresh(self):
         identity = get_jwt_identity()
             
         additional_claims = None
@@ -153,3 +132,73 @@ class SetaRefresh(Resource):
         set_token_info_cookies(response=response, access_token_encoded=access_token)
 
         return response
+
+
+@ns_auth.route('/user-info', endpoint="me_user_info", methods=['GET'])
+class UserInfo(Resource):
+    @inject
+    def __init__(self, usersBroker: IUsersBroker, api=None, *args, **kwargs):
+        self.usersBroker = usersBroker
+                
+        super().__init__(api, *args, **kwargs)
+     
+    @ns_auth.doc(description='Retrieve info for this user.',        
+        responses={int(HTTPStatus.OK): "Retrieved info.",
+                   int(HTTPStatus.NOT_FOUND): "User not found",},
+        
+        security='CSRF')
+    @ns_auth.marshal_with(user_info_model, mask="*")
+    @jwt_required()   
+    def get(self):
+        """ Returns user details"""
+        
+        identity = get_jwt_identity()        
+        
+        if "provider_uid" in identity:
+            user = self.usersBroker.get_user_by_provider(provider_uid=identity["provider_uid"], 
+                        provider=identity["provider"])
+        else:
+            user = self.usersBroker.get_user_by_id(user_id=identity["user_id"], load_scopes=False)
+            user.authenticated_provider = user.external_providers[0]
+        
+        if user is None or user.is_not_active():            
+            abort(HTTPStatus.NOT_FOUND, "User not found in the database!")
+
+        return {
+                "username": user.user_id, 
+                "firstName": user.authenticated_provider.first_name, 
+                "lastName": user.authenticated_provider.last_name,
+                "email": user.email,
+                "role": user.role,
+                "domain": user.authenticated_provider.domain
+                }
+
+@ns_auth.route("/authenticators", methods=["GET"], endpoint="authenticators")   
+class SetaIdentityProviders(Resource):
+
+    @ns_auth.doc(description='Retrieve authenticators for SeTA web application.',        
+        responses={int(HTTPStatus.OK): "Retrieved list."})
+    @ns_auth.marshal_list_with(authenticators_model, mask="*")
+    def get(self):
+        
+        identity_providers = list(app.config.get("SETA_IDENTITY_PROVIDERS", []))
+
+        result = []
+
+        if any(p.lower() == ExternalProviderConstants.ECAS.lower() for p in identity_providers):
+            result.append({
+                "name": ExternalProviderConstants.ECAS,
+                "login_url": url_for("auth_ecas.login"),
+                "logout_url": url_for("auth_ecas.logout_ecas")
+            })
+
+        if any(p.lower() == ExternalProviderConstants.GITHUB.lower() for p in identity_providers):
+            result.append({
+                "name": ExternalProviderConstants.GITHUB,
+                "login_url": url_for("auth_github.login"),
+                "logout_url": url_for("auth._seta_logout")
+            })
+
+        return result
+
+    

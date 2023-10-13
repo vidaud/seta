@@ -1,18 +1,15 @@
 import logging
 
-from flask import (Flask, request, session, url_for)
+from flask import (Flask, request, session)
 from werkzeug.middleware.proxy_fix import ProxyFix
 from flask_jwt_extended import get_jwt_identity
 
-from .infrastructure.extensions import (scheduler, jwt, logs, github)
+from .infrastructure.extensions import (scheduler, jwt, logs)
 from .infrastructure.auth_helpers import refresh_expiring_jwts
 
 from .infrastructure.helpers import MongodbJSONProvider
 from seta_flask_server.repository.interfaces import ISessionsBroker
 from seta_flask_server.infrastructure.auth_helpers import create_session_token
-
-#from cas import CASClient
-from seta_flask_server.infrastructure.clients.cas_client import SetaCasClient
 
 from flask_injector import FlaskInjector
 from .dependency import MongoDbClientModule
@@ -25,8 +22,7 @@ def create_app(config_object):
     app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_host=1)
     
     app.config.from_object(config_object)    
-    app.home_route = app.config.get("HOME_ROUTE")
-        
+            
     #use flask.json in all modules instead of python built-in json
     app.json_provider_class = MongodbJSONProvider
         
@@ -34,12 +30,9 @@ def create_app(config_object):
     
     with app.app_context():
         register_blueprints(app)
-
-    register_cas_client(app)
            
     request_endswith_ignore_list = ['.js', '.css', '.png', '.ico', '.svg', '.map', '.json', 'doc']
-    request_starts_with_ignore_list = ['/authorization', '/authentication', '/seta-ui/api/v1/login', 
-                                       '/seta-ui/api/v1/logout', '/seta-ui/api/v1/refresh', '/seta-ui/api/v1/me/user-info', '/seta-ui/api/v1/notifications']
+    request_starts_with_ignore_list = ['/seta-ui/api/v1/notifications']
     
     with app.app_context():
             
@@ -58,7 +51,8 @@ def create_app(config_object):
                         
             response, new_access_token = refresh_expiring_jwts(app, response)
             
-            if new_access_token:                
+            if new_access_token:  
+                #save this token to the database              
                 session_id = session.get("session_id")
                 
                 if session_id:                    
@@ -140,9 +134,6 @@ def create_app(config_object):
 def register_blueprints(app):
     
     from .blueprints.communities import communities_bp_v1
-    from .blueprints.auth import local_auth
-    from .blueprints.auth_ecas import auth_ecas
-    from .blueprints.auth_github import auth_github
     from .blueprints.profile import profile_bp_v1
     from .blueprints.catalogue import catalogue_bp_v1
     from .blueprints.admin import admin_bp
@@ -150,11 +141,7 @@ def register_blueprints(app):
     
     API_ROOT_V1="/seta-ui/api/v1"
                     
-    app.register_blueprint(profile_bp_v1, url_prefix=API_ROOT_V1)   
-    
-    app.register_blueprint(local_auth, url_prefix=API_ROOT_V1)
-    app.register_blueprint(auth_ecas, url_prefix=API_ROOT_V1)
-    app.register_blueprint(auth_github, url_prefix=API_ROOT_V1)
+    app.register_blueprint(profile_bp_v1, url_prefix=API_ROOT_V1)    
 
     app.register_blueprint(communities_bp_v1, url_prefix=API_ROOT_V1)
 
@@ -163,8 +150,7 @@ def register_blueprints(app):
 
     app.register_blueprint(admin_bp, url_prefix=API_ROOT_V1)    
         
-def register_extensions(app: Flask):    
-    github.init_app(app)
+def register_extensions(app: Flask):
     scheduler.init_app(app)
     jwt.init_app(app)
     
@@ -172,16 +158,3 @@ def register_extensions(app: Flask):
         logs.init_app(app)
     except:
         app.logger.error("logs config failed")
-        
-def register_cas_client(app: Flask):
-    with app.app_context(), app.test_request_context():
-        ecas_login_callback_url = url_for("auth_ecas.login_callback_ecas", _external=True)
-        
-    #app.logger.debug("Auth ECAS login callback: " + ecas_login_callback_url)
-    
-    #the service_url will be changed before ECAS redirect with 'request.url'
-    app.cas_client = SetaCasClient(
-        #version=3,
-        service_url = ecas_login_callback_url,
-        server_url = app.config.get("AUTH_CAS_URL"),
-    )    

@@ -8,7 +8,7 @@ import storageService from './storage.service'
 import { environment } from '../environments/environment'
 import type { User } from '../models/user.model'
 
-const AUTH_API = environment.baseUrl
+const AUTH_API = environment.authenticationUrl
 
 class AuthentificationService {
   public currentUserSubject: BehaviorSubject<User | null> = new BehaviorSubject<User | null>(null)
@@ -62,7 +62,7 @@ class AuthentificationService {
 
   profile(): Observable<User | null> {
     axios
-      .get<User>(AUTH_API + '/me/user-info')
+      .get<User>(AUTH_API + '/user-info')
       .then(response => {
         const user = response.data
 

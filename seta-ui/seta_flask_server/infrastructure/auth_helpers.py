@@ -65,7 +65,7 @@ def refresh_expiring_jwts(app: Flask, response):
             app.logger.debug("Expiring access token was refreshed.")            
     except Exception as e:
         # Case where there is not a valid JWT. Just return the original response
-        app.logger.exception("Could not refresh the expiring token.")        
+        #app.logger.exception("Could not refresh the expiring token.")        
         return response, new_access_token
     finally:
         return response, new_access_token

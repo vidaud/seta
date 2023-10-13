@@ -7,9 +7,9 @@ const errorInterceptor = (error: AxiosError) => {
 
   const { status } = error.response
 
-  // Redirect to login everything but '/me/user-info'
+  // Redirect to login everything but '/user-info'
 
-  if (error.config?.url?.includes('/me/user-info')) {
+  if (error.config?.url?.includes('/user-info')) {
     return Promise.reject(error)
   }
 

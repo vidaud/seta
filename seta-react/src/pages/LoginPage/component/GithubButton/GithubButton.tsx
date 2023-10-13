@@ -4,7 +4,7 @@ import { FaGithub } from 'react-icons/fa'
 
 const GithubButton = (props: ButtonProps & React.ComponentPropsWithoutRef<'button'>) => {
   const loginGithub = () => {
-    login('/seta-ui/api/v1/login/github')
+    login('/authentication/v1/login/github')
   }
   const login = (url: string) => {
     const queryString = window.location.search

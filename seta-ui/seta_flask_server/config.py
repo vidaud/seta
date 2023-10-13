@@ -41,7 +41,10 @@ class Config:
 
         Config.SCHEDULER_ENABLED = config_section.getboolean("SCHEDULER_ENABLED", fallback=False)        
         Config.DISABLE_SWAGGER_DOCUMENTATION = config_section.getboolean("DISABLE_SWAGGER_DOCUMENTATION", fallback=True)
-        Config.AUTO_APPROVE_CHANGE_REQUEST = config_section.getboolean("AUTO_APPROVE_CHANGE_REQUEST", fallback=False)        
+        Config.AUTO_APPROVE_CHANGE_REQUEST = config_section.getboolean("AUTO_APPROVE_CHANGE_REQUEST", fallback=False)    
+
+        identity_providers = config_section.get("SETA_IDENTITY_PROVIDERS", fallback="ECAS")
+        Config.SETA_IDENTITY_PROVIDERS = identity_providers.split(sep=",")    
 
         Config.JWT_IDENTITY_CLAIM = config_section.get("JWT_IDENTITY_CLAIM", fallback="seta_id")
         Config.JWT_COOKIE_CSRF_PROTECT = config_section.getboolean("JWT_COOKIE_CSRF_PROTECT", fallback=True)
