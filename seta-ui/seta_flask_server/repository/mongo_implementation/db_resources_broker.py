@@ -105,7 +105,7 @@ class ResourcesBroker(implements(IResourcesBroker)):
         resources = self.collection.find(filter)
         return [ResourceModel.from_db_json(c) for c in resources]
     
-    def get_ids_by_member_id_and_type(self, user_id:str, type: str) -> list[str]:
+    def get_all_by_member_id_and_type(self, user_id:str, type: str) -> list[ResourceModel]:
         community_ids = self._get_membership_communities(user_id)
 
         filter = {
@@ -114,9 +114,8 @@ class ResourcesBroker(implements(IResourcesBroker)):
                     "type": type
                 }
         
-        resources = self.collection.find(filter, {"resource_id": 1})
-        #return resource ids
-        return [c["resource_id"] for c in resources]
+        resources = self.collection.find(filter)
+        return [ResourceModel.from_db_json(c) for c in resources]
 
     def get_all_by_community_id(self, community_id:str) -> list[ResourceModel]:
         '''Retrieve all resources belonging to the community id'''
