@@ -8,6 +8,7 @@ from .ontology.ontology import ontology_api
 from .embeddings.embeddings import emb_api
 from .file_to_text.file_to_text import file_to_text_api
 from .term_enrichment.term_enrichment import term_enrichment_api
+from .export.export import export_api
 
 authorizations = {
     'apikey': {
@@ -46,3 +47,4 @@ api.add_namespace(ontology_api, path="/")
 api.add_namespace(emb_api, path="/")
 api.add_namespace(file_to_text_api, path="/")
 api.add_namespace(term_enrichment_api, path="/")
+api.add_namespace(export_api, path="/")
