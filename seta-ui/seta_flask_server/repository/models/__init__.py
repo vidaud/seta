@@ -17,3 +17,4 @@ from .catalogue_scope import CatalogueScope, ScopeCatalogues, ScopeCategory
 from .catalogue_role import CatalogueRole, RoleCatalogues, RoleCategory
 from .library import LibraryItem, LibraryItemType
 from .account_info import AccountInfo
+from .catalogue_field import CatalogueField

@@ -1,6 +1,8 @@
 from interface import Interface
 
-from seta_flask_server.repository.models import ScopeCatalogues, ScopeCategory, RoleCatalogues, RoleCategory, CatalogueRole
+from seta_flask_server.repository.models import (ScopeCatalogues, ScopeCategory, 
+                                                 RoleCatalogues, RoleCategory, CatalogueRole, 
+                                                 CatalogueField)
 
 
 class ICatalogueBroker(Interface):
@@ -35,4 +37,10 @@ class ICatalogueBroker(Interface):
             Role code, one of CommunityRoleConstants
         """
 
+        pass
+
+    def get_fields(self) -> list[CatalogueField]:
+        """
+        Get catalogue of fields
+        """
         pass
