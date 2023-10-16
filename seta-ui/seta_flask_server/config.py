@@ -44,7 +44,9 @@ class Config:
         Config.AUTO_APPROVE_CHANGE_REQUEST = config_section.getboolean("AUTO_APPROVE_CHANGE_REQUEST", fallback=False)    
 
         identity_providers = config_section.get("SETA_IDENTITY_PROVIDERS", fallback="ECAS")
-        Config.SETA_IDENTITY_PROVIDERS = identity_providers.split(sep=",")    
+        Config.SETA_IDENTITY_PROVIDERS = identity_providers.split(sep=",")  
+
+        Config.UNBLOCK_TOKENS_HOURS = config_section.getint("UNBLOCK_TOKENS_HOURS", fallback=48)
 
         Config.JWT_IDENTITY_CLAIM = config_section.get("JWT_IDENTITY_CLAIM", fallback="seta_id")
         Config.JWT_COOKIE_CSRF_PROTECT = config_section.getboolean("JWT_COOKIE_CSRF_PROTECT", fallback=True)

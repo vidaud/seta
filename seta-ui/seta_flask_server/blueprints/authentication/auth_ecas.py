@@ -73,7 +73,7 @@ def login_callback_ecas(userBroker: IUsersBroker, sessionBroker: ISessionsBroker
     if auth_user is None:
         #! user is not active
         return redirect(app.home_route)
-        abort(HTTPStatus.UNAUTHORIZED, "The user couldn't be authenticated")
+        #abort(HTTPStatus.UNAUTHORIZED, "The user couldn't be authenticated")
     
     response = create_login_response(seta_user=auth_user, sessionBroker=sessionBroker, next=next)
     

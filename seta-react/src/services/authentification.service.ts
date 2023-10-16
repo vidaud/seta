@@ -3,6 +3,8 @@ import type { Observable } from 'rxjs'
 import { BehaviorSubject } from 'rxjs'
 import { getCookie } from 'typescript-cookie'
 
+import logger from '~/utils/logger'
+
 import storageService from './storage.service'
 
 import { environment } from '../environments/environment'
@@ -42,7 +44,11 @@ class AuthentificationService {
 
   setaLogout() {
     ;(
-      axios.post(AUTH_API + '/logout', { 'Cache-Control': 'no-cache', Pragma: 'no-cache' }) as any
+      axios.post(
+        AUTH_API + '/logout',
+        {},
+        { headers: { 'Cache-Control': 'no-cache', Pragma: 'no-cache' } }
+      ) as any
     ).then(() => {
       window.location.href = AUTH_API + '/logout/ecas'
       this.currentUserSubject.next(null)
@@ -52,7 +58,11 @@ class AuthentificationService {
 
   setaLocalLogout() {
     axios
-      .post(AUTH_API + '/logout', { 'Cache-Control': 'no-cache', Pragma: 'no-cache' })
+      .post(
+        AUTH_API + '/logout',
+        {},
+        { headers: { 'Cache-Control': 'no-cache', Pragma: 'no-cache' } }
+      )
       .then(() => {
         this.currentUserSubject.next(null)
         storageService.clean()
@@ -70,7 +80,7 @@ class AuthentificationService {
         this.currentUserSubject.next(user)
       })
       .catch(error => {
-        console.log(error)
+        logger.error(error)
       })
 
     return this.currentUserSubject
@@ -80,9 +90,13 @@ class AuthentificationService {
     const csrf_token = getCookie('csrf_refresh_token')
 
     return axios
-      .get(AUTH_API + '/refresh', {
-        headers: { 'X-CSRF-TOKEN': csrf_token }
-      })
+      .post(
+        AUTH_API + '/refresh',
+        {},
+        {
+          headers: { 'X-CSRF-TOKEN': csrf_token }
+        }
+      )
       .then((response: any) => {
         return response
       })

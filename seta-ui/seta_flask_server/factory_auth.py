@@ -1,4 +1,7 @@
-from flask import Flask, url_for
+import pytz
+from datetime import datetime
+
+from flask import Flask, url_for, session
 from werkzeug.middleware.proxy_fix import ProxyFix
 
 #from cas import CASClient
@@ -43,10 +46,11 @@ def create_app(config_object):
     #Callback function to check if a JWT exists in the database block list
     @jwt.token_in_blocklist_loader
     def check_if_token_revoked(jwt_header, jwt_payload: dict) -> bool:
-        jti = jwt_payload["jti"]
-        
-        sessionsBroker = app_injector.injector.get(ISessionsBroker)        
-        return sessionsBroker.session_token_is_blocked(jti)
+        jti = jwt_payload["jti"]        
+        sessionsBroker = app_injector.injector.get(ISessionsBroker)
+        session_id = session.get("session_id")
+
+        return jwt_token_revoked(sessionsBroker=sessionsBroker, jti=jti, session_id=session_id)
         
     app_injector = FlaskInjector(
         app=app,
@@ -56,7 +60,7 @@ def create_app(config_object):
     return app
     
 def register_blueprints(app: Flask):
-    from seta_flask_server.blueprints.authorization.token_auth import token_auth
+    from seta_flask_server.blueprints.authentication.token_auth import token_auth
     from seta_flask_server.blueprints.authorization.token_info import token_info  
 
     from .blueprints.authentication.auth import local_auth
@@ -98,3 +102,20 @@ def register_cas_client(app: Flask):
         service_url = ecas_login_callback_url,
         server_url = app.config.get("AUTH_CAS_URL"),
     ) 
+
+def jwt_token_revoked(sessionsBroker: ISessionsBroker, jti: str, session_id: str = None) -> bool:
+
+    is_blocked = sessionsBroker.session_token_is_blocked(jti)
+
+    if is_blocked:
+        return True
+    
+    if session_id:
+        token = sessionsBroker.get_session_token(session_id=session_id, token_jti=jti)
+        now = datetime.now(tz=pytz.utc)
+
+        if token is not None and token.blocked_at is not None and token.blocked_at.replace(tzinfo=pytz.utc) <= now:
+            sessionsBroker.session_token_set_blocked(token_jti=jti)
+            return True
+
+    return False
