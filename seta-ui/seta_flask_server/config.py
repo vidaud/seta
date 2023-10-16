@@ -53,6 +53,9 @@ class Config:
         token_location = config_section.get("JWT_TOKEN_LOCATION", fallback="headers,cookies")
         Config.JWT_TOKEN_LOCATION = token_location.split(sep=",")
 
+        Config.JWT_ACCESS_TOKEN_EXPIRES = config_section.getint("JWT_ACCESS_TOKEN_EXPIRES", fallback=900)
+        Config.JWT_REFRESH_TOKEN_EXPIRES = config_section.getint("JWT_REFRESH_TOKEN_EXPIRES", fallback=86400)
+
         Config.SCHEDULER_API_ENABLED = config_section.getboolean("SCHEDULER_API_ENABLED", fallback=False)
         Config.RESTX_MASK_SWAGGER = config_section.getboolean("RESTX_MASK_SWAGGER", fallback=False)
 
