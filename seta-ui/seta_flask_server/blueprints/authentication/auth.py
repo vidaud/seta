@@ -9,9 +9,9 @@ from flask_jwt_extended import jwt_required
 from flask_jwt_extended import set_access_cookies, unset_jwt_cookies
 from flask_jwt_extended import get_jwt_identity, get_jwt
 
-from flask_restx import Api, Resource, fields
+from flask_restx import Api, Resource
 
-from seta_flask_server.infrastructure.constants import ExternalProviderConstants, UserRoleConstants
+from seta_flask_server.infrastructure.constants import ExternalProviderConstants
 from seta_flask_server.infrastructure.helpers import set_token_info_cookies, unset_token_info_cookies
 from seta_flask_server.infrastructure.auth_helpers import create_session_token
 
@@ -71,8 +71,7 @@ class SetaLogout(Resource):
     def __init__(self, sessionsBroker: ISessionsBroker, api=None, *args, **kwargs):
         self.sessionsBroker = sessionsBroker
         super().__init__(api, *args, **kwargs)
-    
-    @ns_auth.marshal_with(status_model)
+        
     def post(self):
         """
         Remove tokens from cookies, but third-party cookies will remain
