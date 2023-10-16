@@ -1,7 +1,5 @@
-from bson import json_util, SON
-from flask import json as flask_json, Flask
-from six import iteritems, string_types
-from bson.json_util import RELAXED_JSON_OPTIONS
+from bson import json_util
+from flask import Flask
 import typing as t
 
 from flask import Response
@@ -36,33 +34,7 @@ class MongodbJSONProvider(JSONProvider):
         :param s: Text or UTF-8 bytes.
         :param kwargs: May be passed to the underlying JSON library.
         """
-        return json_util.loads(s, **kwargs)
-    
-
-class JSONEncoder(flask_json.JSONEncoder):
-
-    """A JSON encoder that uses :mod:`bson.json_util` for MongoDB documents. """
-
-    def __init__(self, json_options=None, *args, **kwargs):
-        if json_options is None:
-            json_options = RELAXED_JSON_OPTIONS
-        if json_options is not None:
-            self._default_kwargs = {"json_options": json_options}
-        else:
-            self._default_kwargs = {}
-
-        super(JSONEncoder, self).__init__(*args, **kwargs)
-
-    def default(self, obj):
-        if hasattr(obj, "iteritems") or hasattr(obj, "items"):
-            return SON((k, self.default(v)) for k, v in iteritems(obj))
-        elif hasattr(obj, "__iter__") and not isinstance(obj, string_types):
-            return [self.default(v) for v in obj]
-        else:
-            try:
-                return json_util.default(obj, **self._default_kwargs)
-            except TypeError:
-                return obj
+        return json_util.loads(s, **kwargs)   
             
 class NullableString(fields.String):
     __schema_type__ = ['string', 'null']
@@ -73,7 +45,7 @@ def set_app_cookie(
     response: Response, key: str, value: str, max_age=None, domain=None
 ) -> None:
     """
-    Modifiy a Flask Response to set a cookie containing a string value.
+    Modify a Flask Response to set a cookie containing a string value.
 
     :param response:
         A Flask Response object.
@@ -109,7 +81,7 @@ def set_app_cookie(
     
 def unset_app_cookie(response: Response, key: str,  domain: str = None) -> None:
     """
-    Modifiy a Flask Response to delete the cookie with key ``key``.
+    Modify a Flask Response to delete the cookie with key ``key``.
     
     :param response:
         A Flask Response object
