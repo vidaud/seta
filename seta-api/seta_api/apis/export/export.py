@@ -1,3 +1,4 @@
+import requests
 from flask_restx import Namespace, Resource, abort, fields
 from flask import current_app as app, request, jsonify, Response
 from jsonschema import validate
@@ -66,9 +67,13 @@ class Export(Resource):
     @auth_validator()
     def get(self):
         try:
-            return jsonify(export_catalog())
-        except ApiLogicError as aex:
-            abort(404, str(aex))
+            url = app.config.get("CATALOGUE_API_ROOT_URL") + "fields"
+            
+            #get catalogue from 
+            result = requests.get(url=url, headers=request.headers, cookies=request.cookies)
+            catalogue = result.json()
+
+            return jsonify({"fields_catalog": catalogue})
         except:
             app.logger.exception("ExportCatalog->get")
             abort(500, "Internal server error")

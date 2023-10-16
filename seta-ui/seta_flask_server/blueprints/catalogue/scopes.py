@@ -1,11 +1,8 @@
-from crypt import methods
-from random import choices
-from unicodedata import category
 from injector import inject
 from http import HTTPStatus
 
 from flask_jwt_extended import jwt_required
-from flask_restx import Namespace, Resource, abort, reqparse
+from flask_restx import Namespace, Resource, abort
 
 from .models.scopes_dto import scope_model, scopes_model
 

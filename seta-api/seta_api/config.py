@@ -90,6 +90,8 @@ class Config:
 
         Config.TIKA_PATH = config_section.get("TIKA_PATH")
 
+        Config.CATALOGUE_API_ROOT_URL = config_section.get("CATALOGUE_API_ROOT_URL")
+
         #Read logging environment variables
         Config.LOG_TYPE = config_section.get("LOG_TYPE", "stream")
         Config.LOG_LEVEL = config_section.get("LOG_LEVEL", "INFO")

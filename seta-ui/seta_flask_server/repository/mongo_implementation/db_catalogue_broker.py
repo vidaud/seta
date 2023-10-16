@@ -2,7 +2,9 @@ from injector import inject
 from interface import implements
 
 from seta_flask_server.repository.interfaces import IDbConfig, ICatalogueBroker
-from seta_flask_server.repository.models import ScopeCatalogues, ScopeCategory, RoleCatalogues, RoleCategory, CatalogueScope, CatalogueRole
+from seta_flask_server.repository.models import (ScopeCatalogues, ScopeCategory, CatalogueScope,
+                                                 RoleCatalogues, RoleCategory, CatalogueRole, 
+                                                 CatalogueField)
 
 class CatalogueBroker(implements(ICatalogueBroker)):
     @inject
@@ -43,3 +45,7 @@ class CatalogueBroker(implements(ICatalogueBroker)):
             return CatalogueRole.from_db_json(role)
 
         return None
+    
+    def get_fields(self) -> list[CatalogueField]:        
+        fields = self.collection.find({"catalogue": "fields"})
+        return [CatalogueField.from_db_json(f) for f in fields]
