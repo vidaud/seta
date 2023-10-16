@@ -11,8 +11,6 @@ def auth_validator(role=None):
             
             if role:
                 claims = get_jwt()
-                #print(claims,flush=True)
-                #print(role,flush=True)
                 
                 if not (claims['role'] == role):
                     response = jsonify({"message": "Unauthorized access"})
@@ -25,30 +23,25 @@ def auth_validator(role=None):
     return wrapper
 
 
-def validate_view_permissions(sources):
+def validate_view_permissions(sources: list[str]) -> list[str]:
     '''
     Verify that all resources in the `sources` are contained by the resource_permissions.view array of the decoded token.
     Return the list of view resources if `sources` are empty
     '''
     
-    view_resources = None
-    
-    jwt = get_jwt()
-    permissions = jwt.get("resource_permissions", None)
-    if permissions:
-        view_resources = permissions.get("view", None)
-        if view_resources and sources:
-            for s in sources:
-                if not any(r.lower() == s.lower() for r in view_resources):
-                    raise ForbiddenResourceError(resource_id=s)
-    
+    view_resources = get_resource_permissions("view")
+
     #user has no access to any public or community resources
     if not view_resources:   
         raise ForbiddenResourceError(resource_id=None)
     
-    #restrict query only to view_resources
+     #restrict query only to view_resources
     if sources is None:
-        return view_resources
+        return [r["resource_id"] for r in view_resources]
+    else:
+        for s in sources:
+            if not any(r["resource_id"].lower() == s.lower() for r in view_resources):
+                raise ForbiddenResourceError(resource_id=s)
     
     return sources
 
@@ -57,33 +50,38 @@ def validate_add_permission(source: str) -> bool:
     Validate that the `source` is contained by the resource_permissions.add array of the decoded token
     '''
     
-    if source is None:
-        return False
-    
-    jwt = get_jwt()
-    permissions = jwt.get("resource_permissions", None)
-    if permissions:
-        add_resources = permissions.get("add", None)
-        
-        if add_resources is not None:
-            return any(r.lower() == source.lower() for r in add_resources)
-    
-    return False
+    return _validate_source_permission(source=source, permission="add")
 
 def validate_delete_permission(source: str) -> bool:
     '''
     Validate that the `source` is contained by the resource_permissions.delete array of the decoded token
     '''
     
-    if source is None:
-        return False
-    
+    return _validate_source_permission(source=source, permission="delete")
+
+def get_resource_permissions(permission: str) -> list[dict]:
+    """
+    Return the list of {community_id: str, resource_id: str} from 'resource_permissions' inside JWT token
+
+    Important: 'add' & 'delete' lists have value only for the resource_id property
+
+    :param permission:
+        One of 'view', 'add', 'delete', 'representatives'
+    """
+
     jwt = get_jwt()
     permissions = jwt.get("resource_permissions", None)
     if permissions:
-        add_resources = permissions.get("delete", None)
-        
-        if add_resources is not None:
-            return any(r.lower() == source.lower() for r in add_resources)
+        return permissions.get(permission, None)
+    
+    return None
+
+def _validate_source_permission(source: str, permission: str) -> bool:
+    if source is None:
+        return False
+    
+    resources = get_resource_permissions(permission)        
+    if resources is not None:
+        return any(r["resource_id"].lower() == source.lower() for r in resources)
     
     return False

@@ -21,9 +21,9 @@ class IResourcesBroker(Interface):
         '''Retrieve all resource ids that can be queried by user id'''
         pass
 
-    def get_ids_by_member_id_and_type(self, user_id:str, type: str) -> list[str]:
+    def get_all_by_member_id_and_type(self, user_id:str, type: str) -> list[ResourceModel]:
         '''
-        Retrieve all resource ids within user memberships filter by type
+        Retrieve all resources within user memberships filter by type
 
         :param user_id:
             User identifier
