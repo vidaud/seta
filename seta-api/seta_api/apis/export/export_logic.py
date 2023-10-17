@@ -1,15 +1,37 @@
-from seta_api.infrastructure.auth_validator import validate_view_permissions
+from seta_api.infrastructure.auth_validator import validate_view_permissions, get_resource_permissions
 from seta_api.infrastructure.ApiLogicError import ForbiddenResourceError, ApiLogicError
-from .field_catalog import get_catalog_fields_name, get_catalog
 from seta_api.infrastructure.helpers import is_field_in_doc
 import pandas as pd
 import io
+import requests
 
 
-def get_doc_from_es(id, fields, es, index):
+def get_catalog_fields_name(app, request):
+    url = app.config.get("CATALOGUE_API_ROOT_URL") + "fields"
+    try:
+        result = requests.get(url=url, headers=request.headers, cookies=request.cookies)
+    except:
+        raise ApiLogicError("catalog api error")
+    names = []
+    for f in result.json():
+        names.append(f["name"])
+    return names
+
+
+def retrieve_community_id(source):
+    resources = get_resource_permissions("view")
+    if resources is not None:
+        for r in resources:
+            if r["resource_id"].lower() == source.lower():
+                return r["community_id"]
+    return None
+
+
+def get_doc_from_es(id, fields, app, request):
+    es = app.es
+    index = app.config["INDEX"]
     source = []
-    available_fields = get_catalog_fields_name()
-    available_fields.append("community_id")
+    available_fields = get_catalog_fields_name(app, request)
     for field in fields:
         if field in available_fields:
             source.append(field)
@@ -34,18 +56,18 @@ def get_doc_from_es(id, fields, es, index):
                 doc[f] = document[f]
                 continue
             if f == "community_id":
-                #todo retrieve communty id from token
-                doc[f] = None
+                community_id = retrieve_community_id(source_id)
+                doc[f] = community_id
                 continue
             doc[f] = is_field_in_doc(document["_source"], f)
     return doc, source_id
 
 
-def export(ids, fields, app, export_format):
+def export(ids, fields, app, export_format, request):
     documents = []
     unique_ids = set(ids[:app.config["EXPORT_DOCUMENT_LIMIT"]])
     for id in unique_ids:
-        doc, source = get_doc_from_es(id, fields, app.es, app.config["INDEX"])
+        doc, source = get_doc_from_es(id, fields, app, request)
         try:
             validate_view_permissions([source])
         except ForbiddenResourceError:
@@ -63,7 +85,3 @@ def export(ids, fields, app, export_format):
     if export_format == "application/json":
         return {"documents": documents}
 
-
-def export_catalog():
-    c = {"fields_catalog": get_catalog()}
-    return c
