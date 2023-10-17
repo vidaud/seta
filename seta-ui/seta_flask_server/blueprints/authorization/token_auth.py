@@ -105,7 +105,7 @@ refresh_parser = ns_auth.parser()
 refresh_parser.add_argument("Authorization", location="headers", required=False, type="apiKey", help="Bearer JWT refresh token")
 #refresh_parser.add_argument("X-CSRF-TOKEN", location="headers", required=False, type="string")
 
-@ns_auth.route("/refresh", methods=['POST']) 
+@ns_auth.route("/user/refresh", methods=['POST']) 
 class JWTRefreshToken(Resource):
     @inject
     def __init__(self, usersBroker: IUsersBroker, api=None, *args, **kwargs):
