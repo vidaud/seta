@@ -34,7 +34,6 @@ class Export(Resource):
     def post(self):
         try:
             args = request.get_json(force=True)
-            app.logger.debug(str(args))
             validate(instance=args, schema=export_post_schema)
             export_format = str(request.accept_mimetypes)
             export_formats = ["application/json", "text/csv"]
