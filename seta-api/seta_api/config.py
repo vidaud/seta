@@ -72,7 +72,7 @@ class Config:
         Config.SEARCH_TYPES = search_types.split(sep=",")
 
         Config.DEFAULT_ENRICHMENT_TYPE = config_section.get("DEFAULT_ENRICHMENT_TYPE", fallback="similar")
-        Config.EXPORT_DOCUMENT_LIMIT = config_section.get("EXPORT_DOCUMENT_LIMIT", fallback=5000)
+        Config.EXPORT_DOCUMENT_LIMIT = config_section.getint("EXPORT_DOCUMENT_LIMIT", fallback=5000)
 
         Config.ES_INIT_DATA_DUMP_FILE = config_section.get("ES_INIT_DATA_DUMP_FILE")
         Config.ES_UPDATE_DATA_DUMP_FILE = config_section.get("ES_UPDATE_DATA_DUMP_FILE")

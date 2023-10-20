@@ -6,7 +6,7 @@ from jsonschema import validate
 from seta_api.infrastructure.auth_validator import auth_validator
 from seta_api.infrastructure.ApiLogicError import ApiLogicError
 
-from .export_logic import export, export_catalog
+from .export_logic import export
 
 export_api = Namespace('seta-api-export', description='Export')
 
@@ -34,13 +34,12 @@ class Export(Resource):
     def post(self):
         try:
             args = request.get_json(force=True)
-            app.logger.debug(str(args))
             validate(instance=args, schema=export_post_schema)
             export_format = str(request.accept_mimetypes)
             export_formats = ["application/json", "text/csv"]
             if export_format not in export_formats:
                 raise ApiLogicError("Invalid Accept_mimetypes, it must be application/json or text/csv")
-            resp = export(args["ids"], args["fields"], app, export_format)
+            resp = export(args["ids"], args["fields"], app, export_format, request)
             if export_format == "text/csv":
                 return Response(resp, mimetype="text/csv")
             if export_format == "application/json":
