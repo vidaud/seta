@@ -1,13 +1,14 @@
 from http import HTTPStatus
+
+from seta_flask_server.repository.models import UserSession, RefreshedPair
 from injector import inject
 
 from flask import abort, current_app as app, url_for
-from flask import (jsonify, redirect, make_response, session, Blueprint)
+from flask import (jsonify, redirect, make_response, session, Blueprint, request as flask_request)
 
-from flask_jwt_extended import create_access_token
-from flask_jwt_extended import jwt_required
-from flask_jwt_extended import set_access_cookies, unset_jwt_cookies
-from flask_jwt_extended import get_jwt_identity, get_jwt
+from flask_jwt_extended import get_jwt, jwt_required, get_jwt_identity
+from flask_jwt_extended import create_access_token, create_refresh_token
+from flask_jwt_extended import set_access_cookies, set_refresh_cookies, unset_jwt_cookies
 
 from flask_restx import Api, Resource
 
@@ -71,7 +72,8 @@ class SetaLogout(Resource):
     def __init__(self, sessionsBroker: ISessionsBroker, api=None, *args, **kwargs):
         self.sessionsBroker = sessionsBroker
         super().__init__(api, *args, **kwargs)
-        
+
+    
     def post(self):
         """
         Remove tokens from cookies, but third-party cookies will remain
@@ -79,56 +81,83 @@ class SetaLogout(Resource):
         
         session_id = session.get("session_id")
         
-        if session_id:
-            self.sessionsBroker.session_logout(session_id)
+        try:
+            if session_id:
+                self.sessionsBroker.session_logout(session_id)
+        except:
+            app.logger.exception("Logout->post")
         
-        session.clear()
-        
+        session.clear()        
         
         response = jsonify({"status": "success"})
         unset_jwt_cookies(response)
-        unset_token_info_cookies(response=response)
+        unset_token_info_cookies(response)
         
         return response
     
-@ns_auth.route("/refresh", methods=["POST","GET"],
+@ns_auth.route("/refresh", methods=["POST"],
                doc={"description": "Refresh access token"})
 @ns_auth.response(int(HTTPStatus.OK), 'Set new access token in cookies', status_model)
 class SetaRefresh(Resource):
     
     @inject
-    def __init__(self, sessionsBroker: ISessionsBroker, api=None, *args, **kwargs):
+    def __init__(self, sessionsBroker: ISessionsBroker, usersBroker: IUsersBroker, api=None, *args, **kwargs):
         self.sessionsBroker = sessionsBroker
+        self.usersBroker = usersBroker
+
         super().__init__(api, *args, **kwargs)
     
     @jwt_required(refresh=True)
-    def get(self):
-        return self._refresh()
-    
-    @jwt_required(refresh=True)
-    def post(self):
-        return self._refresh()
-
-    def _refresh(self):
+    def post(self):        
         identity = get_jwt_identity()
-            
-        additional_claims = None
-        
-        jwt = get_jwt()
-        role = jwt.get("role", None)
-        if role is not None:
-            additional_claims = {"role": role}
 
-        access_token = create_access_token(identity = identity, fresh=False, additional_claims=additional_claims)
+        user = self.usersBroker.get_user_by_id(identity["user_id"])
+            
+        if user is None or user.is_not_active():
+            abort(HTTPStatus.UNAUTHORIZED, "Invalid User")
+
+        jti = get_jwt()["jti"]
+
+        access_token = None
+        refresh_token = None
         
         session_id = session.get("session_id")
         if session_id:
-            st = create_session_token(session_id=session_id, token=access_token)
-            self.sessionsBroker.session_add_token(st)
+            #check if there's already a generated pair for this refresh token (validation already passed!)
+            #if yes, return these
+            session_token = self.sessionsBroker.get_session_token(session_id=session_id, token_jti=jti, token_type="refresh")
+
+            app.logger.debug(str(session_token))
+
+            if session_token is not None and session_token.refreshed_pair is not None:
+                app.logger.debug(f"{flask_request.remote_addr}: session_token.refreshed_pair found: {session_token.refreshed_pair.to_json()}")
+
+                access_token = session_token.refreshed_pair.access_token
+                refresh_token = session_token.refreshed_pair.refresh_token
+
+        if access_token is None:
+            access_token = create_access_token(identity = identity, fresh=False)
+            refresh_token = create_refresh_token(identity = identity)
+
+            if session_id:
+                #save new refreshed tokens in the database
+
+                at = create_session_token(session_id=session_id, token=access_token)
+                rt = create_session_token(session_id=session_id, token=refresh_token)
+
+                user_session = UserSession(
+                    session_id = session_id,
+                    session_tokens = [rt, at])           
+                        
+                app.logger.debug(f"{flask_request.remote_addr}: refresh tokens for {jti}")
+                refreshed_pair = RefreshedPair(refresh_jti=jti, access_token=access_token, refresh_token=refresh_token)
+                self.sessionsBroker.session_refresh(user_session=user_session, refreshed_pair=refreshed_pair)
 
         response = jsonify({"status": "success"})
-        set_access_cookies(response, access_token)        
-        set_token_info_cookies(response=response, access_token_encoded=access_token)
+        set_access_cookies(response, access_token)
+        set_refresh_cookies(response, refresh_token)     
+
+        set_token_info_cookies(response=response, access_token_encoded=access_token, refresh_token_encoded=refresh_token)
 
         return response
 

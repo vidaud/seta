@@ -35,7 +35,8 @@ export const useUserInfo = (options: UseUserInfoOptions) =>
     cacheTime: 0
   })
 
-export const refreshToken = async () => api.get(REFRESH_TOKEN_API_PATH, apiConfig)
+export const refreshToken = async () =>
+  api.post(REFRESH_TOKEN_API_PATH, { 'Cache-Control': 'no-cache', Pragma: 'no-cache' }, apiConfig)
 
 export const logout = async () =>
   api.post('/logout', { 'Cache-Control': 'no-cache', Pragma: 'no-cache' }, apiConfig)

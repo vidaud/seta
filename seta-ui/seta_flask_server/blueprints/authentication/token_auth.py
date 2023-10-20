@@ -1,17 +1,17 @@
+from injector import inject
+from http import HTTPStatus
+
 from flask_restx import Api, Resource, fields
 from flask import abort, Blueprint
-from flask_jwt_extended import create_access_token, create_refresh_token
+from flask_jwt_extended import create_access_token, create_refresh_token, get_jwt
 from flask_jwt_extended import get_jwt_identity, jwt_required
 from flask_cors import CORS
 from flask import current_app
 
-from seta_flask_server.infrastructure.auth_helpers import validate_public_key
-from seta_flask_server.infrastructure.constants import UserStatusConstants
+from seta_flask_server.infrastructure.auth_helpers import create_session, validate_public_key
 
-from injector import inject
-from seta_flask_server.repository.interfaces import IUsersBroker, IRsaKeysBroker
-
-from http import HTTPStatus
+from seta_flask_server.repository.models import UserSession, RefreshedPair
+from seta_flask_server.repository.interfaces import IUsersBroker, IRsaKeysBroker, ISessionsBroker
 
 token_auth = Blueprint('token_auth', __name__)
 CORS(token_auth)
@@ -51,20 +51,20 @@ auth_data.add_argument("rsa_message_signature",
                         location='json',
                         help="Signature using hex format, string of hexadecimal numbers.")
 
-access_model = ns_auth.model("AccessToken",
-                           {
-                               "access_token": fields.String(description="JWT access token")
-                           })
-auth_model = ns_auth.inherit("AuthTokens", access_model,{
+auth_model = ns_auth.model("AuthTokens", 
+                {
+                    "access_token": fields.String(description="JWT access token"),
                     "refresh_token": fields.String(description="JWT refresh token")
                 })
 
-@ns_auth.route("/user/token", methods=['POST'])
+@ns_auth.route("/token", methods=['POST'])
 class JWTUserToken(Resource):    
     @inject
-    def __init__(self, usersBroker: IUsersBroker, rsaBroker: IRsaKeysBroker, api=None, *args, **kwargs):
+    def __init__(self, usersBroker: IUsersBroker, rsaBroker: IRsaKeysBroker, sessionsBroker: ISessionsBroker, api=None, *args, **kwargs):
         self.usersBroker = usersBroker
         self.rsaBroker = rsaBroker
+        self.sessionsBroker = sessionsBroker
+
         super().__init__(api, *args, **kwargs)
 
     @ns_auth.doc(description="JWT token for users",
@@ -77,8 +77,8 @@ class JWTUserToken(Resource):
         args = auth_data.parse_args()
             
         user = self.usersBroker.get_user_by_provider(provider_uid=args["username"].lower(), provider=args["provider"].lower())
-        if not user or user.status != UserStatusConstants.Active:
-            abort(HTTPStatus.UNAUTHORIZED, "Invalid user")            
+        if user is None or user.is_not_active():
+            abort(HTTPStatus.UNAUTHORIZED, "Invalid User")            
             
         public_key = self.rsaBroker.get_rsa_key(user.user_id)
         if public_key is None:
@@ -98,6 +98,9 @@ class JWTUserToken(Resource):
        
         access_token = create_access_token(identity=identity, fresh=True, additional_claims=additional_claims)
         refresh_token = create_refresh_token(identity=identity, additional_claims=additional_claims)
+
+        user_session = create_session(seta_user=user, access_token=access_token, refresh_token=refresh_token)
+        self.sessionsBroker.session_create(user_session)
                 
         return {"access_token": access_token, "refresh_token": refresh_token}
 
@@ -105,25 +108,28 @@ refresh_parser = ns_auth.parser()
 refresh_parser.add_argument("Authorization", location="headers", required=False, type="apiKey", help="Bearer JWT refresh token")
 #refresh_parser.add_argument("X-CSRF-TOKEN", location="headers", required=False, type="string")
 
-@ns_auth.route("/user/refresh", methods=['POST']) 
+@ns_auth.route("/token/refresh", methods=['POST']) 
 class JWTRefreshToken(Resource):
     @inject
-    def __init__(self, usersBroker: IUsersBroker, api=None, *args, **kwargs):
+    def __init__(self, usersBroker: IUsersBroker, sessionsBroker: ISessionsBroker, api=None, *args, **kwargs):
         self.usersBroker = usersBroker
+        self.sessionsBroker = sessionsBroker
+
         super().__init__(api, *args, **kwargs)
     
     
     @ns_auth.doc(description="JWT refresh access token",
-            responses={int(HTTPStatus.OK): 'Success', int(HTTPStatus.UNAUTHORIZED): "Refresh token verification failed"})
+            responses={int(HTTPStatus.OK): 'Success', 
+                       int(HTTPStatus.UNAUTHORIZED): "Refresh token verification failed"})
     @ns_auth.expect(refresh_parser)
-    @ns_auth.marshal_with(access_model)        
+    @ns_auth.marshal_with(auth_model)        
     @jwt_required(refresh=True)
     def post(self):
         identity = get_jwt_identity()              
         
         user = self.usersBroker.get_user_by_id(identity["user_id"])
             
-        if user is None or user.status != UserStatusConstants.Active:
+        if user is None or user.is_not_active():
             abort(HTTPStatus.UNAUTHORIZED, "Invalid User")
             
         #other additional_claims are added via additional_claims_loader method: factory->add_claims_to_access_token
@@ -132,4 +138,13 @@ class JWTRefreshToken(Resource):
             }
         
         access_token = create_access_token(identity=identity, fresh=False, additional_claims=additional_claims)
-        return {"access_token": access_token}
+        refresh_token = create_refresh_token(identity=identity, additional_claims=additional_claims)
+
+        user_session = create_session(seta_user=user, access_token=access_token, refresh_token=refresh_token)
+        self.sessionsBroker.session_create(user_session)
+
+        #block current refresh token
+        jti = get_jwt()["jti"]
+        self.sessionsBroker.session_token_set_blocked(token_jti=jti)
+
+        return {"access_token": access_token, "refresh_token": refresh_token}

@@ -1,15 +1,12 @@
 import logging
 
-from flask import (Flask, request, session)
+from flask import (Flask, Response, request)
 from werkzeug.middleware.proxy_fix import ProxyFix
 from flask_jwt_extended import get_jwt_identity
 
 from .infrastructure.extensions import (scheduler, jwt, logs)
-from .infrastructure.auth_helpers import refresh_expiring_jwts
 
 from .infrastructure.helpers import MongodbJSONProvider
-from seta_flask_server.repository.interfaces import ISessionsBroker
-from seta_flask_server.infrastructure.auth_helpers import create_session_token
 
 from flask_injector import FlaskInjector
 from .dependency import MongoDbClientModule
@@ -31,41 +28,10 @@ def create_app(config_object):
     with app.app_context():
         register_blueprints(app)
            
-    request_endswith_ignore_list = ['.js', '.css', '.png', '.ico', '.svg', '.map', '.json', 'doc']
-    request_starts_with_ignore_list = ['/seta-ui/api/v1/notifications']
-    
-    with app.app_context():
-            
-        @app.after_request
-        def refresh_jwts(response):
-            """Create a new access token if the current one is close to expiring date"""
-            
-            if app.testing:
-                return response      
-            
-            if request.path.endswith(tuple(request_endswith_ignore_list)):
-                return response
-            
-            if request.path.startswith(tuple(request_starts_with_ignore_list)):
-                return response
-                        
-            response, new_access_token = refresh_expiring_jwts(app, response)
-            
-            if new_access_token:  
-                #save this token to the database              
-                session_id = session.get("session_id")
-                
-                if session_id:                    
-                    st = create_session_token(session_id=session_id, token=new_access_token)
-                    
-                    sessionsBroker = app_injector.injector.get(ISessionsBroker)
-                    sessionsBroker.session_add_token(st)
-                    
-            return response
-        
+    request_endswith_ignore_list = ['.js', '.css', '.png', '.ico', '.svg', '.map', '.json', 'doc']          
             
     @app.after_request
-    def after_request(response):        
+    def after_request(response: Response):
         """ Logging after every request. """
         
         if request.path.endswith(tuple(request_endswith_ignore_list)):
@@ -100,29 +66,14 @@ def create_app(config_object):
                                 "user_agent": repr(request.user_agent),
                                 })
         except:
-            app.logger.exception("seta-api logger db exception")        
+            app.logger.exception("seta-ui logger db exception")        
              
-        return response 
-    
-    @jwt.additional_claims_loader   
-    def add_claims_to_access_token(identity):        
-        additional_claims = {
-            "iss": "SETA API server",
-            "sub": identity["user_id"]
-        }
-        return additional_claims
-    
-    # Callback function to check if a JWT exists in the database blocklist
-    @jwt.token_in_blocklist_loader
-    def check_if_token_revoked(jwt_header, jwt_payload: dict) -> bool:
-        jti = jwt_payload["jti"]
-        
-        sessionsBroker = app_injector.injector.get(ISessionsBroker)        
-        return sessionsBroker.session_token_is_blocked(jti)
+        return response
      
     if app.config.get('SCHEDULER_ENABLED', False):            
         from seta_flask_server.infrastructure.scheduler import (tasks, events)            
         scheduler.start()   
+        app.logger.info("Tasks scheduler has started.")
         
     app_injector = FlaskInjector(
         app=app,

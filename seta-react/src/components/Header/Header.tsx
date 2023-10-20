@@ -19,8 +19,9 @@ const Header = () => {
   const authenticated = !!user
 
   const handleLogout = () => {
-    logout()
-    window.location.href = '/login'
+    logout().finally(() => {
+      window.location.href = '/login'
+    })
   }
 
   const menuItems = getMenuItems(authenticated)
