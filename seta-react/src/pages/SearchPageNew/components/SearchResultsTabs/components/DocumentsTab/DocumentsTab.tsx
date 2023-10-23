@@ -47,7 +47,7 @@ const DocumentsTab = ({ query, searchOptions, onDocumentsChanged }: Props) => {
       // if there are documents to load based on the saved search
       <SuggestionsLoading size="lg" mt="5rem" color="blue" variant="bars" />
     ) : (
-      <Stack align="center" css={S.noDocuments}>
+      <Stack align="center" css={S.noDocuments} id="document-list">
         <BiSearchAlt className="icon" />
 
         <Text mt="md" align="center" fz="lg" color="dimmed" lh={1.6}>

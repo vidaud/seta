@@ -33,7 +33,7 @@ const SidePanel = ({
   const marker = markerColor[filtersStatus ?? FilterStatus.UNKNOWN]
 
   return (
-    <Box className={className}>
+    <Box className={className} id="tab-filters">
       <ToggleSection
         icon={<IconListSearch size={20} />}
         color="teal"
