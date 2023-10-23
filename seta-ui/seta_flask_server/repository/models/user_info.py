@@ -1,4 +1,6 @@
+# pylint: disable=missing-function-docstring
 from dataclasses import dataclass, asdict
+
 
 @dataclass
 class UserInfo:

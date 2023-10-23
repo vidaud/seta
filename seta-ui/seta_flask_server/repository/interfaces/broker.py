@@ -1,5 +1,11 @@
+"""Base broker for all subsequent interfaces."""
 from interface import Interface
 
+
 class IBroker(Interface):
+    """Base broker interface"""
+
     def __init__(self, db) -> None:
-       self.db = db
+        super().__init__()
+
+        self.db = db

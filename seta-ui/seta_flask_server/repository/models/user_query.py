@@ -1,5 +1,7 @@
+# pylint: disable=missing-function-docstring
 from datetime import datetime
 from dataclasses import dataclass, asdict
+
 
 @dataclass
 class UserQuery:

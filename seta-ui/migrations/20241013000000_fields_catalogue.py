@@ -3,21 +3,19 @@ from catalogues.fields_catalogue_builder import FieldsCatalogueBuilder
 
 
 class Migration(BaseMigration):
-    def upgrade(self):  
+    def upgrade(self):
+        collection = self.db["catalogues"]
 
-        collection = self.db['catalogues']    
-        
-        #drop previous entries
+        # drop previous entries
         self._delete_fields()
 
-        #save scopes 
+        # save scopes
         collection.insert_many(FieldsCatalogueBuilder.build_fields("fields"))
-
 
     def downgrade(self):
         self._delete_fields()
 
     def _delete_fields(self):
-        '''drop fields entries form catalogues collection'''
+        """drop fields entries form catalogues collection"""
 
-        self.db['catalogues'].delete_many({"catalogue": "fields"})
+        self.db["catalogues"].delete_many({"catalogue": "fields"})

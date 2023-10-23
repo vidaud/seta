@@ -1,5 +1,7 @@
-from dataclasses import dataclass, asdict
+# pylint: disable=missing-function-docstring
 from datetime import datetime
+from dataclasses import dataclass, asdict
+
 
 @dataclass
 class UserProfileResources:
@@ -11,15 +13,17 @@ class UserProfileResources:
 
     def to_json(self) -> dict:
         return asdict(self)
-    
+
     def to_update_json(self) -> dict:
         json = asdict(self)
         json.pop("user_id", None)
-        
+
         return json
-    
-    @classmethod 
+
+    @classmethod
     def from_db_json(cls, json_dict):
-        return cls(user_id=json_dict["user_id"],
-                   resources=json_dict["resources"],
-                   timestamp=json_dict["timestamp"])    
+        return cls(
+            user_id=json_dict["user_id"],
+            resources=json_dict["resources"],
+            timestamp=json_dict["timestamp"],
+        )
