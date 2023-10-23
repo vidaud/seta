@@ -19,7 +19,7 @@ type Props = {
 const OptionsMenuAction = ({ item, isLoading, onMenuChange }: Props) => {
   const [isOpen, setIsOpen] = useState(false)
 
-  const { renameFolder, confirmDelete, moveItem } = useTreeActions()
+  const { renameFolder, confirmDelete, moveItem, exportItem } = useTreeActions()
 
   const isFolder = item.type === LibraryItemType.Folder
   const subject = isFolder ? 'folder' : 'document'
@@ -58,7 +58,9 @@ const OptionsMenuAction = ({ item, isLoading, onMenuChange }: Props) => {
 
       <Menu.Divider />
 
-      <Menu.Item icon={<FiCornerUpRight />}>Export {isFolder ? 'documents' : 'document'}</Menu.Item>
+      <Menu.Item icon={<FiCornerUpRight />} onClick={() => exportItem(item)}>
+        Export metadata
+      </Menu.Item>
     </ActionIconMenu>
   )
 }

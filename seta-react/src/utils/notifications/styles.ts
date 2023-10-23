@@ -10,6 +10,8 @@ export const getStyles = (type: NotificationType): NotificationProps['styles'] =
 
   return theme => ({
     root: {
+      borderWidth: 1,
+      borderStyle: 'solid',
       borderColor: theme.colors[color][6],
       backgroundColor: theme.colors[color][0],
       boxShadow: '3px 3px 6px 0px rgba(0,0,0, 0.2)',

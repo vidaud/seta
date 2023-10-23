@@ -1,6 +1,12 @@
 import { deserializeJSON, serializeJSON } from '~/utils/json-utils'
 
-export const storage = <T>(key: string, initialValue?: T) => {
+export type StorageOperations<T> = {
+  read: () => T | null
+  write: (data: T) => T
+  remove: (reset?: boolean) => void
+}
+
+export const storage = <T>(key: string, initialValue?: T): StorageOperations<T> => {
   const read = (): T | null => {
     const data = localStorage.getItem(key)
 
