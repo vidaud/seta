@@ -25,6 +25,7 @@ const checkerDev = {
 
 export default defineConfig(({ mode }) => {
   const isBuild = mode === 'production'
+  const isDev = mode === 'development'
 
   return {
     plugins: [
@@ -34,7 +35,14 @@ export default defineConfig(({ mode }) => {
 
       checker(isBuild ? checkerProd : checkerDev)
     ],
-
+    define: isDev
+      ? {
+          // Some libraries use the global object, even though it doesn't exist in the browser.
+          // Alternatively, we could add `<script>window.global = window;</script>` to index.html.
+          // https://github.com/vitejs/vite/discussions/5912
+          global: {}
+        }
+      : null,
     server: {
       host: 'localhost',
       port: 3000,

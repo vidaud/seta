@@ -67,7 +67,7 @@ const SearchInput = forwardRef<HTMLDivElement, Props>(
     }, [isMounted, onSearch, allowSearching])
 
     return (
-      <Flex ref={ref} className={className}>
+      <Flex ref={ref} className={className} id="search-query">
         <UploadButton onClick={onUploadClick} />
 
         <TokensInput

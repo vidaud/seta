@@ -24,7 +24,14 @@ const UploadButton = ({ onClick }: Props) => {
       position="top-start"
     >
       <Tooltip label="Upload files or enter large amounts of text" disabled={!!count}>
-        <ActionIcon css={S.uploadButton} color="blue" size="xl" variant="filled" onClick={onClick}>
+        <ActionIcon
+          css={S.uploadButton}
+          color="blue"
+          size="xl"
+          variant="filled"
+          onClick={onClick}
+          id="search-upload"
+        >
           {loading ? <Loader color="blue.0" size="sm" /> : <IconCloudUp />}
         </ActionIcon>
       </Tooltip>

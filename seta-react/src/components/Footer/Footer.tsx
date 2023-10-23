@@ -23,7 +23,7 @@ const Footer = () => {
           </li>
 
           <li className="column">Documentation</li>
-          <li>
+          <li id="documentation">
             <a href={doc_link}>SeTA Docs</a>
           </li>
         </ul>

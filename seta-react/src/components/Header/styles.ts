@@ -54,6 +54,13 @@ export const dropdown: ThemedCSS = theme => css`
   }
 `
 
+export const aboutDropdown: ThemedCSS = theme => css`
+  z-index: 10 !important;
+  & .seta-Menu-itemIcon {
+    color: ${theme.colors.gray[7]};
+  }
+`
+
 export const action: ThemedCSS = () => css`
   &:hover {
     background-color: unset;
@@ -66,5 +73,18 @@ export const badge: ThemedCSS = () => css`
   margin-left: -2rem;
   &:hover {
     background-color: unset;
+  }
+`
+
+export const button: ThemedCSS = theme => css`
+  padding: 0.5rem 1.25rem;
+  color: white;
+  border-radius: 4px;
+  background-color: transparent;
+  transition: color 0.2s ease, background-color 0.2s ease, transform 0.2s ease;
+
+  &:hover {
+    backgroundColor: ${theme.fn.rgba(theme.colors.gray[1], 0.2)},
+    color: ${theme.colors.gray[1]}
   }
 `

@@ -84,6 +84,7 @@ export const LinksGroup = ({ initiallyOpened, links }: LinksGroupProps) => {
 
   const items = (hasLinks ? links : []).map(link => (
     <Text<'a'>
+      id={link.label === 'Resources' ? 'resource_list' : undefined}
       component="a"
       className={cx(classes.link, { [classes.linkActive]: link.link === active })}
       // href={link.link}

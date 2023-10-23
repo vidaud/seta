@@ -29,6 +29,7 @@ const OpenCommunityMember = ({ community_id }) => {
     <Group position="right">
       <Tooltip label="Join Community">
         <Button
+          id="join_community"
           variant="filled"
           color="orange"
           size="xs"
