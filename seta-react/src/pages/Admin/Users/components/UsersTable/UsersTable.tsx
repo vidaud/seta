@@ -166,9 +166,10 @@ const UsersTable = ({ data, isLoading, error }: DataProps<SetaAccount[]>) => {
           variant="light"
           color="indigo.3"
           component={Link}
+          size="sm"
           to={`/admin/users/${row.original.username}`}
         >
-          <IconUserEdit stroke={1.5} size="sm" />
+          <IconUserEdit stroke={1.5} />
         </ActionIcon>
       </Tooltip>
     ),
