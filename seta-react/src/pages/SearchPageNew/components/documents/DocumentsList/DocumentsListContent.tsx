@@ -51,7 +51,7 @@ const DocumentsListContent = forwardRef<HTMLDivElement, Props>(
     }
 
     return (
-      <Flex ref={ref} direction="column" css={S.root}>
+      <Flex ref={ref} direction="column" css={S.root} id="document-list">
         {info}
 
         {documents.map(document => (

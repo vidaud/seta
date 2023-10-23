@@ -63,7 +63,7 @@ const CommunityList = () => {
 
   return (
     <>
-      <Group sx={{ width: '100%' }}>
+      <Group sx={{ width: '100%' }} id="apply_filters">
         <Filters />
         <TextInput
           className={classes.search}
