@@ -3,6 +3,7 @@ import { useAutoAnimate } from '@formkit/auto-animate/react'
 import { ScrollArea, Stack } from '@mantine/core'
 
 import PopupOverlay from '~/components/PopupOverlay'
+import useExportModal from '~/pages/SearchPageNew/components/documents/LibraryTree/hooks/use-export-modal'
 import { useStagedDocuments } from '~/pages/SearchPageNew/contexts/staged-documents-context'
 import useSaveDocsModal from '~/pages/SearchPageNew/hooks/use-save-docs-modal'
 
@@ -49,6 +50,8 @@ const StagedDocsPopup = ({ target, open, onOpenChange }: Props) => {
     clearSelectedDocs,
     removeStaged
   })
+
+  const { exportStagedDocs, exportModal } = useExportModal({ withinPortal: false })
 
   const [animateRef] = useAutoAnimate<HTMLDivElement>({ duration: 200 })
 
@@ -100,6 +103,8 @@ const StagedDocsPopup = ({ target, open, onOpenChange }: Props) => {
             onRemoveAll={handleRemoveAll}
             onRemoveSelected={handleRemoveSelected}
             onSaveSelected={handleSave}
+            onExportSelected={() => exportStagedDocs(selectedDocs)}
+            onExportAll={() => exportStagedDocs(stagedDocuments)}
           />
 
           {documents}
@@ -107,6 +112,7 @@ const StagedDocsPopup = ({ target, open, onOpenChange }: Props) => {
 
         {confirmRemoveModal}
         {saveModal}
+        {exportModal}
       </PopupOverlay>
     </>
   )

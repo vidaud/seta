@@ -21,7 +21,7 @@ const TreeActionsProvider = ({ children }: ChildrenProp) => {
   const { renameFolder, renameModal } = useRenameModal()
   const { confirmDelete, confirmDeleteModal } = useDeleteModal()
   const { moveItem, moveModal } = useMoveModal()
-  const { exportItem, exportModal } = useExportModal()
+  const { exportLibraryItem: exportItem, exportModal } = useExportModal()
 
   const value: TreeActionsContextProps = {
     renameFolder,

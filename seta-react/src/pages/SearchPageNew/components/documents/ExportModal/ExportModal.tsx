@@ -36,12 +36,16 @@ type Props = ModalProps & Partial<LibraryExport>
 
 const exportStorage = storage<ExportStorage>(STORAGE_KEY.EXPORT)
 
-const ExportModal = ({ exportTarget, exportItems, opened, onClose, ...props }: Props) => {
+const ExportModal = ({ reference, exportItems, opened, onClose, ...props }: Props) => {
   const [selectedFields, setSelectedFields] = useState<ExportField[]>([])
   const [sortedFields, sortedFieldsHandlers] = useListState<ExportField>([])
   const [format, setFormat] = useState<ExportFormatKey>('csv')
 
   const [isExporting, setIsExporting] = useState(false)
+
+  // Keep track of whether the sorted fields are loading or not,
+  // to prevent showing "No fields selected" before the data is loaded from the storage
+  const [isSortedLoading, setIsSortedLoading] = useState(true)
 
   const { data, isLoading, error } = useFieldsCatalog({
     enabled: opened,
@@ -54,12 +58,14 @@ const ExportModal = ({ exportTarget, exportItems, opened, onClose, ...props }: P
         setSortedFields: sortedFieldsHandlers.setState,
         setFormat
       })
+
+      setIsSortedLoading(false)
     }
   })
 
   const exportFields = data?.fields_catalog ?? []
 
-  const loading = isLoading || !data || !!error
+  const loading = isLoading || isSortedLoading || !data || !!error
 
   const { saveExportOptions } = useExportStorage({
     opened,
@@ -102,14 +108,13 @@ const ExportModal = ({ exportTarget, exportItems, opened, onClose, ...props }: P
     setIsExporting(true)
 
     const payload: ExportMetaPayload = {
-      // TODO: Use `_id` everywhere
       ids: exportItems.map(({ documentId }) => documentId),
       fields: sortedFields.map(({ name }) => name),
       format
     }
 
     try {
-      await exportMeta(payload, exportTarget?.title)
+      await exportMeta(payload, reference)
 
       notifications.showSuccess('Metadata exported successfully.')
       onClose()

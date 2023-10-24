@@ -1,7 +1,6 @@
-import type { LibraryItem } from '~/types/library/library-item'
-
 export type LibraryItemExport = {
   documentId: string
+  // TODO: Export `path` as well
   paths: string[]
 }
 
@@ -11,7 +10,8 @@ export type ExportField = {
 }
 
 export type LibraryExport = {
-  exportTarget: LibraryItem
+  // The optional value to include in the name of the exported file
+  reference?: string
   exportItems: LibraryItemExport[]
 }
 
