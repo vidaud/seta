@@ -68,7 +68,7 @@
 
 <figure markdown>
   ![Image title](../../img/pending_invites.png)
-  <figcaption>Notifications of Invites</figcaption>
+  <figcaption>Notifications of Membership Request</figcaption>
 </figure>
 
 <figure markdown>

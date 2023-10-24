@@ -11,7 +11,7 @@ import {
   UnstyledButton,
   Text
 } from '@mantine/core'
-import { IconChevronRight } from '@tabler/icons-react'
+import { IconChevronDown } from '@tabler/icons-react'
 import { AiOutlineUser } from 'react-icons/ai'
 import { FaSignInAlt } from 'react-icons/fa'
 import { Link } from 'react-router-dom'
@@ -36,6 +36,7 @@ import GetStarted from '../GetStarted/GetStarted'
 const Header = () => {
   const { user, isLoading: isUserLoading, logout } = useCurrentUser()
   const [outsideClick, setOutsideClick] = useState(true)
+  const [isOpen, setIsOpen] = useState(false)
   const authenticated = !!user
 
   const handleLogout = () => {
@@ -48,6 +49,10 @@ const Header = () => {
     setOutsideClick(value)
   }
 
+  const handleToggle = () => {
+    setIsOpen(current => !current)
+  }
+
   const menuItems = getMenuItems(authenticated)
 
   const aboutDropdown = getDropdownAbout()
@@ -58,6 +63,7 @@ const Header = () => {
 
   const visibleMenuItems = menuItems.filter(link => !link.hidden && !link.collapse)
 
+  // eslint-disable-next-line array-callback-return
   const aboutDropdownItems = aboutDropdown.map((item, index) => {
     if (itemIsDivider(item)) {
       // eslint-disable-next-line react/no-array-index-key
@@ -128,18 +134,16 @@ const Header = () => {
     <Menu
       shadow="md"
       width={200}
-      position="right"
+      position="bottom"
       closeOnItemClick={false}
       closeOnClickOutside={outsideClick}
       id="about"
     >
       <Menu.Target>
-        <UnstyledButton css={S.button}>
+        <UnstyledButton css={S.button} onClick={handleToggle}>
           <Group>
-            <Text size="sm" fw={500}>
-              About
-            </Text>
-            <IconChevronRight size="1rem" />
+            <Text size="md">About</Text>
+            <IconChevronDown css={S.chevron} data-open={isOpen} size="1rem" />
           </Group>
         </UnstyledButton>
       </Menu.Target>
