@@ -1,46 +1,30 @@
-import type { ForwardedRef, ReactNode } from 'react'
+import type { ReactNode } from 'react'
 import { useEffect, useState } from 'react'
 import type { ModalProps } from '@mantine/core'
-import { Text, Flex, Modal, ActionIcon, ScrollArea } from '@mantine/core'
-import { usePrevious } from '@mantine/hooks'
+import { Text, Flex, Modal, ActionIcon } from '@mantine/core'
 import { FiMaximize, FiMinimize } from 'react-icons/fi'
-
-import useScrolled from '~/hooks/use-scrolled'
 
 import * as S from './styles'
 
-const SCROLL_THRESHOLD = 12
-
-type Props = ModalProps & {
+export type DefaultModalProps = ModalProps & {
   icon?: ReactNode
   actions?: ReactNode
   info?: ReactNode
-  scrollableRef?: ForwardedRef<HTMLDivElement | null>
-  noScrollShadow?: boolean
   fullScreenToggle?: boolean
 }
 
-const ScrollModal = ({
+const DefaultModal = ({
   title,
   icon,
   actions,
   info,
-  scrollableRef,
-  noScrollShadow,
   fullScreenToggle,
   fullScreen = false,
   opened,
   children,
   ...props
-}: Props) => {
+}: DefaultModalProps) => {
   const [isFullScreen, setFullScreen] = useState(fullScreen)
-
-  const { scrolled, setScrolled, handleScrollChange } = useScrolled({
-    delta: SCROLL_THRESHOLD,
-    preventSetScrolled: () => noScrollShadow
-  })
-
-  const prevOpened = usePrevious(opened)
 
   const { classes: modalStyles } = S.modalStyles()
 
@@ -48,13 +32,6 @@ const ScrollModal = ({
   useEffect(() => {
     setFullScreen(fullScreen)
   }, [fullScreen, setFullScreen])
-
-  // Reset scrolled state when modal is opened
-  useEffect(() => {
-    if (opened && !prevOpened) {
-      setScrolled(false)
-    }
-  }, [opened, prevOpened, setScrolled])
 
   const toggleFullScreen = () => setFullScreen(prev => !prev)
 
@@ -106,22 +83,15 @@ const ScrollModal = ({
       css={S.root}
       classNames={{ ...modalStyles }}
       closeButtonProps={{ 'aria-label': 'Close modal' }}
-      data-scrolled={noScrollShadow ? undefined : scrolled}
       data-fullscreen={isFullScreen}
     >
-      <ScrollArea.Autosize
-        viewportRef={scrollableRef}
-        css={S.scrollArea}
-        onScrollPositionChange={handleScrollChange}
-      >
-        <div css={S.content} className="seta-ScrollModal-content">
-          {children}
-        </div>
-      </ScrollArea.Autosize>
+      <div css={S.content} className="seta-DefaultModal-content">
+        {children}
+      </div>
 
       {actionsEl}
     </Modal>
   )
 }
 
-export default ScrollModal
+export default DefaultModal

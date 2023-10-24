@@ -3,3 +3,8 @@ export const dateFormatted = (date: string) => {
 
   return new Date(date).toLocaleDateString('en-GB', options)
 }
+
+/**
+ * Returns a timestamp in the format YYYYMMDDHHmmss
+ */
+export const getTimestamp = () => new Date().toISOString().replace(/(\..*$)|[-T:Z]/g, '')
