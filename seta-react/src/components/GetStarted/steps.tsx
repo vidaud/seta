@@ -91,8 +91,9 @@ export const steps: any = [
         </Title>
         <Group sx={{ justifyContent: 'center' }} pb="xs">
           <Text>
-            Click on the user icon to open your profile. If you have an administrator account you we
-            be able to open the administration console. The user can also log out from this section.
+            Click on the user icon to open your profile. If you have an administrator account you
+            will be able to open the administration console. The user can also log out from this
+            section.
           </Text>
           <Image alt="User Profile" src={user_profile} width={160} />
         </Group>
@@ -102,7 +103,7 @@ export const steps: any = [
         <Group sx={{ justifyContent: 'center' }}>
           <Text>
             Clicking on the notification icon the dropdown with the list with notification type and
-            number of notifications for each type.
+            number of notifications for each type will appear.
           </Text>
           <Image alt="Notifications" src={notifications} width={160} />
         </Group>
