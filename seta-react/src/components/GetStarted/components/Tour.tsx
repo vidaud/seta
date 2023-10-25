@@ -26,6 +26,11 @@ const Tour = () => {
       handleRunTour(false)
     }
 
+    if (!authenticated && type === 'tooltip' && index === 2) {
+      handleRunTour(true)
+      navigate('/login')
+    }
+
     if (authenticated && type === 'tooltip' && index === 2) {
       handleRunTour(true)
       navigate('/community')

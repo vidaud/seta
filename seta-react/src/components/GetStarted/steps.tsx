@@ -46,6 +46,22 @@ export const no_login_steps: any = [
         <Text>Click on the button to login into SeTA and start exploring the website.</Text>
       </div>
     )
+  },
+  {
+    target: '#login_page',
+    placement: 'right',
+    content: (
+      <div style={{ textAlign: 'left' }}>
+        <Title order={3} mb="sm" color="#228be6">
+          Login Providers
+        </Title>
+        <Text>
+          Please log in through the EU Login by clicking on the button below and follow
+          instructions. EU Login is the European Commission's user authentication service.
+        </Text>
+        <Text>Or use other third-party authenticators (ex: GitHub) if available.</Text>
+      </div>
+    )
   }
 ]
 
