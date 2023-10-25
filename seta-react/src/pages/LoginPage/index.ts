@@ -1,1 +1,1 @@
-export { default } from './component/LoginPage/LoginPage'
+export { default } from './LoginPage'
