@@ -26,6 +26,7 @@ export type ItemsResponse = LibraryItem[]
 export type SaveDocumentsPayload = {
   parentId: string | null
   documents: {
+    // Using the `_id` field here
     documentId: string
     title: string
     link?: string | null

@@ -25,8 +25,9 @@ export const pluralize = (word: string, count: number, plural?: string): string 
  * @param text The text to convert
  * @returns The converted text
  */
-export const toKebabCase = (text: string): string =>
+export const toKebabCase = (text: string, maxLength = 50): string =>
   text
+    .slice(0, maxLength)
     .replace(/([a-z])([A-Z])/g, '$1-$2')
-    .replace(/[\s:;,.]+/g, '-')
+    .replace(/[\s:;,.-]+/g, '-')
     .toLowerCase()

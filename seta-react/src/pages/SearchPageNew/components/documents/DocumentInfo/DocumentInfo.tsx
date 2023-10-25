@@ -23,6 +23,7 @@ type Props = {
 
 const DocumentInfo = ({ document, queryTerms }: Props) => {
   const {
+    _id,
     document_id,
     title,
     score,
@@ -46,7 +47,7 @@ const DocumentInfo = ({ document, queryTerms }: Props) => {
     [source, collection, date]
   )
 
-  const isDocumentStaged = useMemo(() => isStaged(document_id), [document_id, isStaged])
+  const isDocumentStaged = useMemo(() => isStaged(_id), [_id, isStaged])
 
   const [titleHl, abstractHl] = useHighlight(queryTerms, title, abstract)
 
@@ -64,7 +65,7 @@ const DocumentInfo = ({ document, queryTerms }: Props) => {
       icon: <IconWallet size={22} />,
       color: 'orange',
       tooltip: 'Save to my documents',
-      onClick: () => handleSave([{ id: document_id, title, link: link_origin }])
+      onClick: () => handleSave([{ id: _id, title, link: link_origin }])
     },
     {
       name: 'stage-doc',
@@ -76,7 +77,7 @@ const DocumentInfo = ({ document, queryTerms }: Props) => {
       toggledColor: 'teal',
       toggledTooltip: 'Remove from staged documents',
       toggledIcon: <FiCheck size={22} style={{ marginTop: 2 }} />,
-      onToggle: staged => toggleStaged(document_id, title, link_origin, staged)
+      onToggle: staged => toggleStaged(_id, title, link_origin, staged)
     }
   ]
 

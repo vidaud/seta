@@ -49,6 +49,8 @@ export const useFieldsCatalog = (args?: UseFieldsCatalogArgs) => {
     queryKey: fieldsCatalogQueryKey,
     queryFn: getFieldsCatalog,
     enabled,
+    // Disable stale time to always fetch the latest data
+    staleTime: 0,
     ...rest
   })
 }
