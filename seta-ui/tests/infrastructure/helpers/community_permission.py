@@ -1,21 +1,36 @@
-from .util import auth_headers
 from flask.testing import FlaskClient
+from .util import auth_headers
 
 API_V1 = "/seta-ui/api/v1"
 
-def get_user_permissions(client: FlaskClient, access_token:str, community_id: str, user_id: str):
+
+def get_user_permissions(
+    client: FlaskClient, access_token: str, community_id: str, user_id: str
+):
     url = f"{API_V1}/permissions/community/{community_id}/user/{user_id}"
 
     return client.get(url, headers=auth_headers(access_token))
 
-def replace_user_permissions(client: FlaskClient, access_token:str, community_id: str, user_id: str, scopes:list[str]):
+
+def replace_user_permissions(
+    client: FlaskClient,
+    access_token: str,
+    community_id: str,
+    user_id: str,
+    scopes: list[str],
+):
     url = f"{API_V1}/permissions/community/{community_id}/user/{user_id}"
 
-    data =""
+    data = ""
     for scope in scopes:
         if data == "":
             data += f"scope={scope}"
         else:
             data += f"&scope={scope}"
 
-    return client.post(url, data=data, content_type="application/x-www-form-urlencoded", headers=auth_headers(access_token))
+    return client.post(
+        url,
+        data=data,
+        content_type="application/x-www-form-urlencoded",
+        headers=auth_headers(access_token),
+    )

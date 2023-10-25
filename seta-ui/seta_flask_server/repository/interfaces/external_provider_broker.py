@@ -1,24 +1,28 @@
 from interface import Interface
 from seta_flask_server.repository.models import ExternalProvider
 
-class IExternalProviderBroker(Interface):
 
+class IExternalProviderBroker(Interface):
     def get_by_uid(self, provider_uid: str, provider: str) -> ExternalProvider:
-        """
-        Returns an external provider
-        
-        :param provider_uid:
-            User id in provider
-        :param provider:
-            Provider name 
+        """External provider by external identifier and provider.
+
+        Args:
+            provider_uid: User id in provider.
+            provider:  Provider name.
+
+        Returns:
+            Found entry in the database or None.
         """
         pass
 
     def get_by_user(self, user_id: str) -> list[ExternalProvider]:
-        """
-        Returns all external providers for user id
+        """All external providers for user identifier.
 
-        :param user_id:
-            Seta User identifier
+        Args:
+            user_id: Seta User identifier.
+
+        Returns:
+            List of external providers for authentication of this local account.
+            Empty list if no provider found.
         """
         pass

@@ -1,4 +1,6 @@
+# pylint: disable=missing-function-docstring
 from dataclasses import dataclass
+
 
 @dataclass
 class CatalogueField:
@@ -7,5 +9,4 @@ class CatalogueField:
 
     @classmethod
     def from_db_json(cls, json_dict: dict):
-        return cls(name=json_dict["name"],
-                   description=json_dict["description"])
+        return cls(name=json_dict["name"], description=json_dict["description"])
