@@ -22,6 +22,7 @@ const UploadButton = ({ onClick }: Props) => {
       size={22}
       withBorder
       position="top-start"
+      style={{ zIndex: '10' }}
     >
       <Tooltip label="Upload files or enter large amounts of text" disabled={!!count}>
         <ActionIcon
