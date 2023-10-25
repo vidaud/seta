@@ -56,10 +56,11 @@ export const no_login_steps: any = [
           Login Providers
         </Title>
         <Text>
-          Please log in through the EU Login by clicking on the button below and follow
-          instructions. EU Login is the European Commission's user authentication service.
+          Please log in through the <strong>EU Login</strong> by clicking on the button below and
+          follow instructions.{' '}
+          <i>EU Login is the European Commission's user authentication service.</i>
         </Text>
-        <Text>Or use other third-party authenticators (ex: GitHub) if available.</Text>
+        <Text pt="xs">Or use other third-party authenticators (ex: GitHub) if available.</Text>
       </div>
     )
   }
