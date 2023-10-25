@@ -55,9 +55,20 @@ export const dropdown: ThemedCSS = theme => css`
 `
 
 export const aboutDropdown: ThemedCSS = theme => css`
-  z-index: 10 !important;
+  z-index: 20 !important;
+  & .seta-Menu-item {
+    font-size: ${theme.fontSizes.md};
+  }
   & .seta-Menu-itemIcon {
     color: ${theme.colors.gray[7]};
+  }
+`
+
+export const chevron: ThemedCSS = theme => css`
+  transition: transform 0.2s ${theme.transitionTimingFunction};
+
+  &[data-open='true'] {
+    transform: rotate(180deg);
   }
 `
 

@@ -1,9 +1,10 @@
 import { Group, Image, Text, Title } from '@mantine/core'
 
-import document_search from '~/images/document_search.png'
+// import document_search from '~/images/document_search.png'
 import notifications from '~/images/notifications.png'
 import user_profile from '~/images/user_profile.png'
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const no_login_steps: any = [
   {
     target: '.menu-items',
@@ -48,6 +49,7 @@ export const no_login_steps: any = [
   }
 ]
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const steps: any = [
   {
     target: '.menu-items',
@@ -227,7 +229,7 @@ export const steps: any = [
         </Title>
         <Group sx={{ justifyContent: 'center' }}>
           <Text>Upload your document or text and start searching for relevant results.</Text>
-          <Image alt="Document/Text Search" src={document_search} width={200} />
+          {/* <Image alt="Document/Text Search" src={document_search} width={200} /> */}
         </Group>
         <Text>
           After uploading the document or putting the text, we can see the uploaded objects.
