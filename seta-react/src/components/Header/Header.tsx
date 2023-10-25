@@ -35,7 +35,6 @@ import GetStarted from '../GetStarted/GetStarted'
 
 const Header = () => {
   const { user, isLoading: isUserLoading, logout } = useCurrentUser()
-  const [outsideClick, setOutsideClick] = useState(true)
   const [isOpen, setIsOpen] = useState(false)
   const authenticated = !!user
 
@@ -43,10 +42,6 @@ const Header = () => {
     logout().finally(() => {
       window.location.href = '/login'
     })
-  }
-
-  const handleOutsideClick = value => {
-    setOutsideClick(value)
   }
 
   const handleToggle = () => {
@@ -86,7 +81,7 @@ const Header = () => {
     }
 
     if (!url) {
-      return <GetStarted key={label} onChange={handleOutsideClick} />
+      return <GetStarted key={label} />
     }
   })
 
@@ -135,8 +130,8 @@ const Header = () => {
       shadow="md"
       width={200}
       position="bottom"
-      closeOnItemClick={false}
-      closeOnClickOutside={outsideClick}
+      closeOnItemClick={true}
+      closeOnClickOutside={true}
       id="about"
     >
       <Menu.Target>

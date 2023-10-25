@@ -64,7 +64,7 @@ const LoginPage = () => {
       <Container size={330} my={40}>
         <Title ta="center">Welcome</Title>
 
-        <Paper mih={300} withBorder shadow="md" p={30} mt={30} radius="md">
+        <Paper mih={300} withBorder shadow="md" p={30} mt={30} radius="md" id="login_page">
           <RxAvatar size={100} className={classes.icon} color="#228be6" />
           <Group className={classes.group} mt="lg">
             <Text c="dimmed">Login With</Text>
