@@ -18,6 +18,7 @@ from jsonschema import validate
 from .validation_json_schema import chunk_update_schema, document_post_schema, chunk_post_schema, query_post_schema
 
 from http import HTTPStatus
+from urllib.parse import unquote
 
 corpus_api = Namespace('seta-api-corpus', description='Corpus')
 swagger_doc = Variable(corpus_api)
@@ -34,8 +35,8 @@ class CorpusChunk(Resource):
     @corpus_api.response(404, 'Not Found Error')
     def get(self, id):
         try:
-
-            chunk = chunk_by_id(id, es=app.es, index=app.config['INDEX_PUBLIC'])
+            decoded_id = unquote(id)
+            chunk = chunk_by_id(decoded_id, es=app.es, index=app.config['INDEX_PUBLIC'])
             validate_view_permissions(sources=[chunk.get("source", None)])
             return chunk
         except ApiLogicError as aex:
@@ -55,15 +56,16 @@ class CorpusChunk(Resource):
     @corpus_api.response(404, 'Not Found Error')
     def delete(self, id):
         try:
-            chunk = chunk_by_id(id, es=app.es, index=app.config['INDEX_PUBLIC'])
+            decoded_id = unquote(id)
+            chunk = chunk_by_id(decoded_id, es=app.es, index=app.config['INDEX_PUBLIC'])
             resource_id = chunk.get("source", None)
 
             if not validate_delete_permission(resource_id):
                 raise ForbiddenResourceError(resource_id=resource_id,
                                              message="User does not have delete permission for the resource")
 
-            delete_chunk(id, es=app.es, index=app.config["INDEX_PUBLIC"])
-            return jsonify({"deleted_document_id": id})
+            delete_chunk(decoded_id, es=app.es, index=app.config["INDEX_PUBLIC"])
+            return jsonify({"deleted_document_id": decoded_id})
         except ApiLogicError as aex:
             abort(404, str(aex))
         except ForbiddenResourceError as fre:
@@ -82,7 +84,8 @@ class CorpusChunk(Resource):
     @corpus_api.expect(swagger_doc.corpus_chunk_put_request_model())
     def put(self, id):
         try:
-            chunk = chunk_by_id(id, es=app.es, index=app.config['INDEX_PUBLIC'])
+            decoded_id = unquote(id)
+            chunk = chunk_by_id(decoded_id, es=app.es, index=app.config['INDEX_PUBLIC'])
             resource_id = chunk.get("source", None)
 
             if not validate_delete_permission(resource_id):
@@ -92,8 +95,8 @@ class CorpusChunk(Resource):
             args = request.get_json(force=True)
             app.logger.debug(str(args))
             validate(instance=args, schema=chunk_update_schema)
-            update_chunk(id, es=app.es, fields=args, index=app.config['INDEX_PUBLIC'])
-            return jsonify({"updated_document_id": id})
+            update_chunk(decoded_id, es=app.es, fields=args, index=app.config['INDEX_PUBLIC'])
+            return jsonify({"updated_document_id": decoded_id})
         except jsonschema.ValidationError as err:
             abort(404, str(err))
         except ApiLogicError as aex:
@@ -147,9 +150,10 @@ class CorpusDocumentId(Resource):
     @corpus_api.response(401, 'Forbbiden access to the resource')
     @corpus_api.response(404, 'Not Found Error')
     def get(self, id):
+        decoded_id = unquote(id)
         args = corpus_get_document_id_parser.parse_args()
         try:
-            document = document_by_id(id, args["n_docs"], args["from_doc"], current_app=app)
+            document = document_by_id(decoded_id, args["n_docs"], args["from_doc"], current_app=app)
             source = get_source_from_chunk_list(document["chunk_list"])
             if source:
                 validate_view_permissions(sources=[source])
@@ -172,15 +176,16 @@ class CorpusDocumentId(Resource):
     @corpus_api.response(404, 'Not Found Error')
     def delete(self, id):
         try:
-            doc = chunk_by_id(id, es=app.es, index=app.config['INDEX_PUBLIC'])
+            decoded_id = unquote(id)
+            doc = chunk_by_id(decoded_id, es=app.es, index=app.config['INDEX_PUBLIC'])
             resource_id = doc.get("source", None)
 
             if not validate_delete_permission(resource_id):
                 raise ForbiddenResourceError(resource_id=resource_id,
                                              message="User does not have delete permission for the resource")
 
-            delete_document(id, es=app.es, index=app.config["INDEX_PUBLIC"])
-            return jsonify({"deleted_document_id": id})
+            delete_document(decoded_id, es=app.es, index=app.config["INDEX_PUBLIC"])
+            return jsonify({"deleted_document_id": decoded_id})
         except ApiLogicError as aex:
             abort(404, str(aex))
         except ForbiddenResourceError as fre:
