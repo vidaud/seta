@@ -95,7 +95,7 @@ export const button: ThemedCSS = theme => css`
   transition: color 0.2s ease, background-color 0.2s ease, transform 0.2s ease;
 
   &:hover {
-    backgroundColor: ${theme.fn.rgba(theme.colors.gray[1], 0.2)},
+    background-color: ${theme.fn.rgba(theme.colors.gray[1], 0.2)},
     color: ${theme.colors.gray[1]}
   }
 `
