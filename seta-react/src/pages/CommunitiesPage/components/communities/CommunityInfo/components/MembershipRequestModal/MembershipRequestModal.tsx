@@ -66,7 +66,6 @@ const MembershipRequest = ({ community_id }) => {
         <Group position="right">
           <Tooltip label="Send Join Request">
             <Button
-              id="join_community"
               variant="filled"
               color="orange"
               size="xs"
