@@ -9,6 +9,7 @@ import { queryClientOptions } from '~/config/query-client-config'
 import { UserProvider } from '~/contexts/user-context'
 
 import AppRouter from './components/AppRouter'
+import { TourProvider } from './contexts/tour-context'
 import { emotionCache, theme } from './styles'
 
 const App = () => {
@@ -21,7 +22,9 @@ const App = () => {
       <ModalsProvider>
         <QueryClientProvider client={queryClient}>
           <UserProvider>
-            <AppRouter />
+            <TourProvider>
+              <AppRouter />
+            </TourProvider>
             {/* <CookiesBanner /> */}
           </UserProvider>
 

@@ -1,7 +1,7 @@
 import type { ForwardedRef, ReactNode } from 'react'
 import { useEffect, useState } from 'react'
 import type { ModalProps } from '@mantine/core'
-import { Text, Flex, Modal, ScrollArea, ActionIcon } from '@mantine/core'
+import { Text, Flex, Modal, ActionIcon, ScrollArea } from '@mantine/core'
 import { usePrevious } from '@mantine/hooks'
 import { FiMaximize, FiMinimize } from 'react-icons/fi'
 

@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-type Position = {
+export type Position = {
   x: number
   y: number
 }

@@ -1,8 +1,7 @@
 from enum import IntEnum
 
-defaultNoPublicKeyMessage = 'NO PUBLIC KEY SET'
-
 INVITE_EXPIRE_DAYS: float = 3
+
 
 class ExternalProviderConstants:
     ECAS = "ECAS"
@@ -10,42 +9,50 @@ class ExternalProviderConstants:
     SETA = "SETA"
     List = (ECAS, GITHUB, SETA)
 
+
 class UserRoleConstants:
     Admin = "Administrator"
     User = "User"
-    
+
     List = [Admin, User]
 
     @staticmethod
     def parse_role(role: str) -> str:
+        """Parsed role"""
+
         if role.lower() == UserRoleConstants.Admin.lower():
             return UserRoleConstants.Admin
         elif role.lower() == UserRoleConstants.User.lower():
             return UserRoleConstants.User
-        
+
         return None
-    
+
+
 class UserStatusConstants:
     Active = "active"
     Disabled = "disabled"
     Blocked = "blocked"
     Deleted = "deleted"
-    
-    List = [Active, Disabled, Blocked]    
-    
+
+    List = [Active, Disabled, Blocked]
+
+
 class ClaimTypeConstants:
     RoleClaimType = "roles"
+
 
 class CommunityStatusConstants:
     Active = "active"
     Blocked = "blocked"
-    
+
     List = [Active, Blocked]
-    
+
+
 class CommunityMembershipConstants:
     Opened = "opened"
     Closed = "closed"
     List = [Opened, Closed]
+
 
 class DiscoverCommunityStatus:
     Unknown = "unknown"
@@ -55,57 +62,65 @@ class DiscoverCommunityStatus:
     Rejected = "rejected"
 
     List = [Unknown, Member, Pending, Invited, Rejected]
-    
-    
-class CommunityRoleConstants:        
+
+
+class CommunityRoleConstants:
     Owner = "CommunityOwner"
     Manager = "CommunityManager"
     ResourceCreator = "ResourceCreator"
     Member = "CommunityMember"
-    
+
     List = [Owner, Manager, ResourceCreator, Member]
-    
+
+
 class CommunityRequestFieldConstants:
     Membership = "membership"
-    List = [Membership] 
-    
+    List = [Membership]
+
+
 class RequestStatusConstants:
     Pending = "pending"
     Approved = "approved"
     Rejected = "rejected"
-    List=[Pending, Approved, Rejected]
-    EditList=[Approved, Rejected]
-    
+    List = [Pending, Approved, Rejected]
+    EditList = [Approved, Rejected]
+
+
 class InviteStatusConstants:
     Pending = "pending"
     Accepted = "accepted"
     Rejected = "rejected"
     Expired = "expired"
-    List=[Pending, Accepted, Rejected, Expired]
-    EditList=[Accepted, Rejected]
+    List = [Pending, Accepted, Rejected, Expired]
+    EditList = [Accepted, Rejected]
 
-class ResourceRequestFieldConstants:    
+
+class ResourceRequestFieldConstants:
     Limits = "limits"
     List = [Limits]
+
 
 class ResourceStatusConstants:
     Active = "active"
     Blocked = "blocked"
-    
+
     List = [Active, Blocked]
+
 
 class ResourceTypeConstants:
     Discoverable = "discoverable"
-    Representative = "representative"    
-    
+    Representative = "representative"
+
     List = [Discoverable, Representative]
+
 
 class NotificationTypeConstants:
     PendingInvite = "pending-invite"
     MembershipRequest = "membership-request"
     CommunityChangeRequest = "change-request"
 
-    List=[PendingInvite, MembershipRequest, CommunityChangeRequest]
+    List = [PendingInvite, MembershipRequest, CommunityChangeRequest]
+
 
 class NotificationPriorityEnum(IntEnum):
     Critical = 0
@@ -113,14 +128,21 @@ class NotificationPriorityEnum(IntEnum):
     Normal = 2
     Low = 3
 
+
 class StatsTypeConstants:
     CommunityChangeRequest = "community-change-request"
     ResourceChangeRequest = "resource-change-request"
-    OrphanedCommunities ="orphaned-communities"
-    OrphanedResources ="orphaned-resources"    
+    OrphanedCommunities = "orphaned-communities"
+    OrphanedResources = "orphaned-resources"
 
-    LightList=[CommunityChangeRequest, ResourceChangeRequest, OrphanedCommunities, OrphanedResources]
+    LightList = [
+        CommunityChangeRequest,
+        ResourceChangeRequest,
+        OrphanedCommunities,
+        OrphanedResources,
+    ]
+
 
 class AuthorizedArea:
-    Resources = "resources"    
-    List=[Resources]
+    Resources = "resources"
+    List = [Resources]

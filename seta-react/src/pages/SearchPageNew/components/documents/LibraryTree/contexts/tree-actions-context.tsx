@@ -4,6 +4,7 @@ import type { ChildrenProp } from '~/types/children-props'
 import type { LibraryItem } from '~/types/library/library-item'
 
 import useDeleteModal from '../hooks/use-delete-modal'
+import useExportModal from '../hooks/use-export-modal'
 import useMoveModal from '../hooks/use-move-modal'
 import useRenameModal from '../hooks/use-rename-modal'
 
@@ -11,6 +12,7 @@ type TreeActionsContextProps = {
   renameFolder: (folder: LibraryItem) => void
   confirmDelete: (item: LibraryItem) => void
   moveItem: (item: LibraryItem) => void
+  exportItem: (item: LibraryItem) => void
 }
 
 const TreeActionsContext = createContext<TreeActionsContextProps | undefined>(undefined)
@@ -19,11 +21,13 @@ const TreeActionsProvider = ({ children }: ChildrenProp) => {
   const { renameFolder, renameModal } = useRenameModal()
   const { confirmDelete, confirmDeleteModal } = useDeleteModal()
   const { moveItem, moveModal } = useMoveModal()
+  const { exportLibraryItem: exportItem, exportModal } = useExportModal()
 
   const value: TreeActionsContextProps = {
     renameFolder,
     confirmDelete,
-    moveItem
+    moveItem,
+    exportItem
   }
 
   return (
@@ -33,6 +37,7 @@ const TreeActionsProvider = ({ children }: ChildrenProp) => {
       {renameModal}
       {confirmDeleteModal}
       {moveModal}
+      {exportModal}
     </>
   )
 }

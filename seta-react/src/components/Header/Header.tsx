@@ -1,4 +1,17 @@
-import { ActionIcon, Flex, Group, Image, Loader, Menu, Tooltip, Grid } from '@mantine/core'
+import { useState } from 'react'
+import {
+  ActionIcon,
+  Flex,
+  Group,
+  Image,
+  Loader,
+  Menu,
+  Tooltip,
+  Grid,
+  UnstyledButton,
+  Text
+} from '@mantine/core'
+import { IconChevronDown } from '@tabler/icons-react'
 import { AiOutlineUser } from 'react-icons/ai'
 import { FaSignInAlt } from 'react-icons/fa'
 import { Link } from 'react-router-dom'
@@ -7,15 +20,23 @@ import { UserRole } from '~/types/user'
 
 import NotificationsButton from './components/NotificationsButton'
 import SiteHeader from './components/SiteHeader'
-import { getDropdownItems, getMenuItems, itemIsCollapse, itemIsDivider } from './config'
+import {
+  getDropdownItems,
+  getDropdownAbout,
+  getMenuItems,
+  itemIsCollapse,
+  itemIsDivider
+} from './config'
 import * as S from './styles'
 
 import { useCurrentUser } from '../../contexts/user-context'
-
 import './style.css'
+import GetStarted from '../GetStarted/GetStarted'
 
 const Header = () => {
   const { user, isLoading: isUserLoading, logout } = useCurrentUser()
+  const [isOpen, setIsOpen] = useState(false)
+  const [menuOpen, setMenuOpen] = useState(false)
   const authenticated = !!user
 
   const handleLogout = () => {
@@ -24,13 +45,51 @@ const Header = () => {
     })
   }
 
+  const handleToggle = () => {
+    setIsOpen(current => !current)
+    setMenuOpen(current => !current)
+  }
+
+  const handleCloseMenu = value => {
+    setMenuOpen(value)
+  }
+
   const menuItems = getMenuItems(authenticated)
+
+  const aboutDropdown = getDropdownAbout()
   const dropdownItems = getDropdownItems({
     isAdmin: user?.role.toLowerCase() === UserRole.Administrator,
     onLogout: handleLogout
   })
 
   const visibleMenuItems = menuItems.filter(link => !link.hidden && !link.collapse)
+
+  // eslint-disable-next-line array-callback-return
+  const aboutDropdownItems = aboutDropdown.map((item, index) => {
+    if (itemIsDivider(item)) {
+      // eslint-disable-next-line react/no-array-index-key
+      return <Menu.Divider key={index} />
+    }
+
+    if (itemIsCollapse(item)) {
+      // eslint-disable-next-line react/no-array-index-key
+      return null
+    }
+
+    const { label, url } = item
+
+    if (url) {
+      return (
+        <Menu.Item key={label} component={Link} to={url}>
+          {label}
+        </Menu.Item>
+      )
+    }
+
+    if (!url) {
+      return <GetStarted key={label} onChange={handleCloseMenu} />
+    }
+  })
 
   const dropdownMenuItems = dropdownItems.map((item, index) => {
     if (itemIsDivider(item)) {
@@ -61,7 +120,7 @@ const Header = () => {
   })
 
   const dropdownMenu = (
-    <Menu shadow="md" width={200} position="bottom-end" closeOnItemClick={false}>
+    <Menu shadow="md" width={200} position="bottom-end" closeOnItemClick={false} id="">
       <Menu.Target>
         <ActionIcon css={S.dropdownTarget} variant="outline" color="gray.1" radius="xl" size="xl">
           <AiOutlineUser size="1.3rem" />
@@ -69,6 +128,29 @@ const Header = () => {
       </Menu.Target>
 
       <Menu.Dropdown css={S.dropdown}>{dropdownMenuItems}</Menu.Dropdown>
+    </Menu>
+  )
+
+  const aboutDropdownMenu = (
+    <Menu
+      shadow="md"
+      width={200}
+      position="bottom"
+      closeOnItemClick={true}
+      closeOnClickOutside={true}
+      id="about"
+      opened={menuOpen}
+    >
+      <Menu.Target>
+        <UnstyledButton css={S.button} onClick={handleToggle}>
+          <Group>
+            <Text size="md">About</Text>
+            <IconChevronDown css={S.chevron} data-open={isOpen} size="1rem" />
+          </Group>
+        </UnstyledButton>
+      </Menu.Target>
+
+      <Menu.Dropdown css={S.aboutDropdown}>{aboutDropdownItems}</Menu.Dropdown>
     </Menu>
   )
 
@@ -93,20 +175,33 @@ const Header = () => {
       <SiteHeader />
 
       <Flex css={S.menu} align="center" justify="space-between">
-        <Grid align="center" pl="2.8%">
+        <Grid align="center" pl="2.8%" className="menu-items">
           <Link to="/" className="mr-5">
             <Image alt="SeTa Logo" src="/img/SeTA-logocut-negative.png" width={120} />
           </Link>
 
           {visibleMenuItems.map(({ to, label }) => (
-            <S.MenuLink key={to} to={to}>
+            <S.MenuLink
+              key={to}
+              to={to}
+              id={
+                label === 'Communities'
+                  ? 'community-tab'
+                  : label === 'Search'
+                  ? 'search-tab'
+                  : undefined
+              }
+            >
               {label}
             </S.MenuLink>
           ))}
+          {aboutDropdownMenu}
         </Grid>
         <Group>
-          {authenticated ? <NotificationsButton dropdownItems={dropdownItems} /> : null}
-          {authenticated ? dropdownMenu : loginButton}
+          <Group className="login-button">
+            {authenticated ? <NotificationsButton dropdownItems={dropdownItems} /> : null}
+            {authenticated ? dropdownMenu : loginButton}
+          </Group>
         </Group>
       </Flex>
     </header>

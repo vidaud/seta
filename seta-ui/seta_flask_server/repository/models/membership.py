@@ -1,9 +1,11 @@
+# pylint: disable=missing-function-docstring
 from datetime import datetime, timedelta
-import pytz
 from dataclasses import dataclass, asdict
-from seta_flask_server.infrastructure.constants import RequestStatusConstants
+import pytz
 
+from seta_flask_server.infrastructure.constants import RequestStatusConstants
 from .user_info import UserInfo
+
 
 @dataclass
 class MembershipModel:
@@ -12,10 +14,10 @@ class MembershipModel:
     role: str = None
     join_date: datetime = None
     status: str = None
-    modified_at: datetime = None 
+    modified_at: datetime = None
 
     user_info: UserInfo = None
-    
+
     def __post_init__(self):
         if self.community_id:
             self.community_id = self.community_id.lower()
@@ -25,24 +27,27 @@ class MembershipModel:
         json.pop("user_info", None)
 
         return json
-    
+
     def to_json_update(self) -> dict:
-        return{
+        return {
             "role": self.role,
             "status": self.status,
-            "modified_at": self.modified_at
+            "modified_at": self.modified_at,
         }
-    
-    @classmethod 
+
+    @classmethod
     def from_db_json(cls, json_dict):
-        return cls(community_id=json_dict["community_id"],
-                   user_id=json_dict["user_id"],
-                   role=json_dict["role"],
-                   join_date=json_dict["join_date"],
-                   status=json_dict["status"],
-                   modified_at=json_dict.get("modified_at", None))
-     
-@dataclass        
+        return cls(
+            community_id=json_dict["community_id"],
+            user_id=json_dict["user_id"],
+            role=json_dict["role"],
+            join_date=json_dict["join_date"],
+            status=json_dict["status"],
+            modified_at=json_dict.get("modified_at", None),
+        )
+
+
+@dataclass
 class MembershipRequestModel:
     community_id: str
     requested_by: str
@@ -63,28 +68,29 @@ class MembershipRequestModel:
         json.pop("reject_timeout", None)
 
         return json
-    
+
     def to_json_update(self):
-        return{            
+        return {
             "status": self.status,
             "review_date": self.review_date,
-            "reviewed_by": self.reviewed_by
+            "reviewed_by": self.reviewed_by,
         }
-    
+
     @property
     def reject_timeout(self) -> datetime:
         if self.status == RequestStatusConstants.Rejected:
             return (self.initiated_date + timedelta(days=30)).replace(tzinfo=pytz.utc)
-        
+
         return None
-    
-    @classmethod 
+
+    @classmethod
     def from_db_json(cls, json_dict: dict):
-        return cls(community_id=json_dict["community_id"],
-                   requested_by=json_dict["requested_by"],
-                   message=json_dict["message"],
-                   status=json_dict["status"],
-                   initiated_date=json_dict["initiated_date"],
-                   reviewed_by=json_dict.get("reviewed_by"),
-                   review_date=json_dict.get("review_date"))
-    
+        return cls(
+            community_id=json_dict["community_id"],
+            requested_by=json_dict["requested_by"],
+            message=json_dict["message"],
+            status=json_dict["status"],
+            initiated_date=json_dict["initiated_date"],
+            reviewed_by=json_dict.get("reviewed_by"),
+            review_date=json_dict.get("review_date"),
+        )

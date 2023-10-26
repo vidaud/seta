@@ -161,9 +161,10 @@ const OrphansTable = ({ data, isLoading, error, onCommunityOwnerSubmit }: Props)
         <ActionIcon
           variant="outline"
           color="teal"
+          size="md"
           onClick={() => handleRowEdit(row.original.community_id)}
         >
-          <IconUserEdit stroke={1.5} size="md" />
+          <IconUserEdit stroke={1.5} />
         </ActionIcon>
       </Tooltip>
     )

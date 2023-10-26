@@ -45,6 +45,7 @@ const CreateCommunity = ({ system_scopes }) => {
             <CreateForm close={close} />
           </Modal>
           <Group
+            id="new_community"
             position="left"
             css={S.root}
             sx={{ width: '100%', border: '1px solid #d0d4d7', borderRadius: '0.25rem' }}

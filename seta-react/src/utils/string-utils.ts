@@ -19,3 +19,15 @@ export const pluralize = (word: string, count: number, plural?: string): string 
 
   return count === 1 ? word : pluralWord
 }
+
+/**
+ * Converts a string to kebab-case
+ * @param text The text to convert
+ * @returns The converted text
+ */
+export const toKebabCase = (text: string, maxLength = 50): string =>
+  text
+    .slice(0, maxLength)
+    .replace(/([a-z])([A-Z])/g, '$1-$2')
+    .replace(/[\s:;,.-]+/g, '-')
+    .toLowerCase()

@@ -1,8 +1,6 @@
 import React from 'react'
-import { createStyles, Container, Title, Text, rem, Group } from '@mantine/core'
+import { createStyles, Container, Title, Text, rem } from '@mantine/core'
 import TextTransition, { presets } from 'react-text-transition'
-
-import ModalPage from './components/modal/ModalPage'
 
 import image from '../../images/background.jpg'
 
@@ -49,8 +47,6 @@ const TEXTS = [
 const HomePage = () => {
   const { classes } = useStyles()
   const [index, setIndex] = React.useState(0)
-  const [isCookie, setCookie] = React.useState(true)
-  const COOKIE_NAME = 'intro_cookie'
 
   React.useEffect(() => {
     const intervalId = setInterval(
@@ -59,17 +55,6 @@ const HomePage = () => {
     )
 
     return () => clearTimeout(intervalId)
-  }, [])
-
-  React.useEffect(() => {
-    const cookies = document.cookie.split(';')
-
-    cookies.forEach(cookie => {
-      if (cookie.trim().includes(`${COOKIE_NAME}`)) {
-        console.log('there is a cookie')
-        setCookie(false)
-      }
-    })
   }, [])
 
   return (
@@ -88,13 +73,6 @@ const HomePage = () => {
               </Text>
             </TextTransition>
           </Title>
-          {isCookie && (
-            <div className={classes.controls}>
-              <Group position="center">
-                <ModalPage />
-              </Group>
-            </div>
-          )}
         </Container>
       </div>
     </>

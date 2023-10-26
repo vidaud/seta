@@ -1,14 +1,16 @@
+"""Starting point for seta-ui web server."""
+
 import os
 from seta_flask_server.config import Config
 from seta_flask_server.factory import create_app
 
 
 stage = os.environ.get("STAGE", default="Production")
-    
-configuration = Config(stage) 
+
+configuration = Config(stage)
 app = create_app(configuration)
 
-if stage == "Development":
+if stage != "Production":
     app.logger.debug(app.url_map)
 
-app.logger.info("seta-ui running in " + stage)
+app.logger.info("seta-ui running in %s", stage)

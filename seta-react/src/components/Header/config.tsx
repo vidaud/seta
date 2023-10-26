@@ -11,7 +11,7 @@ type MenuItem = {
 export type DropdownItem =
   | {
       label: string
-      icon: JSX.Element
+      icon?: JSX.Element
       url?: string
       hidden?: boolean
       onClick?: () => void
@@ -29,20 +29,35 @@ export const getMenuItems = (authenticated: boolean): MenuItem[] => [
     to: '/community',
     label: 'Communities',
     hidden: !authenticated
-  },
-  {
-    to: '/faqs',
-    label: 'FAQs'
-  },
-  {
-    to: '/contact',
-    label: 'Contact'
   }
 ]
 
 type DropdownProps = {
   isAdmin?: boolean
   onLogout: () => void
+}
+
+export const getDropdownAbout = (): DropdownItem[] => {
+  const items: DropdownItem[] = [
+    {
+      label: 'FAQs',
+      url: '/faqs'
+    },
+    {
+      label: 'Contact',
+      url: '/contact'
+    }
+  ]
+
+  items.push({
+    divider: true
+  })
+
+  items.push({
+    label: 'Take a Tour'
+  })
+
+  return items
 }
 
 export const getDropdownItems = ({ isAdmin, onLogout }: DropdownProps): DropdownItem[] => {

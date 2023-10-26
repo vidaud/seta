@@ -26,7 +26,7 @@ type Props = {
 }
 
 const CommunityInfo = ({ community, community_scopes }: Props) => {
-  const { title, community_id, description, membership, created_at } = community
+  const { title, community_id, description, membership, created_at, status } = community
   const theme = useMantineTheme()
   const location = useLocation()
   const ref = createRef<HTMLDivElement>()
@@ -73,7 +73,9 @@ const CommunityInfo = ({ community, community_scopes }: Props) => {
             {title.charAt(0).toUpperCase() + title.slice(1)}
           </Text>
         </div>
-        <CommunityButton props={community} community_scopes={community_scopes} />
+        <div id={status === 'membership' || status === 'unknown' ? 'join_community' : undefined}>
+          <CommunityButton props={community} community_scopes={community_scopes} />
+        </div>
         {toggleIcon}
       </div>
 
