@@ -10,7 +10,9 @@ type Props = {
   preventSetScrolled?: (position: Position) => boolean | void
 }
 
-const useScrolled = ({ delta = 0, preventSetScrolled }: Props) => {
+const useScrolled = (args?: Props) => {
+  const { delta = 10, preventSetScrolled } = args ?? {}
+
   const [scrolled, setScrolled] = useState(false)
 
   const handleScrollChange = (position: Position) => {

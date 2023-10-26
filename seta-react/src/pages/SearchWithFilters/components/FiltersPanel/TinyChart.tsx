@@ -1,4 +1,4 @@
-import { Paper, Text } from '@mantine/core'
+import { Paper, Text, useMantineTheme } from '@mantine/core'
 import { BarChart, Bar, XAxis, Tooltip, Cell } from 'recharts'
 
 import type { FilterData } from '../../types/filter-data'
@@ -26,6 +26,8 @@ const ChartToolTip = ({ active, payload, label }: any) => {
 }
 
 const TinyChart = ({ chartData, selectedKeys, margin, height, width }: Props) => {
+  const { colors } = useMantineTheme()
+
   if (!chartData?.length) {
     return null
   }
@@ -40,12 +42,18 @@ const TinyChart = ({ chartData, selectedKeys, margin, height, width }: Props) =>
       style={{ zIndex: 2 }}
     >
       <XAxis dataKey="label" hide={true} />
-      <Tooltip allowEscapeViewBox={{ y: true }} offset={5} content={<ChartToolTip />} />
-      <Bar dataKey="count" fill="#acb0b5">
+
+      <Tooltip
+        allowEscapeViewBox={{ y: true }}
+        offset={5}
+        content={<ChartToolTip />}
+        cursor={{ fill: colors.gray[2] }}
+      />
+
+      <Bar dataKey="count">
         {chartData.map(entry => (
           <Cell
-            cursor="pointer"
-            fill={selectedKeys?.[entry.key]?.checked ? '#3B82F6' : '#acb0b5'}
+            fill={selectedKeys?.[entry.key]?.checked ? colors.blue[5] : colors.gray[4]}
             key={`cell-${entry.key}`}
           />
         ))}
