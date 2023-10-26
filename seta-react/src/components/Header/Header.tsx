@@ -36,6 +36,7 @@ import GetStarted from '../GetStarted/GetStarted'
 const Header = () => {
   const { user, isLoading: isUserLoading, logout } = useCurrentUser()
   const [isOpen, setIsOpen] = useState(false)
+  const [menuOpen, setMenuOpen] = useState(false)
   const authenticated = !!user
 
   const handleLogout = () => {
@@ -46,6 +47,11 @@ const Header = () => {
 
   const handleToggle = () => {
     setIsOpen(current => !current)
+    setMenuOpen(current => !current)
+  }
+
+  const handleCloseMenu = value => {
+    setMenuOpen(value)
   }
 
   const menuItems = getMenuItems(authenticated)
@@ -81,7 +87,7 @@ const Header = () => {
     }
 
     if (!url) {
-      return <GetStarted key={label} />
+      return <GetStarted key={label} onChange={handleCloseMenu} />
     }
   })
 
@@ -133,6 +139,7 @@ const Header = () => {
       closeOnItemClick={true}
       closeOnClickOutside={true}
       id="about"
+      opened={menuOpen}
     >
       <Menu.Target>
         <UnstyledButton css={S.button} onClick={handleToggle}>

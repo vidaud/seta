@@ -6,12 +6,18 @@ import { useTourContext } from '~/contexts/tour-context'
 import Tour from './components/Tour'
 import * as S from './styles'
 
-const GetStarted = () => {
+const GetStarted = ({ onChange }) => {
   const { openTour } = useTourContext()
 
   return (
     <>
-      <UnstyledButton onClick={openTour} css={S.menuItem}>
+      <UnstyledButton
+        onClick={e => {
+          openTour(e)
+          onChange(false)
+        }}
+        css={S.menuItem}
+      >
         <Group sx={{ gap: '0.3rem' }}>
           Take a Tour
           <BsPlayFill size="1rem" />
