@@ -58,7 +58,10 @@ def document_by_id(doc_id, n_docs, from_doc, current_app):
 
         request = compose_request_for_msearch(body, current_app)
         res = current_app.es.msearch(searches=request)
+
         for response in res["responses"]:
+            if response["hits"]["total"]["value"] == 0:
+                raise ApiLogicError('ID not found.')
             for doc in response["hits"]["hits"]:
                 document = doc["_source"]
                 document['_id'] = doc['_id']
