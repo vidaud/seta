@@ -40,6 +40,8 @@ class Config:
         # ========= Read config section =========#
         # check the seta_config/*.conf files for documentation
 
+        # ============Seta Configuration ========#
+
         Config.AUTH_CAS_URL = config_section.get("AUTH_CAS_URL")
         Config.HOME_ROUTE = config_section.get("HOME_ROUTE", fallback="/")
         Config.PRIVATE_API_URL = config_section["PRIVATE_API_URL"]
@@ -62,6 +64,14 @@ class Config:
         Config.UNBLOCK_TOKENS_HOURS = config_section.getint(
             "UNBLOCK_TOKENS_HOURS", fallback=48
         )
+
+        Config.ROLLING_INDEX_DEFAULT_STORAGE = config_section.getint(
+            "ROLLING_INDEX_DEFAULT_STORAGE", fallback=100
+        )
+
+        # ======================================#
+
+        # ============Flask Configuration========#
 
         Config.JWT_IDENTITY_CLAIM = config_section.get(
             "JWT_IDENTITY_CLAIM", fallback="seta_id"

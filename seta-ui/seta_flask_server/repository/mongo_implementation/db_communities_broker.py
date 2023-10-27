@@ -1,3 +1,4 @@
+# pylint: disable=missing-function-docstring
 from datetime import datetime
 import pytz
 from interface import implements
@@ -6,7 +7,6 @@ from injector import inject
 from seta_flask_server.repository.interfaces.config import IDbConfig
 from seta_flask_server.repository.models import (
     CommunityModel,
-    EntityScope,
     MembershipModel,
 )
 from seta_flask_server.repository.interfaces import ICommunitiesBroker
@@ -15,10 +15,7 @@ from seta_flask_server.infrastructure.constants import (
     CommunityRoleConstants,
     CommunityStatusConstants,
 )
-from seta_flask_server.infrastructure.scope_constants import (
-    CommunityScopeConstants,
-    ResourceScopeConstants,
-)
+from seta_flask_server.infrastructure.scope_constants import CommunityScopeConstants
 
 
 class CommunitiesBroker(implements(ICommunitiesBroker)):
@@ -125,19 +122,29 @@ class CommunitiesBroker(implements(ICommunitiesBroker)):
         }
         ids = self.collection.find(membership_filter, {"community_id": True})
 
-        filter = {
-            "community_id": {"$in": [i["community_id"] for i in ids]},
-            "membership": {"$exists": True},
-        }
-        communities = self.collection.find(filter)
+        communities = self.collection.find(
+            {
+                "community_id": {"$in": [i["community_id"] for i in ids]},
+                "membership": {"$exists": True},
+            }
+        )
 
         # TODO: get creator details
 
         return [CommunityModel.from_db_json(c) for c in communities]
 
     def get_all(self) -> list[CommunityModel]:
-        filter = {"membership": {"$exists": True}}
-        communities = self.collection.find(filter)
+        communities = self.collection.find({"membership": {"$exists": True}})
+
+        return [CommunityModel.from_db_json(c) for c in communities]
+
+    def get_all_by_ids(self, ids: list[str]) -> list[CommunityModel]:
+        if not ids:
+            return []
+
+        communities = self.collection.find(
+            {"membership": {"$exists": True}, "community_id": {"$in": ids}}
+        )
 
         return [CommunityModel.from_db_json(c) for c in communities]
 
@@ -150,19 +157,19 @@ class CommunitiesBroker(implements(ICommunitiesBroker)):
         ids = self.db["users"].aggregate(pipeline)
 
         # get communities that are not in 'ids'
-        filter = {
-            "membership": {"$exists": True},
-            "community_id": {"$not": {"$in": [i["_id"] for i in ids]}},
-        }
-        communities = self.collection.find(filter)
+        communities = self.collection.find(
+            {
+                "membership": {"$exists": True},
+                "community_id": {"$not": {"$in": [i["_id"] for i in ids]}},
+            }
+        )
 
         return [CommunityModel.from_db_json(c) for c in communities]
 
-    # ------------------------#
-    """ Private methods """
+    # -------------Private methods-----------#
 
-    def _filter_community_by_id(self, id: str):
+    def _filter_community_by_id(self, community_id: str):
         """Get filter dict for a community"""
-        return {"community_id": id.lower(), "membership": {"$exists": True}}
+        return {"community_id": community_id.lower(), "membership": {"$exists": True}}
 
     # ------------------------#

@@ -2,16 +2,15 @@ from http import HTTPStatus
 from injector import inject
 
 from flask_jwt_extended import jwt_required, get_jwt_identity
-from flask_restx import Namespace, Resource, abort
+from flask_restx import Resource, abort
 
 from seta_flask_server.infrastructure.constants import UserRoleConstants
 from seta_flask_server.repository import interfaces
 
-from .models import users_dto as dto
-from .logic import user_logic
+from seta_flask_server.blueprints.admin.models import users_dto as dto
+from seta_flask_server.blueprints.admin.logic import user_logic
 
-users_ns = Namespace("Seta Users", description="Seta User Accounts")
-users_ns.models.update(dto.ns_models)
+from .ns import users_ns
 
 
 @users_ns.route("/infos", endpoint="admin_user_infos", methods=["GET"])
