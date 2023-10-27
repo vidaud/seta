@@ -61,6 +61,10 @@ const CommunityListContent = forwardRef<HTMLDivElement, Props>(
 
     const communities = data
 
+    const targetButton = communities.filter(
+      item => item.status === 'membership' || item.status === 'unknown'
+    )[0]
+
     if (!communities.length) {
       return (
         <>
@@ -92,6 +96,7 @@ const CommunityListContent = forwardRef<HTMLDivElement, Props>(
             community_scopes={community_scopes}
             resource_scopes={resource_scopes}
             system_scopes={system_scopes}
+            firstElement={targetButton}
           />
         ))}
         {/* <Divider size="xs" /> */}

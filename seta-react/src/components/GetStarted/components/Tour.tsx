@@ -13,37 +13,44 @@ const Tour = () => {
   const authenticated = !!user
   const navigate = useNavigate()
 
+  const handleAuthenticatedCallback = (data: CallBackProps) => {
+    const { action, index, type, status, lifecycle } = data
+    const finishedStatuses: string[] = [STATUS.FINISHED, STATUS.SKIPPED, STATUS.PAUSED]
+    const stopActions: string[] = [ACTIONS.CLOSE, ACTIONS.SKIP, ACTIONS.STOP]
+
+    if (finishedStatuses.includes(status) || stopActions.includes(action)) {
+      handleRunTour(false)
+    }
+
+    if (type === 'tooltip' && index === 2) {
+      handleRunTour(true)
+      navigate('/community')
+    }
+
+    if (type === 'tooltip' && index === 6) {
+      handleRunTour(true)
+      navigate('/search')
+    }
+
+    if (action === 'prev' && lifecycle === 'init') {
+      if (index === 5) {
+        navigate('/community')
+      }
+    }
+  }
+
   const handleCallback = (data: CallBackProps) => {
     const { action, index, type, status } = data
     const finishedStatuses: string[] = [STATUS.FINISHED, STATUS.SKIPPED, STATUS.PAUSED]
     const stopActions: string[] = [ACTIONS.CLOSE, ACTIONS.SKIP, ACTIONS.STOP]
 
-    if (finishedStatuses.includes(status)) {
+    if (finishedStatuses.includes(status) || stopActions.includes(action)) {
       handleRunTour(false)
     }
 
-    if (stopActions.includes(action)) {
-      handleRunTour(false)
-    }
-
-    if (!authenticated && type === 'tooltip' && index === 2) {
+    if (type === 'tooltip' && index === 2) {
       handleRunTour(true)
       navigate('/login')
-    }
-
-    if (authenticated && type === 'tooltip' && index === 2) {
-      handleRunTour(true)
-      navigate('/community')
-    }
-
-    if (authenticated && type === 'tooltip' && index === 5) {
-      handleRunTour(true)
-      navigate('/community/resources/')
-    }
-
-    if (authenticated && type === 'tooltip' && index === 6) {
-      handleRunTour(true)
-      navigate('/search')
     }
   }
 
@@ -51,7 +58,7 @@ const Tour = () => {
     <Joyride
       run={runTour}
       disableCloseOnEsc={true}
-      callback={handleCallback}
+      callback={authenticated ? handleAuthenticatedCallback : handleCallback}
       steps={authenticated ? steps : no_login_steps}
       showProgress={true}
       continuous={true}
