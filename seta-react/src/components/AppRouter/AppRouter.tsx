@@ -10,10 +10,12 @@ import CreateContribution from '~/pages/CommunitiesPage/components/contributors/
 import InvitesList from '~/pages/CommunitiesPage/components/notifications/invitesList'
 import MembersList from '~/pages/CommunitiesPage/components/notifications/membersList'
 import LoginPage from '~/pages/LoginPage'
+import ProfilePage from '~/pages/ProfilePage'
 
 import LoginAuth from './components/LoginAuth'
 import RequireAuth from './components/RequireAuth'
 import AdminRoutes from './routes/AdminRoutes'
+import UserRoutes from './routes/UserRoutes'
 
 import AppLayout from '../../layouts/AppLayout'
 import CommunityLayout from '../../layouts/CommunityLayout'
@@ -23,7 +25,6 @@ import ContactPage from '../../pages/ContactPage'
 import FaqsPage from '../../pages/FaqsPage'
 import HomePage from '../../pages/HomePage'
 import NotFoundPage from '../../pages/NotFoundPage'
-import ProfilePage from '../../pages/ProfilePage'
 import SearchPageNew from '../../pages/SearchPageNew'
 
 const ROOT_PATH = '/'
@@ -45,13 +46,14 @@ const routes = createRoutesFromElements(
     />
 
     <Route
-      path="profile"
+      path="profile_old"
       element={
         <RequireAuth>
           <ProfilePage />
         </RequireAuth>
       }
     />
+
     <Route path="faqs" element={<FaqsPage />} />
     <Route path="contact" element={<ContactPage />} />
     <Route
@@ -126,6 +128,7 @@ const routes = createRoutesFromElements(
       />
     </Route>
     <Route path="admin" children={AdminRoutes} />
+    <Route path="profile" children={UserRoutes} />
     <Route path="*" element={<NotFoundPage />} />
   </Route>
 )

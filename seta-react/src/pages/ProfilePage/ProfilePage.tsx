@@ -11,7 +11,7 @@ import storageService from '../../services/storage.service'
 
 import './style.css'
 
-function ProfilePage(props) {
+function ProfilePage() {
   const [publicKey, setpublicKey] = useState<string | undefined>()
   let currentUser: User | any = null
 
@@ -62,26 +62,26 @@ function ProfilePage(props) {
                   <i className="pi pi-user" />
                 </span>
                 <span className="p-float-label">
-                  <InputText id="email" type="text" value={currentUser.email} readOnly />
+                  <InputText id="email" type="text" value={currentUser?.email} readOnly />
                   <label htmlFor="email">Email</label>
                 </span>
               </div>
             </div>
             <div className="field col-12 md:col-6">
               <span className="p-float-label">
-                <InputText id="username" type="text" value={currentUser.username} readOnly />
+                <InputText id="username" type="text" value={currentUser?.username} readOnly />
                 <label htmlFor="username">User Identifier</label>
               </span>
             </div>
             <div className="field col-12 md:col-6">
               <span className="p-float-label">
-                <InputText id="firstName" type="text" value={currentUser.firstName} readOnly />
+                <InputText id="firstName" type="text" value={currentUser?.firstName} readOnly />
                 <label htmlFor="FirstName">First Name</label>
               </span>
             </div>
             <div className="field col-12 md:col-6">
               <span className="p-float-label">
-                <InputText id="lastName" type="text" value={currentUser.lastName} readOnly />
+                <InputText id="lastName" type="text" value={currentUser?.lastName} readOnly />
                 <label htmlFor="lastName">Last Name</label>
               </span>
             </div>
