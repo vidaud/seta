@@ -1,5 +1,6 @@
 chunk_update_schema = {"type": "object",
                        "properties": {
+                           "_id": {"type": "string"},
                            "id": {"type": "string"},
                            "id_alias": {"type": "string"},
                            "title": {"type": "string"},
@@ -21,7 +22,8 @@ chunk_update_schema = {"type": "object",
                            "chunk_text": {"type": "string"},
                            "sbert_embedding": {"type": "array", "items": {"type": "number"}}
                        },
-                       "additionalProperties": False
+                       "additionalProperties": False,
+                        "required": ["_id"]
                        }
 
 document_post_schema = {"type": "object",

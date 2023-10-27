@@ -8,9 +8,8 @@ from seta_api.infrastructure.auth_validator import auth_validator, validate_view
 from seta_api.infrastructure.helpers import is_field_in_doc
 
 from .corpus_logic import corpus, delete_chunk, chunk_by_id, insert_doc, document_by_id, delete_document
-from .corpus_logic import update_chunk, get_source_from_chunk_list, insert_chunk
+from .corpus_logic import update_chunk, get_source_from_chunk_list, insert_chunk, get_id_and_source
 from .corpus_logic import translate_from_xml_to_json, translate_from_yaml_to_json
-from .variables import corpus_get_document_id_parser
 from .variables import Variable
 
 import jsonschema
@@ -23,23 +22,32 @@ corpus_api = Namespace('seta-api-corpus', description='Corpus')
 swagger_doc = Variable(corpus_api)
 
 
-@corpus_api.route("corpus/chunk/<string:id>", methods=['GET', 'DELETE', 'PUT'])
-class CorpusChunk(Resource):
+@corpus_api.route("corpus/chunk/id", methods=['POST', 'DELETE', 'PUT'])
+class CorpusChunkId(Resource):
     @auth_validator()
     @corpus_api.doc(description='Given the elasticsearch unique _id, the relative document (chunk) is provided.',
-                    params={'id': 'Return the document (chunk) with the specified _id'},
                     security='apikey')
     @corpus_api.response(200, 'Success', swagger_doc.get_corpus_get_id_response())
     @corpus_api.response(401, 'Forbbiden access to the resource')
     @corpus_api.response(404, 'Not Found Error')
-    def get(self, id):
+    @corpus_api.expect(swagger_doc.corpus_chunk_id_delete_post_request_model())
+    def post(self):
         try:
-
-            chunk = chunk_by_id(id, es=app.es, index=app.config['INDEX_PUBLIC'])
-            validate_view_permissions(sources=[chunk.get("source", None)])
+            args = request.get_json(force=True)
+            _id = is_field_in_doc(args, '_id')
+            if _id is None:
+                raise ApiLogicError("_id has to be provided.")
+            chunk = chunk_by_id(_id, es=app.es, index=app.config['INDEX_PUBLIC'])
+            resource_id = chunk.get("source", None)
+            if not validate_view_permissions(sources=[resource_id]):
+                raise ForbiddenResourceError(resource_id=resource_id,
+                                             message="User does not have view permission for the resource")
             return chunk
         except ApiLogicError as aex:
-            abort(404, str(aex))
+            if str(aex) == "ID not found.":
+                return {}
+            else:
+                abort(404, str(aex))
         except ForbiddenResourceError as fre:
             abort(HTTPStatus.FORBIDDEN, fre.message)
         except:
@@ -48,22 +56,26 @@ class CorpusChunk(Resource):
 
     @auth_validator()
     @corpus_api.doc(description='Given the elasticsearch unique _id, the relative document (chunk) is deleted.',
-                    params={'id': 'Delete the document (chunk) with the specified _id'},
                     security='apikey')
     @corpus_api.response(200, 'Success', swagger_doc.get_delete_id_request_model())
     @corpus_api.response(401, 'Forbbiden access to the resource')
     @corpus_api.response(404, 'Not Found Error')
-    def delete(self, id):
+    @corpus_api.expect(swagger_doc.corpus_chunk_id_delete_post_request_model())
+    def delete(self):
         try:
-            chunk = chunk_by_id(id, es=app.es, index=app.config['INDEX_PUBLIC'])
+            args = request.get_json(force=True)
+            _id = is_field_in_doc(args, '_id')
+            if _id is None:
+                raise ApiLogicError("_id has to be provided.")
+            chunk = chunk_by_id(_id, es=app.es, index=app.config['INDEX_PUBLIC'])
             resource_id = chunk.get("source", None)
 
             if not validate_delete_permission(resource_id):
                 raise ForbiddenResourceError(resource_id=resource_id,
                                              message="User does not have delete permission for the resource")
 
-            delete_chunk(id, es=app.es, index=app.config["INDEX_PUBLIC"])
-            return jsonify({"deleted_document_id": id})
+            delete_chunk(_id, es=app.es, index=app.config["INDEX_PUBLIC"])
+            return jsonify({"deleted_document_id": _id})
         except ApiLogicError as aex:
             abort(404, str(aex))
         except ForbiddenResourceError as fre:
@@ -73,27 +85,27 @@ class CorpusChunk(Resource):
             abort(500, "Internal server error")
 
     @auth_validator()
-    @corpus_api.doc(description='Given the elasticsearch unique _id, and json with field to be updated the relative document (chunk) is updated.',
-                    params={'id': 'Update the document (chunk) with the specified _id'},
+    @corpus_api.doc(description='Given a json with field to be updated and the _id the relative document (chunk) is updated.',
                     security='apikey')
     @corpus_api.response(200, 'Success', swagger_doc.get_update_id_request_model())
     @corpus_api.response(401, 'Forbbiden access to the resource')
     @corpus_api.response(404, 'Not Found Error')
-    @corpus_api.expect(swagger_doc.corpus_chunk_put_request_model())
-    def put(self, id):
+    @corpus_api.expect(swagger_doc.corpus_chunk_id_put_request_model())
+    def put(self):
         try:
-            chunk = chunk_by_id(id, es=app.es, index=app.config['INDEX_PUBLIC'])
+            args = request.get_json(force=True)
+            app.logger.debug(str(args))
+            validate(instance=args, schema=chunk_update_schema)
+            _id = args['_id']
+            chunk = chunk_by_id(_id, es=app.es, index=app.config['INDEX_PUBLIC'])
             resource_id = chunk.get("source", None)
 
             if not validate_delete_permission(resource_id):
                 raise ForbiddenResourceError(resource_id=resource_id,
                                              message="User does not have update permission for the resource")
-
-            args = request.get_json(force=True)
-            app.logger.debug(str(args))
-            validate(instance=args, schema=chunk_update_schema)
-            update_chunk(id, es=app.es, fields=args, index=app.config['INDEX_PUBLIC'])
-            return jsonify({"updated_document_id": id})
+            del args['_id']  # Field [_id] is a metadata field and cannot be used in update.
+            update_chunk(_id, es=app.es, fields=args, index=app.config['INDEX_PUBLIC'])
+            return jsonify({"updated_document_id": _id})
         except jsonschema.ValidationError as err:
             abort(404, str(err))
         except ApiLogicError as aex:
@@ -135,27 +147,32 @@ class CorpusChunk(Resource):
             abort(500, "Internal server error")
 
 
-@corpus_api.route("corpus/document/<string:id>", methods=['GET', 'DELETE'])
+@corpus_api.route("corpus/document/id", methods=['POST', 'DELETE'])
 class CorpusDocumentId(Resource):
     @auth_validator()
     @corpus_api.doc(description='Given a document_id, the relative list of chunks is shown.',
-                    params={'id': 'Return all the chunks of document with the specified document_id',
-                            'n_docs': 'Number of chunks to be returned. Default 10.',
-                            'from_doc': 'Defines the number of hits to skip, defaulting to 0.'},
                     security='apikey')
     @corpus_api.response(200, 'Success', swagger_doc.corpus_get_id_document_response())
     @corpus_api.response(401, 'Forbbiden access to the resource')
     @corpus_api.response(404, 'Not Found Error')
-    def get(self, id):
-        args = corpus_get_document_id_parser.parse_args()
+    @corpus_api.expect(swagger_doc.corpus_document_id_post_request_model())
+    def post(self):
+        args = request.get_json(force=True)
+        document_id = is_field_in_doc(args, "document_id")
+        if document_id is None:
+            raise ApiLogicError("document_id has to be provided.")
         try:
-            document = document_by_id(id, args["n_docs"], args["from_doc"], current_app=app)
+            document = document_by_id(document_id, is_field_in_doc(args, "n_docs"), is_field_in_doc(args, "from_doc"), current_app=app)
             source = get_source_from_chunk_list(document["chunk_list"])
             if source:
                 validate_view_permissions(sources=[source])
                 return document
             return {"chunk_list": []}
         except ApiLogicError as aex:
+            if str(aex) == "ID not found.":
+                return {"chunk_list": []}
+            else:
+                abort(404, str(aex))
             abort(404, str(aex))
         except ForbiddenResourceError as fre:
             abort(HTTPStatus.FORBIDDEN, fre.message)
@@ -165,22 +182,21 @@ class CorpusDocumentId(Resource):
 
     @auth_validator()
     @corpus_api.doc(description='Given a document_id, the relative list of chunks is deleted.',
-                    params={'id': 'Delete the list of chunks with the specified document_id'},
                     security='apikey')
     @corpus_api.response(200, 'Success', swagger_doc.get_delete_id_request_model())
     @corpus_api.response(401, 'Forbbiden access to the resource')
     @corpus_api.response(404, 'Not Found Error')
-    def delete(self, id):
+    @corpus_api.expect(swagger_doc.corpus_document_id_delete_request_model())
+    def delete(self):
         try:
-            doc = chunk_by_id(id, es=app.es, index=app.config['INDEX_PUBLIC'])
-            resource_id = doc.get("source", None)
-
+            args = request.get_json(force=True)
+            document_id, resource_id = get_id_and_source(args, app)
             if not validate_delete_permission(resource_id):
                 raise ForbiddenResourceError(resource_id=resource_id,
                                              message="User does not have delete permission for the resource")
 
-            delete_document(id, es=app.es, index=app.config["INDEX_PUBLIC"])
-            return jsonify({"deleted_document_id": id})
+            delete_document(document_id, es=app.es, index=app.config["INDEX_PUBLIC"])
+            return jsonify({"deleted_document_id": document_id})
         except ApiLogicError as aex:
             abort(404, str(aex))
         except ForbiddenResourceError as fre:

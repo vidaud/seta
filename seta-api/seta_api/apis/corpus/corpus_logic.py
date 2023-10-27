@@ -23,7 +23,7 @@ def chunk_by_id(doc_id, es, index):
         doc['taxonomy'] = tax.tree
         return doc
     except:
-        raise ApiLogicError('ID not found.')
+        raise ApiLogicError("ID not found.")
 
 
 def delete_chunk(id, es, index):
@@ -38,7 +38,7 @@ def update_chunk(id, es, fields, index):
     try:
         res = es.update(index=index, id=id, doc=fields)
     except:
-        raise ApiLogicError('Update not performed', res)
+        raise ApiLogicError("Error on update phase, document ", id, " has not been updated", res)
 
 
 def document_by_id(doc_id, n_docs, from_doc, current_app):
@@ -58,7 +58,10 @@ def document_by_id(doc_id, n_docs, from_doc, current_app):
 
         request = compose_request_for_msearch(body, current_app)
         res = current_app.es.msearch(searches=request)
+
         for response in res["responses"]:
+            if response["hits"]["total"]["value"] == 0:
+                raise ApiLogicError('ID not found.')
             for doc in response["hits"]["hits"]:
                 document = doc["_source"]
                 document['_id'] = doc['_id']
@@ -185,6 +188,18 @@ def get_source_from_chunk_list(chunk_list):
         if "source" in doc:
             return doc["source"]
 
+
+def get_id_and_source(args, current_app):
+    document_id = is_field_in_doc(args, "document_id")
+    if document_id is None:
+        raise ApiLogicError("document_id has to be provided.")
+    chunk_list = document_by_id(document_id, n_docs=1, from_doc=0, current_app=current_app)
+    resource_id = get_source_from_chunk_list(chunk_list["chunk_list"])
+    for chunk in chunk_list["chunk_list"]:
+        resource_id = chunk.get("source", None)
+    if resource_id is None:
+        raise ApiLogicError("Resource id not found")
+    return document_id, resource_id
 
 def from_xml_to_json(xml_string):
     xml_obj = xmltodict.parse(xml_string)
