@@ -6,11 +6,17 @@ import api from '~/api'
 import type { Chunk } from '~/types/search/documents'
 import { getOffset } from '~/utils/pagination-utils'
 
-const DOCUMENT_CHUNKS_API_PATH = '/corpus/document'
+const DOCUMENT_CHUNKS_API_PATH = '/corpus/document/id'
 
 type GetChunksOptions = {
   page?: number
   perPage?: number
+}
+
+type GetChunksPayload = {
+  document_id: string
+  n_docs?: number
+  from_doc?: number
 }
 
 export type ChunksResponse = {
@@ -34,15 +40,17 @@ const getChunks = async (
 ): Promise<ChunksResponse> => {
   const { page = 1, perPage = 10 } = options
 
-  const params = {
+  const payload: GetChunksPayload = {
+    document_id: documentId,
     n_docs: perPage,
     from_doc: getOffset(page, perPage)
   }
 
-  const { data } = await api.get<ChunksResponse>(`${DOCUMENT_CHUNKS_API_PATH}/${documentId}`, {
-    params,
-    ...config
-  })
+  const { data } = await api.post<ChunksResponse, GetChunksPayload>(
+    DOCUMENT_CHUNKS_API_PATH,
+    payload,
+    config
+  )
 
   return data
 }
