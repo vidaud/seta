@@ -1,12 +1,13 @@
-import { Avatar, Grid } from '@mantine/core'
+import { Avatar, Grid, Group } from '@mantine/core'
 
-import { useSetaUserAccount } from '~/api/user/user-account'
+import { useExternalProviders } from '~/api/user/user-account'
 
+import DeleteUser from './components/DeleteUser/DeleteUser'
+import ExternalProviders from './components/ExternalProviders'
 import GeneralInformation from './components/GeneralInformation'
-import Permissions from './components/Permissions/Permissions'
 
 const ProfileDashboard = () => {
-  const { data } = useSetaUserAccount()
+  const { data } = useExternalProviders()
 
   return (
     <>
@@ -18,9 +19,12 @@ const ProfileDashboard = () => {
           <GeneralInformation details={data} />
         </Grid.Col>
         <Grid.Col span={6}>
-          <Permissions />
+          <ExternalProviders details={data} />
         </Grid.Col>
       </Grid>
+      <Group position="right" mt="lg">
+        <DeleteUser />
+      </Group>
     </>
   )
 }

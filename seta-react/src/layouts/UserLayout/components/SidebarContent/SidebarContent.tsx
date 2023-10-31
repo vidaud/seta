@@ -1,6 +1,6 @@
 /* eslint-disable complexity */
 import { Navbar, ScrollArea, NavLink, Group, ThemeIcon, Title } from '@mantine/core'
-import { IconStack2, IconUserCog } from '@tabler/icons-react'
+import { IconUserCog } from '@tabler/icons-react'
 import { BiLibrary } from 'react-icons/bi'
 import { FaUserCircle } from 'react-icons/fa'
 import { GrUserSettings } from 'react-icons/gr'
@@ -15,7 +15,7 @@ const SidebarContent = () => {
   const activeLink = getActiveLink(location.pathname)
 
   return (
-    <Navbar height={800} pt="md" mt="-2rem">
+    <Navbar height={800} pt="md" mt="-2rem" mr="2rem">
       {/* Title section START*/}
       <Navbar.Section css={S.header}>
         <Group>
@@ -44,6 +44,24 @@ const SidebarContent = () => {
           active={activeLink === ActiveLink.DASHBOARD}
         />
         {/* Profile END*/}
+
+        {/* Permissions START*/}
+        <NavLink
+          label="Permissions"
+          icon={
+            <ThemeIcon
+              variant={activeLink === ActiveLink.PERMISSIONS ? 'outline' : 'light'}
+              size={30}
+            >
+              <BiLibrary size="1rem" />
+            </ThemeIcon>
+          }
+          component={Link}
+          to="/profile/permissions"
+          css={S.linkPrimary}
+          active={activeLink === ActiveLink.PERMISSIONS}
+        />
+        {/* Permissions END*/}
 
         {/* RSA Keys START*/}
         <NavLink
@@ -77,38 +95,6 @@ const SidebarContent = () => {
           active={activeLink === ActiveLink.APPLICATIONS}
         />
         {/* Applications END*/}
-
-        {/* Library START*/}
-        <NavLink
-          label="Library"
-          icon={
-            <ThemeIcon variant={activeLink === ActiveLink.LIBRARY ? 'outline' : 'light'} size={30}>
-              <BiLibrary size="1rem" />
-            </ThemeIcon>
-          }
-          component={Link}
-          to="/profile/library"
-          css={S.linkPrimary}
-          active={activeLink === ActiveLink.LIBRARY}
-        />
-        {/* Library END*/}
-        {/* Restricted Resources START*/}
-        <NavLink
-          label="Restricted Resources"
-          icon={
-            <ThemeIcon
-              variant={activeLink === ActiveLink.RESTRICTED_RESOURCES ? 'outline' : 'light'}
-              size={30}
-            >
-              <IconStack2 size="1rem" />
-            </ThemeIcon>
-          }
-          component={Link}
-          to="/profile/restricted-resources"
-          css={S.linkPrimary}
-          active={activeLink === ActiveLink.RESTRICTED_RESOURCES}
-        />
-        {/* Restricted Resources END*/}
       </Navbar.Section>
     </Navbar>
   )

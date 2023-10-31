@@ -6,6 +6,7 @@ import UserLayout from '~/layouts/UserLayout'
 import RequireAuth from '../components/RequireAuth'
 
 const ProfileDashboard = React.lazy(() => import('~/pages/UserProfile/Profile/Profile'))
+const Permissions = React.lazy(() => import('~/pages/UserProfile/Permissions/Permissions'))
 const RSAKeys = React.lazy(() => import('~/pages/UserProfile/RSAKeys/RSAKeys'))
 
 const UserRoutes = (
@@ -17,10 +18,9 @@ const UserRoutes = (
     }
   >
     <Route index element={<ProfileDashboard />} />
+    <Route path="permissions" element={<Permissions />} />
     <Route path="rsa-keys" element={<RSAKeys />} />
     <Route path="applications" element={<RSAKeys />} />
-    <Route path="library" element={<RSAKeys />} />
-    <Route path="restricted-resources" element={<RSAKeys />} />
   </Route>
 )
 
