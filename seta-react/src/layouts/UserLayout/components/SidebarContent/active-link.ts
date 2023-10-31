@@ -2,9 +2,7 @@ export enum ActiveLink {
   DASHBOARD,
   RSAKEYS,
   APPLICATIONS,
-  LIBRARY,
-
-  RESTRICTED_RESOURCES,
+  PERMISSIONS,
   NONE
 }
 
@@ -13,17 +11,14 @@ export const getActiveLink = (path: string): ActiveLink => {
     case '/profile':
       return ActiveLink.DASHBOARD
 
+    case path.startsWith('/permissions') ? path : '':
+      return ActiveLink.PERMISSIONS
+
     case path.startsWith('/rsa-keys') ? path : '':
       return ActiveLink.RSAKEYS
 
-    case '/admin/community-requests':
+    case path.startsWith('/applications') ? path : '':
       return ActiveLink.APPLICATIONS
-
-    case '/admin/resource-requests':
-      return ActiveLink.LIBRARY
-
-    case '/admin/orphaned-communities':
-      return ActiveLink.RESTRICTED_RESOURCES
 
     default:
       return ActiveLink.NONE

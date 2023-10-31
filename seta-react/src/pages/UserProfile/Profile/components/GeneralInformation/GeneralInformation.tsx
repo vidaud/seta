@@ -8,10 +8,11 @@ const useStyles = createStyles(() => ({
 
 const GeneralInformation = ({ details }) => {
   const { classes } = useStyles()
+  const user = details?.external_providers?.filter(item => item.is_current_auth === true)[0]
 
   return (
     <Paper shadow="xs" p="md">
-      <Title order={5} ta="center">
+      <Title order={5} ta="center" pb="3%">
         General Information
       </Title>
       <Table verticalSpacing="sm">
@@ -26,11 +27,11 @@ const GeneralInformation = ({ details }) => {
           </tr>
           <tr>
             <td className={classes.td}>First Name</td>
-            <td>{details?.firstName}</td>
+            <td>{user?.firstName}</td>
           </tr>
           <tr>
             <td className={classes.td}>Last Name</td>
-            <td>{details?.lastName}</td>
+            <td>{user?.lastName}</td>
           </tr>
         </tbody>
       </Table>

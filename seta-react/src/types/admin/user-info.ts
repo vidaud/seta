@@ -40,6 +40,8 @@ export type ExternalProvider = {
   provider: ThirdPartyProvider
   firstName: string
   lastName: string
+  is_current_auth?: boolean
+  domain?: string
 }
 
 export type SetaAccount = {

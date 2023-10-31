@@ -3,12 +3,21 @@ import type { AxiosRequestConfig } from 'axios'
 
 import api from '~/api'
 import { environment } from '~/environments/environment'
-import type { AccountStatus, SetaAccount } from '~/types/admin/user-info'
-import type { UserRole } from '~/types/user'
+import type { SetaAccount } from '~/types/admin/user-info'
 
 import { UserQueryKeys } from './query-keys'
 
-const USERS_API_PATH = (): string => `/me/user-info`
+const USERS_API_PATH = (): string => `/me`
+const USERS_INFO_API_PATH = (): string => `/me/user-info`
+const DELETE_USER_API_PATH = (): string => `/me`
+
+const config_ = {
+  baseURL: environment.baseUrl,
+  headers: {
+    'Content-Type': 'application/x-www-form-urlencoded',
+    accept: 'application/json'
+  }
+}
 
 const queryKey = {
   root: 'me/seta-info',
@@ -16,7 +25,7 @@ const queryKey = {
 }
 
 const getSetaUserAccount = async (config?: AxiosRequestConfig): Promise<SetaAccount> => {
-  const { data } = await api.get<SetaAccount>(USERS_API_PATH(), {
+  const { data } = await api.get<SetaAccount>(USERS_INFO_API_PATH(), {
     baseURL: environment.baseUrl,
     ...config
   })
@@ -30,60 +39,31 @@ export const useSetaUserAccount = () =>
     queryFn: ({ signal }) => getSetaUserAccount({ signal })
   })
 
-type PermissionsRequest = {
-  scopes: string[] | null
-  role?: UserRole
-}
-
-const updateAccountPermissions = async (request: PermissionsRequest) => {
-  return await api.post(USERS_API_PATH(), request, { baseURL: environment.baseUrl })
-}
-
-export const useUpdateAccountPermissions = () => {
-  const client = useQueryClient()
-
-  return useMutation({
-    mutationFn: (request: PermissionsRequest) => updateAccountPermissions(request),
-    onMutate: async () => {
-      await client.cancelQueries(UserQueryKeys.SetaAccount)
-    },
-    onSuccess: () => {
-      client.invalidateQueries(UserQueryKeys.SetaAccount)
-      client.invalidateQueries(queryKey.account())
-      //client.invalidateQueries(['/catalogue/scopes', ScopeCategory.System])
-    }
+const getExternalProviders = async (config?: AxiosRequestConfig): Promise<SetaAccount> => {
+  const { data } = await api.get<SetaAccount>(USERS_API_PATH(), {
+    baseURL: environment.baseUrl,
+    ...config
   })
+
+  return data
 }
 
-const changeAccountStatus = async (status: AccountStatus) => {
-  return await api.put(USERS_API_PATH(), { status: status }, { baseURL: environment.baseUrl })
-}
-
-export const useChangeAccountStatus = () => {
-  const client = useQueryClient()
-
-  return useMutation({
-    mutationFn: (status: AccountStatus) => changeAccountStatus(status),
-    onMutate: async () => {
-      await client.cancelQueries(UserQueryKeys.SetaAccount)
-    },
-    onSuccess: () => {
-      client.invalidateQueries(UserQueryKeys.SetaAccount)
-      client.invalidateQueries(queryKey.account())
-    }
+export const useExternalProviders = () =>
+  useQuery({
+    queryKey: queryKey.account(),
+    queryFn: ({ signal }) => getExternalProviders({ signal })
   })
+
+const deleteUserAccount = async () => {
+  return await api.delete(DELETE_USER_API_PATH(), config_)
 }
 
-const deleteAccount = async () => {
-  return await api.delete(USERS_API_PATH(), { baseURL: environment.baseUrl })
-}
-
-export const useDeleteAccount = () => {
+export const useDeleteUserAccount = () => {
   const client = useQueryClient()
 
   return useMutation({
     // eslint-disable-next-line unused-imports/no-unused-vars
-    mutationFn: (status: AccountStatus) => deleteAccount(),
+    mutationFn: () => deleteUserAccount(),
     onMutate: async () => {
       await client.cancelQueries(UserQueryKeys.SetaAccount)
     },
