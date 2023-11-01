@@ -10,3 +10,10 @@ export const dateFilter = css`
   padding-top: 1rem;
   padding-bottom: 1rem;
 `
+
+export const sourceChart: ThemedCSS = theme => css`
+  display: flex;
+  justify-content: center;
+  padding: 0.5rem 0;
+  border-top: 1px solid ${theme.colors.gray[3]};
+`
