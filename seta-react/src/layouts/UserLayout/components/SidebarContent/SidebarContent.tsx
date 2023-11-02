@@ -1,10 +1,10 @@
 /* eslint-disable complexity */
 import { Navbar, ScrollArea, NavLink, Group, ThemeIcon, Title } from '@mantine/core'
-import { IconUserCog } from '@tabler/icons-react'
-import { BiLibrary } from 'react-icons/bi'
-import { FaUserCircle } from 'react-icons/fa'
+import { BsFiletypeKey } from 'react-icons/bs'
+import { FaRegUserCircle } from 'react-icons/fa'
+import { FiGrid } from 'react-icons/fi'
 import { GrUserSettings } from 'react-icons/gr'
-import { MdOutlineSettingsApplications } from 'react-icons/md'
+import { RiShieldKeyholeLine } from 'react-icons/ri'
 import { Link, useLocation } from 'react-router-dom'
 
 import { ActiveLink, getActiveLink } from './active-link'
@@ -35,7 +35,7 @@ const SidebarContent = () => {
               variant={activeLink === ActiveLink.DASHBOARD ? 'outline' : 'light'}
               size={30}
             >
-              <FaUserCircle size="1rem" />
+              <FaRegUserCircle size="1rem" />
             </ThemeIcon>
           }
           component={Link}
@@ -53,7 +53,7 @@ const SidebarContent = () => {
               variant={activeLink === ActiveLink.PERMISSIONS ? 'outline' : 'light'}
               size={30}
             >
-              <BiLibrary size="1rem" />
+              <RiShieldKeyholeLine size="1rem" />
             </ThemeIcon>
           }
           component={Link}
@@ -68,7 +68,7 @@ const SidebarContent = () => {
           label="RSA Keys"
           icon={
             <ThemeIcon variant={activeLink === ActiveLink.RSAKEYS ? 'outline' : 'light'} size={30}>
-              <IconUserCog size="1rem" stroke={1.5} />
+              <BsFiletypeKey size="1rem" stroke="1.5" />
             </ThemeIcon>
           }
           component={Link}
@@ -86,7 +86,7 @@ const SidebarContent = () => {
               variant={activeLink === ActiveLink.APPLICATIONS ? 'outline' : 'light'}
               size={30}
             >
-              <MdOutlineSettingsApplications size="1rem" />
+              <FiGrid size="1rem" />
             </ThemeIcon>
           }
           component={Link}
