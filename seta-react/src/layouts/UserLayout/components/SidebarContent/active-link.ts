@@ -11,13 +11,13 @@ export const getActiveLink = (path: string): ActiveLink => {
     case '/profile':
       return ActiveLink.DASHBOARD
 
-    case path.startsWith('/permissions') ? path : '':
+    case path.startsWith('/profile/permissions') ? path : '':
       return ActiveLink.PERMISSIONS
 
-    case path.startsWith('/rsa-keys') ? path : '':
+    case path.startsWith('/profile/rsa-keys') ? path : '':
       return ActiveLink.RSAKEYS
 
-    case path.startsWith('/applications') ? path : '':
+    case path.startsWith('/profile/applications') ? path : '':
       return ActiveLink.APPLICATIONS
 
     default:

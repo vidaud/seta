@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { Badge, Box, Table, Text, useMantineTheme } from '@mantine/core'
+import { Badge, Box, Table, Text, createStyles, useMantineTheme } from '@mantine/core'
 
 import { useApplicationsList } from '~/api/user/applications'
 
@@ -12,7 +12,18 @@ const statusColors: Record<string, string> = {
   deleted: 'cyan'
 }
 
+const useStyles = createStyles(() => ({
+  box: {
+    backgroundColor: '#f8f8ff',
+    [`@media only screen and (min-width: 520px) and (max-width: 712px) and (orientation: portrait)`]:
+      {
+        wordBreak: 'break-word'
+      }
+  }
+}))
+
 const ApplicationsList = ({ onChange }) => {
+  const { classes } = useStyles()
   const theme = useMantineTheme()
   const { data } = useApplicationsList()
 
@@ -46,7 +57,7 @@ const ApplicationsList = ({ onChange }) => {
   return (
     <>
       {data && data?.length > 0 ? (
-        <Box style={{ backgroundColor: '#f8f8ff' }} p="md">
+        <Box className={classes.box} p="md">
           <Table>
             <thead>
               <tr>
@@ -54,7 +65,7 @@ const ApplicationsList = ({ onChange }) => {
                 <th>Description</th>
                 <th>User</th>
                 <th>Status</th>
-                <th />
+                <th>Action</th>
               </tr>
             </thead>
             <tbody>{apps}</tbody>

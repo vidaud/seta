@@ -21,7 +21,8 @@ const UserPage = ({ className, sidebarContent, breadcrumbs, children }: Props) =
 
   return (
     <Flex direction="column" css={S.root} className={rootCls}>
-      {breadcrumbs && <Breadcrumbs crumbs={breadcrumbs} />}
+      {/* {breadcrumbs && <Breadcrumbs crumbs={breadcrumbs} />} */}
+      <Breadcrumbs readFromPath />
 
       <Flex css={S.pageWrapper}>
         {sidebarContent && (

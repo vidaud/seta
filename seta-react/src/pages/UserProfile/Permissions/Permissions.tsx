@@ -27,13 +27,17 @@ const Permissions = () => {
       <td>{element.community_id}</td>
       <td>
         <>
-          {element.scopes.map(item => (
-            <Table key={item}>
-              <tr>
-                <td>{extractText(item)}</td>
-              </tr>
-            </Table>
-          ))}
+          <Table>
+            <tbody>
+              {element.scopes.map(item => (
+                <tr key={item}>
+                  <td style={{ border: 'none', padding: '0.2375rem 0.625rem' }}>
+                    {extractText(item)}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </Table>
         </>
       </td>
     </tr>
@@ -45,13 +49,17 @@ const Permissions = () => {
       <td>{element.resource_id}</td>
       <td>
         <>
-          {element.scopes.map(item => (
-            <Table key={item}>
-              <tr>
-                <td>{extractText(item)}</td>
-              </tr>
-            </Table>
-          ))}
+          <Table>
+            <tbody>
+              {element.scopes.map(item => (
+                <tr key={item}>
+                  <td style={{ border: 'none', padding: '0.3375rem 0.625rem' }}>
+                    {extractText(item)}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </Table>
         </>
       </td>
     </tr>
@@ -75,9 +83,13 @@ const Permissions = () => {
               {systemPermissions && systemPermissions?.length > 0 ? (
                 systemPermissions
               ) : (
-                <Text fz="sm" color="gray.6" ta="center">
-                  No results
-                </Text>
+                <tr>
+                  <td>
+                    <Text fz="sm" color="gray.6" ta="center">
+                      No results
+                    </Text>
+                  </td>
+                </tr>
               )}
             </tbody>
           </Table>
@@ -100,9 +112,13 @@ const Permissions = () => {
                 {communityPermissions && communityPermissions?.length > 0 ? (
                   communityPermissions
                 ) : (
-                  <Text fz="sm" color="gray.6" ta="center">
-                    No results
-                  </Text>
+                  <tr>
+                    <td>
+                      <Text fz="sm" color="gray.6" ta="center">
+                        No results
+                      </Text>
+                    </td>
+                  </tr>
                 )}
               </tbody>
             </Table>
@@ -126,9 +142,13 @@ const Permissions = () => {
                 {resourcePermissions && resourcePermissions?.length > 0 ? (
                   resourcePermissions
                 ) : (
-                  <Text fz="sm" color="gray.6" ta="center">
-                    No results
-                  </Text>
+                  <tr>
+                    <td>
+                      <Text fz="sm" color="gray.6" ta="center">
+                        No results
+                      </Text>
+                    </td>
+                  </tr>
                 )}
               </tbody>
             </Table>
