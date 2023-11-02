@@ -59,7 +59,7 @@ const Permissions = () => {
 
   return (
     <Grid style={{ justifyContent: 'center' }}>
-      <Grid.Col span={7}>
+      <Grid.Col span={7} pb="3%">
         <Paper shadow="xs" p="md">
           <Title order={5} ta="center" pb="3%">
             System Permissions

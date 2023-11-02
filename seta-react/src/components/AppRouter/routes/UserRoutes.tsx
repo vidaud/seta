@@ -1,6 +1,8 @@
 import React from 'react'
 import { Route } from 'react-router-dom'
 
+import Applications from '~/pages/UserProfile/Applications'
+
 import UserLayout from '~/layouts/UserLayout'
 
 import RequireAuth from '../components/RequireAuth'
@@ -20,7 +22,7 @@ const UserRoutes = (
     <Route index element={<ProfileDashboard />} />
     <Route path="permissions" element={<Permissions />} />
     <Route path="rsa-keys" element={<RSAKeys />} />
-    <Route path="applications" element={<RSAKeys />} />
+    <Route path="applications" element={<Applications />} />
   </Route>
 )
 

@@ -11,8 +11,8 @@ const ProfileDashboard = () => {
 
   return (
     <>
-      <Grid>
-        <Grid.Col span={12}>
+      <Grid style={{ marginTop: '-3%' }}>
+        <Grid.Col span={12} pb="md">
           <Avatar src={null} alt="profile" w="100%" h="100px" />
         </Grid.Col>
         <Grid.Col span={6}>
