@@ -3,6 +3,9 @@ import { Paper, Table, Title, createStyles } from '@mantine/core'
 const useStyles = createStyles(() => ({
   td: {
     fontWeight: 'bold'
+  },
+  value: {
+    wordBreak: 'break-word'
   }
 }))
 
@@ -19,19 +22,19 @@ const GeneralInformation = ({ details }) => {
         <tbody>
           <tr>
             <td className={classes.td}>Email</td>
-            <td>{details?.email}</td>
+            <td className={classes.value}>{details?.email}</td>
           </tr>
           <tr>
             <td className={classes.td}>User Identifier</td>
-            <td>{details?.username}</td>
+            <td className={classes.value}>{details?.username}</td>
           </tr>
           <tr>
             <td className={classes.td}>First Name</td>
-            <td>{user?.firstName}</td>
+            <td className={classes.value}>{user?.firstName}</td>
           </tr>
           <tr>
             <td className={classes.td}>Last Name</td>
-            <td>{user?.lastName}</td>
+            <td className={classes.value}>{user?.lastName}</td>
           </tr>
         </tbody>
       </Table>
