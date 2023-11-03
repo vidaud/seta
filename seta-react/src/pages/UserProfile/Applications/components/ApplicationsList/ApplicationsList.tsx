@@ -19,6 +19,9 @@ const useStyles = createStyles(() => ({
       {
         wordBreak: 'break-word'
       }
+  },
+  td: {
+    maxWidth: '25rem'
   }
 }))
 
@@ -37,7 +40,7 @@ const ApplicationsList = ({ onChange }) => {
     // eslint-disable-next-line react/no-array-index-key
     <tr key={index}>
       <td>{element.name}</td>
-      <td>{element.description}</td>
+      <td className={classes.td}>{element.description}</td>
       <td>{element.user_id}</td>
       <td>
         <Badge

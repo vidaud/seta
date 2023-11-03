@@ -14,7 +14,7 @@ import {
 import { IconChevronDown } from '@tabler/icons-react'
 import { AiOutlineUser } from 'react-icons/ai'
 import { FaSignInAlt } from 'react-icons/fa'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 
 import { UserRole } from '~/types/user'
 
@@ -37,6 +37,7 @@ const Header = () => {
   const { user, isLoading: isUserLoading, logout } = useCurrentUser()
   const [isOpen, setIsOpen] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
+  const location = useLocation()
   const authenticated = !!user
 
   const handleLogout = () => {
@@ -48,6 +49,11 @@ const Header = () => {
   const handleToggle = () => {
     setIsOpen(current => !current)
     setMenuOpen(current => !current)
+  }
+
+  const handleToggleMenu = () => {
+    setIsOpen(false)
+    setMenuOpen(false)
   }
 
   const handleCloseMenu = value => {
@@ -80,7 +86,12 @@ const Header = () => {
 
     if (url) {
       return (
-        <Menu.Item key={label} component={Link} to={url}>
+        <Menu.Item
+          key={label}
+          component={Link}
+          to={url}
+          css={location.pathname === url ? S.activePath : ''}
+        >
           {label}
         </Menu.Item>
       )
@@ -106,7 +117,13 @@ const Header = () => {
 
     if (!hidden && url) {
       return (
-        <Menu.Item key={label} icon={icon} component={Link} to={url}>
+        <Menu.Item
+          key={label}
+          icon={icon}
+          component={Link}
+          to={url}
+          css={location.pathname === url ? S.activeLink : ''}
+        >
           {label}
         </Menu.Item>
       )
@@ -136,9 +153,8 @@ const Header = () => {
       shadow="md"
       width={200}
       position="bottom"
-      closeOnItemClick={true}
-      closeOnClickOutside={true}
       id="about"
+      onClose={handleToggleMenu}
       opened={menuOpen}
     >
       <Menu.Target>
