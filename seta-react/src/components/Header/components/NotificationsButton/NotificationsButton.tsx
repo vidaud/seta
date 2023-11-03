@@ -5,15 +5,14 @@ import { useCommunitiesNotifications } from '~/api/communities/notifications'
 
 import NotificationsMenu from './NotificationsMenu'
 
-import type { DropdownItem } from '../config'
-import * as S from '../styles'
+import type { DropdownItem } from '../../config'
+import * as S from '../../styles'
 
 type Props = {
   dropdownItems: DropdownItem[]
 }
 
 const NotificationsButton = ({ dropdownItems }: Props) => {
-  // FIXME: This needs to be fixed - Array.map should always return a value
   const { data, refetch } = useCommunitiesNotifications()
 
   useEffect(() => {

@@ -1,42 +1,21 @@
-import { useState } from 'react'
-import {
-  ActionIcon,
-  Flex,
-  Group,
-  Image,
-  Loader,
-  Menu,
-  Tooltip,
-  Grid,
-  UnstyledButton,
-  Text
-} from '@mantine/core'
-import { IconChevronDown } from '@tabler/icons-react'
+import { ActionIcon, Flex, Group, Image, Loader, Menu, Tooltip, Grid } from '@mantine/core'
 import { AiOutlineUser } from 'react-icons/ai'
 import { FaSignInAlt } from 'react-icons/fa'
 import { Link, useLocation } from 'react-router-dom'
 
 import { UserRole } from '~/types/user'
 
+import AboutDropdown from './components/AboutDropdown/AboutDropdown'
 import NotificationsButton from './components/NotificationsButton'
 import SiteHeader from './components/SiteHeader'
-import {
-  getDropdownItems,
-  getDropdownAbout,
-  getMenuItems,
-  itemIsCollapse,
-  itemIsDivider
-} from './config'
+import { getDropdownItems, getMenuItems, itemIsCollapse, itemIsDivider } from './config'
 import * as S from './styles'
 
 import { useCurrentUser } from '../../contexts/user-context'
 import './style.css'
-import GetStarted from '../GetStarted/GetStarted'
 
 const Header = () => {
   const { user, isLoading: isUserLoading, logout } = useCurrentUser()
-  const [isOpen, setIsOpen] = useState(false)
-  const [menuOpen, setMenuOpen] = useState(false)
   const location = useLocation()
   const authenticated = !!user
 
@@ -46,61 +25,14 @@ const Header = () => {
     })
   }
 
-  const handleToggle = () => {
-    setIsOpen(current => !current)
-    setMenuOpen(current => !current)
-  }
-
-  const handleToggleMenu = () => {
-    setIsOpen(false)
-    setMenuOpen(false)
-  }
-
-  const handleCloseMenu = value => {
-    setMenuOpen(value)
-  }
-
   const menuItems = getMenuItems(authenticated)
 
-  const aboutDropdown = getDropdownAbout()
   const dropdownItems = getDropdownItems({
     isAdmin: user?.role.toLowerCase() === UserRole.Administrator,
     onLogout: handleLogout
   })
 
   const visibleMenuItems = menuItems.filter(link => !link.hidden && !link.collapse)
-
-  // eslint-disable-next-line array-callback-return
-  const aboutDropdownItems = aboutDropdown.map((item, index) => {
-    if (itemIsDivider(item)) {
-      // eslint-disable-next-line react/no-array-index-key
-      return <Menu.Divider key={index} />
-    }
-
-    if (itemIsCollapse(item)) {
-      // eslint-disable-next-line react/no-array-index-key
-      return null
-    }
-
-    const { label, url } = item
-
-    if (url) {
-      return (
-        <Menu.Item
-          key={label}
-          component={Link}
-          to={url}
-          css={location.pathname === url ? S.activePath : ''}
-        >
-          {label}
-        </Menu.Item>
-      )
-    }
-
-    if (!url) {
-      return <GetStarted key={label} onChange={handleCloseMenu} />
-    }
-  })
 
   const dropdownMenuItems = dropdownItems.map((item, index) => {
     if (itemIsDivider(item)) {
@@ -148,28 +80,6 @@ const Header = () => {
     </Menu>
   )
 
-  const aboutDropdownMenu = (
-    <Menu
-      shadow="md"
-      width={200}
-      position="bottom"
-      id="about"
-      onClose={handleToggleMenu}
-      opened={menuOpen}
-    >
-      <Menu.Target>
-        <UnstyledButton css={S.button} onClick={handleToggle}>
-          <Group>
-            <Text size="md">About</Text>
-            <IconChevronDown css={S.chevron} data-open={isOpen} size="1rem" />
-          </Group>
-        </UnstyledButton>
-      </Menu.Target>
-
-      <Menu.Dropdown css={S.aboutDropdown}>{aboutDropdownItems}</Menu.Dropdown>
-    </Menu>
-  )
-
   const loginButton = (
     <Tooltip label="Sign in">
       <ActionIcon
@@ -211,7 +121,7 @@ const Header = () => {
               {label}
             </S.MenuLink>
           ))}
-          {aboutDropdownMenu}
+          <AboutDropdown />
         </Grid>
         <Group>
           <Group className="login-button">

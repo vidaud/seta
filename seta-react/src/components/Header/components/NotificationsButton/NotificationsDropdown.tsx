@@ -16,8 +16,6 @@ const NotificationsDropdown = ({ notifications }: Props) => {
   const items = notifications
     ?.sort((a, b) => a.priority - b.priority)
     .map(link => (
-      // eslint-disable-next-line react/no-array-index-key
-
       <Menu.Item
         pb="xs"
         className={link.priority === 1 ? classes.priority : classes.link}
