@@ -5,9 +5,9 @@ import type { NotificationsResponse } from '~/api/types/notifications-types'
 
 import NotificationsDropdown from './NotificationsDropdown'
 
-import type { DropdownItem } from '../config'
-import { itemIsCollapse } from '../config'
-import * as S from '../styles'
+import type { DropdownItem } from '../../config'
+import { itemIsCollapse } from '../../config'
+import * as S from '../../styles'
 
 type Props = {
   dropdownItems: DropdownItem[]
@@ -16,12 +16,10 @@ type Props = {
 }
 
 const NotificationsMenu = ({ dropdownItems, notifications, total }: Props) => {
-  // FIXME: This needs to be fixed - Array.map should always return a value
   // eslint-disable-next-line array-callback-return
   const notificationsMenuItems = dropdownItems.map((item, index) => {
     if (itemIsCollapse(item)) {
       return (
-        // FIXME: We should try to avoid using index as a key when possible - see https://adhithiravi.medium.com/why-do-i-need-keys-in-react-lists-dbb522188bbb
         // eslint-disable-next-line react/no-array-index-key
         <NotificationsDropdown notifications={notifications} key={index} />
       )
