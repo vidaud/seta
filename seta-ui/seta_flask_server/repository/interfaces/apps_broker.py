@@ -27,6 +27,19 @@ class IAppsBroker(Interface):
 
         pass
 
+    def get_by_parent_and_name(self, parent_id: str, name: str) -> SetaApplication:
+        """Find application by name that belongs to user.
+
+        Args:
+            parent_id: The parent user id.
+            name: Searched name (case insensitive).
+
+        Returns:
+            Found application or None
+        """
+
+        pass
+
     def app_exists(self, name: str) -> bool:
         """Check if an application name exists.
 
@@ -77,6 +90,16 @@ class IAppsBroker(Interface):
                 The old version of application (both name and description).
             new:
                 The new version of application.
+        """
+
+        pass
+
+    def delete(self, parent_id: str, name: str):
+        """Deletes an application.
+
+        Args:
+            parent_id: The parent user id.
+            name: Application name (case insensitive).
         """
 
         pass

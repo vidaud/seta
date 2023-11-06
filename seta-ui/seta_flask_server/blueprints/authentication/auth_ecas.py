@@ -47,7 +47,7 @@ def login_callback_ecas(user_broker: IUsersBroker, session_broker: ISessionsBrok
 
     try:
         user, attributes, pgtiou = app.cas_client.verify_ticket(ticket)
-    except:
+    except Exception:
         app.logger.exception("Failed to verify ticket.")
         abort(HTTPStatus.UNAUTHORIZED, "Failed to verify ticket.")
 

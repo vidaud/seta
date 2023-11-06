@@ -16,6 +16,7 @@ from seta_flask_server.repository.models import (
 from seta_flask_server.infrastructure.constants import (
     UserStatusConstants,
     ExternalProviderConstants,
+    UserType,
 )
 
 from flask import current_app
@@ -58,15 +59,17 @@ class AppsBroker(implements(IAppsBroker)):
         if app is None:
             return None
 
-        seta_app = SetaApplication.from_db_json(app)
+        return self._build_seta_app(app)
 
-        user = self.collection.find_one(
-            {"user_id": seta_app.user_id, "email": {"$exists": True}}
+    def get_by_parent_and_name(self, parent_id: str, name: str) -> SetaApplication:
+        app = self.collection.find_one(
+            {"parent_user_id": parent_id, "app_name": name.lower()}
         )
-        if user is not None:
-            seta_app.user = SetaUser.from_db_json(user)
 
-        return seta_app
+        if app is None:
+            return None
+
+        return self._build_seta_app(app)
 
     def app_exists(self, name: str) -> bool:
         return self.collection.count_documents({"app_name": name.lower()}, limit=1) > 0
@@ -79,15 +82,7 @@ class AppsBroker(implements(IAppsBroker)):
         if app is None:
             return None
 
-        seta_app = SetaApplication.from_db_json(app)
-
-        user = self.collection.find_one(
-            {"user_id": user_id, "email": {"$exists": True}}
-        )
-        if user is not None:
-            seta_app.user = SetaUser.from_db_json(user)
-
-        return seta_app
+        return self._build_seta_app(app)
 
     def create(
         self,
@@ -104,7 +99,7 @@ class AppsBroker(implements(IAppsBroker)):
 
         seta_user = SetaUser(
             user_id=user_id,
-            user_type="application",
+            user_type=UserType.Application,
             email=None,
             status=UserStatusConstants.Active,
             created_at=now,
@@ -171,15 +166,78 @@ class AppsBroker(implements(IAppsBroker)):
 
         if new.app_name != old.app_name.lower():
             # double check the name uniqueness
-            if self.get_by_name(name=new.app_name):
+            if self.app_exists(name=new.app_name):
                 return
 
-        self.collection.update_one(
-            {"parent_user_id": old.parent_user_id, "app_name": old.app_name},
-            {
-                "$set": {
-                    "app_name": new.app_name,
-                    "app_description": new.app_description,
-                }
-            },
+        with self.db.client.start_session(causal_consistency=True) as session:
+            self.collection.update_one(
+                {"parent_user_id": old.parent_user_id, "app_name": old.app_name},
+                {
+                    "$set": {
+                        "app_name": new.app_name,
+                        "app_description": new.app_description,
+                    }
+                },
+                session=session,
+            )
+
+            if new.status:
+                now_date = datetime.now(tz=pytz.utc)
+
+                self.collection.update_one(
+                    {"user_id": old.user_id, "email": {"$exists": True}},
+                    {"$set": {"status": new.status, "modified_at": now_date}},
+                )
+
+    def delete(self, parent_id: str, name: str):
+        app = self.get_by_parent_and_name(parent_id=parent_id, name=name)
+
+        if not app:
+            return
+
+        user_id = app.user_id
+
+        with self.db.client.start_session(causal_consistency=True) as session:
+            # delete application scopes
+            self.collection.delete_many(
+                {
+                    "user_id": user_id,
+                    "resource_scope": {"$exists": True},
+                },
+                session=session,
+            )
+
+            # delete rsa key
+            self.collection.delete_one(
+                {"user_id": user_id, "rsa_value": {"$exists": True}}, session=session
+            )
+
+            # delete external providers
+            self.collection.delete_many(
+                {
+                    "user_id": user_id,
+                    "provider": {"$exists": True},
+                },
+                session=session,
+            )
+
+            # delete user account
+            self.collection.delete_one(
+                {"user_id": user_id, "user_type": UserType.Application}, session=session
+            )
+
+            # delete application
+            self.collection.delete_one(
+                {"parent_user_id": parent_id, "app_name": name.lower()}, session=session
+            )
+
+    def _build_seta_app(self, app: dict):
+        seta_app = SetaApplication.from_db_json(app)
+
+        user = self.collection.find_one(
+            {"user_id": seta_app.user_id, "email": {"$exists": True}}
         )
+        if user is not None:
+            seta_app.user = SetaUser.from_db_json(user)
+
+        return seta_app

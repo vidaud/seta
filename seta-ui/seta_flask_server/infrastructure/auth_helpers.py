@@ -127,6 +127,6 @@ def validate_public_key(public, message, signature):
         public_key = RSA.import_key(public)
         digest = SHA256.new(message.encode())
         pkcs1_15.new(public_key).verify(digest, binascii.unhexlify(signature))
-    except:
+    except Exception:
         return False
     return True
