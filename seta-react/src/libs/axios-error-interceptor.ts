@@ -19,10 +19,12 @@ const errorInterceptor = async (error: SetaAxiosError) => {
 
   // Redirect to login everything but '/user-info'
   //? /notifications should prevent refresh mechanism
+  // /rsa-key accepts only fresh tokens
 
   if (
     originalRequest?.url?.includes('/user-info') ||
-    originalRequest?.url?.includes('/notifications')
+    originalRequest?.url?.includes('/notifications') ||
+    originalRequest?.url?.endsWith('/rsa-key')
   ) {
     return Promise.reject(error)
   }
