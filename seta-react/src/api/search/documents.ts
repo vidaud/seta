@@ -2,6 +2,8 @@ import type { UseQueryOptions } from '@tanstack/react-query'
 import { useQuery } from '@tanstack/react-query'
 import type { AxiosRequestConfig } from 'axios'
 
+import { TextChunkValues } from '~/pages/SearchWithFilters/types/filters'
+
 import api from '~/api'
 import type { EmbeddingInfo } from '~/types/embeddings'
 import { AggregationType } from '~/types/search/aggregations'
@@ -65,7 +67,8 @@ const getDocuments = async (
       // TODO: Re-enable this when the taxonomy aggregations are fixed
       // AggregationType.Taxonomies
     ],
-    n_docs: 100
+    n_docs: 100,
+    search_type: TextChunkValues.CHUNK_SEARCH
   }
 
   const { data } = await api.post<DocumentsResponse, DocumentsPayload>(
@@ -114,6 +117,13 @@ export const useDocuments = (
         },
         { signal }
       ),
+
+    staleTime: Infinity,
+    cacheTime: 0,
+    refetchOnWindowFocus: false,
+    refetchOnMount: false,
+    refetchOnReconnect: false,
+    retry: false,
 
     ...options
   })
