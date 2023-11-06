@@ -2,6 +2,7 @@ import time
 import logging
 
 from elasticsearch import Elasticsearch
+from opensearchpy import OpenSearch
 from sentence_transformers import SentenceTransformer
 
 from flask import (Flask, request, g, Response, json)
@@ -94,7 +95,8 @@ def create_app(config_object):
 
 
 def init(app):
-    app.es = Elasticsearch("http://" + app.config["ES_HOST"], verify_certs=False, request_timeout=30)
+    # app.es = Elasticsearch("http://" + app.config["ES_HOST"], verify_certs=False, request_timeout=30)
+    app.es = OpenSearch("https://localhost:9200", verify_certs=False, request_timeout=30, http_auth=('admin', 'admin'))
 
     if not app.testing:
         wait_for_es(app)

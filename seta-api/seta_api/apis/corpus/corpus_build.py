@@ -145,8 +145,8 @@ def add_aggs(agg_body, aggs_name, body):
 
 
 def get_vector(semantic_sort_id, current_app):
-    query = {"bool": {"must": [{"match": {"_id": {"query": semantic_sort_id}}}]}}
-    res = current_app.es.search(index=current_app.config["INDEX"], query=query, _source=["sbert_embedding"])
+    body = {"query": {"bool": {"must": [{"match": {"_id": {"query": semantic_sort_id}}}]}}}
+    res = current_app.es.search(index=current_app.config["INDEX"], body=body, _source=["sbert_embedding"])
     vector = None
     if res['hits']['total']['value'] > 0:
         vector = res['hits']['hits'][0]['_source']['sbert_embedding']

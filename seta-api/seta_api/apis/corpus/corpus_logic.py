@@ -140,7 +140,7 @@ def insert_doc(args, es, index):
     new_doc["other"] = is_field_in_doc(args, "other")
     new_doc["keywords"] = is_field_in_doc(args, "keywords")
 
-    res = es.index(index=index, document=new_doc)
+    res = es.index(index=index, body=new_doc)
     doc_id = res["_id"]
     embs = Embeddings.chunks_and_embeddings_from_doc_fields(is_field_in_doc(args, "title"),
                                                             is_field_in_doc(args, "abstract"),
@@ -148,16 +148,16 @@ def insert_doc(args, es, index):
     first = True
     for emb in embs:
         if first:
-            update_fields = {"chunk_text": emb["text"], "document_id": doc_id, "chunk_number": emb["chunk"],
-                             "sbert_embedding": emb["vector"]}
-            es.update(index=index, id=doc_id, doc=update_fields)
+            update_doc = {"doc": {"chunk_text": emb["text"], "document_id": doc_id, "chunk_number": emb["chunk"],
+                             "sbert_embedding": emb["vector"]}}
+            es.update(index=index, id=doc_id, body=update_doc)
             first = False
         else:
             new_doc["chunk_text"] = emb["text"]
             new_doc["document_id"] = doc_id
             new_doc["chunk_number"] = emb["chunk"]
             new_doc["sbert_embedding"] = emb["vector"]
-            es.index(index=index, document=new_doc)
+            es.index(index=index, body=new_doc)
     return doc_id
 
 
@@ -175,10 +175,10 @@ def corpus(term, n_docs, from_doc, sources, collection, reference, in_force, sor
     body = build_corpus_request(term, n_docs, from_doc, sources, collection, reference, in_force, sort, taxonomy_path,
                                 semantic_sort_id_list, emb_vector_list, author, date_range, aggs, search_type, other,
                                 current_app)
-    # import json
-    # print(json.dumps(body))
+    import json
+    print(json.dumps(body))
     request = compose_request_for_msearch(body, current_app)
-    res = current_app.es.msearch(searches=request)
+    res = current_app.es.msearch(body=request)
     documents = handle_corpus_response(aggs, res, search_type, term, current_app, semantic_sort_id_list, emb_vector_list)
     return documents
 

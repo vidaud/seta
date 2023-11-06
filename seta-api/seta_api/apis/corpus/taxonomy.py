@@ -6,7 +6,7 @@ def get_parent_index(parent, tax_name):
 
 
 def fill_taxonomy_fields(name_in_path, es, index, taxonomy):
-    query = {"nested": {"path": "taxonomy",
+    body = {"query": {"nested": {"path": "taxonomy",
                         "inner_hits": {
                             "_source": [
                                 "taxonomy.classifier",
@@ -21,9 +21,9 @@ def fill_taxonomy_fields(name_in_path, es, index, taxonomy):
                         "query": {"bool": {"must": [{"match": {"taxonomy.name": taxonomy}},
                                                     {"match": {"taxonomy.name_in_path": name_in_path}}]}}
                         }
-             }
+             }}
     try:
-        response = es.search(index=index, query=query, _source=["document_id"], size=1)
+        response = es.search(index=index, body=body, _source=["document_id"], size=1)
     except:
         raise ApiLogicError('Taxonomy not found.')
     if response["hits"]["total"]["value"] == 0:
