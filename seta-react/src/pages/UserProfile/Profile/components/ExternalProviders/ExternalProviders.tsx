@@ -1,4 +1,4 @@
-import { createStyles, Paper, Table, Title } from '@mantine/core'
+import { Text, createStyles, Paper, Table, Title } from '@mantine/core'
 import { BsCheckCircle } from 'react-icons/bs'
 
 const useStyles = createStyles(() => ({
@@ -15,7 +15,6 @@ const useStyles = createStyles(() => ({
 
 const ExternalProviders = ({ details }) => {
   const { classes } = useStyles()
-
   const providers = details?.external_providers?.map((element, index) => (
     // eslint-disable-next-line react/no-array-index-key
     <tr key={index}>
@@ -24,8 +23,11 @@ const ExternalProviders = ({ details }) => {
           <BsCheckCircle color="teal" stroke="1.5" size={20} />
         ) : null}
       </td>
-      <td className={classes.td}>{element.domain}</td>
-      <td className={classes.td}>{element.provider}</td>
+      <td className={classes.td}>{element?.provider_uid}</td>
+      <td className={classes.td}>
+        <Text tt="uppercase">{element?.provider}</Text>
+      </td>
+      <td className={classes.td}>{element?.domain}</td>
     </tr>
   ))
 
@@ -34,12 +36,13 @@ const ExternalProviders = ({ details }) => {
       <Title order={5} ta="center" pb="3%">
         External Providers
       </Title>
-      <Table verticalSpacing="sm">
+      <Table verticalSpacing="sm" striped>
         <thead>
           <tr>
             <th />
-            <th className={classes.th}>Domain</th>
+            <th className={classes.th}>Identifier</th>
             <th className={classes.th}>Provider</th>
+            <th className={classes.th}>Domain</th>
           </tr>
         </thead>
         <tbody>{providers}</tbody>
