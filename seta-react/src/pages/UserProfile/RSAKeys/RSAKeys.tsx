@@ -16,7 +16,7 @@ const RSAKeys = () => {
 
   useEffect(() => {
     if (data) {
-      setpublicKey(data.value)
+      setpublicKey(data.publicKey)
     }
   }, [data, publicKey])
 
@@ -51,8 +51,8 @@ const RSAKeys = () => {
         })
 
         if (data) {
-          downLoadFile(data['privateKey'], 'text/plain', `id_rsa`)
-          setpublicKey(data?.value)
+          downLoadFile(data['privateKey'], 'text/plain', `seta_id_rsa`)
+          setpublicKey(data?.publicKey)
         }
       },
       onError: () => {
