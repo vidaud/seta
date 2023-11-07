@@ -10,7 +10,7 @@ import api from '../api'
 const RSA_API_PATH = (): string => `/me/rsa-key`
 
 const queryKey = {
-  root: 'me/rsa-keys',
+  root: 'profile-rsa-keys',
   rsa: () => [queryKey.root]
 }
 
@@ -23,6 +23,7 @@ const config_ = {
 }
 
 type RSAKey = {
+  privateKey?: string
   publicKey: string
 }
 

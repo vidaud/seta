@@ -21,7 +21,7 @@ const config = {
 }
 
 const queryKey = {
-  root: 'me/apps',
+  root: 'profile-applications',
   apps: () => [queryKey.root]
 }
 

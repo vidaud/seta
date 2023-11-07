@@ -1,8 +1,7 @@
-import { Avatar, Grid, Group } from '@mantine/core'
+import { Avatar, Grid } from '@mantine/core'
 
 import { useExternalProviders } from '~/api/user/user-account'
 
-import DeleteUser from './components/DeleteUser/DeleteUser'
 import ExternalProviders from './components/ExternalProviders'
 import GeneralInformation from './components/GeneralInformation'
 
@@ -22,9 +21,6 @@ const ProfileDashboard = () => {
           <ExternalProviders details={data} />
         </Grid.Col>
       </Grid>
-      <Group position="right" mt="lg">
-        <DeleteUser />
-      </Group>
     </>
   )
 }

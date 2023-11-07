@@ -1,4 +1,6 @@
-import { Anchor, Badge, Paper, Table, Title, createStyles } from '@mantine/core'
+import { Anchor, Badge, Group, Paper, Table, Title, createStyles } from '@mantine/core'
+
+import DeleteUser from '../DeleteUser'
 
 const useStyles = createStyles(() => ({
   td: {
@@ -55,6 +57,9 @@ const GeneralInformation = ({ details }) => {
           </tr>
         </tbody>
       </Table>
+      <Group position="right" mt="lg">
+        <DeleteUser />
+      </Group>
     </Paper>
   )
 }

@@ -21,8 +21,8 @@ const ProviderDetail = ({ externalProviders }: Props) => {
         <Text tt="uppercase">{provider.provider}</Text>
       </td>
       <td>{provider.providerUid}</td>
-      <td>{provider.lastName}</td>
-      <td>{provider.firstName}</td>
+      <td>{provider.lastName ? provider.lastName : '-'}</td>
+      <td>{provider.firstName ? provider.firstName : '-'}</td>
     </tr>
   ))
 

@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import { ActionIcon, Badge, Group, Tooltip, Text } from '@mantine/core'
+import { ActionIcon, Badge, Group, Tooltip, Text, Anchor } from '@mantine/core'
 import { IconUserEdit } from '@tabler/icons-react'
 import { useMantineReactTable, type MRT_ColumnDef, MantineReactTable } from 'mantine-react-table'
 import moment from 'moment'
@@ -14,19 +14,27 @@ import DetailPanel from '../DetailPanel'
 
 const UsersTable = ({ data, isLoading, error }: DataProps<SetaAccount[]>) => {
   const accounts: SetaAccount[] = data ?? []
+  const options = accounts?.map(option => {
+    const email = option.email
+
+    return {
+      ...option,
+      email: email === null ? '-' : email
+    }
+  })
 
   const columns = useMemo<MRT_ColumnDef<SetaAccount>[]>(
     () => [
-      // {
-      //   accessorKey: 'email',
-      //   header: 'Email',
-      //   filterVariant: 'autocomplete',
-      //   Cell: ({ cell }) => (
-      //     <Anchor component="button" size="sm">
-      //       {cell?.getValue<string>()}
-      //     </Anchor>
-      //   )
-      // },
+      {
+        accessorKey: 'email',
+        header: 'Email',
+        filterVariant: 'autocomplete',
+        Cell: ({ cell }) => (
+          <Anchor component="button" size="sm">
+            {cell?.getValue<string>()}
+          </Anchor>
+        )
+      },
       {
         accessorKey: 'role',
         header: 'Role',
@@ -98,7 +106,7 @@ const UsersTable = ({ data, isLoading, error }: DataProps<SetaAccount[]>) => {
 
   const table = useMantineReactTable({
     columns: columns ?? [],
-    data: accounts,
+    data: options,
     enableColumnActions: false,
     enableColumnFilters: true,
     enableTopToolbar: true,
@@ -137,7 +145,7 @@ const UsersTable = ({ data, isLoading, error }: DataProps<SetaAccount[]>) => {
           children: 'Error loading data'
         }
       : undefined,
-    //initialState: { sorting: [{ id: 'email', desc: false }], showColumnFilters: false },
+    initialState: { sorting: [{ id: 'email', desc: false }], showColumnFilters: false },
     state: { isLoading, showAlertBanner: isError },
     displayColumnDefOptions: {
       'mrt-row-actions': {
