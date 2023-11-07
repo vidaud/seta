@@ -1,161 +1,47 @@
-import { useState } from 'react'
-import { Grid, Paper, Table, Title, Text, ScrollArea } from '@mantine/core'
+import { ScrollArea, Tabs, Card } from '@mantine/core'
+import { IconEye } from '@tabler/icons-react'
 
 import { useUserPermissions } from '~/api/communities/user-scopes'
 
-import { useStyles } from './style'
-
-import { extractText } from '../common/utils/utils'
+import CommunityPerms from './components/CommunityPerms'
+import ResourcePerms from './components/ResourcePerms'
+import SystemPerms from './components/SystemPerms'
 
 const Permissions = () => {
-  const { cx, classes } = useStyles()
   const { data } = useUserPermissions()
-  const [scrolled, setScrolled] = useState(false)
-  const [scrolledH1, setScrolledH1] = useState(false)
-
-  const systemPermissions = data?.system_scopes?.map((element, index) => (
-    // eslint-disable-next-line react/no-array-index-key
-    <tr key={index}>
-      <td>{element.area}</td>
-      <td>{extractText(element.scope)}</td>
-    </tr>
-  ))
-
-  const communityPermissions = data?.community_scopes?.map((element, index) => (
-    // eslint-disable-next-line react/no-array-index-key
-    <tr key={index}>
-      <td>{element.community_id}</td>
-      <td>
-        <>
-          <Table>
-            <tbody>
-              {element.scopes.map(item => (
-                <tr key={item}>
-                  <td style={{ border: 'none', padding: '0.2375rem 0.625rem' }}>
-                    {extractText(item)}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </Table>
-        </>
-      </td>
-    </tr>
-  ))
-
-  const resourcePermissions = data?.resource_scopes?.map((element, index) => (
-    // eslint-disable-next-line react/no-array-index-key
-    <tr key={index}>
-      <td>{element.resource_id}</td>
-      <td>
-        <>
-          <Table>
-            <tbody>
-              {element.scopes.map(item => (
-                <tr key={item}>
-                  <td style={{ border: 'none', padding: '0.3375rem 0.625rem' }}>
-                    {extractText(item)}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </Table>
-        </>
-      </td>
-    </tr>
-  ))
 
   return (
-    <Grid style={{ justifyContent: 'center' }}>
-      <Grid.Col span={7} pb="3%">
-        <Paper shadow="xs" p="md">
-          <Title order={5} ta="center" pb="3%">
+    <Card shadow="xs" padding="lg" radius="sm" withBorder mt={15}>
+      <Tabs variant="outline" defaultValue="system-scopes">
+        <Tabs.List>
+          <Tabs.Tab value="system-scopes" icon={<IconEye size="0.95rem" />}>
             System Permissions
-          </Title>
-          <Table>
-            <thead>
-              <tr>
-                <th>Area</th>
-                <th>Scopes</th>
-              </tr>
-            </thead>
-            <tbody>
-              {systemPermissions && systemPermissions?.length > 0 ? (
-                systemPermissions
-              ) : (
-                <tr>
-                  <td>
-                    <Text fz="sm" color="gray.6" ta="center">
-                      No results
-                    </Text>
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </Table>
-        </Paper>
-      </Grid.Col>
-      <Grid.Col span={6}>
-        <Paper shadow="xs" p="md">
-          <Title order={5} ta="center" pb="3%">
+          </Tabs.Tab>
+          <Tabs.Tab value="community-scopes" icon={<IconEye size="0.95rem" />}>
             Community Permissions
-          </Title>
-          <ScrollArea mah={400} onScrollPositionChange={({ y }) => setScrolled(y !== 0)}>
-            <Table>
-              <thead className={cx(classes.header, { [classes.scrolled]: scrolled })}>
-                <tr>
-                  <th>Community ID</th>
-                  <th>Scopes</th>
-                </tr>
-              </thead>
-              <tbody>
-                {communityPermissions && communityPermissions?.length > 0 ? (
-                  communityPermissions
-                ) : (
-                  <tr>
-                    <td>
-                      <Text fz="sm" color="gray.6" ta="center">
-                        No results
-                      </Text>
-                    </td>
-                  </tr>
-                )}
-              </tbody>
-            </Table>
-          </ScrollArea>
-        </Paper>
-      </Grid.Col>
-      <Grid.Col span={6}>
-        <Paper shadow="xs" p="md">
-          <Title order={5} ta="center" pb="3%">
+          </Tabs.Tab>
+          <Tabs.Tab value="resource-scopes" icon={<IconEye size="0.95rem" />}>
             Resource Permissions
-          </Title>
-          <ScrollArea mah={400} onScrollPositionChange={({ y }) => setScrolledH1(y !== 0)}>
-            <Table>
-              <thead className={cx(classes.header, { [classes.scrolled]: scrolledH1 })}>
-                <tr>
-                  <th>Resource ID</th>
-                  <th>Scopes</th>
-                </tr>
-              </thead>
-              <tbody>
-                {resourcePermissions && resourcePermissions?.length > 0 ? (
-                  resourcePermissions
-                ) : (
-                  <tr>
-                    <td>
-                      <Text fz="sm" color="gray.6" ta="center">
-                        No results
-                      </Text>
-                    </td>
-                  </tr>
-                )}
-              </tbody>
-            </Table>
+          </Tabs.Tab>
+        </Tabs.List>
+
+        <Tabs.Panel value="system-scopes" pt="xs">
+          <SystemPerms scopes={data?.system_scopes} />
+        </Tabs.Panel>
+
+        <Tabs.Panel value="community-scopes" pt="xs">
+          <ScrollArea h={500} type="auto" offsetScrollbars>
+            <CommunityPerms scopes={data?.community_scopes} />
           </ScrollArea>
-        </Paper>
-      </Grid.Col>
-    </Grid>
+        </Tabs.Panel>
+
+        <Tabs.Panel value="resource-scopes" pt="xs">
+          <ScrollArea h={500} type="auto" offsetScrollbars>
+            <ResourcePerms scopes={data?.resource_scopes} />
+          </ScrollArea>
+        </Tabs.Panel>
+      </Tabs>
+    </Card>
   )
 }
 

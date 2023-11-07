@@ -7,7 +7,7 @@ import { UserQueryKeys } from './query-keys'
 
 import api from '../api'
 
-const RSA_API_PATH = (): string => `/me/rsa-keys`
+const RSA_API_PATH = (): string => `/me/rsa-key`
 
 const queryKey = {
   root: 'me/rsa-keys',
@@ -23,8 +23,7 @@ const config_ = {
 }
 
 type RSAKey = {
-  username: string
-  value: string
+  publicKey: string
 }
 
 const getRSAKey = async (config?: AxiosRequestConfig): Promise<RSAKey> => {
