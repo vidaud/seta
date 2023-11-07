@@ -8,6 +8,7 @@ from seta_flask_server.infrastructure.constants import (
     UserRoleConstants,
     UserStatusConstants,
     ExternalProviderConstants,
+    UserType,
 )
 
 from .user_claim import UserClaim
@@ -28,7 +29,7 @@ class SetaUserExt:
         user = SetaUser(
             user_id=user_id,
             email=json_dct["email"],
-            user_type="user",
+            user_type=UserType.User,
             status=UserStatusConstants.Active,
             created_at=datetime.now(tz=pytz.utc),
         )
@@ -53,7 +54,7 @@ class SetaUserExt:
         user = SetaUser(
             user_id=user_id,
             email=json_dct["email"],
-            user_type="user",
+            user_type=UserType.User,
             status=UserStatusConstants.Active,
             created_at=datetime.now(tz=pytz.utc),
         )

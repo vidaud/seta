@@ -16,7 +16,7 @@ class SetaCasClient(CASClientV3):
             page = http.request("GET", base_url, fields=params)
 
             return page.data
-        except:
+        except Exception:
             logger.exception("SetaCasClient")
         finally:
             if page is not None:

@@ -45,6 +45,12 @@ class IUserPermissionsBroker(Interface):
         """Replace scopes for user and resource pair."""
         pass
 
+    def replace_all_resource_scopes_for_user(
+        self, user_id: str, scopes: list[EntityScope]
+    ) -> None:
+        """Replace all resource scopes for user."""
+        pass
+
     def get_all_resource_scopes(self, resource_id: str) -> list[EntityScope]:
         """Return all scopes for a resource."""
         pass

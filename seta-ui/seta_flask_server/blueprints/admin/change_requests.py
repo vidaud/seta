@@ -159,7 +159,7 @@ class CommunityChangeRequest(Resource):
                 request.reviewed_by = auth_id
 
                 self.change_requests_broker.update(request)
-        except:
+        except Exception:
             app.logger.exception("Request->put")
             abort(HTTPStatus.INTERNAL_SERVER_ERROR)
 
@@ -309,7 +309,7 @@ class ResourceChangeRequest(Resource):
                 request.reviewed_by = auth_id
 
                 self.change_requests_broker.update(request)
-        except:
+        except Exception:
             app.logger.exception("Request->put")
             abort(HTTPStatus.INTERNAL_SERVER_ERROR)
 
