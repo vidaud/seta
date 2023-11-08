@@ -94,7 +94,7 @@ def create_app(config_object):
 
 
 def init(app):
-    app.es = Elasticsearch("http://" + app.config["ES_HOST"], verify_certs=False, request_timeout=30)
+    app.es = Elasticsearch("http://" + app.config["ES_HOST"], verify_certs=False, request_timeout=180)
 
     if not app.testing:
         wait_for_es(app)

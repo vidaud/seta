@@ -15,3 +15,8 @@ rsa_pair_model = Model(
         "privateKey": fields.String(description="Private RSA key"),
     },
 )
+
+rsa_public = Model(
+    "RsaPublicKey",
+    {"publicKey": fields.String(description="Public RSA key")},
+)

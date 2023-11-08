@@ -118,13 +118,6 @@ export const useDocuments = (
         { signal }
       ),
 
-    staleTime: Infinity,
-    cacheTime: 0,
-    refetchOnWindowFocus: false,
-    refetchOnMount: false,
-    refetchOnReconnect: false,
-    retry: false,
-
     ...options
   })
 }

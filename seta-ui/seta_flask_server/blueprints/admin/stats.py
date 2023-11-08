@@ -100,7 +100,7 @@ class StatsLight(Resource):
                     codes
                 )
 
-        except:
+        except Exception:
             app.logger.exception("CommunityResourceList->post")
 
         result.append(
