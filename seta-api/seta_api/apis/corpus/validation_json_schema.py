@@ -97,10 +97,10 @@ query_post_schema = {"type": "object",
                          "taxonomy_path": {"type": "array", "items": {"type": "string"}},
                          "semantic_sort_id_list": {"type": "array", "items": {"type": "string"}},
                          "sbert_embedding_list": {"type": "array", "items": {"type": "array", "items": {"type": "number"}}},
-                         "author": {"type": "string"},
+                         "author": {"type": "array", "items": {"type": "string"}},
                          "date_range": {"type": "array", "items": {"type": "string"}},
                          "aggs": {"type": "array", "items": {"type": "string"}},
                          "search_type": {"type": "string"},
-                         "other": {"type": "array", "items": {"type": "object"}}
+                         "other": {"type": "object"}
                      },
                      "additionalProperties": False}
