@@ -1,9 +1,8 @@
 import { Group, Button, useMantineTheme, Modal, Divider } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 
+import CreateForm from './components/CreateForm/CreateForm'
 import * as S from './styles'
-
-import CreateForm from '../CreateForm/CreateForm'
 
 const CreateApplication = () => {
   const [opened, { open, close }] = useDisclosure(false)

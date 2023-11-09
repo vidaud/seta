@@ -38,26 +38,29 @@ const CreateForm = ({ close }) => {
   })
 
   const handleSubmit = (values: ApplicationValues) => {
-    setCreateApplicationMutation.mutate(values, {
-      onSuccess: () => {
-        notifications.show({
-          message: `Application Created Successfully!`,
-          color: 'blue',
-          autoClose: 5000
-        })
+    setCreateApplicationMutation.mutate(
+      { ...values },
+      {
+        onSuccess: () => {
+          notifications.show({
+            message: `Application Created Successfully!`,
+            color: 'blue',
+            autoClose: 5000
+          })
 
-        refetch()
-        close()
-      },
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      onError: (error: AxiosError | any) => {
-        notifications.show({
-          message: error?.response?.data?.message,
-          color: 'red',
-          autoClose: 5000
-        })
+          refetch()
+          close()
+        },
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        onError: (error: AxiosError | any) => {
+          notifications.show({
+            message: error?.response?.data?.message,
+            color: 'red',
+            autoClose: 5000
+          })
+        }
       }
-    })
+    )
   }
 
   return (
@@ -77,6 +80,7 @@ const CreateForm = ({ close }) => {
             {...form.getInputProps('description')}
             placeholder="Enter description ..."
             className={cx(classes.input)}
+            withAsterisk
           />
           <Group style={{ display: 'grid' }}>
             <Text color="gray.6">Scopes & Public key</Text>

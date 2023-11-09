@@ -8,14 +8,13 @@ import { UserQueryKeys } from './query-keys'
 
 import api from '../api'
 
-const CREATE_APPLICATION_API_PATH = (): string => `/me/apps`
-const UPDATE_APPLICATION_API_PATH = (name): string => `/me/apps/${name}`
+const SINGLE_APPLICATION_API_PATH = (name): string => `/me/apps/${name}`
 const APPLICATION_API_PATH = (): string => `/me/apps`
 
 const config = {
   baseURL: environment.baseUrl,
   headers: {
-    'Content-Type': 'application/x-www-form-urlencoded',
+    'Content-Type': 'application/json',
     accept: 'application/json'
   }
 }
@@ -47,7 +46,7 @@ export const useApplicationsList = () =>
   })
 
 export const setCreateApplication = async (request: ApplicationValues) => {
-  return await api.post(CREATE_APPLICATION_API_PATH(), request, config)
+  return await api.post(APPLICATION_API_PATH(), request, config)
 }
 
 export const useCreateApplication = () => {
@@ -67,12 +66,11 @@ export const useCreateApplication = () => {
 
 const updateApplications = async (request: ApplicationValues) => {
   return await api.put(
-    UPDATE_APPLICATION_API_PATH(request.name),
+    SINGLE_APPLICATION_API_PATH(request.name),
     {
       new_name: request.new_name,
       status: request.status,
-      description: request.description,
-      name: request.name
+      description: request.description
     },
     config
   )
@@ -83,6 +81,25 @@ export const useUpdateApplication = () => {
 
   return useMutation({
     mutationFn: (request: ApplicationValues) => updateApplications(request),
+    onMutate: async () => {
+      await client.cancelQueries(UserQueryKeys.Applications)
+    },
+    onSuccess: () => {
+      client.invalidateQueries(UserQueryKeys.SetaAccount)
+      client.invalidateQueries(UserQueryKeys.Applications)
+    }
+  })
+}
+
+export const setDeleteApplication = async (name: string) => {
+  return await api.delete(SINGLE_APPLICATION_API_PATH(name), config)
+}
+
+export const useDeleteApplication = (name: string) => {
+  const client = useQueryClient()
+
+  return useMutation({
+    mutationFn: () => setDeleteApplication(name),
     onMutate: async () => {
       await client.cancelQueries(UserQueryKeys.Applications)
     },

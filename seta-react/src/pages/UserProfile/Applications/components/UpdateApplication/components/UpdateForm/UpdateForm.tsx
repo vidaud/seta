@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { TextInput, Group, createStyles, Button, Textarea, Select } from '@mantine/core'
 import { notifications } from '@mantine/notifications'
 
@@ -21,20 +21,17 @@ const useStyles = createStyles({
 
 const applicationStatus = [
   { label: 'Active', value: 'active' },
-  { label: 'Disabled', value: 'disabled' },
-  { label: 'Blocked', value: 'blocked' }
+  { label: 'Disabled', value: 'disabled' }
 ]
 
 const UpdateForm = ({ application, close }) => {
   const { classes, cx } = useStyles()
   const old_name = application.name
   const setUpdateApplicationMutation = useUpdateApplication()
-  const [selected, setSelected] = useState<string | null>(application.status)
 
   const form = useApplication({
     initialValues: {
       new_name: '',
-      name: '',
       description: '',
       status: ''
     }
@@ -45,8 +42,7 @@ const UpdateForm = ({ application, close }) => {
       form.setValues({
         new_name: application.name,
         description: application.description,
-        status: application.status,
-        name: application.name
+        status: application.status
       })
     }
     // adding form to useEffect will cause infinite loop call
@@ -87,7 +83,7 @@ const UpdateForm = ({ application, close }) => {
         <form className={cx(classes.form)} onSubmit={form.onSubmit(handleSubmit)}>
           <TextInput
             label="Name"
-            {...form.getInputProps('name')}
+            {...form.getInputProps('new_name')}
             placeholder="Enter application name ..."
             className={cx(classes.input)}
             withAsterisk
@@ -97,15 +93,15 @@ const UpdateForm = ({ application, close }) => {
             {...form.getInputProps('description')}
             placeholder="Enter description ..."
             className={cx(classes.input)}
+            withAsterisk
           />
           <Select
             label="Status"
             name="status"
             sx={{ width: 'fit-content' }}
             data={applicationStatus}
-            value={selected}
+            {...form.getInputProps('status')}
             className={cx(classes.input)}
-            onChange={setSelected}
           />
           <Group position="right">
             <Button

@@ -1,16 +1,9 @@
 import { useEffect } from 'react'
-import { Badge, Box, Table, Text, createStyles, useMantineTheme } from '@mantine/core'
+import { Box, Table, Text, createStyles } from '@mantine/core'
 
 import { useApplicationsList } from '~/api/user/applications'
 
-import UpdateApplication from '../UpdateApplication'
-
-const statusColors: Record<string, string> = {
-  active: 'green',
-  disabled: 'gray',
-  blocked: 'yellow',
-  deleted: 'cyan'
-}
+import ApplicationsRow from '../ApplicationRow/ApplicationRow'
 
 const useStyles = createStyles(() => ({
   box: {
@@ -27,7 +20,6 @@ const useStyles = createStyles(() => ({
 
 const ApplicationsList = ({ onChange }) => {
   const { classes } = useStyles()
-  const theme = useMantineTheme()
   const { data } = useApplicationsList()
 
   useEffect(() => {
@@ -38,23 +30,7 @@ const ApplicationsList = ({ onChange }) => {
 
   const apps = data?.map((element, index) => (
     // eslint-disable-next-line react/no-array-index-key
-    <tr key={index}>
-      <td>{element.name}</td>
-      <td className={classes.td}>{element.description}</td>
-      <td>{element.user_id}</td>
-      <td>
-        <Badge
-          size="md"
-          color={statusColors[element?.status.toLowerCase()]}
-          variant={theme.colorScheme === 'dark' ? 'light' : 'outline'}
-        >
-          {element?.status.toUpperCase()}
-        </Badge>
-      </td>
-      <td>
-        <UpdateApplication application={element} />
-      </td>
-    </tr>
+    <ApplicationsRow key={index} props={element} />
   ))
 
   return (
@@ -64,6 +40,7 @@ const ApplicationsList = ({ onChange }) => {
           <Table>
             <thead>
               <tr>
+                <th />
                 <th>Name</th>
                 <th>Description</th>
                 <th>User</th>

@@ -4,13 +4,12 @@ import {
   Divider,
   Tooltip,
   UnstyledButton,
-  createStyles,
-  Group
+  createStyles
 } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 import { IconPencil } from '@tabler/icons-react'
 
-import UpdateForm from '../UpdateForm'
+import UpdateForm from './components/UpdateForm'
 
 const useStyles = createStyles({
   button: {
@@ -45,19 +44,18 @@ const UpdateApplication = ({ application }) => {
         <Divider my="xs" label="Update Application" labelPosition="center" />
         <UpdateForm application={application} close={close} />
       </Modal>
-      <Group>
-        <Tooltip label="Update Application">
-          <UnstyledButton
-            className={classes.button}
-            onClick={e => {
-              e.stopPropagation()
-              open()
-            }}
-          >
-            <IconPencil size="1rem" stroke={1.5} />
-          </UnstyledButton>
-        </Tooltip>
-      </Group>
+
+      <Tooltip label="Update Application">
+        <UnstyledButton
+          className={classes.button}
+          onClick={e => {
+            e.stopPropagation()
+            open()
+          }}
+        >
+          <IconPencil size="1rem" stroke={1.5} />
+        </UnstyledButton>
+      </Tooltip>
     </>
   )
 }
