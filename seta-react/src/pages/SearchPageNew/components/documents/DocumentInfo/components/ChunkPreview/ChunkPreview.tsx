@@ -1,6 +1,6 @@
 import { Text } from '@mantine/core'
 
-import useHighlight from '~/hooks/use-highlight'
+import { useHighlightWords } from '~/hooks/use-highlight'
 import useModalState from '~/hooks/use-modal-state'
 
 import * as S from './styles'
@@ -19,7 +19,7 @@ type Props = {
 const ChunkPreview = ({ text, queryTerms, documentTitle, documentId, chunkNumber }: Props) => {
   const { modalOpen, openModal, closeModal } = useModalState()
 
-  const [textHl] = useHighlight(queryTerms, text)
+  const [textHl] = useHighlightWords(queryTerms, text)
 
   return (
     <>
