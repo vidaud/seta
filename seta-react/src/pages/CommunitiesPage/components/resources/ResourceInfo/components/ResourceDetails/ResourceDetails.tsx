@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react'
 import { Badge, Collapse, Tabs } from '@mantine/core'
 
 import type {
-  CommunityScopes,
   ResourceScopes,
   SystemScopes
 } from '~/pages/CommunitiesPage/contexts/community-list.context'
@@ -17,14 +16,20 @@ import ResourcePanelContent from '../PanelContent'
 type Props = ClassNameProp & {
   open: boolean
   resource: ResourceResponse
-  community_scopes?: CommunityScopes[]
+  community_scopes?: string[]
   resource_scopes?: ResourceScopes[]
   system_scopes?: SystemScopes[]
 }
 
 const items = [{ value: 'change_requests' }, { value: 'permissions' }]
 
-const ResourceDetails = ({ className, open, resource, resource_scopes }: Props) => {
+const ResourceDetails = ({
+  className,
+  open,
+  resource,
+  resource_scopes,
+  community_scopes
+}: Props) => {
   const [activeTab, setActiveTab] = useState<string | null>('limits')
   const [selected] = useState<string | null>('pending')
   const { resource_id } = resource
@@ -39,13 +44,14 @@ const ResourceDetails = ({ className, open, resource, resource_scopes }: Props) 
 
   const tabs = items?.map(item => (
     <Tabs.Panel value={item.value} key={item.value}>
-      <ResourcePanelContent id={resource_id} panel={activeTab} />
+      <ResourcePanelContent id={resource_id} panel={activeTab} scopes={scopes} />
     </Tabs.Panel>
   ))
 
   return (
     <Collapse className={className} in={open}>
-      {scopes?.includes('/seta/resource/edit') ? (
+      {community_scopes?.includes('/seta/community/owner') ||
+      community_scopes?.includes('/seta/community/manager') ? (
         <Tabs value={activeTab} onTabChange={setActiveTab} orientation="horizontal">
           <Tabs.List
             sx={theme => ({

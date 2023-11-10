@@ -11,6 +11,7 @@ import {
 } from '~/pages/CommunitiesPage/contexts/resource-context'
 
 import { useCreateResource } from '~/api/communities/resources/my-resource'
+import { useUserPermissions } from '~/api/communities/user-scopes'
 
 import ResourceAlert from '../../../ResourceAlert'
 
@@ -29,6 +30,7 @@ const useStyles = createStyles({
 const CreateForm = ({ id, close }) => {
   const { classes, cx } = useStyles()
   const setNewResourceMutation = useCreateResource(id)
+  const { refetch } = useUserPermissions()
   const [opened, setOpened] = useState<boolean>(false)
 
   const form = useResource({
@@ -57,6 +59,7 @@ const CreateForm = ({ id, close }) => {
           autoClose: 5000
         })
 
+        refetch()
         close()
       },
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
