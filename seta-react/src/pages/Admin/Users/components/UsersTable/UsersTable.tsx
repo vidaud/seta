@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import { ActionIcon, Badge, Group, Tooltip, Text, Anchor } from '@mantine/core'
+import { ActionIcon, Anchor, Badge, Group, Tooltip, Text } from '@mantine/core'
 import { IconUserEdit } from '@tabler/icons-react'
 import { useMantineReactTable, type MRT_ColumnDef, MantineReactTable } from 'mantine-react-table'
 import moment from 'moment'
@@ -14,14 +14,6 @@ import DetailPanel from '../DetailPanel'
 
 const UsersTable = ({ data, isLoading, error }: DataProps<SetaAccount[]>) => {
   const accounts: SetaAccount[] = data ?? []
-  const options = accounts?.map(option => {
-    const email = option.email
-
-    return {
-      ...option,
-      email: email === null ? '-' : email
-    }
-  })
 
   const columns = useMemo<MRT_ColumnDef<SetaAccount>[]>(
     () => [
@@ -31,7 +23,7 @@ const UsersTable = ({ data, isLoading, error }: DataProps<SetaAccount[]>) => {
         filterVariant: 'autocomplete',
         Cell: ({ cell }) => (
           <Anchor component="button" size="sm">
-            {cell?.getValue<string>()}
+            {cell.getValue<string>()}
           </Anchor>
         )
       },
@@ -46,7 +38,7 @@ const UsersTable = ({ data, isLoading, error }: DataProps<SetaAccount[]>) => {
           }
         },
         Cell: ({ cell }) => {
-          const val = cell?.getValue<UserRole>()
+          const val = cell.getValue<UserRole>()
           const color = val === UserRole.Administrator ? 'orange.4' : 'cyan.3'
 
           return <Badge color={color}>{val}</Badge>
@@ -63,7 +55,7 @@ const UsersTable = ({ data, isLoading, error }: DataProps<SetaAccount[]>) => {
           }
         },
         Cell: ({ cell }) => {
-          const val = cell?.getValue<AccountStatus>()
+          const val = cell.getValue<AccountStatus>()
           const color = val === AccountStatus.Active ? 'blue.3' : 'dark.3'
 
           return <Badge color={color}>{val}</Badge>
@@ -80,7 +72,7 @@ const UsersTable = ({ data, isLoading, error }: DataProps<SetaAccount[]>) => {
         },
         filterVariant: 'date-range',
         Cell: ({ cell }) => {
-          const dateTime = cell?.getValue<Date>()
+          const dateTime = cell.getValue<Date>()
 
           const date = moment.utc(dateTime).local().format('YYYY-MM-DD')
           const time = moment.utc(dateTime).local().format('HH:mm')
@@ -105,8 +97,8 @@ const UsersTable = ({ data, isLoading, error }: DataProps<SetaAccount[]>) => {
   const isError = !!error
 
   const table = useMantineReactTable({
-    columns: columns ?? [],
-    data: options,
+    columns: columns,
+    data: accounts,
     enableColumnActions: false,
     enableColumnFilters: true,
     enableTopToolbar: true,

@@ -9,7 +9,6 @@ import {
   useApplication
 } from '~/pages/UserProfile/contexts/application-context'
 
-import { useUserPermissions } from '~/api/communities/user-scopes'
 import { useCreateApplication } from '~/api/user/applications'
 
 const useStyles = createStyles({
@@ -23,7 +22,6 @@ const useStyles = createStyles({
 
 const CreateForm = ({ close }) => {
   const { classes, cx } = useStyles()
-  const { refetch } = useUserPermissions()
   const [copyPublicKey, setCopyPublicKey] = useState(false)
   const [copyResourceScopes, setCopyResourceScopes] = useState(true)
   const setCreateApplicationMutation = useCreateApplication()
@@ -32,35 +30,38 @@ const CreateForm = ({ close }) => {
     initialValues: {
       name: '',
       description: '',
-      copy_public_key: false,
-      copy_resource_scopes: true
+      copyPublicKey: false,
+      copyResourceScopes: true
     }
   })
 
   const handleSubmit = (values: ApplicationValues) => {
-    setCreateApplicationMutation.mutate(
-      { ...values },
-      {
-        onSuccess: () => {
-          notifications.show({
-            message: `Application Created Successfully!`,
-            color: 'blue',
-            autoClose: 5000
-          })
+    const newValues = {
+      name: values.name,
+      description: values.description,
+      copyPublicKey: copyPublicKey,
+      copyResourceScopes: copyResourceScopes
+    }
 
-          refetch()
-          close()
-        },
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        onError: (error: AxiosError | any) => {
-          notifications.show({
-            message: error?.response?.data?.message,
-            color: 'red',
-            autoClose: 5000
-          })
-        }
+    setCreateApplicationMutation.mutate(newValues, {
+      onSuccess: () => {
+        notifications.show({
+          message: `Application Created Successfully!`,
+          color: 'blue',
+          autoClose: 5000
+        })
+
+        close()
+      },
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      onError: (error: AxiosError | any) => {
+        notifications.show({
+          message: error?.response?.data?.message,
+          color: 'red',
+          autoClose: 5000
+        })
       }
-    )
+    })
   }
 
   return (

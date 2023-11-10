@@ -63,7 +63,7 @@ export const useUpdateApplicationsPermissions = (appName: string) => {
     },
     onSuccess: () => {
       client.invalidateQueries(UserQueryKeys.SetaAccount)
-      client.invalidateQueries(queryKey.apps(appName))
+      client.invalidateQueries(UserQueryKeys.Applications)
     }
   })
 }

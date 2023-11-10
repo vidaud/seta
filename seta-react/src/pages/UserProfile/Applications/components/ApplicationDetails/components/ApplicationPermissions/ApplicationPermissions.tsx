@@ -20,7 +20,7 @@ const ApplicationsPermissions = ({ appName }) => {
   }
 
   if (!data || data.length === 0) {
-    return <SuggestionsEmpty message="No scope for communities!" />
+    return <SuggestionsEmpty message={`No scope for ${appName} application!`} />
   }
 
   return (

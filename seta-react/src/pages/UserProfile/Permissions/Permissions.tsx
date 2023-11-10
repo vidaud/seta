@@ -11,7 +11,7 @@ const Permissions = () => {
   const { data } = useUserPermissions()
 
   return (
-    <Card shadow="xs" padding="lg" radius="sm" withBorder mt={15}>
+    <Card shadow="xs" padding="lg" radius="sm" mt={15}>
       <Tabs variant="outline" defaultValue="system-scopes">
         <Tabs.List>
           <Tabs.Tab value="system-scopes" icon={<IconEye size="0.95rem" />}>

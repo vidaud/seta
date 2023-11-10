@@ -22,7 +22,7 @@ const GeneralInformation = ({ details }) => {
   const color = details?.role === UserRole.Administrator ? 'orange.4' : 'cyan.3'
 
   return (
-    <Paper shadow="xs" p="md">
+    <Paper shadow="xs" p="md" withBorder>
       <Title order={5} ta="center" pb="3%">
         General Information
       </Title>
@@ -30,9 +30,7 @@ const GeneralInformation = ({ details }) => {
         <tbody>
           <tr>
             <td className={classes.td}>Role</td>
-            <td>
-              <Badge color={color}>{details?.role}</Badge>
-            </td>
+            <td>{details?.role ? <Badge color={color}>{details?.role}</Badge> : null}</td>
           </tr>
           <tr>
             <td className={classes.td}>Email</td>

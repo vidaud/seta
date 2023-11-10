@@ -1,5 +1,5 @@
-import { useRef, useState } from 'react'
-import { Button, Card, Flex, Group, Text, Title } from '@mantine/core'
+import { useEffect, useState } from 'react'
+import { Button, Card, Group, Text, Title } from '@mantine/core'
 import { IconCheckbox } from '@tabler/icons-react'
 
 import {
@@ -23,19 +23,21 @@ const PermCard = ({ resourceScope, catalogue, appName, allPerms }: Props) => {
   const updatePermissionsMutation = useUpdateApplicationsPermissions(appName)
   const [saveDisabled, setSaveDisabled] = useState(true)
   const { handleSavePermissions, permModified } = useApplicationContext()
-  const initialRef = useRef({
+  const [savedScopes, setSavedScopes] = useState({
     resourceId: resourceScope.resourceId,
     scopes: resourceScope.scopes
   })
+
+  useEffect(() => {
+    setSaveDisabled(
+      !permModified(savedScopes, { resourceId: resourceScope.resourceId, scopes: selection })
+    )
+  }, [savedScopes, permModified, resourceScope, selection])
 
   const toggleRow = (code: string) => {
     const values = selection?.includes(code)
       ? selection?.filter(item => item !== code)
       : [...selection, code]
-
-    setSaveDisabled(
-      !permModified(initialRef.current, { resourceId: resourceScope.resourceId, scopes: values })
-    )
 
     setSelection(values)
   }
@@ -44,46 +46,44 @@ const PermCard = ({ resourceScope, catalogue, appName, allPerms }: Props) => {
     const values: any =
       selection?.length === catalogue?.length ? [] : catalogue?.map(item => item.code)
 
-    setSaveDisabled(
-      !permModified(initialRef.current, { resourceId: resourceScope.resourceId, scopes: values })
-    )
-
     setSelection(values)
   }
 
   return (
     <Card shadow="xs" padding="md" radius="xs" withBorder>
       <Group>
-        <Flex>
+        <Group w="90%" style={{ gap: '0.5rem' }}>
           <Title order={5}>
             <Text span c="dimmed" size="sm" mr={5}>
               Title
             </Text>
             {resourceScope.title}
-          </Title>{' '}
-          {'>'}{' '}
+          </Title>
+          {' > '}
+
           <Title order={5}>
             <Text span c="dimmed" size="sm" mr={5}>
               Resource
             </Text>
             {resourceScope.resourceId}
-          </Title>{' '}
-          {'>'}{' '}
+          </Title>
+          {' > '}
           <Title order={5}>
             <Text span c="dimmed" size="sm" mr={5}>
               Community
             </Text>
             {resourceScope.communityId}
           </Title>
-        </Flex>
+        </Group>
         <Button
           variant="light"
           color="teal.4"
           leftIcon={<IconCheckbox size="1rem" />}
           disabled={saveDisabled}
-          onClick={() =>
+          onClick={() => {
             handleSavePermissions(updatePermissionsMutation, allPerms, resourceScope, selection)
-          }
+            setSavedScopes({ resourceId: resourceScope.resourceId, scopes: selection })
+          }}
         >
           Save
         </Button>

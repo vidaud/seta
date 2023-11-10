@@ -4,8 +4,6 @@ import { notifications } from '@mantine/notifications'
 import type { ApplicationPermissions } from '~/api/user/applications-permissions'
 
 export interface ApplicationContextValue {
-  appPermissions?: PermissionsRequest[]
-  handlePermissions: (value: PermissionsRequest[]) => void
   saveDisabled: boolean
   handleDisabled: (value: boolean) => void
   permModified: (initial: TrackProps, current: TrackProps) => boolean
@@ -38,8 +36,6 @@ type TrackProps = {
 export const ApplicationContext = createContext<ApplicationContextValue | undefined>(undefined)
 
 export const ApplicationProvider = ({ children }) => {
-  // const [selection, setSelection] = useState<string[]>([])
-  const [appPermissions, setAppPermissions] = useState<PermissionsRequest[]>([])
   const [saveDisabled, setSaveDisabled] = useState(true)
 
   const replaceResourcePermissions = (
@@ -85,10 +81,6 @@ export const ApplicationProvider = ({ children }) => {
     })
   }
 
-  const handlePermissions = value => {
-    setAppPermissions([...value])
-  }
-
   const handleDisabled = value => {
     setSaveDisabled(value)
   }
@@ -109,8 +101,6 @@ export const ApplicationProvider = ({ children }) => {
   }
 
   const values: ApplicationContextValue | undefined = {
-    appPermissions: appPermissions,
-    handlePermissions: handlePermissions,
     saveDisabled: saveDisabled,
     handleDisabled: handleDisabled,
     permModified: permModified,

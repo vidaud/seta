@@ -45,12 +45,9 @@ const Info = ({ username, email, role, status, createdAt, lastModifiedAt }: Prop
       </Box>
       <Box>
         <Label label="Email" />
-        {email && (
-          <Anchor component="button" size="sm">
-            {email}
-          </Anchor>
-        )}
-        {!email && '-'}
+        <Anchor component="button" size="sm">
+          {email}
+        </Anchor>
       </Box>
       <Box>
         <Label label="Created at" />

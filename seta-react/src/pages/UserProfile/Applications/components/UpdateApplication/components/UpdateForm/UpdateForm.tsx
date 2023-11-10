@@ -26,7 +26,6 @@ const applicationStatus = [
 
 const UpdateForm = ({ application, close }) => {
   const { classes, cx } = useStyles()
-  const old_name = application.name
   const setUpdateApplicationMutation = useUpdateApplication()
 
   const form = useApplication({
@@ -51,10 +50,10 @@ const UpdateForm = ({ application, close }) => {
 
   const handleSubmit = (values: ApplicationValues) => {
     const updatedValues = {
-      new_name: values.name,
+      new_name: values.new_name,
       description: values.description,
       status: values.status,
-      name: old_name
+      name: application.name
     }
 
     setUpdateApplicationMutation.mutate(updatedValues, {

@@ -32,7 +32,7 @@ const ExternalProviders = ({ details }) => {
   ))
 
   return (
-    <Paper shadow="xs" p="md">
+    <Paper shadow="xs" p="md" withBorder>
       <Title order={5} ta="center" pb="3%">
         External Providers
       </Title>

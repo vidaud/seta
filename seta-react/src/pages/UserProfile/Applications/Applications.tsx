@@ -18,7 +18,7 @@ const Applications = () => {
       <Text fz="sm" color="gray.6">
         Manage applications
       </Text>
-      <Paper shadow="xs" mt="2%">
+      <Paper shadow="xs" mt="2%" withBorder>
         <Flex p="md">
           <Group w="85%" style={{ gap: '0.3rem' }}>
             <FiGrid size="1rem" />

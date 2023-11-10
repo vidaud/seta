@@ -4,6 +4,7 @@ import { Collapse, Tabs } from '@mantine/core'
 import type { ClassNameProp } from '~/types/children-props'
 
 import ApplicationsPermissions from './components/ApplicationPermissions/ApplicationPermissions'
+import ApplicationRSAKeys from './components/ApplicationRSAKey/ApplicationRSAKey'
 
 type Props = ClassNameProp & {
   open: boolean
@@ -25,13 +26,15 @@ const ApplicationDetails = ({ className, open, appName }: Props) => {
             >
               <Tabs.Tab value="permissions">Permissions</Tabs.Tab>
 
-              <Tabs.Tab value="rsa-keys">RSA Keys</Tabs.Tab>
+              <Tabs.Tab value="rsa-keys">RSA Public Keys</Tabs.Tab>
             </Tabs.List>
 
             <Tabs.Panel value="permissions">
-              <ApplicationsPermissions appName={appName} />
+              {open ? <ApplicationsPermissions appName={appName} /> : null}
             </Tabs.Panel>
-            <Tabs.Panel value="rsa-keys">RSA Keys</Tabs.Panel>
+            <Tabs.Panel value="rsa-keys">
+              {open ? <ApplicationRSAKeys appName={appName} /> : null}
+            </Tabs.Panel>
           </Tabs>
         </Collapse>
       </td>
