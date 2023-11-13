@@ -1,5 +1,4 @@
 import { ScrollArea, Tabs, Card } from '@mantine/core'
-import { IconEye } from '@tabler/icons-react'
 
 import { useUserPermissions } from '~/api/communities/user-scopes'
 
@@ -14,15 +13,9 @@ const Permissions = () => {
     <Card shadow="xs" padding="lg" radius="sm" mt={15}>
       <Tabs variant="outline" defaultValue="system-scopes">
         <Tabs.List>
-          <Tabs.Tab value="system-scopes" icon={<IconEye size="0.95rem" />}>
-            System Permissions
-          </Tabs.Tab>
-          <Tabs.Tab value="community-scopes" icon={<IconEye size="0.95rem" />}>
-            Community Permissions
-          </Tabs.Tab>
-          <Tabs.Tab value="resource-scopes" icon={<IconEye size="0.95rem" />}>
-            Resource Permissions
-          </Tabs.Tab>
+          <Tabs.Tab value="system-scopes">System Permissions</Tabs.Tab>
+          <Tabs.Tab value="community-scopes">Community Permissions</Tabs.Tab>
+          <Tabs.Tab value="resource-scopes">Resource Permissions</Tabs.Tab>
         </Tabs.List>
 
         <Tabs.Panel value="system-scopes" pt="xs">

@@ -4,10 +4,9 @@ import { IconChevronDown } from '@tabler/icons-react'
 import { Link, useLocation } from 'react-router-dom'
 
 import GetStarted from '~/components/GetStarted'
-
-import { getDropdownAbout, itemIsCollapse, itemIsDivider } from '../../config'
-import * as S from '../../styles'
-import '../../style.css'
+import { getDropdownAbout, itemIsCollapse, itemIsDivider } from '~/components/Header/config'
+import * as S from '~/components/Header/styles'
+import '~/components/Header/style.css'
 
 const AboutDropdown = () => {
   const [isOpen, setIsOpen] = useState(false)

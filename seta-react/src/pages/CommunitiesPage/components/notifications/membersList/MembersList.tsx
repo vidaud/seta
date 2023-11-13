@@ -4,6 +4,8 @@ import { notifications } from '@mantine/notifications'
 import DateTimeCell from '~/pages/Admin/common/components/DateTimeCell/DateTimeCell'
 import RowActions from '~/pages/Admin/common/components/RequestRowActions/RowActions'
 import UserInfo from '~/pages/Admin/common/components/UserInfo/UserInfo'
+import { ComponentEmpty, ComponentLoading } from '~/pages/CommunitiesPage/components/common'
+import ExtendedMessage from '~/pages/CommunitiesPage/components/communities/CommunityInfo/components/ExtendedMessage/ExtendedMessage'
 import { statusColors } from '~/pages/CommunitiesPage/types'
 
 import {
@@ -11,9 +13,6 @@ import {
   useUpdateMembershipRequest
 } from '~/api/communities/memberships/membership-requests'
 import { MembershipRequestStatus } from '~/types/community/membership-requests'
-
-import { ComponentEmpty, ComponentLoading } from '../../common'
-import ExtendedMessage from '../../communities/CommunityInfo/components/ExtendedMessage/ExtendedMessage'
 
 const useStyles = createStyles(theme => ({
   header: {

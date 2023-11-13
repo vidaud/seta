@@ -1,6 +1,8 @@
 import React from 'react'
 import { Route } from 'react-router-dom'
 
+import CloseUserAccount from '~/pages/UserProfile/CloseUserAccount'
+
 import UserLayout from '~/layouts/UserLayout'
 
 import RequireAuth from '../components/RequireAuth'
@@ -22,6 +24,7 @@ const UserRoutes = (
     <Route path="permissions" element={<Permissions />} />
     <Route path="rsa-keys" element={<RSAKeys />} />
     <Route path="applications" element={<Applications />} />
+    <Route path="close-account" element={<CloseUserAccount />} />
   </Route>
 )
 
