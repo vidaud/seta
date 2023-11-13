@@ -3,7 +3,7 @@ from injector import inject
 
 from flask import current_app, session, jsonify
 from flask_jwt_extended import jwt_required, get_jwt_identity, unset_jwt_cookies
-from flask_restx import Namespace, Resource, abort
+from flask_restx import Resource, abort
 
 from seta_flask_server.infrastructure.helpers import unset_token_info_cookies
 from seta_flask_server.infrastructure.constants import (
@@ -13,14 +13,13 @@ from seta_flask_server.infrastructure.constants import (
 from seta_flask_server.repository.models import SystemScope
 from seta_flask_server.repository import interfaces
 
-from .models import users_dto as dto
-from .logic.user_logic import build_account_info
+from seta_flask_server.blueprints.admin.models import users_dto as dto
+from seta_flask_server.blueprints.admin.logic import user_logic
 
-user_ns = Namespace("Seta User", description="Seta User Account", validate=True)
-user_ns.models.update(dto.ns_models)
+from .ns import users_ns
 
 
-@user_ns.route(
+@users_ns.route(
     "/<string:user_id>", endpoint="admin_user", methods=["GET", "POST", "PUT", "DELETE"]
 )
 class UserAccount(Resource):
@@ -42,7 +41,7 @@ class UserAccount(Resource):
 
         super().__init__(api, *args, **kwargs)
 
-    @user_ns.doc(
+    @users_ns.doc(
         description="Retrieve user account.",
         responses={
             int(HTTPStatus.OK): "'Retrieved account.",
@@ -53,7 +52,7 @@ class UserAccount(Resource):
         },
         security="CSRF",
     )
-    @user_ns.marshal_with(dto.account_model, mask="*")
+    @users_ns.marshal_with(dto.account_model, mask="*")
     @jwt_required()
     def get(self, user_id: str):
         """
@@ -78,10 +77,10 @@ class UserAccount(Resource):
 
         detail = self.users_query_broker.get_account_detail(user_id=user_id)
 
-        info = build_account_info(user, detail, build_scopes=True)
+        info = user_logic.build_account_info(user, detail, build_scopes=True)
         return info
 
-    @user_ns.doc(
+    @users_ns.doc(
         description="Update system permissions.",
         responses={
             int(HTTPStatus.OK): "Permissions updated.",
@@ -93,7 +92,7 @@ class UserAccount(Resource):
         },
         security="CSRF",
     )
-    @user_ns.expect(dto.permissions_model)
+    @users_ns.expect(dto.permissions_model)
     @jwt_required()
     def post(self, user_id: str):
         """
@@ -116,7 +115,7 @@ class UserAccount(Resource):
         if user is None or user.status == UserStatusConstants.Deleted:
             abort(HTTPStatus.NOT_FOUND, "User not found")
 
-        request_dict = dict(user_ns.payload)
+        request_dict = dict(users_ns.payload)
         role = request_dict.get("role", None)
         scopes = request_dict.get("scopes", None)
 
@@ -142,7 +141,7 @@ class UserAccount(Resource):
 
         return jsonify(status="success", message="User permissions updated")
 
-    @user_ns.doc(
+    @users_ns.doc(
         description="Update account status.",
         responses={
             int(HTTPStatus.OK): "Account status updated.",
@@ -154,7 +153,7 @@ class UserAccount(Resource):
         },
         security="CSRF",
     )
-    @user_ns.expect(dto.update_status_parser)
+    @users_ns.expect(dto.update_status_parser)
     @jwt_required()
     def put(self, user_id: str):
         """
@@ -192,7 +191,7 @@ class UserAccount(Resource):
 
         return response
 
-    @user_ns.doc(
+    @users_ns.doc(
         description="Delete account.",
         responses={
             int(HTTPStatus.OK): "Account deleted.",

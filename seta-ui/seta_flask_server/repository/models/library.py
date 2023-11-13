@@ -18,7 +18,7 @@ class LibraryItem:
     parent_id: str
     type: LibraryItemType
     document_id: str = None
-    link: str = (None,)
+    link: str = None
     created_at: datetime = None
     modified_at: datetime = None
 

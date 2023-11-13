@@ -114,7 +114,7 @@ class ApplicationPermissionsResource(Resource):
             if not valid:
                 abort(
                     HTTPStatus.EXPECTATION_FAILED,
-                    {"message": "There are no resource scopes for parent user!"},
+                    "There are no resource scopes for parent user!",
                 )
         except ValueError as ve:
             abort(HTTPStatus.EXPECTATION_FAILED, ve)
