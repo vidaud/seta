@@ -12,9 +12,10 @@ import ResourceUsersPermissions from '../ResourcePermissions/ResourceUserPermiss
 type Props = {
   id: string
   panel: string | null
+  scopes?: string[]
 }
 
-const ResourcePanelContent = ({ id, panel }: Props) => {
+const ResourcePanelContent = ({ id, panel, scopes }: Props) => {
   const { modalOpen, openModal, closeModal } = useModalState()
   const [title, setTitle] = useState('Limits')
 
@@ -31,7 +32,7 @@ const ResourcePanelContent = ({ id, panel }: Props) => {
           {panel === 'change_requests' ? (
             <ChangeResourceRequests id={id} />
           ) : panel === 'permissions' ? (
-            <ResourceUsersPermissions id={id} type="container" />
+            <ResourceUsersPermissions id={id} type="container" scopes={scopes} />
           ) : null}
         </Box>
       </InfoContainer>
