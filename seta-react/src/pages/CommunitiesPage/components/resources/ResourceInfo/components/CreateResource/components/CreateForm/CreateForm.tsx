@@ -4,6 +4,7 @@ import { notifications } from '@mantine/notifications'
 import type { AxiosError } from 'axios'
 import { IoIosInformationCircle } from 'react-icons/io'
 
+import ResourceAlert from '~/pages/CommunitiesPage/components/resources/ResourceInfo/components/ResourceAlert'
 import {
   useResource,
   type ResourceValues,
@@ -11,8 +12,6 @@ import {
 } from '~/pages/CommunitiesPage/contexts/resource-context'
 
 import { useCreateResource } from '~/api/communities/resources/my-resource'
-
-import ResourceAlert from '../../../ResourceAlert'
 
 const useStyles = createStyles({
   input: {

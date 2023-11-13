@@ -3,6 +3,7 @@ export enum ActiveLink {
   RSAKEYS,
   APPLICATIONS,
   PERMISSIONS,
+  CLOSE,
   NONE
 }
 
@@ -19,6 +20,9 @@ export const getActiveLink = (path: string): ActiveLink => {
 
     case path.startsWith('/profile/applications') ? path : '':
       return ActiveLink.APPLICATIONS
+
+    case path.startsWith('/profile/close-account') ? path : '':
+      return ActiveLink.CLOSE
 
     default:
       return ActiveLink.NONE

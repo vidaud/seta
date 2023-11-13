@@ -3,6 +3,7 @@ import { AiOutlineUser } from 'react-icons/ai'
 import { FaSignInAlt } from 'react-icons/fa'
 import { Link, useLocation } from 'react-router-dom'
 
+import { useCurrentUser } from '~/contexts/user-context'
 import { UserRole } from '~/types/user'
 
 import AboutDropdown from './components/AboutDropdown/AboutDropdown'
@@ -11,7 +12,6 @@ import SiteHeader from './components/SiteHeader'
 import { getDropdownItems, getMenuItems, itemIsCollapse, itemIsDivider } from './config'
 import * as S from './styles'
 
-import { useCurrentUser } from '../../contexts/user-context'
 import './style.css'
 
 const Header = () => {

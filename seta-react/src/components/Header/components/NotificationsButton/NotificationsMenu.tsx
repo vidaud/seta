@@ -1,13 +1,13 @@
 import { Menu, ActionIcon } from '@mantine/core'
 import { IoMdNotifications } from 'react-icons/io'
 
+import { itemIsCollapse } from '~/components/Header/config'
+import type { DropdownItem } from '~/components/Header/config'
+import * as S from '~/components/Header/styles'
+
 import type { NotificationsResponse } from '~/api/types/notifications-types'
 
 import NotificationsDropdown from './NotificationsDropdown'
-
-import type { DropdownItem } from '../../config'
-import { itemIsCollapse } from '../../config'
-import * as S from '../../styles'
 
 type Props = {
   dropdownItems: DropdownItem[]

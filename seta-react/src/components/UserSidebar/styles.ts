@@ -26,3 +26,7 @@ export const sidebar: ThemedCSS = theme => css`
 export const mainSection: ThemedCSS = theme => css`
   padding: 2rem ${theme.spacing.xl};
 `
+
+export const linkPrimary = css`
+  font-weight: 600;
+`

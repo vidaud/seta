@@ -1,12 +1,12 @@
 import { useEffect } from 'react'
 import { Badge, Group } from '@mantine/core'
 
+import type { DropdownItem } from '~/components/Header/config'
+import * as S from '~/components/Header/styles'
+
 import { useCommunitiesNotifications } from '~/api/communities/notifications'
 
 import NotificationsMenu from './NotificationsMenu'
-
-import type { DropdownItem } from '../../config'
-import * as S from '../../styles'
 
 type Props = {
   dropdownItems: DropdownItem[]

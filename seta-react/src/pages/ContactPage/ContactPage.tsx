@@ -2,11 +2,10 @@ import { createStyles, Title, SimpleGrid, Image } from '@mantine/core'
 
 import Breadcrumbs from '~/components/Breadcrumbs'
 
+import image from '~/images/contact1.jpg'
 import type { Crumb } from '~/types/breadcrumbs'
 
 import { ContactIconsList } from './components/ContactIcons/ContactIcons'
-
-import image from '../../images/contact1.jpg'
 
 const useStyles = createStyles(theme => ({
   wrapper: {

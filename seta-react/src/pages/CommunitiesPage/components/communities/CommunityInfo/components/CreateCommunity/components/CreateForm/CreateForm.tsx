@@ -3,6 +3,7 @@ import { notifications } from '@mantine/notifications'
 import type { AxiosError } from 'axios'
 import { MdSettingsEthernet } from 'react-icons/md'
 
+import { getCommunityID } from '~/pages/CommunitiesPage/components/communities/CommunityInfo/components/CreateCommunity/utils'
 import type { CommunityValues } from '~/pages/CommunitiesPage/contexts/community-context'
 import {
   CommunityFormProvider,
@@ -12,8 +13,6 @@ import {
 import { useCreateCommunity } from '~/api/communities/communities/my-community'
 import { useUserPermissions } from '~/api/communities/user-scopes'
 import { useCurrentUser } from '~/contexts/user-context'
-
-import { getCommunityID } from '../../utils'
 
 const useStyles = createStyles({
   input: {
