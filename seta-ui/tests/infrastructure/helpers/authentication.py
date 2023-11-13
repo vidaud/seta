@@ -31,8 +31,14 @@ def generate_signature(private_key: str) -> Tuple[str, str]:
     return random_string, str(signature.hex())
 
 
-def login_user(auth_url: str, user_id: str, provider: str = "ECAS"):
-    private_key = get_private_key(user_id)
+def login_user(
+    auth_url: str, user_id: str, user_key_pairs: dict, provider: str = "ECAS"
+):
+    private_key = get_private_key(user_id, user_key_pairs)
+
+    if not private_key:
+        raise Exception(f"{user_id} not found in the test rsa pairs!")
+
     message, signature = generate_signature(private_key)
 
     payload = {

@@ -1,10 +1,12 @@
 import pytest
 import os
 
+from Crypto.PublicKey import RSA
+
 from seta_api.config import Config
 from seta_api.factory import create_app
 
-from tests.infrastructure.init.mongodb import DbTestSetaApi
+from tests.infrastructure.init.mongodb import DbTestSetaApi, load_users_data
 from tests.infrastructure.init.es import SetaES
 
 
@@ -80,9 +82,28 @@ def es(es_host):
     es.cleanup()
 
 
+@pytest.fixture(scope="session")
+def user_key_pairs():
+    """Generate rsa pair for a user list."""
+
+    user_key_pairs = {}
+
+    data = load_users_data()
+
+    for user in data["users"]:
+        user_key_pairs[user["user_id"]] = _generate_rsa_pair()
+
+    yield user_key_pairs
+
+
 @pytest.fixture(scope="session", autouse=True)
-def db(db_host, db_port, db_name):
-    db = DbTestSetaApi(db_host=db_host, db_port=int(db_port), db_name=db_name)
+def db(db_host, db_port, db_name, user_key_pairs):
+    db = DbTestSetaApi(
+        db_host=db_host,
+        db_port=int(db_port),
+        db_name=db_name,
+        user_key_pairs=user_key_pairs,
+    )
 
     db.clear_db()
     db.init_db()
@@ -110,6 +131,21 @@ def app(auth_root):
 def client(app):
     with app.test_client() as client:
         yield client
+
+
+def _generate_rsa_pair() -> dict:
+    key_pair = RSA.generate(bits=4096)
+
+    # public key
+    pub_key = key_pair.public_key()
+    pub_key_pem = pub_key.export_key()
+    decoded_pub_key_pem = pub_key_pem.decode("ascii")
+
+    # private key
+    priv_key_pem = key_pair.export_key()
+    decoded_priv_key_pem = priv_key_pem.decode("ascii")
+
+    return {"privateKey": decoded_priv_key_pem, "publicKey": decoded_pub_key_pem}
 
 
 class TestConfig(Config):
