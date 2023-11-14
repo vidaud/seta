@@ -28,6 +28,6 @@ def test_embeddings_text(client: FlaskClient, user_id: str):
     response = post_text(client=client, access_token=access_token)
     assert response.status_code == HTTPStatus.OK
     #TODO: check response
-    assert "embeddings" in response.json
+    assert "emb_with_chunk_text" in response.json
     
     
