@@ -1,6 +1,6 @@
 beautifulsoup4==4.12.2
 elasticsearch==8.8.0
-Werkzeug==2.3.0
+Werkzeug==2.3.8
 flask==2.3.0
 flask-cors==4.0.0
 flask_jwt_extended==4.5.3
