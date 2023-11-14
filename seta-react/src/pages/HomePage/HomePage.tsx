@@ -2,7 +2,7 @@ import React from 'react'
 import { createStyles, Container, Title, Text, rem } from '@mantine/core'
 import TextTransition, { presets } from 'react-text-transition'
 
-import image from '../../images/background.jpg'
+import image from '~/images/background.jpg'
 
 const useStyles = createStyles(theme => ({
   wrapper: {

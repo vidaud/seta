@@ -2,13 +2,14 @@ import { useEffect, useState } from 'react'
 import { Button, Card, Group, Text, Title } from '@mantine/core'
 import { IconCheckbox } from '@tabler/icons-react'
 
+import { useApplicationContext } from '~/pages/UserProfile/Applications/components/ApplicationDetails/components/ApplicationPermissions/contexts/application-context'
+
 import {
   useUpdateApplicationsPermissions,
   type ApplicationPermissions
 } from '~/api/user/applications-permissions'
 import type { CategoryScopesResponse } from '~/types/catalogue/catalogue-scopes'
 
-import { useApplicationContext } from '../../contexts/application-context'
 import PermsTable from '../PermsTable'
 
 type Props = {
@@ -52,7 +53,7 @@ const PermCard = ({ resourceScope, catalogue, appName, allPerms }: Props) => {
   return (
     <Card shadow="xs" padding="md" radius="xs" withBorder>
       <Group>
-        <Group w="90%" style={{ gap: '0.5rem' }}>
+        <Group w="88%" style={{ gap: '0.5rem' }}>
           <Title order={5}>
             <Text span c="dimmed" size="sm" mr={5}>
               Title
