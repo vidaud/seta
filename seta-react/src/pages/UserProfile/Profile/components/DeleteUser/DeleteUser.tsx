@@ -19,7 +19,7 @@ const DeleteUser = () => {
     setDeleteUserAccountMutation.mutate(undefined, {
       onSuccess: () => {
         notifications.show({
-          message: `User deleted successfully!`,
+          message: `Account deleted successfully!`,
           color: 'blue',
           autoClose: 5000
         })
@@ -28,7 +28,7 @@ const DeleteUser = () => {
       },
       onError: () => {
         notifications.show({
-          message: 'Delete user failed!',
+          message: 'Delete user account failed!',
           color: 'red',
           autoClose: 5000
         })

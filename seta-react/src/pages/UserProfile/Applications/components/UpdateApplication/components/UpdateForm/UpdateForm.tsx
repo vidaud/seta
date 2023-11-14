@@ -30,10 +30,16 @@ const UpdateForm = ({ application, close }) => {
 
   const form = useApplication({
     initialValues: {
+      name: '',
       new_name: '',
       description: '',
       status: ''
-    }
+    },
+    validate: values => ({
+      new_name:
+        values.new_name && values.new_name.length < 2 ? 'Name must have at least 2 letters' : null,
+      description: values.description.length < 2 ? 'Too short description' : null
+    })
   })
 
   useEffect(() => {
@@ -66,9 +72,11 @@ const UpdateForm = ({ application, close }) => {
 
         close()
       },
-      onError: () => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      onError: (error: any) => {
         notifications.show({
-          message: 'Application update failed!',
+          title: 'Application update failed!',
+          message: error?.response?.data?.msg,
           color: 'red',
           autoClose: 5000
         })

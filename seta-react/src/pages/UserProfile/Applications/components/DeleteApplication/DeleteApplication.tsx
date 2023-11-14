@@ -34,9 +34,11 @@ const DeleteApplication = ({ application }) => {
 
         setOpened(o => !o)
       },
-      onError: () => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      onError: (error: any) => {
         notifications.show({
-          message: 'Delete application failed!',
+          title: 'Delete application failed!',
+          message: error?.response?.data?.msg,
           color: 'red',
           autoClose: 5000
         })

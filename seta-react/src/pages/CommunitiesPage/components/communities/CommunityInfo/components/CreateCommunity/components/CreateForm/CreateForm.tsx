@@ -63,6 +63,7 @@ const CreateForm = ({ close }) => {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       onError: (error: AxiosError | any) => {
         notifications.show({
+          title: 'Create Community Failed!',
           message: error?.response?.data?.message,
           color: 'red',
           autoClose: 5000
