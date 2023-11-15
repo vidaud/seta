@@ -4,12 +4,13 @@ from injector import inject
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from flask_restx import Resource, abort
 
-from seta_flask_server.infrastructure.constants import UserRoleConstants
+from seta_flask_server.infrastructure.constants import UserRoleConstants, UserType
 from seta_flask_server.repository import interfaces
 
 from seta_flask_server.blueprints.admin.models import users_dto as dto
 from seta_flask_server.blueprints.admin.logic import user_logic
 
+from seta_flask_server.repository.models.filters import filter_users as fu
 from .ns import users_ns
 
 
@@ -62,11 +63,8 @@ class UserInfos(Resource):
         request_dict = dto.status_parser.parse_args()
         status = request_dict.get("status", None)
 
-        seta_users = (
-            self.users_query_broker.get_all()
-            if status is None
-            else self.users_query_broker.get_all_by_status(status)
-        )
+        filter_users = fu.FilterUsers(user_type=UserType.User, status=status)
+        seta_users = self.users_query_broker.get_all(filter_users=filter_users)
 
         return [
             {
@@ -126,7 +124,9 @@ class UserInfos(Resource):
             if user.role.lower() != UserRoleConstants.Admin.lower():
                 abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
 
-            seta_users = self.users_query_broker.get_all()
+            seta_users = self.users_query_broker.get_all(
+                filter_users=fu.FilterUsers(user_type=UserType.User)
+            )
             account_details = self.users_query_broker.get_account_details()
 
             accounts = []

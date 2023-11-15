@@ -1,23 +1,19 @@
 from interface import Interface
 from seta_flask_server.repository.models import SetaUser, AccountInfo
+from seta_flask_server.repository.models.filters import filter_users as fu
 
 
 class IUsersQueryBroker(Interface):
-    def get_all(self, load_scopes: bool = True) -> list[SetaUser]:
+    def get_all(
+        self, filter_users: fu.FilterUsers = None, load_scopes: bool = True
+    ) -> list[SetaUser]:
         """All user accounts and their providers.
 
         Ignores entries with status 'deleted'.
 
         Args:
             load_scopes: Load permission scopes for each user
-        """
-        pass
-
-    def get_all_by_status(self, status: str) -> list[SetaUser]:
-        """All user accounts and their providers.
-
-        Args:
-            status: Filter accounts by status.
+            filter_users: Specify filter for user list
         """
         pass
 

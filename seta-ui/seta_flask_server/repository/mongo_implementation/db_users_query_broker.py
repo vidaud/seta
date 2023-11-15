@@ -6,6 +6,7 @@ from seta_flask_server.repository.interfaces import IDbConfig, IUsersQueryBroker
 from seta_flask_server.repository.models import SetaUser, AccountInfo
 from seta_flask_server.infrastructure.constants import UserStatusConstants
 
+from seta_flask_server.repository.models.filters import filter_users as fu
 from .db_users_broker import UsersBroker
 
 
@@ -18,12 +19,21 @@ class UsersQueryBroker(implements(IUsersQueryBroker)):
 
         self.users_broker = UsersBroker(config)
 
-    def get_all(self, load_scopes: bool = False) -> list[SetaUser]:
+    def get_all(
+        self, filter_users: fu.FilterUsers = None, load_scopes: bool = True
+    ) -> list[SetaUser]:
+        filter_dict = {"email": {"$exists": True}}
+
+        if filter_users and filter_users.status is not None:
+            filter_dict["status"] = filter_users.status
+        else:
+            filter_dict["status"] = {"$ne": UserStatusConstants.Deleted}
+
+        if filter_users and filter_users.user_type is not None:
+            filter_dict["user_type"] = filter_users.user_type
+
         users = self.collection.find(
-            {
-                "email": {"$exists": True},
-                "status": {"$ne": UserStatusConstants.Deleted},
-            },
+            filter_dict,
             {"user_id": 1},
         )
 
@@ -31,20 +41,6 @@ class UsersQueryBroker(implements(IUsersQueryBroker)):
         for user in users:
             seta_user = self.users_broker.get_user_by_id(
                 user_id=user["user_id"], load_scopes=load_scopes
-            )
-            seta_users.append(seta_user)
-
-        return seta_users
-
-    def get_all_by_status(self, status: str) -> list[SetaUser]:
-        users = self.collection.find(
-            {"email": {"$exists": True}, "status": status}, {"user_id": 1}
-        )
-
-        seta_users = []
-        for user in users:
-            seta_user = self.users_broker.get_user_by_id(
-                user_id=user["user_id"], load_scopes=False
             )
             seta_users.append(seta_user)
 
