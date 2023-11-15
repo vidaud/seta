@@ -3,19 +3,21 @@ from flask.testing import FlaskClient
 from http import HTTPStatus
 
 from tests.infrastructure.helpers.authentication import (login_user)
-from tests.infrastructure.helpers.corpus import (get_document, delete_document, post_by_json,
-                                                 add_document)
+from tests.infrastructure.helpers.corpus import (get_document, delete_document, post_by_json, add_document)
 
+from tests.infrastructure.helpers.util import get_access_token
 
 @pytest.mark.parametrize("user_id, term", [("seta_admin", "test_corpus_simple_search")])
-def test_corpus_simple_search(client: FlaskClient, user_id: str, term: str):
+def test_corpus_simple_search(
+    client: FlaskClient, user_key_pairs: dict, user_id: str, term: str
+):
     """Run simple search for GET & POST corpus methods"""
 
-    response = login_user(auth_url=client.application.config["JWT_TOKEN_AUTH_URL"], user_id=user_id)
-    assert response.status_code == HTTPStatus.OK
-    response_json = response.json()
-    assert "access_token" in response_json
-    access_token = response_json["access_token"]
+    authentication_url = client.application.config["JWT_TOKEN_AUTH_URL"]
+    response = login_user(
+        auth_url=authentication_url, user_key_pairs=user_key_pairs, user_id=user_id
+    )
+    access_token = get_access_token(response)
 
     data = {"source": "cordis",
             "id": "cordis:article:1",
@@ -36,26 +38,30 @@ def test_corpus_simple_search(client: FlaskClient, user_id: str, term: str):
 
 
 @pytest.mark.parametrize("user_id", ["seta_admin"])
-def test_corpus_doc(client: FlaskClient, user_id: str):
+def test_corpus_doc(client: FlaskClient, user_key_pairs: dict, user_id: str):
     """
         Add a new document, get its contents and delete it
     """
-    response = login_user(auth_url=client.application.config["JWT_TOKEN_AUTH_URL"], user_id=user_id)
-    assert response.status_code == HTTPStatus.OK
-    response_json = response.json()
-    assert "access_token" in response_json
-    access_token = response_json["access_token"]
+    authentication_url = client.application.config["JWT_TOKEN_AUTH_URL"]
+    response = login_user(
+        auth_url=authentication_url, user_key_pairs=user_key_pairs, user_id=user_id
+    )
+    access_token = get_access_token(response)
 
-    data = {"source": "cordis",
-            "id": "cordis:article:1",
-            "title": "Evaluation of policy options to deal with the greenhouse effect"}
+    data = {
+        "source": "cordis",
+        "id": "cordis:article:1",
+        "title": "Evaluation of policy options to deal with the greenhouse effect",
+    }
 
     response = add_document(client=client, access_token=access_token, data=data)
     assert response.status_code == HTTPStatus.OK
     assert "_id" in response.json
     doc_id = response.json["_id"]
 
-    response = get_document(client=client, access_token=access_token, document_id=doc_id)
+    response = get_document(
+        client=client, access_token=access_token, document_id=doc_id
+    )
     assert response.status_code == HTTPStatus.OK
     assert "chunk_list" in response.json
     assert "source" in response.json["chunk_list"][0]
@@ -75,14 +81,16 @@ def test_corpus_doc(client: FlaskClient, user_id: str):
 
 
 @pytest.mark.parametrize("user_id, aggs", [("seta_admin", "taxonomies")])
-def test_corpus_taxonomy_aggregation(client: FlaskClient, user_id: str, aggs: str):
+def test_corpus_taxonomy_aggregation(
+    client: FlaskClient, user_key_pairs: dict, user_id: str, aggs: str
+):
     """Run search with aggregation on taxonomy field for GET corpus methods"""
 
-    response = login_user(auth_url=client.application.config["JWT_TOKEN_AUTH_URL"], user_id=user_id)
-    assert response.status_code == HTTPStatus.OK
-    response_json = response.json()
-    assert "access_token" in response_json
-    access_token = response_json["access_token"]
+    authentication_url = client.application.config["JWT_TOKEN_AUTH_URL"]
+    response = login_user(
+        auth_url=authentication_url, user_key_pairs=user_key_pairs, user_id=user_id
+    )
+    access_token = get_access_token(response)
 
     data1 = {"source": "cordis",
             "id": "cordis:article:1",
@@ -142,14 +150,16 @@ def test_corpus_taxonomy_aggregation(client: FlaskClient, user_id: str, aggs: st
 
 
 @pytest.mark.parametrize("user_id, aggs", [("seta_admin", "taxonomy:euro")])
-def test_corpus_taxonomy_aggregation_with_one_taxonomy(client: FlaskClient, user_id: str, aggs: str):
+def test_corpus_taxonomy_aggregation_with_one_taxonomy(
+    client: FlaskClient, user_key_pairs: dict, user_id: str, aggs: str
+):
     """Run search with aggregation on taxonomy field for GET corpus methods"""
 
-    response = login_user(auth_url=client.application.config["JWT_TOKEN_AUTH_URL"], user_id=user_id)
-    assert response.status_code == HTTPStatus.OK
-    response_json = response.json()
-    assert "access_token" in response_json
-    access_token = response_json["access_token"]
+    authentication_url = client.application.config["JWT_TOKEN_AUTH_URL"]
+    response = login_user(
+        auth_url=authentication_url, user_key_pairs=user_key_pairs, user_id=user_id
+    )
+    access_token = get_access_token(response)
 
     data = {"source": "cordis",
             "id": "cordis:article:1",
@@ -203,14 +213,16 @@ def test_corpus_taxonomy_aggregation_with_one_taxonomy(client: FlaskClient, user
 
 
 @pytest.mark.parametrize("user_id", ["seta_admin"])
-def test_corpus_taxonomy_search(client: FlaskClient, user_id: str):
+def test_corpus_taxonomy_search(
+    client: FlaskClient, user_key_pairs: dict, user_id: str
+):
     """Run taxonomy search for POST corpus methods"""
 
-    response = login_user(auth_url=client.application.config["JWT_TOKEN_AUTH_URL"], user_id=user_id)
-    assert response.status_code == HTTPStatus.OK
-    response_json = response.json()
-    assert "access_token" in response_json
-    access_token = response_json["access_token"]
+    authentication_url = client.application.config["JWT_TOKEN_AUTH_URL"]
+    response = login_user(
+        auth_url=authentication_url, user_key_pairs=user_key_pairs, user_id=user_id
+    )
+    access_token = get_access_token(response)
 
     data1 = {"source": "cordis",
              "id": "cordis:article:1",

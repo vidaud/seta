@@ -32,16 +32,6 @@ const SiteHeader = () => {
             className="mr-2"
           />
         </a>
-
-        {/* <div className="p-inputgroup searches">
-          <InputText placeholder="Search" type="text" className="search-form" />
-          <Button
-            label="Search"
-            className="searchButton"
-            tooltip="Search on the website"
-            tooltipOptions={{ className: 'blue-tooltip', position: 'right' }}
-          />
-        </div> */}
       </div>
     </div>
   )

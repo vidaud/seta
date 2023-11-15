@@ -16,3 +16,4 @@ from .stats_broker import IStatsBroker
 from .library_broker import ILibraryBroker
 from .users_query_broker import IUsersQueryBroker
 from .external_provider_broker import IExternalProviderBroker
+from .rolling_index_broker import IRollingIndexBroker

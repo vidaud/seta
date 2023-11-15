@@ -12,7 +12,13 @@ import { useResourcePermissionsID } from '~/api/communities/resources/user-resou
 
 import ManageResourcePermissions from '../ManageResourcePermissions'
 
-const ResourceUsersPermissions = ({ id, type }) => {
+type Props = {
+  id: string
+  type: string
+  scopes?: string[]
+}
+
+const ResourceUsersPermissions = ({ id, type, scopes }: Props) => {
   const perPage = 1
   const { data, isLoading, error, refetch } = useResourcePermissionsID(id)
   const [items, setItems] = useState(type === 'container' ? data?.slice(0, perPage) : data)
@@ -49,7 +55,7 @@ const ResourceUsersPermissions = ({ id, type }) => {
         </Group>
       </td>
       <td>
-        <ManageResourcePermissions props={item} id={id} />
+        <ManageResourcePermissions props={item} id={id} scopes={scopes} />
       </td>
     </tr>
   ))

@@ -6,25 +6,25 @@ import {
   RouterProvider
 } from 'react-router-dom'
 
-import CreateContribution from '~/pages/CommunitiesPage/components/contributors/NewContribution'
+import CommunitiesPage from '~/pages/CommunitiesPage/CommunitiesPage'
+import CreateContribution from '~/pages/CommunitiesPage/components/contributors/NewContribution/NewContribution'
 import InvitesList from '~/pages/CommunitiesPage/components/notifications/invitesList'
 import MembersList from '~/pages/CommunitiesPage/components/notifications/membersList'
+import ResourcesPage from '~/pages/CommunitiesPage/ResourcesPage'
+import ContactPage from '~/pages/ContactPage'
+import FaqsPage from '~/pages/FaqsPage'
+import HomePage from '~/pages/HomePage'
 import LoginPage from '~/pages/LoginPage'
+import NotFoundPage from '~/pages/NotFoundPage'
+import SearchPageNew from '~/pages/SearchPageNew'
+
+import AppLayout from '~/layouts/AppLayout'
+import CommunityLayout from '~/layouts/CommunityLayout'
 
 import LoginAuth from './components/LoginAuth'
 import RequireAuth from './components/RequireAuth'
 import AdminRoutes from './routes/AdminRoutes'
-
-import AppLayout from '../../layouts/AppLayout'
-import CommunityLayout from '../../layouts/CommunityLayout'
-import CommunitiesPage from '../../pages/CommunitiesPage/CommunitiesPage'
-import ResourcesPage from '../../pages/CommunitiesPage/ResourcesPage'
-import ContactPage from '../../pages/ContactPage'
-import FaqsPage from '../../pages/FaqsPage'
-import HomePage from '../../pages/HomePage'
-import NotFoundPage from '../../pages/NotFoundPage'
-import ProfilePage from '../../pages/ProfilePage'
-import SearchPageNew from '../../pages/SearchPageNew'
+import UserRoutes from './routes/UserRoutes'
 
 const ROOT_PATH = '/'
 const DISCOVER_COMMUNITY_PATH = '/community/'
@@ -44,14 +44,6 @@ const routes = createRoutesFromElements(
       }
     />
 
-    <Route
-      path="profile"
-      element={
-        <RequireAuth>
-          <ProfilePage />
-        </RequireAuth>
-      }
-    />
     <Route path="faqs" element={<FaqsPage />} />
     <Route path="contact" element={<ContactPage />} />
     <Route
@@ -126,6 +118,7 @@ const routes = createRoutesFromElements(
       />
     </Route>
     <Route path="admin" children={AdminRoutes} />
+    <Route path="profile" children={UserRoutes} />
     <Route path="*" element={<NotFoundPage />} />
   </Route>
 )

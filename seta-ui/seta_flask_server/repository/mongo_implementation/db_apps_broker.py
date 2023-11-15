@@ -19,8 +19,6 @@ from seta_flask_server.infrastructure.constants import (
     UserType,
 )
 
-from flask import current_app
-
 
 class AppsBroker(implements(IAppsBroker)):
     @inject
@@ -48,8 +46,6 @@ class AppsBroker(implements(IAppsBroker)):
             r = next((u for u in users if u["user_id"] == sa.user_id), None)
             if r is not None:
                 sa.user = SetaUser.from_db_json(r)
-            else:
-                current_app.logger.error("no user found for id %s", sa.user_id)
 
         return seta_apps
 

@@ -4,6 +4,7 @@ import { notifications } from '@mantine/notifications'
 import type { AxiosError } from 'axios'
 import { IoIosInformationCircle } from 'react-icons/io'
 
+import ResourceAlert from '~/pages/CommunitiesPage/components/resources/ResourceInfo/components/ResourceAlert'
 import {
   useResource,
   type ResourceValues,
@@ -11,8 +12,7 @@ import {
 } from '~/pages/CommunitiesPage/contexts/resource-context'
 
 import { useCreateResource } from '~/api/communities/resources/my-resource'
-
-import ResourceAlert from '../../../ResourceAlert'
+import { useUserPermissions } from '~/api/communities/user-scopes'
 
 const useStyles = createStyles({
   input: {
@@ -29,6 +29,7 @@ const useStyles = createStyles({
 const CreateForm = ({ id, close }) => {
   const { classes, cx } = useStyles()
   const setNewResourceMutation = useCreateResource(id)
+  const { refetch } = useUserPermissions()
   const [opened, setOpened] = useState<boolean>(false)
 
   const form = useResource({
@@ -57,11 +58,13 @@ const CreateForm = ({ id, close }) => {
           autoClose: 5000
         })
 
+        refetch()
         close()
       },
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       onError: (error: AxiosError | any) => {
         notifications.show({
+          title: 'Create Resource Failed!',
           message: error?.response?.data?.message,
           color: 'red',
           autoClose: 5000

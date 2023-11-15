@@ -24,27 +24,17 @@ export const useStyles = createStyles(theme => {
     },
 
     link: {
-      width: '80%',
-      display: 'block',
-      textDecoration: 'none',
-      fontSize: theme.fontSizes.xs,
-      color: theme.colorScheme === 'dark' ? theme.colors.dark[2] : theme.colors.gray[6],
-      paddingBottom: theme.spacing.xs,
       '&:hover': {
         backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.colors.gray[0],
-        color: theme.colorScheme === 'dark' ? theme.white : theme.black
+        color: theme.colorScheme === 'dark' ? theme.colors.dark[2] : theme.colors.gray[6]
       }
     },
 
     priority: {
       color: '#4169e1',
-      fontSize: theme.fontSizes.xs,
-      width: '80%',
-      textDecoration: 'none',
-      paddingBottom: theme.spacing.xs,
       '&:hover': {
         backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.colors.gray[0],
-        color: theme.colorScheme === 'dark' ? theme.white : theme.black
+        color: theme.colorScheme === 'dark' ? theme.colors.dark[2] : theme.colors.gray[6]
       }
     },
 

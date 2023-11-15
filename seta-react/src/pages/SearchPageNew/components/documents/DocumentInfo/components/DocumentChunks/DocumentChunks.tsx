@@ -3,7 +3,7 @@ import { forwardRef, useMemo } from 'react'
 
 import { SuggestionsError, SuggestionsLoading } from '~/pages/SearchPageNew/components/common'
 
-import useHighlight from '~/hooks/use-highlight'
+import { useHighlightWords } from '~/hooks/use-highlight'
 import type { DataProps } from '~/types/data-props'
 import type { Chunk } from '~/types/search/documents'
 
@@ -29,7 +29,7 @@ const DocumentChunks = forwardRef<HTMLDivElement, Props>(
       [data]
     )
 
-    const chunksTextHl = useHighlight(queryTerms, ...chunksText)
+    const chunksTextHl = useHighlightWords(queryTerms, ...chunksText)
 
     if (error) {
       return (
