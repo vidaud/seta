@@ -31,9 +31,13 @@ const RSAKeys = () => {
 
         setpublicKey(defaultNoPublicKeyMessage)
       },
-      onError: () => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      onError: (error: any) => {
         notifications.show({
-          message: 'Delete public Key failed!',
+          title: 'Delete public Key failed!',
+          message: error?.response?.data?.msg
+            ? error?.response?.data?.msg
+            : error?.response?.data?.message,
           color: 'red',
           autoClose: 5000
         })
@@ -55,9 +59,11 @@ const RSAKeys = () => {
           setpublicKey(data?.publicKey)
         }
       },
-      onError: () => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      onError: (error: any) => {
         notifications.show({
-          message: 'Public Key generation failed!',
+          title: 'Public Key generation failed!',
+          message: error?.response?.data?.msg,
           color: 'red',
           autoClose: 5000
         })

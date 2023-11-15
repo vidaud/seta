@@ -65,15 +65,19 @@ export const ApplicationProvider = ({ children }) => {
     updatePermissionsMutation.mutate(request, {
       onSuccess: () => {
         notifications.show({
+          title: 'Permissions updated!',
           message: `The application permissions were updated.`,
           color: 'blue',
           autoClose: 5000
         })
       },
-      onError: () => {
+      onError: error => {
         notifications.show({
           title: 'Update failed!',
-          message: 'The update of the application permissions failed. Please try again!',
+          // message: 'The update of the application permissions failed. Please try again!',
+          message: error?.response?.data?.msg
+            ? error?.response?.data?.msg
+            : error?.response?.data?.message,
           color: 'red',
           autoClose: 5000
         })

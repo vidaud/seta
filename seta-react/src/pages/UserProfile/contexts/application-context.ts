@@ -2,7 +2,7 @@ import { createFormContext } from '@mantine/form'
 
 export type ApplicationValues = {
   new_name?: string
-  name?: string
+  name: string
   description: string
   copyPublicKey?: boolean
   copyResourceScopes?: boolean

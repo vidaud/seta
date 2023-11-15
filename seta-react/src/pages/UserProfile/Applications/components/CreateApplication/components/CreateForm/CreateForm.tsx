@@ -32,7 +32,11 @@ const CreateForm = ({ close }) => {
       description: '',
       copyPublicKey: false,
       copyResourceScopes: true
-    }
+    },
+    validate: values => ({
+      name: values.name.length < 2 ? 'Name must have at least 2 letters' : null,
+      description: values.description.length < 2 ? 'Too short description' : null
+    })
   })
 
   const handleSubmit = (values: ApplicationValues) => {
@@ -56,7 +60,10 @@ const CreateForm = ({ close }) => {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       onError: (error: AxiosError | any) => {
         notifications.show({
-          message: error?.response?.data?.message,
+          title: 'Create Application Failed!',
+          message: error?.response?.data?.msg
+            ? error?.response?.data?.msg
+            : error?.response?.data?.message,
           color: 'red',
           autoClose: 5000
         })
