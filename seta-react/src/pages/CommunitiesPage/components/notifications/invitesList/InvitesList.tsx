@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
 import { createStyles, Table, rem, Title, Badge, useMantineTheme, Group } from '@mantine/core'
-import { notifications } from '@mantine/notifications'
 
 import DateTimeCell from '~/pages/Admin/common/components/DateTimeCell/DateTimeCell'
 import RowActions from '~/pages/Admin/common/components/RequestRowActions/RowActions'
@@ -16,6 +15,7 @@ import { statusColors } from '~/pages/CommunitiesPage/types'
 import { useUpdateInvitationRequest } from '~/api/communities/invites/invitation-requests'
 import { useAllPendingInvites } from '~/api/communities/invites/invite'
 import { InviteRequestStatus } from '~/types/community/invite-requests'
+import { notifications } from '~/utils/notifications'
 
 const useStyles = createStyles(theme => ({
   header: {
@@ -88,17 +88,9 @@ const InvitesList = () => {
     })
 
     if (updateRequestMutation.isError) {
-      notifications.show({
-        message: 'The invitation request update failed!',
-        color: 'red',
-        autoClose: 5000
-      })
+      notifications.showError('The invitation request update failed!', { autoClose: true })
     } else {
-      notifications.show({
-        message: 'The invitation request was approved!',
-        color: 'teal',
-        autoClose: 5000
-      })
+      notifications.showSuccess('The invitation request was approved!', { autoClose: true })
     }
   }
 
@@ -109,18 +101,12 @@ const InvitesList = () => {
     })
 
     if (updateRequestMutation.error) {
-      notifications.show({
-        title: 'Update failed!',
-        message: 'The invitation request update failed. Please try again!',
-        color: 'red',
-        autoClose: 5000
+      notifications.showError('Update failed!', {
+        description: 'The invitation request update failed. Please try again!',
+        autoClose: true
       })
     } else {
-      notifications.show({
-        message: 'The invitation request was rejected!',
-        color: 'yellow',
-        autoClose: 5000
-      })
+      notifications.showInfo('The invitation request was rejected!', { autoClose: true })
     }
   }
 

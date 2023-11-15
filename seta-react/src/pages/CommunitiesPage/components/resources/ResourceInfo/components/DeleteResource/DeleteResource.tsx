@@ -1,9 +1,9 @@
 import { useState } from 'react'
 import { Text, Popover, Button, Group, createStyles, UnstyledButton } from '@mantine/core'
-import { notifications } from '@mantine/notifications'
 import { IconTrash } from '@tabler/icons-react'
 
 import { useDeleteResource } from '~/api/communities/resources/my-resource'
+import { notifications } from '~/utils/notifications'
 
 const useStyles = createStyles(theme => ({
   form: {
@@ -27,20 +27,12 @@ const DeleteResource = ({ id }) => {
   const deleteResource = () => {
     setDeleteResourceMutation.mutate(id, {
       onSuccess: () => {
-        notifications.show({
-          message: `Resource deleted successfully!`,
-          color: 'blue',
-          autoClose: 5000
-        })
+        notifications.showSuccess(`Resource deleted successfully!`, { autoClose: true })
 
         setOpened(o => !o)
       },
       onError: () => {
-        notifications.show({
-          message: 'Delete resource failed!',
-          color: 'red',
-          autoClose: 5000
-        })
+        notifications.showError('Delete resource failed!', { autoClose: true })
       }
     })
   }

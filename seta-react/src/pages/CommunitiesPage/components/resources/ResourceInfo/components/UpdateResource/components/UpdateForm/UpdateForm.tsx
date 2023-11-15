@@ -1,6 +1,5 @@
 import { useEffect } from 'react'
 import { TextInput, Group, createStyles, Button, Textarea } from '@mantine/core'
-import { notifications } from '@mantine/notifications'
 
 import type { ResourceValues } from '~/pages/CommunitiesPage/contexts/resource-context'
 import {
@@ -9,6 +8,7 @@ import {
 } from '~/pages/CommunitiesPage/contexts/resource-context'
 
 import { useSetUpdateResource } from '~/api/communities/resources/my-resource'
+import { notifications } from '~/utils/notifications'
 
 const useStyles = createStyles({
   input: {
@@ -58,20 +58,12 @@ const UpdateForm = ({ resource, close, onChange }) => {
   const handleSubmit = (values: ResourceValues) => {
     setUpdateResourceMutation.mutate(values, {
       onSuccess: () => {
-        notifications.show({
-          message: `Resource Updated Successfully!`,
-          color: 'blue',
-          autoClose: 5000
-        })
+        notifications.showSuccess(`Resource Updated Successfully!`, { autoClose: true })
 
         close()
       },
       onError: () => {
-        notifications.show({
-          message: 'Resource update failed!',
-          color: 'red',
-          autoClose: 5000
-        })
+        notifications.showError('Resource update failed!', { autoClose: true })
       }
     })
   }

@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
 import { createStyles, Switch, useMantineTheme } from '@mantine/core'
-import { notifications } from '@mantine/notifications'
 import { CgSearchFound } from 'react-icons/cg'
 import { MdOutlineSearchOff } from 'react-icons/md'
 
@@ -9,6 +8,7 @@ import type { ResourceScopes } from '~/pages/CommunitiesPage/contexts/scope-cont
 import { useAllResources } from '~/api/communities/resources/discover-resources'
 import { useRestrictedResource } from '~/api/communities/resources/restricted-resources'
 import type { ResourceResponse } from '~/api/types/resource-types'
+import { notifications } from '~/utils/notifications'
 
 const useStyles = createStyles(theme => ({
   form: {
@@ -62,18 +62,10 @@ const RestrictedResource = ({ resource }: Props) => {
       form.append('resource', id)
       setRestrictedResourceMutation.mutate(form, {
         onSuccess: () => {
-          notifications.show({
-            message: `Resource is now not searchable!`,
-            color: 'blue',
-            autoClose: 5000
-          })
+          notifications.showSuccess(`Resource is now not searchable!`, { autoClose: true })
         },
         onError: () => {
-          notifications.show({
-            message: 'The resource update failed!',
-            color: 'red',
-            autoClose: 5000
-          })
+          notifications.showError('The resource update failed!', { autoClose: true })
         }
       })
     } else {
@@ -87,18 +79,10 @@ const RestrictedResource = ({ resource }: Props) => {
 
       setRestrictedResourceMutation.mutate(form, {
         onSuccess: () => {
-          notifications.show({
-            message: `Resource is now searchable!`,
-            color: 'blue',
-            autoClose: 5000
-          })
+          notifications.showSuccess(`Resource is now searchable!`, { autoClose: true })
         },
         onError: () => {
-          notifications.show({
-            message: 'The resource update failed!',
-            color: 'red',
-            autoClose: 5000
-          })
+          notifications.showError('The resource update failed!', { autoClose: true })
         }
       })
     }

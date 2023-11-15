@@ -1,9 +1,9 @@
 import { Card, Text, Title } from '@mantine/core'
 
+import PermsTable from '~/pages/UserProfile/Permissions/components/PermsTable'
+
 import type { CommunityScope } from '~/types/admin/scopes'
 import type { CategoryScopesResponse } from '~/types/catalogue/catalogue-scopes'
-
-import PermsTable from '../../../PermsTable'
 
 type Props = {
   communityScope: CommunityScope

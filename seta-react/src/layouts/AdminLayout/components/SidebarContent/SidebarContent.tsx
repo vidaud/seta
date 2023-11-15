@@ -16,10 +16,10 @@ const SidebarContent = () => {
   const { data } = useAdminSidebarStats()
 
   return (
-    <Navbar height={800} p="md" mt="-2rem">
+    <Navbar height={800} mt="-2rem">
       {/* Title section START*/}
       <Navbar.Section css={S.header}>
-        <Group>
+        <Group p="md">
           <FaWrench size="1.1rem" color="gray" />
           <Title order={4} c="dimmed">
             Administration

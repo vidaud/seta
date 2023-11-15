@@ -1,5 +1,4 @@
 import { TextInput, Group, createStyles, Button, Textarea, Tooltip } from '@mantine/core'
-import { notifications } from '@mantine/notifications'
 import type { AxiosError } from 'axios'
 import { MdSettingsEthernet } from 'react-icons/md'
 
@@ -13,6 +12,7 @@ import {
 import { useCreateCommunity } from '~/api/communities/communities/my-community'
 import { useUserPermissions } from '~/api/communities/user-scopes'
 import { useCurrentUser } from '~/contexts/user-context'
+import { notifications } from '~/utils/notifications'
 
 const useStyles = createStyles({
   input: {
@@ -51,22 +51,16 @@ const CreateForm = ({ close }) => {
   const handleSubmit = (values: CommunityValues) => {
     setCreateCommunityMutation.mutate(values, {
       onSuccess: () => {
-        notifications.show({
-          message: `Community Created Successfully!`,
-          color: 'blue',
-          autoClose: 5000
-        })
+        notifications.showSuccess(`Community Created Successfully!`, { autoClose: true })
 
         refetch()
         close()
       },
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       onError: (error: AxiosError | any) => {
-        notifications.show({
-          title: 'Create Community Failed!',
-          message: error?.response?.data?.message,
-          color: 'red',
-          autoClose: 5000
+        notifications.showError('Create Community Failed!', {
+          description: error?.response?.data?.message,
+          autoClose: true
         })
       }
     })

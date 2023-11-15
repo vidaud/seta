@@ -12,7 +12,7 @@ const SimpleStat = ({ icon, title, label, count }: Props) => {
   const countColor = count === 0 ? 'gray' : 'orange'
 
   return (
-    <Paper radius="md" shadow="md" p="xs">
+    <Paper radius="md" shadow="md" p="xs" w="max-content">
       <Group align="flex-start">
         {icon}
         <Box>

@@ -1,7 +1,7 @@
 import { createContext, useContext, useState } from 'react'
-import { notifications } from '@mantine/notifications'
 
 import type { ApplicationPermissions } from '~/api/user/applications-permissions'
+import { notifications } from '~/utils/notifications'
 
 export interface ApplicationContextValue {
   saveDisabled: boolean
@@ -64,23 +64,23 @@ export const ApplicationProvider = ({ children }) => {
 
     updatePermissionsMutation.mutate(request, {
       onSuccess: () => {
-        notifications.show({
-          title: 'Permissions updated!',
-          message: `The application permissions were updated.`,
-          color: 'blue',
-          autoClose: 5000
+        notifications.showSuccess('Permissions updated!', {
+          description: `The application permissions were updated.`,
+
+          autoClose: true
         })
       },
       onError: error => {
-        notifications.show({
-          title: 'Update failed!',
+        notifications.showError(
+          'Update failed!',
           // message: 'The update of the application permissions failed. Please try again!',
-          message: error?.response?.data?.msg
-            ? error?.response?.data?.msg
-            : error?.response?.data?.message,
-          color: 'red',
-          autoClose: 5000
-        })
+          {
+            description: error?.response?.data?.msg
+              ? error?.response?.data?.msg
+              : error?.response?.data?.message,
+            autoClose: true
+          }
+        )
       }
     })
   }

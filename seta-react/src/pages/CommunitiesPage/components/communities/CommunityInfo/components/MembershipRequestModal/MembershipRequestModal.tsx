@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import { Popover, Button, Group, Textarea, createStyles, Tooltip } from '@mantine/core'
-import { notifications } from '@mantine/notifications'
 
 import type { MembershipValues } from '~/pages/CommunitiesPage/contexts/membership-context'
 import {
@@ -9,6 +8,7 @@ import {
 } from '~/pages/CommunitiesPage/contexts/membership-context'
 
 import { useNewCommunityMembership } from '~/api/communities/memberships/membership'
+import { notifications } from '~/utils/notifications'
 
 const useStyles = createStyles({
   form: {
@@ -33,20 +33,12 @@ const MembershipRequest = ({ community_id }) => {
   const handleSubmit = (values: MembershipValues) => {
     setNewCommunityMembershipMutation.mutate(values, {
       onSuccess: () => {
-        notifications.show({
-          message: `Membership Request Sent Successfully!`,
-          color: 'blue',
-          autoClose: 5000
-        })
+        notifications.showSuccess(`Membership Request Sent Successfully!`, { autoClose: true })
 
         setOpened(o => !o)
       },
       onError: () => {
-        notifications.show({
-          message: 'Membership Request Failed!',
-          color: 'red',
-          autoClose: 5000
-        })
+        notifications.showError('Membership Request Failed!', { autoClose: true })
       }
     })
   }

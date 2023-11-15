@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import { TextInput, Group, createStyles, Button, Textarea, Radio } from '@mantine/core'
-import { notifications } from '@mantine/notifications'
 import type { AxiosError } from 'axios'
 import { IoIosInformationCircle } from 'react-icons/io'
 
@@ -13,6 +12,7 @@ import {
 
 import { useCreateResource } from '~/api/communities/resources/my-resource'
 import { useUserPermissions } from '~/api/communities/user-scopes'
+import { notifications } from '~/utils/notifications'
 
 const useStyles = createStyles({
   input: {
@@ -52,22 +52,16 @@ const CreateForm = ({ id, close }) => {
   const handleSubmit = (values: ResourceValues) => {
     setNewResourceMutation.mutate(values, {
       onSuccess: () => {
-        notifications.show({
-          message: `New Resource Added Successfully!`,
-          color: 'blue',
-          autoClose: 5000
-        })
+        notifications.showSuccess(`New Resource Added Successfully!`, { autoClose: true })
 
         refetch()
         close()
       },
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       onError: (error: AxiosError | any) => {
-        notifications.show({
-          title: 'Create Resource Failed!',
-          message: error?.response?.data?.message,
-          color: 'red',
-          autoClose: 5000
+        notifications.showError('Create Resource Failed!', {
+          description: error?.response?.data?.message,
+          autoClose: true
         })
       }
     })

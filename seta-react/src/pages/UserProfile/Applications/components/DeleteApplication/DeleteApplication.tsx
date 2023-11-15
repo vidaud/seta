@@ -1,9 +1,9 @@
 import { useState } from 'react'
 import { Text, Popover, Button, Group, createStyles, UnstyledButton } from '@mantine/core'
-import { notifications } from '@mantine/notifications'
 import { IconTrash } from '@tabler/icons-react'
 
 import { useDeleteApplication } from '~/api/user/applications'
+import { notifications } from '~/utils/notifications'
 
 const useStyles = createStyles(theme => ({
   form: {
@@ -26,21 +26,16 @@ const DeleteApplication = ({ application }) => {
   const deleteApplication = () => {
     setDeleteApplicationMutation.mutate(application?.name, {
       onSuccess: () => {
-        notifications.show({
-          message: `Application deleted successfully!`,
-          color: 'blue',
-          autoClose: 5000
-        })
+        notifications.showSuccess(`Application deleted successfully!`, { autoClose: true })
 
         setOpened(o => !o)
       },
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       onError: (error: any) => {
-        notifications.show({
-          title: 'Delete application failed!',
-          message: error?.response?.data?.msg,
-          color: 'red',
-          autoClose: 5000
+        notifications.showError('Delete application failed!', {
+          description: error?.response?.data?.msg,
+
+          autoClose: true
         })
       }
     })

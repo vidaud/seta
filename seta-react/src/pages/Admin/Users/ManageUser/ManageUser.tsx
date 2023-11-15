@@ -1,5 +1,4 @@
 import { Box, Card, Grid, Title, Container } from '@mantine/core'
-import { notifications } from '@mantine/notifications'
 import { useNavigate, useParams } from 'react-router-dom'
 
 import { SuggestionsError } from '~/pages/SearchPageNew/components/common'
@@ -7,6 +6,7 @@ import { SuggestionsError } from '~/pages/SearchPageNew/components/common'
 import { useSetaAccount, useChangeAccountStatus, useDeleteAccount } from '~/api/admin/user'
 import { AccountStatus } from '~/types/admin/user-info'
 import logger from '~/utils/logger'
+import { notifications } from '~/utils/notifications'
 
 import Actions from './components/Actions'
 import Info from './components/Info'
@@ -40,20 +40,14 @@ const ManageUser = () => {
       onSuccess: () => {
         logger.log('handleChangeAccountStatus success')
 
-        notifications.show({
-          message: `The account was ${status}.`,
-          color: 'blue',
-          autoClose: 5000
-        })
+        notifications.showSuccess(`The account was ${status}.`, { autoClose: true })
       },
       onError: () => {
         logger.log('handleChangeAccountStatus error')
 
-        notifications.show({
-          title: 'Update failed!',
-          message: 'The account status update failed. Please try again!',
-          color: 'red',
-          autoClose: 5000
+        notifications.showError('Update failed!', {
+          description: 'The account status update failed. Please try again!',
+          autoClose: true
         })
       }
     })
@@ -64,22 +58,16 @@ const ManageUser = () => {
       onSuccess: () => {
         logger.log('handleDeleteAccount success')
 
-        notifications.show({
-          message: `The account was deleted.`,
-          color: 'blue',
-          autoClose: 5000
-        })
+        notifications.showSuccess(`The account was deleted.`, { autoClose: true })
 
         navigate('/admin/users', { replace: true })
       },
       onError: () => {
         logger.log('handleDeleteAccount error')
 
-        notifications.show({
-          title: 'Account deletion failed!',
-          message: 'The account deletion failed. Please try again later!',
-          color: 'red',
-          autoClose: 5000
+        notifications.showError('Account deletion failed!', {
+          description: 'The account deletion failed. Please try again later!',
+          autoClose: true
         })
       }
     })
