@@ -46,7 +46,7 @@ def test_ontology_term(
     # TODO: check response
     if response.status_code == HTTPStatus.OK:
         assert "links" in response.json
-
+    
 
 @pytest.mark.parametrize("user_id", ["seta_admin"])
 @pytest.mark.parametrize(
