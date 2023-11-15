@@ -6,19 +6,35 @@ import pytz
 from pymongo import MongoClient
 from seta_flask_server.repository.models import SetaUser, RsaKey
 
-
 from migrations.catalogues import (
     scopes_catalogue_builder as scopes_builder,
     roles_catalogue_builder as roles_builder,
     rolling_index_builder as index_builder,
 )
 
+from tests.infrastructure.helpers.util import get_public_key
+
+
+def load_users_data() -> dict:
+    base_path = Path(__file__).parent
+    users_file_path = "../data/users.json"
+    users_full_path = (base_path / users_file_path).resolve()
+
+    with open(users_full_path, encoding="utf-8") as fp:
+        data = json.load(fp)
+
+        return data
+
 
 class DbTestSetaApi:
-    def __init__(self, db_host: str, db_port: int, db_name: str) -> None:
+    def __init__(
+        self, db_host: str, db_port: int, db_name: str, user_key_pairs: dict
+    ) -> None:
         self.db_host = db_host
         self.db_port = db_port
         self.db_name = db_name
+
+        self.user_key_pairs = user_key_pairs
 
         client = MongoClient(self.db_host, self.db_port)
         self.db = client[self.db_name]
@@ -35,14 +51,9 @@ class DbTestSetaApi:
         """
 
         now_date = datetime.datetime.now(tz=pytz.utc)
-        base_path = Path(__file__).parent
-        users_file_path = "../data/users.json"
-        users_full_path = (base_path / users_file_path).resolve()
-
-        with open(users_full_path, encoding="utf-8") as fp:
-            data = json.load(fp)
-
         user_collection = self.db["users"]
+
+        data = load_users_data()
 
         # save users
         for user in data["users"]:
@@ -56,15 +67,11 @@ class DbTestSetaApi:
             user_collection.insert_one(su.to_json())
 
             # insert public key
-            pub_path = f"../data/{su.user_id}.pub"
-            full_path = (base_path / pub_path).resolve()
+            pub_key = get_public_key(su.user_id, self.user_key_pairs)
 
-            with open(full_path, encoding="utf-8") as fk:
-                key = fk.read()
-                rk = RsaKey(user_id=su.user_id, rsa_value=key, created_at=now_date)
+            if pub_key:
+                rk = RsaKey(user_id=su.user_id, rsa_value=pub_key, created_at=now_date)
                 user_collection.insert_one(rk.to_json())
-
-            # current_app.logger.debug("Append user: " + su.user_id)
 
         # save user claims
         user_collection.insert_many(data["claims"])

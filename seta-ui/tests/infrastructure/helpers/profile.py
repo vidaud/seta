@@ -1,3 +1,4 @@
+from flask import json
 from flask.testing import FlaskClient
 from .util import auth_headers
 
@@ -78,12 +79,19 @@ def create_app(
 
     url = f"{API_V1}/apps"
 
-    # pylint: disable-next=line-too-long
-    data = f"name={name}&description={description}&copy_public_key={str(copy_public_key)}&copy_resource_scopes={str(copy_resource_scopes)}"
+    payload = {
+        "name": name,
+        "description": description,
+        "copyPublicKey": copy_public_key,
+        "copyResourceScopes": copy_resource_scopes,
+    }
+
+    data = json.dumps(payload)
+
     return client.post(
         url,
         data=data,
-        content_type="application/x-www-form-urlencoded",
+        content_type="application/json",
         headers=auth_headers(access_token),
     )
 
@@ -115,11 +123,17 @@ def update_app(
 
     url = f"{API_V1}/apps/{name}"
 
-    data = f"new_name={new_name}&description={description}"
+    payload = {
+        "new_name": new_name,
+        "description": description,
+    }
+
+    data = json.dumps(payload)
+
     return client.put(
         url,
         data=data,
-        content_type="application/x-www-form-urlencoded",
+        content_type="application/json",
         headers=auth_headers(access_token),
     )
 

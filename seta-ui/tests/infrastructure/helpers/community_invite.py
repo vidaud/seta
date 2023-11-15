@@ -36,6 +36,14 @@ def get_community_pending_invites(
     )
 
 
+def get_pending_invites(client: FlaskClient, access_token: str, community_id: str):
+    url = f"{API_V1}/invites"
+
+    return client.get(
+        url, content_type="application/json", headers=auth_headers(access_token)
+    )
+
+
 def get_invite(client: FlaskClient, access_token: str, invite_id: str):
     url = f"{API_V1}/invites/{invite_id}"
 

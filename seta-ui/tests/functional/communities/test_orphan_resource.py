@@ -4,10 +4,11 @@ import pytest
 from flask.testing import FlaskClient
 import requests
 
-
 from tests.infrastructure.helpers.authentication import login_user
 from tests.infrastructure.helpers.community import create_community
 from tests.infrastructure.helpers.resource import create_resource
+
+from tests.infrastructure.helpers.util import get_access_token
 
 
 def add_document(url: str):
@@ -37,6 +38,7 @@ def add_document(url: str):
 def test_orphan(
     client: FlaskClient,
     authentication_url: str,
+    user_key_pairs: dict,
     seta_api_corpus: str,
     user_id: str,
     community_id: str,
@@ -49,11 +51,10 @@ def test_orphan(
     # wait for commit in ES
     time.sleep(2)
 
-    response = login_user(auth_url=authentication_url, user_id=user_id)
-    assert response.status_code == HTTPStatus.OK
-    response_json = response.json()
-    assert "access_token" in response_json
-    access_token = response_json["access_token"]
+    response = login_user(
+        auth_url=authentication_url, user_key_pairs=user_key_pairs, user_id=user_id
+    )
+    access_token = get_access_token(response)
 
     response = create_community(
         client=client,

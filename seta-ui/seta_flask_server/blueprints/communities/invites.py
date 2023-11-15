@@ -113,7 +113,7 @@ class CommunityInvite(Resource):
         return response
 
 
-@invite_ns.route("/", endpoint="my_invites", methods=["GET", "PUT"])
+@invite_ns.route("", endpoint="my_invites", methods=["GET", "PUT"])
 class MyCommunityInvites(Resource):
     """Handles HTTP requests to URL: /invites"""
 

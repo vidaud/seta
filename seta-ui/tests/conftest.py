@@ -10,11 +10,15 @@ Usage:
 import os
 import pytest
 import requests
+import configparser
+from pathlib import Path
+
+from Crypto.PublicKey import RSA
 
 from seta_flask_server.config import Config
 from seta_flask_server.factory import create_app
 
-from tests.infrastructure.init.db import DbTestSetaApi
+from tests.infrastructure.init.db import DbTestSetaApi, load_users_data
 
 
 def pytest_addoption(parser):
@@ -69,10 +73,16 @@ def auth_root(request):
 def init_os(db_host, db_port, db_name):
     """Initialize environment variables for config."""
 
-    #! set the same API_SECRET_KEY in the .env.test file
-    os.environ["API_SECRET_KEY"] = "testkey1"
-    os.environ["GITHUB_CLIENT_ID"] = "seta"
-    os.environ["GITHUB_CLIENT_SECRET"] = "seta"
+    base_path = Path(__file__).parent
+    conf_path = (base_path / "test.conf").resolve()
+
+    config = configparser.ConfigParser()
+    config.read(conf_path)
+    config_section = config["TEST"]
+
+    os.environ["API_SECRET_KEY"] = config_section["API_SECRET_KEY"]
+    os.environ["GITHUB_CLIENT_ID"] = config_section["GITHUB_CLIENT_ID"]
+    os.environ["GITHUB_CLIENT_SECRET"] = config_section["GITHUB_CLIENT_SECRET"]
 
     os.environ["DB_HOST"] = db_host
     os.environ["DB_NAME"] = db_name
@@ -87,11 +97,30 @@ def authentication_url(auth_root):
     return f"http://{auth_root}/authentication/v1/token"
 
 
+@pytest.fixture(scope="session")
+def user_key_pairs():
+    """Generate rsa pair for a user list."""
+
+    user_key_pairs = {}
+
+    data = load_users_data()
+
+    for user in data["users"]:
+        user_key_pairs[user["user_id"]] = _generate_rsa_pair()
+
+    yield user_key_pairs
+
+
 @pytest.fixture(scope="module", autouse=True)
-def db(db_host, db_port, db_name):
+def db(db_host, db_port, db_name, user_key_pairs):
     """Initialize test database."""
 
-    db = DbTestSetaApi(db_host=db_host, db_port=int(db_port), db_name=db_name)
+    db = DbTestSetaApi(
+        db_host=db_host,
+        db_port=int(db_port),
+        db_name=db_name,
+        user_key_pairs=user_key_pairs,
+    )
     db.clear_db()
     db.init_db()
 
@@ -135,6 +164,21 @@ def seta_api_corpus(api_root: str):
     # remove everything from ES
     cleanup_url = f"http://{api_root}/seta-api-test/cleanup"
     requests.post(cleanup_url, timeout=30)
+
+
+def _generate_rsa_pair() -> dict:
+    key_pair = RSA.generate(bits=4096)
+
+    # public key
+    pub_key = key_pair.public_key()
+    pub_key_pem = pub_key.export_key()
+    decoded_pub_key_pem = pub_key_pem.decode("ascii")
+
+    # private key
+    priv_key_pem = key_pair.export_key()
+    decoded_priv_key_pem = priv_key_pem.decode("ascii")
+
+    return {"privateKey": decoded_priv_key_pem, "publicKey": decoded_pub_key_pem}
 
 
 class TestConfig(Config):

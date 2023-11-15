@@ -7,6 +7,8 @@ from tests.functional.admin.rolling_indexes import api
 
 from seta_flask_server.repository.models import RollingIndex, StorageLimits
 
+from tests.infrastructure.helpers.util import get_access_token
+
 new_rolling_indexes = {
     "jrc": RollingIndex(
         rolling_index_name="jrc",
@@ -50,15 +52,18 @@ update_rolling_indexes = {
 
 @pytest.mark.parametrize("user_id, name", [("seta_admin", "default")])
 def test_get_all_rolling_indexes(
-    client: FlaskClient, authentication_url: str, user_id: str, name: str
+    client: FlaskClient,
+    authentication_url: str,
+    user_key_pairs: dict,
+    user_id: str,
+    name: str,
 ):
     """Retrieves all rolling indexes and validates name in result."""
 
-    response = login_user(auth_url=authentication_url, user_id=user_id)
-    assert response.status_code == HTTPStatus.OK
-    response_json = response.json()
-    assert "access_token" in response_json
-    access_token = response_json["access_token"]
+    response = login_user(
+        auth_url=authentication_url, user_key_pairs=user_key_pairs, user_id=user_id
+    )
+    access_token = get_access_token(response)
 
     response = api.get_all_rolling_indexes(client=client, access_token=access_token)
     assert response.status_code == HTTPStatus.OK
@@ -84,15 +89,19 @@ def test_get_all_rolling_indexes(
     ],
 )
 def test_create_rolling_index(
-    client: FlaskClient, authentication_url: str, user_id: str, key: str, expect: int
+    client: FlaskClient,
+    authentication_url: str,
+    user_key_pairs: dict,
+    user_id: str,
+    key: str,
+    expect: int,
 ):
     """Create rolling index."""
 
-    response = login_user(auth_url=authentication_url, user_id=user_id)
-    assert response.status_code == HTTPStatus.OK
-    response_json = response.json()
-    assert "access_token" in response_json
-    access_token = response_json["access_token"]
+    response = login_user(
+        auth_url=authentication_url, user_key_pairs=user_key_pairs, user_id=user_id
+    )
+    access_token = get_access_token(response)
 
     rolling_index = new_rolling_indexes[key]
     response = api.create_rolling_index(
@@ -109,15 +118,19 @@ def test_create_rolling_index(
     ],
 )
 def test_update_rolling_index(
-    client: FlaskClient, authentication_url: str, user_id: str, key: str, expect: int
+    client: FlaskClient,
+    authentication_url: str,
+    user_key_pairs: dict,
+    user_id: str,
+    key: str,
+    expect: int,
 ):
     """Update rolling index."""
 
-    response = login_user(auth_url=authentication_url, user_id=user_id)
-    assert response.status_code == HTTPStatus.OK
-    response_json = response.json()
-    assert "access_token" in response_json
-    access_token = response_json["access_token"]
+    response = login_user(
+        auth_url=authentication_url, user_key_pairs=user_key_pairs, user_id=user_id
+    )
+    access_token = get_access_token(response)
 
     rolling_index = update_rolling_indexes[key]
     response = api.update_rolling_index(
@@ -134,15 +147,19 @@ def test_update_rolling_index(
     ],
 )
 def test_create_active_index(
-    client: FlaskClient, authentication_url: str, user_id: str, name: str, expect: int
+    client: FlaskClient,
+    authentication_url: str,
+    user_key_pairs: dict,
+    user_id: str,
+    name: str,
+    expect: int,
 ):
     """Test create active rolling index."""
 
-    response = login_user(auth_url=authentication_url, user_id=user_id)
-    assert response.status_code == HTTPStatus.OK
-    response_json = response.json()
-    assert "access_token" in response_json
-    access_token = response_json["access_token"]
+    response = login_user(
+        auth_url=authentication_url, user_key_pairs=user_key_pairs, user_id=user_id
+    )
+    access_token = get_access_token(response)
 
     response = api.create_active_index(
         client=client, access_token=access_token, rolling_index_name=name
@@ -160,6 +177,7 @@ def test_create_active_index(
 def test_replace_communities(
     client: FlaskClient,
     authentication_url: str,
+    user_key_pairs: dict,
     user_id: str,
     name: str,
     communities: str,
@@ -167,11 +185,10 @@ def test_replace_communities(
 ):
     """Test replace communities."""
 
-    response = login_user(auth_url=authentication_url, user_id=user_id)
-    assert response.status_code == HTTPStatus.OK
-    response_json = response.json()
-    assert "access_token" in response_json
-    access_token = response_json["access_token"]
+    response = login_user(
+        auth_url=authentication_url, user_key_pairs=user_key_pairs, user_id=user_id
+    )
+    access_token = get_access_token(response)
 
     community_ids = communities.split(",")
     response = api.replace_communities(
