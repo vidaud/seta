@@ -6,6 +6,7 @@ import type { DocumentsOptions, DocumentsResponse } from '~/api/search/documents
 import { useDocuments } from '~/api/search/documents'
 import usePaginator from '~/hooks/use-paginator'
 import type { EmbeddingInfo } from '~/types/embeddings'
+import { notifications } from '~/utils/notifications'
 
 import DocumentsListContent from './DocumentsListContent'
 
@@ -21,6 +22,7 @@ type Props = {
 
 const DocumentsList = ({ query, terms, embeddings, searchOptions, onDocumentsChanged }: Props) => {
   const documentsChangedRef = useRef(onDocumentsChanged)
+  const errorNotificationShownRef = useRef(false)
 
   const [page, setPage] = useState(1)
 
@@ -31,6 +33,20 @@ const DocumentsList = ({ query, terms, embeddings, searchOptions, onDocumentsCha
     perPage: PER_PAGE,
     searchOptions
   })
+
+  // Show an error notification if there was an error fetching the documents
+  // and there is data (i.e. there was a successful request before)
+  if (error && data && !errorNotificationShownRef.current) {
+    errorNotificationShownRef.current = true
+
+    notifications.showError('There was an error refreshing the documents.', {
+      description: 'Please try again later.',
+      onClose: () => {
+        // Prevent showing the notification again until it's closed
+        errorNotificationShownRef.current = false
+      }
+    })
+  }
 
   useEffect(() => {
     if (data) {
