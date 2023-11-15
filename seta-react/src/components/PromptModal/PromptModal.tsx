@@ -14,6 +14,7 @@ type Props<T extends Value> = {
   label?: ReactNode
   placeholder?: string
   initialValue: T
+  invalidChars?: string[]
   optional?: boolean
   withStar?: boolean
   submitLabel?: string
@@ -32,6 +33,7 @@ const PromptModal = <T extends Value>(props: Props<T>) => {
     label = 'Enter a value',
     placeholder = 'Value',
     initialValue,
+    invalidChars,
     optional,
     withStar,
     submitLabel = 'Submit',
@@ -90,6 +92,12 @@ const PromptModal = <T extends Value>(props: Props<T>) => {
   }
 
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (invalidChars?.includes(e.key)) {
+      e.preventDefault()
+
+      return
+    }
+
     if (e.key === 'Enter') {
       handleSubmit()
     } else if (e.key === 'Escape') {

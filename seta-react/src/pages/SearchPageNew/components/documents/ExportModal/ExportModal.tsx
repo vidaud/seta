@@ -26,7 +26,7 @@ import SelectableFieldsGroup from './components/SelectableFieldsGroup'
 import SelectSection from './components/SelectSection'
 import SortableFieldsGroup from './components/SortableFieldsGroup'
 import SortedFieldsTitle from './components/SortedFieldsTitle'
-import { EXPORT_FORMATS } from './constants'
+import { EXPORT_FORMATS, EXPORT_PATHS_SEPARATOR } from './constants'
 import useExportStorage from './hooks/use-export-storage'
 import useSelectFields from './hooks/use-select-fields'
 import * as S from './styles'
@@ -107,9 +107,17 @@ const ExportModal = ({ reference, exportItems, opened, onClose, ...props }: Prop
 
     setIsExporting(true)
 
+    const ids: ExportMetaPayload['ids'] = exportItems.map(({ documentId, paths }) => ({
+      id: documentId,
+      // The same document can be located at multiple paths, so we join them here
+      path: paths.join(EXPORT_PATHS_SEPARATOR)
+    }))
+
+    const fields: ExportMetaPayload['fields'] = sortedFields.map(({ name }) => name)
+
     const payload: ExportMetaPayload = {
-      ids: exportItems.map(({ documentId }) => documentId),
-      fields: sortedFields.map(({ name }) => name),
+      ids,
+      fields,
       format
     }
 

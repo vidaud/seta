@@ -17,6 +17,12 @@ const EXPORT_API_PATH = '/export'
 
 const EXPORT_FILE_NAME_PREFIX = 'seta-export'
 
+// Extra field to return as part of the fields catalog to allow exporting the document's path
+const PATH_FIELD: ExportField = {
+  name: 'path',
+  description: 'The path(s) where the document is located in the library.'
+}
+
 export type FieldsCatalogResponse = {
   fields_catalog: ExportField[]
 }
@@ -27,7 +33,11 @@ type UseFieldsCatalogArgs = {
 }
 
 export type ExportMetaPayload = {
-  ids: string[]
+  ids: {
+    id: string
+    path: string
+  }[]
+
   fields: string[]
   format: ExportFormatKey
 }
@@ -39,7 +49,10 @@ export const fieldsCatalogQueryKey: QueryKey = ['fields-catalog']
 const getFieldsCatalog = async (config?: AxiosRequestConfig): Promise<FieldsCatalogResponse> => {
   const { data } = await api.get<FieldsCatalogResponse>(FIELDS_CATALOG_API_PATH, config)
 
-  return data
+  return {
+    // Add the `path` field to the catalog
+    fields_catalog: [...data.fields_catalog, PATH_FIELD]
+  }
 }
 
 export const useFieldsCatalog = (args?: UseFieldsCatalogArgs) => {
