@@ -5,14 +5,17 @@ import { notifications } from '@mantine/notifications'
 import DateTimeCell from '~/pages/Admin/common/components/DateTimeCell/DateTimeCell'
 import RowActions from '~/pages/Admin/common/components/RequestRowActions/RowActions'
 import UserInfo from '~/pages/Admin/common/components/UserInfo/UserInfo'
+import {
+  ComponentEmpty,
+  ComponentError,
+  ComponentLoading
+} from '~/pages/CommunitiesPage/components/common'
+import ExtendedMessage from '~/pages/CommunitiesPage/components/communities/CommunityInfo/components/ExtendedMessage/ExtendedMessage'
 import { statusColors } from '~/pages/CommunitiesPage/types'
 
 import { useUpdateInvitationRequest } from '~/api/communities/invites/invitation-requests'
 import { useAllPendingInvites } from '~/api/communities/invites/invite'
 import { InviteRequestStatus } from '~/types/community/invite-requests'
-
-import { ComponentEmpty, ComponentError, ComponentLoading } from '../../common'
-import ExtendedMessage from '../../communities/CommunityInfo/components/ExtendedMessage/ExtendedMessage'
 
 const useStyles = createStyles(theme => ({
   header: {

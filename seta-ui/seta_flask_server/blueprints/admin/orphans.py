@@ -249,7 +249,7 @@ class ResourceOrphans(Resource):
 
         except HTTPException:
             raise
-        except:
+        except Exception:
             app.logger.exception("CommunityResourceList->post")
             abort(HTTPStatus.INTERNAL_SERVER_ERROR)
 

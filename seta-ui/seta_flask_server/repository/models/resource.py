@@ -29,15 +29,15 @@ class ResourceLimitsModel:
 
 @dataclass
 class ResourceModel:
-    resource_id: str = (None,)
-    community_id: str = (None,)
-    title: str = (None,)
-    abstract: str = (None,)
-    type: str = (ResourceTypeConstants.Discoverable,)
-    limits: ResourceLimitsModel = (None,)
-    status: str = (ResourceStatusConstants.Active,)
-    creator_id: str = (None,)
-    created_at: datetime = (None,)
+    resource_id: str = None
+    community_id: str = None
+    title: str = None
+    abstract: str = None
+    type: str = ResourceTypeConstants.Discoverable
+    limits: ResourceLimitsModel = None
+    status: str = ResourceStatusConstants.Active
+    creator_id: str = None
+    created_at: datetime = None
     modified_at: datetime = None
 
     creator: UserInfo = None
@@ -82,11 +82,11 @@ class ResourceModel:
 
 @dataclass
 class ResourceContributorModel:
-    resource_id: str = (None,)
-    user_id: str = (None,)
-    file_name: str = (None,)
-    file_size_mb: float = (None,)
-    metadata: dict = (None,)
+    resource_id: str = None
+    user_id: str = None
+    file_name: str = None
+    file_size_mb: float = None
+    metadata: dict = None
     uploaded_at: datetime = None
 
     def to_json(self):

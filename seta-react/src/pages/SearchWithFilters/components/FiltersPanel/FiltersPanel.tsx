@@ -1,5 +1,10 @@
 import { useEffect, useRef, useState } from 'react'
-import { Container, Flex, Accordion, ScrollArea, rem, Text } from '@mantine/core'
+import { Container, Flex, Accordion, ScrollArea, rem, Text, Box } from '@mantine/core'
+
+import AccordionItem from '~/components/Accordion/AccordionItem'
+import AccordionPanel from '~/components/Accordion/AccordionPanel'
+
+import useScrolled from '~/hooks/use-scrolled'
 
 import { itemsReducer } from './items-reducer'
 import * as S from './styles'
@@ -26,6 +31,8 @@ type KeyLabel = {
 const FiltersPanel = ({ queryContract, onApplyFilter, onStatusChange }: AdvancedFilterProps) => {
   const [resourceSelectedKeys, setResourceSelectedKeys] = useState<SelectionKeys | null>(null)
   const [taxonomySelectedKeys, setTaxonomySelectedKeys] = useState<SelectionKeys | null>(null)
+
+  const { scrolled: sourceScrolled, handleScrollChange: handleSourceScrollChange } = useScrolled()
 
   const statusChangeRef = useRef(onStatusChange)
 
@@ -134,19 +141,23 @@ const FiltersPanel = ({ queryContract, onApplyFilter, onStatusChange }: Advanced
   }
 
   const { handleClearFilters } = useClearFilter({
-    status: status,
-    otherItems: otherItems,
-    resourceSelectedKeys: resourceSelectedKeys,
-    taxonomySelectedKeys: taxonomySelectedKeys,
-    dispatchStatus: dispatchStatus,
-    dispatchOtherItems: dispatchOtherItems,
-    handleTextChunkChange: handleTextChunkChange,
-    handleSourceSelectionChange: handleSourceSelectionChange,
-    handleTaxonomySelectionChange: handleTaxonomySelectionChange,
-    handleItemChange: handleItemChange,
-    handleRangeChange: handleRangeChange
+    status,
+    otherItems,
+    resourceSelectedKeys,
+    taxonomySelectedKeys,
+    dispatchStatus,
+    dispatchOtherItems,
+    handleTextChunkChange,
+    handleSourceSelectionChange,
+    handleTaxonomySelectionChange,
+    handleItemChange,
+    handleRangeChange
   })
 
+  const sources = filterData?.current?.sources
+  const hasSources = !!sources?.length
+
+  // TODO: Split this into multiple components
   return (
     <Flex direction="column" align="center" gap="xl">
       <ApplyFilters
@@ -180,30 +191,39 @@ const FiltersPanel = ({ queryContract, onApplyFilter, onStatusChange }: Advanced
         defaultValue={['sources-tree', 'taxonomy-tree']}
         variant="separated"
       >
-        <Accordion.Item value="sources-tree">
+        <AccordionItem value="sources-tree" $scrolled={sourceScrolled}>
           <Accordion.Control>
             <Text span>Data sources</Text>
           </Accordion.Control>
-          <Accordion.Panel>
-            <ScrollArea.Autosize mx="auto" mah={rem(250)}>
+
+          <AccordionPanel $withScrollArea>
+            <ScrollArea.Autosize
+              mx="auto"
+              mih={rem(hasSources ? 180 : 60)}
+              mah={rem(300)}
+              onScrollPositionChange={handleSourceScrollChange}
+            >
               <DataSourceFilter
                 data={resourceNodes}
                 selectedKeys={resourceSelectedKeys}
                 onSelectionChange={handleSourceSelectionChange}
               />
             </ScrollArea.Autosize>
-            <TinyChart
-              chartData={filterData?.current?.sources}
-              selectedKeys={resourceSelectedKeys}
-            />
-          </Accordion.Panel>
-        </Accordion.Item>
+
+            {hasSources && (
+              <Box css={S.sourceChart}>
+                <TinyChart chartData={sources} selectedKeys={resourceSelectedKeys} />
+              </Box>
+            )}
+          </AccordionPanel>
+        </AccordionItem>
 
         {/* TODO: Re-enable this once the taxonomy aggregations are fixed */}
         {/* <Accordion.Item value="taxonomy-tree">
           <Accordion.Control>
             <Text span>Taxonomies</Text>
           </Accordion.Control>
+
           <Accordion.Panel>
             <ScrollArea.Autosize mx="auto" mah={rem(250)}>
               <TaxonomyFilter
@@ -212,6 +232,7 @@ const FiltersPanel = ({ queryContract, onApplyFilter, onStatusChange }: Advanced
                 onSelectionChange={handleTaxonomySelectionChange}
               />
             </ScrollArea.Autosize>
+
             <TinyChart
               chartData={filterData?.current?.taxonomies}
               selectedKeys={taxonomySelectedKeys}
@@ -219,14 +240,15 @@ const FiltersPanel = ({ queryContract, onApplyFilter, onStatusChange }: Advanced
           </Accordion.Panel>
         </Accordion.Item> */}
 
-        <Accordion.Item value="other">
+        <AccordionItem value="other">
           <Accordion.Control>
             <Text span>Other</Text>
           </Accordion.Control>
-          <Accordion.Panel>
+
+          <AccordionPanel>
             <OtherFilter data={otherItems} onItemChange={handleItemChange} />
-          </Accordion.Panel>
-        </Accordion.Item>
+          </AccordionPanel>
+        </AccordionItem>
       </Accordion>
     </Flex>
   )

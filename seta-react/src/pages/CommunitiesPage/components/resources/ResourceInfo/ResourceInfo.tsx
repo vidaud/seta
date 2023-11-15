@@ -32,6 +32,7 @@ type Props = {
 
 const ResourceInfo = ({ resource, resource_scopes, community_scopes }: Props) => {
   const [scopes, setScopes] = useState<string[] | undefined>([])
+  const [resourceScopes, setResourceScopes] = useState<string[] | undefined>([])
   const [outsideClick, setOutsideClick] = useState(true)
   const theme = useMantineTheme()
   const { title, resource_id, abstract, community_title, created_at, community_id, searchable } =
@@ -64,6 +65,12 @@ const ResourceInfo = ({ resource, resource_scopes, community_scopes }: Props) =>
     )
 
     findResource ? setScopes(findResource[0]?.scopes) : setScopes([])
+
+    const findResourceScope = resource_scopes?.filter(
+      scope => scope.resource_id === resource.resource_id
+    )
+
+    findResourceScope ? setResourceScopes(findResourceScope[0]?.scopes) : setResourceScopes([])
     //prevent entering infinite loop
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
@@ -95,7 +102,7 @@ const ResourceInfo = ({ resource, resource_scopes, community_scopes }: Props) =>
             {title.charAt(0).toUpperCase() + title.slice(1)}
           </Text>
         </div>
-        {scopes?.includes('/seta/resource/create') ? (
+        {resourceScopes?.includes('/seta/resource/edit') ? (
           <>
             <RestrictedResource resource={resource} />
             <Menu
@@ -163,6 +170,7 @@ const ResourceInfo = ({ resource, resource_scopes, community_scopes }: Props) =>
             open={detailsOpen}
             resource={resource}
             resource_scopes={resource_scopes}
+            community_scopes={scopes}
           />
         </PanelProvider>
       )}

@@ -9,7 +9,7 @@ import TogglePanel from '~/components/TogglePanel'
 import { useStagedDocuments } from '~/pages/SearchPageNew/contexts/staged-documents-context'
 import useSaveDocsModal from '~/pages/SearchPageNew/hooks/use-save-docs-modal'
 
-import useHighlight from '~/hooks/use-highlight'
+import { useHighlightWords } from '~/hooks/use-highlight'
 import type { Document } from '~/types/search/documents'
 import { dateFormatted } from '~/utils/date-utils'
 
@@ -49,7 +49,7 @@ const DocumentInfo = ({ document, queryTerms }: Props) => {
 
   const isDocumentStaged = useMemo(() => isStaged(_id), [_id, isStaged])
 
-  const [titleHl, abstractHl] = useHighlight(queryTerms, title, abstract)
+  const [titleHl, abstractHl] = useHighlightWords(queryTerms, title, abstract)
 
   const hasDetails = !!taxonomy?.length || !!chunk_text
 

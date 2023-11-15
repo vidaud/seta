@@ -1,7 +1,5 @@
 import { css, keyframes } from '@emotion/react'
 
-export { Container } from '../../styles'
-
 const itemKeyframes = keyframes({
   from: {
     padding: 0

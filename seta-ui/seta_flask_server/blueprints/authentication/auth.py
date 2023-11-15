@@ -107,7 +107,7 @@ class SetaLogout(Resource):
         try:
             if session_id:
                 self.sessions_broker.session_logout(session_id)
-        except:
+        except Exception:
             app.logger.exception("Logout->post")
 
         session.clear()

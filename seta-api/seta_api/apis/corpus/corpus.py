@@ -90,11 +90,11 @@ class CorpusChunkId(Resource):
     @corpus_api.response(200, 'Success', swagger_doc.get_update_id_request_model())
     @corpus_api.response(401, 'Forbbiden access to the resource')
     @corpus_api.response(404, 'Not Found Error')
+    @corpus_api.response(400, 'Bad Request Error')
     @corpus_api.expect(swagger_doc.corpus_chunk_id_put_request_model())
     def put(self):
         try:
             args = request.get_json(force=True)
-            app.logger.debug(str(args))
             validate(instance=args, schema=chunk_update_schema)
             _id = args['_id']
             chunk = chunk_by_id(_id, es=app.es, index=app.config['INDEX_PUBLIC'])
@@ -107,7 +107,7 @@ class CorpusChunkId(Resource):
             update_chunk(_id, es=app.es, fields=args, index=app.config['INDEX_PUBLIC'])
             return jsonify({"updated_document_id": _id})
         except jsonschema.ValidationError as err:
-            abort(404, str(err))
+            abort(400, err.message)
         except ApiLogicError as aex:
             abort(404, str(aex))
         except ForbiddenResourceError as fre:
@@ -123,6 +123,7 @@ class CorpusChunk(Resource):
     @corpus_api.doc(description='Put a chunk into corpus index.', security='apikey')
     @corpus_api.response(200, 'Success', swagger_doc.get_put_doc_chunk_response_model())
     @corpus_api.response(401, 'Forbidden access to the resource')
+    @corpus_api.response(400, 'Bad Request Error')
     @corpus_api.expect(swagger_doc.corpus_chunk_post_request_model())
     def post(self):
         try:
@@ -130,14 +131,13 @@ class CorpusChunk(Resource):
 
             source = is_field_in_doc(args, 'source')
             if not validate_add_permission(source):
-                abort(HTTPStatus.FORBIDDEN, "User does not have add document permission for the resource")
-
+                raise ForbiddenResourceError(resource_id=source)
             validate(instance=args, schema=chunk_post_schema)
 
             doc_id = insert_chunk(args, es=app.es, index=app.config["INDEX_PUBLIC"])
             return jsonify({"_id": doc_id})
         except jsonschema.ValidationError as err:
-            abort(404, str(err))
+            abort(400, err.message)
         except ApiLogicError as aex:
             abort(404, str(aex))
         except ForbiddenResourceError as fre:
@@ -173,7 +173,6 @@ class CorpusDocumentId(Resource):
                 return {"chunk_list": []}
             else:
                 abort(404, str(aex))
-            abort(404, str(aex))
         except ForbiddenResourceError as fre:
             abort(HTTPStatus.FORBIDDEN, fre.message)
         except:
@@ -212,6 +211,7 @@ class CorpusDocument(Resource):
     @corpus_api.doc(description='Put a document into corpus index.', security='apikey')
     @corpus_api.response(200, 'Success', swagger_doc.get_put_doc_chunk_response_model())
     @corpus_api.response(401, 'Forbbiden access to the resource')
+    @corpus_api.response(400, 'Bad Request Error')
     @corpus_api.expect(swagger_doc.get_put_request_model(), validate=False)
     def post(self):
         if not request.content_type == "application/json":
@@ -230,7 +230,7 @@ class CorpusDocument(Resource):
         except ApiLogicError as aex:
             abort(404, str(aex))
         except jsonschema.ValidationError as err:
-            abort(404, str(err))
+            abort(400, err.message)
         except ForbiddenResourceError as fre:
             abort(HTTPStatus.FORBIDDEN, fre.message)
         except:
@@ -282,7 +282,8 @@ class CorpusQuery(Resource):
     @corpus_api.response(200, 'Success', swagger_doc.get_corpus_post_response_model())
     @corpus_api.response(401, 'Forbbiden access to the resource')
     @corpus_api.response(404, 'Not Found Error')
-    @corpus_api.expect(swagger_doc.get_post_request_model())
+    @corpus_api.response(400, 'Bad Request Error')
+    @corpus_api.expect(swagger_doc.query_request_model())
     def post(self):
         try:
             args = request.get_json(force=True)
@@ -309,7 +310,7 @@ class CorpusQuery(Resource):
         except ForbiddenResourceError:
             return {"total_docs": None, "documents": []}
         except jsonschema.ValidationError as err:
-            abort(404, str(err))
+            abort(400, err.message)
         except ApiLogicError as aex:
             abort(404, str(aex))
         except:

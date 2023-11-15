@@ -1,6 +1,7 @@
-from flask_restx import Model, fields, inputs
-from flask_restx.reqparse import RequestParser
+from flask_restx import Model, fields
+
 from seta_flask_server.infrastructure.constants import UserStatusConstants
+from seta_flask_server.infrastructure.scope_constants import ResourceScopeConstants
 
 app_model = Model(
     "AppInfo",
@@ -10,57 +11,67 @@ app_model = Model(
         "description": fields.String(
             description="Application description", attribute="app_description"
         ),
-        "status": fields.String("Status", enum=UserStatusConstants.List),
+        "status": fields.String(
+            "Status", enum=[UserStatusConstants.Active, UserStatusConstants.Disabled]
+        ),
     },
 )
 
-new_app_parser = RequestParser(bundle_errors=True)
-new_app_parser.add_argument(
-    "name", location="form", required=True, nullable=False, help="Application name"
-)
-new_app_parser.add_argument(
-    "description",
-    location="form",
-    required=False,
-    nullable=True,
-    help="Application description",
-)
-new_app_parser.add_argument(
-    "copy_public_key",
-    type=inputs.boolean,
-    default="false",
-    location="form",
-    required=True,
-    help="Copy the public key from parent to the new application?",
-)
-new_app_parser.add_argument(
-    "copy_resource_scopes",
-    type=inputs.boolean,
-    default="true",
-    location="form",
-    required=True,
-    help="Copy the resource scopes from parent to the new application?",
+new_app_model = Model(
+    "NewApplication",
+    {
+        "name": fields.String(description="Application name", required=True),
+        "description": fields.String(
+            description="Application description", required=True
+        ),
+        "copyPublicKey": fields.Boolean(
+            description="Copy the public key from parent to the new application?",
+            default=False,
+        ),
+        "copyResourceScopes": fields.Boolean(
+            description="Copy the resource scopes from parent to the new application?",
+            default=False,
+        ),
+    },
 )
 
-update_app_parser = RequestParser(bundle_errors=True)
-update_app_parser.add_argument(
-    "new_name",
-    location="form",
-    required=False,
-    nullable=False,
-    help="New name for the application",
+update_app_model = Model(
+    "UpdateApplication",
+    {
+        "new_name": fields.String(description="Updated application name"),
+        "description": fields.String(
+            description="Application description", required=True
+        ),
+        "status": fields.String(
+            "Status",
+            required=False,
+            enum=[UserStatusConstants.Active, UserStatusConstants.Disabled],
+        ),
+    },
 )
-update_app_parser.add_argument(
-    "description",
-    location="form",
-    required=False,
-    nullable=True,
-    help="Application description",
+
+application_scopes_model = Model(
+    "ApplicationScopes",
+    {
+        "resourceId": fields.String(description="Resource identifier", required=True),
+        "scopes": fields.List(
+            fields.String(description="Scopes", enum=ResourceScopeConstants.List)
+        ),
+    },
 )
-update_app_parser.add_argument(
-    "status",
-    location="form",
-    required=False,
-    choices=UserStatusConstants.List,
-    help="Status",
+
+application_scopes_details_model = application_scopes_model.clone(
+    "ApplicationScopesDetail",
+    {
+        "communityId": fields.String(description="Community identifier"),
+        "title": fields.String(description="Resource title"),
+    },
 )
+
+ns_models = {
+    app_model.name: app_model,
+    new_app_model.name: new_app_model,
+    update_app_model.name: update_app_model,
+    application_scopes_model.name: application_scopes_model,
+    application_scopes_details_model.name: application_scopes_details_model,
+}

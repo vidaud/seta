@@ -19,19 +19,21 @@ def build_user_scopes(user: SetaUser) -> dict:
             )
 
     if user.community_scopes:
-        user_scopes["community_scopes"] = _group_entity_scopes(
+        user_scopes["community_scopes"] = group_entity_scopes(
             scopes=user.community_scopes, id_field="community_id"
         )
 
     if user.resource_scopes:
-        user_scopes["resource_scopes"] = _group_entity_scopes(
+        user_scopes["resource_scopes"] = group_entity_scopes(
             scopes=user.resource_scopes, id_field="resource_id"
         )
 
     return user_scopes
 
 
-def _group_entity_scopes(scopes: list[EntityScope], id_field: str) -> list[dict]:
+def group_entity_scopes(scopes: list[EntityScope], id_field: str) -> list[dict]:
+    """Group scopes by identifier."""
+
     scope_list = []
     for scope in scopes:
         entry = next((us for us in scope_list if us[id_field] == scope.id), None)

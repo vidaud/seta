@@ -59,7 +59,7 @@ class LibraryItemsResource(Resource):
             items = get_library_tree(
                 user_id=user_id, library_broker=self.library_broker
             )
-        except:
+        except Exception:
             current_app.logger.exception("LibraryItemsResource->get")
             abort(HTTPStatus.INTERNAL_SERVER_ERROR)
 
@@ -92,7 +92,7 @@ class LibraryItemsResource(Resource):
             self.library_broker.create(items)
 
             response_data = [item.to_json_api() for item in items]
-        except:
+        except Exception:
             current_app.logger.exception("LibraryItemsResource->post")
             abort(HTTPStatus.INTERNAL_SERVER_ERROR)
 
@@ -153,7 +153,7 @@ class LibraryItemResource(Resource):
             parse_args_update_library_item(item, args)
 
             self.library_broker.update(item)
-        except:
+        except Exception:
             current_app.logger.exception("LibraryItemResource->put")
             abort(HTTPStatus.INTERNAL_SERVER_ERROR)
 
@@ -186,7 +186,7 @@ class LibraryItemResource(Resource):
 
         try:
             self.library_broker.delete(user_id=user_id, item_id=item_id)
-        except:
+        except Exception:
             current_app.logger.exception("LibraryItemResource->delete")
             abort(HTTPStatus.INTERNAL_SERVER_ERROR)
 

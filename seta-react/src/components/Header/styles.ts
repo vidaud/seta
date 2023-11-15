@@ -39,6 +39,13 @@ export const MenuLink = styled(NavLink)`
   }
 `
 
+export const activeLink: ThemedCSS = theme => css`
+  background-color: ${theme.colors.gray[1]};
+`
+export const activePath: ThemedCSS = theme => css`
+  background-color: ${theme.colors.gray[1]};
+`
+
 export const dropdownTarget: ThemedCSS = theme => css`
   opacity: 0.85;
   transition: background-color 0.2s ease;
@@ -51,6 +58,13 @@ export const dropdownTarget: ThemedCSS = theme => css`
 export const dropdown: ThemedCSS = theme => css`
   & .seta-Menu-itemIcon {
     color: ${theme.colors.gray[7]};
+  }
+`
+
+export const notificationsDropdown: ThemedCSS = theme => css`
+  & .seta-Menu-itemIcon {
+    color: ${theme.colors.gray[7]};
+    width: fit-content !important;
   }
 `
 

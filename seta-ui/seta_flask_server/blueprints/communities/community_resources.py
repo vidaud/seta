@@ -12,7 +12,6 @@ from seta_flask_server.repository.interfaces import (
     IUsersBroker,
     ICommunitiesBroker,
 )
-from seta_flask_server.infrastructure.decorators import auth_validator
 from seta_flask_server.infrastructure.scope_constants import CommunityScopeConstants
 from seta_flask_server.infrastructure.clients.private_api_client import (
     PrivateResourceClient,
@@ -88,7 +87,7 @@ class CommunityResourceList(Resource):
         security="CSRF",
     )
     @community_resources_ns.expect(dto.new_resource_parser)
-    @auth_validator()
+    @jwt_required()
     def post(self, community_id):
         """
         Create resource, available to community members.
