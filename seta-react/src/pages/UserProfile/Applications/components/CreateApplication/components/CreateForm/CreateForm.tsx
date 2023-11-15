@@ -61,7 +61,9 @@ const CreateForm = ({ close }) => {
       onError: (error: AxiosError | any) => {
         notifications.show({
           title: 'Create Application Failed!',
-          message: error?.response?.data?.msg,
+          message: error?.response?.data?.msg
+            ? error?.response?.data?.msg
+            : error?.response?.data?.message,
           color: 'red',
           autoClose: 5000
         })

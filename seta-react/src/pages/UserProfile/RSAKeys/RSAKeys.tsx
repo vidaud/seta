@@ -35,7 +35,9 @@ const RSAKeys = () => {
       onError: (error: any) => {
         notifications.show({
           title: 'Delete public Key failed!',
-          message: error?.response?.data?.msg,
+          message: error?.response?.data?.msg
+            ? error?.response?.data?.msg
+            : error?.response?.data?.message,
           color: 'red',
           autoClose: 5000
         })

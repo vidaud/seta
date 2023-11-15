@@ -75,7 +75,9 @@ export const ApplicationProvider = ({ children }) => {
         notifications.show({
           title: 'Update failed!',
           // message: 'The update of the application permissions failed. Please try again!',
-          message: error?.response?.data?.msg,
+          message: error?.response?.data?.msg
+            ? error?.response?.data?.msg
+            : error?.response?.data?.message,
           color: 'red',
           autoClose: 5000
         })
