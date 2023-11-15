@@ -65,13 +65,13 @@ class IRollingIndexBroker(Interface):
 
         pass
 
-    def get_active_index(self, community_id: str) -> str:
-        """Active storage indexes for community.
+    def get_active_index_for_resource(self, resource_id: str) -> str:
+        """Active storage indexes for resource.
 
-        If this community has no rolling index assigned, then the default active index is returned instead.
+        If the resource community has no rolling index assigned, then the default active index is returned instead.
 
         Args:
-            community_id: Community identifier
+            resource_id: Resource identifier
 
         Returns:
             Name of the active storage index
@@ -79,17 +79,17 @@ class IRollingIndexBroker(Interface):
 
         pass
 
-    def get_storage_indexes_for_community(self, community_id: str) -> tuple[str]:
-        """All storage indexes that were assigned to community.
+    def get_storage_indexes_for_resource(self, resource_id: str) -> tuple[str]:
+        """All storage indexes that were assigned to resource community.
 
-        Searches for community identifier through all current and past community_ids collections.
+        Searches for resource's community identifier through all current and past community_ids collections.
         The storage names of the default rolling index are always appended to the return list.
 
         Args:
-            community_id: Community identifier
+            resource_id: Resource identifier
 
         Returns:
-            Name of all storage indexes where data can be found for the community resources.
+            Name of all storage indexes where data can be found for the resource community.
         """
 
         pass
