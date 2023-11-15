@@ -20,7 +20,9 @@ type Props = DataProps<DocumentsResponse> & {
 
 const DocumentsListContent = forwardRef<HTMLDivElement, Props>(
   ({ data, isLoading, error, onTryAgain, queryTerms, paginator, info }, ref) => {
-    if (error) {
+    // Only show the error if there is no data
+    // Otherwise, the data is used from the cache and the error notification is shown in the parent component
+    if (error && !data) {
       return (
         <SuggestionsError
           size="md"
