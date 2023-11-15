@@ -27,7 +27,9 @@ def retrieve_community_id(source):
     return None
 
 
-def get_doc_from_es(id, fields, app, request):
+def get_doc_from_es(doc_tuple, fields, app, request):
+    doc_id = doc_tuple[0]
+    doc_path = doc_tuple[1]
     es = app.es
     index = app.config["INDEX"]
     source = []
@@ -39,7 +41,7 @@ def get_doc_from_es(id, fields, app, request):
         source.append("source")
     query = {"bool": {"must": [
         {"match": {
-            "_id": id
+            "_id": doc_id
         }}
     ]}}
     response = es.search(index=index, query=query, _source=source, size=1)
@@ -50,6 +52,9 @@ def get_doc_from_es(id, fields, app, request):
     for document in response["hits"]["hits"]:
         source_id = document["_source"]["source"]
         for f in fields:
+            if f == "path":
+                doc[f] = doc_path
+                continue
             if f not in available_fields:
                 continue
             if f == "_id":
@@ -63,11 +68,20 @@ def get_doc_from_es(id, fields, app, request):
     return doc, source_id
 
 
+def from_json_obj_to_tuple(ids):
+    ids_tuple = []
+    for obj in ids:
+        t = (obj["id"], obj["path"])
+        ids_tuple.append(t)
+    return ids_tuple
+
+
 def export(ids, fields, app, export_format, request):
     documents = []
-    unique_ids = set(ids[:app.config["EXPORT_DOCUMENT_LIMIT"]])
-    for id in unique_ids:
-        doc, source = get_doc_from_es(id, fields, app, request)
+    ids_tuple = from_json_obj_to_tuple(ids)
+    unique_ids = set(ids_tuple[:app.config["EXPORT_DOCUMENT_LIMIT"]])
+    for doc_tuple in unique_ids:
+        doc, source = get_doc_from_es(doc_tuple, fields, app, request)
         try:
             validate_view_permissions([source])
         except ForbiddenResourceError:
