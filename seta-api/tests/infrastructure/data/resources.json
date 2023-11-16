@@ -11,6 +11,7 @@
               "file_size_mb": 50
             },
             "status": "active",
+            "type": "discoverable",
             "creator_id": "seta_admin"            
           }
     ]

@@ -1,7 +1,7 @@
 import { Button, Group, Tooltip } from '@mantine/core'
-import { notifications } from '@mantine/notifications'
 
 import { useOpenCommunityMembership } from '~/api/communities/memberships/membership'
+import { notifications } from '~/utils/notifications'
 
 const OpenCommunityMember = ({ community_id }) => {
   const setOpenCommunityMembershipMutation = useOpenCommunityMembership(community_id)
@@ -9,18 +9,10 @@ const OpenCommunityMember = ({ community_id }) => {
   const createMember = () => {
     setOpenCommunityMembershipMutation.mutate(null, {
       onSuccess: () => {
-        notifications.show({
-          message: `You are now member of the community!`,
-          color: 'blue',
-          autoClose: 5000
-        })
+        notifications.showSuccess(`You are now member of the community!`, { autoClose: true })
       },
       onError: () => {
-        notifications.show({
-          message: 'Membership Request Failed!',
-          color: 'red',
-          autoClose: 5000
-        })
+        notifications.showError('Membership Request Failed!', { autoClose: true })
       }
     })
   }

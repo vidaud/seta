@@ -1,9 +1,9 @@
 import { Group, createStyles } from '@mantine/core'
-import { notifications } from '@mantine/notifications'
 
 import { useSetChangeMembershipRequest } from '~/api/communities/memberships/membership-requests'
 import type { CommunityResponse } from '~/api/types/community-types'
 import { ChangeMembershipRequestStatus } from '~/types/community/change-membership-requests'
+import { notifications } from '~/utils/notifications'
 
 import RowActions from './components/RowActions'
 
@@ -37,17 +37,9 @@ const ChangePrivacyRequestActions = ({ props }: Props) => {
     })
 
     if (setChangeRequestMutation.isError) {
-      notifications.show({
-        message: 'The membership change request update failed!',
-        color: 'red',
-        autoClose: 5000
-      })
+      notifications.showError('The membership change request update failed!', { autoClose: true })
     } else {
-      notifications.show({
-        message: `New change request added!`,
-        color: 'teal',
-        autoClose: 5000
-      })
+      notifications.showSuccess(`New change request added!`, { autoClose: true })
     }
   }
 
@@ -60,17 +52,9 @@ const ChangePrivacyRequestActions = ({ props }: Props) => {
     })
 
     if (setChangeRequestMutation.isError) {
-      notifications.show({
-        message: 'The membership change request update failed!',
-        color: 'red',
-        autoClose: 5000
-      })
+      notifications.showError('The membership change request update failed!', { autoClose: true })
     } else {
-      notifications.show({
-        message: `New change request added!`,
-        color: 'teal',
-        autoClose: 5000
-      })
+      notifications.showSuccess(`New change request added!`, { autoClose: true })
     }
   }
 

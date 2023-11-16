@@ -19,6 +19,22 @@ const errorInterceptor = async (error: SetaAxiosError) => {
 
   // Redirect to login everything but '/user-info'
   //? /notifications should prevent refresh mechanism
+  // /rsa-key accepts only fresh tokens
+
+  const fresh_endpoints: RegExp[] = [
+    /\/me\/rsa-key[/]?$/,
+    /\/me\/apps$/,
+    /\/me\/apps\/.*/,
+    /\/me\/permissions$/
+  ]
+
+  const redirectEndpoint = (url: string | undefined) => {
+    if (!url) {
+      return true
+    }
+
+    return fresh_endpoints.find(item => item.test(url))
+  }
 
   if (
     originalRequest?.url?.includes('/user-info') ||
@@ -28,7 +44,7 @@ const errorInterceptor = async (error: SetaAxiosError) => {
   }
 
   if (status === 401) {
-    if (!originalRequest || originalRequest?._retry) {
+    if (!originalRequest || originalRequest?._retry || redirectEndpoint(originalRequest?.url)) {
       window.location.href = '/login?redirect=' + window.location.pathname
     } else {
       originalRequest._retry = true

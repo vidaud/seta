@@ -1,9 +1,10 @@
 import { createStyles, Table, rem, Title, Badge, Group, useMantineTheme } from '@mantine/core'
-import { notifications } from '@mantine/notifications'
 
 import DateTimeCell from '~/pages/Admin/common/components/DateTimeCell/DateTimeCell'
 import RowActions from '~/pages/Admin/common/components/RequestRowActions/RowActions'
 import UserInfo from '~/pages/Admin/common/components/UserInfo/UserInfo'
+import { ComponentEmpty, ComponentLoading } from '~/pages/CommunitiesPage/components/common'
+import ExtendedMessage from '~/pages/CommunitiesPage/components/communities/CommunityInfo/components/ExtendedMessage/ExtendedMessage'
 import { statusColors } from '~/pages/CommunitiesPage/types'
 
 import {
@@ -11,9 +12,7 @@ import {
   useUpdateMembershipRequest
 } from '~/api/communities/memberships/membership-requests'
 import { MembershipRequestStatus } from '~/types/community/membership-requests'
-
-import { ComponentEmpty, ComponentLoading } from '../../common'
-import ExtendedMessage from '../../communities/CommunityInfo/components/ExtendedMessage/ExtendedMessage'
+import { notifications } from '~/utils/notifications'
 
 const useStyles = createStyles(theme => ({
   header: {
@@ -77,17 +76,9 @@ const MembersList = () => {
     })
 
     if (updateRequestMutation.isError) {
-      notifications.show({
-        message: 'The membership request update failed!',
-        color: 'red',
-        autoClose: 5000
-      })
+      notifications.showError('The membership request update failed!', { autoClose: true })
     } else {
-      notifications.show({
-        message: 'The membership request was approved!',
-        color: 'teal',
-        autoClose: 5000
-      })
+      notifications.showSuccess('The membership request was approved!', { autoClose: true })
     }
   }
 
@@ -99,18 +90,13 @@ const MembersList = () => {
     })
 
     if (updateRequestMutation.error) {
-      notifications.show({
-        title: 'Update failed!',
-        message: 'The membership request update failed. Please try again!',
-        color: 'red',
-        autoClose: 5000
+      notifications.showError('Update failed!', {
+        description: 'The membership request update failed. Please try again!',
+
+        autoClose: true
       })
     } else {
-      notifications.show({
-        message: 'The membership request was rejected!',
-        color: 'yellow',
-        autoClose: 5000
-      })
+      notifications.showInfo('The membership request was rejected!', { autoClose: true })
     }
   }
 

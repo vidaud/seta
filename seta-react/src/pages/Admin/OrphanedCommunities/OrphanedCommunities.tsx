@@ -1,9 +1,9 @@
 import { Box, Title, Text } from '@mantine/core'
-import { notifications } from '@mantine/notifications'
 
 import { SuggestionsError } from '~/pages/SearchPageNew/components/common'
 
 import { useOrphanedCommunities, useSetCommunityOwner } from '~/api/admin/orphaned-communities'
+import { notifications } from '~/utils/notifications'
 
 import OrphansTable from './components/OrphanesTable'
 
@@ -24,18 +24,12 @@ const AdminOrphanedCommunities = () => {
       },
       {
         onSuccess: () => {
-          notifications.show({
-            message: `Community '${communityId}' has a new owner!`,
-            color: 'blue',
-            autoClose: 5000
+          notifications.showSuccess(`Community '${communityId}' has a new owner!`, {
+            autoClose: true
           })
         },
         onError: () => {
-          notifications.show({
-            message: 'The community owner update failed!',
-            color: 'red',
-            autoClose: 5000
-          })
+          notifications.showError('The community owner update failed!', { autoClose: true })
         }
       }
     )

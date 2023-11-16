@@ -1,10 +1,10 @@
 import { Box, Title } from '@mantine/core'
-import { notifications } from '@mantine/notifications'
 
 import { SuggestionsError } from '~/pages/SearchPageNew/components/common'
 
 import { useResourcePendingRequests, useUpdateResourceRequest } from '~/api/admin/resource-requests'
 import { RequestStatus } from '~/types/admin/change-requests'
+import { notifications } from '~/utils/notifications'
 
 import RequestsTable from './components/RequestsTable'
 
@@ -21,17 +21,9 @@ const AdminResourceRequests = () => {
     })
 
     if (updateRequestMutation.isError) {
-      notifications.show({
-        message: 'The request update failed!',
-        color: 'red',
-        autoClose: 5000
-      })
+      notifications.showError('The request update failed!', { autoClose: true })
     } else {
-      notifications.show({
-        message: 'The request was approved!',
-        color: 'blue',
-        autoClose: 5000
-      })
+      notifications.showSuccess('The request was approved!', { autoClose: true })
     }
   }
 
@@ -43,18 +35,12 @@ const AdminResourceRequests = () => {
     })
 
     if (updateRequestMutation.error) {
-      notifications.show({
-        title: 'Update failed!',
-        message: 'The request update failed. Please try again!',
-        color: 'red',
-        autoClose: 5000
+      notifications.showError('Update failed!', {
+        description: 'The request update failed. Please try again!',
+        autoClose: true
       })
     } else {
-      notifications.show({
-        message: 'The request was rejected!',
-        color: 'yellow',
-        autoClose: 5000
-      })
+      notifications.showInfo('The request was rejected!', { autoClose: true })
     }
   }
 

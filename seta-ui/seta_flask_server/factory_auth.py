@@ -19,7 +19,7 @@ from seta_flask_server.repository.interfaces import ISessionsBroker
 
 
 def create_app(config_object):
-    """Main app factory"""
+    """Auth app factory"""
 
     app = Flask(__name__)
     # Tell Flask it is Behind a Proxy
@@ -99,7 +99,7 @@ def register_extensions(app: Flask):
 
     try:
         logs.init_app(app)
-    except:  # pylint: disable=bare-except
+    except Exception:
         app.logger.exception("logs config failed")
 
 

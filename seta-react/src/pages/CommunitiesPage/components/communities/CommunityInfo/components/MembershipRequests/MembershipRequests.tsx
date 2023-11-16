@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
 import { Table, Badge, useMantineTheme, Group, Text } from '@mantine/core'
-import { notifications } from '@mantine/notifications'
 
 import DateTimeCell from '~/pages/Admin/common/components/DateTimeCell/DateTimeCell'
 import RowActions from '~/pages/Admin/common/components/RequestRowActions/RowActions'
@@ -19,6 +18,7 @@ import {
 } from '~/api/communities/memberships/membership-requests'
 import type { MembershipRequest } from '~/api/types/membership-types'
 import { MembershipRequestStatus } from '~/types/community/membership-requests'
+import { notifications } from '~/utils/notifications'
 
 import { useStyles } from './style'
 
@@ -66,17 +66,9 @@ const MembershipRequests = ({ id, type }) => {
     })
 
     if (updateRequestMutation.isError) {
-      notifications.show({
-        message: 'The membership request update failed!',
-        color: 'red',
-        autoClose: 5000
-      })
+      notifications.showError('The membership request update failed!', { autoClose: true })
     } else {
-      notifications.show({
-        message: 'The membership request was approved!',
-        color: 'teal',
-        autoClose: 5000
-      })
+      notifications.showSuccess('The membership request was approved!', { autoClose: true })
     }
   }
 
@@ -88,18 +80,12 @@ const MembershipRequests = ({ id, type }) => {
     })
 
     if (updateRequestMutation.error) {
-      notifications.show({
-        title: 'Update failed!',
-        message: 'The membership request update failed. Please try again!',
-        color: 'red',
-        autoClose: 5000
+      notifications.showError('Update failed!', {
+        description: 'The membership request update failed. Please try again!',
+        autoClose: true
       })
     } else {
-      notifications.show({
-        message: 'The membership request was rejected!',
-        color: 'yellow',
-        autoClose: 5000
-      })
+      notifications.showInfo('The membership request was rejected!', { autoClose: true })
     }
   }
 

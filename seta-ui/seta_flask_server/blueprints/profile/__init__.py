@@ -2,7 +2,7 @@ from flask_restx import Api
 from flask import Blueprint, current_app
 
 from .info import account_info_ns
-from .rsa import rsa_ns
+from .rsa_key import rsa_key_ns
 from .apps import applications_ns
 from .scopes import scopes_ns
 from .resources import resources_ns
@@ -39,8 +39,8 @@ profile_api = Api(
 )
 
 profile_api.add_namespace(account_info_ns, path="/me")
-profile_api.add_namespace(rsa_ns, path="/me")
-profile_api.add_namespace(applications_ns, path="/me")
+profile_api.add_namespace(rsa_key_ns, path="/me/rsa-key")
+profile_api.add_namespace(applications_ns, path="/me/apps")
 profile_api.add_namespace(scopes_ns, path="/me")
 profile_api.add_namespace(resources_ns, path="/me")
 profile_api.add_namespace(library_ns, path="/me")

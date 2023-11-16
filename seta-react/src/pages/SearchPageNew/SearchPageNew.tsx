@@ -35,7 +35,7 @@ const SearchPageNew = () => {
 
   useDocuments(undefined, undefined, {
     enabled: loadDocsForFilters,
-    staleTime: 0,
+
     onSuccess: docs => {
       handleDocumentsChanged(docs)
     }

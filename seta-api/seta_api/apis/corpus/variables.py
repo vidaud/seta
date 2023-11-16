@@ -1,4 +1,4 @@
-from flask_restx import reqparse, fields
+from flask_restx import fields
 
 
 other = {}
@@ -100,7 +100,7 @@ corpus_put_params["collection"] = fields.String()
 corpus_put_params["reference"] = fields.String()
 corpus_put_params["author"] = fields.List(fields.String())
 corpus_put_params["date"] = fields.Date()
-corpus_put_params["link_origin"] = fields.List(fields.String())
+corpus_put_params["link_origin"] = fields.String()
 corpus_put_params["link_alias"] = fields.List(fields.String())
 corpus_put_params["link_related"] = fields.List(fields.String())
 corpus_put_params["link_reference"] = fields.List(fields.String())
@@ -134,7 +134,7 @@ corpus_chunk_id_put_params["collection"] = fields.String()
 corpus_chunk_id_put_params["reference"] = fields.String()
 corpus_chunk_id_put_params["author"] = fields.List(fields.String())
 corpus_chunk_id_put_params["date"] = fields.Date()
-corpus_chunk_id_put_params["link_origin"] = fields.List(fields.String())
+corpus_chunk_id_put_params["link_origin"] = fields.String()
 corpus_chunk_id_put_params["link_alias"] = fields.List(fields.String())
 corpus_chunk_id_put_params["link_related"] = fields.List(fields.String())
 corpus_chunk_id_put_params["link_reference"] = fields.List(fields.String())
@@ -158,7 +158,7 @@ corpus_chunk_post_params["collection"] = fields.String()
 corpus_chunk_post_params["reference"] = fields.String()
 corpus_chunk_post_params["author"] = fields.List(fields.String())
 corpus_chunk_post_params["date"] = fields.Date()
-corpus_chunk_post_params["link_origin"] = fields.List(fields.String())
+corpus_chunk_post_params["link_origin"] = fields.String()
 corpus_chunk_post_params["link_alias"] = fields.List(fields.String())
 corpus_chunk_post_params["link_related"] = fields.List(fields.String())
 corpus_chunk_post_params["link_reference"] = fields.List(fields.String())
@@ -169,7 +169,7 @@ corpus_chunk_post_params["taxonomy"] = None
 corpus_chunk_post_params["keywords"] = None
 corpus_chunk_post_params["other"] = None
 corpus_chunk_post_params["chunk_text"] = fields.String()
-corpus_chunk_post_params["chunk_number"] = fields.String()
+corpus_chunk_post_params["chunk_number"] = fields.Integer()
 corpus_chunk_post_params["sbert_embedding"] = fields.List(fields.Float)
 
 corpus_post_params = {}
@@ -191,7 +191,7 @@ corpus_post_params["semantic_sort_id_list"] = fields.List(fields.String(),
                                                           description="sort results by semantic distance among documents")
 corpus_post_params["sbert_embedding_list"] = fields.List(fields.List(fields.Float,
                                                                      description="list of embeddings vector"))
-corpus_post_params["author"] = fields.String(description="author")
+corpus_post_params["author"] = fields.List(fields.String(description="author"))
 corpus_post_params["date_range"] = fields.List(fields.String, description="examples: gte:yyyy-mm-dd,lte:yyyy-mm-dd,"
                                                                           "gt:yyyy-mm-dd,lt:yyyy-mm-dd")
 corpus_post_params["aggs"] = fields.List(fields.String, description="field to be aggregated, allowed fields are:"
@@ -348,7 +348,7 @@ class Variable:
 
         document["keywords"] = fields.List(fields.Nested(self.keywords_model))
         document["taxonomy"] = fields.List(fields.Nested(self.taxonomy_model_tree))
-        document["other"] = fields.List(fields.Nested(self.other_model))
+        document["other"] = fields.Nested(self.other_model)
         post_get_response["documents"] = fields.List(fields.Nested(self.namespace.model("document", document)))
 
         collection["references"] = fields.List(fields.Nested(self.namespace.model("reference", reference)))
@@ -371,13 +371,13 @@ class Variable:
     def get_corpus_get_id_response(self):
         corpus_get_id_response["keywords"] = fields.List(fields.Nested(self.keywords_model))
         corpus_get_id_response["taxonomy"] = fields.List(fields.Nested(self.taxonomy_model_tree))
-        corpus_get_id_response["other"] = fields.List(fields.Nested(self.other_model))
+        corpus_get_id_response["other"] = fields.Nested(self.other_model)
         return self.namespace.model("corpus_get_id_response", corpus_get_id_response)
 
     def corpus_get_id_document_response(self):
         corpus_get_id_response["keywords"] = fields.List(fields.Nested(self.keywords_model))
         corpus_get_id_response["taxonomy"] = fields.List(fields.Nested(self.taxonomy_model_tree))
-        corpus_get_id_response["other"] = fields.List(fields.Nested(self.other_model))
+        corpus_get_id_response["other"] = fields.Nested(self.other_model)
         corpus_get_id_response_model = self.namespace.model("corpus_get_id_response_model", corpus_get_id_response)
         corpus_get_id_document_response = {"chunk_list": fields.List(fields.Nested(corpus_get_id_response_model)),
                                            "num_chunks": fields.Integer()}
@@ -389,8 +389,8 @@ class Variable:
     def get_update_id_request_model(self):
         return self.namespace.model("corpus_update_id_response", corpus_update_id_response)
 
-    def get_post_request_model(self):
-        corpus_post_params["other"] = fields.List(fields.Nested(self.other_model))
+    def query_request_model(self):
+        corpus_post_params["other"] = fields.Nested(self.other_model)
         return self.namespace.model("corpus_post_params", corpus_post_params)
 
     def get_corpus_post_response_model(self):
@@ -408,19 +408,19 @@ class Variable:
     def get_put_request_model(self):
         corpus_put_params["taxonomy"] = fields.List(fields.Nested(self.taxonomy_model_tree))
         corpus_put_params["keywords"] = fields.List(fields.Nested(self.keywords_model))
-        corpus_put_params["other"] = fields.List(fields.Nested(self.other_model))
+        corpus_put_params["other"] = fields.Nested(self.other_model)
         return self.namespace.model("corpus_put_request", corpus_put_params)
 
     def corpus_chunk_id_put_request_model(self):
         corpus_chunk_id_put_params["taxonomy"] = fields.List(fields.Nested(self.taxonomy_model_tree))
         corpus_chunk_id_put_params["keywords"] = fields.List(fields.Nested(self.keywords_model))
-        corpus_chunk_id_put_params["other"] = fields.List(fields.Nested(self.other_model))
+        corpus_chunk_id_put_params["other"] = fields.Nested(self.other_model)
         return self.namespace.model("corpus_chunk_id_put_params", corpus_chunk_id_put_params)
 
     def corpus_chunk_post_request_model(self):
         corpus_chunk_post_params["taxonomy"] = fields.List(fields.Nested(self.taxonomy_model_tree))
         corpus_chunk_post_params["keywords"] = fields.List(fields.Nested(self.keywords_model))
-        corpus_chunk_post_params["other"] = fields.List(fields.Nested(self.other_model))
+        corpus_chunk_post_params["other"] = fields.Nested(self.other_model)
         return self.namespace.model("corpus_chunk_post_params", corpus_chunk_post_params)
 
     def corpus_chunk_id_delete_post_request_model(self):

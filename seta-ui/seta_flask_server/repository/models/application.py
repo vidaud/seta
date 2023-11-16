@@ -1,5 +1,6 @@
 # pylint: disable=missing-function-docstring
 from dataclasses import dataclass, asdict
+
 from .seta_user import SetaUser
 
 
@@ -7,28 +8,39 @@ from .seta_user import SetaUser
 class SetaApplication:
     user_id: str = None
     app_name: str
-    app_description: str = None
+    app_description: str
     parent_user_id: str
 
-    # user object
+    # local account object
     user: SetaUser = None
     # parent user object
     parent_user: SetaUser = None
+
+    _status: str = None
 
     def __post_init__(self):
         if self.app_name:
             self.app_name = self.app_name.lower()
 
     @property
-    def status(self):
-        if self.user:
-            return self.user.status
-        return "unknown"
+    def status(self) -> str:
+        if not self._status and self.user:
+            self._status = self.user.status
+
+        if self._status:
+            return self._status
+
+        return None
+
+    @status.setter
+    def status(self, value: str):
+        self._status = value
 
     def to_json(self) -> dict:
         json = asdict(self)
         json.pop("user", None)
         json.pop("parent_user", None)
+        json.pop("_status", None)
 
         return json
 

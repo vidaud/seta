@@ -1,9 +1,9 @@
 import { useState } from 'react'
 import { Popover, Button, Group, Tooltip } from '@mantine/core'
-import { notifications } from '@mantine/notifications'
 
 import { useRemoveCommunityMembership } from '~/api/communities/memberships/membership'
 import { useUserPermissions } from '~/api/communities/user-scopes'
+import { notifications } from '~/utils/notifications'
 
 import ConfirmationModal from './components/ConfirmationModal'
 
@@ -15,21 +15,13 @@ const LeaveCommunity = ({ props }) => {
   const deleteMembership = () => {
     setRemoveCommunityMembershipMutation.mutate(props.community_id, {
       onSuccess: () => {
-        notifications.show({
-          message: `Community Membership Removed!`,
-          color: 'blue',
-          autoClose: 5000
-        })
+        notifications.showSuccess(`Community Membership Removed!`, { autoClose: true })
 
         refetch()
         setOpened(o => !o)
       },
       onError: () => {
-        notifications.show({
-          message: 'Leave Community Failed!',
-          color: 'red',
-          autoClose: 5000
-        })
+        notifications.showError('Leave Community Failed!', { autoClose: true })
       }
     })
   }

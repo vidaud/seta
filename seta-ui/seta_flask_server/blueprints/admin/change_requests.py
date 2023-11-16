@@ -65,9 +65,6 @@ class CommunityChangeRequestList(Resource):
 
         # verify scope
         user = self.users_broker.get_user_by_id(user_id)
-        if user is None or user.is_not_active():
-            abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
-
         if not user_logic.can_approve_resource_cr(user):
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
 
@@ -138,10 +135,6 @@ class CommunityChangeRequest(Resource):
         auth_id = identity["user_id"]
 
         user = self.users_broker.get_user_by_id(auth_id)
-
-        if user is None or user.is_not_active():
-            abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
-
         if not user_logic.can_approve_resource_cr(user):
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
 
@@ -159,7 +152,7 @@ class CommunityChangeRequest(Resource):
                 request.reviewed_by = auth_id
 
                 self.change_requests_broker.update(request)
-        except:
+        except Exception:
             app.logger.exception("Request->put")
             abort(HTTPStatus.INTERNAL_SERVER_ERROR)
 
@@ -217,9 +210,6 @@ class ResourceChangeRequestList(Resource):
 
         # verify scope
         user = self.users_broker.get_user_by_id(auth_id)
-        if user is None or user.is_not_active():
-            abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
-
         if not user_logic.can_approve_resource_cr(user):
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
 
@@ -288,10 +278,6 @@ class ResourceChangeRequest(Resource):
         auth_id = identity["user_id"]
 
         user = self.users_broker.get_user_by_id(auth_id)
-
-        if user is None or user.is_not_active():
-            abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
-
         if not user_logic.can_approve_resource_cr(user):
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
 
@@ -309,7 +295,7 @@ class ResourceChangeRequest(Resource):
                 request.reviewed_by = auth_id
 
                 self.change_requests_broker.update(request)
-        except:
+        except Exception:
             app.logger.exception("Request->put")
             abort(HTTPStatus.INTERNAL_SERVER_ERROR)
 

@@ -7,6 +7,7 @@ import PromptModal from '~/components/PromptModal'
 import { useUpdateItem } from '~/api/search/library'
 import useComplexModalState from '~/hooks/use-complex-modal-state'
 import type { LibraryItem } from '~/types/library/library-item'
+import { INVALID_PATH_CHARACTERS } from '~/utils/library-utils'
 import { notifications } from '~/utils/notifications'
 
 import { getFolderPath } from '../utils'
@@ -100,6 +101,7 @@ const useRenameModal = () => {
       placeholder="Folder name"
       submitLabel="Rename folder"
       initialValue={folder?.title ?? ''}
+      invalidChars={INVALID_PATH_CHARACTERS}
       onClose={closeModal}
       onSubmit={handleSubmit}
     />

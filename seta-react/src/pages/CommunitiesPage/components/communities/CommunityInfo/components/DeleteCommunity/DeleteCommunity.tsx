@@ -1,12 +1,12 @@
 import { useState } from 'react'
 import { Text, Popover, Button, Group, createStyles, Title, UnstyledButton } from '@mantine/core'
-import { notifications } from '@mantine/notifications'
 import { IconTrash } from '@tabler/icons-react'
 
 import {
   useDeleteCommunity,
   useMyCommunityResources
 } from '~/api/communities/communities/my-community'
+import { notifications } from '~/utils/notifications'
 
 const useStyles = createStyles(theme => ({
   form: {
@@ -31,20 +31,12 @@ const DeleteCommunity = ({ props }) => {
   const deleteCommunity = () => {
     setDeleteCommunityMutation.mutate(props?.community_id, {
       onSuccess: () => {
-        notifications.show({
-          message: `Community deleted successfully!`,
-          color: 'blue',
-          autoClose: 5000
-        })
+        notifications.showSuccess(`Community deleted successfully!`, { autoClose: true })
 
         setOpened(o => !o)
       },
       onError: () => {
-        notifications.show({
-          message: 'Delete community failed!',
-          color: 'red',
-          autoClose: 5000
-        })
+        notifications.showError('Delete community failed!', { autoClose: true })
       }
     })
   }

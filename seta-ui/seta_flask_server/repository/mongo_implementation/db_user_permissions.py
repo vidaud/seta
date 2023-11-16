@@ -139,11 +139,35 @@ class UserPermissionsBroker(implements(IUserPermissionsBroker)):
                 scope_list.append(es.to_resource_json())
 
         with self.db.client.start_session(causal_consistency=True) as session:
-            # delete existing system scopes
+            # delete existing resource scopes for resource id
             self.collection.delete_many(
                 {
                     "user_id": user_id,
                     "resource_id": resource_id,
+                    "resource_scope": {"$exists": True},
+                },
+                session=session,
+            )
+
+            if scope_list:
+                # insert new scopes
+                self.collection.insert_many(scope_list, session=session)
+
+    def replace_all_resource_scopes_for_user(
+        self, user_id: str, scopes: list[EntityScope]
+    ) -> None:
+        """Replace all resource scopes for user."""
+        scope_list = []
+
+        if scopes:
+            for scope in scopes:
+                scope_list.append(scope.to_resource_json())
+
+        with self.db.client.start_session(causal_consistency=True) as session:
+            # delete existing resource scopes
+            self.collection.delete_many(
+                {
+                    "user_id": user_id,
                     "resource_scope": {"$exists": True},
                 },
                 session=session,

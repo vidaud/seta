@@ -97,7 +97,7 @@ const UsersTable = ({ data, isLoading, error }: DataProps<SetaAccount[]>) => {
   const isError = !!error
 
   const table = useMantineReactTable({
-    columns,
+    columns: columns,
     data: accounts,
     enableColumnActions: false,
     enableColumnFilters: true,

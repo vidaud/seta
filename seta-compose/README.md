@@ -81,7 +81,7 @@ This command creates a docker image based on the Docker file called by default *
 ## Up
 After finishing the build, launch the command to start and run the services:
 
-First the service to initialise the Elasticsearch :
+First the service to initialize the Elasticsearch :
 
 ```
     docker compose up seta-data     
@@ -154,7 +154,25 @@ Create an ***.env.dev*** file containing the variables as described in  file **.
 
 To deploy in a Test environment:
 
-Create an ***.env.test*** file containing the variables as described in **.env.example** and then you can launch the build and up commands:
+Create an ***.env.test*** file containing the variables as described in **.env.example**, important differences:
+
+```
+# docker container names
+NO_PROXY="seta-es-test,seta-data-test,seta-mongo-test,seta-api-test,seta-nginx-test,seta-ui-test,seta-auth-test"
+
+# flask environment
+STAGE="Test"
+
+# same secret for seta-ui tests, check README file in seta-ui/tests
+API_SECRET_KEY=
+
+# test hosts
+ES_HOST="seta-es-test:9200"
+DB_HOST=seta-mongo-test
+DB_NAME=seta-test
+```
+
+Launch the build and up commands:
 
 ```
     docker compose -f docker compose-test.yml build
@@ -170,7 +188,7 @@ To create scripts with short commands like this:
     docker compose -f docker-compose.yml -f docker-compose-dev.yml --env-file .env.dev
 ```
 
- It can be used a *.bat* file where it can be set up all the neccesary functions, as well as the set up of the proxy.  
+ It can be used a *.bat* file where it can be set up all the needed functions, as well as the set up of the proxy.  
  
  
  Here below an example:
@@ -244,18 +262,18 @@ Please make sure to update tests as appropriate.
 
 ## License
 Copyright (c) 2023 European Union      
-Licensed under the EUPL, Version 1.2 or – as soon they will be approved by the European Commission – subsequent versions of the EUPL (the "Licence");     
+Licensed under the EUPL, Version 1.2 or – as soon they will be approved by the European Commission – subsequent versions of the EUPL (the "License");     
 
-You may not use this work except in compliance with the Licence.      
+You may not use this work except in compliance with the License.      
 
 
-You may obtain a copy of the Licence at:      
+You may obtain a copy of the License at:      
 
 
 https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12       
  
-Unless required by applicable law or agreed to in writing, software distributed under the Licence is distributed on an "AS IS" basis, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.             
+Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" basis, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.             
  
-See the Licence for the specific language governing permissions and limitations under the Licence.
+See the License for the specific language governing permissions and limitations under the License.
 
 

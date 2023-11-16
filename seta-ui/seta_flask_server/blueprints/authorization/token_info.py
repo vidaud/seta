@@ -47,6 +47,7 @@ class TokenInfo(Resource):
         users_broker: interfaces.IUsersBroker,
         resources_broker: interfaces.IResourcesBroker,
         session_broker: interfaces.ISessionsBroker,
+        rolling_index_broker: interfaces.IRollingIndexBroker,
         *args,
         api=None,
         **kwargs,
@@ -54,6 +55,7 @@ class TokenInfo(Resource):
         self.users_broker = users_broker
         self.resources_broker = resources_broker
         self.session_broker = session_broker
+        self.rolling_index_broker = rolling_index_broker
 
         super().__init__(api, *args, **kwargs)
 
@@ -71,8 +73,9 @@ class TokenInfo(Resource):
         """Decodes the token and builds the community scopes for the user identity"""
 
         r = authorization_api.payload
+
         token = r["token"]
-        areas = r["auth_area"]
+        areas = r.get("auth_area", None)
 
         decoded_token = None
         try:
@@ -92,7 +95,9 @@ class TokenInfo(Resource):
                         abort(HTTPStatus.UNAUTHORIZED, "User inactive!")
 
                     decoded_token["resource_permissions"] = get_resource_permissions(
-                        user=user, resources_broker=self.resources_broker
+                        user=user,
+                        resources_broker=self.resources_broker,
+                        rolling_index_broker=self.rolling_index_broker,
                     )
 
         except Exception as e:  # pylint: disable=broad-exception-caught

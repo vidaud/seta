@@ -1,6 +1,5 @@
 import { useState, useRef } from 'react'
 import { Button, Group, Title } from '@mantine/core'
-import { notifications } from '@mantine/notifications'
 import { IconCheckbox } from '@tabler/icons-react'
 
 import ApiLoader from '~/pages/Admin/common/components/Loader'
@@ -12,6 +11,7 @@ import type { SystemScope } from '~/types/admin/scopes'
 import { ScopeCategory } from '~/types/catalogue/catalogue-scopes'
 import { UserRole } from '~/types/user'
 import logger from '~/utils/logger'
+import { notifications } from '~/utils/notifications'
 
 import RoleEditor from './components/RoleEditor'
 import SystemPermsTable from './components/SystemPermsTable'
@@ -62,11 +62,7 @@ const SystemPerms = ({ userId, role, scopes }: Props) => {
         onSuccess: () => {
           logger.log('handleSavePermissions success')
 
-          notifications.show({
-            message: `The account permissions were updated.`,
-            color: 'blue',
-            autoClose: 5000
-          })
+          notifications.showSuccess(`The account permissions were updated.`, { autoClose: true })
 
           initialRef.current.role = roleValue
           initialRef.current.selection = selection
@@ -76,11 +72,9 @@ const SystemPerms = ({ userId, role, scopes }: Props) => {
         onError: () => {
           logger.log('handleSavePermissions error')
 
-          notifications.show({
-            title: 'Update failed!',
-            message: 'The update of the account permissions failed. Please try again!',
-            color: 'red',
-            autoClose: 5000
+          notifications.showError('Update failed!', {
+            description: 'The update of the account permissions failed. Please try again!',
+            autoClose: true
           })
         }
       }

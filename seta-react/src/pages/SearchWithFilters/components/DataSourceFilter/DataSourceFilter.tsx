@@ -30,7 +30,6 @@ const DataSourceFilter = ({ data, selectedKeys, onSelectionChange }: Props) => {
   return (
     <Tree
       css={S.tree}
-      style={{ border: 'none' }}
       disabled={disabled}
       value={data}
       selectionMode="checkbox"

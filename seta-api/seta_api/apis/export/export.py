@@ -12,13 +12,19 @@ export_api = Namespace('seta-api-export', description='Export')
 
 export_post_schema = {"type": "object",
                       "properties": {
-                          "ids": {"type": "array", "items": {"type": "string"}},
+                          "ids": {"type": "array", "items": {"type": "object", "properties": {"id": {"type": "string"},
+                                                                                              "path": {"type": "string"}
+                                                                                              }
+                                                             }
+                                  },
                           "fields": {"type": "array", "items": {"type": "string"}}
                       },
                       "required": ["ids", "fields"],
                       "additionalProperties": False}
 
-export_req = {"ids": fields.List(fields.String()), "fields": fields.List(fields.String())}
+id_obj = {"id": fields.String, "path": fields.String}
+id_model = export_api.model("id_model", id_obj)
+export_req = {"ids": fields.List(fields.Nested(id_model)), "fields": fields.List(fields.String())}
 export_request_model = export_api.model("export_req_model", export_req)
 
 
@@ -67,8 +73,8 @@ class Export(Resource):
     def get(self):
         try:
             url = app.config.get("CATALOGUE_API_ROOT_URL") + "fields"
-            
-            #get catalogue from 
+
+            # get catalogue from
             result = requests.get(url=url, headers=request.headers, cookies=request.cookies)
             catalogue = result.json()
 

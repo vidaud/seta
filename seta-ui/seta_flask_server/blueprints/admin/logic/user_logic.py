@@ -46,7 +46,19 @@ def build_account_info(
 def can_approve_resource_cr(user: SetaUser) -> bool:
     """Check if user can approve change requests for resources."""
 
+    if user is None or user.is_not_active():
+        return False
+
     return (
         user.role.lower() == UserRoleConstants.Admin.lower()
         or user.has_system_scope(SystemScopeConstants.ApproveResourceChangeRequest)
     )
+
+
+def is_admin(user: SetaUser) -> bool:
+    """Check user role as 'Administrator'."""
+
+    if user is None or user.is_not_active():
+        return False
+
+    return user.role.lower() == UserRoleConstants.Admin.lower()

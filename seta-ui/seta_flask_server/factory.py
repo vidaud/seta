@@ -7,15 +7,14 @@ from werkzeug.middleware.proxy_fix import ProxyFix
 from flask_jwt_extended import get_jwt_identity
 from flask_injector import FlaskInjector
 
-from .infrastructure.extensions import scheduler, jwt, logs
+from seta_flask_server.infrastructure.extensions import scheduler, jwt, logs
+from seta_flask_server.infrastructure.helpers import MongodbJSONProvider
 
-from .infrastructure.helpers import MongodbJSONProvider
-
-from .dependency import MongoDbClientModule
+from seta_flask_server.dependency import MongoDbClientModule
 
 
 def create_app(config_object):
-    """Main app factory"""
+    """Web service app factory"""
 
     app = Flask(__name__)
     # Tell Flask it is Behind a Proxy
@@ -50,6 +49,7 @@ def create_app(config_object):
             return response
 
         if app.testing:
+            # pylint: disable-next=no-member
             app.logger.debug(
                 {
                     "path": request.path,
@@ -65,7 +65,7 @@ def create_app(config_object):
 
             if identity:
                 user_id = identity["user_id"]
-        except:  # pylint: disable=bare-except
+        except Exception:
             pass  # suppress all exceptions
 
         try:
@@ -85,7 +85,8 @@ def create_app(config_object):
                         "user_agent": repr(request.user_agent),
                     },
                 )
-        except:
+        except Exception:
+            # pylint: disable-next=no-member
             app.logger.exception("seta-ui logger db exception")
 
         return response
@@ -98,6 +99,7 @@ def create_app(config_object):
         )
 
         scheduler.start()
+        # pylint: disable-next=no-member
         app.logger.info("Tasks scheduler has started.")
 
     FlaskInjector(
@@ -138,5 +140,5 @@ def register_extensions(app: Flask):
 
     try:
         logs.init_app(app)
-    except:  # pylint: disable=bare-except
+    except Exception:
         app.logger.error("logs config failed")

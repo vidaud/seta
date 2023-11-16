@@ -8,7 +8,6 @@ import {
   Input,
   UnstyledButton
 } from '@mantine/core'
-import { notifications } from '@mantine/notifications'
 import { IconMessages } from '@tabler/icons-react'
 
 import type { InvitationValues } from '~/pages/CommunitiesPage/contexts/invite-context'
@@ -19,6 +18,7 @@ import {
 
 import { useNewCommunityInvite } from '~/api/communities/invites/invite'
 import { useCurrentUser } from '~/contexts/user-context'
+import { notifications } from '~/utils/notifications'
 
 const useStyles = createStyles({
   form: {
@@ -57,20 +57,12 @@ const InviteMember = ({ communityId }) => {
   const handleSubmit = (values: InvitationValues) => {
     setNewCommunityInviteMutation.mutate(values, {
       onSuccess: () => {
-        notifications.show({
-          message: `Invitation Sent Successfully!`,
-          color: 'blue',
-          autoClose: 5000
-        })
+        notifications.showSuccess(`Invitation Sent Successfully!`, { autoClose: true })
 
         setOpened(o => !o)
       },
       onError: () => {
-        notifications.show({
-          message: 'Invitation sent failed!',
-          color: 'red',
-          autoClose: 5000
-        })
+        notifications.showError('Invitation sent failed!', { autoClose: true })
       }
     })
   }

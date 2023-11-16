@@ -2,11 +2,11 @@ import { css } from '@emotion/react'
 import { rem } from '@mantine/core'
 
 export const header: ThemedCSS = theme => css`
-  padding: ${theme.spacing.md};
-  padding-top: 0;
-  padding-left: calc(${theme.spacing.md} + ${rem(10)});
-  margin-left: calc(${theme.spacing.md} * -1);
-  margin-right: calc(${theme.spacing.md} * -1);
+  // padding: ${theme.spacing.md};
+  // padding-top: 0;
+  // padding-left: calc(${theme.spacing.md} + ${rem(10)});
+  // margin-left: calc(${theme.spacing.md} * -1);
+  // margin-right: calc(${theme.spacing.md} * -1);
   color: ${theme.colorScheme === 'dark' ? theme.white : theme.black};
   border-bottom: ${rem(1)} solid
     ${theme.colorScheme === 'dark' ? theme.colors.dark[4] : theme.colors.gray[3]};

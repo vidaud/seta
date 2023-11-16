@@ -1,9 +1,9 @@
 import { useState } from 'react'
 import { TextInput, Group, createStyles, Button, Textarea, Radio } from '@mantine/core'
-import { notifications } from '@mantine/notifications'
 import type { AxiosError } from 'axios'
 import { IoIosInformationCircle } from 'react-icons/io'
 
+import ResourceAlert from '~/pages/CommunitiesPage/components/resources/ResourceInfo/components/ResourceAlert'
 import {
   useResource,
   type ResourceValues,
@@ -11,8 +11,8 @@ import {
 } from '~/pages/CommunitiesPage/contexts/resource-context'
 
 import { useCreateResource } from '~/api/communities/resources/my-resource'
-
-import ResourceAlert from '../../../ResourceAlert'
+import { useUserPermissions } from '~/api/communities/user-scopes'
+import { notifications } from '~/utils/notifications'
 
 const useStyles = createStyles({
   input: {
@@ -29,6 +29,7 @@ const useStyles = createStyles({
 const CreateForm = ({ id, close }) => {
   const { classes, cx } = useStyles()
   const setNewResourceMutation = useCreateResource(id)
+  const { refetch } = useUserPermissions()
   const [opened, setOpened] = useState<boolean>(false)
 
   const form = useResource({
@@ -51,20 +52,16 @@ const CreateForm = ({ id, close }) => {
   const handleSubmit = (values: ResourceValues) => {
     setNewResourceMutation.mutate(values, {
       onSuccess: () => {
-        notifications.show({
-          message: `New Resource Added Successfully!`,
-          color: 'blue',
-          autoClose: 5000
-        })
+        notifications.showSuccess(`New Resource Added Successfully!`, { autoClose: true })
 
+        refetch()
         close()
       },
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       onError: (error: AxiosError | any) => {
-        notifications.show({
-          message: error?.response?.data?.message,
-          color: 'red',
-          autoClose: 5000
+        notifications.showError('Create Resource Failed!', {
+          description: error?.response?.data?.message,
+          autoClose: true
         })
       }
     })
