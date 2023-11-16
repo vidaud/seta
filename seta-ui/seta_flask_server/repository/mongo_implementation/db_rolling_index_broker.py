@@ -146,13 +146,18 @@ class RollingIndexBroker(implements(IRollingIndexBroker)):
 
         return rolling_indexes
 
-    def get_active_index(self, community_id: str) -> str:
-        rolling_index = self.collection.find_one(
-            {"community_ids": community_id}, {"rolling_index_name": 1}
-        )
+    def get_active_index_for_resource(self, resource_id: str) -> str:
+        rolling_index = None
 
-        if rolling_index and rolling_index.get("is_disabled", False):
-            rolling_index = None
+        community_id = self._get_community_id_for_resource(resource_id)
+
+        if community_id is not None:
+            rolling_index = self.collection.find_one(
+                {"community_ids": community_id}, {"rolling_index_name": 1}
+            )
+
+            if rolling_index and rolling_index.get("is_disabled", False):
+                rolling_index = None
 
         if not rolling_index:
             rolling_index = self.collection.find_one(
@@ -170,7 +175,7 @@ class RollingIndexBroker(implements(IRollingIndexBroker)):
 
         return None
 
-    def get_storage_indexes_for_community(self, community_id: str) -> tuple[str]:
+    def get_storage_indexes_for_resource(self, resource_id: str) -> tuple[str]:
         storage_indexes = []
 
         # append the default list
@@ -185,26 +190,31 @@ class RollingIndexBroker(implements(IRollingIndexBroker)):
             storage_indexes += [index["name"] for index in indexes]
 
         # append storage for (currently or in the past) assigned rolling indexes
-        rolling_indexes = self.collection.find(
-            {
-                "$or": [
-                    {"community_ids": community_id},
-                    {"past_community_ids": community_id},
-                ]
-            },
-            {"rolling_index_name": 1},
-        )
+        community_id = self._get_community_id_for_resource(resource_id)
 
-        other_indexes = self.collection.find(
-            {
-                "parent": {
-                    "$in": [index["rolling_index_name"] for index in rolling_indexes]
-                }
-            },
-            {"name": 1},
-        )
+        if community_id is not None:
+            rolling_indexes = self.collection.find(
+                {
+                    "$or": [
+                        {"community_ids": community_id},
+                        {"past_community_ids": community_id},
+                    ]
+                },
+                {"rolling_index_name": 1},
+            )
 
-        storage_indexes += [other_index["name"] for other_index in other_indexes]
+            other_indexes = self.collection.find(
+                {
+                    "parent": {
+                        "$in": [
+                            index["rolling_index_name"] for index in rolling_indexes
+                        ]
+                    }
+                },
+                {"name": 1},
+            )
+
+            storage_indexes += [other_index["name"] for other_index in other_indexes]
 
         return tuple(storage_indexes)
 
@@ -215,5 +225,18 @@ class RollingIndexBroker(implements(IRollingIndexBroker)):
 
         if rolling_index:
             return rolling_index["rolling_index_name"]
+
+        return None
+
+    def _get_community_id_for_resource(self, resource_id: str) -> str:
+        resources_collection = self.db["resources"]
+
+        find_resource = resources_collection.find_one(
+            {"resource_id": resource_id, "community_id": {"$exists": True}},
+            {"community_id": 1},
+        )
+
+        if find_resource:
+            return find_resource["community_id"]
 
         return None
