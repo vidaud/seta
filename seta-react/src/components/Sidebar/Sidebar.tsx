@@ -16,7 +16,7 @@ const Sidebar = ({ className, withBreadcrumbs, children }: Props) => {
     <Flex className={className} css={S.wrapper}>
       <Navbar css={S.sidebar} className={navbarCls}>
         <Navbar.Section className="section" grow component={ScrollArea}>
-          <Box py="2rem">{children}</Box>
+          <Box pt="2rem">{children}</Box>
         </Navbar.Section>
       </Navbar>
     </Flex>

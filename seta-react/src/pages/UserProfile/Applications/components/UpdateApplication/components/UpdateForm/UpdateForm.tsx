@@ -1,6 +1,5 @@
 import { useEffect } from 'react'
 import { TextInput, Group, createStyles, Button, Textarea, Select } from '@mantine/core'
-import { notifications } from '@mantine/notifications'
 
 import type { ApplicationValues } from '~/pages/UserProfile/contexts/application-context'
 import {
@@ -9,6 +8,7 @@ import {
 } from '~/pages/UserProfile/contexts/application-context'
 
 import { useUpdateApplication } from '~/api/user/applications'
+import { notifications } from '~/utils/notifications'
 
 const useStyles = createStyles({
   input: {
@@ -64,23 +64,18 @@ const UpdateForm = ({ application, close }) => {
 
     setUpdateApplicationMutation.mutate(updatedValues, {
       onSuccess: () => {
-        notifications.show({
-          message: `Application Updated Successfully!`,
-          color: 'blue',
-          autoClose: 5000
-        })
+        notifications.showSuccess(`Application Updated Successfully!`, { autoClose: true })
 
         close()
       },
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       onError: (error: any) => {
-        notifications.show({
-          title: 'Application update failed!',
-          message: error?.response?.data?.msg
+        notifications.showError('Application update failed!', {
+          description: error?.response?.data?.msg
             ? error?.response?.data?.msg
             : error?.response?.data?.message,
-          color: 'red',
-          autoClose: 5000
+
+          autoClose: true
         })
       }
     })

@@ -1,5 +1,4 @@
 import { Box, Title } from '@mantine/core'
-import { notifications } from '@mantine/notifications'
 
 import { SuggestionsError } from '~/pages/SearchPageNew/components/common'
 
@@ -9,6 +8,7 @@ import {
 } from '~/api/admin/community-requests'
 import { RequestStatus } from '~/types/admin/change-requests'
 import logger from '~/utils/logger'
+import { notifications } from '~/utils/notifications'
 
 import RequestsTable from './components/RequestsTable'
 
@@ -28,20 +28,12 @@ const AdminCommunityRequests = () => {
         onSuccess: () => {
           logger.log('handleApproveRequest success')
 
-          notifications.show({
-            message: 'The request was approved!',
-            color: 'blue',
-            autoClose: 5000
-          })
+          notifications.showSuccess(`The request was approved!`, { autoClose: true })
         },
         onError: () => {
           logger.log('handleApproveRequest error')
 
-          notifications.show({
-            message: 'The request update failed!',
-            color: 'red',
-            autoClose: 5000
-          })
+          notifications.showError('The request update failed!', { autoClose: true })
         }
       }
     )
@@ -58,20 +50,15 @@ const AdminCommunityRequests = () => {
         onSuccess: () => {
           logger.log('handleRejectRequest success')
 
-          notifications.show({
-            message: 'The request was rejected!',
-            color: 'yellow',
-            autoClose: 5000
-          })
+          notifications.showInfo('The request was rejected!', { autoClose: true })
         },
         onError: () => {
           logger.log('handleRejectRequest error')
 
-          notifications.show({
-            title: 'Update failed!',
-            message: 'The request update failed. Please try again!',
-            color: 'red',
-            autoClose: 5000
+          notifications.showError('Update failed!', {
+            description: 'The request update failed. Please try again!',
+
+            autoClose: true
           })
         }
       }

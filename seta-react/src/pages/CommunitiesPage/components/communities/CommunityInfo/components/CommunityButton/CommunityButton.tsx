@@ -48,7 +48,6 @@ const CommunityButton = ({ props, community_scopes }: Props) => {
         {isManager ? (
           <>
             <Menu
-              withinPortal={true}
               transitionProps={{ transition: 'pop' }}
               withArrow
               position="bottom"

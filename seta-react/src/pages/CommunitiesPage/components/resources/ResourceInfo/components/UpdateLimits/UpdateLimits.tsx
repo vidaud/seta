@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
 import { Popover, Button, Group, createStyles, Text, NumberInput } from '@mantine/core'
-import { notifications } from '@mantine/notifications'
 
 import type { NewValueValues } from '~/pages/CommunitiesPage/contexts/change-request-context'
 import {
@@ -9,6 +8,7 @@ import {
 } from '~/pages/CommunitiesPage/contexts/change-request-context'
 
 import { useResourceChangeRequest } from '~/api/communities/resources/resource-change-requests'
+import { notifications } from '~/utils/notifications'
 
 const useStyles = createStyles({
   form: {
@@ -55,20 +55,12 @@ const UpdateLimits = ({ props }) => {
     // form.setValues({ new_value: form.values})
     setNewChangeRequestMutation.mutate(formValues, {
       onSuccess: () => {
-        notifications.show({
-          message: `Resource Limits Request Created!`,
-          color: 'blue',
-          autoClose: 5000
-        })
+        notifications.showSuccess(`Resource Limits Request Created!`, { autoClose: true })
 
         setOpened(o => !o)
       },
       onError: () => {
-        notifications.show({
-          message: 'Change Request Failed!',
-          color: 'red',
-          autoClose: 5000
-        })
+        notifications.showSuccess('Change Request Failed!', { autoClose: true })
       }
     })
   }

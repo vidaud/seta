@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react'
 import { Paper, Textarea, Box, Button, Group } from '@mantine/core'
-import { notifications } from '@mantine/notifications'
 import { RiDeleteBin5Line } from 'react-icons/ri'
 
 import { useDeleteRSAKey, useGeneratePublicKey, useRSAKey } from '~/api/user/rsa-keys'
 import { defaultNoPublicKeyMessage } from '~/common/constants'
+import { notifications } from '~/utils/notifications'
 
 import { downLoadFile } from '../common/utils/utils'
 
@@ -23,23 +23,17 @@ const RSAKeys = () => {
   const deletePublicKey = () => {
     setDeleteRSAKeyMutation.mutate(undefined, {
       onSuccess: () => {
-        notifications.show({
-          message: `Public Key deleted successfully!`,
-          color: 'blue',
-          autoClose: 5000
-        })
+        notifications.showSuccess(`Public Key deleted successfully!`, { autoClose: true })
 
         setpublicKey(defaultNoPublicKeyMessage)
       },
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       onError: (error: any) => {
-        notifications.show({
-          title: 'Delete public Key failed!',
-          message: error?.response?.data?.msg
+        notifications.showError('Delete public Key failed!', {
+          description: error?.response?.data?.msg
             ? error?.response?.data?.msg
             : error?.response?.data?.message,
-          color: 'red',
-          autoClose: 5000
+          autoClose: true
         })
       }
     })
@@ -48,11 +42,7 @@ const RSAKeys = () => {
   const generatePublicKey = () => {
     setGeneratePublicKey.mutate(undefined, {
       onSuccess: () => {
-        notifications.show({
-          message: `Public Key Generated Successfully!`,
-          color: 'blue',
-          autoClose: 5000
-        })
+        notifications.showSuccess(`Public Key Generated Successfully!`, { autoClose: true })
 
         if (data) {
           downLoadFile(data['privateKey'], 'text/plain', `seta_id_rsa`)
@@ -61,11 +51,9 @@ const RSAKeys = () => {
       },
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       onError: (error: any) => {
-        notifications.show({
-          title: 'Public Key generation failed!',
-          message: error?.response?.data?.msg,
-          color: 'red',
-          autoClose: 5000
+        notifications.showError('Public Key generation failed!', {
+          description: error?.response?.data?.msg,
+          autoClose: true
         })
       }
     })

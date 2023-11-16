@@ -1,6 +1,5 @@
 import { useEffect } from 'react'
 import { TextInput, Group, createStyles, Button, Textarea } from '@mantine/core'
-import { notifications } from '@mantine/notifications'
 
 import type { CommunityValues } from '~/pages/CommunitiesPage/contexts/community-context'
 import {
@@ -9,6 +8,7 @@ import {
 } from '~/pages/CommunitiesPage/contexts/community-context'
 
 import { useSetUpdateCommunity } from '~/api/communities/communities/my-community'
+import { notifications } from '~/utils/notifications'
 
 const useStyles = createStyles({
   input: {
@@ -55,20 +55,12 @@ const UpdateForm = ({ community, close, onChange }) => {
   const handleSubmit = (values: CommunityValues) => {
     setUpdateCommunityMutation.mutate(values, {
       onSuccess: () => {
-        notifications.show({
-          message: `Community Updated Successfully!`,
-          color: 'blue',
-          autoClose: 5000
-        })
+        notifications.showSuccess(`Community Updated Successfully!`, { autoClose: true })
 
         close()
       },
       onError: () => {
-        notifications.show({
-          message: 'Community update failed!',
-          color: 'red',
-          autoClose: 5000
-        })
+        notifications.showError('Community update failed!', { autoClose: true })
       }
     })
   }

@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
 import { Paper, Textarea, Box, Button, Group } from '@mantine/core'
-import { notifications } from '@mantine/notifications'
 import { RiDeleteBin5Line } from 'react-icons/ri'
 
 import { downLoadFile } from '~/pages/UserProfile/common/utils/utils'
@@ -11,6 +10,7 @@ import {
   useGenerateApplicationPublicKey
 } from '~/api/user/applications-rsa-keys'
 import { defaultNoPublicKeyMessage } from '~/common/constants'
+import { notifications } from '~/utils/notifications'
 
 const ApplicationRSAKeys = ({ appName }) => {
   const { data } = useApplicationRSAKey(appName)
@@ -27,20 +27,12 @@ const ApplicationRSAKeys = ({ appName }) => {
   const deletePublicKey = () => {
     setDeleteRSAKeyMutation.mutate(appName, {
       onSuccess: () => {
-        notifications.show({
-          message: `Public Key deleted successfully!`,
-          color: 'blue',
-          autoClose: 5000
-        })
+        notifications.showSuccess(`Public Key deleted successfully!`, { autoClose: true })
 
         setpublicKey(defaultNoPublicKeyMessage)
       },
       onError: () => {
-        notifications.show({
-          message: 'Delete public Key failed!',
-          color: 'red',
-          autoClose: 5000
-        })
+        notifications.showError('Delete public Key failed!', { autoClose: true })
       }
     })
   }
@@ -48,11 +40,7 @@ const ApplicationRSAKeys = ({ appName }) => {
   const generatePublicKey = () => {
     setGeneratePublicKey.mutate(appName, {
       onSuccess: () => {
-        notifications.show({
-          message: `Public Key Generated Successfully!`,
-          color: 'blue',
-          autoClose: 5000
-        })
+        notifications.showSuccess(`Public Key Generated Successfully!`, { autoClose: true })
 
         if (data) {
           downLoadFile(data['privateKey'], 'text/plain', `${appName}_id_rsa`)
@@ -60,11 +48,7 @@ const ApplicationRSAKeys = ({ appName }) => {
         }
       },
       onError: () => {
-        notifications.show({
-          message: 'Public Key generation failed!',
-          color: 'red',
-          autoClose: 5000
-        })
+        notifications.showError('Public Key generation failed!', { autoClose: true })
       }
     })
   }
