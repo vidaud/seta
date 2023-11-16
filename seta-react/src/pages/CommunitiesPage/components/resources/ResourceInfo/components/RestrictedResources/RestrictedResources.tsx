@@ -3,11 +3,10 @@ import { createStyles, Switch, useMantineTheme } from '@mantine/core'
 import { CgSearchFound } from 'react-icons/cg'
 import { MdOutlineSearchOff } from 'react-icons/md'
 
-import type { ResourceScopes } from '~/pages/CommunitiesPage/contexts/scope-context'
-
 import { useAllResources } from '~/api/communities/resources/discover-resources'
 import { useRestrictedResource } from '~/api/communities/resources/restricted-resources'
 import type { ResourceResponse } from '~/api/types/resource-types'
+import type { ResourceScopes } from '~/types/user/user-scopes'
 import { notifications } from '~/utils/notifications'
 
 const useStyles = createStyles(theme => ({

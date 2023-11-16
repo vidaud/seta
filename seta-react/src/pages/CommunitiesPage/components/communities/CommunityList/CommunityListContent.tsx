@@ -1,11 +1,6 @@
 import { forwardRef } from 'react'
 import { Flex, Group, Text } from '@mantine/core'
 
-import type {
-  CommunityScopes,
-  ResourceScopes,
-  SystemScopes
-} from '~/pages/CommunitiesPage/contexts/community-list.context'
 import {
   SuggestionsEmpty,
   SuggestionsError,
@@ -14,6 +9,7 @@ import {
 
 import type { CommunityResponse } from '~/api/types/community-types'
 import type { DataProps } from '~/types/data-props'
+import type { CommunityScopes, ResourceScopes, SystemScopes } from '~/types/user/user-scopes'
 
 import * as S from './styles'
 

@@ -5,13 +5,9 @@ import { FaChevronDown, FaUsers, FaUsersSlash } from 'react-icons/fa'
 import { useLocation } from 'react-router-dom'
 
 import { PanelProvider } from '~/pages/CommunitiesPage/contexts/panel-context'
-import type {
-  CommunityScopes,
-  ResourceScopes,
-  SystemScopes
-} from '~/pages/CommunitiesPage/contexts/scope-context'
 
 import type { CommunityResponse } from '~/api/types/community-types'
+import type { CommunityScopes, ResourceScopes, SystemScopes } from '~/types/user/user-scopes'
 
 import CommunityButton from './components/CommunityButton'
 import CommunityDetails from './components/CommunityDetails'
