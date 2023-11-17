@@ -2,9 +2,8 @@ import { useMantineTheme, Modal, Divider, UnstyledButton, createStyles, Group } 
 import { useDisclosure } from '@mantine/hooks'
 import { IconPencil } from '@tabler/icons-react'
 
-import type { ResourceScopes } from '~/pages/CommunitiesPage/contexts/community-list.context'
-
 import type { ResourceResponse } from '~/api/types/resource-types'
+import type { ResourceScopes } from '~/types/user/user-scopes'
 
 import UpdateForm from './components/UpdateForm'
 

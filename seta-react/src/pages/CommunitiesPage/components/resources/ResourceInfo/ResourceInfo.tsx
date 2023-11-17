@@ -7,14 +7,10 @@ import { FaChevronDown } from 'react-icons/fa'
 import { MdOutlineSearchOff } from 'react-icons/md'
 import { useLocation, useNavigate } from 'react-router-dom'
 
-import type {
-  CommunityScopes,
-  ResourceScopes,
-  SystemScopes
-} from '~/pages/CommunitiesPage/contexts/community-list.context'
 import { PanelProvider } from '~/pages/CommunitiesPage/contexts/panel-context'
 
 import type { ResourceResponse } from '~/api/types/resource-types'
+import type { CommunityScopes, ResourceScopes, SystemScopes } from '~/types/user/user-scopes'
 
 import DeleteResource from './components/DeleteResource'
 import ResourceDetails from './components/ResourceDetails'

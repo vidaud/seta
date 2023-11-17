@@ -2,19 +2,11 @@ import { useEffect, useState } from 'react'
 import { Badge, Collapse, Group, Tabs } from '@mantine/core'
 
 import CreateResource from '~/pages/CommunitiesPage/components/resources/ResourceInfo/components/CreateResource'
-import type {
-  CommunityScopes,
-  ResourceScopes,
-  SystemScopes
-} from '~/pages/CommunitiesPage/contexts/community-list.context'
 import { usePanelNotifications } from '~/pages/CommunitiesPage/contexts/panel-context'
 
-import type { ChangeRequestResponse } from '~/api/types/change-request-types'
 import type { CommunityResponse } from '~/api/types/community-types'
-import type { InviteResponse } from '~/api/types/invite-types'
-import type { MembershipRequest } from '~/api/types/membership-types'
-import type { UserPermissionsResponse } from '~/api/types/user-permissions-types'
 import type { ClassNameProp } from '~/types/children-props'
+import type { CommunityScopes, ResourceScopes, SystemScopes } from '~/types/user/user-scopes'
 
 import CommunityResources from '../CommunityResources'
 import PanelContent from '../PanelContent'
@@ -25,13 +17,6 @@ type Props = ClassNameProp & {
   community_scopes?: CommunityScopes[]
   resource_scopes?: ResourceScopes[]
   system_scopes?: SystemScopes[]
-}
-
-export type DataResponse = {
-  memberships: MembershipRequest[]
-  invites: InviteResponse[]
-  userPermissions: UserPermissionsResponse[]
-  changeRequests: ChangeRequestResponse
 }
 
 const items = [

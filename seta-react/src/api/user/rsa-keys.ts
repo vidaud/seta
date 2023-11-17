@@ -6,6 +6,7 @@ import { environment } from '~/environments/environment'
 import { UserQueryKeys } from './query-keys'
 
 import api from '../api'
+import type { RSAKey } from '../types/rsa-keys-types'
 
 const RSA_API_PATH = (): string => `/me/rsa-key`
 
@@ -20,11 +21,6 @@ const config_ = {
     'Content-Type': 'application/x-www-form-urlencoded',
     accept: 'application/json'
   }
-}
-
-type RSAKey = {
-  privateKey?: string
-  publicKey: string
 }
 
 const getRSAKey = async (config?: AxiosRequestConfig): Promise<RSAKey> => {

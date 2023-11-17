@@ -3,7 +3,7 @@ import { Box, Table, Text, createStyles } from '@mantine/core'
 
 import { useApplicationsList } from '~/api/user/applications'
 
-import ApplicationsRow from '../ApplicationRow/ApplicationRow'
+import ApplicationsRow from './components/ApplicationRow/ApplicationRow'
 
 const useStyles = createStyles(() => ({
   box: {

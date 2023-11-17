@@ -50,6 +50,7 @@ const HomePage = () => {
 
   React.useEffect(() => {
     const intervalId = setInterval(
+      // eslint-disable-next-line @typescript-eslint/no-shadow
       () => setIndex(index => index + 1),
       5000 // every  seconds
     )
