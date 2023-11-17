@@ -3,6 +3,7 @@ import { Group, TextInput, createStyles } from '@mantine/core'
 import { IconSearch } from '@tabler/icons-react'
 
 import { useCommunityListContext } from '~/pages/CommunitiesPage/contexts/community-list.context'
+import { ResourceListProvider } from '~/pages/CommunitiesPage/contexts/resource-list.context'
 import { sortResourceData } from '~/pages/CommunitiesPage/utils/resource-utils'
 
 import { useAllResources } from '~/api/communities/resources/discover-resources'
@@ -53,16 +54,18 @@ const ResourceList = () => {
           onChange={handleSearchChange}
         />
       </Group>
-      <ResourceListContent
-        queryTerms={search}
-        isLoading={isLoading}
-        data={sortedData}
-        error={error}
-        onTryAgain={refetch}
-        community_scopes={community_scopes}
-        resource_scopes={resource_scopes}
-        system_scopes={system_scopes}
-      />
+      <ResourceListProvider>
+        <ResourceListContent
+          queryTerms={search}
+          isLoading={isLoading}
+          data={sortedData}
+          error={error}
+          onTryAgain={refetch}
+          community_scopes={community_scopes}
+          resource_scopes={resource_scopes}
+          system_scopes={system_scopes}
+        />
+      </ResourceListProvider>
     </>
   )
 }

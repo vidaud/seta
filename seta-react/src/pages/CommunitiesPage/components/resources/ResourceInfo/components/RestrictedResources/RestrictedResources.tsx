@@ -35,70 +35,55 @@ const useStyles = createStyles(theme => ({
 type Props = {
   resource: ResourceResponse
   resource_scopes?: ResourceScopes[] | undefined
+  searchable: boolean
 }
 
-const RestrictedResource = ({ resource }: Props) => {
+const RestrictedResource = ({ resource, searchable }: Props) => {
   const { data } = useAllResources()
   const { classes } = useStyles()
   const theme = useMantineTheme()
-  const [checked, setChecked] = useState(resource.searchable)
+
   const setRestrictedResourceMutation = useRestrictedResource()
+  const [selection, setSelection] = useState<string[]>(
+    data ? data?.filter(item => item.searchable === false).map(item => item.resource_id) : []
+  )
+  const selected = selection.includes(resource.resource_id)
 
   useEffect(() => {
-    if (resource) {
-      // form.setValues(props)
-    }
-  }, [resource, data])
+    setSelection(
+      data ? data?.filter(item => item.searchable === false).map(item => item.resource_id) : []
+    )
+  }, [data])
 
-  const handleSwitch = (value: React.ChangeEvent<HTMLInputElement>, id: string) => {
-    setChecked(value.currentTarget.checked)
+  const toggleRow = (code: string) => {
+    const form = new FormData()
+    const values = selection?.includes(code)
+      ? selection?.filter(item => item !== code)
+      : [...selection, code]
 
-    if (!value.currentTarget.checked) {
-      const form = new FormData()
+    setSelection(values)
+    values?.forEach(element => form.append('resource', element))
 
-      const index = data?.filter(item => item.searchable === false).map(item => item.resource_id)
-
-      index?.forEach(element => form.append('resource', element))
-      form.append('resource', id)
-      setRestrictedResourceMutation.mutate(form, {
-        onSuccess: () => {
-          notifications.showSuccess(`Resource is now not searchable!`, { autoClose: true })
-        },
-        onError: () => {
-          notifications.showError('The resource update failed!', { autoClose: true })
-        }
-      })
-    } else {
-      const form = new FormData()
-
-      const index = data
-        ?.filter(item => item.searchable === false && item.resource_id !== id)
-        .map(item => item.resource_id)
-
-      index?.forEach(element => form.append('resource', element))
-
-      setRestrictedResourceMutation.mutate(form, {
-        onSuccess: () => {
-          notifications.showSuccess(`Resource is now searchable!`, { autoClose: true })
-        },
-        onError: () => {
-          notifications.showError('The resource update failed!', { autoClose: true })
-        }
-      })
-    }
+    setRestrictedResourceMutation.mutate(form, {
+      onSuccess: () => {
+        notifications.showSuccess(`Resource is now not searchable!`, { autoClose: true })
+      },
+      onError: () => {
+        notifications.showError('The resource update failed!', { autoClose: true })
+      }
+    })
   }
 
   return (
     <>
       <Switch
         className={classes.button}
-        checked={checked}
-        onChange={event => handleSwitch(event, resource.resource_id)}
+        checked={!selected}
+        onChange={() => toggleRow?.(resource.resource_id)}
         color="teal"
         size="md"
-        // label={checked ? 'Switch to Searchable' : 'Switch to Not Searchable'}
         thumbIcon={
-          checked ? (
+          searchable ? (
             <CgSearchFound size="0.8rem" color={theme.colors.teal[theme.fn.primaryShade()]} />
           ) : (
             <MdOutlineSearchOff

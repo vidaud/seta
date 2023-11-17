@@ -23,6 +23,7 @@ import type {
   SystemScopes
 } from '~/pages/CommunitiesPage/contexts/community-list.context'
 import { PanelProvider } from '~/pages/CommunitiesPage/contexts/panel-context'
+import { useResourceListContext } from '~/pages/CommunitiesPage/contexts/resource-list.context'
 
 import type { ResourceResponse } from '~/api/types/resource-types'
 
@@ -43,6 +44,8 @@ type Props = {
 const ResourceInfo = ({ resource, resource_scopes, community_scopes }: Props) => {
   const [scopes, setScopes] = useState<string[] | undefined>([])
   const [resourceScopes, setResourceScopes] = useState<string[] | undefined>([])
+  const { memberCommunities } = useResourceListContext()
+
   const [outsideClick, setOutsideClick] = useState(true)
   const theme = useMantineTheme()
   const { title, resource_id, abstract, community_title, created_at, community_id, searchable } =
@@ -50,7 +53,6 @@ const ResourceInfo = ({ resource, resource_scopes, community_scopes }: Props) =>
   const location = useLocation()
   const ref = createRef<HTMLDivElement>()
   const navigate = useNavigate()
-
   const [detailsOpen, { toggle }] = useDisclosure()
 
   const chevronClass = clsx({ open: detailsOpen })
@@ -75,13 +77,11 @@ const ResourceInfo = ({ resource, resource_scopes, community_scopes }: Props) =>
     )
 
     findResource ? setScopes(findResource[0]?.scopes) : setScopes([])
-
     const findResourceScope = resource_scopes?.filter(
       scope => scope.resource_id === resource.resource_id
     )
 
     findResourceScope ? setResourceScopes(findResourceScope[0]?.scopes) : setResourceScopes([])
-    //prevent entering infinite loop
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -141,9 +141,13 @@ const ResourceInfo = ({ resource, resource_scopes, community_scopes }: Props) =>
           ) : (
             <div />
           )}
-          <RestrictedResource resource={resource} />
+          {memberCommunities
+            ?.filter(item => item.status === 'membership')
+            .map(el => el.community_id)
+            .includes(resource.community_id) ? (
+            <RestrictedResource resource={resource} searchable={searchable} />
+          ) : null}
         </Grid>
-
         {toggleIcon}
       </div>
 
