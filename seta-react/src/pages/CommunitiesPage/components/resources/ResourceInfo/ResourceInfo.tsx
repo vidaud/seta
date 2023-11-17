@@ -1,5 +1,15 @@
 import { createRef, useEffect, useState } from 'react'
-import { Flex, Text, clsx, Group, Anchor, Menu, ActionIcon, useMantineTheme } from '@mantine/core'
+import {
+  Flex,
+  Text,
+  clsx,
+  Group,
+  Anchor,
+  Menu,
+  ActionIcon,
+  useMantineTheme,
+  Grid
+} from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 import { IconDotsVertical } from '@tabler/icons-react'
 import { CgSearchFound } from 'react-icons/cg'
@@ -102,9 +112,8 @@ const ResourceInfo = ({ resource, resource_scopes, community_scopes }: Props) =>
             {title.charAt(0).toUpperCase() + title.slice(1)}
           </Text>
         </div>
-        {resourceScopes?.includes('/seta/resource/edit') ? (
-          <>
-            <RestrictedResource resource={resource} />
+        <Grid css={S.grid}>
+          {resourceScopes?.includes('/seta/resource/edit') ? (
             <Menu
               transitionProps={{ transition: 'pop' }}
               withArrow
@@ -129,13 +138,11 @@ const ResourceInfo = ({ resource, resource_scopes, community_scopes }: Props) =>
                 <DeleteResource id={resource_id} />
               </Menu.Dropdown>
             </Menu>
-          </>
-        ) : (
-          <>
+          ) : (
             <div />
-            <div />
-          </>
-        )}
+          )}
+          <RestrictedResource resource={resource} />
+        </Grid>
 
         {toggleIcon}
       </div>
