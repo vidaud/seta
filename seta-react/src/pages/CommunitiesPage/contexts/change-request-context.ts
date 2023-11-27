@@ -14,6 +14,7 @@ export type NewValueValues = {
     total_storage_mb: number
     file_size_mb: number
   }
+  message: string
   membership?: string
 }
 

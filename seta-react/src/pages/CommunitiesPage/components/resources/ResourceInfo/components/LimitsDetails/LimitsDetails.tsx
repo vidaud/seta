@@ -7,7 +7,7 @@ import { useResourceID } from '~/api/communities/resources/my-resource'
 
 import UpdateLimits from '../UpdateLimits'
 
-const LimitsDetails = ({ id, scopes }) => {
+const LimitsDetails = ({ id, scopes, nrResourcesChangeRequests }) => {
   const { data, isLoading } = useResourceID(id)
   const [rows, setRows] = useState(data)
 
@@ -54,7 +54,7 @@ const LimitsDetails = ({ id, scopes }) => {
 
       {scopes?.includes('/seta/resource/edit') ? (
         <Group position="right" style={{ paddingTop: '2%' }}>
-          <UpdateLimits props={rows} />
+          <UpdateLimits props={rows} nrResourcesChangeRequests={nrResourcesChangeRequests} />
         </Group>
       ) : null}
     </div>

@@ -13,12 +13,9 @@ type Props = {
 
 const useStyles = createStyles(() => ({
   button: {
-    padding: '0.625rem 0.75rem',
     color: '#868e96',
-    // width: '100%',
     borderRadius: '4px',
     ':hover': {
-      // background: '#f1f3f5',
       cursor: 'auto'
     }
   }
@@ -28,12 +25,13 @@ const ChangePrivacyRequestActions = ({ props }: Props) => {
   const { classes } = useStyles()
   const setChangeRequestMutation = useSetChangeMembershipRequest()
 
-  const handleOpenedRequest = (community_id: string) => {
+  const handleOpenedRequest = (community_id: string, message: string) => {
     setChangeRequestMutation.mutate({
       community_id: community_id,
       field_name: 'membership',
       new_value: ChangeMembershipRequestStatus.Opened,
-      old_value: props.membership
+      old_value: props.membership,
+      message: message
     })
 
     if (setChangeRequestMutation.isError) {
@@ -43,12 +41,13 @@ const ChangePrivacyRequestActions = ({ props }: Props) => {
     }
   }
 
-  const handleClosedRequest = (community_id: string) => {
+  const handleClosedRequest = (community_id: string, message: string) => {
     setChangeRequestMutation.mutate({
       community_id: community_id,
       field_name: 'membership',
       new_value: ChangeMembershipRequestStatus.Restricted,
-      old_value: props.membership
+      old_value: props.membership,
+      message: message
     })
 
     if (setChangeRequestMutation.isError) {
@@ -62,11 +61,11 @@ const ChangePrivacyRequestActions = ({ props }: Props) => {
     <>
       <Group spacing={0} className={classes.button}>
         <RowActions
-          onApprove={() => {
-            handleOpenedRequest?.(props.community_id)
+          onApprove={value => {
+            handleOpenedRequest?.(props.community_id, value)
           }}
-          onReject={() => {
-            handleClosedRequest?.(props.community_id)
+          onReject={value => {
+            handleClosedRequest?.(props.community_id, value)
           }}
           community={props}
         />

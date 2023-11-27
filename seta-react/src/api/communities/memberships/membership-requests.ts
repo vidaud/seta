@@ -32,6 +32,7 @@ type UpdateRequest = {
   field_name: string
   new_value: ChangeMembershipRequestStatus
   old_value: string
+  message: string
 }
 
 const updatePendingMembershipRequest = async (request: Request) => {

@@ -1,5 +1,5 @@
 import { useEffect, useState, lazy } from 'react'
-import { ActionIcon, Button, Divider, Group, Menu, Text } from '@mantine/core'
+import { ActionIcon, Button, Group, Menu } from '@mantine/core'
 import { IconDotsVertical } from '@tabler/icons-react'
 
 import type { CommunityScopes } from '~/pages/CommunitiesPage/contexts/community-list.context'
@@ -76,10 +76,10 @@ const CommunityButton = ({ props, community_scopes }: Props) => {
                 {scopes?.includes('/seta/community/owner') ? (
                   <>
                     <DeleteCommunity props={props} />
-                    <Divider sx={{ marginTop: '0.25rem' }} />
+                    {/* <Divider sx={{ marginTop: '0.25rem' }} />
                     <Text sx={{ paddingLeft: '0.75rem' }} color="#868e96" size="sm">
                       Membership
-                    </Text>
+                    </Text> */}
                     <ChangePrivacyRequestActions props={props} />
                   </>
                 ) : null}

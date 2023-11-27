@@ -69,7 +69,13 @@ const ResourceDetails = ({
           </Tabs.List>
 
           <Tabs.Panel value="limits">
-            {open ? <LimitsDetails id={resource_id} scopes={scopes} /> : null}
+            {open ? (
+              <LimitsDetails
+                id={resource_id}
+                scopes={scopes}
+                nrResourcesChangeRequests={nrResourcesChangeRequests}
+              />
+            ) : null}
           </Tabs.Panel>
           {tabs}
         </Tabs>
