@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react'
 import { Paper, Textarea, Box, Button, Group } from '@mantine/core'
+import type { AxiosResponse } from 'axios'
 import { RiDeleteBin5Line } from 'react-icons/ri'
 
 import { useDeleteRSAKey, useGeneratePublicKey, useRSAKey } from '~/api/user/rsa-keys'
 import { defaultNoPublicKeyMessage } from '~/common/constants'
+import { useCurrentUser } from '~/contexts/user-context'
 import { notifications } from '~/utils/notifications'
 
 import { downLoadFile } from '../common/utils/utils'
@@ -12,13 +14,15 @@ const RSAKeys = () => {
   const { data } = useRSAKey()
   const [publicKey, setpublicKey] = useState<string>()
   const setDeleteRSAKeyMutation = useDeleteRSAKey()
-  const setGeneratePublicKey = useGeneratePublicKey()
+  const un = useCurrentUser().user?.username
+  const setGeneratePublicKey = useGeneratePublicKey(un)
+  const [disabledView, setDisabledView] = useState(false)
 
   useEffect(() => {
     if (data) {
       setpublicKey(data.publicKey)
     }
-  }, [data, publicKey])
+  }, [data, publicKey, disabledView])
 
   const deletePublicKey = () => {
     setDeleteRSAKeyMutation.mutate(undefined, {
@@ -40,17 +44,20 @@ const RSAKeys = () => {
   }
 
   const generatePublicKey = () => {
+    setDisabledView(true)
     setGeneratePublicKey.mutate(undefined, {
-      onSuccess: () => {
+      onSuccess: (response: AxiosResponse) => {
         notifications.showSuccess(`Public Key Generated Successfully!`, { autoClose: true })
 
-        if (data) {
-          downLoadFile(data['privateKey'], 'text/plain', `seta_id_rsa`)
-          setpublicKey(data?.publicKey)
+        if (response) {
+          setDisabledView(false)
+          downLoadFile(response.data?.privateKey, 'text/plain', `seta_id_rsa`)
+          setpublicKey(response.data?.publicKey)
         }
       },
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       onError: (error: any) => {
+        setDisabledView(false)
         notifications.showError('Public Key generation failed!', {
           description: error?.response?.data?.msg,
           autoClose: true
@@ -74,8 +81,20 @@ const RSAKeys = () => {
         />
       </Box>
       <Group position="right" mt="md">
-        <Button onClick={generatePublicKey}>Generate Public Key</Button>
-        <Button color="red" leftIcon={<RiDeleteBin5Line size="1rem" />} onClick={deletePublicKey}>
+        <Button
+          disabled={disabledView}
+          onClick={() => {
+            generatePublicKey()
+          }}
+        >
+          Generate Public Key
+        </Button>
+        <Button
+          color="red"
+          disabled={disabledView}
+          leftIcon={<RiDeleteBin5Line size="1rem" />}
+          onClick={deletePublicKey}
+        >
           Delete
         </Button>
       </Group>
