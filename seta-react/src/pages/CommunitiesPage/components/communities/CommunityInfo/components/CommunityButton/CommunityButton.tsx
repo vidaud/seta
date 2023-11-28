@@ -2,9 +2,8 @@ import { useEffect, useState, lazy } from 'react'
 import { ActionIcon, Button, Divider, Group, Menu, Text } from '@mantine/core'
 import { IconDotsVertical } from '@tabler/icons-react'
 
-import type { CommunityScopes } from '~/pages/CommunitiesPage/contexts/community-list.context'
-
 import type { CommunityResponse } from '~/api/types/community-types'
+import type { CommunityScopes } from '~/types/user/user-scopes'
 
 import ChangePrivacyRequestActions from '../ChangePrivacy/ChangePrivacyRequestActions'
 import DeleteCommunity from '../DeleteCommunity'
@@ -48,7 +47,6 @@ const CommunityButton = ({ props, community_scopes }: Props) => {
         {isManager ? (
           <>
             <Menu
-              withinPortal={true}
               transitionProps={{ transition: 'pop' }}
               withArrow
               position="bottom"

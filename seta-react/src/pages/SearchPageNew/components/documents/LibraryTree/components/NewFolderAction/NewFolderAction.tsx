@@ -8,6 +8,7 @@ import { ROOT_NODE_ID } from '~/pages/SearchPageNew/components/documents/Library
 
 import { useCreateNewFolder } from '~/api/search/library'
 import type { LibraryItem } from '~/types/library/library-item'
+import { INVALID_PATH_CHARACTERS } from '~/utils/library-utils'
 
 import * as S from './styles'
 
@@ -70,6 +71,12 @@ const NewFolderAction = ({
   }
 
   const handleInputKeyDown: React.KeyboardEventHandler<HTMLInputElement> = e => {
+    if (INVALID_PATH_CHARACTERS.includes(e.key)) {
+      e.preventDefault()
+
+      return
+    }
+
     if (e.key === 'Enter') {
       submitNewFolder()
     }

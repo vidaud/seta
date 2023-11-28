@@ -11,3 +11,5 @@ export const EXPORT_FORMATS: ExportSelectItem[] = [
     label: ExportMimeType.json.name
   }
 ]
+
+export const EXPORT_PATHS_SEPARATOR = '; '

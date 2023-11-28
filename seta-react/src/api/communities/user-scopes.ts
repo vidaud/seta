@@ -3,6 +3,7 @@ import type { AxiosRequestConfig } from 'axios'
 
 import { environment } from '~/environments/environment'
 import type { User } from '~/types/user'
+import type { UserPermissions } from '~/types/user/user-scopes'
 
 import api from '../api'
 
@@ -11,27 +12,6 @@ const USER_INFO_API_PATH = '/me/permissions'
 
 const apiConfig: AxiosRequestConfig = {
   baseURL: BASE_URL
-}
-
-type SystemScopes = {
-  area: string
-  scope: string
-}
-
-type CommunityScopes = {
-  community_id: string
-  scopes: string[]
-}
-
-type ResourceScopes = {
-  resource_id: string
-  scopes: string[]
-}
-
-type UserPermissions = {
-  system_scopes: SystemScopes[]
-  community_scopes: CommunityScopes[]
-  resource_scopes: ResourceScopes[]
 }
 
 export type UserInfoResponse = User

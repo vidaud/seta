@@ -96,6 +96,8 @@ export const useDeleteResource = (id: string) => {
     },
     onSuccess: () => {
       client.invalidateQueries(ResourceQueryKeys.ResourcesQueryKey)
+      client.invalidateQueries(ResourceQueryKeys.CommunitiesQueryKey)
+      client.invalidateQueries(ResourceQueryKeys.CommunityQueryKey)
     }
   })
 }

@@ -6,6 +6,7 @@ import { environment } from '~/environments/environment'
 import { UserQueryKeys } from './query-keys'
 
 import api from '../api'
+import type { RSAKey } from '../types/rsa-keys-types'
 
 const RSA_API_PATH = (name?: string): string => `/me/apps/${name}/rsa-key`
 
@@ -20,11 +21,6 @@ const config_ = {
     'Content-Type': 'application/x-www-form-urlencoded',
     accept: 'application/json'
   }
-}
-
-type RSAKey = {
-  privateKey?: string
-  publicKey: string
 }
 
 const getApplicationRSAKey = async (name: string, config?: AxiosRequestConfig): Promise<RSAKey> => {
@@ -42,15 +38,19 @@ export const useApplicationRSAKey = (name: string) =>
     queryFn: () => getApplicationRSAKey(name)
   })
 
-export const setGenerateApplicationPublicKey = async (name: string) => {
-  return await api.post(RSA_API_PATH(name), null, config_)
+export const setGenerateApplicationPublicKey = async (name: string, un?: string) => {
+  const body = {
+    username: un
+  }
+
+  return await api.post(RSA_API_PATH(name), body, config_)
 }
 
-export const useGenerateApplicationPublicKey = (name: string) => {
+export const useGenerateApplicationPublicKey = (name: string, un?: string) => {
   const client = useQueryClient()
 
   return useMutation({
-    mutationFn: () => setGenerateApplicationPublicKey(name),
+    mutationFn: () => setGenerateApplicationPublicKey(name, un),
     onMutate: async () => {
       await client.cancelQueries(UserQueryKeys.RSAKeys)
     },

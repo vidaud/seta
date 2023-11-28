@@ -1,9 +1,9 @@
 import { Button } from '@mantine/core'
-import { notifications } from '@mantine/notifications'
 import { BiUserCircle } from 'react-icons/bi'
 
 import { useDeleteUserAccount } from '~/api/user/user-account'
 import { useCurrentUser } from '~/contexts/user-context'
+import { notifications } from '~/utils/notifications'
 
 const DeleteUser = () => {
   const { logout } = useCurrentUser()
@@ -18,20 +18,12 @@ const DeleteUser = () => {
   const deleteUser = () => {
     setDeleteUserAccountMutation.mutate(undefined, {
       onSuccess: () => {
-        notifications.show({
-          message: `Account deleted successfully!`,
-          color: 'blue',
-          autoClose: 5000
-        })
+        notifications.showSuccess(`Account deleted successfully!`, { autoClose: true })
 
         handleLogout()
       },
       onError: () => {
-        notifications.show({
-          message: 'Delete user account failed!',
-          color: 'red',
-          autoClose: 5000
-        })
+        notifications.showError('Delete user account failed!', { autoClose: true })
       }
     })
   }

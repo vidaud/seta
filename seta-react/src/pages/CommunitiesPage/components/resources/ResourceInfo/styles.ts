@@ -136,3 +136,7 @@ export const Container = styled.div`
   padding: ${({ theme }) => `${theme.spacing.xs} ${theme.spacing.md}`};
   border-radius: ${({ theme }) => theme.radius.md};
 `
+
+export const grid: ThemedCSS = () => css`
+  display: contents;
+`

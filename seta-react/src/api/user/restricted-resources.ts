@@ -6,17 +6,13 @@ import { environment } from '~/environments/environment'
 
 import { UserQueryKeys } from './query-keys'
 
+import type { RestrictedResources } from '../types/restricted-resource-types'
+
 const RESOURCES_API_PATH = (): string => `/me/resources`
 
 const queryKey = {
   root: 'me/resources',
   resources: () => [queryKey.root]
-}
-
-type RestrictedResources = {
-  resource_id: string
-  community_id: string
-  title: string
 }
 
 const getRestrictedResources = async (

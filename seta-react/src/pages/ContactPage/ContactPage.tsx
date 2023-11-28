@@ -1,41 +1,12 @@
-import { createStyles, Title, SimpleGrid, Image } from '@mantine/core'
+import { Title, SimpleGrid, Image } from '@mantine/core'
 
 import Breadcrumbs from '~/components/Breadcrumbs'
 
 import image from '~/images/contact1.jpg'
 import type { Crumb } from '~/types/breadcrumbs'
 
-import { ContactIconsList } from './components/ContactIcons/ContactIcons'
-
-const useStyles = createStyles(theme => ({
-  wrapper: {
-    minHeight: 600,
-    boxSizing: 'border-box',
-    padding: `calc(${theme.spacing.xl} * 3.5)`,
-
-    [theme.fn.smallerThan('sm')]: {
-      padding: `calc(${theme.spacing.xl} * 2.5)`
-    }
-  },
-
-  title: {
-    fontFamily: `Greycliff CF, ${theme.fontFamily}`,
-    color: theme.black,
-    lineHeight: 1
-  },
-
-  description: {
-    color: theme.colors[theme.primaryColor][6],
-
-    [theme.fn.smallerThan('md')]: {
-      maxWidth: '100%'
-    }
-  },
-
-  form: {
-    backgroundColor: theme.white
-  }
-}))
+import ContactIconsList from './components/ContactIconsList/ContactIconsList'
+import { useStyles } from './style'
 
 const breadcrumbs: Crumb[] = [
   {

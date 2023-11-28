@@ -5,6 +5,10 @@ import { environment } from '~/environments/environment'
 import { UserQueryKeys } from './query-keys'
 
 import api from '../api'
+import type {
+  ApplicationPermissions,
+  PermissionsRequest
+} from '../types/applications-permissions-types'
 
 const APPLICATION_PERMISSIONS_API_PATH = (name): string => `/me/apps/${name}/permissions`
 
@@ -21,24 +25,12 @@ const queryKey = {
   apps: (name?: string) => [queryKey.root, name]
 }
 
-export type ApplicationPermissions = {
-  resourceId: string
-  scopes: string[]
-  communityId?: string
-  title?: string
-}
-
 const getApplicationPermissions = async (name?: string): Promise<ApplicationPermissions[]> => {
   const { data } = await api.get<ApplicationPermissions[]>(APPLICATION_PERMISSIONS_API_PATH(name), {
     ...config
   })
 
   return data
-}
-
-type PermissionsRequest = {
-  resourceId?: string
-  scopes: string[] | null
 }
 
 export const useApplicationsPermissions = (name?: string) =>

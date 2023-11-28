@@ -1,12 +1,13 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 
-import type { ApplicationValues } from '~/pages/UserProfile/contexts/application-context'
+import type { ApplicationValues } from '~/pages/UserProfile/common/contexts/application-context'
 
 import { environment } from '~/environments/environment'
 
 import { UserQueryKeys } from './query-keys'
 
 import api from '../api'
+import type { ApplicationModel } from '../types/applications-permissions-types'
 
 const SINGLE_APPLICATION_API_PATH = (name): string => `/me/apps/${name}`
 const APPLICATION_API_PATH = (): string => `/me/apps`
@@ -22,13 +23,6 @@ const config = {
 const queryKey = {
   root: 'profile-applications',
   apps: () => [queryKey.root]
-}
-
-type ApplicationModel = {
-  user_id: string
-  name: string
-  description: string
-  status: string
 }
 
 const getApplications = async (): Promise<ApplicationModel[]> => {

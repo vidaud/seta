@@ -1,15 +1,15 @@
 import { useState } from 'react'
 import { Group, createStyles, Button, TextInput, Textarea, Checkbox, Text } from '@mantine/core'
-import { notifications } from '@mantine/notifications'
 import type { AxiosError } from 'axios'
 
-import type { ApplicationValues } from '~/pages/UserProfile/contexts/application-context'
 import {
   ApplicationFormProvider,
-  useApplication
-} from '~/pages/UserProfile/contexts/application-context'
+  useApplication,
+  type ApplicationValues
+} from '~/pages/UserProfile/common/contexts/application-context'
 
 import { useCreateApplication } from '~/api/user/applications'
+import { notifications } from '~/utils/notifications'
 
 const useStyles = createStyles({
   input: {
@@ -49,23 +49,17 @@ const CreateForm = ({ close }) => {
 
     setCreateApplicationMutation.mutate(newValues, {
       onSuccess: () => {
-        notifications.show({
-          message: `Application Created Successfully!`,
-          color: 'blue',
-          autoClose: 5000
-        })
+        notifications.showSuccess(`Application Created Successfully!`, { autoClose: true })
 
         close()
       },
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       onError: (error: AxiosError | any) => {
-        notifications.show({
-          title: 'Create Application Failed!',
-          message: error?.response?.data?.msg
+        notifications.showError('Create Application Failed!', {
+          description: error?.response?.data?.msg
             ? error?.response?.data?.msg
             : error?.response?.data?.message,
-          color: 'red',
-          autoClose: 5000
+          autoClose: true
         })
       }
     })

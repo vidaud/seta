@@ -1,14 +1,11 @@
 import { useEffect, useState } from 'react'
 import { Badge, Collapse, Tabs } from '@mantine/core'
 
-import type {
-  ResourceScopes,
-  SystemScopes
-} from '~/pages/CommunitiesPage/contexts/community-list.context'
 import { usePanelNotifications } from '~/pages/CommunitiesPage/contexts/panel-context'
 
 import type { ResourceResponse } from '~/api/types/resource-types'
 import type { ClassNameProp } from '~/types/children-props'
+import type { ResourceScopes, SystemScopes } from '~/types/user/user-scopes'
 
 import LimitsDetails from '../LimitsDetails'
 import ResourcePanelContent from '../PanelContent'

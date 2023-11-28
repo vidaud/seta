@@ -1,11 +1,12 @@
 import type { Dispatch, SetStateAction } from 'react'
 import { useEffect } from 'react'
 
-import updateSelectedStates from '~/pages/SearchPageNew/components/documents/ExportModal/utils/update-selected-states'
 import { STORAGE_KEY } from '~/pages/SearchPageNew/utils/constants'
 
 import type { ExportField, ExportFormatKey, ExportStorage } from '~/types/library/library-export'
 import { storage } from '~/utils/storage-utils'
+
+import updateSelectedStates from '../utils/update-selected-states'
 
 const exportStorage = storage<ExportStorage>(STORAGE_KEY.EXPORT)
 
