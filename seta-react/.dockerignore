@@ -1,6 +1,7 @@
 .dockerignore
 Dockerfile*
 .pytest_cache
+.git
 .gitignore
 changelog.txt
 README.md

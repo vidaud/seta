@@ -9,7 +9,7 @@ services:
       - seta-network
     volumes:
       - seta-mongo:/data/db
-      
+
   seta-es:
     container_name: seta-es
     extends:
@@ -108,10 +108,12 @@ services:
     extends:
       file: common.yml
       service: ui-react
+    build:
+      dockerfile: docker/Dockerfile
     depends_on:
       - "seta-api"
       - "seta-ui"
-    networks: 
+    networks:
       - seta-network
 
   seta-data:

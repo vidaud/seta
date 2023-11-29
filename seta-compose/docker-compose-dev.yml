@@ -32,7 +32,7 @@ services:
 
   seta-ui-react:
     build:
-       dockerfile: Dockerfile-dev
+       dockerfile: docker/Dockerfile-dev
     ports:
       - "3000:3000"
     volumes:
@@ -43,7 +43,7 @@ services:
       - CHOKIDAR_USEPOLLING=true
 
   seta-doc:
-    build:       
+    build:
        dockerfile: Dockerfile-dev
     expose:
       - "8000"
