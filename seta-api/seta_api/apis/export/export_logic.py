@@ -39,12 +39,8 @@ def get_doc_from_es(doc_tuple, fields, app, request):
             source.append(field)
     if "source" not in source:
         source.append("source")
-    query = {"bool": {"must": [
-        {"match": {
-            "_id": doc_id
-        }}
-    ]}}
-    response = es.search(index=index, query=query, _source=source, size=1)
+    body = {"query": {"bool": {"must": [{"match": {"_id": doc_id}}]}}}
+    response = es.search(index=index, body=body, _source=source, size=1)
     doc = {}
     source_id = ""
     if "error" in response:

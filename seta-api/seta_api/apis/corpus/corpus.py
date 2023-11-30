@@ -305,13 +305,16 @@ class CorpusQuery(Resource):
                                is_field_in_doc(args, 'taxonomy_path'), is_field_in_doc(args, 'semantic_sort_id_list'),
                                is_field_in_doc(args, 'sbert_embedding_list'), is_field_in_doc(args, 'author'),
                                is_field_in_doc(args, 'date_range'), is_field_in_doc(args, 'aggs'),
-                               is_field_in_doc(args, 'search_type'), is_field_in_doc(args, 'other'), current_app=app)
+                               is_field_in_doc(args, 'search_type'), is_field_in_doc(args, 'other'), current_app=app,
+                               vector_field=is_field_in_doc(args, 'vector_field'))
             return jsonify(documents)
         except ForbiddenResourceError:
             return {"total_docs": None, "documents": []}
         except jsonschema.ValidationError as err:
             abort(400, err.message)
         except ApiLogicError as aex:
+            if str(aex) == "Sbert vector not retrieved":
+                return {"total_docs": None, "documents": []}
             abort(404, str(aex))
         except:
             app.logger.exception("CorpusQuery->post")

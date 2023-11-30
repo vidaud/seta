@@ -1,39 +1,44 @@
 from flask import json
 from .corpus_build_search import build_search_query
 from seta_api.infrastructure.ApiLogicError import ApiLogicError
-import copy
 
 
-def retrieve_vector_list(semantic_sort_id_list, emb_vector_list, current_app):
+def retrieve_vector_list(semantic_sort_id_list, emb_vector_list, current_app, vector_field_name):
     vectors = []
     if semantic_sort_id_list:
         for id in semantic_sort_id_list:
-            vector = get_vector(id, current_app)
-            vectors.append(vector)
+            vector = get_vector(id, current_app, vector_field_name)
+            if vector:
+                vectors.append(vector)
     elif emb_vector_list:
         vectors = emb_vector_list
     return vectors
 
 
-def create_knn_query(semantic_sort_id_list, emb_vector_list, current_app, k, query):
-    vectors = retrieve_vector_list(semantic_sort_id_list, emb_vector_list, current_app)
-    if not vectors:
-        raise ApiLogicError('Sbert vector is not retrieved')
-    knn = []
+def create_knn_query(semantic_sort_id_list, emb_vector_list, current_app, k, query, vector_field):
+
+    if vector_field == "lucene":
+        vector_field_name = "sbert_embedding_lucene"
+    elif vector_field == "faiss":
+        vector_field_name = "sbert_embedding_faiss"
+    else:
+        vector_field_name = "sbert_embedding_faiss"  # default
+    vectors = retrieve_vector_list(semantic_sort_id_list, emb_vector_list, current_app, vector_field_name)
+    if len(vectors) == 0:
+        raise ApiLogicError('Sbert vector not retrieved')
+    knn = {"bool": {"should": []}}
     for vector in vectors:
-        item = {"field": "sbert_embedding",
-                "query_vector": vector,
+        item = {"knn": {vector_field_name: {
+                "vector": vector,
                 "k": k,
-                "num_candidates": current_app.config["KNN_SEARCH_NUM_CANDIDATES"],
-                "similarity": current_app.config["SIMILARITY_THRESHOLD"],
-                "filter": query}
-        knn.append(item)
+                "filter": query}}}
+        knn["bool"]["should"].append(item)
     return knn
 
 
 def build_corpus_request(term, n_docs, from_doc, sources, collection, reference, in_force, sort, taxonomy_path,
                          semantic_sort_id_list, emb_vector_list, author, date_range,
-                         aggs, search_type, other, current_app):
+                         aggs, search_type, other, current_app, vector_field):
     query = build_search_query(term, sources, collection, reference, in_force, author, date_range, search_type,
                                other, taxonomy_path)
     body = {
@@ -50,7 +55,7 @@ def build_corpus_request(term, n_docs, from_doc, sources, collection, reference,
         body["aggs"] = {"total": {"cardinality": {"field": "document_id"}}}
 
     if emb_vector_list or semantic_sort_id_list:
-        body = add_knn_search_query(current_app, emb_vector_list, semantic_sort_id_list, body, query)
+        body = add_knn_search_query(current_app, emb_vector_list, semantic_sort_id_list, body, query, vector_field)
     else:
         body["query"] = query
 
@@ -77,10 +82,10 @@ def fill_body_for_sort(body, sort):
 
 
 def add_knn_search_query(current_app, emb_vector_list, semantic_sort_id_list,
-                         body, query):
+                         body, query, vector_field):
     if semantic_sort_id_list or emb_vector_list:
         k = current_app.config["KNN_SEARCH_K"]
-        body["knn"] = create_knn_query(semantic_sort_id_list, emb_vector_list, current_app, k, query)
+        body["query"] = create_knn_query(semantic_sort_id_list, emb_vector_list, current_app, k, query, vector_field)
     return body
 
 
@@ -144,12 +149,12 @@ def add_aggs(agg_body, aggs_name, body):
     return body
 
 
-def get_vector(semantic_sort_id, current_app):
+def get_vector(semantic_sort_id, current_app, vector_field_name):
     body = {"query": {"bool": {"must": [{"match": {"_id": {"query": semantic_sort_id}}}]}}}
-    res = current_app.es.search(index=current_app.config["INDEX"], body=body, _source=["sbert_embedding"])
+    res = current_app.es.search(index=current_app.config["INDEX"], body=body, _source=[vector_field_name])
     vector = None
     if res['hits']['total']['value'] > 0:
-        vector = res['hits']['hits'][0]['_source']['sbert_embedding']
+        vector = res['hits']['hits'][0]['_source'][vector_field_name]
     return vector
 
 

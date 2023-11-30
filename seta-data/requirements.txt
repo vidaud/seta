@@ -1,4 +1,4 @@
-elasticsearch==8.8.0
+opensearch-py==2.4.2
 gensim==4.3.2
 pathlib==1.0.1
 requests==2.31.0

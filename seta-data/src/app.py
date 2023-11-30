@@ -2,10 +2,10 @@ import json
 import os
 import shutil
 import time
-import config
 import requests
-from elasticsearch import Elasticsearch
-from elasticsearch.helpers import bulk
+
+from opensearchpy import OpenSearch
+from opensearchpy.helpers import bulk
 
 import hashlib as hash
 from config import Config
@@ -73,10 +73,10 @@ def suggestion_update_job(es):
 
                 if crc_id:
                     print("updating suggestions id", flush=True)
-                    es.update(index=index_suggestion, id=crc_id, doc=crc_model)
+                    es.update(index=index_suggestion, id=crc_id, body=crc_model)
                 else:
                     print("adding suggestions id", flush=True)
-                    es.index(index=index_suggestion, document=crc_model)
+                    es.index(index=index_suggestion, body=crc_model)
             except Exception as e:
                 print("errors on suggestion update. New crc: ", crc, flush=True)
                 print(str(e), flush=True)
@@ -132,7 +132,7 @@ def verify_data_mapping(host, index, es_session, data_format, headers, mapping_c
     if crc_value is None:
         crc_mapping = {"crc_data_mapping": crc}
         print("adding crc mapping document", flush=True)
-        es.index(index=index, document=crc_mapping)
+        es.index(index=index, body=crc_mapping)
         return
 
     if crc != crc_value:
@@ -153,7 +153,7 @@ def create_index(es_session, host, index, data_format, headers, mapping_crc_file
     crc = open(mapping_crc_file, 'r').read()
     crc_mapping = {"crc_data_mapping": crc}
     print("adding crc mapping document", flush=True)
-    es.index(index=index, document=crc_mapping)
+    es.index(index=index, body=crc_mapping)
 
 
 def check_index_exists_or_create_it(host, mapping_file, mapping_crc_file, es_session, index, es):
@@ -212,8 +212,8 @@ def copy_models_files():
 
 
 def get_crc_from_es(es, index, crc_field):
-    query = {"bool": {"must": [{"exists": {"field": crc_field}}]}}
-    resp = es.search(index=index, query=query)
+    body = {"query": {"bool": {"must": [{"exists": {"field": crc_field}}]}}}
+    resp = es.search(index=index, body=body)
     if resp['hits']['total']['value'] == 0:
         crc_value = None
         crc_id = None
@@ -224,8 +224,9 @@ def get_crc_from_es(es, index, crc_field):
 
 
 def init():
-    es = Elasticsearch("http://" + configuration.ES_HOST, verify_certs=False, request_timeout=300, max_retries=10,
-                       retry_on_timeout=True)
+    es = OpenSearch("http://" + configuration.ES_HOST, verify_certs=False, request_timeout=300, max_retries=10,
+                    retry_on_timeout=True)
+
     wait_for_es()
     print("copy model files", flush=True)
     copy_models_files()
