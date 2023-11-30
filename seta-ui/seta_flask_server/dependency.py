@@ -47,6 +47,7 @@ class MongoDbClientModule(injector.Module):
         binder.bind(
             interfaces.IRollingIndexBroker, to=implementation.RollingIndexBroker
         )
+        binder.bind(interfaces.IDataSourcesBroker, to=implementation.DataSourcesBroker)
 
     def create_client(self) -> interfaces.IDbConfig:
         """Create configuration client"""
