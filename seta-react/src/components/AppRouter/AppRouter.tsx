@@ -12,6 +12,7 @@ import InvitesList from '~/pages/CommunitiesPage/components/notifications/invite
 import MembersList from '~/pages/CommunitiesPage/components/notifications/membersList'
 import ResourcesPage from '~/pages/CommunitiesPage/ResourcesPage'
 import ContactPage from '~/pages/ContactPage'
+import DatasourcesPage from '~/pages/DatasourcesPage/DatasourcesPage'
 import FaqsPage from '~/pages/FaqsPage'
 import HomePage from '~/pages/HomePage'
 import LoginPage from '~/pages/LoginPage'
@@ -40,6 +41,15 @@ const routes = createRoutesFromElements(
       element={
         <RequireAuth>
           <SearchPageNew />
+        </RequireAuth>
+      }
+    />
+
+    <Route
+      path="datasources"
+      element={
+        <RequireAuth>
+          <DatasourcesPage />
         </RequireAuth>
       }
     />

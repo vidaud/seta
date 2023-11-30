@@ -26,6 +26,11 @@ export const getMenuItems = (authenticated: boolean): MenuItem[] => [
     hidden: !authenticated
   },
   {
+    to: '/datasources',
+    label: 'Datasources',
+    hidden: !authenticated
+  },
+  {
     to: '/community',
     label: 'Communities',
     hidden: !authenticated
