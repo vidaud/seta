@@ -1,6 +1,8 @@
 import { RiShareBoxFill } from 'react-icons/ri'
 import { useNavigate } from 'react-router-dom'
 
+import Version from '~/components/Version'
+
 import * as S from './styles'
 
 const Footer = () => {
@@ -14,6 +16,10 @@ const Footer = () => {
           <li className="title">Joint Research Centre Semantic Text Analysis (SeTA)</li>
           <li />
           <li className="description">This site is managed by the Joint Research Centre</li>
+
+          <li>
+            <Version color="white" css={S.version} />
+          </li>
         </ul>
 
         <ul css={S.section}>
