@@ -2,7 +2,7 @@ from http import HTTPStatus
 from injector import inject
 
 from flask_restx import Namespace, Resource
-from flask_jwt_extended import jwt_required
+from flask_jwt_extended import jwt_required, get_jwt_identity
 
 from seta_flask_server.repository import interfaces
 
@@ -18,11 +18,13 @@ class DataSourcesResource(Resource):
     def __init__(
         self,
         data_sources_broker: interfaces.IDataSourcesBroker,
+        profile_broker: interfaces.IUserProfileUnsearchables,
         *args,
         api=None,
         **kwargs,
     ):
         self.data_sources_broker = data_sources_broker
+        self.profile_broker = profile_broker
 
         super().__init__(api, *args, **kwargs)
 
@@ -36,4 +38,23 @@ class DataSourcesResource(Resource):
     def get(self):
         """Get a list of data sources available for search, available to any user"""
 
-        return self.data_sources_broker.get_all()
+        identity = get_jwt_identity()
+        user_id = identity["user_id"]
+
+        data_sources = self.data_sources_broker.get_all()
+        unsearchables = self.profile_broker.get_unsearchables(user_id=user_id)
+
+        response = []
+
+        for data_source in data_sources:
+            ds_dict = data_source.to_dict(
+                exclude={"creator", "creator_id", "modified_at", "status"}
+            )
+
+            ds_dict["searchable"] = (
+                unsearchables is None or data_source.data_source_id not in unsearchables
+            )
+
+            response.append(ds_dict)
+
+        return response

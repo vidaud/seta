@@ -82,9 +82,11 @@ class DataSourcesResource(Resource):
         security="CSRF",
     )
     @data_sources_ns.expect(dto.new_data_source_model)
-    @data_sources_ns.response(int(HTTPStatus.CREATED), "", dto.response_message_model)
     @data_sources_ns.response(
-        int(HTTPStatus.BAD_REQUEST), "Bad payload", dto.error_model
+        int(HTTPStatus.CREATED), "", dto.response_dto.response_message_model
+    )
+    @data_sources_ns.response(
+        int(HTTPStatus.BAD_REQUEST), "Bad payload", dto.response_dto.error_model
     )
     @jwt_required()
     def post(self):
@@ -126,7 +128,7 @@ class DataSourcesResource(Resource):
     "/<string:data_source_id>", endpoint="admin_data_source", methods=["PUT"]
 )
 @data_sources_ns.param("data_source_id", "Data source identifier")
-@data_sources_ns.response(int(HTTPStatus.BAD_REQUEST), "", dto.error_model)
+@data_sources_ns.response(int(HTTPStatus.BAD_REQUEST), "", dto.response_dto.error_model)
 class DataSourceResource(Resource):
     """Handles HTTP requests to URL: /admin/data-sources/{data_source_id}."""
 
@@ -154,7 +156,9 @@ class DataSourceResource(Resource):
         },
         security="CSRF",
     )
-    @data_sources_ns.response(int(HTTPStatus.OK), "", dto.response_message_model)
+    @data_sources_ns.response(
+        int(HTTPStatus.OK), "", dto.response_dto.response_message_model
+    )
     @data_sources_ns.expect(dto.update_data_source_model)
     @jwt_required()
     def put(self, data_source_id: str):
