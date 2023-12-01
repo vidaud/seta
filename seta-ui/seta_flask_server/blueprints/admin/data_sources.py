@@ -105,6 +105,7 @@ class DataSourcesResource(Resource):
                 payload=data_sources_ns.payload,
                 broker=self.data_sources_broker,
             )
+            data_source.creator_id = auth_id
 
             self.data_sources_broker.create(data_source)
         except PayloadErrors as pe:
@@ -154,7 +155,7 @@ class DataSourceResource(Resource):
         security="CSRF",
     )
     @data_sources_ns.response(int(HTTPStatus.OK), "", dto.response_message_model)
-    @data_sources_ns.expect(dto.data_source_model)
+    @data_sources_ns.expect(dto.update_data_source_model)
     @jwt_required()
     def put(self, data_source_id: str):
         """

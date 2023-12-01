@@ -27,6 +27,14 @@ contact_model = Model(
     },
 )
 
+status_field = fields.String(
+    description="Status",
+    enum=[
+        DataSourceStatusConstants.ACTIVE,
+        DataSourceStatusConstants.ARCHIVED,
+    ],
+)
+
 data_source_model = Model(
     "DataSource",
     {
@@ -34,13 +42,6 @@ data_source_model = Model(
         "description": fields.String(description="Long text description"),
         "organisation": fields.String(description="Organisation owner"),
         "theme": fields.String(description="Domain of application"),
-        "status": fields.String(
-            description="Status",
-            enum=[
-                DataSourceStatusConstants.ACTIVE,
-                DataSourceStatusConstants.ARCHIVED,
-            ],
-        ),
         "contact": fields.Nested(
             model=contact_model, description="Contact channels", skip_none=True
         ),
@@ -54,6 +55,7 @@ view_data_source_model = data_source_model.clone(
         "creator": fields.Nested(
             model=user_info_model, description="Creator", skip_none=True
         ),
+        "status": status_field,
     },
 )
 
@@ -62,10 +64,15 @@ new_data_source_model = data_source_model.clone(
     {"id": fields.String(description="Identifier.")},
 )
 
+update_data_source_model = data_source_model.clone(
+    "DataSourceUpdate",
+    {"status": status_field},
+)
+
 ns_models = {
     contact_model.name: contact_model,
     user_info_model.name: user_info_model,
-    data_source_model.name: data_source_model,
+    update_data_source_model.name: update_data_source_model,
     view_data_source_model.name: view_data_source_model,
     new_data_source_model.name: new_data_source_model,
     error_fields_model.name: error_fields_model,
