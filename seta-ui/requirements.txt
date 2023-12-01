@@ -19,4 +19,5 @@ shortuuid==1.0.11
 pytest==7.4.3
 mongodb-migrations==1.3.0
 configparser==6.0.0
-pydantic==2.5.2 
+email-validator==2.1.0.post1
+pydantic==2.5.2

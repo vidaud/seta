@@ -25,12 +25,7 @@ class DataSourcesBroker(implements(IDataSourcesBroker)):
     def update(self, model: DataSourceModel) -> None:
         model.modified_at = datetime.now(tz=pytz.utc)
 
-        json = model.to_dict()
-
-        # pop fields that should not be updated
-        json.pop("created_at", None)
-        json.pop("creator_id", None)
-
+        json = model.to_dict(exclude={"created_at", "creator_id"})
         set_json = {"$set": json}
 
         self.collection.update_one({"data_source_id": model.data_source_id}, set_json)
