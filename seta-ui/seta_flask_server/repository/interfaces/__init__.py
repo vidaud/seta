@@ -17,4 +17,6 @@ from .library_broker import ILibraryBroker
 from .users_query_broker import IUsersQueryBroker
 from .external_provider_broker import IExternalProviderBroker
 from .rolling_index_broker import IRollingIndexBroker
+
 from .data_sources_broker import IDataSourcesBroker
+from .user_profile_unsearchables import IUserProfileUnsearchables

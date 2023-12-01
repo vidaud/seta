@@ -1,4 +1,6 @@
 from flask_restx import Model, fields
+from seta_flask_server.infrastructure.dto import datetime_format
+
 
 contact_model = Model(
     "DataSourceContact",
@@ -20,6 +22,10 @@ data_source_model = Model(
         "contact": fields.Nested(
             model=contact_model, description="Contact channels", skip_none=True
         ),
+        "created": datetime_format.DateISOFormat(
+            "Creation date in SeTA system.", attribute="created_at"
+        ),
+        "searchable": fields.Boolean(description="Is searchable for this user?"),
     },
 )
 

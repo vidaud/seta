@@ -1,10 +1,6 @@
 from flask_restx import Model, fields
-
-from seta_flask_server.infrastructure.dto.response_dto import (
-    error_model,
-    error_fields_model,
-    response_message_model,
-)
+from seta_flask_server.infrastructure.dto import response_dto
+from seta_flask_server.infrastructure.dto import datetime_format
 
 from seta_flask_server.infrastructure.constants import DataSourceStatusConstants
 
@@ -56,6 +52,9 @@ view_data_source_model = data_source_model.clone(
             model=user_info_model, description="Creator", skip_none=True
         ),
         "status": status_field,
+        "created": datetime_format.DateISOFormat(
+            "Creation date in SeTA system.", attribute="created_at"
+        ),
     },
 )
 
@@ -75,7 +74,7 @@ ns_models = {
     update_data_source_model.name: update_data_source_model,
     view_data_source_model.name: view_data_source_model,
     new_data_source_model.name: new_data_source_model,
-    error_fields_model.name: error_fields_model,
-    error_model.name: error_model,
-    response_message_model.name: response_message_model,
+    response_dto.error_fields_model.name: response_dto.error_fields_model,
+    response_dto.error_model.name: response_dto.error_model,
+    response_dto.response_message_model.name: response_dto.response_message_model,
 }
