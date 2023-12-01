@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react'
 import { createStyles, Switch, useMantineTheme } from '@mantine/core'
 import { VscSearch, VscSearchStop } from 'react-icons/vsc'
 
-import { useAllResources } from '~/api/communities/resources/discover-resources'
-import { useRestrictedResource } from '~/api/communities/resources/restricted-resources'
+import { useAllDatasources } from '~/api/datasources/discover-datasources'
+import { useUnsearchableDatasources } from '~/api/datasources/unsearchable-datasources'
 import type { DatasourceResponse } from '~/api/types/datasource-types'
 import { notifications } from '~/utils/notifications'
 
@@ -21,43 +21,42 @@ type Props = {
   searchable: boolean
 }
 
-const RestrictedDatasource = ({ datasource }: Props) => {
-  const { data } = useAllResources()
+const UnsearchableDatasources = ({ datasource }: Props) => {
+  const { data } = useAllDatasources()
   const { classes } = useStyles()
   const theme = useMantineTheme()
-  const setRestrictedDatasourceMutation = useRestrictedResource()
+  const setRestrictedDatasourceMutation = useUnsearchableDatasources()
   const [selection, setSelection] = useState<string[]>(
-    data ? data?.filter(item => item.searchable === false).map(item => item.resource_id) : []
+    data ? data?.filter(item => item.searchable === false).map(item => item.id) : []
   )
   const selected = selection.includes(datasource.id)
   const [isChecked, setIsChecked] = useState<boolean>(datasource.searchable)
 
   useEffect(() => {
-    setSelection(
-      data ? data?.filter(item => item.searchable === false).map(item => item.resource_id) : []
-    )
-  }, [data, isChecked])
+    setSelection(data ? data?.filter(item => item.searchable === false).map(item => item.id) : [])
+  }, [data])
 
   const toggleRow = (code: string) => {
-    const form = new FormData()
     const values = selection?.includes(code)
       ? selection?.filter(item => item !== code)
       : [...selection, code]
 
     setSelection(values)
-    values?.forEach(element => form.append('resource', element))
 
-    setRestrictedDatasourceMutation.mutate(form, {
-      onSuccess: () => {
-        notifications.showSuccess(
-          isChecked ? `Datasource is now not searchable!` : `Datasource is now searchable!`,
-          { autoClose: true }
-        )
-      },
-      onError: () => {
-        notifications.showError('The datasource update failed!', { autoClose: true })
+    setRestrictedDatasourceMutation.mutate(
+      { dataSourceIds: values },
+      {
+        onSuccess: () => {
+          notifications.showSuccess(
+            isChecked ? `Datasource is now not searchable!` : `Datasource is now searchable!`,
+            { autoClose: true }
+          )
+        },
+        onError: () => {
+          notifications.showError('The datasource update failed!', { autoClose: true })
+        }
       }
-    })
+    )
   }
 
   return (
@@ -66,8 +65,8 @@ const RestrictedDatasource = ({ datasource }: Props) => {
         className={classes.button}
         checked={!selected}
         onChange={e => {
-          toggleRow?.(datasource.id)
           setIsChecked(e.target.checked)
+          toggleRow?.(datasource.id)
         }}
         color="teal"
         size="md"
@@ -75,16 +74,9 @@ const RestrictedDatasource = ({ datasource }: Props) => {
         offLabel={
           <VscSearchStop size="0.8rem" color={theme.colors.orange[theme.fn.primaryShade()]} />
         }
-        // thumbIcon={
-        //   searchable ? (
-        //     <VscSearch size="0.8rem" color={theme.colors.teal[theme.fn.primaryShade()]} />
-        //   ) : (
-        //     <VscSearchStop size="0.8rem" color={theme.colors.orange[theme.fn.primaryShade()]} />
-        //   )
-        // }
       />
     </>
   )
 }
 
-export default RestrictedDatasource
+export default UnsearchableDatasources

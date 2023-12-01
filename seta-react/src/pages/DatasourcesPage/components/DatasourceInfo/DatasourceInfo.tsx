@@ -9,7 +9,7 @@ import type { DatasourceResponse } from '~/api/types/datasource-types'
 import ThemeList from './components/ThemeList/ThemeList'
 import * as S from './styles'
 
-import RestrictedDatasources from '../RestrictedDatasources'
+import UnsearchableDatasources from '../UnsearchableDatasources'
 
 type Props = {
   queryTerms: string
@@ -18,7 +18,7 @@ type Props = {
 
 const DatasourceInfo = ({ datasource }: Props) => {
   const theme = useMantineTheme()
-  const { id, title, description, organisation, contact, searchable, created_at } = datasource
+  const { id, title, description, organisation, contact, searchable, created } = datasource
   const mailTo = `mailto:${contact?.email}`
 
   return (
@@ -44,7 +44,7 @@ const DatasourceInfo = ({ datasource }: Props) => {
             {title?.charAt(0).toUpperCase() + title?.slice(1)}
           </Text>
         </div>
-        <RestrictedDatasources datasource={datasource} searchable={searchable} />
+        <UnsearchableDatasources datasource={datasource} searchable={searchable} />
       </div>
 
       <Flex direction="column" gap="xs" data-info css={S.info}>
@@ -57,11 +57,11 @@ const DatasourceInfo = ({ datasource }: Props) => {
           <Tooltip label="Organization Name">
             <Text size="sm">{organisation?.charAt(0).toUpperCase() + organisation?.slice(1)}</Text>
           </Tooltip>
-          {created_at ? (
+          {created ? (
             <Group css={S.group}>
               <Divider size="sm" orientation="vertical" />
               <IconCalendarTime size="1.2rem" color="gray" />
-              <Text size="sm">{new Date(created_at)?.toDateString()}</Text>
+              <Text size="sm">{new Date(created)?.toDateString()}</Text>
             </Group>
           ) : null}
         </Group>

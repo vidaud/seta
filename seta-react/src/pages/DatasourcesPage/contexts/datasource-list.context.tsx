@@ -1,7 +1,5 @@
 import { createContext, useContext, useState } from 'react'
 
-import { useMemberCommunities } from '~/api/communities/communities/member-communities'
-
 export interface DatasourceListContextValue {
   selected?: string
   handleSearchableChange: (value) => void
@@ -10,10 +8,7 @@ export interface DatasourceListContextValue {
 export const DatasourceContext = createContext<DatasourceListContextValue | undefined>(undefined)
 
 export const DatasourceListProvider = ({ children }) => {
-  const { data } = useMemberCommunities()
   const [selected, setSelected] = useState<string | undefined>('all')
-
-  data?.filter(item => item.status === 'membership').map(el => el.community_id)
 
   const handleSearchableChange = value => {
     setSelected(value)

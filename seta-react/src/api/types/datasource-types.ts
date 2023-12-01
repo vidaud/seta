@@ -4,7 +4,7 @@ export type DatasourceResponse = {
   description: string
   organisation: string
   theme: string
-  created_at: Date
+  created: Date
   searchable: boolean
   contact?: {
     email?: string

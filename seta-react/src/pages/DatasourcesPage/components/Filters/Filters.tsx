@@ -5,7 +5,7 @@ import { useDatasourceListContext } from '~/pages/DatasourcesPage/contexts/datas
 const useStyles = createStyles({
   filters: {
     [`@media (max-width: 89em) and (min-width: 68em)`]: {
-      width: '16%'
+      width: '14%'
     }
   }
 })

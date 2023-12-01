@@ -15,7 +15,7 @@ import Filters from '../Filters'
 
 const useStyles = createStyles({
   search: {
-    width: '82%'
+    width: '85%'
   }
 })
 
@@ -48,7 +48,7 @@ const DatasourcesList = () => {
   }
 
   return (
-    <Box w="100%" pl="10rem" pr="10rem">
+    <Box w="100%" pl="3rem" pr="3rem">
       <Group id="apply_filters" css={S.group}>
         <Filters />
         <TextInput
