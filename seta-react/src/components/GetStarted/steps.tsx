@@ -1,7 +1,6 @@
 import { Group, Image, Text, Title } from '@mantine/core'
 
 // import document_search from '~/images/document_search.png'
-import notifications from '~/images/notifications.png'
 import user_profile from '~/images/user_profile.png'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -76,8 +75,8 @@ export const steps: any = [
           Welcome to SeTA!
         </Title>
         <Text>
-          This is the navigation menu of the website. Clicking on each of the menu items will
-          redirect you to the other pages.
+          This navigation menu facilitates browsing through the website. Clicking on any menu item
+          will redirect you to different pages.
         </Text>
       </div>
     )
@@ -91,117 +90,55 @@ export const steps: any = [
         </Title>
         <Group sx={{ justifyContent: 'center' }} pb="xs">
           <Text>
-            Click on the user icon to open your profile. If you have an administrator account you
-            will be able to open the administration console. The user can also log out from this
-            section.
+            To access your profile, simply click on the user icon. If you have administrator
+            privileges, the option to open the administration console will be available. You can
+            also log out from this section.
           </Text>
           <Image alt="User Profile" src={user_profile} width={160} />
         </Group>
-        <Title order={3} mb="sm" color="#228be6">
-          Notifications
-        </Title>
-        <Group sx={{ justifyContent: 'center' }}>
-          <Text>
-            Clicking on the notification icon the dropdown with the list with notification type and
-            number of notifications for each type will appear.
-          </Text>
-          <Image alt="Notifications" src={notifications} width={160} />
-        </Group>
       </div>
     )
   },
   {
-    target: '#community-tab',
+    target: '#datasource-tab',
     content: (
       <div style={{ textAlign: 'left' }}>
         <Title order={3} mb="sm" color="#228be6">
-          Communities Page
+          Datasources Page
         </Title>
         <Text>
-          SeTA communities offers a shared place, where users can interact among them about specific
-          areas of interest.
-        </Text>
-        <Text>
-          Click on <strong>Community</strong> menu item to open the search page. You will be able to
-          explore the available list communities and become a member.
-        </Text>
-        <Text>
-          In SeTA there are two types of communities: <strong>Public Communities</strong> and
-          <strong> Private Communities</strong>.
+          Explore the comprehensive list of available data sources accessible to all users.
         </Text>
       </div>
     )
   },
   {
-    target: '#new_community',
+    target: '#datasource-list',
+    placement: 'top',
     content: (
       <div style={{ textAlign: 'left' }}>
         <Title order={3} mb="sm" color="#228be6">
-          Create Community
+          Datasource List
         </Title>
         <Text>
-          Click on <strong>New Community +</strong> to create your community.
-        </Text>
-      </div>
-    )
-  },
-  // {
-  //   target: '#apply_filters',
-  //   content: (
-  //     <div style={{ textAlign: 'left' }}>
-  //       <Title order={3} mb="sm" color="#228be6">
-  //         Customize Search
-  //       </Title>
-  //       <Text>Select Membership type or/and Status of membership or/and search by field.</Text>
-  //     </div>
-  //   )
-  // },
-  {
-    target: '#join_community',
-    placement: 'left',
-    content: (
-      <div style={{ textAlign: 'left' }}>
-        <Title order={3} mb="sm" color="#228be6">
-          JOIN / LEAVE Community
-        </Title>
-        <Text>
-          <strong>JOIN Button</strong>: Click on <strong>JOIN</strong> button to become member of
-          the community. For restricted communities you need to send a request and wait for the
-          approval. After the request, the status remains “Pending” until the Community Owner
-          accepts the request.
-        </Text>
-        <Text>
-          <strong>LEAVE Button</strong>: Click on <strong>LEAVE </strong>button if you don't want to
-          be a community member anymore.
-        </Text>
-        <Text>
-          <strong> Note</strong>:
-          <i>
-            {' '}
-            By leaving communities that you are the only owner/manager, all resources will be
-            allocated as orphan and could not be reused by other users.
-          </i>
+          Each data source includes essential details such as title, organization, ID, themes, and
+          more. Customize searchability based on your preferences for enhanced usability:
+          <strong> searchable</strong> or<strong> not searchable</strong> datasource
         </Text>
       </div>
     )
   },
   {
-    target: '#resource_list',
-    placement: 'right',
+    target: '#apply_filters',
     content: (
       <div style={{ textAlign: 'left' }}>
         <Title order={3} mb="sm" color="#228be6">
-          Resource List
+          Datasources Filters
         </Title>
         <Text>
-          Here you can find a list of resources available from the communities you have joined
-          and/or resources you have created within your communities.
-        </Text>
-        <Text>
-          To create a resource you need to have the right permissions on that specific community.
-          You can also make the resource <strong>searchable</strong> or
-          <strong> not searchable</strong>, <strong>update</strong> or even <strong>delete</strong>{' '}
-          it.
+          Users can refine data sources via a dropdown, selecting between 'searchable' and
+          'unsearchable.' Additionally, they can filter by other fields by inputting specific
+          criteria into the search box.
         </Text>
       </div>
     )
@@ -214,8 +151,8 @@ export const steps: any = [
           Search Page
         </Title>
         <Text>
-          Clicking the <strong>Search</strong> menu item will open the search page. The search tool
-          allows the access to the community data.
+          Selecting the <strong>Search</strong> menu item will open the search page, granting access
+          to the data sources through the search tool.
         </Text>
       </div>
     )
@@ -246,11 +183,12 @@ export const steps: any = [
           Document/Text Upload
         </Title>
         <Group sx={{ justifyContent: 'center' }}>
-          <Text>Upload your document or text and start searching for relevant results.</Text>
+          <Text>Upload your document or text to initiate a search for relevant results.</Text>
           {/* <Image alt="Document/Text Search" src={document_search} width={200} /> */}
         </Group>
         <Text>
-          After uploading the document or putting the text, we can see the uploaded objects.
+          After uploading the document or entering the text, you'll be able to view the uploaded
+          objects.
         </Text>
       </div>
     )
@@ -263,8 +201,8 @@ export const steps: any = [
           Document Results
         </Title>
         <Text>
-          List of documents relevant to the query searched and filters applied. The search results
-          can be easily screened and filtered by the user with the help of the tool.
+          These are the documents matching your search query and applied filters. You can easily
+          screen and refine the search results using the provided tool.
         </Text>
       </div>
     )
