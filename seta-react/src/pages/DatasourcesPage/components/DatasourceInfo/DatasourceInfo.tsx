@@ -18,11 +18,8 @@ type Props = {
 
 const DatasourceInfo = ({ datasource }: Props) => {
   const theme = useMantineTheme()
-  const { title, resource_id, abstract, community_title, created_at, searchable, creator } =
-    datasource
-  const link_origin = 'https://localhost'
-  const mailTo = `mailto:${creator?.email}`
-  const label = 'adriana@gmail.com'
+  const { id, title, description, organisation, contact, searchable, created_at } = datasource
+  const mailTo = `mailto:${contact?.email}`
 
   return (
     <div css={S.root}>
@@ -44,47 +41,52 @@ const DatasourceInfo = ({ datasource }: Props) => {
         </Tooltip>
         <div css={S.title}>
           <Text fz="md" fw={600}>
-            {title.charAt(0).toUpperCase() + title.slice(1)}
+            {title?.charAt(0).toUpperCase() + title?.slice(1)}
           </Text>
         </div>
         <RestrictedDatasources datasource={datasource} searchable={searchable} />
       </div>
 
       <Flex direction="column" gap="xs" data-info css={S.info}>
-        <Text size="md">{abstract?.charAt(0).toUpperCase() + abstract?.slice(1)}</Text>
+        <Text size="md">{description?.charAt(0).toUpperCase() + description?.slice(1)}</Text>
         <Group css={S.group}>
           <Tooltip label="Datasource ID">
-            <Text size="sm">{resource_id}</Text>
+            <Text size="sm">{id}</Text>
           </Tooltip>
           <Divider size="sm" orientation="vertical" />
           <Tooltip label="Organization Name">
-            <Text size="sm">
-              {community_title.charAt(0).toUpperCase() + community_title.slice(1)}
-            </Text>
+            <Text size="sm">{organisation?.charAt(0).toUpperCase() + organisation?.slice(1)}</Text>
           </Tooltip>
-          <Group css={S.group}>
-            <Divider size="sm" orientation="vertical" />
-            <IconCalendarTime size="1.2rem" color="gray" />
-            <Text size="sm">{new Date(created_at).toDateString()}</Text>
-          </Group>
+          {created_at ? (
+            <Group css={S.group}>
+              <Divider size="sm" orientation="vertical" />
+              <IconCalendarTime size="1.2rem" color="gray" />
+              <Text size="sm">{new Date(created_at)?.toDateString()}</Text>
+            </Group>
+          ) : null}
         </Group>
         <Group>
           <Group css={S.group} w="60%">
             <MdEmail size={18} />
             <Text size="sm" color="gray.7" pr="md">
+              {contact?.person}
+              {': '}
               <Anchor href={mailTo} target="_blank">
-                {label}
+                {contact?.email}
               </Anchor>
             </Text>
-
-            <IoMdLink size={18} />
-            <Text size="sm" color="gray.7">
-              <Anchor href={link_origin} target="_blank">
-                {link_origin}
-              </Anchor>
-            </Text>
+            {contact?.website ? (
+              <>
+                <IoMdLink size={18} />
+                <Text size="sm" color="gray.7">
+                  <Anchor href={contact?.website} target="_blank">
+                    {contact?.website}
+                  </Anchor>
+                </Text>
+              </>
+            ) : null}
           </Group>
-          <ThemeList />
+          <ThemeList themes={datasource.theme} />
         </Group>
       </Flex>
     </div>

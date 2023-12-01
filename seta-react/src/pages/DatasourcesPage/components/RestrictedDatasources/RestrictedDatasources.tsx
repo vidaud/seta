@@ -29,7 +29,7 @@ const RestrictedDatasource = ({ datasource }: Props) => {
   const [selection, setSelection] = useState<string[]>(
     data ? data?.filter(item => item.searchable === false).map(item => item.resource_id) : []
   )
-  const selected = selection.includes(datasource.resource_id)
+  const selected = selection.includes(datasource.id)
   const [isChecked, setIsChecked] = useState<boolean>(datasource.searchable)
 
   useEffect(() => {
@@ -66,7 +66,7 @@ const RestrictedDatasource = ({ datasource }: Props) => {
         className={classes.button}
         checked={!selected}
         onChange={e => {
-          toggleRow?.(datasource.resource_id)
+          toggleRow?.(datasource.id)
           setIsChecked(e.target.checked)
         }}
         color="teal"

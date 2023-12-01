@@ -7,7 +7,6 @@ import { useCurrentUser } from '~/contexts/user-context'
 import { UserRole } from '~/types/user'
 
 import AboutDropdown from './components/AboutDropdown/AboutDropdown'
-import NotificationsButton from './components/NotificationsButton'
 import SiteHeader from './components/SiteHeader'
 import { getDropdownItems, getMenuItems, itemIsCollapse, itemIsDivider } from './config'
 import * as S from './styles'
@@ -125,7 +124,7 @@ const Header = () => {
         </Grid>
         <Group>
           <Group className="login-button">
-            {authenticated ? <NotificationsButton dropdownItems={dropdownItems} /> : null}
+            {/* {authenticated ? <NotificationsButton dropdownItems={dropdownItems} /> : null} */}
             {authenticated ? dropdownMenu : loginButton}
           </Group>
         </Group>

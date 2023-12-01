@@ -57,11 +57,7 @@ const DatasourcesListContent = forwardRef<HTMLDivElement, Props>(
         </div>
 
         {datasources.map(datasource => (
-          <DatasourceInfo
-            key={datasource.resource_id}
-            datasource={datasource}
-            queryTerms={queryTerms}
-          />
+          <DatasourceInfo key={datasource.id} datasource={datasource} queryTerms={queryTerms} />
         ))}
       </Flex>
     )

@@ -9,4 +9,5 @@ export const root = css`
 `
 export const group = css`
   gap: 0.5rem;
+  justify-content: center;
 `

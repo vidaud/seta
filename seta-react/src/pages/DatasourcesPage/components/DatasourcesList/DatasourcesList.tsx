@@ -15,7 +15,7 @@ import Filters from '../Filters'
 
 const useStyles = createStyles({
   search: {
-    width: '83.8%'
+    width: '82%'
   }
 })
 

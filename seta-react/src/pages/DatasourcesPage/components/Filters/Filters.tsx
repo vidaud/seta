@@ -1,8 +1,17 @@
-import { Select } from '@mantine/core'
+import { createStyles, Select } from '@mantine/core'
 
 import { useDatasourceListContext } from '~/pages/DatasourcesPage/contexts/datasource-list.context'
 
+const useStyles = createStyles({
+  filters: {
+    [`@media (max-width: 89em) and (min-width: 68em)`]: {
+      width: '16%'
+    }
+  }
+})
+
 const Filters = () => {
+  const { classes } = useStyles()
   const { selected, handleSearchableChange } = useDatasourceListContext()
 
   const searchableOptions = [
@@ -13,7 +22,7 @@ const Filters = () => {
 
   return (
     <Select
-      width="15%"
+      className={classes.filters}
       name="searchable"
       value={selected}
       data={searchableOptions}
