@@ -10,4 +10,6 @@ def is_field_in_doc(source, field):
     if field in source:
         return source[field]
     else:
+        if field == "other":
+            return {}
         return None

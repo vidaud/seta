@@ -3,7 +3,7 @@ services:
     ports:
       - "27017:27017"
 
-  seta-es:
+  seta-opensearch:
     mem_limit: "6g"
     environment:
     - logger.level=INFO

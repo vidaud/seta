@@ -7,6 +7,7 @@ from tests.infrastructure.helpers.corpus import (get_document, delete_document, 
 
 from tests.infrastructure.helpers.util import get_access_token
 
+
 @pytest.mark.parametrize("user_id, term", [("seta_admin", "test_corpus_simple_search")])
 def test_corpus_simple_search(
     client: FlaskClient, user_key_pairs: dict, user_id: str, term: str
