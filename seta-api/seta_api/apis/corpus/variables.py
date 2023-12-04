@@ -145,7 +145,7 @@ corpus_chunk_id_put_params["taxonomy"] = None
 corpus_chunk_id_put_params["keywords"] = None
 corpus_chunk_id_put_params["other"] = None
 corpus_chunk_id_put_params["chunk_text"] = fields.String()
-corpus_chunk_id_put_params["sbert_embedding"] = fields.List(fields.Float)
+corpus_chunk_id_put_params["sbert_embedding"] = fields.List(fields.Raw)
 
 corpus_chunk_post_params = {}
 corpus_chunk_post_params["id"] = fields.String()
@@ -170,7 +170,7 @@ corpus_chunk_post_params["keywords"] = None
 corpus_chunk_post_params["other"] = None
 corpus_chunk_post_params["chunk_text"] = fields.String()
 corpus_chunk_post_params["chunk_number"] = fields.Integer()
-corpus_chunk_post_params["sbert_embedding"] = fields.List(fields.Float)
+corpus_chunk_post_params["sbert_embedding"] = fields.List(fields.Raw)
 
 corpus_post_params = {}
 corpus_post_params["term"] = fields.String(description="term to be searched", example="data")
@@ -189,7 +189,7 @@ corpus_post_params["in_force"] = fields.String(description="eurlex metadata into
 corpus_post_params["sort"] = fields.List(fields.String(), description="sort results field:order")
 corpus_post_params["semantic_sort_id_list"] = fields.List(fields.String(),
                                                           description="sort results by semantic distance among documents")
-corpus_post_params["sbert_embedding_list"] = fields.List(fields.List(fields.Float,
+corpus_post_params["sbert_embedding_list"] = fields.List(fields.List(fields.Raw,
                                                                      description="list of embeddings vector"))
 corpus_post_params["author"] = fields.List(fields.String(description="author"))
 corpus_post_params["date_range"] = fields.List(fields.String, description="examples: gte:yyyy-mm-dd,lte:yyyy-mm-dd,"
