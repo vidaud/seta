@@ -59,6 +59,21 @@ const SidebarContent = () => {
         />
         {/* RSA Keys END*/}
 
+        {/* RSA Key START*/}
+        <NavLink
+          label="RSA Key"
+          icon={
+            <ThemeIcon variant={activeLink === ActiveLink.RSAKEY ? 'outline' : 'light'} size={30}>
+              <BsFiletypeKey size="1rem" stroke="1.5" />
+            </ThemeIcon>
+          }
+          component={Link}
+          to="/profile/rsa-key"
+          css={S.linkPrimary}
+          active={activeLink === ActiveLink.RSAKEY}
+        />
+        {/* RSA Key END*/}
+
         {/* Applications START*/}
         <NavLink
           label="Applications"
