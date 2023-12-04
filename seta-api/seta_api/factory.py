@@ -94,7 +94,7 @@ def create_app(config_object):
 
 
 def init(app):
-    app.es = OpenSearch("http://" + app.config["ES_HOST"], verify_certs=False, request_timeout=30)
+    app.es = OpenSearch("http://" + app.config["ES_HOST"], verify_certs=False, request_timeout=120)
 
     if not app.testing:
         wait_for_es(app)
