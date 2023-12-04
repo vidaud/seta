@@ -18,3 +18,6 @@ from .db_library_broker import LibraryBroker
 from .db_users_query_broker import UsersQueryBroker
 from .db_external_provider_broker import ExternalProviderBroker
 from .db_rolling_index_broker import RollingIndexBroker
+
+from .db_data_sources_broker import DataSourcesBroker
+from .profile import UserProfileUnsearchables

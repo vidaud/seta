@@ -1,5 +1,15 @@
 import { createRef, useEffect, useState } from 'react'
-import { Flex, Text, clsx, Group, Anchor, Menu, ActionIcon, useMantineTheme } from '@mantine/core'
+import {
+  Flex,
+  Text,
+  clsx,
+  Group,
+  Anchor,
+  Menu,
+  ActionIcon,
+  useMantineTheme,
+  Grid
+} from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 import { IconDotsVertical } from '@tabler/icons-react'
 import { CgSearchFound } from 'react-icons/cg'
@@ -7,14 +17,11 @@ import { FaChevronDown } from 'react-icons/fa'
 import { MdOutlineSearchOff } from 'react-icons/md'
 import { useLocation, useNavigate } from 'react-router-dom'
 
-import type {
-  CommunityScopes,
-  ResourceScopes,
-  SystemScopes
-} from '~/pages/CommunitiesPage/contexts/community-list.context'
 import { PanelProvider } from '~/pages/CommunitiesPage/contexts/panel-context'
+import { useResourceListContext } from '~/pages/CommunitiesPage/contexts/resource-list.context'
 
 import type { ResourceResponse } from '~/api/types/resource-types'
+import type { CommunityScopes, ResourceScopes, SystemScopes } from '~/types/user/user-scopes'
 
 import DeleteResource from './components/DeleteResource'
 import ResourceDetails from './components/ResourceDetails'
@@ -33,6 +40,8 @@ type Props = {
 const ResourceInfo = ({ resource, resource_scopes, community_scopes }: Props) => {
   const [scopes, setScopes] = useState<string[] | undefined>([])
   const [resourceScopes, setResourceScopes] = useState<string[] | undefined>([])
+  const { memberCommunities } = useResourceListContext()
+
   const [outsideClick, setOutsideClick] = useState(true)
   const theme = useMantineTheme()
   const { title, resource_id, abstract, community_title, created_at, community_id, searchable } =
@@ -40,7 +49,6 @@ const ResourceInfo = ({ resource, resource_scopes, community_scopes }: Props) =>
   const location = useLocation()
   const ref = createRef<HTMLDivElement>()
   const navigate = useNavigate()
-
   const [detailsOpen, { toggle }] = useDisclosure()
 
   const chevronClass = clsx({ open: detailsOpen })
@@ -65,13 +73,11 @@ const ResourceInfo = ({ resource, resource_scopes, community_scopes }: Props) =>
     )
 
     findResource ? setScopes(findResource[0]?.scopes) : setScopes([])
-
     const findResourceScope = resource_scopes?.filter(
       scope => scope.resource_id === resource.resource_id
     )
 
     findResourceScope ? setResourceScopes(findResourceScope[0]?.scopes) : setResourceScopes([])
-    //prevent entering infinite loop
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -102,9 +108,8 @@ const ResourceInfo = ({ resource, resource_scopes, community_scopes }: Props) =>
             {title.charAt(0).toUpperCase() + title.slice(1)}
           </Text>
         </div>
-        {resourceScopes?.includes('/seta/resource/edit') ? (
-          <>
-            <RestrictedResource resource={resource} />
+        <Grid css={S.grid}>
+          {resourceScopes?.includes('/seta/resource/edit') ? (
             <Menu
               transitionProps={{ transition: 'pop' }}
               withArrow
@@ -129,14 +134,16 @@ const ResourceInfo = ({ resource, resource_scopes, community_scopes }: Props) =>
                 <DeleteResource id={resource_id} />
               </Menu.Dropdown>
             </Menu>
-          </>
-        ) : (
-          <>
+          ) : (
             <div />
-            <div />
-          </>
-        )}
-
+          )}
+          {memberCommunities
+            ?.filter(item => item.status === 'membership')
+            .map(el => el.community_id)
+            .includes(resource.community_id) ? (
+            <RestrictedResource resource={resource} searchable={searchable} />
+          ) : null}
+        </Grid>
         {toggleIcon}
       </div>
 

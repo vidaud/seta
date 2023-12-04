@@ -2,11 +2,11 @@ import { useState } from 'react'
 import { Group, createStyles, Button, TextInput, Textarea, Checkbox, Text } from '@mantine/core'
 import type { AxiosError } from 'axios'
 
-import type { ApplicationValues } from '~/pages/UserProfile/contexts/application-context'
 import {
   ApplicationFormProvider,
-  useApplication
-} from '~/pages/UserProfile/contexts/application-context'
+  useApplication,
+  type ApplicationValues
+} from '~/pages/UserProfile/common/contexts/application-context'
 
 import { useCreateApplication } from '~/api/user/applications'
 import { notifications } from '~/utils/notifications'

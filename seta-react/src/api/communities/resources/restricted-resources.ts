@@ -18,6 +18,10 @@ const config = {
   }
 }
 
+export type Request = {
+  resource: string
+}
+
 const setRestrictedResources = async (request: FormData) => {
   return await api.post(RESTRICTED_RESOURCE_API_PATH(), request, config)
 }

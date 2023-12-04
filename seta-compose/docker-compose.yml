@@ -74,10 +74,12 @@ services:
     extends:
       file: common.yml
       service: ui-react
+    build:
+      dockerfile: docker/Dockerfile
     depends_on:
       - "seta-api"
       - "seta-ui"
-    networks: 
+    networks:
       - seta-network
 
   seta-data:

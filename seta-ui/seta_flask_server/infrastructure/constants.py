@@ -1,4 +1,4 @@
-from enum import IntEnum
+from enum import IntEnum, Enum
 
 INVITE_EXPIRE_DAYS: float = 3
 
@@ -112,6 +112,11 @@ class ResourceTypeConstants:
     Representative = "representative"
 
     List = [Discoverable, Representative]
+
+
+class DataSourceStatusConstants(str, Enum):
+    ACTIVE = "active"
+    ARCHIVED = "archived"
 
 
 class NotificationTypeConstants:

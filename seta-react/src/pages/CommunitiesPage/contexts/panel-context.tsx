@@ -2,21 +2,6 @@ import { createContext, useContext, useState } from 'react'
 
 import type { ChildrenProp } from '~/types/children-props'
 
-export type SystemScopes = {
-  area: string
-  scope: string
-}
-
-export type CommunityScopes = {
-  community_id: string
-  scopes: string[]
-}
-
-export type ResourceScopes = {
-  resource_id: string
-  scopes: string[]
-}
-
 export type PanelData = {
   nrInvites?: number | undefined
   nrChangeRequests?: number | undefined

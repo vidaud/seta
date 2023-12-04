@@ -6,21 +6,9 @@ from .orphans import orphans_ns
 from .stats import stats_ns
 from .users import users_ns
 from .rolling_indexes import rolling_indexes_ns
+from .data_sources import data_sources_ns
 
-authorizations = {
-    "Bearer": {
-        "type": "apiKey",
-        "in": "header",
-        "name": "Authorization",
-        "description": "Type in the *'Value'* input box below: **'Bearer &lt;JWT&gt;'**, where JWT is the token",
-    },
-    "CSRF": {
-        "type": "apiKey",
-        "in": "header",
-        "name": "X-CSRF-TOKEN",
-        "description": "Type in the *'Value'* input box below: **'&lt;CSRF&gt;'**, where CSRF is the CSRF token",
-    },
-}
+from seta_flask_server.infrastructure.dto.authorizations import authorizations
 
 DOC = "/admin/doc"
 if current_app.config.get("DISABLE_SWAGGER_DOCUMENTATION"):
@@ -42,3 +30,4 @@ admin_api.add_namespace(orphans_ns, path="/admin/orphan")
 admin_api.add_namespace(stats_ns, path="/admin/stats")
 admin_api.add_namespace(users_ns, path="/admin/users")
 admin_api.add_namespace(rolling_indexes_ns, path="/admin")
+admin_api.add_namespace(data_sources_ns, path="/admin/data-sources")

@@ -24,3 +24,6 @@ from .library import LibraryItem, LibraryItemType
 from .account_info import AccountInfo
 from .catalogue_field import CatalogueField
 from .rolling_index import StorageLimits, StorageIndex, RollingIndex
+
+from .data_source import DataSourceContactModel, DataSourceModel
+from .profile import UnsearchablesModel
