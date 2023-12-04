@@ -110,8 +110,8 @@ const Header = () => {
               key={to}
               to={to}
               id={
-                label === 'Communities'
-                  ? 'community-tab'
+                label === 'Datasources'
+                  ? 'datasource-tab'
                   : label === 'Search'
                   ? 'search-tab'
                   : undefined

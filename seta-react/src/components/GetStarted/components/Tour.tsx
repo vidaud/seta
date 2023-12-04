@@ -24,17 +24,17 @@ const Tour = () => {
 
     if (type === 'tooltip' && index === 2) {
       handleRunTour(true)
-      navigate('/community')
+      navigate('/datasources')
     }
 
-    if (type === 'tooltip' && index === 6) {
+    if (type === 'tooltip' && action === 'update' && index === 5) {
       handleRunTour(true)
       navigate('/search')
     }
 
     if (action === 'prev' && lifecycle === 'init') {
-      if (index === 5) {
-        navigate('/community')
+      if (index === 4) {
+        navigate('/datasources')
       }
     }
   }

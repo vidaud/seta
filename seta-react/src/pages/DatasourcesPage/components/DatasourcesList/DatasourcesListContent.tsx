@@ -49,7 +49,7 @@ const DatasourcesListContent = forwardRef<HTMLDivElement, Props>(
     }
 
     return (
-      <Flex ref={ref} direction="column" css={S.root}>
+      <Flex ref={ref} direction="column" css={S.root} id="datasource-list">
         <div>
           <Text fz="md" fw="bold" color="gray.7">
             DATASOURCES ({data?.length})
