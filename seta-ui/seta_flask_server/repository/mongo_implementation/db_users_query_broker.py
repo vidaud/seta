@@ -63,7 +63,7 @@ class UsersQueryBroker(implements(IUsersQueryBroker)):
 
         app_pipeline = [
             {"$match": {"app_name": {"$exists": 1}}},
-            {"$group": {"_id": "$user_id", "count": {"$sum": 1}}},
+            {"$group": {"_id": "$parent_user_id", "count": {"$sum": 1}}},
         ]
         apps = self.collection.aggregate(app_pipeline)
 
