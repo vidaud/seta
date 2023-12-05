@@ -28,13 +28,13 @@ const SystemPerms = ({ scopes }: Props) => {
     return <SuggestionsEmpty message="Scopes catalogue is empty!" />
   }
 
-  const perms = scopes.map(scope => (
-    <Card shadow="xs" key={scope.area} padding="md" radius="xs" withBorder>
-      <SystemPermsTable scopes={scopes} catalogue={data} />
-    </Card>
-  ))
-
-  return <SimpleGrid>{perms}</SimpleGrid>
+  return (
+    <SimpleGrid>
+      <Card shadow="xs" padding="md" radius="xs" withBorder>
+        <SystemPermsTable scopes={scopes} catalogue={data} />
+      </Card>
+    </SimpleGrid>
+  )
 }
 
 export default SystemPerms

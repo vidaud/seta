@@ -3,7 +3,6 @@ import { Table, useMantineTheme, Badge, Select, Text } from '@mantine/core'
 
 import DateTimeCell from '~/pages/Admin/common/components/DateTimeCell/DateTimeCell'
 import UserInfo from '~/pages/Admin/common/components/UserInfo/UserInfo'
-import LimitsPropertyCell from '~/pages/Admin/ResourceRequests/components/LimitsPropertyCell/LimitsPropertyCell'
 import {
   ComponentEmpty,
   ComponentError,
@@ -63,11 +62,9 @@ const ChangeResourceRequests = ({ id }) => {
         </Text>
       </td>
       <td>
-        <LimitsPropertyCell
-          fieldName={row?.field_name}
-          currentValue={row.old_value}
-          newValue={row.new_value}
-        />
+        <Text>
+          {row?.field_name} - {row.old_value} - {row.new_value}
+        </Text>
       </td>
       <td>
         <UserInfo

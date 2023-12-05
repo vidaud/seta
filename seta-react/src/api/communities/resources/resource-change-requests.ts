@@ -3,7 +3,6 @@ import type { AxiosRequestConfig } from 'axios'
 
 import type { ChangeRequestValues } from '~/pages/CommunitiesPage/contexts/change-request-context'
 
-import { AdminQueryKeys } from '~/api/admin/query-keys'
 import api from '~/api/api'
 import type { ResourceChangeRequests } from '~/api/types/change-request-types'
 import { environment } from '~/environments/environment'
@@ -56,8 +55,6 @@ export const useResourceChangeRequest = (id: string) => {
       client.invalidateQueries(ResourceQueryKeys.ChangeRequestsQueryKey)
       client.invalidateQueries(ResourceQueryKeys.ResourcesQueryKey)
       client.invalidateQueries(CommunityQueryKeys.NotificationsQueryKey)
-      client.invalidateQueries(AdminQueryKeys.SidebarQueryKey)
-      client.invalidateQueries(AdminQueryKeys.ResourceRequestsQueryKey)
     }
   })
 }

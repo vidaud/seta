@@ -1,10 +1,9 @@
 import { ScrollArea, Tabs } from '@mantine/core'
-import { IconEdit, IconEye } from '@tabler/icons-react'
+import { IconEdit } from '@tabler/icons-react'
 
 import type { UserScopeList } from '~/types/admin/scopes'
 import type { UserRole } from '~/types/user'
 
-import CommunityPerms from './components/CommunityPerms'
 import ResourcePerms from './components/ResourcePerms'
 import SystemPerms from './components/SystemPerms'
 
@@ -21,22 +20,11 @@ const Permissions = ({ userId, role, scopes }: Props) => {
         <Tabs.Tab value="system-scopes" icon={<IconEdit size="0.95rem" />}>
           System Permissions
         </Tabs.Tab>
-        <Tabs.Tab value="community-scopes" icon={<IconEye size="0.95rem" />}>
-          Community Permissions
-        </Tabs.Tab>
-        <Tabs.Tab value="resource-scopes" icon={<IconEye size="0.95rem" />}>
-          Resource Permissions
-        </Tabs.Tab>
+        <Tabs.Tab value="resource-scopes">Resource Permissions</Tabs.Tab>
       </Tabs.List>
 
       <Tabs.Panel value="system-scopes" pt="xs">
         <SystemPerms userId={userId} role={role} scopes={scopes?.system_scopes} />
-      </Tabs.Panel>
-
-      <Tabs.Panel value="community-scopes" pt="xs">
-        <ScrollArea h={500} type="auto" offsetScrollbars>
-          <CommunityPerms scopes={scopes?.community_scopes} />
-        </ScrollArea>
       </Tabs.Panel>
 
       <Tabs.Panel value="resource-scopes" pt="xs">
