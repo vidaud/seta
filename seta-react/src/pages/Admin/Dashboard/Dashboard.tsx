@@ -1,11 +1,7 @@
-import { useAdminStatsLight } from '~/api/admin/menu-stats'
-
-import StatsGrid from './components/StatsGrid'
+import UnderConstruction from '~/components/UnderConstruction'
 
 const AdminDashboard = () => {
-  const { data, isLoading, error, refetch } = useAdminStatsLight()
-
-  return <StatsGrid data={data} isLoading={isLoading} error={error} onTryAgain={refetch} />
+  return <UnderConstruction />
 }
 
 export default AdminDashboard

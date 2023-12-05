@@ -15,6 +15,5 @@ export type ResourceScope = {
 
 export type UserScopeList = {
   system_scopes?: SystemScope[]
-  community_scopes?: CommunityScope[]
   resource_scopes?: ResourceScope[]
 }

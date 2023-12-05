@@ -16,7 +16,7 @@ const SystemPermsTable = ({ scopes, catalogue }: Props) => {
 
     return (
       <tr
-        key={scope.area}
+        key={scope.scope}
         className={clsx('scopeRow', { elevated: catalogueItem?.elevated })}
         css={S.scopeRow}
       >

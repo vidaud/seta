@@ -1,7 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 
 import api from '~/api'
-import { AdminQueryKeys } from '~/api/admin/query-keys'
 import type { MembershipRequest } from '~/api/types/membership-types'
 import { environment } from '~/environments/environment'
 import type { ChangeMembershipRequestStatus } from '~/types/community/change-membership-requests'
@@ -78,8 +77,6 @@ export const useSetChangeMembershipRequest = () => {
       client.invalidateQueries(CommunityQueryKeys.MembershipChangeRequestsQueryKey)
       client.invalidateQueries(CommunityQueryKeys.CommunitiesQueryKey)
       client.invalidateQueries(CommunityQueryKeys.NotificationsQueryKey)
-      client.invalidateQueries(AdminQueryKeys.SidebarQueryKey)
-      client.invalidateQueries(AdminQueryKeys.CommunityRequestsQueryKey)
     }
   })
 }
