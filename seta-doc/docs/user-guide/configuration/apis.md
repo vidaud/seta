@@ -1,19 +1,19 @@
-The SeTA APIs provides the functions and procedures to access the data of the Communities and the functionalities from the Search tool, from a developer point of view.
+The SeTA APIs provides the functions and procedures to access the data of the Datasources and the functionalities from the Search tool, from a developer point of view.
 
 ## APIs in SeTA
 
 In SeTA there the following APIs:   
-- Communities API       
+- Datasources API       
 - JWT Token Authentication                
 - SeTA API - Elastic Search queries                 
 
 
-To prepare the upload of the data, it is important to setup first the **Communities API** to then follow with **SeTA API**.
+To prepare the upload of the data, it is important to setup first the **Datasources API** to then follow with **SeTA API**.
 
-### Communities API 
+### Datasources API 
 
 !!! info
-    The ^^SeTA Communities API^^ are only available for the *Development Environment*
+    The ^^SeTA Datasources API^^ are only available for the *Development Environment*
 
 #### Prerequisites
 
@@ -43,11 +43,6 @@ After successful authentication, check that you have the following entries in th
 </figure>
 
 <figure markdown>
-![Image title](../../../img/community_create_scope.png){ width="700" }
-<figcaption>Community create scope</figcaption>
-</figure>
-
-<figure markdown>
 ![Image title](../../../img/role_claim.png){ width="700" }
 <figcaption>Role claim (claim_value can different)</figcaption>
 </figure>
@@ -56,11 +51,11 @@ After successful authentication, check that you have the following entries in th
     **user_id** is a randomly generated short guid for each new account
 
 
-Open a new tab in the same browser for the [SeTA Communities API]({{ setaUrls.apiCommunities }})
+Open a new tab in the same browser for the [SeTA Datasources API]({{ setaUrls.apiDatasources }})
 
 <figure markdown>
-![Image title](../../../img/communities_api.png)
-<figcaption>SeTA Communities</figcaption>
+![Image title](../../../img/datasources_api.png)
+<figcaption>SeTA Datasources</figcaption>
 </figure>
 
 
@@ -85,64 +80,7 @@ SeTA-API will get at each request another authorization decoded token from seta-
 > You can verify the authorization token at [authorization doc]({{ setaUrls.auth_Token }}) passing the JWT access token as payload.
 
 
-#### Create community
-
-Expand **Communities** region and then Try out **POST** /communities:
-
-<figure markdown>
-![Image title](../../img/create_community.png){ width="800" }
-<figcaption>Create Community</figcaption>
-</figure>
-
-The server response should be a 201 code with a JSON body:
-```
-    { "message": "New community added", "status": "success" }
-```
-\     
-\     
-Check the following entries in the **seta database - communities** collection:
-
-<figure markdown>
-![Image title](../../img/community_object.png){ width="700" }
-<figcaption>Community object</figcaption>
-</figure>
-
-<figure markdown>
-![Image title](../../img/membership_object.png){ width="700" }
-<figcaption>Membership object</figcaption>
-</figure>
-
-Check the objects for the community scopes in the **seta database - users** collection:
-
-<figure markdown>
-![Image title](../../img/seta_usr_scope.png){ width="700" }
-<figcaption>User scope</figcaption>
-</figure>
-
-#### Create resource
-
-Expand **Community Resources** region and then Try out **POST** /communities/{community_id}/resources:
-
-<figure markdown>
-![Image title](../../img/create-resource.png)
-<figcaption>Create Resource</figcaption>
-</figure>
-
-Check that the Resource entry appears in the **seta database - resources** collection:
-
-<figure markdown>
-![Image title](../../img/resource_community.png){ width="700" }
-<figcaption>Resource</figcaption>
-</figure>
-
-Check that the objects for the resource scopes in the **seta database - users** collection exists
-
-<figure markdown>
-![Image title](../../img/usrs_resources.png){ width="700" }
-<figcaption>Users Resource</figcaption>
-</figure>
-
-At this point, Community API usage is set up and now it is possible to go to SeTA API to start using the methods under **seta-api-corpus** region for the upload of data.
+At this point, Datasource API usage is set up and now it is possible to go to SeTA API to start using the methods under **seta-api-corpus** region for the upload of data.
 
 ### SeTA API
 

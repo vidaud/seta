@@ -92,7 +92,7 @@ For SeTA we are using two types of containers:
 
     a) **seta-data**: this container functions mainly to populate de Elasticsearch  database. If the database is empty at the beginning, it will fill the Elasticsearch  database.
 
-    b) **seta-mongo**: contains the operational databases for SETA web services and web application, and also includes users management, community, resources management and other operational data.
+    b) **seta-mongo**: contains the operational databases for SETA web services and web application, and also includes users management, datasource management and other operational data.
 
 
 

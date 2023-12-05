@@ -9,9 +9,9 @@ The SeTA Web App is a user-friendly interface that allows the user to access the
 
 In the SeTA Web App, we can find:
 
-- Communities: A digital platform where people with a common interest can share, connect and communicate with one another.               
+- Datasources: A digital platform where people with a common interest can explore among different repository of information.
 
-- Search tool: An online search engine tool designed to search for metadata on the SeTA community database. It sorts the results, and makes an ordered list of these results according to the search algorithms.
+- Search tool: An online search engine tool designed to search for metadata on the SeTA datasource database. It sorts the results, and makes an ordered list of these results according to the search algorithms.
 
 To access these features, you need to login either with an EU login[^1] account or with a GitHub[^2] authentication.
 
@@ -28,7 +28,7 @@ To access these features, you need to login either with an EU login[^1] account 
 
 
 
-Once you are logged in, you can see in the top menu the link to the Search and to the Communities:
+Once you are logged in, you can see in the top menu the link to the Search and to the Datasources:
 
 
 <figure markdown>
