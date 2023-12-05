@@ -12,27 +12,23 @@ services:
       - NO_PROXY=${NO_PROXY}
       - no_proxy=${NO_PROXY}
 
-  es:
+  opensearch:
     restart: always
     build:
-      context: ../seta-es
+      context: ../seta-opensearch
       args:
         - HTTP_PROXY=${HTTP_PROXY}
         - HTTPS_PROXY=${HTTPS_PROXY}
-    mem_limit: "4g"
     environment:
-      - NO_PROXY=${NO_PROXY}
-      - no_proxy=${NO_PROXY}
-      - xpack.security.enabled=false
-      - xpack.security.http.ssl.enabled=false
-      - xpack.security.transport.ssl.enabled=false
-      - ingest.geoip.downloader.enabled=false
       - bootstrap.memory_lock=true
-      - cluster.name=docker-cluster      
+      - plugins.security.disabled=true
     ulimits:
       memlock:
         soft: -1
         hard: -1
+      nofile:
+        soft: 65536 # maximum number of open files for the OpenSearch user, set to at least 65536 on modern systems
+        hard: 65536
 
   api:
     restart: always

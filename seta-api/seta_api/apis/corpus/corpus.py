@@ -312,6 +312,8 @@ class CorpusQuery(Resource):
         except jsonschema.ValidationError as err:
             abort(400, err.message)
         except ApiLogicError as aex:
+            if str(aex) == "Sbert vector not retrieved":
+                return {"total_docs": None, "documents": []}
             abort(404, str(aex))
         except:
             app.logger.exception("CorpusQuery->post")

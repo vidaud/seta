@@ -1,7 +1,7 @@
 import time
 import logging
 
-from elasticsearch import Elasticsearch
+from opensearchpy import OpenSearch
 from sentence_transformers import SentenceTransformer
 
 from flask import (Flask, request, g, Response, json)
@@ -94,7 +94,7 @@ def create_app(config_object):
 
 
 def init(app):
-    app.es = Elasticsearch("http://" + app.config["ES_HOST"], verify_certs=False, request_timeout=180)
+    app.es = OpenSearch("http://" + app.config["ES_HOST"], verify_certs=False, request_timeout=120)
 
     if not app.testing:
         wait_for_es(app)
@@ -103,11 +103,12 @@ def init(app):
     app.sbert_model.max_seq_length = 512
 
     app.logger.info("SeTA-API is up and running.")
-    
+
+
 def wait_for_es(app):
     host = app.config["ES_HOST"]
     esh = f"http://{host}/_cluster/health?pretty"
-    app.logger.info(f'Waiting for ES {esh} ...')
+    app.logger.info(f'Waiting for OS {esh} ...')
     
     try:
         es_session = requests.Session()
@@ -116,10 +117,10 @@ def wait_for_es(app):
         
         if res.ok:
             res = json.loads(res.content)
-            app.logger.info("ElasticSearch..." + res['status'])
+            app.logger.info("OpenSearch..." + res['status'])
             if res['status'] == 'green' or res['status'] == 'yellow':
                 total = app.es.count(index=app.config["INDEX"][0])['count']
-                app.logger.info(f"Total number of documents indexed by Elastic: {total}")
+                app.logger.info(f"Total number of documents indexed by Open: {total}")
                 
                 return
             
@@ -131,12 +132,14 @@ def wait_for_es(app):
         time.sleep(5)
         wait_for_es(app)
 
+
 def register_blueprints(app):
     app.register_blueprint(apis_bp_v1)
     app.register_blueprint(private_bp_v1)
     
     if app.config.get("TESTING") or app.testing:
         app.register_blueprint(test_bp)
+
 
 def register_extensions(app):
     jwt.init_app(app)    

@@ -10,55 +10,19 @@ services:
     volumes:
       - seta-mongo:/data/db
 
-  seta-es:
-    container_name: seta-es
+
+  seta-opensearch:
+    container_name: opensearch
     extends:
       file: common.yml
-      service: es
+      service: opensearch
+    environment:
+      - discovery.type=single-node
+    volumes:
+      - opensearch-data:/usr/share/opensearch/data
     expose:
       - "9200"
-      - "9300"
-    volumes:
-      - seta-es01:/usr/share/elasticsearch/data
-    environment:
-      - node.name=seta-es
-      - cluster.initial_master_nodes=seta-es,seta-es02,seta-es03
-      - discovery.seed_hosts=seta-es02,seta-es03
-      - logger.level=WARN
-    networks:
-      - seta-network
-    depends_on:
-      - seta-es02
-      - seta-es03
-
-  seta-es02:
-    extends:
-      file: common.yml
-      service: es
-    container_name: seta-es02
-    volumes:
-      - seta-es02:/usr/share/elasticsearch/data
-    environment:
-      - node.name=seta-es02
-      - cluster.initial_master_nodes=seta-es,seta-es02,seta-es03
-      - discovery.seed_hosts=seta-es,seta-es03
-      - logger.level=WARN
-    networks:
-      - seta-network
-
-  seta-es03:
-    extends:
-      file: common.yml
-      service: es
-    container_name: seta-es03
-    volumes:
-      - seta-es03:/usr/share/elasticsearch/data
-    environment:
-      - node.name=seta-es03
-      - cluster.initial_master_nodes=seta-es,seta-es02,seta-es03
-      - discovery.seed_hosts=seta-es,seta-es02
-      - cluster.name=docker-cluster
-      - logger.level=WARN
+      - "9600"
     networks:
       - seta-network
 
@@ -73,7 +37,7 @@ services:
       - seta-network
     depends_on:
       - "seta-mongo"
-      - "seta-es"
+      - "seta-opensearch"
 
   seta-nginx:
     container_name: nginx
@@ -122,9 +86,7 @@ services:
       file: common.yml
       service: data
     depends_on:
-      - "seta-es"
-      - "seta-es02"
-      - "seta-es03"
+      - "seta-opensearch"
     volumes:
       - seta-models3:/home/seta/models
     networks:
@@ -159,7 +121,5 @@ networks:
 
 volumes:
   seta-mongo:
-  seta-es01:
-  seta-es02:
-  seta-es03:
   seta-models3:
+  opensearch-data:

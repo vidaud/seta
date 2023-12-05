@@ -12,11 +12,11 @@ services:
     networks:
       - seta-network-test      
 
-  seta-es-test:
-    container_name: es-test
+  seta-opensearch-test:
+    container_name: opensearch-test
     restart: "no"   
     build:
-      context: ../seta-es
+      context: ../seta-opensearch
       args:
         - HTTP_PROXY=${HTTP_PROXY}
         - HTTPS_PROXY=${HTTPS_PROXY}
@@ -24,11 +24,9 @@ services:
     environment:
       - NO_PROXY=${NO_PROXY}
       - no_proxy=${NO_PROXY}
-      - xpack.security.enabled=false
+      - bootstrap.memory_lock=true
+      - plugins.security.disabled=true
       - discovery.type=single-node
-      - xpack.security.http.ssl.enabled=false
-      - xpack.security.transport.ssl.enabled=false
-      - ingest.geoip.downloader.enabled=false
       - logger.level=WARN
     expose:
       - "9200"
@@ -37,7 +35,7 @@ services:
       - "0.0.0.0:9200:9200"
       - "0.0.0.0:9300:9300"
     volumes:
-      - seta-es3-test:/usr/share/elasticsearch/data
+      - opensearch-data-test:/usr/share/opensearch/data
     networks:
       - seta-network-test
 
@@ -53,7 +51,7 @@ services:
       - seta-network-test
     depends_on:
       - "seta-mongo-test"
-      - "seta-es-test"
+      - "seta-opensearch-test"
 
   seta-nginx-test:
     container_name: nginx-test
@@ -92,7 +90,7 @@ services:
       file: common.yml
       service: data
     depends_on:
-      - "seta-es-test"
+      - "seta-opensearch-test"
     volumes:
       - seta-models3-test:/home/seta/models
     networks:
@@ -117,5 +115,5 @@ networks:
     driver: bridge
 
 volumes:
-  seta-es3-test:
+  opensearch-data-test:
   seta-models3-test:

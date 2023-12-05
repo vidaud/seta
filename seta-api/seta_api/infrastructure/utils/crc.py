@@ -11,9 +11,10 @@ def getsha256(filename):
             file_buffer = f.read(BLOCKSIZE)
     return sha.hexdigest()
 
+
 def get_crc_from_es(es, index_suggestion):
-    query = {"bool": {"must": [{"exists": {"field": "crc_model"}}]}}
-    resp = es.search(index=index_suggestion, query=query)
+    body = {"query": {"bool": {"must": [{"exists": {"field": "crc_model"}}]}}}
+    resp = es.search(index=index_suggestion, body=body)
     if resp['hits']['total']['value'] == 0:
         crc_es = None
         crc_id = None

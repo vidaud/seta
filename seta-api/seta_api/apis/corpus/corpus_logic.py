@@ -13,6 +13,7 @@ import lxml
 from lxml import etree
 import xmltodict
 
+
 def chunk_by_id(doc_id, es, index):
     tax = Taxonomy()
     try:
@@ -35,8 +36,9 @@ def delete_chunk(id, es, index):
 
 def update_chunk(id, es, fields, index):
     res = ""
+    update_doc = {"doc": fields}
     try:
-        res = es.update(index=index, id=id, doc=fields)
+        res = es.update(index=index, id=id, body=update_doc)
     except:
         raise ApiLogicError("Error on update phase, document ", id, " has not been updated", res)
 
@@ -57,7 +59,7 @@ def document_by_id(doc_id, n_docs, from_doc, current_app):
                           "sort": [{"chunk_number": {"order": "asc"}}]}
 
         request = compose_request_for_msearch(body, current_app)
-        res = current_app.es.msearch(searches=request)
+        res = current_app.es.msearch(body=request)
 
         for response in res["responses"]:
             if response["hits"]["total"]["value"] == 0:
@@ -81,6 +83,7 @@ def delete_document(id, es, index):
         es.delete_by_query(index=index, body=query)
     except:
         raise ApiLogicError("id not found")
+
 
 def insert_chunk(args, es, index):
     new_doc = {}
@@ -107,8 +110,9 @@ def insert_chunk(args, es, index):
     new_doc["chunk_text"] = is_field_in_doc(args, "chunk_text")
     new_doc["document_id"] = is_field_in_doc(args, "document_id")
     new_doc["chunk_number"] = is_field_in_doc(args, "chunk_number")
-    new_doc["sbert_embedding"] = get_embeddings(args)
-    res = es.index(index=index, document=new_doc)
+    emb = get_embeddings(args)
+    new_doc["sbert_embedding"] = emb
+    res = es.index(index=index, body=new_doc)
     return res["_id"]
 
 
@@ -140,7 +144,7 @@ def insert_doc(args, es, index):
     new_doc["other"] = is_field_in_doc(args, "other")
     new_doc["keywords"] = is_field_in_doc(args, "keywords")
 
-    res = es.index(index=index, document=new_doc)
+    res = es.index(index=index, body=new_doc)
     doc_id = res["_id"]
     embs = Embeddings.chunks_and_embeddings_from_doc_fields(is_field_in_doc(args, "title"),
                                                             is_field_in_doc(args, "abstract"),
@@ -148,16 +152,16 @@ def insert_doc(args, es, index):
     first = True
     for emb in embs:
         if first:
-            update_fields = {"chunk_text": emb["text"], "document_id": doc_id, "chunk_number": emb["chunk"],
-                             "sbert_embedding": emb["vector"]}
-            es.update(index=index, id=doc_id, doc=update_fields)
+            update_doc = {"doc": {"chunk_text": emb["text"], "document_id": doc_id, "chunk_number": emb["chunk"],
+                             "sbert_embedding": emb["vector"]}}
+            es.update(index=index, id=doc_id, body=update_doc)
             first = False
         else:
             new_doc["chunk_text"] = emb["text"]
             new_doc["document_id"] = doc_id
             new_doc["chunk_number"] = emb["chunk"]
             new_doc["sbert_embedding"] = emb["vector"]
-            es.index(index=index, document=new_doc)
+            es.index(index=index, body=new_doc)
     return doc_id
 
 
@@ -178,7 +182,8 @@ def corpus(term, n_docs, from_doc, sources, collection, reference, in_force, sor
     # import json
     # print(json.dumps(body))
     request = compose_request_for_msearch(body, current_app)
-    res = current_app.es.msearch(searches=request)
+    res = current_app.es.msearch(body=request)
+    print(res)
     documents = handle_corpus_response(aggs, res, search_type, term, current_app, semantic_sort_id_list, emb_vector_list)
     return documents
 

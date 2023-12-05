@@ -391,6 +391,7 @@ class Variable:
 
     def query_request_model(self):
         corpus_post_params["other"] = fields.Nested(self.other_model)
+        corpus_post_params["vector_field"] = fields.String
         return self.namespace.model("corpus_post_params", corpus_post_params)
 
     def get_corpus_post_response_model(self):

@@ -1,5 +1,5 @@
 import json
-from elasticsearch import Elasticsearch
+from opensearchpy import OpenSearch
 from pathlib import Path
 
 from seta_api.apis.corpus.corpus_logic import insert_doc
@@ -7,8 +7,8 @@ from seta_api.apis.corpus.corpus_logic import insert_doc
 class SetaES:
     def __init__(self, host: str, index: str) -> None:
         self.index = index
-        self.es = Elasticsearch("http://" + host, verify_certs=False, request_timeout=30)
-    
+        self.es = OpenSearch("http://" + host, verify_certs=False, request_timeout=30)
+
     def init_es(self) -> None:
         """
         Add documents to ElasticSearch
@@ -33,6 +33,6 @@ class SetaES:
     
     def cleanup(self) -> None:
         try:
-            self.es.delete_by_query(index=self.index, query={"match_all": {}})
+            self.es.delete_by_query(index=self.index, body={"query": {"match_all": {}}})
         except Exception as e:
             print(e)
