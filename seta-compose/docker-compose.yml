@@ -17,11 +17,9 @@ services:
       file: common.yml
       service: opensearch
     environment:
-      - cluster.name=opensearch-cluster
-      - node.name=opensearch
       - discovery.type=single-node
     volumes:
-      - opensearch-data1:/usr/share/opensearch/data
+      - opensearch-data:/usr/share/opensearch/data
     expose:
       - "9200"
       - "9600"
@@ -124,4 +122,4 @@ networks:
 volumes:
   seta-mongo:
   seta-models3:
-  opensearch-data1:
+  opensearch-data:

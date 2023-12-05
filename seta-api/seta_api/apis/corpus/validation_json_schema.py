@@ -101,7 +101,6 @@ query_post_schema = {"type": "object",
                          "date_range": {"type": "array", "items": {"type": "string"}},
                          "aggs": {"type": "array", "items": {"type": "string"}},
                          "search_type": {"type": "string"},
-                         "other": {"type": "object"},
-                         "vector_field": {"type": "string"}
+                         "other": {"type": "object"}
                      },
                      "additionalProperties": False}

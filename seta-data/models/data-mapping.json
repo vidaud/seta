@@ -55,7 +55,6 @@
                                                                        ,"name_in_path":{"type":"keyword"}
                                                                        ,"name":{"type":"keyword"} }}
       ,"taxonomy_path": {"type":"text", "analyzer": "custom_path_tree", "search_analyzer": "keyword", "fielddata": true}
-      ,"sbert_embedding_lucene":{"type": "knn_vector", "dimension": 768, "method": {"name": "hnsw", "space_type": "l2", "engine": "lucene", "parameters": {"ef_construction": 128, "m": 24}}}
-      ,"sbert_embedding_faiss":{"type": "knn_vector", "dimension": 768, "method": {"name": "hnsw", "space_type": "l2", "engine": "faiss"}}
+      ,"sbert_embedding":{"type": "knn_vector", "dimension": 768, "method": {"name": "hnsw", "space_type": "l2", "engine": "faiss"}}
       ,"other":{"type":"flat_object"}
 }}}

@@ -111,8 +111,7 @@ def insert_chunk(args, es, index):
     new_doc["document_id"] = is_field_in_doc(args, "document_id")
     new_doc["chunk_number"] = is_field_in_doc(args, "chunk_number")
     emb = get_embeddings(args)
-    new_doc["sbert_embedding_lucene"] = emb
-    new_doc["sbert_embedding_faiss"] = emb
+    new_doc["sbert_embedding"] = emb
     res = es.index(index=index, body=new_doc)
     return res["_id"]
 
@@ -154,21 +153,20 @@ def insert_doc(args, es, index):
     for emb in embs:
         if first:
             update_doc = {"doc": {"chunk_text": emb["text"], "document_id": doc_id, "chunk_number": emb["chunk"],
-                             "sbert_embedding_lucene": emb["vector"], "sbert_embedding_faiss": emb["vector"]}}
+                             "sbert_embedding": emb["vector"]}}
             es.update(index=index, id=doc_id, body=update_doc)
             first = False
         else:
             new_doc["chunk_text"] = emb["text"]
             new_doc["document_id"] = doc_id
             new_doc["chunk_number"] = emb["chunk"]
-            new_doc["sbert_embedding_lucene"] = emb["vector"]
-            new_doc["sbert_embedding_faiss"] = emb["vector"]
+            new_doc["sbert_embedding"] = emb["vector"]
             es.index(index=index, body=new_doc)
     return doc_id
 
 
 def corpus(term, n_docs, from_doc, sources, collection, reference, in_force, sort, taxonomy_path, semantic_sort_id_list,
-           emb_vector_list, author, date_range, aggs, search_type, other, current_app, vector_field):
+           emb_vector_list, author, date_range, aggs, search_type, other, current_app):
     if search_type is None or search_type not in current_app.config["SEARCH_TYPES"]:
         search_type = "CHUNK_SEARCH"
     if n_docs is None:
@@ -180,7 +178,7 @@ def corpus(term, n_docs, from_doc, sources, collection, reference, in_force, sor
 
     body = build_corpus_request(term, n_docs, from_doc, sources, collection, reference, in_force, sort, taxonomy_path,
                                 semantic_sort_id_list, emb_vector_list, author, date_range, aggs, search_type, other,
-                                current_app, vector_field)
+                                current_app)
     # import json
     # print(json.dumps(body))
     request = compose_request_for_msearch(body, current_app)

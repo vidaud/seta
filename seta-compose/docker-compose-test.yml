@@ -35,7 +35,7 @@ services:
       - "0.0.0.0:9200:9200"
       - "0.0.0.0:9300:9300"
     volumes:
-      - opensearch-data2-test:/usr/share/opensearch/data
+      - opensearch-data-test:/usr/share/opensearch/data
     networks:
       - seta-network-test
 
@@ -115,5 +115,5 @@ networks:
     driver: bridge
 
 volumes:
-  opensearch-data2-test:
+  opensearch-data-test:
   seta-models3-test:
