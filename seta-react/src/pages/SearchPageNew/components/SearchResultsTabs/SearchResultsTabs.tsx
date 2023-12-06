@@ -1,8 +1,6 @@
 import type { ReactElement } from 'react'
 import { Transition } from '@mantine/core'
 import { AiOutlineFileSearch } from 'react-icons/ai'
-import { BiNetworkChart } from 'react-icons/bi'
-import { RiCheckDoubleLine } from 'react-icons/ri'
 
 import Tabs, { Tab } from '~/components/Tabs'
 import { useStagedDocuments } from '~/pages/SearchPageNew/contexts/staged-documents-context'
@@ -48,14 +46,16 @@ const SearchResultsTabs = ({ children }: Props) => {
           color="orange"
         />
 
-        <Tab value={ResultsTab.CONCEPTS} label="Concepts" icon={<BiNetworkChart />} color="grape" />
+        {/* TODO: Re-enable these 👇🏻 as we start working on them */}
+
+        {/* <Tab value={ResultsTab.CONCEPTS} label="Concepts" icon={<BiNetworkChart />} color="grape" />
 
         <Tab
           value={ResultsTab.VALIDATION}
           label="Validation"
           icon={<RiCheckDoubleLine />}
           color="teal"
-        />
+        /> */}
 
         <StagedDocsPopup target={stagedDocsButton} />
       </div>

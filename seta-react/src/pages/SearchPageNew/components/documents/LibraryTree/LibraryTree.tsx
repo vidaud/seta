@@ -1,7 +1,5 @@
 import { Suspense, lazy, useEffect, useMemo, useRef, useState } from 'react'
 
-import UnderDevelopment from '~/components/UnderDevelopment'
-
 import type { ClassNameProp } from '~/types/children-props'
 import type { DataProps } from '~/types/data-props'
 import type { LibraryItem } from '~/types/library/library-item'
@@ -89,8 +87,6 @@ const LibraryTree = ({
 
   return (
     <div className={className}>
-      <UnderDevelopment mb="md" />
-
       <DocumentsTreeProvider
         {...options}
         rootNode={rootNode}
