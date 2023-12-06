@@ -21,6 +21,8 @@ import RequireAuth from './components/RequireAuth'
 import AdminRoutes from './routes/AdminRoutes'
 import UserRoutes from './routes/UserRoutes'
 
+import GenerateKeyInstructions from '../GenerateKeyInstructions/GenerateKeyInstructions'
+
 const ROOT_PATH = '/'
 const routes = createRoutesFromElements(
   <Route path={ROOT_PATH} element={<AppLayout />}>
@@ -45,6 +47,7 @@ const routes = createRoutesFromElements(
       }
     />
 
+    <Route path="key-generation-instructions" element={<GenerateKeyInstructions />} />
     <Route path="faqs" element={<FaqsPage />} />
     <Route path="contact" element={<ContactPage />} />
     <Route

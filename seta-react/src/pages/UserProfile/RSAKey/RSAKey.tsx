@@ -1,42 +1,43 @@
 import { useState } from 'react'
-import { Flex, Group, Paper, Text, Title } from '@mantine/core'
+import { Anchor, Flex, Group, Paper, Text, Title } from '@mantine/core'
 import { VscKey } from 'react-icons/vsc'
 
-import CreateRSAKey from './components/CreateRSAKey'
-import KeysList from './components/KeyList/KeyList'
+import AddKey from './components/AddKey/AddKey'
 
 const RSAKey = () => {
-  const [keyNR, setKeyNR] = useState<number>(0)
+  const [key, setKey] = useState()
 
-  const handleKeyNR = value => {
-    setKeyNR(value)
+  const handleKey = value => {
+    setKey(value)
   }
 
   return (
     <>
       <Title order={4}>RSA Key</Title>
       <Text fz="sm" color="gray.6">
-        {keyNR && keyNR > 0 ? (
-          'This is a list of keys associated with your account. Remove any keys that you do not recognize.'
+        {key ? (
+          'This is the key associated with your account. Remove the key if you do not recognize.'
         ) : (
           <>
-            There are no keys associated with your account.
+            There is no key associated with your account.
             <br /> Learn how to generate a key and add it to your account.
           </>
         )}
+      </Text>
+      <Text fz="sm" color="gray.6">
+        Check out our guide to{' '}
+        <Anchor href="/key-generation-instructions" target="_blank">
+          generating RSA keys
+        </Anchor>
       </Text>
       <Paper shadow="xs" mt="2%" withBorder>
         <Flex p="md">
           <Group w="85%" style={{ gap: '0.3rem' }}>
             <VscKey size="1rem" />
-            <Text>Your Keys</Text>
-          </Group>
-
-          <Group position="right">
-            <CreateRSAKey />
+            <Text>Public Key</Text>
           </Group>
         </Flex>
-        <KeysList onChange={handleKeyNR} />
+        <AddKey onChange={handleKey} />
       </Paper>
     </>
   )
