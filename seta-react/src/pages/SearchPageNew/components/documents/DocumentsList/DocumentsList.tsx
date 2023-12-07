@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef } from 'react'
 
 import { useEnrichLoading } from '~/pages/SearchPageNew/contexts/enrich-loading-context'
 
@@ -17,18 +17,27 @@ type Props = {
   terms: string[]
   embeddings?: EmbeddingInfo[]
   searchOptions?: DocumentsOptions
+  page: number
+  onPageChange: (page: number) => void
   onDocumentsChanged?: (documents: DocumentsResponse) => void
 }
 
-const DocumentsList = ({ query, terms, embeddings, searchOptions, onDocumentsChanged }: Props) => {
+const DocumentsList = ({
+  query,
+  terms,
+  embeddings,
+  searchOptions,
+  page,
+  onPageChange,
+  onDocumentsChanged
+}: Props) => {
   const documentsChangedRef = useRef(onDocumentsChanged)
   const errorNotificationShownRef = useRef(false)
 
-  const [page, setPage] = useState(1)
-
   const { loading: enrichLoading } = useEnrichLoading()
 
-  const { data, isLoading, error, refetch } = useDocuments(query, embeddings, {
+  // Using `isFetching` to also show the loading state when there is data in the cache
+  const { data, isFetching, error, refetch } = useDocuments(query, embeddings, {
     page,
     perPage: PER_PAGE,
     searchOptions
@@ -65,14 +74,14 @@ const DocumentsList = ({ query, terms, embeddings, searchOptions, onDocumentsCha
     },
     resetPageDependencies: [query, searchOptions],
     scrollOffset: 80,
-    onPageChange: setPage
+    onPageChange
   })
 
   return (
     <DocumentsListContent
       ref={scrollTargetRef}
       data={data}
-      isLoading={isLoading || enrichLoading}
+      isLoading={isFetching || enrichLoading}
       error={error}
       onTryAgain={refetch}
       queryTerms={terms}

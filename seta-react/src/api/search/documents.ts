@@ -105,6 +105,8 @@ export const useDocuments = (
     // The vectors in the query are identified by the `embeddingsKey` array
     // eslint-disable-next-line @tanstack/query/exhaustive-deps
     queryKey: queryKey.docs(query, embeddingsKey, page, perPage, searchOptions),
+    refetchOnWindowFocus: false,
+    staleTime: 5 * 60 * 1000, // 5 minutes
 
     queryFn: ({ signal }) =>
       getDocuments(

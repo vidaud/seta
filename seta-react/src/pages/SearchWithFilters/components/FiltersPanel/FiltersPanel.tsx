@@ -1,5 +1,14 @@
 import { useEffect, useRef, useState } from 'react'
-import { Container, Flex, Accordion, ScrollArea, rem, Text, Box } from '@mantine/core'
+import {
+  Container,
+  Flex,
+  Accordion,
+  ScrollArea,
+  rem,
+  Text,
+  Box,
+  LoadingOverlay
+} from '@mantine/core'
 
 import AccordionItem from '~/components/Accordion/AccordionItem'
 import AccordionPanel from '~/components/Accordion/AccordionPanel'
@@ -53,6 +62,9 @@ const FiltersPanel = ({ queryContract, onApplyFilter, onStatusChange }: Advanced
   useEffect(() => {
     statusChangeRef.current?.(status.status)
   }, [status])
+
+  // Show the loading overlay while the initial query is loading
+  const isLoading = !queryContract
 
   const handleApplyFilters = () => {
     const contract = buildFiltersContract({
@@ -160,6 +172,8 @@ const FiltersPanel = ({ queryContract, onApplyFilter, onStatusChange }: Advanced
   // TODO: Split this into multiple components
   return (
     <Flex direction="column" align="center" gap="xl">
+      <LoadingOverlay visible={isLoading} overlayBlur={2} />
+
       <ApplyFilters
         status={status}
         onApplyFilters={handleApplyFilters}
