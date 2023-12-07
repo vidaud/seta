@@ -23,6 +23,21 @@ const checkerDev = {
   }
 }
 
+// Common `define` configuration for both development and production
+/** @type {import('vite').UserConfig['define']} */
+const commonDefine = {
+  APP_VERSION: JSON.stringify(process.env.npm_package_version)
+}
+
+// `define` configuration for development
+/** @type {import('vite').UserConfig['define']} */
+const devDefine = {
+  // Some libraries use the global object, even though it doesn't exist in the browser.
+  // Alternatively, we could add `<script>window.global = window;</script>` to index.html.
+  // https://github.com/vitejs/vite/discussions/5912
+  global: {}
+}
+
 export default defineConfig(({ mode }) => {
   const isBuild = mode === 'production'
   const isDev = mode === 'development'
@@ -35,14 +50,11 @@ export default defineConfig(({ mode }) => {
 
       checker(isBuild ? checkerProd : checkerDev)
     ],
-    define: isDev
-      ? {
-          // Some libraries use the global object, even though it doesn't exist in the browser.
-          // Alternatively, we could add `<script>window.global = window;</script>` to index.html.
-          // https://github.com/vitejs/vite/discussions/5912
-          global: {}
-        }
-      : null,
+    define: {
+      ...commonDefine,
+      // Replace `undefined` with production specific configuration if needed
+      ...(isDev ? devDefine : undefined)
+    },
     server: {
       host: 'localhost',
       port: 3000,

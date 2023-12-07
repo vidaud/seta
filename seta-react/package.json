@@ -1,13 +1,17 @@
 {
   "name": "seta-app",
-  "version": "0.1.0",
+  "version": "2.0.5",
   "private": true,
   "scripts": {
     "preinstall": "npx only-allow pnpm",
+    "postversion": "node ./scripts/version-tag-commit.js",
     "start": "vite",
     "build": "tsc && vite build",
     "lint": "eslint --ext ts,tsx . --color",
     "lint:fix": "eslint --ext ts,tsx . --color --fix",
+    "bump": "pnpm version minor",
+    "bump:patch": "pnpm version patch",
+    "bump:major": "pnpm version major",
     "prepare": "cd .. && husky install ./seta-react/.husky",
     "docker:build": "cd ../seta-compose && docker compose -f docker-compose.yml -f docker-compose-dev.yml --env-file .env.dev build",
     "docker:build:prod": "cd ../seta-compose && docker compose build",

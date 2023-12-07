@@ -75,3 +75,7 @@ export const section: ThemedCSS = theme => css`
 export const withDivider: ThemedCSS = theme => css`
   border-top: 1px solid ${theme.colors.gray[0]};
 `
+
+export const version = css`
+  opacity: 0.4;
+`
