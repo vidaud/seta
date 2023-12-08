@@ -20,10 +20,12 @@ const uploadsStorage = storage<unknown[]>(STORAGE_KEY.UPLOADS)
 type Props = {
   query: SearchState
   searchOptions: DocumentsOptions | undefined
+  page: number
+  onPageChange: (page: number) => void
   onDocumentsChanged?: (docs: DocumentsResponse) => void
 }
 
-const DocumentsTab = ({ query, searchOptions, onDocumentsChanged }: Props) => {
+const DocumentsTab = ({ query, searchOptions, page, onPageChange, onDocumentsChanged }: Props) => {
   // If there is a saved search, prepare the loading state
   const initialLoading = useMemo(
     () => !query && (!!searchStorage.read() || !!uploadsStorage.read()?.length),
@@ -36,6 +38,8 @@ const DocumentsTab = ({ query, searchOptions, onDocumentsChanged }: Props) => {
       terms={query.terms}
       embeddings={query.embeddings}
       searchOptions={searchOptions}
+      page={page}
+      onPageChange={onPageChange}
       onDocumentsChanged={onDocumentsChanged}
     />
   )
