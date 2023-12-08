@@ -52,6 +52,7 @@ services:
       - "seta-ui"
       - "seta-ui-react"
       - "seta-doc"
+      - "seta-admin"
     networks:
       - seta-network
 
@@ -113,6 +114,18 @@ services:
       - "seta-mongo"
     networks:
       - seta-network
+
+  seta-admin:
+    container_name: admin
+    extends:
+      file: common.yml
+      service: admin
+    volumes:
+      - seta-models3:/home/seta/models
+    networks:
+      - seta-network
+    depends_on:
+      - "seta-opensearch"
 
 networks:
   seta-network:

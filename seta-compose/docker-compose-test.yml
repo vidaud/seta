@@ -68,6 +68,7 @@ services:
       - "seta-auth-test"
       - "seta-api-test"
       - "seta-ui-test"
+      - "seta-admin-test"
     networks:
       - seta-network-test
 
@@ -108,6 +109,19 @@ services:
       - seta-network-test
     depends_on:
       - "seta-mongo-test"
+
+  seta-admin-test:
+    restart: "no"
+    container_name: admin-test
+    extends:
+      file: common.yml
+      service: admin
+    volumes:
+      - seta-models3-test:/home/seta/models
+    networks:
+      - seta-network-test
+    depends_on:
+      - "seta-opensearch-test"
 
 networks:
   seta-network-test:

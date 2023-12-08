@@ -1,0 +1,8 @@
+fastapi==0.104.1
+uvicorn==0.24.0.post1
+configparser==6.0.0
+pydantic==2.5.2
+opensearch-py[async]==2.4.2
+python-interface==1.6.1
+requests==2.31.0
+aiofiles==23.2.1
