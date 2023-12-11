@@ -11,7 +11,7 @@ Seta-ui is using pytest for functional and unit testing.
 Create a file with name *test.conf* for [configparser](https://docs.python.org/3.10/library/configparser.html) that looks like this:
 
 ```
-[DEFAULT]
+[TEST]
 # same secret as in seta-compose/.env.test
 API_SECRET_KEY = 
 
