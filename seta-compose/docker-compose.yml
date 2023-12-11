@@ -36,7 +36,7 @@ services:
     networks:
       - seta-network
     depends_on:
-      - "seta-mongo"
+      - "seta-auth"
       - "seta-opensearch"
 
   seta-nginx:
@@ -64,7 +64,8 @@ services:
     build:
        dockerfile: seta-ui/dockerfiles/Dockerfile-ui
     depends_on:
-      - "seta-api"
+      - "seta-auth"
+      - "seta-mongo"
     networks:
       - seta-network
 
