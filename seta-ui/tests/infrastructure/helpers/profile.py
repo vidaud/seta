@@ -33,7 +33,7 @@ def get_user_info(client: FlaskClient, access_token: str):
 def get_rsa_key(client: FlaskClient, access_token: str):
     """Public rsa for authenticated user."""
 
-    url = f"{API_V1}/rsa-keys"
+    url = f"{API_V1}/rsa-key"
 
     return client.get(
         url, content_type="application/json", headers=auth_headers(access_token)
@@ -43,7 +43,7 @@ def get_rsa_key(client: FlaskClient, access_token: str):
 def create_rsa_key(client: FlaskClient, access_token: str):
     """Create rsa for authenticated user."""
 
-    url = f"{API_V1}/rsa-keys"
+    url = f"{API_V1}/rsa-key"
 
     return client.post(
         url,
@@ -55,7 +55,7 @@ def create_rsa_key(client: FlaskClient, access_token: str):
 def delete_rsa_key(client: FlaskClient, access_token: str):
     """Delete rsa for authenticated user."""
 
-    url = f"{API_V1}/rsa-keys"
+    url = f"{API_V1}/rsa-key"
 
     return client.delete(
         url,

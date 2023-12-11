@@ -1,5 +1,15 @@
-import pytest
+# pylint: disable=missing-function-docstring,redefined-outer-name
+"""
+    For testing in docker run: 
+    pytest -s tests/ --es_host="seta-es-test:9200" 
+                    --db_host="seta-mongo-test" 
+                    --dp_port=27017 
+                    --db_name="seta-test" 
+                    --root_url="seta-auth-test:8080"
+"""
+
 import os
+import pytest
 
 from Crypto.PublicKey import RSA
 
@@ -8,11 +18,6 @@ from seta_api.factory import create_app
 
 from tests.infrastructure.init.mongodb import DbTestSetaApi, load_users_data
 from tests.infrastructure.init.es import SetaES
-
-
-"""
-    For testing in docker run: pytest -s tests/ --es_host="seta-es-test:9200" --db_host="seta-mongo-test" --dp_port=27017 --db_name="seta-test" --auth_root="seta-auth-test:8080"
-"""
 
 
 def pytest_addoption(parser):
@@ -30,7 +35,7 @@ def pytest_addoption(parser):
         "--db_name", action="store", default="seta-test", help="database name"
     )
     parser.addoption(
-        "--auth_root", action="store", default="localhost:8080", help="seta-auth url"
+        "--root_url", action="store", default="localhost:8080", help="test root url"
     )
 
 
@@ -55,8 +60,8 @@ def db_name(request):
 
 
 @pytest.fixture(scope="session")
-def auth_root(request):
-    return request.config.getoption("--auth_root")
+def root_url(request):
+    return request.config.getoption("--root_url")
 
 
 @pytest.fixture(scope="session", autouse=True)
@@ -114,14 +119,17 @@ def db(db_host, db_port, db_name, user_key_pairs):
 
 
 @pytest.fixture(scope="module")
-def app(auth_root):
+def app(root_url):
     config = TestConfig()
 
-    config.JWT_TOKEN_INFO_URL = f"http://{auth_root}/authorization/v1/token_info"
+    # pylint: disable-next=invalid-name
+    config.JWT_TOKEN_INFO_URL = f"http://{root_url}/authorization/v1/token_info"
+    # pylint: disable-next=invalid-name
+    config.CATALOGUE_API_ROOT_URL = f"http://{root_url}/seta-ui/api/v1/catalogue/"
 
     app = create_app(config)
     app.testing = True
-    app.config["JWT_TOKEN_AUTH_URL"] = f"http://{auth_root}/authentication/v1/token"
+    app.config["JWT_TOKEN_AUTH_URL"] = f"http://{root_url}/authentication/v1/token"
 
     with app.app_context():
         yield app
