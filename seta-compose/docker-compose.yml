@@ -37,7 +37,7 @@ services:
       - seta-network
     depends_on:
       - "seta-auth"
-      - "seta-opensearch"
+      - "seta-opensearch"      
 
   seta-nginx:
     container_name: nginx
@@ -49,10 +49,10 @@ services:
     depends_on:
       - "seta-auth"
       - "seta-api"
+      - "seta-nlp"
       - "seta-ui"
       - "seta-ui-react"
       - "seta-doc"
-      - "seta-admin"
     networks:
       - seta-network
 
@@ -66,6 +66,7 @@ services:
     depends_on:
       - "seta-auth"
       - "seta-mongo"
+      - "seta-admin"
     networks:
       - seta-network
 
@@ -127,6 +128,14 @@ services:
       - seta-network
     depends_on:
       - "seta-opensearch"
+
+  seta-nlp:
+    container_name: nlp
+    extends:
+      file: common.yml
+      service: nlp
+    networks:
+      - seta-network
 
 networks:
   seta-network:

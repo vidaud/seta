@@ -1,5 +1,4 @@
 import logging
-from venv import logger
 from fastapi import APIRouter, Depends, HTTPException, status
 
 from admin.models.index import Index
