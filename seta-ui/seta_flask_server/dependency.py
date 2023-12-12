@@ -49,6 +49,7 @@ class MongoDbClientModule(injector.Module):
         )
 
         binder.bind(interfaces.IDataSourcesBroker, to=implementation.DataSourcesBroker)
+        binder.bind(interfaces.IAnnotationsBroker, to=implementation.AnnotationsBroker)
         binder.bind(
             interfaces.IUserProfileUnsearchables,
             to=implementation.UserProfileUnsearchables,
