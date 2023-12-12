@@ -23,6 +23,7 @@ const AccordionItem = styled(
   return {
     backgroundColor: theme.colors.gray[0],
     borderColor: theme.colors.gray[3],
+    overflow: 'hidden',
 
     '.seta-Accordion-control': {
       position: 'relative',

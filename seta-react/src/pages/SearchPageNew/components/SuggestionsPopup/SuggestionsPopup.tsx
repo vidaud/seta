@@ -47,7 +47,7 @@ const SuggestionsPopup = ({ opened, enrichQuery, onOpenChange, onEnrichToggle }:
   const enrichType =
     termsView === TermsView.TermsClusters ? EnrichType.Ontology : EnrichType.Similar
 
-  const allowSearching = (inputValue?.trim().length ?? 0) > 1 || !!documents.length
+  const allowSearching = true //(inputValue?.trim().length ?? 0) > 1 || !!documents.length
 
   // Delay the token reset to avoid it disappearing before the animation ends when the popup is closing
   useEffect(() => {

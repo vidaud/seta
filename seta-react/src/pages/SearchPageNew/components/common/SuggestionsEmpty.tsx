@@ -2,9 +2,10 @@ import type { DefaultMantineColor, MantineStyleSystemProps } from '@mantine/core
 import { Box, Flex, Text } from '@mantine/core'
 import { BiInfoCircle } from 'react-icons/bi'
 
+import type { SizeProp } from '~/types/size'
+import { IconSize } from '~/types/size'
+
 import * as S from './styles'
-import type { SizeProp } from './types'
-import { IconSize } from './types'
 
 type Props = {
   message?: string

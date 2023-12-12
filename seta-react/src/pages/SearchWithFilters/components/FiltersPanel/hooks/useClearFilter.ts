@@ -1,11 +1,18 @@
 /* eslint-disable complexity */
-import { itemsReducer } from './items-reducer'
 
-import type { FilterStatusInfo } from '../../types/filter-info'
-import type { ClearAction, RangeValue, SelectionKeys } from '../../types/filters'
-import { ClearCategory, ClearType, TextChunkValues } from '../../types/filters'
-import type { OtherItem } from '../../types/other-filter'
-import { OtherItemStatus } from '../../types/other-filter'
+import type { FilterStatusInfo } from '~/pages/SearchWithFilters/types/filter-info'
+import type {
+  ClearAction,
+  RangeValue,
+  SelectionKeys
+} from '~/pages/SearchWithFilters/types/filters'
+import { ClearCategory, ClearType, TextChunkValues } from '~/pages/SearchWithFilters/types/filters'
+import type { OtherItem } from '~/pages/SearchWithFilters/types/other-filter'
+import { OtherItemStatus } from '~/pages/SearchWithFilters/types/other-filter'
+
+import type { Label } from '~/types/filters/label'
+
+import { itemsReducer } from '../reducers/items-reducer'
 
 type Props = {
   status: FilterStatusInfo
@@ -18,7 +25,8 @@ type Props = {
   handleEnableDateChanged?(value: boolean): void
   handleSourceSelectionChange?(value: SelectionKeys | null): void
   handleTaxonomySelectionChange?(value: SelectionKeys | null): void
-  handleItemChange?(type, item): void
+  handleSelectedLabelsChange?(value: Label[]): void
+  handleItemChange?(type: string, item: OtherItem | undefined): void
   handleRangeChange?(value: RangeValue | null): void
 }
 
@@ -33,6 +41,7 @@ const useClearFilter = ({
   handleTextChunkChange,
   handleSourceSelectionChange,
   handleTaxonomySelectionChange,
+  handleSelectedLabelsChange,
   handleItemChange,
   handleRangeChange
 }: Props) => {
@@ -45,6 +54,10 @@ const useClearFilter = ({
     handleSourceSelectionChange?.(null)
     //reset taxonomies
     handleTaxonomySelectionChange?.(null)
+
+    //reset labels
+    handleSelectedLabelsChange?.([])
+
     //reset other
     otherItems
       ?.filter(i => i.status !== OtherItemStatus.DELETED)
@@ -177,6 +190,30 @@ const useClearFilter = ({
     handleTaxonomySelectionChange?.(selectionKeys)
   }
 
+  const clearModifiedLabels = (): void => {
+    if (!status.appliedFilter?.labels) {
+      handleSelectedLabelsChange?.([])
+
+      return
+    }
+
+    handleSelectedLabelsChange?.(status.appliedFilter?.labels)
+  }
+
+  const clearAppliedLabels = (): void => {
+    if (!status.appliedFilter?.labels || !status.appliedFilter?.labels?.length) {
+      return
+    }
+
+    const newSelectedLabels: Label[] = []
+
+    for (const label of status.appliedFilter?.labels) {
+      newSelectedLabels.push({ ...label })
+    }
+
+    handleSelectedLabelsChange?.(newSelectedLabels)
+  }
+
   const clearOther = (type: string) => {
     dispatchOtherItems?.({ type: type })
     //get items for the next render
@@ -225,6 +262,7 @@ const useClearFilter = ({
 
         clearModifiedSources()
         clearModifiedTaxonomies()
+        clearModifiedLabels()
 
         clearOther('clear-modified')
 
@@ -239,6 +277,10 @@ const useClearFilter = ({
 
           case ClearCategory.TAXONOMY:
             clearAppliedTaxonomies()
+            break
+
+          case ClearCategory.LABELS:
+            clearAppliedLabels()
             break
 
           case ClearCategory.OTHER:
@@ -261,6 +303,10 @@ const useClearFilter = ({
 
           case ClearCategory.TAXONOMY:
             clearModifiedTaxonomies()
+            break
+
+          case ClearCategory.LABELS:
+            clearModifiedLabels()
             break
 
           case ClearCategory.OTHER:

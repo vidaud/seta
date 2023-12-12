@@ -6,13 +6,13 @@ import type TreeNode from 'primereact/treenode'
 import * as S from '../../custom/tree-styles'
 import type { SelectionKeys } from '../../types/filters'
 
-type Props = {
+export type DataSourceFilterProps = {
   data?: TreeNode[]
   selectedKeys?: SelectionKeys | null
   onSelectionChange?(keys: SelectionKeys): void
 }
 
-const DataSourceFilter = ({ data, selectedKeys, onSelectionChange }: Props) => {
+const DataSourceFilter = ({ data, selectedKeys, onSelectionChange }: DataSourceFilterProps) => {
   const onSelectionChangeHandler = (e: TreeSelectionParams) => {
     if (onSelectionChange !== undefined) {
       const keys = e.value as SelectionKeys

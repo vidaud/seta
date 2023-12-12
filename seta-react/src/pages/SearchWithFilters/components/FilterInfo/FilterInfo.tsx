@@ -1,3 +1,4 @@
+import { useMemo } from 'react'
 import { ScrollArea, Container, Group, Button, Divider, rem } from '@mantine/core'
 import { IconClearAll } from '@tabler/icons-react'
 
@@ -22,13 +23,22 @@ const FilterInfo = ({ status, onClear }: Props) => {
     ? status?.currentFilter?.chunkValue
     : status?.appliedFilter?.chunkValue
 
-  const { sourceApplied, sourceDeleted, sourceAdded } = getSourceLists(status)
-  const { taxonomyApplied, taxonomyDeleted, taxonomyAdded } = getTaxonomyLists(status)
-  const { otherApplied, otherDeleted, otherAdded } = getOtherLists(status)
+  const { sourceApplied, sourceDeleted, sourceAdded } = useMemo(
+    () => getSourceLists(status),
+    [status]
+  )
+
+  const { taxonomyApplied, taxonomyDeleted, taxonomyAdded } = useMemo(
+    () => getTaxonomyLists(status),
+    [status]
+  )
+
+  const { otherApplied, otherDeleted, otherAdded } = useMemo(() => getOtherLists(status), [status])
 
   const clearAllDisabled =
     status?.prevStatus === FilterStatus.UNKNOWN ||
     (status?.prevStatus === FilterStatus.APPLIED && status?.applied() === 0)
+
   const clearModifiedDisabled = status?.modified() === 0
 
   return (

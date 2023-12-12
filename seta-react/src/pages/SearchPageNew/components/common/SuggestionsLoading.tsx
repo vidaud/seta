@@ -1,7 +1,7 @@
 import type { DefaultMantineColor, LoaderProps, MantineStyleSystemProps } from '@mantine/core'
 import { Flex, Loader } from '@mantine/core'
 
-import type { SizeProp } from './types'
+import type { SizeProp } from '~/types/size'
 
 type Props = {
   color?: DefaultMantineColor

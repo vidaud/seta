@@ -1,14 +1,18 @@
 import { useState, useReducer, useRef } from 'react'
 
-import { itemsReducer } from './items-reducer'
-import { statusReducer } from './status-reducer'
-import { buildFilterInfo } from './utils'
+import { parseQueryContract } from '~/pages/SearchWithFilters/custom/map-filters'
+import type { QueryAggregationContract } from '~/pages/SearchWithFilters/types/contracts'
+import {
+  FilterStatus,
+  FilterStatusInfo,
+  ViewFilterInfo
+} from '~/pages/SearchWithFilters/types/filter-info'
+import type { RangeValue, SelectionKeys } from '~/pages/SearchWithFilters/types/filters'
+import { TextChunkValues } from '~/pages/SearchWithFilters/types/filters'
 
-import { parseQueryContract } from '../../custom/map-filters'
-import type { QueryAggregationContract } from '../../types/contracts'
-import { FilterStatus, FilterStatusInfo, ViewFilterInfo } from '../../types/filter-info'
-import type { RangeValue, SelectionKeys } from '../../types/filters'
-import { TextChunkValues } from '../../types/filters'
+import { itemsReducer } from '../reducers/items-reducer'
+import { statusReducer } from '../reducers/status-reducer'
+import { buildFilterInfo } from '../utils/buildFilterInfo'
 
 const useFilter = (
   queryContract?: QueryAggregationContract | null,

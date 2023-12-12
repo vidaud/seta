@@ -1,3 +1,5 @@
+import type { Label } from '~/types/filters/label'
+
 import { TextChunkValues, type RangeValue } from './filters'
 import type { OtherItem } from './other-filter'
 
@@ -20,6 +22,7 @@ export class ViewFilterInfo {
   sourceValues?: NodeInfo[] | null
   taxonomyValues?: NodeInfo[] | null
   otherItems?: OtherItem[]
+  labels?: Label[]
 
   public copy(): ViewFilterInfo {
     const cpy = new ViewFilterInfo()
@@ -39,6 +42,10 @@ export class ViewFilterInfo {
       return { ...i }
     })
 
+    cpy.labels = this.labels?.map(l => {
+      return { ...l }
+    })
+
     return cpy
   }
 }
@@ -49,6 +56,7 @@ export class FilterStatusInfo {
   sourceModified?: number
   taxonomyModified?: number
   otherModified?: number
+  labelsModified?: number
 
   appliedFilter?: ViewFilterInfo
   currentFilter?: ViewFilterInfo
@@ -62,7 +70,8 @@ export class FilterStatusInfo {
       (this.rangeModified ?? 0) +
       (this.sourceModified ?? 0) +
       (this.taxonomyModified ?? 0) +
-      (this.otherModified ?? 0)
+      (this.otherModified ?? 0) +
+      (this.labelsModified ?? 0)
     )
   }
 
@@ -97,6 +106,10 @@ export class FilterStatusInfo {
       applied += this.appliedFilter.otherItems.length
     }
 
+    if (this.appliedFilter.labels?.length) {
+      applied += this.appliedFilter.labels.length
+    }
+
     return applied
   }
 
@@ -108,6 +121,7 @@ export class FilterStatusInfo {
     cpy.sourceModified = this.sourceModified
     cpy.taxonomyModified = this.taxonomyModified
     cpy.otherModified = this.otherModified
+    cpy.labelsModified = this.labelsModified
 
     cpy.appliedFilter = this.appliedFilter?.copy()
     cpy.currentFilter = this.currentFilter?.copy()

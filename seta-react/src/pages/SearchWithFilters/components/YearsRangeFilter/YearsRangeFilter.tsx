@@ -4,7 +4,7 @@ import { computeSelectedYears, getProps } from './utils'
 
 import type { FilterData } from '../../types/filter-data'
 import type { SelectionKeys } from '../../types/filters'
-import TinyChart from '../FiltersPanel/TinyChart'
+import TinyChart from '../TinyChart'
 
 type Props = {
   value?: [number, number] | null
