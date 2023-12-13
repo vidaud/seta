@@ -149,8 +149,8 @@ class StatsTypeConstants:
 
 
 class AuthorizedArea:
-    Resources = "resources"
-    List = [Resources]
+    DataSources = "data-sources"
+    List = [DataSources]
 
 
 class UserType:

@@ -4,6 +4,8 @@ from seta_flask_server.infrastructure.dto import datetime_format
 
 from seta_flask_server.infrastructure.constants import DataSourceStatusConstants
 
+from seta_flask_server.repository.models import DataSourceScopeEnum
+
 user_info_model = Model(
     "User Info",
     {
@@ -31,6 +33,40 @@ status_field = fields.String(
     ],
 )
 
+data_source_scope_model = Model(
+    "DataSourceScope",
+    {
+        "user": fields.Nested(
+            model=user_info_model, description="User", skip_none=True
+        ),
+        "scope": fields.String(
+            description="Scope", enum=[DataSourceScopeEnum.DATA_OWNER]
+        ),
+    },
+)
+
+update_data_source_scope_model = Model(
+    "DataSourceScopeUpdate",
+    {
+        "user_id": fields.String(description="User identifier"),
+        "scope": fields.String(
+            description="Scope", enum=[DataSourceScopeEnum.DATA_OWNER]
+        ),
+    },
+)
+
+replace_data_source_scopes_model = Model(
+    "ReplaceDataSourceScopes",
+    {
+        "scopes": fields.List(
+            fields.Nested(model=update_data_source_scope_model),
+            description="Scopes",
+            skip_none=True,
+        ),
+    },
+)
+
+
 data_source_model = Model(
     "DataSource",
     {
@@ -52,15 +88,27 @@ view_data_source_model = data_source_model.clone(
             model=user_info_model, description="Creator", skip_none=True
         ),
         "status": status_field,
+        "index": fields.String(description="Search index name", attribute="index_name"),
         "created": datetime_format.DateISOFormat(
             "Creation date in SeTA system.", attribute="created_at"
+        ),
+        "scopes": fields.List(
+            fields.Nested(model=data_source_scope_model),
+            description="Scopes",
+            skip_none=True,
         ),
     },
 )
 
 new_data_source_model = data_source_model.clone(
     "DataSourceNew",
-    {"id": fields.String(description="Identifier.")},
+    {
+        "id": fields.String(description="Identifier."),
+        "index": fields.String(
+            description="Index name. If this not already exists, it will be created in the Search engine.",
+            attribute="index_name",
+        ),
+    },
 )
 
 update_data_source_model = data_source_model.clone(
@@ -68,12 +116,32 @@ update_data_source_model = data_source_model.clone(
     {"status": status_field},
 )
 
+view_search_index_model = Model(
+    "SearchIndexView",
+    {
+        "name": fields.String("Index name.", attribute="index_name"),
+        "created": datetime_format.DateISOFormat(
+            "Creation date in SeTA system.", attribute="created_at"
+        ),
+    },
+)
+
+new_search_index_model = Model(
+    "SearchIndexNew",
+    {"name": fields.String("Index name.", attribute="index_name")},
+)
+
 ns_models = {
     contact_model.name: contact_model,
     user_info_model.name: user_info_model,
-    update_data_source_model.name: update_data_source_model,
+    data_source_scope_model.name: data_source_scope_model,
+    update_data_source_scope_model.name: update_data_source_scope_model,
+    replace_data_source_scopes_model.name: replace_data_source_scopes_model,
     view_data_source_model.name: view_data_source_model,
     new_data_source_model.name: new_data_source_model,
+    update_data_source_model.name: update_data_source_model,
+    view_search_index_model.name: view_search_index_model,
+    new_search_index_model.name: new_search_index_model,
     response_dto.error_fields_model.name: response_dto.error_fields_model,
     response_dto.error_model.name: response_dto.error_model,
     response_dto.response_message_model.name: response_dto.response_message_model,

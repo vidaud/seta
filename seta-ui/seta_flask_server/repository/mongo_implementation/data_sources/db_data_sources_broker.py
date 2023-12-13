@@ -25,7 +25,7 @@ class DataSourcesBroker(implements(IDataSourcesBroker)):
     def update(self, model: DataSourceModel) -> None:
         model.modified_at = datetime.now(tz=pytz.utc)
 
-        json = model.to_dict(exclude={"created_at", "creator_id"})
+        json = model.to_dict(exclude={"created_at", "creator_id", "index_name"})
         set_json = {"$set": json}
 
         self.collection.update_one({"data_source_id": model.data_source_id}, set_json)
@@ -82,6 +82,7 @@ def _data_source_from_db_json(json_dict: dict) -> DataSourceModel:
         data_source_id=json_dict["data_source_id"],
         title=json_dict["title"],
         description=json_dict["description"],
+        index_name=json_dict["index_name"],
         organisation=json_dict.get("organisation"),
         theme=json_dict.get("theme"),
         status=json_dict["status"],
