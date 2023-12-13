@@ -39,6 +39,19 @@ services:
       - "seta-mongo"
       - "seta-opensearch"
 
+  seta-search:
+    container_name: search
+    extends:
+      file: common.yml
+      service: search
+    build:
+      dockerfile: seta-search/Dockerfile
+    networks:
+      - seta-network
+    depends_on:
+      - "seta-mongo"
+      - "seta-opensearch"
+
   seta-nginx:
     container_name: nginx
     extends:

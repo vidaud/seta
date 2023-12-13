@@ -15,6 +15,17 @@ services:
       - ../seta-api:/home/seta
       - ../seta-config:/etc/seta
       - /home/seta/tika
+    environment:
+      - logger.level=DEBUG
+
+  seta-search:
+    build:
+      dockerfile: seta-search/Dockerfile-dev
+    volumes:
+      - ../seta-search:/home/seta
+      - ../seta-config:/etc/seta
+    environment:
+      - logger.level=DEBUG
 
   seta-nginx:
     build:

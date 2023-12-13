@@ -1,0 +1,7 @@
+.dockerignore
+Dockerfile*
+__pychache__
+.pytest_cache
+.gitignore
+changelog.txt
+README.md
