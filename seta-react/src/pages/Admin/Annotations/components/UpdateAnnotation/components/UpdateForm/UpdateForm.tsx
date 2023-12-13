@@ -1,5 +1,13 @@
 import { useEffect, useState } from 'react'
-import { TextInput, Group, createStyles, Button, ActionIcon, ColorInput } from '@mantine/core'
+import {
+  TextInput,
+  Group,
+  createStyles,
+  Button,
+  ActionIcon,
+  ColorInput,
+  Select
+} from '@mantine/core'
 import { IconRefresh } from '@tabler/icons-react'
 
 import { AnnotationFormProvider, useAnnotation } from '~/pages/Admin/Annotations/annotation-context'
@@ -19,7 +27,7 @@ const useStyles = createStyles({
 
 const randomColor = () => `#${Math.floor(Math.random() * 16777215).toString(16)}`
 
-const UpdateForm = ({ annotation, close }) => {
+const UpdateForm = ({ annotation, close, categories }) => {
   const { classes, cx } = useStyles()
   const setUpdateAnnotationMutation = useUpdateAnnotation()
   const [color, onChange] = useState(annotation.color_code)
@@ -44,10 +52,9 @@ const UpdateForm = ({ annotation, close }) => {
     }
     // adding form to useEffect will cause infinite loop call
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [annotation])
+  }, [annotation, color])
 
   const handleSubmit = (values: AnnotationResponse) => {
-    console.log(values)
     const updatedValues = {
       id: annotation.id,
       label: values.label,
@@ -75,22 +82,23 @@ const UpdateForm = ({ annotation, close }) => {
       <AnnotationFormProvider form={form}>
         <form className={cx(classes.form)} onSubmit={form.onSubmit(handleSubmit)}>
           <TextInput
-            label="Label"
+            label="Annotation"
             {...form.getInputProps('label')}
-            placeholder="Enter annotation label ..."
+            placeholder="Enter annotation name ..."
             className={cx(classes.input)}
             withAsterisk
           />
-          <TextInput
+          <Select
+            data={categories}
             label="Category"
             {...form.getInputProps('category_id')}
-            placeholder="Enter category ..."
             className={cx(classes.input)}
             withAsterisk
           />
           <ColorInput
             placeholder="Pick color"
-            label="Your favorite color"
+            label="Color"
+            {...form.getInputProps('color_code')}
             value={color}
             onChange={onChange}
             rightSection={

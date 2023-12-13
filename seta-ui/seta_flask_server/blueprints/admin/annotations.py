@@ -78,7 +78,7 @@ class AnnotationsResource(Resource):
                     category_id=annotation.category_id
                 )
                 if category is not None:
-                    annotation.category_id = category
+                    annotation.category_id = category.category_id
         
 
         print(annotations)

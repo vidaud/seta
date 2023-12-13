@@ -24,7 +24,7 @@ class AnnotationCategoriesBroker(implements(IAnnotationCategoriesBroker)):
         return None
 
     def get_all(self, active_only: bool = True) -> list[AnnotationCategoryModel]:
-        query_filter = {"annotation_category_id": {"$exists": True}}
+        query_filter = {"category_id": {"$exists": True}}
 
         annotation_categories = self.collection.find(query_filter)
         return [_annotations_category_from_db_json(ds) for ds in annotation_categories]

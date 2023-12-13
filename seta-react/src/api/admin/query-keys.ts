@@ -4,4 +4,6 @@ export class AdminQueryKeys {
   public static readonly SetaUsers = ['seta-users']
 
   public static readonly Annotations = ['annotations']
+
+  public static readonly AnnotationCategories = ['annotation-categories']
 }

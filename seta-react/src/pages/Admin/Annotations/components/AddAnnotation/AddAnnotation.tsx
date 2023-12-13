@@ -1,26 +1,18 @@
-import { Group, Button, useMantineTheme, Modal, Divider, createStyles } from '@mantine/core'
+import { Group, Button, useMantineTheme, Modal, Divider } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 import { IconPlus } from '@tabler/icons-react'
+
+import { useAnnotationCategories } from '~/api/admin/annotation_categories'
 
 import CreateForm from './components/CreateForm'
 import * as S from './styles'
 
-const useStyles = createStyles({
-  button: {
-    border: 'none',
-    width: '10rem'
-  },
-  notification: {
-    position: 'absolute',
-    top: 10,
-    right: 0
-  }
-})
-
 const AddAnnotation = () => {
-  const { classes } = useStyles()
   const [opened, { open, close }] = useDisclosure(false)
   const theme = useMantineTheme()
+  const { data } = useAnnotationCategories()
+
+  const rows = data?.map(item => ({ value: item.category_id, label: item.category_name }))
 
   return (
     <>
@@ -35,11 +27,10 @@ const AddAnnotation = () => {
         }}
       >
         <Divider my="xs" label="Add New Annotation" labelPosition="center" />
-        <CreateForm close={close} />
+        <CreateForm close={close} categories={rows} />
       </Modal>
-      <Group id="new_annotation" position="right" css={S.root} variant="outline">
+      <Group id="new_annotation" css={S.root} variant="outline">
         <Button
-          className={classes.button}
           size="sm"
           color="gray"
           onClick={open}

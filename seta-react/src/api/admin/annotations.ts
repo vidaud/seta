@@ -24,7 +24,7 @@ const getAnnotations = async (): Promise<AnnotationResponse[]> => {
 }
 
 export const useAnnotations = () =>
-  useQuery({ queryKey: cacheKey(), queryFn: () => getAnnotations() })
+  useQuery({ queryKey: AdminQueryKeys.Annotations, queryFn: () => getAnnotations() })
 
 export const setCreateAnnotation = async (request: AnnotationResponse) => {
   return await api.post(ANNOTATIONS(), request, apiConfig)

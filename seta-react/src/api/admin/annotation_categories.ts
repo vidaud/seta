@@ -4,6 +4,8 @@ import type { AxiosRequestConfig } from 'axios'
 import api from '~/api/api'
 import { environment } from '~/environments/environment'
 
+import { AdminQueryKeys } from './query-keys'
+
 import type { AnnotationCategoryResponse } from '../types/annotation-categories-types'
 
 export const cacheKey = () => ['annotations']
@@ -21,4 +23,7 @@ const getAnnotationCategories = async (): Promise<AnnotationCategoryResponse[]> 
 }
 
 export const useAnnotationCategories = () =>
-  useQuery({ queryKey: cacheKey(), queryFn: () => getAnnotationCategories() })
+  useQuery({
+    queryKey: AdminQueryKeys.AnnotationCategories,
+    queryFn: () => getAnnotationCategories()
+  })

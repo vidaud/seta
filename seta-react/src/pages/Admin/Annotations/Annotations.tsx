@@ -1,4 +1,4 @@
-import { Group, Table } from '@mantine/core'
+import { Button, Group, Paper, Table, Tooltip } from '@mantine/core'
 
 import { SuggestionsEmpty, SuggestionsError } from '~/pages/SearchPageNew/components/common'
 
@@ -29,7 +29,11 @@ const Annotations = () => {
     <tr key={item.label}>
       <td>{item.label}</td>
       <td>{item.category?.category_name ? item.category?.category_name : '-'}</td>
-      <td>{item.color_code}</td>
+      <td>
+        <Tooltip label={item.color_code}>
+          <Button sx={{ backgroundColor: String(item.color_code) }} />
+        </Tooltip>
+      </td>
       <td>
         <Group>
           <UpdateAnnotation annotation={item} />
@@ -40,19 +44,21 @@ const Annotations = () => {
   ))
 
   return (
-    <Table>
-      <thead>
-        <tr>
-          <th>Annotation</th>
-          <th>Category</th>
-          <th>Color</th>
-          <th>
-            <AddAnnotation />
-          </th>
-        </tr>
-      </thead>
-      <tbody>{rows}</tbody>
-    </Table>
+    <Paper p="sm" w="100%">
+      <Table>
+        <thead>
+          <tr>
+            <th>Annotation</th>
+            <th>Category</th>
+            <th>Color</th>
+            <th style={{ width: '11rem' }}>
+              <AddAnnotation />
+            </th>
+          </tr>
+        </thead>
+        <tbody>{rows}</tbody>
+      </Table>
+    </Paper>
   )
 }
 

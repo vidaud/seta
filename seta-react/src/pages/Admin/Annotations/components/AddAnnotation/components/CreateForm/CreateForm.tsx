@@ -1,5 +1,13 @@
 import { useState } from 'react'
-import { TextInput, Group, createStyles, Button, ActionIcon, ColorInput } from '@mantine/core'
+import {
+  TextInput,
+  Group,
+  createStyles,
+  Button,
+  ActionIcon,
+  ColorInput,
+  Select
+} from '@mantine/core'
 import { IconRefresh } from '@tabler/icons-react'
 import type { AxiosError } from 'axios'
 
@@ -23,7 +31,7 @@ const useStyles = createStyles({
 
 const randomColor = () => `#${Math.floor(Math.random() * 16777215).toString(16)}`
 
-const CreateForm = ({ close }) => {
+const CreateForm = ({ close, categories }) => {
   const { classes, cx } = useStyles()
   const setCreateAnnotationMutation = useCreateAnnotation()
   const [color, onChange] = useState(randomColor())
@@ -74,25 +82,24 @@ const CreateForm = ({ close }) => {
             data-autofocus
           />
           <TextInput
-            label="Label"
-            description="Label should be unique."
+            label="Annotation"
+            description="Annotation should be unique."
             {...form.getInputProps('label')}
             className={cx(classes.input)}
-            placeholder="Enter label ..."
+            placeholder="Enter annotation name ..."
             withAsterisk
             data-autofocus
           />
-
-          <TextInput
+          <Select
+            data={categories}
             label="Category"
             {...form.getInputProps('category_id')}
-            placeholder="Enter category ..."
             className={cx(classes.input)}
             withAsterisk
           />
           <ColorInput
             placeholder="Pick color"
-            label="Your favorite color"
+            label="Color"
             value={color}
             onChange={onChange}
             rightSection={

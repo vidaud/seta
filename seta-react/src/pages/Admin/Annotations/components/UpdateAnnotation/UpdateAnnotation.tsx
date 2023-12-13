@@ -9,6 +9,8 @@ import {
 import { useDisclosure } from '@mantine/hooks'
 import { IconEdit } from '@tabler/icons-react'
 
+import { useAnnotationCategories } from '~/api/admin/annotation_categories'
+
 import UpdateForm from './components/UpdateForm'
 
 const useStyles = createStyles({
@@ -24,6 +26,9 @@ const UpdateAnnotation = ({ annotation }) => {
   const { classes } = useStyles()
   const [opened, { open, close }] = useDisclosure(false)
   const theme = useMantineTheme()
+  const { data } = useAnnotationCategories()
+
+  const rows = data?.map(item => ({ value: item.category_id, label: item.category_name }))
 
   return (
     <>
@@ -42,7 +47,7 @@ const UpdateAnnotation = ({ annotation }) => {
         }}
       >
         <Divider my="xs" label="Update Annotation" labelPosition="center" />
-        <UpdateForm annotation={annotation} close={close} />
+        <UpdateForm annotation={annotation} close={close} categories={rows} />
       </Modal>
 
       <Tooltip label="Update Annotation">
