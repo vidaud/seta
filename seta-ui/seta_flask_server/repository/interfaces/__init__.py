@@ -20,4 +20,5 @@ from .rolling_index_broker import IRollingIndexBroker
 
 from .data_sources_broker import IDataSourcesBroker
 from .annotations_broker import IAnnotationsBroker
+from .annotation_categories_broker import IAnnotationCategoriesBroker
 from .user_profile_unsearchables import IUserProfileUnsearchables

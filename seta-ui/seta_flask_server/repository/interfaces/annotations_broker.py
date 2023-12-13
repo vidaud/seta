@@ -12,6 +12,10 @@ class IAnnotationsBroker(Interface):
         """Updates annotations model in database."""
 
         pass
+    
+    def delete(self, annotation_id: str) -> None:
+        """Deletes an annotation by identifier."""
+        pass
 
     def get_by_id(self, annotation_id: str) -> AnnotationModel:
         """Retrieves annotation by identifier."""

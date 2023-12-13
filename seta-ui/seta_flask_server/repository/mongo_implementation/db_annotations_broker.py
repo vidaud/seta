@@ -29,6 +29,12 @@ class AnnotationsBroker(implements(IAnnotationsBroker)):
 
         self.collection.update_one({"annotation_id": model.annotation_id}, set_json)
 
+    def delete(self, annotation_id: str) -> None:
+        query_filter = {"annotation_id": annotation_id}
+        ds = self.collection.find_one(query_filter)
+
+        self.collection.delete_one(ds)
+
     def update_status(self, annotation_id: str, status: str) -> None:
         set_json = {"$set": json}
 
@@ -77,9 +83,7 @@ def _annotations_from_db_json(json_dict: dict) -> AnnotationModel:
         color_code=json_dict["color_code"],
         created_at=json_dict.get("created_at"),
         modified_at=json_dict.get("modified_at"),
+        category_id=json_dict.get("category_id")
     )
-
-    if "category" in json_dict.keys() and json_dict["category"] is not None:
-        annotation.category = _annotations_category_from_db_json(json_dict["category"])
 
     return annotation

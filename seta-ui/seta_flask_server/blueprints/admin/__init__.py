@@ -8,6 +8,7 @@ from .users import users_ns
 from .rolling_indexes import rolling_indexes_ns
 from .data_sources import data_sources_ns
 from .annotations import annotations_ns
+from .annotation_categories import annotation_categories_ns
 
 from seta_flask_server.infrastructure.dto.authorizations import authorizations
 
@@ -33,3 +34,4 @@ admin_api.add_namespace(users_ns, path="/admin/users")
 admin_api.add_namespace(rolling_indexes_ns, path="/admin")
 admin_api.add_namespace(data_sources_ns, path="/admin/data-sources")
 admin_api.add_namespace(annotations_ns, path="/admin/annotations")
+admin_api.add_namespace(annotation_categories_ns, path="/admin/annotation_categories")

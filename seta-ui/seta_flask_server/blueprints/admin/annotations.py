@@ -27,12 +27,14 @@ class AnnotationsResource(Resource):
         self,
         users_broker: interfaces.IUsersBroker,
         annotations_broker: interfaces.IAnnotationsBroker,
+        annotation_categories_broker: interfaces.IAnnotationCategoriesBroker,
         *args,
         api=None,
         **kwargs,
     ):
         self.users_broker = users_broker
         self.annotations_broker = annotations_broker
+        self.annotation_categories_broker = annotation_categories_broker
 
         super().__init__(api, *args, **kwargs)
 
@@ -47,12 +49,12 @@ class AnnotationsResource(Resource):
         security="CSRF",
     )
     @annotations_ns.marshal_list_with(
-        dto.annotation_model, mask="*", skip_none=True
+        dto.view_annotation_model, mask="*", skip_none=True
     )
     @jwt_required()
     def get(self):
         """
-        Retrieve all annotations, available to sysadmin,
+        Retrieve all annotations, available to sysadmin
 
         Permissions: "Administrator" role
         """
@@ -66,7 +68,20 @@ class AnnotationsResource(Resource):
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
 
         annotations = self.annotations_broker.get_all(active_only=False)
+        annotations_logic.load_annotation_categories(
+            annotations=annotations, categories_broker=self.annotation_categories_broker
+        )
 
+        if annotations is not None:
+           for annotation in annotations:
+                category = self.annotation_categories_broker.get_by_id(
+                    category_id=annotation.category_id
+                )
+                if category is not None:
+                    annotation.category_id = category
+        
+
+        print(annotations)
         return annotations
 
     @annotations_ns.doc(
@@ -87,7 +102,7 @@ class AnnotationsResource(Resource):
     )
     @jwt_required()
     def post(self):
-        """Create a new annotation, available to sysadmins.
+        """Create a new annotation, available to sysadmin
 
         Permissions: "Administrator" role
         """
@@ -121,7 +136,7 @@ class AnnotationsResource(Resource):
 
 
 @annotations_ns.route(
-    "/<string:annotation_id>", endpoint="admin_annotation", methods=["PUT"]
+    "/<string:annotation_id>", endpoint="admin_annotation", methods=["PUT", "DELETE", "GET"]
 )
 @annotations_ns.param("annotation_id", "Annotation identifier")
 @annotations_ns.response(int(HTTPStatus.BAD_REQUEST), "", dto.response_dto.error_model)
@@ -133,14 +148,58 @@ class AnnotationResource(Resource):
         self,
         users_broker: interfaces.IUsersBroker,
         annotations_broker: interfaces.IAnnotationsBroker,
+        annotation_categories_broker: interfaces.IAnnotationCategoriesBroker,
         *args,
         api=None,
         **kwargs,
     ):
         self.users_broker = users_broker
         self.annotations_broker = annotations_broker
+        self.annotation_categories_broker = annotation_categories_broker
 
         super().__init__(api, *args, **kwargs)
+
+    @annotations_ns.doc(
+        description="Get annotation by id",
+        responses={
+            int(HTTPStatus.OK): "Retrieved annotation.",
+            int(
+                HTTPStatus.FORBIDDEN
+            ): "Insufficient rights, role 'Administrator' required",
+        },
+        security="CSRF",
+    )
+    @annotations_ns.response(
+        int(HTTPStatus.OK), "", dto.response_dto.response_message_model
+    )
+    @annotations_ns.marshal_list_with(
+        dto.view_annotation_model, mask="*", skip_none=True
+    )
+    @jwt_required()
+    def get(self, annotation_id: str):
+        """
+        Retrieve annotations by id, available to sysadmin
+
+        Permissions: "Administrator" role
+        """
+
+        identity = get_jwt_identity()
+        auth_id = identity["user_id"]
+
+        # verify scope
+        user = self.users_broker.get_user_by_id(auth_id)
+        if not user_logic.can_approve_resource_cr(user):
+            abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
+
+        annotation = self.annotations_broker.get_by_id(annotation_id)
+
+        category = self.annotation_categories_broker.get_by_id(
+            category_id=annotation.category_id
+        )
+        if category:
+            annotation.category_id = category.category_id
+
+        return annotation
 
     @annotations_ns.doc(
         description="Update annotation",
@@ -159,7 +218,7 @@ class AnnotationResource(Resource):
     @jwt_required()
     def put(self, annotation_id: str):
         """
-        Updates an annotation, available to sysadmins
+        Updates an annotation, available to sysadmin
 
         Permissions: "Administrator" role
         """
@@ -192,3 +251,42 @@ class AnnotationResource(Resource):
             abort()
 
         return jsonify(status="success", message="Annotation updated.")
+
+
+    @annotations_ns.doc(
+        description="Delete annotation",
+        responses={
+            int(HTTPStatus.OK): "Annotation deleted.",
+            int(HTTPStatus.BAD_REQUEST): "Errors in request payload",
+            int(HTTPStatus.FORBIDDEN): "Insufficient rights",
+            int(HTTPStatus.NOT_FOUND): "Annotation not found.",
+        },
+        security="CSRF",
+    )
+
+    @jwt_required()
+    def delete(self, annotation_id: str):
+        """
+        Delete annotation, available to sysadmin
+
+        Permissions: "Administrator" role
+        """
+
+        identity = get_jwt_identity()
+        auth_id = identity["user_id"]
+
+        user = self.users_broker.get_user_by_id(auth_id, load_scopes=False)
+        if not user_logic.is_admin(user):
+            abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
+
+        annotation = self.annotations_broker.get_by_id(annotation_id)
+        if annotation is None:
+            abort(HTTPStatus.NOT_FOUND, message="Annotation not found.")
+        
+        self.annotations_broker.delete(annotation_id)
+
+        message = f"Annotation '{annotation_id}' deleted."
+        response = jsonify(status="success", message=message)
+        response.status_code = HTTPStatus.OK
+
+        return response

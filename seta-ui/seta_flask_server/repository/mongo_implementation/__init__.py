@@ -21,4 +21,5 @@ from .db_rolling_index_broker import RollingIndexBroker
 
 from .db_data_sources_broker import DataSourcesBroker
 from .db_annotations_broker import AnnotationsBroker
+from .db_annotation_categories_broker import AnnotationCategoriesBroker
 from .profile import UserProfileUnsearchables

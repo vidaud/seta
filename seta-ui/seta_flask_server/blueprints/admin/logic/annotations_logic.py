@@ -7,6 +7,26 @@ from seta_flask_server.repository import models
 
 from seta_flask_server.infrastructure.dto.payload_errors import PayloadErrors
 
+def load_annotation_categories(
+    annotations: list[models.AnnotationModel], categories_broker: interfaces.IAnnotationCategoriesBroker
+):
+    """Load categories from database."""
+
+    for annotation in annotations:
+        category = None
+
+        if annotation.category_id is not None:
+            category = categories_broker.get_by_id(
+                annotation.category_id
+            )
+
+        if category is None:
+            annotation.category_id = models.AnnotationCategoryModel(
+                user_id=annotation.category_id
+            )
+        else:
+            annotation.category = category
+
 def build_new_annotation(
     payload: dict, broker: interfaces.IAnnotationsBroker
 ) -> models.AnnotationModel:

@@ -1,6 +1,8 @@
 import React from 'react'
 import { Route } from 'react-router-dom'
 
+import Annotations from '~/pages/Admin/Annotations'
+
 import AdminLayout from '~/layouts/AdminLayout'
 import { UserRole } from '~/types/user'
 
@@ -21,6 +23,7 @@ const AdminRoutes = (
     <Route index element={<AdminDashboard />} />
     <Route path="users" element={<AdminUsers />} />
     <Route path="users/:id" element={<ManageUser />} />
+    <Route path="annotations" element={<Annotations />} />
   </Route>
 )
 
