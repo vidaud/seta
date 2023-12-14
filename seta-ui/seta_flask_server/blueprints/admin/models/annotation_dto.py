@@ -5,7 +5,7 @@ annotation_model = Model(
     "Annotation",
     {
         "label": fields.String(description="Label, case sensitive."),
-        "color": fields.String(description="Annotation color", attribute="color_code"),
+        "color": fields.String(description="Annotation color", attribute="color"),
         "category": fields.String(description="Identifier."),
     },
 )

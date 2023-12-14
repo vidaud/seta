@@ -11,7 +11,7 @@ import type { AnnotationResponse } from '../types/annotations-types'
 export const cacheKey = () => ['annotations']
 const BASE_URL = environment.baseUrl
 const ANNOTATIONS = (): string => '/admin/annotations'
-const ANNOTATIONS_API_PATH = (id): string => `/admin/annotations/${id}`
+const ANNOTATIONS_API_PATH = (label): string => `/admin/annotations/${label}`
 
 const apiConfig: AxiosRequestConfig = {
   baseURL: BASE_URL
@@ -46,11 +46,10 @@ export const useCreateAnnotation = () => {
 
 const updateAnnotation = async (request: AnnotationResponse) => {
   return await api.put(
-    ANNOTATIONS_API_PATH(request.id),
+    ANNOTATIONS_API_PATH(request.label),
     {
-      label: request.label,
-      color_code: request.color_code,
-      category_id: request.category_id
+      color: request.color,
+      category: request.category
     },
     apiConfig
   )
@@ -70,15 +69,15 @@ export const useUpdateAnnotation = () => {
   })
 }
 
-export const setDeleteAnnotation = async (id: string) => {
-  return await api.delete(ANNOTATIONS_API_PATH(id), apiConfig)
+export const setDeleteAnnotation = async (label: string) => {
+  return await api.delete(ANNOTATIONS_API_PATH(label), apiConfig)
 }
 
-export const useDeleteAnnotation = (id: string) => {
+export const useDeleteAnnotation = (label: string) => {
   const client = useQueryClient()
 
   return useMutation({
-    mutationFn: () => setDeleteAnnotation(id),
+    mutationFn: () => setDeleteAnnotation(label),
     onMutate: async () => {
       await client.cancelQueries(AdminQueryKeys.Annotations)
     },

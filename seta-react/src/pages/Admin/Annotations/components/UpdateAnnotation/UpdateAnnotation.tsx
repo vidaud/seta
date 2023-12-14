@@ -27,8 +27,7 @@ const UpdateAnnotation = ({ annotation }) => {
   const [opened, { open, close }] = useDisclosure(false)
   const theme = useMantineTheme()
   const { data } = useAnnotationCategories()
-
-  const rows = data?.map(item => ({ value: item.category_id, label: item.category_name }))
+  const rows = data?.map(item => item.category)
 
   return (
     <>

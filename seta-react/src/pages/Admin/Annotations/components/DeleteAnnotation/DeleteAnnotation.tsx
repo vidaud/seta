@@ -21,10 +21,10 @@ const useStyles = createStyles(theme => ({
 const DeleteAnnotation = ({ annotation }) => {
   const { classes, cx } = useStyles()
   const [opened, setOpened] = useState(false)
-  const setDeleteAnnotationMutation = useDeleteAnnotation(annotation?.id)
+  const setDeleteAnnotationMutation = useDeleteAnnotation(annotation?.label)
 
   const deleteAnnotation = () => {
-    setDeleteAnnotationMutation.mutate(annotation?.id, {
+    setDeleteAnnotationMutation.mutate(annotation?.label, {
       onSuccess: () => {
         notifications.showSuccess(`Annotation deleted successfully!`, { autoClose: true })
 

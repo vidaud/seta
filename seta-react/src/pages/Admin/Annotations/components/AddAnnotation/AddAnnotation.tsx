@@ -11,8 +11,7 @@ const AddAnnotation = () => {
   const [opened, { open, close }] = useDisclosure(false)
   const theme = useMantineTheme()
   const { data } = useAnnotationCategories()
-
-  const rows = data?.map(item => ({ value: item.category_id, label: item.category_name }))
+  const rows = data?.map(item => item.category)
 
   return (
     <>
@@ -29,13 +28,13 @@ const AddAnnotation = () => {
         <Divider my="xs" label="Add New Annotation" labelPosition="center" />
         <CreateForm close={close} categories={rows} />
       </Modal>
-      <Group id="new_annotation" css={S.root} variant="outline">
+      <Group id="new_annotation" css={S.root} variant="outline" sx={{ justifyContent: 'center' }}>
         <Button
-          size="sm"
+          size="xs"
           color="gray"
+          fw="bold"
           onClick={open}
           variant="outline"
-          h="40px"
           rightIcon={<IconPlus size="1rem" />}
         >
           New Annotation

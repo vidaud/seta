@@ -1,13 +1,5 @@
 import { useEffect, useState } from 'react'
-import {
-  TextInput,
-  Group,
-  createStyles,
-  Button,
-  ActionIcon,
-  ColorInput,
-  Select
-} from '@mantine/core'
+import { Group, createStyles, Button, ActionIcon, ColorInput, Autocomplete } from '@mantine/core'
 import { IconRefresh } from '@tabler/icons-react'
 
 import {
@@ -33,24 +25,22 @@ const randomColor = () => `#${Math.floor(Math.random() * 16777215).toString(16)}
 const UpdateForm = ({ annotation, close, categories }) => {
   const { classes, cx } = useStyles()
   const setUpdateAnnotationMutation = useUpdateAnnotation()
-  const [color, onChange] = useState(annotation.color_code)
+  const [color, onChange] = useState(annotation.color)
 
   const form = useAnnotation({
     initialValues: {
-      id: annotation.id,
       label: '',
-      color_code: annotation.color_code,
-      category_id: ''
+      color: annotation.color,
+      category: ''
     }
   })
 
   useEffect(() => {
     if (annotation) {
       form.setValues({
-        id: annotation.id,
         label: annotation.label,
-        color_code: color,
-        category_id: annotation.category_id
+        color: color,
+        category: annotation.category
       })
     }
     // adding form to useEffect will cause infinite loop call
@@ -59,10 +49,9 @@ const UpdateForm = ({ annotation, close, categories }) => {
 
   const handleSubmit = (values: AnnotationResponse) => {
     const updatedValues = {
-      id: annotation.id,
       label: values.label,
-      color_code: values.color_code,
-      category_id: values.category_id
+      color: values.color,
+      category: values.category
     }
 
     setUpdateAnnotationMutation.mutate(updatedValues, {
@@ -84,24 +73,17 @@ const UpdateForm = ({ annotation, close, categories }) => {
     <>
       <AnnotationFormProvider form={form}>
         <form className={cx(classes.form)} onSubmit={form.onSubmit(handleSubmit)}>
-          <TextInput
-            label="Annotation"
-            {...form.getInputProps('label')}
-            placeholder="Enter annotation name ..."
-            className={cx(classes.input)}
-            withAsterisk
-          />
-          <Select
+          <Autocomplete
             data={categories}
             label="Category"
-            {...form.getInputProps('category_id')}
+            {...form.getInputProps('category')}
             className={cx(classes.input)}
             withAsterisk
           />
           <ColorInput
             placeholder="Pick color"
             label="Color"
-            {...form.getInputProps('color_code')}
+            {...form.getInputProps('color')}
             value={color}
             onChange={onChange}
             rightSection={

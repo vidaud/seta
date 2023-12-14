@@ -58,7 +58,7 @@ def _annotation_from_db_json(json_dict: dict) -> AnnotationModel:
     annotation = AnnotationModel.model_construct(
         label=json_dict["label"],
         category=json_dict["category"],
-        color_code=json_dict["color_code"],
+        color=json_dict["color"],
         created_at=json_dict.get("created_at"),
         modified_at=json_dict.get("modified_at"),
     )

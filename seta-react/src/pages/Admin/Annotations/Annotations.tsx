@@ -29,10 +29,15 @@ const Annotations = () => {
   const rows = data?.map(item => (
     <tr key={item.label}>
       <td>{item.label}</td>
-      <td>{item.category?.category_name ? item.category?.category_name : '-'}</td>
+      <td>{item.category ? item.category : '-'}</td>
       <td>
-        <Tooltip label={item.color_code}>
-          <Button sx={{ backgroundColor: String(item.color_code) }} />
+        <Tooltip label={item.color}>
+          <Button
+            sx={{
+              backgroundColor: String(item.color),
+              '&:hover': { backgroundColor: String(item.color) }
+            }}
+          />
         </Tooltip>
       </td>
       <td>

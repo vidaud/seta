@@ -10,7 +10,7 @@ import type { AnnotationCategoryResponse } from '../types/annotation-categories-
 
 export const cacheKey = () => ['annotations']
 const BASE_URL = environment.baseUrl
-const ANNOTATION_CATEGORIES = (): string => '/admin/annotation_categories'
+const ANNOTATION_CATEGORIES = (): string => '/admin/annotations/categories'
 
 const apiConfig: AxiosRequestConfig = {
   baseURL: BASE_URL

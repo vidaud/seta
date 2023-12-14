@@ -6,7 +6,7 @@ import {
   Button,
   ActionIcon,
   ColorInput,
-  Select
+  Autocomplete
 } from '@mantine/core'
 import { IconRefresh } from '@tabler/icons-react'
 import type { AxiosError } from 'axios'
@@ -41,19 +41,17 @@ const CreateForm = ({ close, categories }) => {
 
   const form = useAnnotation({
     initialValues: {
-      id: '',
       label: '',
-      color_code: '',
-      category_id: ''
+      color: '',
+      category: ''
     }
   })
 
   const handleSubmit = (values: AnnotationResponse) => {
     const updatedValues = {
-      id: values.id,
       label: values.label,
-      color_code: color,
-      category_id: values.category_id
+      color: color,
+      category: values.category
     }
 
     setCreateAnnotationMutation.mutate(updatedValues, {
@@ -76,15 +74,6 @@ const CreateForm = ({ close, categories }) => {
       <AnnotationFormProvider form={form}>
         <form className={cx(classes.form)} onSubmit={form.onSubmit(handleSubmit)}>
           <TextInput
-            label="ID"
-            description="ID should be unique."
-            {...form.getInputProps('id')}
-            className={cx(classes.input)}
-            placeholder="Enter id ..."
-            withAsterisk
-            data-autofocus
-          />
-          <TextInput
             label="Annotation"
             description="Annotation should be unique."
             {...form.getInputProps('label')}
@@ -93,10 +82,10 @@ const CreateForm = ({ close, categories }) => {
             withAsterisk
             data-autofocus
           />
-          <Select
+          <Autocomplete
             data={categories}
             label="Category"
-            {...form.getInputProps('category_id')}
+            {...form.getInputProps('category')}
             className={cx(classes.input)}
             withAsterisk
           />
