@@ -11,7 +11,10 @@ import {
 import { IconRefresh } from '@tabler/icons-react'
 import type { AxiosError } from 'axios'
 
-import { AnnotationFormProvider, useAnnotation } from '~/pages/Admin/Annotations/annotation-context'
+import {
+  AnnotationFormProvider,
+  useAnnotation
+} from '~/pages/Admin/Annotations/contexts/annotation-context'
 
 import { useCreateAnnotation } from '~/api/admin/annotations'
 import type { AnnotationResponse } from '~/api/types/annotations-types'

@@ -62,14 +62,17 @@ const SidebarContent = () => {
         <NavLink
           label="Annotations"
           icon={
-            <ThemeIcon variant={activeLink === ActiveLink.USERS ? 'outline' : 'light'} size={30}>
+            <ThemeIcon
+              variant={activeLink === ActiveLink.ANNOTATIONS ? 'outline' : 'light'}
+              size={30}
+            >
               <RiMarkupLine size="1rem" stroke="1.5" />
             </ThemeIcon>
           }
           component={Link}
           to="/admin/annotations"
           css={S.linkPrimary}
-          active={activeLink === ActiveLink.USERS}
+          active={activeLink === ActiveLink.ANNOTATIONS}
         />
         {/* Annotations END*/}
       </Navbar.Section>

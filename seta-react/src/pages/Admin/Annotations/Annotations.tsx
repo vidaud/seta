@@ -7,6 +7,7 @@ import { useAnnotations } from '~/api/admin/annotations'
 import AddAnnotation from './components/AddAnnotation/AddAnnotation'
 import DeleteAnnotation from './components/DeleteAnnotation'
 import UpdateAnnotation from './components/UpdateAnnotation/UpdateAnnotation'
+import * as S from './styles'
 
 import ApiLoader from '../common/components/Loader/ApiLoader'
 
@@ -35,7 +36,7 @@ const Annotations = () => {
         </Tooltip>
       </td>
       <td>
-        <Group>
+        <Group sx={{ justifyContent: 'center' }}>
           <UpdateAnnotation annotation={item} />
           <DeleteAnnotation annotation={item} />
         </Group>
@@ -44,7 +45,7 @@ const Annotations = () => {
   ))
 
   return (
-    <Paper p="sm" w="100%">
+    <Paper p="sm" w="96%" radius="sm" shadow="sm" withBorder>
       <Table>
         <thead>
           <tr>
@@ -56,7 +57,7 @@ const Annotations = () => {
             </th>
           </tr>
         </thead>
-        <tbody>{rows}</tbody>
+        <tbody css={S.tbody}>{rows}</tbody>
       </Table>
     </Paper>
   )

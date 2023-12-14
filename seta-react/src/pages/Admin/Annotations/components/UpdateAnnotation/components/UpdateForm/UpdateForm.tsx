@@ -10,7 +10,10 @@ import {
 } from '@mantine/core'
 import { IconRefresh } from '@tabler/icons-react'
 
-import { AnnotationFormProvider, useAnnotation } from '~/pages/Admin/Annotations/annotation-context'
+import {
+  AnnotationFormProvider,
+  useAnnotation
+} from '~/pages/Admin/Annotations/contexts/annotation-context'
 
 import { useUpdateAnnotation } from '~/api/admin/annotations'
 import type { AnnotationResponse } from '~/api/types/annotations-types'
@@ -102,7 +105,7 @@ const UpdateForm = ({ annotation, close, categories }) => {
             value={color}
             onChange={onChange}
             rightSection={
-              <ActionIcon onClick={() => randomColor()}>
+              <ActionIcon onClick={() => onChange(randomColor())}>
                 <IconRefresh size="1rem" />
               </ActionIcon>
             }
