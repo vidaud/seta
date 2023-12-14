@@ -12,27 +12,27 @@ class IAnnotationsBroker(Interface):
         """Updates annotations model in database."""
 
         pass
-    
-    def delete(self, annotation_id: str) -> None:
-        """Deletes an annotation by identifier."""
+
+    def delete(self, label: str) -> None:
+        """Deletes an annotation by label."""
         pass
 
-    def get_by_id(self, annotation_id: str) -> AnnotationModel:
-        """Retrieves annotation by identifier."""
+    def get_by_label(self, label: str) -> AnnotationModel:
+        """Retrieves annotation by label."""
 
         pass
 
-    def get_all(self, active_only: bool = True) -> list[AnnotationModel]:
+    def get_all(self) -> list[AnnotationModel]:
         """Retrieves all annotations."""
 
         pass
 
-    def identifier_exists(self, annotation_id: str) -> bool:
-        """Checks existing annotation identifier."""
+    def label_exists(self, label: str) -> bool:
+        """Checks existing label."""
 
         pass
 
-    def label_exists(self, label: str) -> bool:
-        """Checks existing annotation label."""
+    def get_categories(self) -> list[str]:
+        """Get unique categories."""
 
         pass

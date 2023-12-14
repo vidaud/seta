@@ -5,7 +5,7 @@ from interface import implements
 from injector import inject
 
 from seta_flask_server.repository.interfaces import IDbConfig, IAnnotationsBroker
-from seta_flask_server.repository.models import AnnotationCategoryModel, AnnotationModel
+from seta_flask_server.repository.models import AnnotationModel
 
 
 class AnnotationsBroker(implements(IAnnotationsBroker)):
@@ -15,75 +15,52 @@ class AnnotationsBroker(implements(IAnnotationsBroker)):
         self.collection = self.db["annotations"]
 
     def create(self, model: AnnotationModel) -> None:
-        if not self.identifier_exists(model.annotation_id):
+        if not self.label_exists(model.label):
             model.created_at = datetime.now(tz=pytz.utc)
 
-            model_json = model.to_dict()
-            self.collection.insert_one(model_json)
+            self.collection.insert_one(model.model_dump())
 
     def update(self, model: AnnotationModel) -> None:
         model.modified_at = datetime.now(tz=pytz.utc)
 
-        json = model.to_dict(exclude={"created_at"})
-        set_json = {"$set": json}
+        json = model.model_dump(exclude={"label", "created_at"})
+        self.collection.update_one({"label": model.label}, {"$set": json})
 
-        self.collection.update_one({"annotation_id": model.annotation_id}, set_json)
+    def delete(self, label: str) -> None:
+        self.collection.delete_one({"label": label})
 
-    def delete(self, annotation_id: str) -> None:
-        query_filter = {"annotation_id": annotation_id}
-        ds = self.collection.find_one(query_filter)
+    def get_by_label(self, label: str) -> AnnotationModel:
+        annotation = self.collection.find_one({"label": label})
 
-        self.collection.delete_one(ds)
-
-    def update_status(self, annotation_id: str, status: str) -> None:
-        set_json = {"$set": json}
-
-        self.collection.update_one({"annotation_id": annotation_id}, set_json)
-
-    def get_by_id(self, annotation_id: str) -> AnnotationModel:
-        query_filter = {"annotation_id": annotation_id}
-        ds = self.collection.find_one(query_filter)
-
-        if ds is not None:
-            return _annotations_from_db_json(ds)
+        if annotation is not None:
+            return _annotation_from_db_json(annotation)
 
         return None
 
-    def get_all(self, active_only: bool = True) -> list[AnnotationModel]:
-        query_filter = {"annotation_id": {"$exists": True}}
-
-        annotations = self.collection.find(query_filter)
-        return [_annotations_from_db_json(ds) for ds in annotations]
-
-    def identifier_exists(self, annotation_id: str) -> bool:
-        if annotation_id is None:
-            return False
-
-        exists_count = self.collection.count_documents(
-            {"annotation_id": annotation_id.lower()}
-        )
-        return exists_count > 0
+    def get_all(self) -> list[AnnotationModel]:
+        annotations = self.collection.find()
+        return [_annotation_from_db_json(a) for a in annotations]
 
     def label_exists(self, label: str) -> bool:
         exists_count = self.collection.count_documents({"label": label})
         return exists_count > 0
 
+    def get_categories(self) -> list[str]:
+        pipeline = [
+            {"$group": {"_id": "$category"}},
+        ]
+        categories = self.collection.aggregate(pipeline)
 
-def _annotations_category_from_db_json(json_dict: dict) -> AnnotationCategoryModel:
-    return AnnotationCategoryModel.model_construct(
-        category_id=json_dict.get("category_id", None),
-        category_name=json_dict.get("category_name", None)
-    )
+        return [c["_id"] for c in categories]
 
 
-def _annotations_from_db_json(json_dict: dict) -> AnnotationModel:
+def _annotation_from_db_json(json_dict: dict) -> AnnotationModel:
     annotation = AnnotationModel.model_construct(
-        annotation_id=json_dict["annotation_id"],
         label=json_dict["label"],
+        category=json_dict["category"],
         color_code=json_dict["color_code"],
         created_at=json_dict.get("created_at"),
         modified_at=json_dict.get("modified_at"),
-        category_id=json_dict.get("category_id")
     )
 
     return annotation
