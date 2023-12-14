@@ -123,10 +123,7 @@ const Header = () => {
           <AboutDropdown />
         </Grid>
         <Group>
-          <Group className="login-button">
-            {/* {authenticated ? <NotificationsButton dropdownItems={dropdownItems} /> : null} */}
-            {authenticated ? dropdownMenu : loginButton}
-          </Group>
+          <Group className="login-button">{authenticated ? dropdownMenu : loginButton}</Group>
         </Group>
       </Flex>
     </header>
