@@ -26,4 +26,5 @@ from .catalogue_field import CatalogueField
 from .rolling_index import StorageLimits, StorageIndex, RollingIndex
 
 from .data_source import DataSourceContactModel, DataSourceModel
+from .annotation import AnnotationModel
 from .profile import UnsearchablesModel

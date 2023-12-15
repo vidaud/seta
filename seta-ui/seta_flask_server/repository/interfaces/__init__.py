@@ -19,4 +19,5 @@ from .external_provider_broker import IExternalProviderBroker
 from .rolling_index_broker import IRollingIndexBroker
 
 from .data_sources_broker import IDataSourcesBroker
+from .annotations_broker import IAnnotationsBroker
 from .user_profile_unsearchables import IUserProfileUnsearchables

@@ -20,4 +20,5 @@ from .db_external_provider_broker import ExternalProviderBroker
 from .db_rolling_index_broker import RollingIndexBroker
 
 from .db_data_sources_broker import DataSourcesBroker
+from .db_annotations_broker import AnnotationsBroker
 from .profile import UserProfileUnsearchables

@@ -2,6 +2,7 @@
 import { Navbar, ScrollArea, NavLink, Group, ThemeIcon, Title } from '@mantine/core'
 import { IconGauge, IconUserCog } from '@tabler/icons-react'
 import { FaWrench } from 'react-icons/fa'
+import { RiMarkupLine } from 'react-icons/ri'
 import { Link, useLocation } from 'react-router-dom'
 
 import { ActiveLink, getActiveLink } from './active-link'
@@ -56,6 +57,24 @@ const SidebarContent = () => {
           active={activeLink === ActiveLink.USERS}
         />
         {/* Users END*/}
+
+        {/* Annotations START*/}
+        <NavLink
+          label="Annotations"
+          icon={
+            <ThemeIcon
+              variant={activeLink === ActiveLink.ANNOTATIONS ? 'outline' : 'light'}
+              size={30}
+            >
+              <RiMarkupLine size="1rem" stroke="1.5" />
+            </ThemeIcon>
+          }
+          component={Link}
+          to="/admin/annotations"
+          css={S.linkPrimary}
+          active={activeLink === ActiveLink.ANNOTATIONS}
+        />
+        {/* Annotations END*/}
       </Navbar.Section>
     </Navbar>
   )

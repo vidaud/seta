@@ -5,6 +5,7 @@ export enum ActiveLink {
   RESOURCE_REQUESTS,
   ORPHANED_COMMUNITIES,
   ORPHANED_RESOURCES,
+  ANNOTATIONS,
   NONE
 }
 
@@ -27,6 +28,9 @@ export const getActiveLink = (path: string): ActiveLink => {
 
     case '/admin/orphaned-resources':
       return ActiveLink.ORPHANED_RESOURCES
+
+    case '/admin/annotations':
+      return ActiveLink.ANNOTATIONS
 
     default:
       return ActiveLink.NONE
