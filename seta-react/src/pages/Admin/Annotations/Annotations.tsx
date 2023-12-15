@@ -4,8 +4,8 @@ import { SuggestionsError } from '~/pages/SearchPageNew/components/common'
 
 import { useAnnotations } from '~/api/admin/annotations'
 
-import AddAnnotation from './components/AddAnnotation/AddAnnotation'
 import DeleteAnnotation from './components/DeleteAnnotation'
+import OptionsMenuAction from './components/OptionsMenuAction'
 import UpdateAnnotation from './components/UpdateAnnotation/UpdateAnnotation'
 import * as S from './styles'
 
@@ -40,6 +40,7 @@ const Annotations = () => {
         <Group sx={{ justifyContent: 'center' }}>
           <UpdateAnnotation annotation={item} />
           <DeleteAnnotation annotation={item} />
+          <OptionsMenuAction item={item} />
         </Group>
       </td>
     </tr>
@@ -53,8 +54,10 @@ const Annotations = () => {
             <th>Annotation</th>
             <th>Category</th>
             <th>Color</th>
-            <th style={{ width: '11rem' }}>
-              <AddAnnotation />
+            <th style={{ width: '10rem' }}>
+              <Group position="right">
+                <OptionsMenuAction data={data} />
+              </Group>
             </th>
           </tr>
         </thead>
