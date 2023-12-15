@@ -48,7 +48,7 @@ class DataSourcesResource(Resource):
 
         for data_source in data_sources:
             ds_dict = data_source.to_dict(
-                exclude={"creator", "creator_id", "modified_at", "status"}
+                exclude={"creator", "creator_id", "modified_at", "status", "index_name"}
             )
 
             ds_dict["searchable"] = (

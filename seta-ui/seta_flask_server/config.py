@@ -45,6 +45,7 @@ class Config:
         Config.AUTH_CAS_URL = config_section.get("AUTH_CAS_URL")
         Config.HOME_ROUTE = config_section.get("HOME_ROUTE", fallback="/")
         Config.PRIVATE_API_URL = config_section["PRIVATE_API_URL"]
+        Config.INTERNAL_ADMIN_API = config_section["INTERNAL_ADMIN_API"]
 
         Config.SCHEDULER_ENABLED = config_section.getboolean(
             "SCHEDULER_ENABLED", fallback=False
