@@ -1,11 +1,4 @@
-from sentence_transformers import SentenceTransformer
-from .clean import sentenced
-
-model = SentenceTransformer('all-distilroberta-v1')
-model.max_seq_length = 512
-version = "sbert model all-distilroberta-v1"
-
-CHUNK_SIZE = 300
+import requests
 
 
 def compute_embeddings(text):
@@ -25,7 +18,22 @@ def compute_embeddings(text):
         high += 300
     return embeddings, vectors
 
+
 class Embeddings:
+
+    def __init__(self, url: str) -> None:
+        self.api_url = url
+
+    def chunks_and_embeddings_from_doc_fields(self, title, abstract, text):
+        data = {
+            "text": text,
+            "title": title,
+            "abstract": abstract
+        }
+        result = requests.post(url=self.api_url + "chunks/document", data=data)
+        embeddings = result.json()
+        return embeddings
+
     @staticmethod
     def chunks_and_embeddings_from_doc_fields(title, abstract, text):
         text_doc = ''
@@ -36,7 +44,6 @@ class Embeddings:
         if text is not None:
             text_doc = text_doc + text
         emb, vec = compute_embeddings(text_doc)
-        return emb
 
     @staticmethod
     def chunks_and_embeddings_from_text(text):
@@ -47,10 +54,3 @@ class Embeddings:
     def embedding_vector_from_text(text):
         emb = model.encode(text, convert_to_numpy=True).tolist()
         return emb
-
-
-
-
-
-
-

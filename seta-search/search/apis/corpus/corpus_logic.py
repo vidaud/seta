@@ -1,3 +1,4 @@
+import app
 from search.infrastructure.utils.embeddings import Embeddings
 from search.infrastructure.helpers import is_field_in_doc
 from search.infrastructure.ApiLogicError import ApiLogicError
@@ -119,6 +120,7 @@ def insert_chunk(args, es, index):
 def get_embeddings(args):
     if is_field_in_doc(args, "sbert_embedding"):
         return args["sbert_embedding"]
+    # TODO replace with nlp api call
     return Embeddings.embedding_vector_from_text(is_field_in_doc(args, "chunk_text"))
 
 
@@ -146,6 +148,7 @@ def insert_doc(args, es, index):
 
     res = es.index(index=index, body=new_doc)
     doc_id = res["_id"]
+    # TODO replace with nlp api call
     embs = Embeddings.chunks_and_embeddings_from_doc_fields(is_field_in_doc(args, "title"),
                                                             is_field_in_doc(args, "abstract"),
                                                             is_field_in_doc(args, "text"))
