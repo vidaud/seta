@@ -2,7 +2,7 @@ import { createStyles, Text, rem, UnstyledButton, Group, Center } from '@mantine
 import { keys } from '@mantine/utils'
 import { IconSelector, IconChevronDown, IconChevronUp } from '@tabler/icons-react'
 
-import type { DatasourceResponse } from '~/api/types/datasource-types'
+import type { DatasourcesResponse } from '~/api/types/datasource-types'
 
 import type { ThProps } from '../types'
 
@@ -47,7 +47,7 @@ export const Th = ({ children, reversed, sorted, onSort }: ThProps) => {
   )
 }
 
-export const filterDatasourceData = (data: DatasourceResponse[], search: string) => {
+export const filterDatasourceData = (data: DatasourcesResponse[], search: string) => {
   const query = search.toLowerCase().trim()
 
   return data?.filter(item =>
@@ -56,8 +56,8 @@ export const filterDatasourceData = (data: DatasourceResponse[], search: string)
 }
 
 export const sortDatasourceData = (
-  data: DatasourceResponse[],
-  payload: { sortBy?: keyof DatasourceResponse | null; reversed?: boolean; search: string }
+  data: DatasourcesResponse[],
+  payload: { sortBy?: keyof DatasourcesResponse | null; reversed?: boolean; search: string }
 ) => {
   const { sortBy } = payload
 

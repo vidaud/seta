@@ -4,9 +4,10 @@ import { themeColors } from '~/pages/DatasourcesPage/types'
 
 type Props = {
   themes: string
+  width?: string
 }
 
-const ThemeList = ({ themes }: Props) => {
+const ThemeList = ({ themes, width }: Props) => {
   const pills = themes?.split(',').map((item, index) => (
     // eslint-disable-next-line react/no-array-index-key
     <Badge key={index} color={themeColors[index]} radius="sm" variant="filled">
@@ -15,7 +16,7 @@ const ThemeList = ({ themes }: Props) => {
   ))
 
   return (
-    <Group position="right" w="38%">
+    <Group position="right" w={width}>
       {pills}
     </Group>
   )

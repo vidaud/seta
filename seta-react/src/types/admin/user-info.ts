@@ -15,6 +15,11 @@ export enum AccountStatus {
   Deleted = 'deleted'
 }
 
+export enum DatasourceStatus {
+  Active = 'active',
+  Archived = 'archived'
+}
+
 export enum ThirdPartyProvider {
   ECAS = 'ecas',
   GitHub = 'github',

@@ -18,7 +18,7 @@ const config = {
 }
 
 export type Request = {
-  dataSourceIds: string[]
+  dataSourceIds: (string | undefined)[]
 }
 
 const setUnsearchableDatasources = async (request: Request) => {

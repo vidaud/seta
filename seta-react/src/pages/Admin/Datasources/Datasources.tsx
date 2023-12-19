@@ -1,0 +1,39 @@
+import { Box, Title, Text } from '@mantine/core'
+
+import { SuggestionsEmpty, SuggestionsError } from '~/pages/SearchPageNew/components/common'
+
+import { useDatasources } from '~/api/admin/datasources'
+
+import DatasourcesTable from './DatasourcesTable/DatasourcesTable'
+
+import ApiLoader from '../common/components/Loader/ApiLoader'
+
+const Datasources = () => {
+  const { data, isLoading, error, refetch } = useDatasources()
+
+  if (error) {
+    return <SuggestionsError subject="annotation" onTryAgain={refetch} />
+  }
+
+  if (isLoading) {
+    return <ApiLoader />
+  }
+
+  if (!data || data.length === 0) {
+    return <SuggestionsEmpty message="No annotations available!" />
+  }
+
+  return (
+    <Box w="100%" pl="md" pr="md" display="grid">
+      <Title order={3} mb="sm" mt="-2rem" color="blue.5">
+        SeTA Datasources
+      </Title>
+      <Text mb="md" c="dimmed">
+        Manage SeTA Datasources
+      </Text>
+      <DatasourcesTable data={data} isLoading={isLoading} error={error} />
+    </Box>
+  )
+}
+
+export default Datasources

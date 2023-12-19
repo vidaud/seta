@@ -4,7 +4,7 @@ import { VscSearch, VscSearchStop } from 'react-icons/vsc'
 
 import { useAllDatasources } from '~/api/datasources/discover-datasources'
 import { useUnsearchableDatasources } from '~/api/datasources/unsearchable-datasources'
-import type { DatasourceResponse } from '~/api/types/datasource-types'
+import type { DatasourcesResponse } from '~/api/types/datasource-types'
 import { notifications } from '~/utils/notifications'
 
 const useStyles = createStyles(() => ({
@@ -17,7 +17,7 @@ const useStyles = createStyles(() => ({
 }))
 
 type Props = {
-  datasource: DatasourceResponse
+  datasource: DatasourcesResponse
   searchable: boolean
 }
 
@@ -26,11 +26,11 @@ const UnsearchableDatasources = ({ datasource }: Props) => {
   const { classes } = useStyles()
   const theme = useMantineTheme()
   const setRestrictedDatasourceMutation = useUnsearchableDatasources()
-  const [selection, setSelection] = useState<string[]>(
+  const [selection, setSelection] = useState<(string | undefined)[]>(
     data ? data?.filter(item => item.searchable === false).map(item => item.id) : []
   )
-  const selected = selection.includes(datasource.id)
-  const [isChecked, setIsChecked] = useState<boolean>(datasource.searchable)
+  const selected: boolean = selection.includes(datasource.id)
+  const [isChecked, setIsChecked] = useState<boolean | undefined>(datasource.searchable)
 
   useEffect(() => {
     setSelection(data ? data?.filter(item => item.searchable === false).map(item => item.id) : [])

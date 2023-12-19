@@ -4,7 +4,7 @@ import { IoMdLink } from 'react-icons/io'
 import { MdEmail } from 'react-icons/md'
 import { VscSearch, VscSearchStop } from 'react-icons/vsc'
 
-import type { DatasourceResponse } from '~/api/types/datasource-types'
+import type { DatasourcesResponse } from '~/api/types/datasource-types'
 
 import ThemeList from './components/ThemeList/ThemeList'
 import * as S from './styles'
@@ -13,7 +13,7 @@ import UnsearchableDatasources from '../UnsearchableDatasources'
 
 type Props = {
   queryTerms: string
-  datasource: DatasourceResponse
+  datasource: DatasourcesResponse
 }
 
 const DatasourceInfo = ({ datasource }: Props) => {
@@ -44,7 +44,10 @@ const DatasourceInfo = ({ datasource }: Props) => {
             {title?.charAt(0).toUpperCase() + title?.slice(1)}
           </Text>
         </div>
-        <UnsearchableDatasources datasource={datasource} searchable={searchable} />
+        <UnsearchableDatasources
+          datasource={datasource}
+          searchable={searchable ? searchable : true}
+        />
       </div>
 
       <Flex direction="column" gap="xs" data-info css={S.info}>
@@ -86,7 +89,7 @@ const DatasourceInfo = ({ datasource }: Props) => {
               </>
             ) : null}
           </Group>
-          <ThemeList themes={datasource.theme} />
+          <ThemeList themes={datasource.theme ? datasource.theme : '-'} width="38%" />
         </Group>
       </Flex>
     </div>
