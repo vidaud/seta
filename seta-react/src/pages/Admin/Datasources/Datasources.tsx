@@ -1,6 +1,6 @@
 import { Box, Title, Text } from '@mantine/core'
 
-import { SuggestionsEmpty, SuggestionsError } from '~/pages/SearchPageNew/components/common'
+import { SuggestionsError } from '~/pages/SearchPageNew/components/common'
 
 import { useDatasources } from '~/api/admin/datasources'
 
@@ -17,10 +17,6 @@ const Datasources = () => {
 
   if (isLoading) {
     return <ApiLoader />
-  }
-
-  if (!data || data.length === 0) {
-    return <SuggestionsEmpty message="No annotations available!" />
   }
 
   return (
