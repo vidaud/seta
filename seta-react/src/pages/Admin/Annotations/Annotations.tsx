@@ -1,6 +1,6 @@
-import { Button, Group, Paper, Table, Tooltip } from '@mantine/core'
+import { Button, Flex, Group, Paper, Table, Tooltip, Text } from '@mantine/core'
 
-import { SuggestionsEmpty, SuggestionsError } from '~/pages/SearchPageNew/components/common'
+import { SuggestionsError } from '~/pages/SearchPageNew/components/common'
 
 import { useAnnotations } from '~/api/admin/annotations'
 
@@ -20,10 +20,6 @@ const Annotations = () => {
 
   if (isLoading) {
     return <ApiLoader />
-  }
-
-  if (!data || data.length === 0) {
-    return <SuggestionsEmpty message="No annotations available!" />
   }
 
   const rows = data?.map(item => (
@@ -62,7 +58,21 @@ const Annotations = () => {
             </th>
           </tr>
         </thead>
-        <tbody css={S.tbody}>{rows}</tbody>
+        {rows && rows?.length > 0 ? (
+          <tbody css={S.tbody}>{rows}</tbody>
+        ) : (
+          <tbody>
+            <tr>
+              <td colSpan={4}>
+                <Flex align="center" justify="center" gap="sm" mt="xs">
+                  <Text fz="sm" color="gray">
+                    No annotations available!
+                  </Text>
+                </Flex>
+              </td>
+            </tr>
+          </tbody>
+        )}
       </Table>
     </Paper>
   )
