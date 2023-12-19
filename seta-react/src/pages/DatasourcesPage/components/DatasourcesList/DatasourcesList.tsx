@@ -5,7 +5,7 @@ import { IconSearch } from '@tabler/icons-react'
 import { useDatasourceListContext } from '~/pages/DatasourcesPage/contexts/datasource-list.context'
 
 import { useAllDatasources } from '~/api/datasources/discover-datasources'
-import type { DatasourceResponse } from '~/api/types/datasource-types'
+import type { DatasourcesResponse } from '~/api/types/datasource-types'
 
 import DatasourcesListContent from './DatasourcesListContent'
 import * as S from './styles'
@@ -22,7 +22,7 @@ const useStyles = createStyles({
 const DatasourcesList = () => {
   const [search, setSearch] = useState('')
   const { classes } = useStyles()
-  const [sortedData, setSortedData] = useState<DatasourceResponse[]>([])
+  const [sortedData, setSortedData] = useState<DatasourcesResponse[]>([])
 
   const { data, isLoading, error, refetch } = useAllDatasources()
   const { selected } = useDatasourceListContext()

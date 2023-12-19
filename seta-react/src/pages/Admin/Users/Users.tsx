@@ -14,7 +14,7 @@ const AdminUsers = () => {
   }
 
   return (
-    <Box w="100%" pl="md" pr="md">
+    <Box w="100%" pl="md" pr="md" display="grid">
       <Title order={3} mb="sm" mt="-2rem" color="blue.5">
         SeTA Accounts
       </Title>

@@ -1,6 +1,7 @@
 /* eslint-disable complexity */
 import { Navbar, ScrollArea, NavLink, Group, ThemeIcon, Title } from '@mantine/core'
 import { IconGauge, IconUserCog } from '@tabler/icons-react'
+import { AiOutlineDatabase } from 'react-icons/ai'
 import { FaWrench } from 'react-icons/fa'
 import { RiMarkupLine } from 'react-icons/ri'
 import { Link, useLocation } from 'react-router-dom'
@@ -73,6 +74,24 @@ const SidebarContent = () => {
           to="/admin/annotations"
           css={S.linkPrimary}
           active={activeLink === ActiveLink.ANNOTATIONS}
+        />
+        {/* Annotations END*/}
+
+        {/* Datasources START*/}
+        <NavLink
+          label="Datasources"
+          icon={
+            <ThemeIcon
+              variant={activeLink === ActiveLink.DATASOURCES ? 'outline' : 'light'}
+              size={30}
+            >
+              <AiOutlineDatabase size="1rem" stroke="1.5" />
+            </ThemeIcon>
+          }
+          component={Link}
+          to="/admin/datasources"
+          css={S.linkPrimary}
+          active={activeLink === ActiveLink.DATASOURCES}
         />
         {/* Annotations END*/}
       </Navbar.Section>
