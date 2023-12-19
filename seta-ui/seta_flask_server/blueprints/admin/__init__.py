@@ -3,8 +3,6 @@ from flask import Blueprint, current_app
 
 from seta_flask_server.infrastructure.dto.authorizations import authorizations
 
-from seta_flask_server.infrastructure.dto.authorizations import authorizations
-
 from .change_requests import change_requests_ns
 from .orphans import orphans_ns
 from .stats import stats_ns

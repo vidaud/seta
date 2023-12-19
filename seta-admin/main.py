@@ -16,7 +16,9 @@ def create_app() -> FastAPI():
     # get root logger
     logger = logging.getLogger(__name__)
 
-    app = FastAPI(root_path="/admin", title="Internal Administration", version="0.0.1")
+    app = FastAPI(
+        root_path="/seta-admin", title="Internal Administration", version="0.0.1"
+    )
 
     @app.middleware("http")
     async def log_requests(request: Request, call_next):
