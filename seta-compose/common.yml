@@ -153,3 +153,19 @@ services:
       - no_proxy=${NO_PROXY}            
       - ES_HOST
       - STAGE
+
+  nlp:
+    restart: always
+    build:
+      context: ../
+      dockerfile: seta-nlp/Dockerfile
+      args:
+        - HTTP_PROXY=${HTTP_PROXY}
+        - HTTPS_PROXY=${HTTPS_PROXY}
+    expose:
+      - "8084"
+    environment:
+      - NO_PROXY=${NO_PROXY}
+      - no_proxy=${NO_PROXY}            
+      - ES_HOST
+      - STAGE

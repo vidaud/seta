@@ -4,7 +4,8 @@ import random
 import string
 from fastapi import FastAPI, Request
 
-from admin.routers.indexes import router as indexes_router
+from nlp.routers.file_parser import router as file_parser_router
+from nlp.routers.embeddings import router as embeddings_router
 
 # setup loggers
 logging.config.fileConfig("/etc/seta/logging.conf", disable_existing_loggers=False)
@@ -16,7 +17,12 @@ def create_app() -> FastAPI():
     # get root logger
     logger = logging.getLogger(__name__)
 
-    app = FastAPI(root_path="/admin", title="Internal Administration", version="0.0.1")
+    app = FastAPI(
+        root_path="/seta-nlp",
+        title="SeTA NLP",
+        summary="Natural language processing web service.",
+        version="1.0.0",
+    )
 
     @app.middleware("http")
     async def log_requests(request: Request, call_next):
@@ -39,8 +45,9 @@ def create_app() -> FastAPI():
 
         return response
 
-    app.include_router(indexes_router, tags=["indexes"])
+    app.include_router(file_parser_router)
+    app.include_router(embeddings_router)
 
-    logger.info("FastAPI initialized.")
+    logger.info("FastAPI NLP initialized.")
 
     return app

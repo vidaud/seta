@@ -21,11 +21,11 @@ ENV PYTHONUNBUFFERED 1
 COPY ./seta-admin/requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-#copy configuration file
+#copy configuration files
 COPY ./seta-config/data.conf /etc/seta/
+COPY ./seta-config/logging.conf /etc/seta/
 
 COPY ./seta-admin/admin $ROOT/admin
 COPY ./seta-admin/*.py ./
-COPY ./seta-admin/logging.conf ./logging.conf
 
 CMD ["uvicorn", "--factory", "main:create_app", "--host=0.0.0.0", "--port=8000", "--no-access-log"]
