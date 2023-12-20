@@ -53,6 +53,7 @@ def handle_corpus_response(aggs, res, search_type, term, current_app, semantic_s
                                            "taxonomy": tax.tree,
                                            "keywords": is_field_in_doc(document['_source'], "keywords"),
                                            "other": is_field_in_doc(document['_source'], "other"),
+                                           "annotation": is_field_in_doc(document['_source'], "annotation"),
                                            "concordance": concordance_field})
     return documents
 

@@ -57,4 +57,5 @@
       ,"taxonomy_path": {"type":"text", "analyzer": "custom_path_tree", "search_analyzer": "keyword", "fielddata": true}
       ,"sbert_embedding":{"type": "knn_vector", "dimension": 768, "method": {"name": "hnsw", "space_type": "innerproduct", "engine": "faiss","parameters": {"ef_search": 256, "ef_construction": 256,"m": 48}}}
       ,"other":{"type":"flat_object"}
+      ,"annotation":{"type":"text","fields":{"keyword":{"type":"keyword"}}}
 }}}
