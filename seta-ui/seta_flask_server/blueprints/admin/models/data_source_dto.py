@@ -19,9 +19,15 @@ user_info_model = Model(
 contact_model = Model(
     "DataSourceContact",
     {
-        "email": fields.String(description="Email address of the organisation."),
-        "person": fields.String(description="Person name within the organisation."),
-        "website": fields.String(description="Website address of the data source."),
+        "email": fields.String(
+            description="Email address of the organisation.", required=True
+        ),
+        "person": fields.String(
+            description="Person name within the organisation.", required=True
+        ),
+        "website": fields.String(
+            description="Website address of the data source.", required=True
+        ),
     },
 )
 
@@ -70,12 +76,23 @@ replace_data_source_scopes_model = Model(
 data_source_model = Model(
     "DataSource",
     {
-        "title": fields.String(description="Short title"),
-        "description": fields.String(description="Long text description"),
-        "organisation": fields.String(description="Organisation owner"),
-        "theme": fields.String(description="Domain of application"),
+        "title": fields.String(
+            description="Unique short title. min_length=3, max_length=200",
+            required=True,
+        ),
+        "description": fields.String(
+            description="Long text description. min_length=5, max_length=5000",
+            required=True,
+        ),
+        "organisation": fields.String(description="Organisation owner", required=True),
+        "themes": fields.List(
+            fields.String(), description="Domains of application.", required=True
+        ),
         "contact": fields.Nested(
-            model=contact_model, description="Contact channels", skip_none=True
+            model=contact_model,
+            description="Contact channels",
+            required=True,
+            skip_none=True,
         ),
     },
 )
@@ -103,10 +120,13 @@ view_data_source_model = data_source_model.clone(
 new_data_source_model = data_source_model.clone(
     "DataSourceNew",
     {
-        "id": fields.String(description="Identifier."),
+        "id": fields.String(
+            description="Unique identifier. min_length=3, max_length=100", required=True
+        ),
         "index": fields.String(
-            description="Index name. If this not already exists, it will be created in the Search engine.",
+            description="Index name. min_length=3,  max_length=200,  regex=^[a-zA-Z0-9][a-zA-Z0-9_\-]*$.",
             attribute="index_name",
+            required=True,
         ),
     },
 )

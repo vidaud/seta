@@ -11,9 +11,9 @@ from ..user_info import UserInfo
 
 
 class DataSourceContactModel(BaseModel):
-    email: Optional[EmailStr] = None
-    person: Optional[str] = None
-    website: Optional[HttpUrl] = None
+    email: EmailStr
+    person: str
+    website: HttpUrl
 
     @field_serializer("website")
     def serialize_website(self, website: HttpUrl):
@@ -26,11 +26,16 @@ class DataSourceModel(BaseModel):
     data_source_id: str = Field(min_length=3, max_length=100, validation_alias="id")
     title: str = Field(min_length=3, max_length=200)
     description: str = Field(min_length=5, max_length=5000)
-    index_name: str = Field(validation_alias="index")
-    organisation: Optional[str] = None
-    theme: Optional[str] = None
+    index_name: str = Field(
+        min_length=3,
+        max_length=200,
+        pattern=r"^[a-zA-Z0-9][a-zA-Z0-9_\-]*$",
+        validation_alias="index",
+    )
+    organisation: str
+    themes: list[str]
     status: DataSourceStatusConstants = DataSourceStatusConstants.ACTIVE
-    contact: DataSourceContactModel = None
+    contact: DataSourceContactModel
     creator_id: Optional[str] = None
     created_at: Optional[datetime] = None
     modified_at: Optional[datetime] = None
@@ -38,9 +43,3 @@ class DataSourceModel(BaseModel):
     creator: Optional[UserInfo] = Field(default=None, exclude=True)
     search_index: Optional[SearchIndexModel] = Field(default=None, exclude=True)
     scopes: Optional[list[DataSourceScopeModel]] = Field(default=None, exclude=True)
-
-    def to_dict(self, exclude: set[str] = None):
-        """Convert model to dictionary."""
-
-        json = self.model_dump(exclude=exclude)
-        return json

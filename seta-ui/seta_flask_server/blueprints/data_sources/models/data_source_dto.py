@@ -14,11 +14,13 @@ contact_model = Model(
 data_source_model = Model(
     "DataSource",
     {
-        "id": fields.String(description="Identifier.", attribute="data_source_id"),
-        "title": fields.String(description="Short title"),
-        "description": fields.String(description="Long text description"),
-        "organisation": fields.String(description="Organisation owner"),
-        "theme": fields.String(description="Domain of application"),
+        "id": fields.String(
+            description="Unique identifier.", attribute="data_source_id"
+        ),
+        "title": fields.String(description="Unique short title"),
+        "description": fields.String(description="Long text description."),
+        "organisation": fields.String(description="Organisation owner."),
+        "themes": fields.List(fields.String(), description="Domains of application."),
         "contact": fields.Nested(
             model=contact_model, description="Contact channels", skip_none=True
         ),
