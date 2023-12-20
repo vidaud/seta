@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import { Menu } from '@mantine/core'
-import { IconPlus } from '@tabler/icons-react'
 import { BsThreeDotsVertical } from 'react-icons/bs'
 import { FiCornerRightDown, FiCornerUpRight } from 'react-icons/fi'
 
@@ -9,7 +8,6 @@ import ActionIconMenu from '~/components/ActionIconMenu/ActionIconMenu'
 import type { AnnotationResponse } from '~/api/types/annotations-types'
 
 import { downLoadJSON } from '../../downloadJson'
-import AddAnnotation from '../AddAnnotation'
 
 type Props = {
   item?: AnnotationResponse
@@ -22,6 +20,7 @@ const OptionsMenuAction = ({ item, data, isLoading }: Props) => {
 
   return (
     <ActionIconMenu
+      position="right"
       closeOnItemClick={false}
       action={{
         icon: <BsThreeDotsVertical size={18} strokeWidth={0.5} />,
@@ -36,9 +35,6 @@ const OptionsMenuAction = ({ item, data, isLoading }: Props) => {
     >
       {data ? (
         <>
-          <Menu.Item icon={<IconPlus size="1.1rem" />}>
-            <AddAnnotation />
-          </Menu.Item>
           <Menu.Item
             icon={<FiCornerUpRight />}
             onClick={() => {
