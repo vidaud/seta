@@ -116,6 +116,7 @@ def build_update_data_source(
     errors = {}
 
     payload["id"] = data_source.data_source_id
+    payload["index"] = data_source.index_name
 
     try:
         update_data_source = models.DataSourceModel(**payload)

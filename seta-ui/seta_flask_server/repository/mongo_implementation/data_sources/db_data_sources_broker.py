@@ -19,13 +19,13 @@ class DataSourcesBroker(implements(IDataSourcesBroker)):
         if not self.identifier_exists(model.data_source_id):
             model.created_at = datetime.now(tz=pytz.utc)
 
-            model_json = model.to_dict()
+            model_json = model.model_dump()
             self.collection.insert_one(model_json)
 
     def update(self, model: DataSourceModel) -> None:
         model.modified_at = datetime.now(tz=pytz.utc)
 
-        json = model.to_dict(exclude={"created_at", "creator_id", "index_name"})
+        json = model.model_dump(exclude={"created_at", "creator_id", "index_name"})
         set_json = {"$set": json}
 
         self.collection.update_one({"data_source_id": model.data_source_id}, set_json)
@@ -84,7 +84,7 @@ def _data_source_from_db_json(json_dict: dict) -> DataSourceModel:
         description=json_dict["description"],
         index_name=json_dict["index_name"],
         organisation=json_dict.get("organisation"),
-        theme=json_dict.get("theme"),
+        themes=json_dict.get("themes"),
         status=json_dict["status"],
         creator_id=json_dict.get("creator_id"),
         created_at=json_dict.get("created_at"),
