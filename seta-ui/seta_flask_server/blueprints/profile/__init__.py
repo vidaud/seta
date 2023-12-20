@@ -8,6 +8,7 @@ from .scopes import scopes_ns
 from .resources import resources_ns
 from .library import library_ns
 from .unsearchables import unsearchables_ns
+from .auth_key import auth_key_ns
 
 authorizations = {
     "Bearer": {
@@ -47,3 +48,4 @@ profile_api.add_namespace(resources_ns, path="/me")
 profile_api.add_namespace(library_ns, path="/me")
 
 profile_api.add_namespace(unsearchables_ns, path="/me")
+profile_api.add_namespace(auth_key_ns, path="/me/auth-key")
