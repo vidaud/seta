@@ -40,7 +40,6 @@ class Config:
 
         Config.INDEX_SUGGESTION = config_section["INDEX_SUGGESTION"]
         Config.INDEX_PUBLIC = config_section["INDEX_PUBLIC"]
-        Config.INDEX_PRIVATE = config_section["INDEX_PRIVATE"]
 
         Config.MODELS_DOCKER_PATH = config_section["MODELS_DOCKER_PATH"]
         Config.MODELS_PATH = config_section["MODELS_PATH"]
