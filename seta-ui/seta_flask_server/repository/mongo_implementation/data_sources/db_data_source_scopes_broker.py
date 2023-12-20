@@ -37,7 +37,10 @@ class DataSourceScopesBroker(implements(IDataSourceScopesBroker)):
     ):
         """Replace all scopes for a data source."""
 
-        scope_list = [s.model_dump() for s in scopes]
+        scope_list = None
+
+        if scopes:
+            scope_list = [s.model_dump() for s in scopes]
 
         with self.db.client.start_session(causal_consistency=True) as session:
             # delete existing system scopes
