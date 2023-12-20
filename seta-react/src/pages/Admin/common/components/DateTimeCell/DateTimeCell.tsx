@@ -16,8 +16,8 @@ const DateTimeCell = ({ dateTime }: Props) => {
         <IconCalendarTime size="1.2rem" color="gray" />
       </Box>
       <Box m={0}>
-        <Text fz="md">{date}</Text>
-        <Text fz="md" c="dimmed">
+        <Text fz="sm">{date}</Text>
+        <Text fz="sm" c="dimmed">
           {time}
         </Text>
       </Box>

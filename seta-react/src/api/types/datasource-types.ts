@@ -11,13 +11,13 @@ export type DatasourceResponse = {
   title: string
   description: string
   organisation: string
-  theme?: string
+  themes: string[]
   created?: Date
   searchable?: boolean
-  contact?: {
-    email?: string
-    person?: string
-    website?: string
+  contact: {
+    email: string
+    person: string
+    website: string
   }
   creator?: {
     id?: string
@@ -33,7 +33,7 @@ export type DatasourcesResponse = {
   title: string
   description: string
   organisation: string
-  theme: string
+  themes: string[]
   created: Date
   searchable: boolean
   contact: {

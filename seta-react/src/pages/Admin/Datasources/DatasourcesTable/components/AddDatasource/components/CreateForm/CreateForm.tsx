@@ -1,4 +1,5 @@
-import { TextInput, Group, createStyles, Button, Autocomplete } from '@mantine/core'
+import { useState } from 'react'
+import { TextInput, Group, createStyles, Button, Autocomplete, MultiSelect } from '@mantine/core'
 import { IconAt, IconUser } from '@tabler/icons-react'
 import type { AxiosError } from 'axios'
 import { IoMdLink } from 'react-icons/io'
@@ -27,6 +28,7 @@ const useStyles = createStyles({
 const CreateForm = ({ close, categories }) => {
   const { classes, cx } = useStyles()
   const setCreateDatasourceMutation = useCreateDatasource()
+  const [data, setData] = useState<string[]>([])
 
   const form = useDatasource({
     initialValues: {
@@ -35,7 +37,7 @@ const CreateForm = ({ close, categories }) => {
       title: '',
       description: '',
       organisation: '',
-      theme: '',
+      themes: [],
       contact: {
         email: '',
         person: '',
@@ -53,7 +55,9 @@ const CreateForm = ({ close, categories }) => {
           : null,
       title: values.title.length < 5 ? 'Title should have at least 3 characters' : null,
       description:
-        values.description.length < 5 ? 'Description should have at least 5 characters' : null
+        values.description.length < 5 ? 'Description should have at least 5 characters' : null,
+      organisation: values.organisation.length < 1 ? 'Organisation name is too short' : null,
+      themes: values.themes.length < 1 ? 'Themes field is empty' : null
     })
   })
 
@@ -64,7 +68,7 @@ const CreateForm = ({ close, categories }) => {
       title: values.title,
       description: values.description,
       organisation: values.organisation,
-      theme: values.theme,
+      themes: values.themes,
       contact: {
         email: values.contact?.email,
         person: values.contact?.person,
@@ -133,15 +137,27 @@ const CreateForm = ({ close, categories }) => {
             label="Organisation"
             {...form.getInputProps('organisation')}
             className={cx(classes.input)}
-            placeholder="Enter organisation ..."
+            placeholder="Enter organisation name ..."
             withAsterisk
           />
-          <TextInput
+          <MultiSelect
             w="49%"
-            label="Theme"
-            {...form.getInputProps('theme')}
-            className={cx(classes.input)}
-            placeholder="Enter theme ..."
+            mb="20px"
+            label="Themes"
+            data={data}
+            placeholder="Add new theme"
+            {...form.getInputProps('themes')}
+            searchable
+            creatable
+            rightSection={<></>}
+            getCreateLabel={query => `+ Add theme "${query}"`}
+            onCreate={query => {
+              const item = query
+
+              setData(current => [...current, item])
+
+              return item
+            }}
             withAsterisk
           />
         </Group>
@@ -152,7 +168,8 @@ const CreateForm = ({ close, categories }) => {
             icon={<IconUser size="1rem" />}
             {...form.getInputProps('contact.person')}
             className={cx(classes.input)}
-            placeholder="Enter person ..."
+            placeholder="Enter contact ..."
+            withAsterisk
           />
           <TextInput
             w="49%"
@@ -161,14 +178,16 @@ const CreateForm = ({ close, categories }) => {
             {...form.getInputProps('contact.email')}
             className={cx(classes.input)}
             placeholder="Enter email ..."
+            withAsterisk
           />
         </Group>
         <TextInput
-          label="website"
+          label="Website"
           icon={<IoMdLink size="1rem" />}
           {...form.getInputProps('contact.website')}
           className={cx(classes.input)}
           placeholder="Enter website ..."
+          withAsterisk
         />
         <Group position="right" pt="md">
           <Button

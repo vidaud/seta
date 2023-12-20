@@ -16,9 +16,7 @@ const EmailGroup = ({ email }: Props) => {
   return (
     <Group noWrap spacing={3} mt={3}>
       {email ? <IconAt stroke={1.5} size="1rem" color="gray" /> : null}
-      <Text fz="xs" c="dimmed">
-        {email}
-      </Text>
+      <Text fz="sm">{email}</Text>
     </Group>
   )
 }
@@ -28,16 +26,12 @@ const ContactInfo = ({ person, website, email }: Props) => {
     <Box>
       <Group noWrap spacing={3}>
         {person ? <IconUser size="1rem" color="gray" /> : null}
-        <Text fz="md" fw={500}>
-          {person ?? 'unknown'}
-        </Text>
+        <Text fz="sm">{person ?? 'unknown'}</Text>
       </Group>
 
       <Group noWrap spacing={3}>
         {website ? <IoMdLink size="1rem" color="gray" /> : null}
-        <Text fz="xs" tt="uppercase" fw={700} c="dimmed">
-          {website}
-        </Text>
+        <Text fz="sm">{website}</Text>
       </Group>
 
       <EmailGroup email={email} />
