@@ -5,6 +5,8 @@ import api from '~/api/api'
 import type { DatasourcesResponse } from '~/api/types/datasource-types'
 import { environment } from '~/environments/environment'
 
+import { DatasourceQueryKeys } from './datasource-query-keys'
+
 export const cacheKey = () => ['data-sources']
 const BASE_URL = environment.baseUrl
 
@@ -19,4 +21,7 @@ const getAllDatasources = async (): Promise<DatasourcesResponse[]> => {
 }
 
 export const useAllDatasources = () =>
-  useQuery({ queryKey: cacheKey(), queryFn: () => getAllDatasources() })
+  useQuery({
+    queryKey: DatasourceQueryKeys.DatasourcesQueryKey,
+    queryFn: () => getAllDatasources()
+  })

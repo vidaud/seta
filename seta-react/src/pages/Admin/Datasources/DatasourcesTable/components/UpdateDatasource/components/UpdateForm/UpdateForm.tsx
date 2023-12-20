@@ -1,5 +1,5 @@
-import { useEffect } from 'react'
-import { Group, Button, TextInput, Radio } from '@mantine/core'
+import { useEffect, useState } from 'react'
+import { Group, Button, TextInput, Radio, MultiSelect } from '@mantine/core'
 import { IconAt, IconUser } from '@tabler/icons-react'
 import type { AxiosError } from 'axios'
 import { IoMdLink } from 'react-icons/io'
@@ -18,13 +18,14 @@ import { useStyles } from '../style'
 const UpdateForm = ({ datasource, close }) => {
   const { classes, cx } = useStyles()
   const setUpdateDatasourceMutation = useUpdateDatasource(datasource.id)
+  const [data, setData] = useState<string[]>(datasource.themes)
 
   const form = useDatasource({
     initialValues: {
       title: '',
       description: '',
       organisation: '',
-      theme: '',
+      themes: [],
       contact: {
         email: '',
         person: '',
@@ -32,28 +33,35 @@ const UpdateForm = ({ datasource, close }) => {
       },
       status: ''
     },
-    validate: values => ({
-      id:
-        values.id !== undefined && values.id?.length < 3
-          ? 'ID should have at least 3 characters'
+    validate: {
+      title: (value, values) =>
+        values && values.title.length < 3
+          ? 'Title should have at least 3 characters and should be unique'
           : null,
-      title: values.title.length < 5 ? 'Title should have at least 3 characters' : null,
-      description:
-        values.description.length < 5 ? 'Description should have at least 5 characters' : null
-    })
+      description: (value, values) =>
+        values && values.description.length < 5
+          ? 'Description should have at least 5 characters'
+          : null,
+      organisation: (value, values) =>
+        values && values.organisation.length < 3
+          ? 'Organisation should have at least 3 characters'
+          : null,
+      themes: value => (value && value.length < 1 ? 'Themes field should not be empty' : null),
+      contact: {
+        email: value =>
+          value.length < 2
+            ? 'The email address is not valid. It must have exactly one @-sign'
+            : null,
+        website: value =>
+          value.length < 2 ? 'Input should be a valid URL, relative URL without a base' : null,
+        person: value => (value.length < 2 ? 'Contact person name is too short' : null)
+      }
+    }
   })
 
   useEffect(() => {
     if (datasource) {
-      form.setValues({
-        title: datasource.title,
-        description: datasource.description,
-        organisation: datasource.organisation,
-        theme: datasource.theme,
-        contact: datasource.contact,
-        status: datasource.status,
-        index: datasource.index
-      })
+      form.setValues(datasource)
     }
     // adding form to useEffect will cause infinite loop call
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -64,7 +72,7 @@ const UpdateForm = ({ datasource, close }) => {
       title: values.title,
       description: values.description,
       organisation: values.organisation,
-      theme: values.theme,
+      themes: values.themes,
       contact: {
         email: values.contact?.email ? values.contact.email : '-',
         person: values.contact?.person ? values.contact.person : '-',
@@ -88,6 +96,7 @@ const UpdateForm = ({ datasource, close }) => {
           })
         } else {
           notifications.showError('Datasource update failed!', {
+            description: error?.response?.data?.message,
             autoClose: true
           })
         }
@@ -122,12 +131,24 @@ const UpdateForm = ({ datasource, close }) => {
               placeholder="Enter organisation ..."
               withAsterisk
             />
-            <TextInput
+            <MultiSelect
               w="49%"
-              label="Theme"
-              {...form.getInputProps('theme')}
-              className={cx(classes.input)}
-              placeholder="Enter theme ..."
+              mb="20px"
+              label="Themes"
+              data={data}
+              placeholder="Add new theme"
+              {...form.getInputProps('themes')}
+              searchable
+              creatable
+              rightSection={<></>}
+              getCreateLabel={query => `+ Add theme "${query}"`}
+              onCreate={query => {
+                const item = query
+
+                setData(current => [...current, item])
+
+                return item
+              }}
               withAsterisk
             />
           </Group>
@@ -139,6 +160,7 @@ const UpdateForm = ({ datasource, close }) => {
               {...form.getInputProps('contact.person')}
               className={cx(classes.input)}
               placeholder="Enter person ..."
+              withAsterisk
             />
             <TextInput
               w="49%"
@@ -147,6 +169,7 @@ const UpdateForm = ({ datasource, close }) => {
               {...form.getInputProps('contact.email')}
               className={cx(classes.input)}
               placeholder="Enter email ..."
+              withAsterisk
             />
           </Group>
           <TextInput
@@ -155,6 +178,7 @@ const UpdateForm = ({ datasource, close }) => {
             {...form.getInputProps('contact.website')}
             className={cx(classes.input)}
             placeholder="Enter website ..."
+            withAsterisk
           />
           <Radio.Group label="Status" {...form.getInputProps('status')}>
             <Radio value="active" label="Active" />

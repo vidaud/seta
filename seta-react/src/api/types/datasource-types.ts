@@ -11,13 +11,13 @@ export type DatasourceResponse = {
   title: string
   description: string
   organisation: string
-  theme?: string
+  themes: string[]
   created?: Date
   searchable?: boolean
-  contact?: {
-    email?: string
-    person?: string
-    website?: string
+  contact: {
+    email: string
+    person: string
+    website: string
   }
   creator?: {
     id?: string
@@ -28,12 +28,26 @@ export type DatasourceResponse = {
   scopes?: DatasourceScopes[]
 }
 
+export type CreateDatasource = {
+  id: string
+  index: string
+  title: string
+  description: string
+  organisation: string
+  themes: string[]
+  contact: {
+    email: string
+    person: string
+    website: string
+  }
+}
+
 export type DatasourcesResponse = {
   id: string
   title: string
   description: string
   organisation: string
-  theme: string
+  themes: string[]
   created: Date
   searchable: boolean
   contact: {

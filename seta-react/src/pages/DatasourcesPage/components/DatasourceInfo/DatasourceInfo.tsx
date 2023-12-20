@@ -89,7 +89,7 @@ const DatasourceInfo = ({ datasource }: Props) => {
               </>
             ) : null}
           </Group>
-          <ThemeList themes={datasource.theme ? datasource.theme : '-'} width="38%" />
+          <ThemeList themes={datasource.themes ? datasource.themes : []} width="38%" />
         </Group>
       </Flex>
     </div>

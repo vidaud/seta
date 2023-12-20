@@ -96,7 +96,7 @@ const DatasourcesTable = ({ data, isLoading, error }: DataProps<DatasourceRespon
     positionExpandColumn: 'first',
     enablePagination: true,
     paginationDisplayMode: 'default',
-    renderTopToolbarCustomActions: () => <AddDatasource />,
+    renderBottomToolbarCustomActions: () => <AddDatasource />,
     mantinePaginationProps: {
       rowsPerPageOptions: ['10', '20', '50']
     },
@@ -155,7 +155,7 @@ const DatasourcesTable = ({ data, isLoading, error }: DataProps<DatasourceRespon
       <DetailPanel
         scopes={row.original.scopes}
         contactDetails={row.original.contact}
-        themes={row.original.theme ? row.original.theme : '-'}
+        themes={row.original.themes ? row.original.themes : []}
       />
     )
   })

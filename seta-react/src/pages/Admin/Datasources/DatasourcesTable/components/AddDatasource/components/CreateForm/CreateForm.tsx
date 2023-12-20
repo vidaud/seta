@@ -1,15 +1,16 @@
-import { TextInput, Group, createStyles, Button, Autocomplete } from '@mantine/core'
+import { useState } from 'react'
+import { TextInput, Group, createStyles, Button, Autocomplete, MultiSelect } from '@mantine/core'
 import { IconAt, IconUser } from '@tabler/icons-react'
 import type { AxiosError } from 'axios'
 import { IoMdLink } from 'react-icons/io'
 
 import {
-  DatasourceFormProvider,
-  useDatasource
-} from '~/pages/Admin/Datasources/contexts/datasource-context'
+  CreateDatasourceFormProvider,
+  useCreateDatasources
+} from '~/pages/Admin/Datasources/contexts/create-datasource-context'
 
 import { useCreateDatasource } from '~/api/admin/datasources'
-import type { DatasourceResponse } from '~/api/types/datasource-types'
+import type { CreateDatasource } from '~/api/types/datasource-types'
 import { notifications } from '~/utils/notifications'
 
 const useStyles = createStyles({
@@ -27,44 +28,60 @@ const useStyles = createStyles({
 const CreateForm = ({ close, categories }) => {
   const { classes, cx } = useStyles()
   const setCreateDatasourceMutation = useCreateDatasource()
+  const [data, setData] = useState<string[]>([])
 
-  const form = useDatasource({
+  const form = useCreateDatasources({
     initialValues: {
       id: '',
       index: '',
       title: '',
       description: '',
       organisation: '',
-      theme: '',
+      themes: [],
       contact: {
         email: '',
         person: '',
         website: ''
       }
     },
-    validate: values => ({
-      id:
-        values.id !== undefined && values.id?.length < 3
-          ? 'ID should have at least 3 characters'
+    validate: {
+      id: (value, values) =>
+        values && values.id.length < 3 ? 'ID should have at least 3 characters' : null,
+      index: (value, values) =>
+        values && values.index.length < 3 ? 'Index should have at least 3 characters' : null,
+      title: (value, values) =>
+        values && values.title.length < 3
+          ? 'Title should have at least 3 characters and should be unique'
           : null,
-      index:
-        values.index !== undefined && values.index?.length < 3
-          ? 'Index should have at least 3 characters'
+      description: (value, values) =>
+        values && values.description.length < 5
+          ? 'Description should have at least 5 characters'
           : null,
-      title: values.title.length < 5 ? 'Title should have at least 3 characters' : null,
-      description:
-        values.description.length < 5 ? 'Description should have at least 5 characters' : null
-    })
+      organisation: (value, values) =>
+        values && values.organisation.length < 3
+          ? 'Organisation should have at least 3 characters'
+          : null,
+      themes: value => (value && value.length < 1 ? 'Themes field should not be empty' : null),
+      contact: {
+        email: value =>
+          value.length < 2
+            ? 'The email address is not valid. It must have exactly one @-sign'
+            : null,
+        website: value =>
+          value.length < 2 ? 'Input should be a valid URL, relative URL without a base' : null,
+        person: value => (value.length < 2 ? 'Contact person name is too short' : null)
+      }
+    }
   })
 
-  const handleSubmit = (values: DatasourceResponse) => {
+  const handleSubmit = (values: CreateDatasource) => {
     const updatedValues = {
       id: values.id,
       index: values.index,
       title: values.title,
       description: values.description,
       organisation: values.organisation,
-      theme: values.theme,
+      themes: values.themes,
       contact: {
         email: values.contact?.email,
         person: values.contact?.person,
@@ -94,7 +111,7 @@ const CreateForm = ({ close, categories }) => {
   }
 
   return (
-    <DatasourceFormProvider form={form}>
+    <CreateDatasourceFormProvider form={form}>
       <form className={cx(classes.form)} onSubmit={form.onSubmit(handleSubmit)}>
         <TextInput
           label="ID"
@@ -133,15 +150,27 @@ const CreateForm = ({ close, categories }) => {
             label="Organisation"
             {...form.getInputProps('organisation')}
             className={cx(classes.input)}
-            placeholder="Enter organisation ..."
+            placeholder="Enter organisation name ..."
             withAsterisk
           />
-          <TextInput
+          <MultiSelect
             w="49%"
-            label="Theme"
-            {...form.getInputProps('theme')}
-            className={cx(classes.input)}
-            placeholder="Enter theme ..."
+            mb="20px"
+            label="Themes"
+            data={data}
+            placeholder="Add new theme"
+            {...form.getInputProps('themes')}
+            searchable
+            creatable
+            rightSection={<></>}
+            getCreateLabel={query => `+ Add theme "${query}"`}
+            onCreate={query => {
+              const item = query
+
+              setData(current => [...current, item])
+
+              return item
+            }}
             withAsterisk
           />
         </Group>
@@ -152,7 +181,8 @@ const CreateForm = ({ close, categories }) => {
             icon={<IconUser size="1rem" />}
             {...form.getInputProps('contact.person')}
             className={cx(classes.input)}
-            placeholder="Enter person ..."
+            placeholder="Enter contact ..."
+            withAsterisk
           />
           <TextInput
             w="49%"
@@ -161,14 +191,16 @@ const CreateForm = ({ close, categories }) => {
             {...form.getInputProps('contact.email')}
             className={cx(classes.input)}
             placeholder="Enter email ..."
+            withAsterisk
           />
         </Group>
         <TextInput
-          label="website"
+          label="Website"
           icon={<IoMdLink size="1rem" />}
           {...form.getInputProps('contact.website')}
           className={cx(classes.input)}
           placeholder="Enter website ..."
+          withAsterisk
         />
         <Group position="right" pt="md">
           <Button
@@ -187,7 +219,7 @@ const CreateForm = ({ close, categories }) => {
           </Button>
         </Group>
       </form>
-    </DatasourceFormProvider>
+    </CreateDatasourceFormProvider>
   )
 }
 
