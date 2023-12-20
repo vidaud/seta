@@ -28,6 +28,20 @@ export type DatasourceResponse = {
   scopes?: DatasourceScopes[]
 }
 
+export type CreateDatasource = {
+  id: string
+  index: string
+  title: string
+  description: string
+  organisation: string
+  themes: string[]
+  contact: {
+    email: string
+    person: string
+    website: string
+  }
+}
+
 export type DatasourcesResponse = {
   id: string
   title: string

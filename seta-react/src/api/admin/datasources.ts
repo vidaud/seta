@@ -6,7 +6,7 @@ import { environment } from '~/environments/environment'
 
 import { AdminQueryKeys } from './query-keys'
 
-import type { DatasourceResponse } from '../types/datasource-types'
+import type { CreateDatasource, DatasourceResponse } from '../types/datasource-types'
 
 export const cacheKey = () => ['data-sources']
 const BASE_URL = environment.baseUrl
@@ -26,7 +26,7 @@ const getDatasources = async (): Promise<DatasourceResponse[]> => {
 export const useDatasources = () =>
   useQuery({ queryKey: AdminQueryKeys.Datasources, queryFn: () => getDatasources() })
 
-export const setCreateDatasource = async (request: DatasourceResponse) => {
+export const setCreateDatasource = async (request: CreateDatasource) => {
   return await api.post(DATASOURCES(), request, apiConfig)
 }
 
@@ -34,7 +34,7 @@ export const useCreateDatasource = () => {
   const client = useQueryClient()
 
   return useMutation({
-    mutationFn: (request: DatasourceResponse) => setCreateDatasource(request),
+    mutationFn: (request: CreateDatasource) => setCreateDatasource(request),
     onMutate: async () => {
       await client.cancelQueries(AdminQueryKeys.Datasources)
     },

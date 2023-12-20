@@ -33,17 +33,30 @@ const UpdateForm = ({ datasource, close }) => {
       },
       status: ''
     },
-    validate: values => ({
-      id:
-        values.id !== undefined && values.id?.length < 3
-          ? 'ID should have at least 3 characters'
+    validate: {
+      title: (value, values) =>
+        values && values.title.length < 3
+          ? 'Title should have at least 3 characters and should be unique'
           : null,
-      title: values.title.length < 5 ? 'Title should have at least 3 characters' : null,
-      description:
-        values.description.length < 5 ? 'Description should have at least 5 characters' : null,
-      organisation: values.organisation.length < 1 ? 'Organisation name is too short' : null,
-      themes: values.themes.length < 1 ? 'Themes can not be empty' : null
-    })
+      description: (value, values) =>
+        values && values.description.length < 5
+          ? 'Description should have at least 5 characters'
+          : null,
+      organisation: (value, values) =>
+        values && values.organisation.length < 3
+          ? 'Organisation should have at least 3 characters'
+          : null,
+      themes: value => (value && value.length < 1 ? 'Themes field should not be empty' : null),
+      contact: {
+        email: value =>
+          value.length < 2
+            ? 'The email address is not valid. It must have exactly one @-sign'
+            : null,
+        website: value =>
+          value.length < 2 ? 'Input should be a valid URL, relative URL without a base' : null,
+        person: value => (value.length < 2 ? 'Contact person name is too short' : null)
+      }
+    }
   })
 
   useEffect(() => {
