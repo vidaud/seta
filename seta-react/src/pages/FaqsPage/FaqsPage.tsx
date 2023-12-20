@@ -1,5 +1,4 @@
 import { Title, Container, Accordion, MantineProvider, Text } from '@mantine/core'
-import { IconDotsVertical } from '@tabler/icons-react'
 
 import Breadcrumbs from '~/components/Breadcrumbs'
 
@@ -18,7 +17,7 @@ const FaqsPage = () => {
   const { classes } = useStyles()
 
   const seta_api = '/seta-api/api/v1/doc'
-  const comm_api = '/seta-ui/api/v1/communities/doc'
+  const data_api = '/seta-ui/api/v1/data-sources/doc'
 
   return (
     <MantineProvider inherit theme={{ colorScheme: 'light' }}>
@@ -32,35 +31,10 @@ const FaqsPage = () => {
           <Accordion
             chevronPosition="right"
             multiple
-            defaultValue={['invite', 'resource', 'filters', 'upload-doc', 'api']}
+            defaultValue={['filters', 'upload-doc', 'api']}
             chevronSize={50}
             variant="separated"
           >
-            <Accordion.Item className={classes.item} value="invite">
-              <Accordion.Control className={classes.control}>
-                <Text fw={700}> What option do you need to select in order to invite others? </Text>
-              </Accordion.Control>
-              <Accordion.Panel>
-                <Text>
-                  From the community list, click on the <IconDotsVertical size={16} /> placed at the
-                  right of the Community name and select the option INVITE.
-                </Text>
-              </Accordion.Panel>
-            </Accordion.Item>
-
-            <Accordion.Item className={classes.item} value="resource">
-              <Accordion.Control className={classes.control}>
-                <Text fw={700}>
-                  What are the specific details that can be updated in a Community?
-                </Text>
-              </Accordion.Control>
-              <Accordion.Panel>
-                <Text>
-                  It is possible to update the 'Title' and 'Description' of the Communities.
-                </Text>
-              </Accordion.Panel>
-            </Accordion.Item>
-
             <Accordion.Item className={classes.item} value="filters">
               <Accordion.Control className={classes.control}>
                 <Text fw={700}> How does the user screen and filter search results in SeTA? </Text>
@@ -96,7 +70,7 @@ const FaqsPage = () => {
             <Accordion.Item className={classes.item} value="api">
               <Accordion.Control className={classes.control}>
                 <Text fw={700}>
-                  How can the Communities and Search tool be accessed through API's?
+                  How can the Datasources and Search tool be accessed through API's?
                 </Text>
               </Accordion.Control>
               <Accordion.Panel>
@@ -108,12 +82,12 @@ const FaqsPage = () => {
                 <Text
                   variant="link"
                   component="a"
-                  href={comm_api}
+                  href={data_api}
                   color="blue"
                   underline
                   align="center"
                 >
-                  Communities API
+                  Datasources API
                 </Text>
                 <br />
                 <Text

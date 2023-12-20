@@ -128,6 +128,7 @@ def register_blueprints(app):
     app.register_blueprint(communities_bp_v1, url_prefix=api_root_v1)
 
     app.register_blueprint(catalogue_bp_v1, url_prefix=api_root_v1)
+
     app.register_blueprint(notifications_bp_v1, url_prefix=api_root_v1)
 
     app.register_blueprint(data_sources_bp_v1, url_prefix=api_root_v1)

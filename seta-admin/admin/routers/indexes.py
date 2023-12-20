@@ -1,5 +1,4 @@
 import logging
-from venv import logger
 from fastapi import APIRouter, Depends, HTTPException, status
 
 from admin.models.index import Index
@@ -51,7 +50,7 @@ async def create_index(
 
 
 @router.delete(
-    "/indexes/{index_name}",
+    "/indexes",
     status_code=status.HTTP_200_OK,
     response_model=ResponseMessage,
     responses={
@@ -61,19 +60,19 @@ async def create_index(
     },
 )
 async def delete_index(
-    index_name: str,
+    index: Index,
     client: opensearch.OpenSearchEngine = Depends(opensearch.get_search_client),
 ):
     """Deletes index and all its data from Search engine."""
 
-    if not await client.index_exists(name=index_name):
+    if not await client.index_exists(name=index.name):
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail={"name": "Index not found."},
         )
 
     try:
-        await client.delete_index(name=index_name)
+        await client.delete_index(name=index.name)
 
         return ResponseMessage(status=ResponseStatus.SUCCESS, message="Index deleted.")
     except Exception as ex:

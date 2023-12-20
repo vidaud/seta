@@ -12,11 +12,6 @@ const HOME_CRUMB: Crumb = {
   path: '/'
 }
 
-// const COMMUNITY_CRUMB: Crumb = {
-//   title: 'Communities',
-//   path: '/communities'
-// }
-
 const linksFromLocation = (location: string): Crumb[] => {
   const paths = location.split('/').filter(Boolean)
 

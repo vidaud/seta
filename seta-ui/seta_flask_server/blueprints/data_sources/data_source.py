@@ -47,8 +47,8 @@ class DataSourcesResource(Resource):
         response = []
 
         for data_source in data_sources:
-            ds_dict = data_source.to_dict(
-                exclude={"creator", "creator_id", "modified_at", "status"}
+            ds_dict = data_source.model_dump(
+                exclude={"creator", "creator_id", "modified_at", "status", "index_name"}
             )
 
             ds_dict["searchable"] = (

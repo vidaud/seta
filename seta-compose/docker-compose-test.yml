@@ -14,28 +14,21 @@ services:
 
   seta-opensearch-test:
     container_name: opensearch-test
-    restart: "no"   
-    build:
-      context: ../seta-opensearch
-      args:
-        - HTTP_PROXY=${HTTP_PROXY}
-        - HTTPS_PROXY=${HTTPS_PROXY}
-    mem_limit: "4g"
+    restart: "no"
+    extends:
+      file: common.yml
+      service: opensearch
     environment:
-      - NO_PROXY=${NO_PROXY}
-      - no_proxy=${NO_PROXY}
-      - bootstrap.memory_lock=true
-      - plugins.security.disabled=true
       - discovery.type=single-node
-      - logger.level=WARN
-    expose:
-      - "9200"
-      - "9300"
-    ports:
-      - "0.0.0.0:9200:9200"
-      - "0.0.0.0:9300:9300"
+      - logger.level=DEBUG
     volumes:
       - opensearch-data-test:/usr/share/opensearch/data
+    expose:
+      - "9200"
+      - "9600"
+    ports:
+      - "0.0.0.0:9200:9200"
+      - "0.0.0.0:9600:9600"
     networks:
       - seta-network-test
 
@@ -50,7 +43,7 @@ services:
     networks:
       - seta-network-test
     depends_on:
-      - "seta-mongo-test"
+      - "seta-auth-test"
       - "seta-opensearch-test"
 
   seta-search-test:
@@ -95,7 +88,7 @@ services:
     build: 
       dockerfile: seta-ui/dockerfiles/Dockerfile-ui-test
     depends_on:
-      - "seta-api-test"
+      - "seta-auth-test"
     networks:
       - seta-network-test
 

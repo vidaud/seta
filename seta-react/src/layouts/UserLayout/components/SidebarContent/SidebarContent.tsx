@@ -4,7 +4,6 @@ import { BsFiletypeKey } from 'react-icons/bs'
 import { FaRegUserCircle } from 'react-icons/fa'
 import { FiGrid } from 'react-icons/fi'
 import { GrUserSettings } from 'react-icons/gr'
-import { RiShieldKeyholeLine } from 'react-icons/ri'
 import { Link, useLocation } from 'react-router-dom'
 
 import { ActiveLink, getActiveLink } from './active-link'
@@ -44,24 +43,6 @@ const SidebarContent = () => {
           active={activeLink === ActiveLink.DASHBOARD}
         />
         {/* Profile END*/}
-
-        {/* Permissions START*/}
-        <NavLink
-          label="Permissions"
-          icon={
-            <ThemeIcon
-              variant={activeLink === ActiveLink.PERMISSIONS ? 'outline' : 'light'}
-              size={30}
-            >
-              <RiShieldKeyholeLine size="1rem" />
-            </ThemeIcon>
-          }
-          component={Link}
-          to="/profile/permissions"
-          css={S.linkPrimary}
-          active={activeLink === ActiveLink.PERMISSIONS}
-        />
-        {/* Permissions END*/}
 
         {/* RSA Keys START*/}
         <NavLink

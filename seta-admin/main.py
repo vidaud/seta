@@ -7,7 +7,7 @@ from fastapi import FastAPI, Request
 from admin.routers.indexes import router as indexes_router
 
 # setup loggers
-logging.config.fileConfig("logging.conf", disable_existing_loggers=False)
+logging.config.fileConfig("/etc/seta/logging.conf", disable_existing_loggers=False)
 
 
 def create_app() -> FastAPI():
@@ -16,7 +16,9 @@ def create_app() -> FastAPI():
     # get root logger
     logger = logging.getLogger(__name__)
 
-    app = FastAPI(root_path="/admin", title="Internal Administration", version="0.0.1")
+    app = FastAPI(
+        root_path="/seta-admin", title="Internal Administration", version="0.0.1"
+    )
 
     @app.middleware("http")
     async def log_requests(request: Request, call_next):

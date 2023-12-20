@@ -1,22 +1,49 @@
 services:
   seta-mongo:
+    container_name: mongo
+    extends:
+      file: common.yml
+      service: mongo
+    volumes:
+      - seta-mongo:/data/db
     ports:
       - "27017:27017"
+    networks:
+      - seta-network
 
   seta-opensearch:
+    container_name: opensearch
+    extends:
+      file: common.yml
+      service: opensearch
     mem_limit: "6g"
     environment:
-    - logger.level=INFO
+      - discovery.type=single-node
+      - logger.level=INFO
+    volumes:
+      - opensearch-data:/usr/share/opensearch/data
+    expose:
+      - "9200"
+      - "9600"
+    networks:
+      - seta-network
 
   seta-api:
+    container_name: api
+    extends:
+      file: common.yml
+      service: api
     build:
       dockerfile: seta-api/Dockerfile-dev
     volumes:
       - ../seta-api:/home/seta
       - ../seta-config:/etc/seta
       - /home/seta/tika
-    environment:
-      - logger.level=DEBUG
+    depends_on:
+      - "seta-auth"
+      - "seta-opensearch"
+    networks:
+      - seta-network
 
   seta-search:
     build:
@@ -28,11 +55,31 @@ services:
       - logger.level=DEBUG
 
   seta-nginx:
+    container_name: nginx
+    extends:
+      file: common.yml
+      service: nginx
     build:
       args:
         - PROJECT_CONF=project_dev
+    ports:
+      - "80:80"
+    depends_on:
+      - "seta-auth"
+      - "seta-api"
+      - "seta-nlp"
+      - "seta-ui"
+      - "seta-ui-react"
+      - "seta-doc"
+      - "seta-admin"
+    networks:
+      - seta-network
 
   seta-ui:
+    container_name: ui
+    extends:
+      file: common.yml
+      service: ui
     build:
        dockerfile: seta-ui/dockerfiles/Dockerfile-ui-dev
     ports:
@@ -40,8 +87,18 @@ services:
     volumes:
       - ../seta-ui:/home/seta
       - ../seta-config:/etc/seta
+    depends_on:
+      - "seta-auth"
+      - "seta-mongo"
+      - "seta-admin"
+    networks:
+      - seta-network
 
   seta-ui-react:
+    container_name: ui-react
+    extends:
+      file: common.yml
+      service: ui-react
     build:
        dockerfile: docker/Dockerfile-dev
     ports:
@@ -52,18 +109,79 @@ services:
     environment:
       - NODE_ENV=development
       - CHOKIDAR_USEPOLLING=true
+    depends_on:
+      - "seta-api"
+      - "seta-ui"
+    networks:
+      - seta-network
+
+  seta-data:
+    container_name: data
+    extends:
+      file: common.yml
+      service: data
+    depends_on:
+      - "seta-opensearch"
+    volumes:
+      - seta-models3:/home/seta/models
+    networks:
+      - seta-network
 
   seta-doc:
+    container_name: doc
+    extends:
+      file: common.yml
+      service: doc
     build:
        dockerfile: Dockerfile-dev
     expose:
       - "8000"
     volumes:
       - ../seta-doc:/home/seta
+    networks:
+      - seta-network
 
   seta-auth:
+    container_name: auth
+    extends:
+      file: common.yml
+      service: auth
     build:
        dockerfile: seta-ui/dockerfiles/Dockerfile-auth-dev
     volumes:
       - ../seta-ui:/home/seta
       - ../seta-config:/etc/seta
+    depends_on:
+      - "seta-mongo"
+    networks:
+      - seta-network
+
+  seta-admin:
+    container_name: admin
+    extends:
+      file: common.yml
+      service: admin
+    volumes:
+      - seta-models3:/home/seta/models
+    networks:
+      - seta-network
+    depends_on:
+      - "seta-opensearch"
+
+  seta-nlp:
+    container_name: nlp
+    extends:
+      file: common.yml
+      service: nlp
+    networks:
+      - seta-network
+
+networks:
+  seta-network:
+    name: seta-network
+    driver: bridge
+
+volumes:
+  seta-mongo:
+  seta-models3:
+  opensearch-data:

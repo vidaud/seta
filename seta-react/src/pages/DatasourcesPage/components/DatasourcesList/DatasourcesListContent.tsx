@@ -7,7 +7,7 @@ import {
   SuggestionsLoading
 } from '~/pages/SearchPageNew/components/common'
 
-import type { DatasourceResponse } from '~/api/types/datasource-types'
+import type { DatasourcesResponse } from '~/api/types/datasource-types'
 import type { DataProps } from '~/types/data-props'
 
 import * as S from './styles'
@@ -16,7 +16,7 @@ import DatasourceInfo from '../DatasourceInfo/DatasourceInfo'
 
 const MARGIN_TOP = '4rem'
 
-type Props = DataProps<DatasourceResponse[]> & {
+type Props = DataProps<DatasourcesResponse[]> & {
   queryTerms: string
 }
 

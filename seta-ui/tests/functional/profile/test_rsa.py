@@ -25,7 +25,7 @@ def test_get_rsa_key(
 
     response = get_rsa_key(client=client, access_token=access_token)
     assert response.status_code == HTTPStatus.OK
-    assert "value" in response.json
+    assert "publicKey" in response.json
 
 
 @pytest.mark.parametrize("user_id", [("seta_admin")])

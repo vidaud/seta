@@ -4,7 +4,7 @@ from injector import inject
 from flask import current_app as app
 from flask import jsonify, abort, Blueprint
 from flask_jwt_extended import decode_token
-from flask_restx import Api, Resource, reqparse
+from flask_restx import Api, Resource, fields
 
 
 from seta_flask_server.repository import interfaces
@@ -13,7 +13,7 @@ from seta_flask_server.infrastructure.constants import (
     AuthorizedArea,
     UserStatusConstants,
 )
-from .logic.token_info_logic import get_resource_permissions
+from .logic.token_info_logic import get_data_source_permissions
 
 
 token_info = Blueprint("token_info", __name__)
@@ -26,16 +26,15 @@ authorization_api = Api(
 )
 ns_authorization = authorization_api.namespace("", "Authorization endpoints")
 
-request_parser = reqparse.RequestParser()
-request_parser.add_argument(
-    "token", location="json", required=True, nullable=False, help="Encoded token"
-)
-request_parser.add_argument(
-    "auth_area",
-    location="json",
-    required=False,
-    action="append",
-    help=f"Authorized areas, a list of {AuthorizedArea.List}",
+token_model = ns_authorization.model(
+    "Token",
+    {
+        "token": fields.String(description="Encoded token", required=True),
+        "authorizationAreas": fields.List(
+            fields.String(enum=AuthorizedArea.List),
+            description="List of authorized areas",
+        ),
+    },
 )
 
 
@@ -45,17 +44,19 @@ class TokenInfo(Resource):
     def __init__(
         self,
         users_broker: interfaces.IUsersBroker,
-        resources_broker: interfaces.IResourcesBroker,
         session_broker: interfaces.ISessionsBroker,
-        rolling_index_broker: interfaces.IRollingIndexBroker,
+        data_sources_broker: interfaces.IDataSourcesBroker,
+        data_source_scopes_broker: interfaces.IDataSourceScopesBroker,
+        profile_broker: interfaces.IUserProfileUnsearchables,
         *args,
         api=None,
         **kwargs,
     ):
         self.users_broker = users_broker
-        self.resources_broker = resources_broker
         self.session_broker = session_broker
-        self.rolling_index_broker = rolling_index_broker
+        self.data_sources_broker = data_sources_broker
+        self.data_source_scopes_broker = data_source_scopes_broker
+        self.profile_broker = profile_broker
 
         super().__init__(api, *args, **kwargs)
 
@@ -68,14 +69,14 @@ class TokenInfo(Resource):
             int(HTTPStatus.UNPROCESSABLE_ENTITY): "Invalid token",
         },
     )
-    @ns_authorization.expect(request_parser, validate=True)
+    @ns_authorization.expect(token_model, validate=True)
     def post(self):
         """Decodes the token and builds the community scopes for the user identity"""
 
-        r = authorization_api.payload
+        r = ns_authorization.payload
 
         token = r["token"]
-        areas = r.get("auth_area", None)
+        areas = r.get("authorizationAreas", None)
 
         decoded_token = None
         try:
@@ -86,18 +87,21 @@ class TokenInfo(Resource):
                 if self.session_broker.session_token_is_blocked(jti):
                     abort(HTTPStatus.UNAUTHORIZED, "Blocked token")
 
-            if areas is not None and AuthorizedArea.Resources in areas:
+            if areas is not None and AuthorizedArea.DataSources in areas:
                 # get user permissions for all resources
                 seta_id = decoded_token.get("seta_id")
                 if seta_id:
-                    user = self.users_broker.get_user_by_id(seta_id["user_id"])
+                    user = self.users_broker.get_user_by_id(
+                        seta_id["user_id"], load_scopes=False
+                    )
                     if user.status != UserStatusConstants.Active:
                         abort(HTTPStatus.UNAUTHORIZED, "User inactive!")
 
-                    decoded_token["resource_permissions"] = get_resource_permissions(
-                        user=user,
-                        resources_broker=self.resources_broker,
-                        rolling_index_broker=self.rolling_index_broker,
+                    decoded_token["resource_permissions"] = get_data_source_permissions(
+                        user_id=user.user_id,
+                        data_sources_broker=self.data_sources_broker,
+                        scopes_broker=self.data_source_scopes_broker,
+                        profile_broker=self.profile_broker,
                     )
 
         except Exception as e:  # pylint: disable=broad-exception-caught
