@@ -7,17 +7,17 @@ from flask_restx import Namespace, Resource, abort
 from seta_flask_server.repository.interfaces import IUsersBroker
 from .models.scopes_dto import (
     system_scope_model,
-    community_scopes_model,
-    resource_scopes_model,
+    data_source_scopes_model,
     user_scopes_model,
 )
 
 from .logic.scopes_logic import build_user_scopes
 
-scopes_ns = Namespace("Permissions", validate=True, description="SETA User Permissions")
+scopes_ns = Namespace(
+    "Permissions", validate=False, description="SETA User Permissions"
+)
 scopes_ns.models[system_scope_model.name] = system_scope_model
-scopes_ns.models[community_scopes_model.name] = community_scopes_model
-scopes_ns.models[resource_scopes_model.name] = resource_scopes_model
+scopes_ns.models[data_source_scopes_model.name] = data_source_scopes_model
 scopes_ns.models[user_scopes_model.name] = user_scopes_model
 
 

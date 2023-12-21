@@ -18,6 +18,7 @@ from seta_flask_server.infrastructure.constants import (
 )
 
 from .db_user_permissions import UserPermissionsBroker
+from .data_sources.db_data_source_scopes_broker import DataSourceScopesBroker
 from .db_external_provider_broker import ExternalProviderBroker
 
 
@@ -104,13 +105,12 @@ class UsersBroker(implements(IUsersBroker)):
 
         if load_scopes:
             perm_broker = UserPermissionsBroker(config=self.config)
-            seta_user.community_scopes = perm_broker.get_all_user_community_scopes(
-                seta_user.user_id
-            )
-            seta_user.resource_scopes = perm_broker.get_all_user_resource_scopes(
-                seta_user.user_id
-            )
             seta_user.system_scopes = perm_broker.get_all_user_system_scopes(
+                seta_user.user_id
+            )
+
+            ds_scopes_broker = DataSourceScopesBroker(config=self.config)
+            seta_user.data_source_scopes = ds_scopes_broker.get_by_user_id(
                 seta_user.user_id
             )
 

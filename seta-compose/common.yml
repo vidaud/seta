@@ -72,7 +72,7 @@ services:
     environment:
       - NO_PROXY=${NO_PROXY}
       - no_proxy=${NO_PROXY}
-      - ROOT_USERS=${ROOT_USERS}
+      - ROOT_USERS
       - API_SECRET_KEY
       - DB_HOST
       - DB_PORT
@@ -130,6 +130,7 @@ services:
     environment:
       - NO_PROXY=${NO_PROXY}
       - no_proxy=${NO_PROXY}
+      - ROOT_USERS
       - API_SECRET_KEY
       - GITHUB_CLIENT_ID
       - GITHUB_CLIENT_SECRET

@@ -114,7 +114,6 @@ def register_blueprints(app):
     """Register seta-ui blueprints"""
 
     # pylint: disable=import-outside-toplevel
-    from .blueprints.communities import communities_bp_v1
     from .blueprints.profile import profile_bp_v1
     from .blueprints.catalogue import catalogue_bp_v1
     from .blueprints.admin import admin_bp
@@ -124,8 +123,6 @@ def register_blueprints(app):
     api_root_v1 = "/seta-ui/api/v1"
 
     app.register_blueprint(profile_bp_v1, url_prefix=api_root_v1)
-
-    app.register_blueprint(communities_bp_v1, url_prefix=api_root_v1)
 
     app.register_blueprint(catalogue_bp_v1, url_prefix=api_root_v1)
 

@@ -1,7 +1,6 @@
 from flask_restx import Model, fields
 
 from seta_flask_server.infrastructure.constants import UserStatusConstants
-from seta_flask_server.infrastructure.scope_constants import ResourceScopeConstants
 
 app_model = Model(
     "AppInfo",
@@ -28,10 +27,6 @@ new_app_model = Model(
             description="Copy the public key from parent to the new application?",
             default=False,
         ),
-        "copyResourceScopes": fields.Boolean(
-            description="Copy the resource scopes from parent to the new application?",
-            default=False,
-        ),
     },
 )
 
@@ -54,9 +49,7 @@ application_scopes_model = Model(
     "ApplicationScopes",
     {
         "resourceId": fields.String(description="Resource identifier", required=True),
-        "scopes": fields.List(
-            fields.String(description="Scopes", enum=ResourceScopeConstants.List)
-        ),
+        "scopes": fields.List(fields.String(), description="Scopes"),
     },
 )
 

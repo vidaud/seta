@@ -82,9 +82,7 @@ class ApplicationListResource(Resource):
             parent_user_id=user_id,
         )
         self.apps_broker.create(
-            app=app,
-            copy_parent_rsa=bool(app_dict.get("copyPublicKey", False)),
-            copy_parent_scopes=bool(app_dict.get("copyResourceScopes", False)),
+            app=app, copy_parent_rsa=bool(app_dict.get("copyPublicKey", False))
         )
 
         response = jsonify(status="success", message="New application created")

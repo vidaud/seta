@@ -1,7 +1,5 @@
 from enum import IntEnum, Enum
 
-INVITE_EXPIRE_DAYS: float = 3
-
 
 class ExternalProviderConstants:
     ECAS = "ECAS"
@@ -22,7 +20,8 @@ class UserRoleConstants:
 
         if role.lower() == UserRoleConstants.Admin.lower():
             return UserRoleConstants.Admin
-        elif role.lower() == UserRoleConstants.User.lower():
+
+        if role.lower() == UserRoleConstants.User.lower():
             return UserRoleConstants.User
 
         return None
@@ -41,111 +40,16 @@ class ClaimTypeConstants:
     RoleClaimType = "roles"
 
 
-class CommunityStatusConstants:
-    Active = "active"
-    Blocked = "blocked"
-
-    List = [Active, Blocked]
-
-
-class CommunityMembershipConstants:
-    Opened = "opened"
-    Closed = "closed"
-    List = [Opened, Closed]
-
-
-class DiscoverCommunityStatus:
-    Unknown = "unknown"
-    Member = "membership"
-    Pending = "pending"
-    Invited = "invited"
-    Rejected = "rejected"
-
-    List = [Unknown, Member, Pending, Invited, Rejected]
-
-
-class CommunityRoleConstants:
-    Owner = "CommunityOwner"
-    Manager = "CommunityManager"
-    ResourceCreator = "ResourceCreator"
-    Member = "CommunityMember"
-
-    List = [Owner, Manager, ResourceCreator, Member]
-
-
-class CommunityRequestFieldConstants:
-    Membership = "membership"
-    List = [Membership]
-
-
-class RequestStatusConstants:
-    Pending = "pending"
-    Approved = "approved"
-    Rejected = "rejected"
-    List = [Pending, Approved, Rejected]
-    EditList = [Approved, Rejected]
-
-
-class InviteStatusConstants:
-    Pending = "pending"
-    Accepted = "accepted"
-    Rejected = "rejected"
-    Expired = "expired"
-    List = [Pending, Accepted, Rejected, Expired]
-    EditList = [Accepted, Rejected]
-
-
-class ResourceRequestFieldConstants:
-    Limits = "limits"
-    List = [Limits]
-
-
-class ResourceStatusConstants:
-    Active = "active"
-    Blocked = "blocked"
-
-    List = [Active, Blocked]
-
-
-class ResourceTypeConstants:
-    Discoverable = "discoverable"
-    Representative = "representative"
-
-    List = [Discoverable, Representative]
-
-
 class DataSourceStatusConstants(str, Enum):
     ACTIVE = "active"
     ARCHIVED = "archived"
 
 
-class NotificationTypeConstants:
-    PendingInvite = "pending-invite"
-    MembershipRequest = "membership-request"
-    CommunityChangeRequest = "change-request"
-
-    List = [PendingInvite, MembershipRequest, CommunityChangeRequest]
-
-
 class NotificationPriorityEnum(IntEnum):
-    Critical = 0
-    High = 1
-    Normal = 2
-    Low = 3
-
-
-class StatsTypeConstants:
-    CommunityChangeRequest = "community-change-request"
-    ResourceChangeRequest = "resource-change-request"
-    OrphanedCommunities = "orphaned-communities"
-    OrphanedResources = "orphaned-resources"
-
-    LightList = [
-        CommunityChangeRequest,
-        ResourceChangeRequest,
-        OrphanedCommunities,
-        OrphanedResources,
-    ]
+    CRITICAL = 0
+    HIGH = 1
+    NORMAL = 2
+    LOW = 3
 
 
 class AuthorizedArea:

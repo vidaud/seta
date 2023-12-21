@@ -1,4 +1,3 @@
-from seta_flask_server.infrastructure.scope_constants import SystemScopeConstants
 from seta_flask_server.infrastructure.constants import UserRoleConstants
 from seta_flask_server.repository.models import SetaUser, AccountInfo
 from seta_flask_server.blueprints.profile.logic.scopes_logic import build_user_scopes
@@ -41,18 +40,6 @@ def build_account_info(
         account_info["scopes"] = build_user_scopes(user)
 
     return account_info
-
-
-def can_approve_resource_cr(user: SetaUser) -> bool:
-    """Check if user can approve change requests for resources."""
-
-    if user is None or user.is_not_active():
-        return False
-
-    return (
-        user.role.lower() == UserRoleConstants.Admin.lower()
-        or user.has_system_scope(SystemScopeConstants.ApproveResourceChangeRequest)
-    )
 
 
 def is_admin(user: SetaUser) -> bool:

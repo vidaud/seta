@@ -12,40 +12,20 @@ class MongoDbClientModule(injector.Module):
 
     def configure(self, binder):
         binder.bind(interfaces.IDbConfig, to=self.create_client)
+
         binder.bind(interfaces.IRsaKeysBroker, to=implementation.RsaKeysBroker)
         binder.bind(interfaces.IUsersBroker, to=implementation.UsersBroker)
-        binder.bind(interfaces.ICommunitiesBroker, to=implementation.CommunitiesBroker)
-        binder.bind(interfaces.IMembershipsBroker, to=implementation.MembershipsBroker)
-        binder.bind(
-            interfaces.ICommunityChangeRequestsBroker,
-            to=implementation.CommunityChangeRequestsBroker,
-        )
-        binder.bind(
-            interfaces.ICommunityInvitesBroker, to=implementation.CommunityInvitesBroker
-        )
-        binder.bind(interfaces.IResourcesBroker, to=implementation.ResourcesBroker)
-        binder.bind(
-            interfaces.IResourceChangeRequestsBroker,
-            to=implementation.ResourceChangeRequestsBroker,
-        )
         binder.bind(
             interfaces.IUserPermissionsBroker, to=implementation.UserPermissionsBroker
         )
         binder.bind(interfaces.ISessionsBroker, to=implementation.SessionsBroker)
         binder.bind(interfaces.IAppsBroker, to=implementation.AppsBroker)
-        binder.bind(interfaces.IUserProfile, to=implementation.UserProfile)
         binder.bind(interfaces.ICatalogueBroker, to=implementation.CatalogueBroker)
-        binder.bind(
-            interfaces.INotificationsBroker, to=implementation.NotificationsBroker
-        )
-        binder.bind(interfaces.IStatsBroker, to=implementation.StatsBroker)
+
         binder.bind(interfaces.ILibraryBroker, to=implementation.LibraryBroker)
         binder.bind(interfaces.IUsersQueryBroker, to=implementation.UsersQueryBroker)
         binder.bind(
             interfaces.IExternalProviderBroker, to=implementation.ExternalProviderBroker
-        )
-        binder.bind(
-            interfaces.IRollingIndexBroker, to=implementation.RollingIndexBroker
         )
 
         binder.bind(interfaces.IDataSourcesBroker, to=implementation.DataSourcesBroker)

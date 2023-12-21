@@ -1,3 +1,4 @@
+# pylint: disable=missing-function-docstring
 from http import HTTPStatus
 import pytest
 from flask.testing import FlaskClient
@@ -5,7 +6,6 @@ from flask.testing import FlaskClient
 from tests.infrastructure.helpers.authentication import login_user
 from tests.infrastructure.helpers.profile import (
     create_app,
-    get_app,
     get_user_apps,
     update_app,
 )
@@ -32,7 +32,6 @@ def test_create_app(
         name=app_name,
         description="Test app",
         copy_public_key=True,
-        copy_resource_scopes=False,
     )
     assert response.status_code == HTTPStatus.CREATED
 

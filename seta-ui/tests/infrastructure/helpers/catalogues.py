@@ -1,3 +1,4 @@
+# pylint: disable=missing-function-docstring
 from flask.testing import FlaskClient
 from .util import auth_headers
 

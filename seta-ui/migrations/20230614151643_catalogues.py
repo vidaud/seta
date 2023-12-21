@@ -9,38 +9,24 @@ class Migration(BaseMigration):
 
         # drop previous entries
         collection.delete_many(
-            {
-                "catalogue": {
-                    "$in": [
-                        "system-scopes",
-                        "community-scopes",
-                        "resource-scopes",
-                        "app-roles",
-                        "community-roles",
-                    ]
-                }
-            }
+            {"catalogue": {"$in": ["system-scopes", "data-source-scopes", "app-roles"]}}
         )
 
         # save scopes
-        collection.insert_many(
-            ScopesCatalogueBuilder.build_system_scopes("system-scopes")
-        )
+        system_scopes = ScopesCatalogueBuilder.build_system_scopes("system-scopes")
+        if system_scopes:
+            collection.insert_many(system_scopes)
 
-        collection.insert_many(
-            ScopesCatalogueBuilder.build_community_scopes("community-scopes")
+        data_source_scopes = ScopesCatalogueBuilder.build_data_source_scopes(
+            "data-source-scopes"
         )
-
-        collection.insert_many(
-            ScopesCatalogueBuilder.build_resource_scopes("resource-scopes")
-        )
+        if data_source_scopes:
+            collection.insert_many(data_source_scopes)
 
         # save roles
-        collection.insert_many(RolesCatalogueBuilder.build_app_roles("app-roles"))
-
-        collection.insert_many(
-            RolesCatalogueBuilder.build_community_roles("community-roles")
-        )
+        roles = RolesCatalogueBuilder.build_app_roles("app-roles")
+        if roles:
+            collection.insert_many(roles)
 
     def downgrade(self):
         self.db["catalogues"].drop()

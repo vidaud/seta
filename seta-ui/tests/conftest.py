@@ -8,10 +8,10 @@ Usage:
 """
 
 import os
-import pytest
-import requests
 import configparser
 from pathlib import Path
+import pytest
+import requests
 
 from Crypto.PublicKey import RSA
 

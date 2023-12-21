@@ -29,8 +29,7 @@ class ScopeCatalogues:
 
 class ScopeCategory(Enum):
     System = "system"
-    Community = "community"
-    Resource = "resource"
+    DataSource = "data-source"
 
     def __str__(self):
         return str(self.value)

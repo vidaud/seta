@@ -1,3 +1,4 @@
+# pylint: disable=missing-function-docstring
 import random
 import string
 from typing import Tuple
@@ -37,7 +38,7 @@ def login_user(
     private_key = get_private_key(user_id, user_key_pairs)
 
     if not private_key:
-        raise Exception(f"{user_id} not found in the test rsa pairs!")
+        raise ValueError(f"{user_id} not found in the test rsa pairs!")
 
     message, signature = generate_signature(private_key)
 

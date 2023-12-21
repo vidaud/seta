@@ -9,13 +9,14 @@ from seta_flask_server.repository.models import SetaUser, RsaKey
 from migrations.catalogues import (
     scopes_catalogue_builder as scopes_builder,
     roles_catalogue_builder as roles_builder,
-    rolling_index_builder as index_builder,
 )
 
 from tests.infrastructure.helpers.util import get_public_key
 
 
 def load_users_data() -> dict:
+    """Load test users."""
+
     base_path = Path(__file__).parent
     users_file_path = "../data/users.json"
     users_full_path = (base_path / users_file_path).resolve()
@@ -86,26 +87,10 @@ class DbTestSetaApi:
             scopes_builder.ScopesCatalogueBuilder.build_system_scopes("system-scopes")
         )
         catalogue_collection.insert_many(
-            scopes_builder.ScopesCatalogueBuilder.build_community_scopes(
-                "community-scopes"
-            )
-        )
-        catalogue_collection.insert_many(
-            scopes_builder.ScopesCatalogueBuilder.build_resource_scopes(
-                "resource-scopes"
+            scopes_builder.ScopesCatalogueBuilder.build_data_source_scopes(
+                "data-source-scopes"
             )
         )
         catalogue_collection.insert_many(
             roles_builder.RolesCatalogueBuilder.build_app_roles("app-roles")
         )
-        catalogue_collection.insert_many(
-            roles_builder.RolesCatalogueBuilder.build_community_roles("community-roles")
-        )
-
-        index_collection = self.db["rolling-indexes"]
-
-        rolling_index = index_builder.default_rolling_index(now_date)
-        storage_indexes = rolling_index.pop("storage")
-
-        index_collection.insert_one(rolling_index)
-        index_collection.insert_many(storage_indexes)

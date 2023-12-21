@@ -73,7 +73,6 @@ def create_app(
     name: str,
     description: str,
     copy_public_key: bool = False,
-    copy_resource_scopes: bool = True,
 ):
     """Create an application for user."""
 
@@ -83,7 +82,6 @@ def create_app(
         "name": name,
         "description": description,
         "copyPublicKey": copy_public_key,
-        "copyResourceScopes": copy_resource_scopes,
     }
 
     data = json.dumps(payload)
@@ -157,7 +155,7 @@ def get_permissions(client: FlaskClient, access_token: str):
 def get_unsearchable_resources(client: FlaskClient, access_token: str):
     """Get unsearchable resources."""
 
-    url = f"{API_V1}/resources"
+    url = f"{API_V1}/unsearchables"
 
     return client.get(
         url, content_type="application/json", headers=auth_headers(access_token)
@@ -169,18 +167,13 @@ def manage_unsearchable_resources(
 ):
     """Set unsearchable resources."""
 
-    url = f"{API_V1}/resources"
+    url = f"{API_V1}/unsearchables"
 
-    data = ""
-    for rid in resource_ids:
-        if data == "":
-            data += f"resource={rid}"
-        else:
-            data += f"&resource={rid}"
+    data = {"dataSourceIds": resource_ids}
 
     return client.post(
         url,
-        data=data,
-        content_type="application/x-www-form-urlencoded",
+        data=json.dumps(data),
+        content_type="application/json",
         headers=auth_headers(access_token),
     )

@@ -3,7 +3,6 @@ from datetime import datetime
 import pytz
 import shortuuid
 
-from seta_flask_server.infrastructure.scope_constants import SystemScopeConstants
 from seta_flask_server.infrastructure.constants import (
     UserRoleConstants,
     UserStatusConstants,
@@ -12,7 +11,6 @@ from seta_flask_server.infrastructure.constants import (
 )
 
 from .user_claim import UserClaim
-from .system_scope import SystemScope
 from .external_provider import ExternalProvider
 from .seta_user import SetaUser
 
@@ -86,30 +84,8 @@ class SetaUserExt:
                 UserClaim.create_role_claim(user.user_id, UserRoleConstants.Admin)
             )
 
-            user.system_scopes = [
-                SystemScope(
-                    user_id=user.user_id,
-                    system_scope=SystemScopeConstants.CreateCommunity,
-                    area="community",
-                ).to_json(),
-                SystemScope(
-                    user_id=user.user_id,
-                    system_scope=SystemScopeConstants.ApproveCommunityChangeRequest,
-                    area="community",
-                ).to_json(),
-                SystemScope(
-                    user_id=user.user_id,
-                    system_scope=SystemScopeConstants.ApproveResourceChangeRequest,
-                    area="resource",
-                ).to_json(),
-            ]
+            user.system_scopes = []
 
         else:
             user.add_claim(UserClaim.create_default_role_claim(user.user_id))
-            user.system_scopes = [
-                SystemScope(
-                    user_id=user.user_id,
-                    system_scope=SystemScopeConstants.CreateCommunity,
-                    area="community",
-                ).to_json()
-            ]
+            user.system_scopes = []

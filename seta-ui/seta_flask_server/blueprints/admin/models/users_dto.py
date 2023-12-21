@@ -1,7 +1,6 @@
 from flask_restx import Model, fields
 from flask_restx.reqparse import RequestParser
 
-from seta_flask_server.infrastructure.scope_constants import SystemScopeConstants
 from seta_flask_server.infrastructure.constants import (
     UserStatusConstants,
     UserRoleConstants,
@@ -10,8 +9,7 @@ from seta_flask_server.infrastructure.constants import (
 
 from seta_flask_server.blueprints.profile.models.scopes_dto import (
     system_scope_model,
-    community_scopes_model,
-    resource_scopes_model,
+    data_source_scopes_model,
     user_scopes_model,
 )
 
@@ -96,16 +94,13 @@ permissions_model = Model(
         "role": fields.String(
             description="User role", enum=[r.lower() for r in UserRoleConstants.List]
         ),
-        "scopes": fields.List(
-            fields.String(enum=SystemScopeConstants.List), description="System scopes"
-        ),
+        "scopes": fields.List(fields.String(), description="System scopes"),
     },
 )
 
 ns_models = {}
 ns_models[system_scope_model.name] = system_scope_model
-ns_models[community_scopes_model.name] = community_scopes_model
-ns_models[resource_scopes_model.name] = resource_scopes_model
+ns_models[data_source_scopes_model.name] = data_source_scopes_model
 ns_models[user_scopes_model.name] = user_scopes_model
 
 ns_models[user_info_model.name] = user_info_model
