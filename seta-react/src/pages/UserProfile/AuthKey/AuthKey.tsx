@@ -26,7 +26,7 @@ const AuthKey = () => {
       </Text>
       <Text fz="sm" color="gray.6">
         Check out our guide to{' '}
-        <Anchor href="/key-generation-instructions" target="_blank">
+        <Anchor href="/profile/key-generation-instructions" target="_blank">
           generating authentications keys
         </Anchor>
       </Text>
