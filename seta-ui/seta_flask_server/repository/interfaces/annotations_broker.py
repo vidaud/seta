@@ -36,3 +36,8 @@ class IAnnotationsBroker(Interface):
         """Get unique categories."""
 
         pass
+
+    def bulk_import(self, categories: list[str], annotations: list[AnnotationModel]):
+        """Bulk import annotations, clear existing categories."""
+
+        pass

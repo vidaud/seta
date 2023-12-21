@@ -1,16 +1,11 @@
 from pydantic import ValidationError
-
 from flask import current_app
 
-from seta_flask_server.repository import interfaces
 from seta_flask_server.repository import models
-
 from seta_flask_server.infrastructure.dto.payload_errors import PayloadErrors
 
 
-def build_new_annotation(
-    payload: dict, broker: interfaces.IAnnotationsBroker
-) -> models.AnnotationModel:
+def build_new_annotation(payload: dict) -> models.AnnotationModel:
     """Build annotation object for database insert."""
 
     has_errors = False
@@ -24,15 +19,6 @@ def build_new_annotation(
 
         for err in e.errors():
             errors[err["loc"][0]] = err["msg"]
-
-    if has_errors:
-        raise PayloadErrors(
-            message="Errors encountered in annotation payload", errors=errors
-        )
-
-    if broker.label_exists(annotation.label):
-        has_errors = True
-        errors["label"] = "Label already exists."
 
     if has_errors:
         raise PayloadErrors(
