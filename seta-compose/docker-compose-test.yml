@@ -46,6 +46,20 @@ services:
       - "seta-auth-test"
       - "seta-opensearch-test"
 
+  seta-search-test:
+    container_name: search-test
+    extends:
+      file: common.yml
+      service: search
+    restart: "no"
+    build:
+      dockerfile: seta-search/Dockerfile-test
+    networks:
+      - seta-network-test
+    depends_on:
+      - "seta-mongo-test"
+      - "seta-opensearch-test"
+
   seta-nginx-test:
     container_name: nginx-test
     extends:

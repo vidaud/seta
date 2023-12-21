@@ -49,6 +49,27 @@ services:
       - DB_NAME
       - STAGE
 
+  search:
+    restart: always
+    build:
+      context: ../
+      args:
+        - HTTP_PROXY=${HTTP_PROXY}
+        - HTTPS_PROXY=${HTTPS_PROXY}
+    expose:
+      - "8081"
+    mem_limit: "8g"
+    environment:
+      - NO_PROXY=${NO_PROXY}
+      - no_proxy=${NO_PROXY}
+      - ES_HOST
+      - DB_HOST
+      - DB_PORT
+      - DB_NAME
+      - STAGE
+
+
+
   nginx:
     restart: always
     build:

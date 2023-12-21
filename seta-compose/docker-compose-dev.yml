@@ -3,7 +3,7 @@ services:
     container_name: mongo
     extends:
       file: common.yml
-      service: mongo    
+      service: mongo
     volumes:
       - seta-mongo:/data/db
     ports:
@@ -54,9 +54,18 @@ services:
       - /home/seta/tika
     depends_on:
       - "seta-auth"
-      - "seta-opensearch"      
+      - "seta-opensearch"
     networks:
       - seta-network
+
+  seta-search:
+    build:
+      dockerfile: seta-search/Dockerfile-dev
+    volumes:
+      - ../seta-search:/home/seta
+      - ../seta-config:/etc/seta
+    environment:
+      - logger.level=DEBUG
 
   seta-nginx:
     container_name: nginx
@@ -75,7 +84,7 @@ services:
       - "seta-ui"
       - "seta-ui-react"
       - "seta-doc"
-      - "seta-admin"      
+      - "seta-admin"
     networks:
       - seta-network
 
@@ -116,7 +125,7 @@ services:
     depends_on:
       - "seta-api"
       - "seta-ui"
-    networks: 
+    networks:
       - seta-network
 
   seta-data:
@@ -136,7 +145,7 @@ services:
     extends:
       file: common.yml
       service: doc
-    build:       
+    build:
        dockerfile: Dockerfile-dev
     expose:
       - "8000"
@@ -186,6 +195,6 @@ networks:
     driver: bridge
 
 volumes:
-  seta-mongo:  
-  seta-models3:      
+  seta-mongo:
+  seta-models3:
   opensearch-data:
