@@ -1,6 +1,6 @@
 export enum ActiveLink {
   DASHBOARD,
-  RSAKEYS,
+  AUTHKEY,
   APPLICATIONS,
   PERMISSIONS,
   CLOSE,
@@ -15,8 +15,8 @@ export const getActiveLink = (path: string): ActiveLink => {
     case path.startsWith('/profile/permissions') ? path : '':
       return ActiveLink.PERMISSIONS
 
-    case path.startsWith('/profile/rsa-keys') ? path : '':
-      return ActiveLink.RSAKEYS
+    case path.startsWith('/profile/auth-key') ? path : '':
+      return ActiveLink.AUTHKEY
 
     case path.startsWith('/profile/applications') ? path : '':
       return ActiveLink.APPLICATIONS

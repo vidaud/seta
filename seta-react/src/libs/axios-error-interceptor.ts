@@ -23,6 +23,7 @@ const errorInterceptor = async (error: SetaAxiosError) => {
 
   const fresh_endpoints: RegExp[] = [
     /\/me\/rsa-key[/]?$/,
+    /\/me\/auth-key[/]?$/,
     /\/me\/apps$/,
     /\/me\/apps\/.*/,
     /\/me\/permissions$/
