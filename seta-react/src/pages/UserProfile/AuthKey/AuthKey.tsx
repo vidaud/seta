@@ -2,9 +2,9 @@ import { useState } from 'react'
 import { Anchor, Flex, Group, Paper, Text, Title } from '@mantine/core'
 import { VscKey } from 'react-icons/vsc'
 
-import AddKey from './components/AddKey/AddKey'
+import StoreKey from './components/StoreKey/StoreKey'
 
-const RSAKey = () => {
+const AuthKey = () => {
   const [key, setKey] = useState()
 
   const handleKey = value => {
@@ -13,7 +13,7 @@ const RSAKey = () => {
 
   return (
     <>
-      <Title order={4}>RSA Key</Title>
+      <Title order={4}>Authentication Key</Title>
       <Text fz="sm" color="gray.6">
         {key ? (
           'This is the key associated with your account. Remove the key if you do not recognize.'
@@ -27,7 +27,7 @@ const RSAKey = () => {
       <Text fz="sm" color="gray.6">
         Check out our guide to{' '}
         <Anchor href="/key-generation-instructions" target="_blank">
-          generating RSA keys
+          generating authentications keys
         </Anchor>
       </Text>
       <Paper shadow="xs" mt="2%" withBorder>
@@ -37,10 +37,10 @@ const RSAKey = () => {
             <Text>Public Key</Text>
           </Group>
         </Flex>
-        <AddKey onChange={handleKey} />
+        <StoreKey onChange={handleKey} />
       </Paper>
     </>
   )
 }
 
-export default RSAKey
+export default AuthKey

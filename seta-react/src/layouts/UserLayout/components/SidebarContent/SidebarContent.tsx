@@ -44,35 +44,20 @@ const SidebarContent = () => {
         />
         {/* Profile END*/}
 
-        {/* RSA Keys START*/}
+        {/* Auth Key START*/}
         <NavLink
-          label="RSA Keys"
+          label="Authentication Key"
           icon={
-            <ThemeIcon variant={activeLink === ActiveLink.RSAKEYS ? 'outline' : 'light'} size={30}>
+            <ThemeIcon variant={activeLink === ActiveLink.AUTHKEY ? 'outline' : 'light'} size={30}>
               <BsFiletypeKey size="1rem" stroke="1.5" />
             </ThemeIcon>
           }
           component={Link}
-          to="/profile/rsa-keys"
+          to="/profile/auth-key"
           css={S.linkPrimary}
-          active={activeLink === ActiveLink.RSAKEYS}
+          active={activeLink === ActiveLink.AUTHKEY}
         />
-        {/* RSA Keys END*/}
-
-        {/* RSA Key START*/}
-        <NavLink
-          label="RSA Key"
-          icon={
-            <ThemeIcon variant={activeLink === ActiveLink.RSAKEY ? 'outline' : 'light'} size={30}>
-              <BsFiletypeKey size="1rem" stroke="1.5" />
-            </ThemeIcon>
-          }
-          component={Link}
-          to="/profile/rsa-key"
-          css={S.linkPrimary}
-          active={activeLink === ActiveLink.RSAKEY}
-        />
-        {/* RSA Key END*/}
+        {/* Auth Key END*/}
 
         {/* Applications START*/}
         <NavLink

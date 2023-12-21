@@ -85,7 +85,7 @@ const CreateForm = ({ close }) => {
             withAsterisk
           />
           <Group style={{ display: 'grid' }}>
-            <Text color="gray.6">Scopes & Public key</Text>
+            <Text color="gray.6">Other</Text>
             <Checkbox
               label="Copy Public Key"
               checked={copyPublicKey}

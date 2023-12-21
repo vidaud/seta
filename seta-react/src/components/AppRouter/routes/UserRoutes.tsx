@@ -1,6 +1,7 @@
 import React from 'react'
 import { Route } from 'react-router-dom'
 
+import GenerateKeyInstructions from '~/components/GenerateKeyInstructions/GenerateKeyInstructions'
 import CloseUserAccount from '~/pages/UserProfile/CloseUserAccount'
 
 import UserLayout from '~/layouts/UserLayout'
@@ -8,8 +9,7 @@ import UserLayout from '~/layouts/UserLayout'
 import RequireAuth from '../components/RequireAuth'
 
 const ProfileDashboard = React.lazy(() => import('~/pages/UserProfile/Profile/Profile'))
-const RSAKeys = React.lazy(() => import('~/pages/UserProfile/RSAKeys/RSAKeys'))
-const RSAKey = React.lazy(() => import('~/pages/UserProfile/RSAKey/RSAKey'))
+const AuthKey = React.lazy(() => import('~/pages/UserProfile/AuthKey/AuthKey'))
 const Applications = React.lazy(() => import('~/pages/UserProfile/Applications/Applications'))
 
 const UserRoutes = (
@@ -21,10 +21,10 @@ const UserRoutes = (
     }
   >
     <Route index element={<ProfileDashboard />} />
-    <Route path="rsa-keys" element={<RSAKeys />} />
-    <Route path="rsa-key" element={<RSAKey />} />
+    <Route path="auth-key" element={<AuthKey />} />
     <Route path="applications" element={<Applications />} />
     <Route path="close-account" element={<CloseUserAccount />} />
+    <Route path="key-generation-instructions" element={<GenerateKeyInstructions />} />
   </Route>
 )
 

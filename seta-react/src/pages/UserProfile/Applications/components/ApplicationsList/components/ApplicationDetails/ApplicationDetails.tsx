@@ -3,7 +3,7 @@ import { Collapse, Tabs } from '@mantine/core'
 
 import type { ClassNameProp } from '~/types/children-props'
 
-import ApplicationRSAKeys from './components/ApplicationRSAKey/ApplicationRSAKey'
+import ApplicationAuthKey from './components/ApplicationsAuthKey/ApplicationsAuthKey'
 
 type Props = ClassNameProp & {
   open: boolean
@@ -11,7 +11,7 @@ type Props = ClassNameProp & {
 }
 
 const ApplicationDetails = ({ className, open, appName }: Props) => {
-  const [activeTab, setActiveTab] = useState<string | null>('rsa-keys')
+  const [activeTab, setActiveTab] = useState<string | null>('auth-key')
 
   return (
     <tr style={open ? { backgroundColor: 'white' } : { display: 'none' }}>
@@ -23,11 +23,11 @@ const ApplicationDetails = ({ className, open, appName }: Props) => {
                 marginBottom: theme.spacing.xs
               })}
             >
-              <Tabs.Tab value="rsa-keys">RSA Public Keys</Tabs.Tab>
+              <Tabs.Tab value="auth-key">Authentication Key</Tabs.Tab>
             </Tabs.List>
 
-            <Tabs.Panel value="rsa-keys">
-              {open ? <ApplicationRSAKeys appName={appName} /> : null}
+            <Tabs.Panel value="auth-key">
+              {open ? <ApplicationAuthKey appName={appName} /> : null}
             </Tabs.Panel>
           </Tabs>
         </Collapse>

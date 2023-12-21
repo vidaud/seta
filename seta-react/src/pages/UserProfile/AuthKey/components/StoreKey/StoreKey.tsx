@@ -3,48 +3,52 @@ import { Box, Button, Group, Paper, Textarea } from '@mantine/core'
 import { RiDeleteBin5Line } from 'react-icons/ri'
 
 import { useStyles } from '~/pages/ContactPage/style'
-import type { RSAKeyValues } from '~/pages/UserProfile/common/contexts/rsa-key-context'
-import { RSAKeyFormProvider, useRSAKeys } from '~/pages/UserProfile/common/contexts/rsa-key-context'
+import type { AuthKeyValues } from '~/pages/UserProfile/common/contexts/auth-key-context'
+import {
+  AuthKeyFormProvider,
+  useAuthKeys
+} from '~/pages/UserProfile/common/contexts/auth-key-context'
 
-import { useCreateKey } from '~/api/user/rsa-key'
-import { useDeleteRSAKey, useRSAKey } from '~/api/user/rsa-keys'
+import { useDeletePublicKey, usePublicKey, useStorePublicKey } from '~/api/user/auth-key'
 import { defaultNoPublicKeyMessage } from '~/common/constants'
 import { notifications } from '~/utils/notifications'
 
-const AddKey = ({ onChange }) => {
-  const { data } = useRSAKey()
+const StoreKey = ({ onChange }) => {
+  const { data } = usePublicKey()
   const [publicKey, setpublicKey] = useState<string | undefined>(data?.publicKey)
-  const setDeleteRSAKeyMutation = useDeleteRSAKey()
+  const setDeleteKeyMutation = useDeletePublicKey()
   const { classes, cx } = useStyles()
-  const setCreateApplicationMutation = useCreateKey()
+  const setCreateApplicationMutation = useStorePublicKey()
 
-  useEffect(() => {
-    if (data) {
-      setpublicKey(data?.publicKey)
-      onChange(data?.publicKey)
-    }
-  }, [data, publicKey, onChange])
-
-  const form = useRSAKeys({
+  const form = useAuthKeys({
     initialValues: {
-      key: publicKey ? publicKey : defaultNoPublicKeyMessage
+      publicKey: publicKey ? publicKey : defaultNoPublicKeyMessage
     },
     validate: values => ({
-      key: values.key.length < 2 ? 'Too short key' : null
+      publicKey: values.publicKey.length < 2 ? 'Too short key' : null
     })
   })
 
-  const handleSubmit = (values: RSAKeyValues) => {
-    const newValues = {
-      key: values.key
-    }
+  useEffect(() => {
+    if (data) {
+      onChange(data?.publicKey)
 
-    setpublicKey(values.key)
-    setCreateApplicationMutation.mutate(newValues, {
+      if (data) {
+        setpublicKey(data?.publicKey ? data?.publicKey : defaultNoPublicKeyMessage)
+        form.setValues({
+          publicKey: data?.publicKey ? data?.publicKey : defaultNoPublicKeyMessage
+        })
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data, publicKey, onChange])
+
+  const handleSubmit = (values: AuthKeyValues) => {
+    setpublicKey(values.publicKey)
+    setCreateApplicationMutation.mutate(values, {
       onSuccess: () => {
         notifications.showSuccess(`Key Saved Successfully!`, { autoClose: true })
       },
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       onError: () => {
         notifications.showError('Key saving failed!', {
           autoClose: true
@@ -54,11 +58,12 @@ const AddKey = ({ onChange }) => {
   }
 
   const deletePublicKey = () => {
-    setDeleteRSAKeyMutation.mutate(undefined, {
+    setDeleteKeyMutation.mutate(undefined, {
       onSuccess: () => {
         notifications.showSuccess(`Public Key deleted successfully!`, { autoClose: true })
-
-        setpublicKey(defaultNoPublicKeyMessage)
+        form.setValues({
+          publicKey: defaultNoPublicKeyMessage
+        })
       },
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       onError: (error: any) => {
@@ -74,13 +79,12 @@ const AddKey = ({ onChange }) => {
 
   return (
     <Paper shadow="xs" p="md">
-      <RSAKeyFormProvider form={form}>
+      <AuthKeyFormProvider form={form}>
         <form className={cx(classes.form)} onSubmit={form.onSubmit(handleSubmit)}>
           <Box className="public_key">
             <Textarea
-              // label="Public Key"
               id="publicKey"
-              {...form.getInputProps('key')}
+              {...form.getInputProps('publicKey')}
               maxRows={15}
               rows={12}
               cols={5}
@@ -89,9 +93,11 @@ const AddKey = ({ onChange }) => {
           </Box>
 
           <Group position="right" mt="md">
-            <Button disabled={form.values.key === publicKey ? true : false}>Save Public Key</Button>
+            <Button disabled={form.values.publicKey === publicKey ? true : false} type="submit">
+              Save Public Key
+            </Button>
             <Button
-              disabled={publicKey ? false : true}
+              disabled={publicKey !== defaultNoPublicKeyMessage ? false : true}
               color="red"
               leftIcon={<RiDeleteBin5Line size="1rem" />}
               onClick={deletePublicKey}
@@ -100,9 +106,9 @@ const AddKey = ({ onChange }) => {
             </Button>
           </Group>
         </form>
-      </RSAKeyFormProvider>
+      </AuthKeyFormProvider>
     </Paper>
   )
 }
 
-export default AddKey
+export default StoreKey

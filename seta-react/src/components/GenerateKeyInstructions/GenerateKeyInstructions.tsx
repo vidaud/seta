@@ -7,10 +7,14 @@ const GenerateKeyInstructions = () => {
   return (
     <Page>
       <Flex direction="column" align="left" style={{ margin: '0 5%' }}>
-        <Title order={4}>About RSA key</Title>
+        <Title order={4}>RSA key</Title>
         <Text pt="md">
           You can access and write data in repositories on SeTA using RSA. When you connect via RSA,
           you authenticate using a private key file on your local machine.
+        </Text>
+        <Text pt="sm" italic>
+          Note: RSA is just one example of SSH Keys that can be generated and used in SeTA for
+          authentication.
         </Text>
         <Title order={4} pt="md">
           Generating a new RSA key
@@ -99,7 +103,7 @@ const GenerateKeyInstructions = () => {
               </ThemeIcon>
             }
           >
-            Navigate in SeTA to RSA page <Code>/profile/rsa-key</Code> put the copied key into the
+            Navigate in SeTA to RSA page <Code>/profile/auth-key</Code> put the copied key into the
             textbox. Then click Save to save the key.
           </List.Item>
         </List>
