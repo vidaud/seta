@@ -22,7 +22,7 @@ apis_bp_v1 = Blueprint('seta-search-v1', __name__, url_prefix=api_root)
 
 api = Api(apis_bp_v1,
          version='beta',
-         title='SeTA API',
+         title='SeTA Search',
          description='SeTA<style>.models {display: none !important}</style> - Semantic Text Analysis. \n'
                      'SeTa applies advanced text analysis techniques to large document collections, helping policy '
                      'analysts to understand the concepts expressed in thousands of documents and to see in a visual '

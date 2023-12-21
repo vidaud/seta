@@ -12,4 +12,6 @@ def is_field_in_doc(source, field):
     else:
         if field == "other":
             return {}
+        if field == "chunk_text":
+            return ""
         return None

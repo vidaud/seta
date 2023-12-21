@@ -133,8 +133,7 @@ class CorpusChunk(Resource):
             if not validate_add_permission(source):
                 raise ForbiddenResourceError(resource_id=source)
             validate(instance=args, schema=chunk_post_schema)
-
-            doc_id = insert_chunk(args, es=app.es, index=app.config["INDEX_PUBLIC"])
+            doc_id = insert_chunk(args, es=app.es, index=app.config["INDEX_PUBLIC"], current_app=app, request=request)
             return jsonify({"_id": doc_id})
         except jsonschema.ValidationError as err:
             abort(400, err.message)
@@ -225,7 +224,7 @@ class CorpusDocument(Resource):
             source = is_field_in_doc(args, 'source')
             if not validate_add_permission(source):
                 raise ForbiddenResourceError(resource_id=source)
-            doc_id = insert_doc(args, es=app.es, index=app.config["INDEX_PUBLIC"])
+            doc_id = insert_doc(args, es=app.es, index=app.config["INDEX_PUBLIC"], current_app=app, request=request)
             return jsonify({"_id": doc_id})
         except ApiLogicError as aex:
             abort(404, str(aex))

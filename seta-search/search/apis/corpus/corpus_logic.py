@@ -1,5 +1,3 @@
-import app
-from search.infrastructure.utils.embeddings import Embeddings
 from search.infrastructure.helpers import is_field_in_doc
 from search.infrastructure.ApiLogicError import ApiLogicError
 
@@ -13,6 +11,7 @@ import json
 import lxml
 from lxml import etree
 import xmltodict
+import requests
 
 
 def chunk_by_id(doc_id, es, index):
@@ -86,7 +85,7 @@ def delete_document(id, es, index):
         raise ApiLogicError("id not found")
 
 
-def insert_chunk(args, es, index):
+def insert_chunk(args, es, index, current_app, request):
     new_doc = {}
     new_doc["id"] = is_field_in_doc(args, "id")
     new_doc["id_alias"] = is_field_in_doc(args, "id_alias")
@@ -111,20 +110,53 @@ def insert_chunk(args, es, index):
     new_doc["chunk_text"] = is_field_in_doc(args, "chunk_text")
     new_doc["document_id"] = is_field_in_doc(args, "document_id")
     new_doc["chunk_number"] = is_field_in_doc(args, "chunk_number")
-    emb = get_embeddings(args)
+    emb = get_embedding(args, current_app, request)
     new_doc["sbert_embedding"] = emb
     res = es.index(index=index, body=new_doc)
     return res["_id"]
 
 
-def get_embeddings(args):
+def get_embedding(args, current_app, request):
     if is_field_in_doc(args, "sbert_embedding"):
         return args["sbert_embedding"]
-    # TODO replace with nlp api call
-    return Embeddings.embedding_vector_from_text(is_field_in_doc(args, "chunk_text"))
+    response = compute_embedding(is_field_in_doc(args, "chunk_text"), current_app, request)
+    return response["vector"]
 
 
-def insert_doc(args, es, index):
+def compute_embeddings(text, current_app, request):
+    url = current_app.config.get("NLP_API_ROOT_URL") + "compute_embeddings"
+    data = {"text": text}
+    try:
+        result = requests.post(url=url, headers=request.headers, cookies=request.cookies,
+                               json=data)
+    except:
+        raise ApiLogicError("nlp compute_embeddings api error")
+    return result.json()
+
+
+def compute_embedding(chunk_text, current_app, request):
+    url = current_app.config.get("NLP_API_ROOT_URL") + "compute_embedding"
+    data = {"text": chunk_text}
+    try:
+        result = requests.post(url=url, headers=request.headers, cookies=request.cookies,
+                               json=data)
+    except:
+        raise ApiLogicError("nlp compute_embedding api error")
+    return result.json()
+
+
+def text_from_doc_fields(title, abstract, text):
+    text_doc = ""
+    if title is not None:
+        text_doc = title + "\n"
+    if abstract is not None:
+        text_doc = text_doc + abstract + "\n"
+    if text is not None:
+        text_doc = text_doc + text
+    return text_doc
+
+
+def insert_doc(args, es, index, current_app, request):
     new_doc = {}
     new_doc["id"] = is_field_in_doc(args, "id")
     new_doc["id_alias"] = is_field_in_doc(args, "id_alias")
@@ -148,12 +180,14 @@ def insert_doc(args, es, index):
 
     res = es.index(index=index, body=new_doc)
     doc_id = res["_id"]
-    # TODO replace with nlp api call
-    embs = Embeddings.chunks_and_embeddings_from_doc_fields(is_field_in_doc(args, "title"),
-                                                            is_field_in_doc(args, "abstract"),
-                                                            is_field_in_doc(args, "text"))
+    text = text_from_doc_fields(is_field_in_doc(args, "title"),
+                                is_field_in_doc(args, "abstract"),
+                                is_field_in_doc(args, "text"))
+
+    embs = compute_embeddings(text, current_app, request)
+
     first = True
-    for emb in embs:
+    for emb in embs["emb_with_chunk_text"]:
         if first:
             update_doc = {"doc": {"chunk_text": emb["text"], "document_id": doc_id, "chunk_number": emb["chunk"],
                              "sbert_embedding": emb["vector"]}}
