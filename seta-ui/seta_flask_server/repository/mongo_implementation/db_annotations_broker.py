@@ -53,6 +53,16 @@ class AnnotationsBroker(implements(IAnnotationsBroker)):
 
         return [c["_id"] for c in categories]
 
+    def bulk_import(self, categories: list[str], annotations: list[AnnotationModel]):
+        with self.db.client.start_session(causal_consistency=True) as session:
+            self.collection.delete_many(
+                {"category": {"$in": categories}}, session=session
+            )
+
+            self.collection.insert_many(
+                [annotation.model_dump() for annotation in annotations], session=session
+            )
+
 
 def _annotation_from_db_json(json_dict: dict) -> AnnotationModel:
     annotation = AnnotationModel.model_construct(

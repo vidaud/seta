@@ -101,10 +101,7 @@ class AnnotationsResource(Resource):
             abort(HTTPStatus.CONFLICT, "Label already exists")
 
         try:
-            annotation = annotations_logic.build_new_annotation(
-                payload=annotations_ns.payload,
-                broker=self.annotations_broker,
-            )
+            annotation = annotations_logic.build_new_annotation(payload=payload)
 
             self.annotations_broker.create(annotation)
         except PayloadErrors as pe:
