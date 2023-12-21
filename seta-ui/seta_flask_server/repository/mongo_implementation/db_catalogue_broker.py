@@ -29,16 +29,10 @@ class CatalogueBroker(implements(ICatalogueBroker)):
                 for s in self.collection.find({"catalogue": "system-scopes"})
             ]
 
-        if category is None or category == ScopeCategory.Community:
-            catalogues.community = [
-                CatalogueScope.from_db_json(s)
-                for s in self.collection.find({"catalogue": "community-scopes"})
-            ]
-
-        if category is None or category == ScopeCategory.Resource:
+        if category is None or category == ScopeCategory.DataSource:
             catalogues.resource = [
                 CatalogueScope.from_db_json(s)
-                for s in self.collection.find({"catalogue": "resource-scopes"})
+                for s in self.collection.find({"catalogue": "data-source-scopes"})
             ]
 
         return catalogues
@@ -50,12 +44,6 @@ class CatalogueBroker(implements(ICatalogueBroker)):
             catalogues.application = [
                 CatalogueRole.from_db_json(s)
                 for s in self.collection.find({"catalogue": "app-roles"})
-            ]
-
-        if category is None or category == RoleCategory.Community:
-            catalogues.community = [
-                CatalogueRole.from_db_json(s)
-                for s in self.collection.find({"catalogue": "community-roles"})
             ]
 
         return catalogues

@@ -23,12 +23,10 @@ class CatalogueRole:
 @dataclass
 class RoleCatalogues:
     application: list[CatalogueRole] = None
-    community: list[CatalogueRole] = None
 
 
 class RoleCategory(Enum):
     Application = "application"
-    Community = "community"
 
     def __str__(self):
         return str(self.value)

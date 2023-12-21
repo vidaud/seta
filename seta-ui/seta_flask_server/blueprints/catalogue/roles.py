@@ -85,5 +85,3 @@ class RoleCatalogueByCategory(Resource):
         match role_category:
             case RoleCategory.Application:
                 return result.application
-            case RoleCategory.Community:
-                return result.community

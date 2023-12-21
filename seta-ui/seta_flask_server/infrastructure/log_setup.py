@@ -9,7 +9,7 @@ from logging.config import dictConfig
 from flask import Flask
 
 
-class LogSetup(object):
+class LogSetup:
     def __init__(self, app=None, **kwargs):
         if app is not None:
             self.init_app(app, **kwargs)

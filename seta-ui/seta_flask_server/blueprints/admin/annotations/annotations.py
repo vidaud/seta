@@ -57,7 +57,7 @@ class AnnotationsResource(Resource):
 
         # verify scope
         user = self.users_broker.get_user_by_id(auth_id)
-        if not user_logic.can_approve_resource_cr(user):
+        if not user_logic.is_admin(user):
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
 
         annotations = self.annotations_broker.get_all()

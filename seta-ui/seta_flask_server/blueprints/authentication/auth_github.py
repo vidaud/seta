@@ -39,6 +39,8 @@ def token_getter():
     if user is not None:
         return user["github_access_token"]
 
+    return None
+
 
 @auth_github.route("/login/callback/github", methods=["GET"])
 @github.authorized_handler

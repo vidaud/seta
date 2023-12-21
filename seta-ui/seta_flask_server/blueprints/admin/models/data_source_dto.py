@@ -124,6 +124,7 @@ new_data_source_model = data_source_model.clone(
             description="Unique identifier. min_length=3, max_length=100", required=True
         ),
         "index": fields.String(
+            # pylint: disable-next=W1401
             description="Index name. min_length=3,  max_length=200,  regex=^[a-zA-Z0-9][a-zA-Z0-9_\-]*$.",
             attribute="index_name",
             required=True,

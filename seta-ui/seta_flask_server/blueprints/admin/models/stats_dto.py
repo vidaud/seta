@@ -1,4 +1,3 @@
-from seta_flask_server.infrastructure.constants import StatsTypeConstants
 from flask_restx import Model, fields
 
 stats_light_model = Model(
@@ -6,8 +5,6 @@ stats_light_model = Model(
     {
         "label": fields.String(description="Display label"),
         "count": fields.Integer(description="Items count"),
-        "type": fields.String(
-            description="Stats type", enum=StatsTypeConstants.LightList
-        ),
+        "type": fields.String(description="Stats type"),
     },
 )

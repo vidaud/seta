@@ -55,9 +55,7 @@ class ScopeCatalogueByCategory(Resource):
         description="Retrieve scopes catalogue by category.",
         responses={
             int(HTTPStatus.OK): "'Retrieved scopes.",
-            int(
-                HTTPStatus.BAD_REQUEST
-            ): "Invalid category; if set, then must be one of 'system', 'community', 'scope'.",
+            int(HTTPStatus.BAD_REQUEST): "Invalid category.",
         },
         security="CSRF",
     )
@@ -68,9 +66,12 @@ class ScopeCatalogueByCategory(Resource):
         Get catalogue of scopes by category
 
         :param category:
-            Optional, filter scope list by category, one of: 'system', 'community', 'resource'
+            Optional, filter scope list by category, one of: 'system', 'data-source'
             None means no filter, return all entries
         """
+
+        if category.lower() == "resource":
+            category = str(ScopeCategory.DataSource)
 
         if category.lower() in CATEGORIES:
             scope_category = ScopeCategory(category.lower())
@@ -85,7 +86,5 @@ class ScopeCatalogueByCategory(Resource):
         match scope_category:
             case ScopeCategory.System:
                 return result.system
-            case ScopeCategory.Community:
-                return result.community
-            case ScopeCategory.Resource:
+            case ScopeCategory.DataSource:
                 return result.resource

@@ -11,9 +11,9 @@ from seta_flask_server.infrastructure.constants import (
 
 from .user_info import UserInfo
 from .user_claim import UserClaim
-from .entity_scope import EntityScope
 from .system_scope import SystemScope
 from .external_provider import ExternalProvider
+from .data_source.data_source_scope import DataSourceScopeModel
 
 
 class SetaUser:
@@ -41,8 +41,7 @@ class SetaUser:
         self._external_providers = []
         self._claims = []
 
-        self._community_scopes = []
-        self._resource_scopes = []
+        self._data_source_scopes = []
         self._system_scopes = []
 
     def __iter__(self):
@@ -73,34 +72,6 @@ class SetaUser:
             "provider": self.authenticated_provider.provider,
             "provider_uid": self.authenticated_provider.provider_uid,
         }
-
-    def to_json_complete(self) -> dict:
-        to_return = dict(self)
-
-        to_return["role"] = self.role
-
-        if self._authenticated_provider is not None:
-            to_return["provider"] = self._authenticated_provider.to_json()
-
-        if self._claims is not None:
-            to_return["claims"] = json.dumps([obj.to_json() for obj in self._claims])
-
-        if self._system_scopes is not None:
-            to_return["system_scopes"] = json.dumps(
-                [obj.to_json() for obj in self._system_scopes]
-            )
-
-        if self._resource_scopes is not None:
-            to_return["resource_scopes"] = json.dumps(
-                [obj.to_json() for obj in self._resource_scopes]
-            )
-
-        if self._community_scopes is not None:
-            to_return["community_scopes"] = json.dumps(
-                [obj.to_json() for obj in self._community_scopes]
-            )
-
-        return to_return
 
     @classmethod
     def from_db_json(cls, json_dict):
@@ -141,20 +112,12 @@ class SetaUser:
         self._system_scopes = value
 
     @property
-    def community_scopes(self) -> list[EntityScope]:
-        return self._community_scopes
+    def data_source_scopes(self) -> list[DataSourceScopeModel]:
+        return self._data_source_scopes
 
-    @community_scopes.setter
-    def community_scopes(self, value: list[EntityScope]):
-        self._community_scopes = value
-
-    @property
-    def resource_scopes(self) -> list[EntityScope]:
-        return self._resource_scopes
-
-    @resource_scopes.setter
-    def resource_scopes(self, value: list[EntityScope]):
-        self._resource_scopes = value
+    @data_source_scopes.setter
+    def data_source_scopes(self, value: list[DataSourceScopeModel]):
+        self._data_source_scopes = value
 
     @property
     def external_providers(self) -> list[ExternalProvider]:
@@ -209,69 +172,3 @@ class SetaUser:
 
     def is_not_active(self) -> bool:
         return self.status.lower() != UserStatusConstants.Active.lower()
-
-    def has_community_scope(self, community_id: str, scope: str) -> bool:
-        if self._community_scopes is None:
-            return False
-
-        return any(
-            cs.id.lower() == community_id.lower() and cs.scope == scope
-            for cs in self._community_scopes
-        )
-
-    def has_any_community_scope(self, community_id: str, scopes: list[str]) -> bool:
-        if self._community_scopes is None:
-            return False
-
-        for scope in scopes:
-            if self.has_community_scope(community_id=community_id, scope=scope):
-                return True
-
-        return False
-
-    def has_all_community_scopes(self, community_id: str, scopes: list[str]) -> bool:
-        if not scopes:
-            return False
-
-        if self._community_scopes is None:
-            return False
-
-        for scope in scopes:
-            if not self.has_community_scope(community_id=community_id, scope=scope):
-                return False
-
-        return True
-
-    def has_resource_scope(self, community_id: str, scope: str) -> bool:
-        if self._resource_scopes is None:
-            return False
-
-        return any(
-            cs.id.lower() == community_id.lower() and cs.scope == scope
-            for cs in self._resource_scopes
-        )
-
-    def has_any_resource_scope(self, community_id: str, scopes: list[str]) -> bool:
-        if self._resource_scopes is None:
-            return False
-
-        for scope in scopes:
-            if self.has_resource_scope(community_id=community_id, scope=scope):
-                return True
-        return False
-
-    def has_system_scope(self, scope: str) -> bool:
-        if self._system_scopes is None:
-            return False
-
-        return any(cs.system_scope == scope for cs in self._system_scopes)
-
-    def has_any_system_scope(self, scopes: list[str]) -> bool:
-        if self._system_scopes is None:
-            return False
-
-        for scope in scopes:
-            if self.has_system_scope(scope):
-                return True
-
-        return False

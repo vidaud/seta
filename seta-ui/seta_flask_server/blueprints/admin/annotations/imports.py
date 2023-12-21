@@ -75,7 +75,7 @@ class AnnotationsImportResource(Resource):
                 annotation = annotations_logic.build_new_annotation(payload=json)
 
                 annotations.append(annotation)
-                if not annotation.category in categories:
+                if annotation.category not in categories:
                     categories.append(annotation.category)
             except PayloadErrors as pe:
                 e = BadRequest()

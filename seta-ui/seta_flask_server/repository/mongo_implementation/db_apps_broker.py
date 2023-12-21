@@ -83,7 +83,6 @@ class AppsBroker(implements(IAppsBroker)):
     def create(
         self,
         app: SetaApplication,
-        copy_parent_scopes: bool = True,
         copy_parent_rsa: bool = False,
     ):
         # double check the name uniqueness
@@ -111,21 +110,6 @@ class AppsBroker(implements(IAppsBroker)):
             domain=ExternalProviderConstants.SETA.lower(),
         )
         rsa_key = None
-        resource_scopes = None
-
-        if copy_parent_scopes:
-            result = self.collection.find(
-                {
-                    "user_id": app.parent_user_id,
-                    "resource_scope": {"$exists": True},
-                },
-                {"_id": 0, "user_id": 0},
-            )
-
-            resource_scopes = list(result)
-
-            for rs in resource_scopes:
-                rs["user_id"] = user_id
 
         if copy_parent_rsa:
             q = {"user_id": app.parent_user_id, "rsa_value": {"$exists": True}}
@@ -149,10 +133,6 @@ class AppsBroker(implements(IAppsBroker)):
             # insert rsa_key
             if rsa_key is not None:
                 self.collection.insert_one(rsa_key.to_json(), session=session)
-
-            # insert parent resource scopes
-            if resource_scopes:
-                self.collection.insert_many(resource_scopes, session=session)
 
     def update(self, old: SetaApplication, new: SetaApplication):
         if not new.app_name:

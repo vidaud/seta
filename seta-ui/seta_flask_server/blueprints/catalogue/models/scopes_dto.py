@@ -16,9 +16,6 @@ scopes_model = Model(
         "system": fields.List(
             fields.Nested(model=scope_model), description="List of the systems scopes"
         ),
-        "community": fields.List(
-            fields.Nested(model=scope_model), description="List of the community scopes"
-        ),
         "resource": fields.List(
             fields.Nested(model=scope_model), description="List of the resource scopes"
         ),

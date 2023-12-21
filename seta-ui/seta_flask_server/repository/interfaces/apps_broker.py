@@ -67,15 +67,12 @@ class IAppsBroker(Interface):
     def create(
         self,
         app: SetaApplication,
-        copy_parent_scopes: bool = True,
         copy_parent_rsa: bool = False,
     ):
         """Inserts an application record in the database.
 
         Args:
             app: The application object.
-            copy_parent_scopes:
-                Indicates that the new app gets the same resource scopes as its parent.
             copy_parent_rsa:
                 Indicates that the new application has the same public key as its parent.
         """
