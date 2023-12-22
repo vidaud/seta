@@ -44,6 +44,18 @@ const CreateForm = ({ close, categories }) => {
       label: '',
       color: '',
       category: ''
+    },
+    validate: {
+      label: (value, values) =>
+        values && values.label.length < 3 ? 'Label should have at least 3 characters' : null,
+      color: (value, values) =>
+        values && values.color.length < 1
+          ? `String should match pattern '^#(?:[0-9a-fA-F]{3}){1,2}$'"}`
+          : null,
+      category: (value, values) =>
+        values && values.category.length < 3
+          ? 'Category should have at least 3 characters and should be unique'
+          : null
     }
   })
 
