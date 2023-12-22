@@ -59,6 +59,10 @@ services:
       - seta-network
 
   seta-search:
+    container_name: search
+    extends:
+      file: common.yml
+      service: search
     build:
       dockerfile: seta-search/Dockerfile-dev
     volumes:
@@ -66,6 +70,12 @@ services:
       - ../seta-config:/etc/seta
     environment:
       - logger.level=DEBUG
+    depends_on:
+      - "seta-auth"
+      - "seta-opensearch"
+      - "seta-nlp"
+    networks:
+      - seta-network
 
   seta-nginx:
     container_name: nginx
@@ -81,6 +91,7 @@ services:
       - "seta-auth"
       - "seta-api"
       - "seta-nlp"
+      - "seta-search"
       - "seta-ui"
       - "seta-ui-react"
       - "seta-doc"

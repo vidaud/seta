@@ -112,6 +112,7 @@ def insert_chunk(args, es, index, current_app, request):
     new_doc["chunk_number"] = is_field_in_doc(args, "chunk_number")
     emb = get_embedding(args, current_app, request)
     new_doc["sbert_embedding"] = emb
+    new_doc["annotation"] = is_field_in_doc(args, "annotation")
     res = es.index(index=index, body=new_doc)
     return res["_id"]
 
@@ -177,6 +178,7 @@ def insert_doc(args, es, index, current_app, request):
     new_doc["taxonomy"], new_doc["taxonomy_path"] = Taxonomy.from_tree_to_elasticsearch_format(is_field_in_doc(args, "taxonomy"))
     new_doc["other"] = is_field_in_doc(args, "other")
     new_doc["keywords"] = is_field_in_doc(args, "keywords")
+    new_doc["annotation"] = is_field_in_doc(args, "annotation")
 
     res = es.index(index=index, body=new_doc)
     doc_id = res["_id"]
@@ -203,7 +205,7 @@ def insert_doc(args, es, index, current_app, request):
 
 
 def corpus(term, n_docs, from_doc, sources, collection, reference, in_force, sort, taxonomy_path, semantic_sort_id_list,
-           emb_vector_list, author, date_range, aggs, search_type, other, current_app):
+           emb_vector_list, author, date_range, aggs, search_type, other, annotation, current_app):
     if search_type is None or search_type not in current_app.config["SEARCH_TYPES"]:
         search_type = "CHUNK_SEARCH"
     if n_docs is None:
@@ -215,7 +217,7 @@ def corpus(term, n_docs, from_doc, sources, collection, reference, in_force, sor
 
     body = build_corpus_request(term, n_docs, from_doc, sources, collection, reference, in_force, sort, taxonomy_path,
                                 semantic_sort_id_list, emb_vector_list, author, date_range, aggs, search_type, other,
-                                current_app)
+                                annotation, current_app)
     # import json
     # print(json.dumps(body))
     request = compose_request_for_msearch(body, current_app)
