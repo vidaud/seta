@@ -6,11 +6,12 @@ import { environment } from '~/environments/environment'
 
 import { AdminQueryKeys } from './query-keys'
 
-import type { AnnotationResponse } from '../types/annotations-types'
+import type { AnnotationResponse, ImportResponse } from '../types/annotations-types'
 
 export const cacheKey = () => ['annotations']
 const BASE_URL = environment.baseUrl
 const ANNOTATIONS = (): string => '/admin/annotations'
+const IMPORT_ANNOTATIONS = (): string => '/admin/annotations/import'
 const ANNOTATIONS_API_PATH = (label): string => `/admin/annotations/${label}`
 
 const apiConfig: AxiosRequestConfig = {
@@ -82,6 +83,25 @@ export const useDeleteAnnotation = (label: string) => {
       await client.cancelQueries(AdminQueryKeys.Annotations)
     },
     onSuccess: () => {
+      client.invalidateQueries(AdminQueryKeys.Annotations)
+    }
+  })
+}
+
+export const importAnnotations = async (request: ImportResponse) => {
+  return await api.post(IMPORT_ANNOTATIONS(), request, apiConfig)
+}
+
+export const useImportAnnotations = () => {
+  const client = useQueryClient()
+
+  return useMutation({
+    mutationFn: (request: ImportResponse) => importAnnotations(request),
+    onMutate: async () => {
+      await client.cancelQueries(AdminQueryKeys.ImportAnnotations)
+    },
+    onSuccess: () => {
+      client.invalidateQueries(AdminQueryKeys.ImportAnnotations)
       client.invalidateQueries(AdminQueryKeys.Annotations)
     }
   })
