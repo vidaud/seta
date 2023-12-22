@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Group, createStyles, Button, ActionIcon, ColorInput, Autocomplete } from '@mantine/core'
+import { Group, createStyles, Button, ActionIcon, ColorInput } from '@mantine/core'
 import { IconRefresh } from '@tabler/icons-react'
 
 import {
@@ -22,7 +22,13 @@ const useStyles = createStyles({
 
 const randomColor = () => `#${Math.floor(Math.random() * 16777215).toString(16)}`
 
-const UpdateForm = ({ annotation, close, categories }) => {
+type Props = {
+  annotation: AnnotationResponse
+  close: () => void
+  categories?: string[]
+}
+
+const UpdateForm = ({ annotation, close }: Props) => {
   const { classes, cx } = useStyles()
   const setUpdateAnnotationMutation = useUpdateAnnotation()
   const [color, onChange] = useState(annotation.color)
@@ -32,6 +38,12 @@ const UpdateForm = ({ annotation, close, categories }) => {
       label: '',
       color: annotation.color,
       category: ''
+    },
+    validate: {
+      color: (value, values) =>
+        values && values.color.length < 1
+          ? `String should match pattern '^#(?:[0-9a-fA-F]{3}){1,2}$'"}`
+          : null
     }
   })
 
@@ -73,13 +85,6 @@ const UpdateForm = ({ annotation, close, categories }) => {
     <>
       <AnnotationFormProvider form={form}>
         <form className={cx(classes.form)} onSubmit={form.onSubmit(handleSubmit)}>
-          <Autocomplete
-            data={categories}
-            label="Category"
-            {...form.getInputProps('category')}
-            className={cx(classes.input)}
-            withAsterisk
-          />
           <ColorInput
             placeholder="Pick color"
             label="Color"
