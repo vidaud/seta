@@ -3,3 +3,7 @@ export type AnnotationResponse = {
   color: string
   category: string
 }
+
+export type ImportResponse = {
+  annotations: string
+}

@@ -1,6 +1,12 @@
+/* eslint-disable react/jsx-pascal-case */
 import { useMemo } from 'react'
 import { Text, Flex, ScrollArea, Button } from '@mantine/core'
-import { useMantineReactTable, MantineReactTable } from 'mantine-react-table'
+import {
+  useMantineReactTable,
+  MantineReactTable,
+  MRT_ToggleFiltersButton,
+  MRT_ToggleGlobalFilterButton
+} from 'mantine-react-table'
 import type { MRT_ColumnDef } from 'mantine-react-table'
 
 import type { AnnotationResponse } from '~/api/types/annotations-types'
@@ -19,7 +25,7 @@ const AnnotationsTable = ({ data, isLoading, error }: DataProps<AnnotationRespon
       {
         accessorKey: 'label',
         header: 'Label',
-        enableSorting: false
+        filterVariant: 'multi-select'
       },
       {
         accessorKey: 'category',
@@ -54,13 +60,20 @@ const AnnotationsTable = ({ data, isLoading, error }: DataProps<AnnotationRespon
     enableColumnActions: false,
     enableColumnFilters: true,
     enableTopToolbar: true,
-    renderTopToolbarCustomActions: () => <OptionsMenuAction data={data} />,
     enableBottomToolbar: true,
     enableDensityToggle: false,
     enableHiding: false,
     enableFullScreenToggle: false,
     enableRowActions: true,
     enableFacetedValues: true,
+    // eslint-disable-next-line @typescript-eslint/no-shadow
+    renderToolbarInternalActions: ({ table }) => (
+      <>
+        <MRT_ToggleFiltersButton table={table} />
+        <MRT_ToggleGlobalFilterButton table={table} />
+        <OptionsMenuAction data={data} />
+      </>
+    ),
     positionActionsColumn: 'last',
     positionExpandColumn: 'first',
     enablePagination: true,
@@ -121,13 +134,6 @@ const AnnotationsTable = ({ data, isLoading, error }: DataProps<AnnotationRespon
         <OptionsMenuAction item={row.original} />
       </Flex>
     )
-    // renderDetailPanel: ({ row }) => (
-    //   <DetailPanel
-    //     scopes={row.original.scopes}
-    //     contactDetails={row.original.contact}
-    //     themes={row.original.theme ? row.original.theme : '-'}
-    //   />
-    // )
   })
 
   return (

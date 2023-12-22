@@ -1,5 +1,6 @@
-import { useState } from 'react'
-import { Menu } from '@mantine/core'
+import React, { useState } from 'react'
+import { ActionIcon, Menu, Popover } from '@mantine/core'
+import { IconX } from '@tabler/icons-react'
 import { BsThreeDotsVertical } from 'react-icons/bs'
 import { FiCornerRightDown, FiCornerUpRight } from 'react-icons/fi'
 
@@ -7,7 +8,10 @@ import ActionIconMenu from '~/components/ActionIconMenu/ActionIconMenu'
 
 import type { AnnotationResponse } from '~/api/types/annotations-types'
 
+import * as S from './styles'
+
 import { downLoadJSON } from '../../downloadJson'
+import ImportContainer from '../ImportContainer'
 
 type Props = {
   item?: AnnotationResponse
@@ -17,6 +21,11 @@ type Props = {
 
 const OptionsMenuAction = ({ item, data, isLoading }: Props) => {
   const [isOpen, setIsOpen] = useState(false)
+  const [opened, setOpened] = useState(false)
+
+  const closePopup = () => {
+    setOpened(false)
+  }
 
   return (
     <ActionIconMenu
@@ -31,7 +40,7 @@ const OptionsMenuAction = ({ item, data, isLoading }: Props) => {
         onClick: () => setIsOpen(true)
       }}
       opened={isOpen}
-      closeOnClickOutside={false}
+      closeOnClickOutside={opened ? false : true}
     >
       {data ? (
         <>
@@ -41,16 +50,39 @@ const OptionsMenuAction = ({ item, data, isLoading }: Props) => {
               downLoadJSON(JSON.stringify(data), 'application/json', `annotations.json`)
             }}
           >
-            Export annotations
+            Export all annotations
           </Menu.Item>
-          <Menu.Item
-            icon={<FiCornerRightDown />}
-            onClick={() => {
-              // downLoadJSON(JSON.stringify(item), 'application/json', `${item.label}-annotation.json`)
-            }}
+          <Popover
+            position="bottom"
+            withinPortal
+            width="30%"
+            withArrow
+            arrowSize={16}
+            shadow="sm"
+            offset={10}
+            opened={opened}
+            onChange={setOpened}
           >
-            Import annotations
-          </Menu.Item>
+            <Popover.Target>
+              <Menu.Item icon={<FiCornerRightDown />} onClick={() => setOpened(o => !o)}>
+                Import annotations
+              </Menu.Item>
+            </Popover.Target>
+
+            <Popover.Dropdown css={S.popup} className="flex">
+              <ImportContainer />
+
+              <ActionIcon
+                variant="light"
+                size="md"
+                radius="sm"
+                css={S.closeButton}
+                onClick={closePopup}
+              >
+                <IconX size={20} strokeWidth={3} />
+              </ActionIcon>
+            </Popover.Dropdown>
+          </Popover>
         </>
       ) : null}
       {item ? (

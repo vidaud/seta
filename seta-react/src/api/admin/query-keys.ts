@@ -5,6 +5,8 @@ export class AdminQueryKeys {
 
   public static readonly Annotations = ['admin-annotations']
 
+  public static readonly ImportAnnotations = ['admin-annotations-import']
+
   public static readonly AnnotationCategories = ['admin-annotation-categories']
 
   public static readonly Datasources = ['admin-data-sources']
