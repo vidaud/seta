@@ -83,6 +83,9 @@ extra:
     home: /
     contact: /contact
     apiDatasources: /seta-ui/api/v1/data-sources/doc
+    apiUserProfile: /seta-api/api/v1/me/doc
+    apiSysAdmin: /seta-ui/api/v1/admin/doc
+    apiCatalogue: /seta-ui/api/v1/catalogue/doc
     apiSeta: /seta-api/doc
     jwtToken: /authentication/v1/doc
     docs: /docs
@@ -107,19 +110,23 @@ nav:
     - Web App:
       - Datasources:
         - SeTA Datasources: user-guide/datasources/datasources.md
-      # - Communities: 
-      #   - SeTA Communities: user-guide/communities/communities.md
-      #   - Communities ChangeRequest: user-guide/communitiesChangeRequest.md
-      #   - Community Memberships: user-guide/communities/communityMemberships.md
-      #   - Community Administrator: user-guide/communities/communityAdministrator.md
-      #   - Resources: user-guide/communities/resources.md
-      #  - Users Permissions: user-guide/usersPermissions.md
       - Search: 
         - Methodology: user-guide/search/methodology.md
         - Web Interface: user-guide/search/searchWebApp.md
+      - User Profile:
+        - Profile: user-guide/user-profile/profile.md
+        - Authentication Key: user-guide/user-profile/authentication-key.md
+        - Applications: user-guide/user-profile/applications.md
+      - Administration Panel:
+        - Users: user-guide/administration-panel/user-management.md
+        - Annotations: user-guide/administration-panel/annotations.md
+        - Datasources: user-guide/administration-panel/datasources.md
     - APIs: 
       - JWT Token Authentication: apis/jwt_token/jwt_token_api.md
       - SeTA API: apis/seta_api/seta_api.md
+      - SeTA Catalogue API: apis/seta_catalogue_api/seta_catalogue_api.md
+      - SeTA User Profile API: apis/seta_user_profile_api/seta_user_profile_api.md
+      - SeTA Sys Admin API: apis/seta_sys_admin_api/seta_sys_admin_api.md
       - SeTA Datasources API: apis/seta_datasources_api/seta_datasources_api.md
   - Install SeTA:
     - Docker: setup/docker-architecture.md
