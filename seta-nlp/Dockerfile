@@ -17,9 +17,10 @@ ENV PYTHONUNBUFFERED 1
 ENV TIKA_PATH="tika/tika-app-2.4.1.jar"
 
 RUN apt update -y
-RUN apt install -y wget
-RUN apt install -y default-jre
+RUN apt install -y --no-install-recommends wget
+RUN apt install -y --no-install-recommends default-jre
 RUN apt install -y gpg
+RUN apt install -y --no-install-recommends libmagic1
 
 RUN useradd seta 
 ARG ROOT=/home/seta

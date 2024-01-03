@@ -3,6 +3,7 @@ from fastapi import APIRouter, HTTPException, Security, UploadFile, Depends, sta
 
 from fastapi.responses import PlainTextResponse
 
+from nlp.internal import file_validation
 from nlp.internal import tika_parser
 from nlp.internal import seta_jwt
 from nlp.access_security import access_security
@@ -33,6 +34,17 @@ async def parse_text(
             )
 
         file_content = await file.read()
+
+        is_allowed, mime = file_validation.allowed_extension(file_content)
+
+        logger.debug("Detected file extension: %s", mime)
+
+        if not is_allowed:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail=f"Detected file extension not allowed: {mime}",
+            )
+
         text = await parser.extract_text(content=file_content)
 
         return text
