@@ -13,8 +13,6 @@ SeTA provides a semantic system that brings entities, concepts, relations and pr
 
 ## SeTA can be used
 
-<!-- -  To join Communities with easy interactions, secure, and intuitive.  Creating real connections with a user-friendly experience.    -->
-
 - To find the crucial places in documents with just a few clicks. SeTA helps to accelerate time-consuming processes many times over. This allows specialists to concentrate on their essential, value-adding tasks.
 
 - To upload the user’s own highly complex documents and unstructured content and promptly obtain related results in documents using the record & document classification. 

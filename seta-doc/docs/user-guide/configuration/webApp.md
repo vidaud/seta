@@ -28,7 +28,7 @@ To access these features, you need to login either with an EU login[^1] account 
 
 
 
-Once you are logged in, you can see in the top menu the link to the Search and to the Datasources:
+Once logged in, the top menu provides access to the Search and Datasources links. Additionally, the About dropdown offers access to FAQs, Contact, and Take a Tour pages:
 
 
 <figure markdown>

@@ -42,7 +42,7 @@ const CreateForm = ({ close, categories }) => {
   const form = useAnnotation({
     initialValues: {
       label: '',
-      color: '',
+      color: color,
       category: ''
     },
     validate: {

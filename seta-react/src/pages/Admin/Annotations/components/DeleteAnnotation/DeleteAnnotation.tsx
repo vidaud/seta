@@ -44,7 +44,7 @@ const DeleteAnnotation = ({ annotation }) => {
   return (
     <Popover
       width={300}
-      // withinPortal={true}
+      withinPortal={true}
       trapFocus
       position="left"
       withArrow

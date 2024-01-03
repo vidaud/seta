@@ -150,7 +150,12 @@ It also possible stage a document in its current version just click on :material
 </figure>
 
 ### My Search           
-In this panel, we can see the user's search library.               
+In this panel, we can see the user's search library. This feature is under development and will be available soon.
+
+<figure markdown>
+  ![Image title](../../img/my_search.png)
+  <figcaption>My Searches</figcaption>
+</figure>              
 
 ### My Documents         
 In this panel we can see the documents the user has saved during the searching.                 

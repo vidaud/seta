@@ -149,7 +149,7 @@ After successfully start all the containers, you are ready to open your browser 
 
 * **SETA API:** [[location] {{ setaUrls.apiSeta }}]({{ setaUrls.apiSeta }})
 
-* **SETA API Communities:** [[location] {{ setaUrls.apiDatasources }}]({{ setaUrls.apiDatasources }})
+* **SETA API Datasources:** [[location] {{ setaUrls.apiDatasources }}]({{ setaUrls.apiDatasources }})
 
 * **Documentation:** [[location] {{ setaUrls.docs }}]({{ setaUrls.docs }})
 
