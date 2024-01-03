@@ -53,7 +53,7 @@ services:
       service: search
     restart: "no"
     build:
-      dockerfile: seta-search/Dockerfile-test
+      dockerfile: seta-search/Dockerfile
     networks:
       - seta-network-test
     depends_on:

@@ -15,7 +15,6 @@ requests==2.31.0
 #restricted by flask-restx
 jsonschema==4.17.3
 
-python-magic==0.4.27
 xmltodict==0.13.0
 
 #log client for mongo db:
