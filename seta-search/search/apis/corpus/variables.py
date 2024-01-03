@@ -1,6 +1,5 @@
 from flask_restx import fields
 
-
 other = {}
 other["*"] = fields.String()
 
@@ -30,6 +29,7 @@ document["score"] = fields.Float
 document["taxonomy"] = None
 document["title"] = fields.String()
 document["source"] = fields.String()
+document["annotation"] = fields.String()
 
 date_year_agg = {}
 date_year_agg["doc_count"] = fields.Integer
@@ -111,15 +111,16 @@ corpus_put_params["taxonomy"] = None
 corpus_put_params["keywords"] = None
 corpus_put_params["other"] = None
 
-
 corpus_document_id_post_request_model = {}
-corpus_document_id_post_request_model["document_id"] = fields.String(description="Return all the chunks of document with the specified document_id" )
-corpus_document_id_post_request_model["n_docs"] = fields.Integer(description="Number of chunks to be returned. Default 10." )
-corpus_document_id_post_request_model["from_doc"] = fields.Integer(description="Defines the number of chunks to skip, defaulting to 0." )
+corpus_document_id_post_request_model["document_id"] = fields.String(
+    description="Return all the chunks of document with the specified document_id")
+corpus_document_id_post_request_model["n_docs"] = fields.Integer(
+    description="Number of chunks to be returned. Default 10.")
+corpus_document_id_post_request_model["from_doc"] = fields.Integer(
+    description="Defines the number of chunks to skip, defaulting to 0.")
 
 corpus_document_id_delete_request_model = {}
 corpus_document_id_delete_request_model["document_id"] = fields.String()
-
 
 corpus_chunk_id_post_delete_params = {}
 corpus_chunk_id_post_delete_params["_id"] = fields.String()
@@ -198,6 +199,10 @@ corpus_post_params["aggs"] = fields.List(fields.String, description="field to be
                                                                     '"source", "date_year", "source_collection_reference", '
                                                                     '"taxonomy:taxonomyname", "taxonomies", "taxonomy_path_years-path:to:taxonomy"')
 corpus_post_params["other"] = None
+corpus_post_params["annotation"] = fields.List(fields.String(),
+                                               description="annotation list. Annotation are defined using this format 'group:label',"
+                                                           " to select all labels belonging to the same group type 'group:'. "
+                                                           "To search for a label in any group use ':label'")
 
 corpus_delete_id_response = {}
 corpus_delete_id_response["deleted_document_id"] = fields.String
@@ -274,6 +279,7 @@ xsd_string = """<?xml version="1.0" encoding="UTF-8"?>
       <xs:element type="xs:string" name="collection"/>
       <xs:element type="xs:string" name="reference"/>
       <xs:element type="xs:string" name="in_force"/>
+      <xs:element type="xs:string" name="annotation"/>
       <xs:element name="author">
         <xs:complexType>
             <xs:sequence>
@@ -326,9 +332,8 @@ xsd_string = """<?xml version="1.0" encoding="UTF-8"?>
       </xs:element>
     </xs:choice>
   </xs:complexType>
-  
-</xs:schema>"""
 
+</xs:schema>"""
 
 
 class Variable:
@@ -363,7 +368,8 @@ class Variable:
                                                     source_collection_reference_agg))),
                        "taxonomy": fields.List(fields.Nested(self.taxonomy_agg_model_tree)),
                        "taxonomies": fields.List(fields.Nested(self.taxonomy_agg_model_tree)),
-                       "taxonomy_path_years": fields.List(fields.Nested(self.namespace.model("date_year_agg", date_year_agg)))
+                       "taxonomy_path_years": fields.List(
+                           fields.Nested(self.namespace.model("date_year_agg", date_year_agg)))
                        }
         post_get_response["aggregations"] = fields.List(fields.Nested(self.namespace.model("aggregation", aggregation)))
         self.post_get_response = post_get_response
@@ -391,7 +397,6 @@ class Variable:
 
     def query_request_model(self):
         corpus_post_params["other"] = fields.Nested(self.other_model)
-        corpus_post_params["vector_field"] = fields.String
         return self.namespace.model("corpus_post_params", corpus_post_params)
 
     def get_corpus_post_response_model(self):

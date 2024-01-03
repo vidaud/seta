@@ -49,8 +49,9 @@ services:
     networks:
       - seta-network
     depends_on:
-      - "seta-mongo"
+      - "seta-auth"
       - "seta-opensearch"
+      - "seta-nlp"
 
   seta-nginx:
     container_name: nginx
@@ -63,6 +64,7 @@ services:
       - "seta-auth"
       - "seta-api"
       - "seta-nlp"
+      - "seta-search"
       - "seta-ui"
       - "seta-ui-react"
       - "seta-doc"

@@ -20,7 +20,8 @@ chunk_update_schema = {"type": "object",
                            "other": {"type": "object"},
                            "keywords": {"type": "array", "items": {"type": "object"}},
                            "chunk_text": {"type": "string"},
-                           "sbert_embedding": {"type": "array", "items": {"type": "number"}}
+                           "sbert_embedding": {"type": "array", "items": {"type": "number"}},
+                           "annotation": {"type": "string"}
                        },
                        "additionalProperties": False,
                         "required": ["_id"]
@@ -47,7 +48,8 @@ document_post_schema = {"type": "object",
                             "in_force": {"type": "string"},
                             "taxonomy": {"type": "array", "items": {"type": "object"}},
                             "other": {"type": "object"},
-                            "keywords": {"type": "array", "items": {"type": "object"}}
+                            "keywords": {"type": "array", "items": {"type": "object"}},
+                            "annotation": {"type": "string"}
                         },
                         "additionalProperties": False,
                         "required": ["source"]
@@ -79,7 +81,8 @@ chunk_post_schema = {"type": "object",
                          "keywords": {"type": "array", "items": {"type": "object"}},
                          "chunk_text": {"type": "string"},
                          "sbert_embedding": {"type": "array", "items": {"type": "number"},
-                                             "minItems": 768, "maxItems": 768}
+                                             "minItems": 768, "maxItems": 768},
+                         "annotation": {"type": "string"}
                      },
                      "additionalProperties": False,
                      "required": ["source", "document_id", "chunk_number"]}
@@ -101,6 +104,7 @@ query_post_schema = {"type": "object",
                          "date_range": {"type": "array", "items": {"type": "string"}},
                          "aggs": {"type": "array", "items": {"type": "string"}},
                          "search_type": {"type": "string"},
-                         "other": {"type": "object"}
+                         "other": {"type": "object"},
+                         "annotation": {"type": "array", "items": {"type": "string"}}
                      },
                      "additionalProperties": False}

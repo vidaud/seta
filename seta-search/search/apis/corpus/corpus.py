@@ -304,7 +304,8 @@ class CorpusQuery(Resource):
                                is_field_in_doc(args, 'taxonomy_path'), is_field_in_doc(args, 'semantic_sort_id_list'),
                                is_field_in_doc(args, 'sbert_embedding_list'), is_field_in_doc(args, 'author'),
                                is_field_in_doc(args, 'date_range'), is_field_in_doc(args, 'aggs'),
-                               is_field_in_doc(args, 'search_type'), is_field_in_doc(args, 'other'), current_app=app)
+                               is_field_in_doc(args, 'search_type'), is_field_in_doc(args, 'other'),
+                               is_field_in_doc(args, 'annotation'), current_app=app)
             return jsonify(documents)
         except ForbiddenResourceError:
             return {"total_docs": None, "documents": []}
