@@ -20,16 +20,16 @@ const Permissions = ({ userId, role, scopes }: Props) => {
         <Tabs.Tab value="system-scopes" icon={<IconEdit size="0.95rem" />}>
           System Permissions
         </Tabs.Tab>
-        <Tabs.Tab value="resource-scopes">Resource Permissions</Tabs.Tab>
+        <Tabs.Tab value="datasource-scopes">Datasource Permissions</Tabs.Tab>
       </Tabs.List>
 
       <Tabs.Panel value="system-scopes" pt="xs">
         <SystemPerms userId={userId} role={role} scopes={scopes?.system_scopes} />
       </Tabs.Panel>
 
-      <Tabs.Panel value="resource-scopes" pt="xs">
+      <Tabs.Panel value="datasource-scopes" pt="xs">
         <ScrollArea h={500} type="auto" offsetScrollbars>
-          <ResourcePerms scopes={scopes?.resource_scopes} />
+          <ResourcePerms scopes={scopes?.data_source_scopes} />
         </ScrollArea>
       </Tabs.Panel>
     </Tabs>

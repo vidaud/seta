@@ -10,9 +10,8 @@ export const sidebar: ThemedCSS = theme => css`
   position: sticky;
   top: 0;
   margin: -3rem 0;
-  // min-width: 18rem;
-  // max-width: 24rem;
-  width: 20%;
+  min-width: 18rem;
+  max-width: 24rem;
   max-height: 100vh;
   height: auto;
   flex: 1;

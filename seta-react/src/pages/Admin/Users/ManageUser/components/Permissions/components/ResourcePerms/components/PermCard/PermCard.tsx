@@ -1,12 +1,12 @@
 import { Card, Text, Title } from '@mantine/core'
 
-import type { ResourceScope } from '~/types/admin/scopes'
+import type { DatasourceScope } from '~/types/admin/scopes'
 import type { CategoryScopesResponse } from '~/types/catalogue/catalogue-scopes'
 
 import PermsTable from '../../../PermsTable'
 
 type Props = {
-  resourceScope: ResourceScope
+  resourceScope: DatasourceScope
   catalogue?: CategoryScopesResponse[]
 }
 
@@ -15,9 +15,9 @@ const PermCard = ({ resourceScope, catalogue }: Props) => {
     <Card shadow="xs" padding="md" radius="xs" withBorder>
       <Title order={5}>
         <Text span c="dimmed" size="sm" mr={5}>
-          Resource
+          Datasource
         </Text>
-        {resourceScope.resource_id}
+        {resourceScope.data_source_id}
       </Title>
 
       <PermsTable scopes={resourceScope.scopes} catalogue={catalogue} />

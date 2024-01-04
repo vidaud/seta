@@ -5,7 +5,7 @@ export type ApplicationValues = {
   name: string
   description: string
   copyPublicKey?: boolean
-  copyResourceScopes?: boolean
+  copyDatasourceScopes?: boolean
   status?: string
 }
 

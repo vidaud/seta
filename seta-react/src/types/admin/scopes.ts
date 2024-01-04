@@ -13,7 +13,13 @@ export type ResourceScope = {
   scopes: string[]
 }
 
+export type DatasourceScope = {
+  data_source_id: string
+  scopes: string[]
+}
+
 export type UserScopeList = {
   system_scopes?: SystemScope[]
   resource_scopes?: ResourceScope[]
+  data_source_scopes?: DatasourceScope[]
 }

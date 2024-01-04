@@ -9,6 +9,9 @@ import {
 import { useDisclosure } from '@mantine/hooks'
 import { RiUserSettingsLine } from 'react-icons/ri'
 
+import { useCategoryCatalogueScopes } from '~/api/catalogues/scopes'
+import { ScopeCategory } from '~/types/catalogue/catalogue-scopes'
+
 import AssignScopes from './components/AssignScopes/AssignScopes'
 
 const useStyles = createStyles({
@@ -23,6 +26,7 @@ const useStyles = createStyles({
 const ManageScopes = ({ datasource_id }) => {
   const { classes } = useStyles()
   const [opened, { open, close }] = useDisclosure(false)
+  const { data } = useCategoryCatalogueScopes(ScopeCategory.Datasource)
   const theme = useMantineTheme()
 
   return (
@@ -42,7 +46,7 @@ const ManageScopes = ({ datasource_id }) => {
         }}
       >
         <Divider my="xs" label="Manage Scopes" labelPosition="center" />
-        <AssignScopes datasource_id={datasource_id} close={close} />
+        <AssignScopes scopes={data} datasource_id={datasource_id} close={close} />
         {/* <UpdateForm datasource={datasource} close={close} /> */}
       </Modal>
 
