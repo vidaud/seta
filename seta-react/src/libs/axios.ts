@@ -7,7 +7,7 @@ import errorInterceptor from '~/libs/axios-error-interceptor'
 import { logResponse } from '~/libs/axios-logger'
 import { paramsSerializer } from '~/utils/api-utils'
 
-const API_ROOT = environment.api_target_path.replace(/\/+$/, '')
+const API_ROOT = environment.searchApiRoot
 
 export const axiosConfig: AxiosRequestConfig = {
   baseURL: API_ROOT,

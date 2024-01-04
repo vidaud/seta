@@ -76,7 +76,7 @@ export const getFilesEmbeddingInfo = async (
 
     reportProgress(0, `Extracting text from ${file.name} ...`)
 
-    const { text } = await getTextFromFile(file, config)
+    const text = await getTextFromFile(file, config)
 
     const normalizedText = text
       .split('\n')
