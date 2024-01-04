@@ -1,4 +1,4 @@
-FROM ubuntu:22.04
+FROM python:3.10-slim
 
 RUN echo "Acquire::http::Proxy \""$HTTP_PROXY"\";" >> /etc/apt/apt.conf
 RUN echo "Acquire::https::Proxy \""$HTTPS_PROXY"\";" >> /etc/apt/apt.conf
@@ -9,32 +9,23 @@ ENV http_proxy=$HTTP_PROXY
 ENV HTTPS_PROXY=$HTTPS_PROXY
 ENV HTTP_PROXY=$HTTP_PROXY
 
-RUN apt update -y 
-RUN apt install -y  --no-install-recommends curl
-RUN apt install -y  --no-install-recommends wget
-RUN apt install -y  --no-install-recommends python3-pip
-RUN pip install --upgrade pip
-
-RUN useradd -m seta
-
+RUN useradd seta 
 ARG ROOT=/home/seta
 
-#set UTC timezone
-RUN apt-get install -yq tzdata && \
-    ln -fs /usr/share/zoneinfo/UTC /etc/localtime && \
-    dpkg-reconfigure -f noninteractive tzdata
-
-COPY ./seta-ui/requirements.txt $ROOT/requirements.txt
-
 WORKDIR $ROOT
-RUN pip install --upgrade pip
-RUN pip install -r requirements.txt
 
-COPY ./seta-ui/app_auth $ROOT/app_auth
-COPY ./seta-ui/seta_flask_server $ROOT/seta_flask_server
+# set env variables
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
+
+COPY ./seta-ui/requirements.txt ./requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
 #copy configuration files
 COPY ./seta-config/ui.conf /etc/seta/
 COPY ./seta-config/logs.conf /etc/seta/
+
+COPY ./seta-ui/app_auth ./app_auth
+COPY ./seta-ui/seta_flask_server ./seta_flask_server
 
 CMD ["gunicorn", "--conf", "/home/seta/app_auth/gunicorn_conf.py", "--bind", "0.0.0.0:8082", "--capture-output" , "--access-logformat", "[seta.auth] %(h)s %(l)s %(u)s %(t)s %(r)s %(s)s %(b)s | %(f)s | %(a)s", "--chdir", "/home/seta/app_auth", "app:app"]

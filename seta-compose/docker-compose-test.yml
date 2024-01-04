@@ -86,7 +86,7 @@ services:
       service: ui
     restart: "no"
     build: 
-      dockerfile: seta-ui/dockerfiles/Dockerfile-ui-test
+      dockerfile: seta-ui/dockerfiles/Dockerfile-ui
     depends_on:
       - "seta-auth-test"
     networks:
@@ -111,7 +111,7 @@ services:
       service: auth
     restart: "no"
     build:
-      dockerfile: seta-ui/dockerfiles/Dockerfile-auth-test
+      dockerfile: seta-ui/dockerfiles/Dockerfile-auth
     networks:
       - seta-network-test
     depends_on:
