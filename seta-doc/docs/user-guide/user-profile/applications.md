@@ -14,7 +14,7 @@ Initially, you don't have any applications associated to your account. The list 
 
 1. From the list click on the top right bottom ^^Add new application^^.  
 2. Enter the Application name and Description.  
-3. Select or deselect the option to copy the Public key associated with the user account and datasource scopes based on your requirements.
+3. Select or deselect the option to copy the Public key associated with the user account based on your requirements.
 4. Click **Save application** to retain the stored application or **Cancel** to discard any changes made. 
 
 <figure markdown>

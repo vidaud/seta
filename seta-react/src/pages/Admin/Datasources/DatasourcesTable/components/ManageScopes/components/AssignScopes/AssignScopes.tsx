@@ -13,9 +13,7 @@ import { notifications } from '~/utils/notifications'
 
 import { useStyles } from '../../../UpdateDatasource/components/style'
 
-const scopes = [{ label: 'Owner', value: '/seta/data-source/owner' }]
-
-const AssignScopes = ({ datasource_id, close }) => {
+const AssignScopes = ({ scopes, datasource_id, close }) => {
   const { classes, cx } = useStyles()
   const setAssignScopeMutation = useAssignScope(datasource_id)
   const { data } = useAllAccounts()
@@ -23,6 +21,13 @@ const AssignScopes = ({ datasource_id, close }) => {
     ? data?.map(item => ({
         label: item.email,
         value: item.username
+      }))
+    : []
+
+  const datasource_scopes: readonly (string | SelectItem)[] = data
+    ? scopes?.map(item => ({
+        label: item.name,
+        value: item.code
       }))
     : []
 
@@ -66,7 +71,7 @@ const AssignScopes = ({ datasource_id, close }) => {
           />
 
           <Select
-            data={scopes}
+            data={datasource_scopes}
             label="Scope"
             {...form.getInputProps('scope')}
             className={cx(classes.input)}

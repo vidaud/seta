@@ -23,15 +23,14 @@ const useStyles = createStyles({
 const CreateForm = ({ close }) => {
   const { classes, cx } = useStyles()
   const [copyPublicKey, setCopyPublicKey] = useState(false)
-  const [copyResourceScopes, setCopyResourceScopes] = useState(true)
+  // const [copyDatasourceScopes, setCopyDatasourceScopes] = useState(true)
   const setCreateApplicationMutation = useCreateApplication()
 
   const form = useApplication({
     initialValues: {
       name: '',
       description: '',
-      copyPublicKey: false,
-      copyResourceScopes: true
+      copyPublicKey: false
     },
     validate: values => ({
       name: values.name.length < 2 ? 'Name must have at least 2 letters' : null,
@@ -43,8 +42,7 @@ const CreateForm = ({ close }) => {
     const newValues = {
       name: values.name,
       description: values.description,
-      copyPublicKey: copyPublicKey,
-      copyResourceScopes: copyResourceScopes
+      copyPublicKey: copyPublicKey
     }
 
     setCreateApplicationMutation.mutate(newValues, {
@@ -90,11 +88,6 @@ const CreateForm = ({ close }) => {
               label="Copy Public Key"
               checked={copyPublicKey}
               onChange={() => setCopyPublicKey(o => !o)}
-            />
-            <Checkbox
-              label="Copy Resource Scopes"
-              checked={copyResourceScopes}
-              onChange={() => setCopyResourceScopes(o => !o)}
             />
           </Group>
           <Group position="right">

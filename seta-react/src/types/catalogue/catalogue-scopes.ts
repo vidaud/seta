@@ -9,10 +9,12 @@ export type CatalogueScopesResponse = {
   system: CategoryScopesResponse[]
   community: CategoryScopesResponse[]
   resource: CategoryScopesResponse[]
+  datasource: CategoryScopesResponse[]
 }
 
 export enum ScopeCategory {
   System = 'system',
   Community = 'community',
-  Resource = 'resource'
+  Resource = 'resource',
+  Datasource = 'data-source'
 }
