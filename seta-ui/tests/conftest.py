@@ -135,9 +135,6 @@ def app(api_root):
 
     config = TestConfig()
 
-    # pylint: disable-next=invalid-name
-    config.PRIVATE_API_URL = f"http://{api_root}/seta-api-private/v1"
-
     app = create_app(config)
     app.testing = True
 

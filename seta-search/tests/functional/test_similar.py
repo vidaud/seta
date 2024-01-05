@@ -1,6 +1,6 @@
+from http import HTTPStatus
 import pytest
 from flask.testing import FlaskClient
-from http import HTTPStatus
 
 from tests.infrastructure.helpers.util import auth_headers
 from tests.infrastructure.helpers.authentication import login_user
@@ -9,7 +9,7 @@ from tests.infrastructure.helpers.util import get_access_token
 
 
 def get_by_term(client: FlaskClient, access_token: str, term: str, n_term: int = 6):
-    url = f"/seta-api/api/v1/similar?term={term}&n_term={n_term}"
+    url = f"/seta-search/api/v1/similar?term={term}&n_term={n_term}"
 
     return client.get(
         url, content_type="application/json", headers=auth_headers(access_token)

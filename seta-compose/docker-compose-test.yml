@@ -32,20 +32,6 @@ services:
     networks:
       - seta-network-test
 
-  seta-api-test:
-    container_name: api-test
-    extends:
-      file: common.yml
-      service: api
-    restart: "no"
-    build:
-      dockerfile: seta-api/Dockerfile-test
-    networks:
-      - seta-network-test
-    depends_on:
-      - "seta-auth-test"
-      - "seta-opensearch-test"
-
   seta-search-test:
     container_name: search-test
     extends:
@@ -73,7 +59,6 @@ services:
       - "8080:8080"
     depends_on:
       - "seta-auth-test"
-      - "seta-api-test"
       - "seta-ui-test"
       - "seta-admin-test"
     networks:

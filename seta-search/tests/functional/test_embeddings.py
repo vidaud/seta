@@ -1,6 +1,6 @@
+from http import HTTPStatus
 import pytest
 from flask.testing import FlaskClient
-from http import HTTPStatus
 
 from tests.infrastructure.helpers.util import auth_headers
 from tests.infrastructure.helpers.authentication import login_user
@@ -11,7 +11,7 @@ from tests.infrastructure.helpers.util import get_access_token
 def post_text(client: FlaskClient, access_token: str):
     text = "Ocean energy thematic network to present results"
 
-    url = f"/seta-api/api/v1/compute_embeddings?text={text}"
+    url = f"/seta-search/api/v1/compute_embeddings?text={text}"
 
     return client.post(
         url, content_type="application/json", headers=auth_headers(access_token)
@@ -34,5 +34,3 @@ def test_embeddings_text(client: FlaskClient, user_key_pairs: dict, user_id: str
     assert response.status_code == HTTPStatus.OK
     # TODO: check response
     assert "emb_with_chunk_text" in response.json
-    
-    

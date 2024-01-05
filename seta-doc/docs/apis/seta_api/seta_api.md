@@ -1,6 +1,6 @@
-# Seta-API - Elastic Search queries
+# Seta Search API - OpenSearch queries
 
-The [SeTA API]({{ setaUrls.apiSeta }}) exposes the data and functionality in a consistent JSON format. It has various methods that can be performed on them over HTTP, like *GET, POST, PUT, and DELETE*. Where POST is used to create datasources, and PUT to update datasources.
+The [SeTA Search API]({{ setaUrls.apiSeta }}) exposes the data and functionality in a consistent JSON format. It has various methods that can be performed on them over HTTP, like *GET, POST, PUT, and DELETE*. Where POST is used to create data sources, and PUT to update data sources.
 
 <figure markdown>
 ![Image title](/docs/img/seta_api_suggestions_corpus.png)
