@@ -117,7 +117,6 @@ def register_blueprints(app):
     from .blueprints.profile import profile_bp_v1
     from .blueprints.catalogue import catalogue_bp_v1
     from .blueprints.admin import admin_bp
-    from .blueprints.notifications import notifications_bp_v1
     from .blueprints.data_sources import data_sources_bp_v1
 
     api_root_v1 = "/seta-ui/api/v1"
@@ -125,8 +124,6 @@ def register_blueprints(app):
     app.register_blueprint(profile_bp_v1, url_prefix=api_root_v1)
 
     app.register_blueprint(catalogue_bp_v1, url_prefix=api_root_v1)
-
-    app.register_blueprint(notifications_bp_v1, url_prefix=api_root_v1)
 
     app.register_blueprint(data_sources_bp_v1, url_prefix=api_root_v1)
 

@@ -1,8 +1,7 @@
 from http import HTTPStatus
 from injector import inject
 
-from flask import current_app as app
-from flask import jsonify, abort, Blueprint
+from flask import jsonify, abort, Blueprint, current_app
 from flask_jwt_extended import decode_token
 from flask_restx import Api, Resource, fields
 
@@ -12,6 +11,7 @@ from seta_flask_server.repository import interfaces
 from seta_flask_server.infrastructure.constants import (
     AuthorizedArea,
     UserStatusConstants,
+    UserType,
 )
 from .logic.token_info_logic import get_data_source_permissions
 
@@ -48,6 +48,7 @@ class TokenInfo(Resource):
         data_sources_broker: interfaces.IDataSourcesBroker,
         data_source_scopes_broker: interfaces.IDataSourceScopesBroker,
         profile_broker: interfaces.IUserProfileUnsearchables,
+        apps_broker: interfaces.IAppsBroker,
         *args,
         api=None,
         **kwargs,
@@ -57,6 +58,7 @@ class TokenInfo(Resource):
         self.data_sources_broker = data_sources_broker
         self.data_source_scopes_broker = data_source_scopes_broker
         self.profile_broker = profile_broker
+        self.apps_broker = apps_broker
 
         super().__init__(api, *args, **kwargs)
 
@@ -97,17 +99,31 @@ class TokenInfo(Resource):
                     if user.status != UserStatusConstants.Active:
                         abort(HTTPStatus.UNAUTHORIZED, "User inactive!")
 
-                    decoded_token["resource_permissions"] = get_data_source_permissions(
-                        user_id=user.user_id,
-                        data_sources_broker=self.data_sources_broker,
-                        scopes_broker=self.data_source_scopes_broker,
-                        profile_broker=self.profile_broker,
-                    )
+                    perm_user_id = user.user_id
+
+                    if user.user_type == UserType.Application:
+                        # load parent permissions
+                        application = self.apps_broker.get_by_user_id(user.user_id)
+
+                        if application is not None:
+                            perm_user_id = application.parent_user_id
+                        else:
+                            perm_user_id = None
+
+                    if perm_user_id is not None:
+                        decoded_token[
+                            "resource_permissions"
+                        ] = get_data_source_permissions(
+                            user_id=perm_user_id,
+                            data_sources_broker=self.data_sources_broker,
+                            scopes_broker=self.data_source_scopes_broker,
+                            profile_broker=self.profile_broker,
+                        )
 
         except Exception as e:  # pylint: disable=broad-exception-caught
             message = str(e)
-            app.logger.exception(message)
+            current_app.logger.exception(message)
             abort(HTTPStatus.UNAUTHORIZED, message)
 
-        app.logger.debug(decoded_token)
+        current_app.logger.debug(decoded_token)
         return jsonify(decoded_token)
