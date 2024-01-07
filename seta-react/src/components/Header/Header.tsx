@@ -18,6 +18,8 @@ const Header = () => {
   const location = useLocation()
   const authenticated = !!user
 
+  const toRefresh = window.location.href.includes('/login?redirect=')
+
   const handleLogout = () => {
     logout().finally(() => {
       window.location.href = '/login'
@@ -98,34 +100,35 @@ const Header = () => {
   return (
     <header>
       <SiteHeader />
+      {user && toRefresh ? null : (
+        <Flex css={S.menu} align="center" justify="space-between">
+          <Grid align="center" pl="2.8%" className="menu-items">
+            <Link to="/" className="mr-5">
+              <Image alt="SeTa Logo" src="/img/SeTA-logocut-negative.png" width={120} />
+            </Link>
 
-      <Flex css={S.menu} align="center" justify="space-between">
-        <Grid align="center" pl="2.8%" className="menu-items">
-          <Link to="/" className="mr-5">
-            <Image alt="SeTa Logo" src="/img/SeTA-logocut-negative.png" width={120} />
-          </Link>
-
-          {visibleMenuItems.map(({ to, label }) => (
-            <S.MenuLink
-              key={to}
-              to={to}
-              id={
-                label === 'Datasources'
-                  ? 'datasource-tab'
-                  : label === 'Search'
-                  ? 'search-tab'
-                  : undefined
-              }
-            >
-              {label}
-            </S.MenuLink>
-          ))}
-          <AboutDropdown />
-        </Grid>
-        <Group>
-          <Group className="login-button">{authenticated ? dropdownMenu : loginButton}</Group>
-        </Group>
-      </Flex>
+            {visibleMenuItems.map(({ to, label }) => (
+              <S.MenuLink
+                key={to}
+                to={to}
+                id={
+                  label === 'Datasources'
+                    ? 'datasource-tab'
+                    : label === 'Search'
+                    ? 'search-tab'
+                    : undefined
+                }
+              >
+                {label}
+              </S.MenuLink>
+            ))}
+            <AboutDropdown />
+          </Grid>
+          <Group>
+            <Group className="login-button">{authenticated ? dropdownMenu : loginButton}</Group>
+          </Group>
+        </Flex>
+      )}
     </header>
   )
 }
