@@ -24,19 +24,19 @@ const AssignScopes = ({ scopes, datasource_id, close }) => {
       }))
     : []
 
-  const datasource_scopes: readonly (string | SelectItem)[] = data
-    ? scopes?.map(item => ({
-        label: item.name,
-        value: item.code
-      }))
-    : []
-
   const form = useDatasourceScopes({
     initialValues: {
       user_id: [],
       scope: []
     }
   })
+
+  const datasource_scopes: readonly (string | SelectItem)[] = data
+    ? scopes?.map(item => ({
+        label: item.name,
+        value: item.code
+      }))
+    : []
 
   const handleSubmit = values => {
     const updated_values: DatasourceScope[] = values.user_id?.map(item =>
