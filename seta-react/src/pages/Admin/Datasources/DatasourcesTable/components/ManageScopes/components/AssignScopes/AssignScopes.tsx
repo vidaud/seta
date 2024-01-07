@@ -26,8 +26,8 @@ const AssignScopes = ({ scopes, datasource_id, close }) => {
 
   const form = useDatasourceScopes({
     initialValues: {
-      user_id: [],
-      scope: []
+      user_id: '',
+      scope: ''
     }
   })
 
@@ -39,11 +39,16 @@ const AssignScopes = ({ scopes, datasource_id, close }) => {
     : []
 
   const handleSubmit = values => {
-    const updated_values: DatasourceScope[] = values.user_id?.map(item =>
-      values.scope.map(element => ({
-        user_id: item,
-        scope: element
-      }))
+    // eslint-disable-next-line prefer-const
+    let updated_values: DatasourceScope[] = []
+
+    values.user_id?.forEach(item =>
+      values.scope?.forEach((element: string) =>
+        updated_values.push({
+          user_id: item,
+          scope: element
+        })
+      )
     )
 
     setAssignScopeMutation.mutate(updated_values, {
