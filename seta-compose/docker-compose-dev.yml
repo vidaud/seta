@@ -71,9 +71,7 @@ services:
     environment:
       - logger.level=DEBUG
     depends_on:
-      - "seta-auth"
       - "seta-opensearch"
-      - "seta-nlp"
     networks:
       - seta-network
 
