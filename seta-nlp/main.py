@@ -50,7 +50,9 @@ def create_app() -> FastAPI():
     app.include_router(file_parser_router)
     app.include_router(embeddings_router)
     app.include_router(
-        concordance_router, prefix="/internal", include_in_schema=stage == "Development"
+        concordance_router,
+        prefix="/internal",
+        include_in_schema=stage.lower() == "development",
     )
 
     logger.info("FastAPI NLP initialized.")
