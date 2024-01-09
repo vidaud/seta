@@ -16,7 +16,7 @@ const breadcrumbs: Crumb[] = [
 const FaqsPage = () => {
   const { classes } = useStyles()
 
-  const seta_api = '/seta-api/api/v1/doc'
+  const seta_search = '/seta-search/api/v1/doc'
   const data_api = '/seta-ui/api/v1/data-sources/doc'
 
   return (
@@ -93,12 +93,12 @@ const FaqsPage = () => {
                 <Text
                   variant="link"
                   component="a"
-                  href={seta_api}
+                  href={seta_search}
                   color="blue"
                   underline
                   align="center"
                 >
-                  SeTA API
+                  SeTA Search API
                 </Text>
               </Accordion.Panel>
             </Accordion.Item>

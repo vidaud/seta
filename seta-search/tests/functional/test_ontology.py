@@ -1,6 +1,6 @@
+from http import HTTPStatus
 import pytest
 from flask.testing import FlaskClient
-from http import HTTPStatus
 
 from tests.infrastructure.helpers.util import auth_headers
 from tests.infrastructure.helpers.authentication import login_user
@@ -9,7 +9,7 @@ from tests.infrastructure.helpers.util import get_access_token
 
 
 def get_by_term(client: FlaskClient, access_token: str, term: str):
-    url = f"/seta-api/api/v1/ontology?term={term}"
+    url = f"/seta-search/api/v1/ontology?term={term}"
 
     return client.get(
         url, content_type="application/json", headers=auth_headers(access_token)
@@ -17,7 +17,7 @@ def get_by_term(client: FlaskClient, access_token: str, term: str):
 
 
 def get_list_by_term(client: FlaskClient, access_token: str, term: str):
-    url = f"/seta-api/api/v1/ontology-list?term={term}"
+    url = f"/seta-search/api/v1/ontology-list?term={term}"
 
     return client.get(
         url, content_type="application/json", headers=auth_headers(access_token)
@@ -46,7 +46,7 @@ def test_ontology_term(
     # TODO: check response
     if response.status_code == HTTPStatus.OK:
         assert "links" in response.json
-    
+
 
 @pytest.mark.parametrize("user_id", ["seta_admin"])
 @pytest.mark.parametrize(

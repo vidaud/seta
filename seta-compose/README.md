@@ -45,7 +45,7 @@ In the ***.env*** file change the necessary information, where is required, for 
 
 
     # set-up of no proxy control for docker containers 
-    NO_PROXY="seta-es,seta-data,seta-mongo,seta-api,seta-nginx,seta-ui,seta-ui-react,seta-auth"
+    NO_PROXY="seta-es,seta-data,seta-mongo,seta-search,seta-nginx,seta-ui,seta-ui-react,seta-auth"
 
 
     ##### Seta-UI variables  ####
@@ -109,14 +109,14 @@ This command will setup all system and data.
 
 It will take a while depending on the Internet speed. Might take 30min to 2h.
 
-At some point there will be a message **SeTA-API is up and running**
+At some point there will be a message **SeTA-SEARCH is up and running**
 
 
 After successfully start all the containers you are ready to open your browser and go to one of the following links:
 
 * **User Web App:** [[location] /](/)
 
-* **SETA API:** [[location] /seta-api/doc](/seta-api/doc)
+* **SETA API:** [[location] /seta-search/doc](/seta-search/doc)
 
 * **SETA API Communities:** [[location] /seta-ui/api/v1/communities/doc](/seta-ui/api/v1/communities/doc)
 
@@ -158,7 +158,7 @@ Create an ***.env.test*** file containing the variables as described in **.env.e
 
 ```
 # docker container names
-NO_PROXY="seta-es-test,seta-data-test,seta-mongo-test,seta-api-test,seta-nginx-test,seta-ui-test,seta-auth-test"
+NO_PROXY="seta-es-test,seta-data-test,seta-mongo-test,seta-search-test,seta-nginx-test,seta-ui-test,seta-auth-test"
 
 # flask environment
 STAGE="Test"

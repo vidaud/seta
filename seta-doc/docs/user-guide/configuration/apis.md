@@ -3,24 +3,24 @@ The SeTA APIs provides the functions and procedures to access the data of the Da
 ## APIs in SeTA
 
 In SeTA there the following APIs:   
-- Datasources API       
+- Data Sources API       
 - JWT Token Authentication                
-- SeTA API - Elastic Search queries                 
+- SeTA Search API - OpenSearch queries                 
 
 
-To prepare the upload of the data, it is important to setup first the **Datasources API** to then follow with **SeTA API**.
+To prepare the upload of the data, it is important to setup first the **Data Sources API** to then follow with **SeTA Search API**.
 
-### Datasources API 
+### Data Sources API 
 
 !!! info
-    The ^^SeTA Datasources API^^ are only available for the *Development Environment*
+    The ^^SeTA Data Sources API^^ are only available for the *Development Environment*
 
 #### Prerequisites
 
 The Docker containers must be running.
 
 !!! note "Optional, but useful:" 
-    Install MongoDB Compass and connect to dockerized MongoDB on localhost:27017
+    Install MongoDB Compass and connect to MongoDB docker container on localhost:27017
 
     If the seta database exists, then remove it with either MongoDB Compass or bash MongoDB commands.
 
@@ -51,11 +51,11 @@ After successful authentication, check that you have the following entries in th
     **user_id** is a randomly generated short guid for each new account
 
 
-Open a new tab in the same browser for the [SeTA Datasources API]({{ setaUrls.apiDatasources }})
+Open a new tab in the same browser for the [SeTA Data Sources API]({{ setaUrls.apiDatasources }})
 
 <figure markdown>
 ![Image title](../../../img/datasources_api.png)
-<figcaption>SeTA Datasources</figcaption>
+<figcaption>SeTA Data Sources</figcaption>
 </figure>
 
 
@@ -71,7 +71,7 @@ Click on the **Authorize** button to open the Available authorizations dialog; s
 <figcaption>Authorize</figcaption>
 </figure>
 
-!!! warning "Only if you want to use seta-api in another browser:"
+!!! warning "Only if you want to use seta-search in another browser:"
     * open the browser developer tool and copy the value of the **access_token_cookie**
     * click on the **Authorize** button to open the Available authorizations dialog; in the apikey text input set **Bearer** value then click on the *Authorize* button.
 
@@ -80,15 +80,15 @@ SeTA-API will get at each request another authorization decoded token from seta-
 > You can verify the authorization token at [authorization doc]({{ setaUrls.auth_Token }}) passing the JWT access token as payload.
 
 
-At this point, Datasource API usage is set up and now it is possible to go to SeTA API to start using the methods under **seta-api-corpus** region for the upload of data.
+At this point, Data Source API usage is set up and now it is possible to go to SeTA Search API to start using the methods under **Corpus** namespace for the upload of data.
 
-### SeTA API
+### SeTA Search API
 
 #### Prerequisites
 
 #### EU Login Authentication
 
-Open a browser and go to seta-ui [login]({{ setaUrls.login }}) page. Connect with EU Login account or use a GitHub authentication. After that, you can open a new tab in the same browser or go to [SeTA API]({{ setaUrls.apiSeta }}).
+Open a browser and go to seta-ui [login]({{ setaUrls.login }}) page. Connect with EU Login account or use a GitHub authentication. After that, you can open a new tab in the same browser or go to [SeTA Search API]({{ setaUrls.apiSeta }}).
 
 
 !!! info
@@ -96,11 +96,11 @@ Open a browser and go to seta-ui [login]({{ setaUrls.login }}) page. Connect wit
 
 <figure markdown>
 ![Image title](../../img/seta-api.png)
-<figcaption>SeTA API</figcaption>
+<figcaption>SeTA Search API</figcaption>
 </figure>
 
 ### JWT token authentication
-There is no need to configurate to access the JWT token authetication API:    
+There is no need to configure to access the JWT token authentication API:    
  
 [JWT Token]({{ setaUrls.jwtToken }})
 

@@ -24,20 +24,7 @@ services:
       - "9200"
       - "9600"
     networks:
-      - seta-network
-
-  seta-api:
-    container_name: api
-    extends:
-      file: common.yml
-      service: api
-    build:
-       dockerfile: seta-api/Dockerfile
-    networks:
-      - seta-network
-    depends_on:
-      - "seta-auth"
-      - "seta-opensearch"      
+      - seta-network     
 
   seta-search:
     container_name: search
@@ -62,7 +49,6 @@ services:
       - "80:80"
     depends_on:
       - "seta-auth"
-      - "seta-api"
       - "seta-nlp"
       - "seta-search"
       - "seta-ui"
@@ -92,9 +78,6 @@ services:
       service: ui-react
     build:
       dockerfile: docker/Dockerfile
-    depends_on:
-      - "seta-api"
-      - "seta-ui"
     networks:
       - seta-network
 

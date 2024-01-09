@@ -76,7 +76,7 @@ In the ***.env*** file change the necessary information, where is required, for 
 
 
     # set-up of no proxy control for docker containers 
-    NO_PROXY="seta-es,seta-data,seta-mongo,seta-api,seta-nginx,seta-ui,seta-ui-react,seta-auth"
+    NO_PROXY="seta-es,seta-data,seta-mongo,seta-search,seta-nginx,seta-ui,seta-ui-react,seta-auth"
 
 
     ##### Seta-UI variables  ####
@@ -140,16 +140,16 @@ This command will setup all system and data.
 
 It will take a while depending on the Internet speed. Might take 30min to 2h.
 
-At some point there will be a message **SeTA-API is up and running**
+At some point there will be a message **SeTA Search API is up and running**
 
 
 After successfully start all the containers, you are ready to open your browser and go to one of the following links:
 
 * **User Web App:** [[location] {{ setaUrls.home }}]({{ setaUrls.home }})
 
-* **SETA API:** [[location] {{ setaUrls.apiSeta }}]({{ setaUrls.apiSeta }})
+* **SETA Search API:** [[location] {{ setaUrls.apiSeta }}]({{ setaUrls.apiSeta }})
 
-* **SETA API Datasources:** [[location] {{ setaUrls.apiDatasources }}]({{ setaUrls.apiDatasources }})
+* **SETA API Data Sources:** [[location] {{ setaUrls.apiDatasources }}]({{ setaUrls.apiDatasources }})
 
 * **Documentation:** [[location] {{ setaUrls.docs }}]({{ setaUrls.docs }})
 

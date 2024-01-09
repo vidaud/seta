@@ -152,7 +152,9 @@ class TestConfig(Config):
     def __init__(self) -> None:
         current_dir = os.path.dirname(__file__)
 
-        Config.CONFIG_APP_FILE = os.path.join(current_dir, "../../seta-config/api.conf")
+        Config.CONFIG_APP_FILE = os.path.join(
+            current_dir, "../../seta-config/search.conf"
+        )
         Config.CONFIG_LOGS_FILE = os.path.join(
             current_dir, "../../seta-config/logs.conf"
         )

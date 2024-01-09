@@ -22,16 +22,14 @@ To start this service:
 
 It will recreate containers: _seta-ui-react_ and _seta-nginx_ 
 
-At some point there will be a message **SeTA-API is up and running**
+At some point there will be a message **SeTA-Search is up and running**
 
 
 After successfully start all the containers, you are ready to open your browser and go to one of the following links:
 
 * **User Web App:** [[location] /](/)
 
-* **SETA API:** [[location] /seta-api/doc](/seta-api/doc)
-
-* **SETA API Communities:** [[location] /seta-ui/api/v1/communities/doc](/seta-ui/api/v1/communities/doc)
+* **SETA API:** [[location] /seta-search/doc](/seta-search/doc)
 
 * **Documentation:** [[location] /docs](/docs)
 
