@@ -3,6 +3,7 @@ from search.infrastructure.ApiLogicError import ApiLogicError
 
 from search.apis.corpus import taxonomy
 import math
+import requests
 
 
 def normalize_es_score(score, semantic_sort_id_list, emb_vector_list):
@@ -176,8 +177,12 @@ def handle_aggs_response(aggs, response, documents, current_app, search_type):
     return documents
 
 
-def compute_concordance(abstract, term, text):
-    #TODO define compute_concordance in nlp api, here call concordance api
-    concor = []
-    return concor
+def compute_concordance(abstract, term, text, current_app):
+    url = current_app.config.get("NLP_API_ROOT_URL") + "internal/compute_concordance"
+    data = {"term": term, "abstract": abstract, "text": text}
+    try:
+        result = requests.post(url=url, json=data)
+    except:
+        raise ApiLogicError("nlp compute_concordance api error")
+    return result.json()
 
