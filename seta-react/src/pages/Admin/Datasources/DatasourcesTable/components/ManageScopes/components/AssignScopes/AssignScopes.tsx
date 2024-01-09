@@ -1,5 +1,5 @@
 import type { SelectItem } from '@mantine/core'
-import { Group, Button, Select, MultiSelect } from '@mantine/core'
+import { Group, Button, MultiSelect } from '@mantine/core'
 
 import {
   DatasourceScopesFormProvider,
@@ -24,6 +24,13 @@ const AssignScopes = ({ scopes, datasource_id, close }) => {
       }))
     : []
 
+  const form = useDatasourceScopes({
+    initialValues: {
+      user_id: '',
+      scope: ''
+    }
+  })
+
   const datasource_scopes: readonly (string | SelectItem)[] = data
     ? scopes?.map(item => ({
         label: item.name,
@@ -31,18 +38,18 @@ const AssignScopes = ({ scopes, datasource_id, close }) => {
       }))
     : []
 
-  const form = useDatasourceScopes({
-    initialValues: {
-      user_id: [],
-      scope: ''
-    }
-  })
-
   const handleSubmit = values => {
-    const updated_values: DatasourceScope[] = values.user_id?.map(item => ({
-      user_id: item,
-      scope: values.scope
-    }))
+    // eslint-disable-next-line prefer-const
+    let updated_values: DatasourceScope[] = []
+
+    values.user_id?.forEach(item =>
+      values.scope?.forEach((element: string) =>
+        updated_values.push({
+          user_id: item,
+          scope: element
+        })
+      )
+    )
 
     setAssignScopeMutation.mutate(updated_values, {
       onSuccess: () => {
@@ -70,7 +77,7 @@ const AssignScopes = ({ scopes, datasource_id, close }) => {
             withAsterisk
           />
 
-          <Select
+          <MultiSelect
             data={datasource_scopes}
             label="Scope"
             {...form.getInputProps('scope')}
