@@ -28,7 +28,7 @@ def handle_corpus_response(aggs, res, search_type, term, current_app, semantic_s
         for document in response["hits"]["hits"]:
             abstract = document['_source']['abstract'] if isinstance(document['_source']['abstract'], str) else ""
             text = is_field_in_doc(document['_source'], "chunk_text")
-            concordance_field = compute_concordance(abstract, term, text)
+            concordance_field = compute_concordance(abstract, term, text, current_app)
             tax.create_tree_from_elasticsearch_format(is_field_in_doc(document['_source'], "taxonomy"),
                                                       is_field_in_doc(document['_source'], "taxonomy_path"))
             documents["documents"].append({"_id": document['_id'],
