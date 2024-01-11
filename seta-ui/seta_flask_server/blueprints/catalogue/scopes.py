@@ -14,7 +14,7 @@ scope_catalogue_ns.models[scope_model.name] = scope_model
 scope_catalogue_ns.models[scopes_model.name] = scopes_model
 
 
-@scope_catalogue_ns.route("/scopes", endpoint="scope_catalogue", methods=["GET"])
+@scope_catalogue_ns.route("", endpoint="scope_catalogue", methods=["GET"])
 class ScopeCatalogue(Resource):
     @inject
     def __init__(self, catalogue_broker: ICatalogueBroker, *args, api=None, **kwargs):
@@ -41,7 +41,7 @@ CATEGORIES = [str(s) for s in ScopeCategory]
 
 
 @scope_catalogue_ns.route(
-    "/scopes/<string:category>", endpoint="scope_category_catalogue", methods=["GET"]
+    "/<string:category>", endpoint="scope_category_catalogue", methods=["GET"]
 )
 @scope_catalogue_ns.param("category", "Scopes category", enum=CATEGORIES)
 class ScopeCatalogueByCategory(Resource):

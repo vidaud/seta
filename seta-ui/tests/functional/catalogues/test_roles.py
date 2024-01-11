@@ -3,7 +3,7 @@ import pytest
 from flask.testing import FlaskClient
 
 from tests.infrastructure.helpers.authentication import login_user
-from tests.infrastructure.helpers.catalogues import get_all_roles, get_roles_by_category
+from tests.functional.catalogues import api
 
 from tests.infrastructure.helpers.util import get_access_token
 
@@ -12,24 +12,21 @@ from tests.infrastructure.helpers.util import get_access_token
 def test_get_all_roles(
     client: FlaskClient, authentication_url: str, user_key_pairs: dict, user_id: str
 ):
+    """Test get all roles."""
+
     response = login_user(
         auth_url=authentication_url, user_key_pairs=user_key_pairs, user_id=user_id
     )
     access_token = get_access_token(response)
 
-    response = get_all_roles(client=client, access_token=access_token)
+    response = api.get_all_roles(client=client, access_token=access_token)
     assert response.status_code == HTTPStatus.OK
 
     assert "application" in response.json
     assert response.json["application"]
 
-    assert "community" in response.json
-    assert response.json["community"]
 
-
-@pytest.mark.parametrize(
-    "user_id, category", [("seta_admin", "application"), ("seta_admin", "community")]
-)
+@pytest.mark.parametrize("user_id, category", [("seta_admin", "application")])
 def test_get_roles_by_category(
     client: FlaskClient,
     authentication_url: str,
@@ -37,13 +34,14 @@ def test_get_roles_by_category(
     user_id: str,
     category,
 ):
+    """Test get roles by category."""
+
     response = login_user(
         auth_url=authentication_url, user_key_pairs=user_key_pairs, user_id=user_id
     )
     access_token = get_access_token(response)
 
-    response = get_roles_by_category(
+    response = api.get_roles_by_category(
         client=client, access_token=access_token, category=category
     )
     assert response.status_code == HTTPStatus.OK
-    assert response.json

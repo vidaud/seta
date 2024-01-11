@@ -17,7 +17,7 @@ field_model = field_catalogue_ns.model(
 )
 
 
-@field_catalogue_ns.route("/fields", endpoint="fields_catalogue", methods=["GET"])
+@field_catalogue_ns.route("", endpoint="fields_catalogue", methods=["GET"])
 class RoleCatalogue(Resource):
     @inject
     def __init__(self, catalogue_broker: ICatalogueBroker, *args, api=None, **kwargs):

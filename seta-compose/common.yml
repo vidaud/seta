@@ -164,7 +164,7 @@ services:
         - HTTP_PROXY=${HTTP_PROXY}
         - HTTPS_PROXY=${HTTPS_PROXY}
     expose:
-      - "8084"
+      - "8000"
     environment:
       - NO_PROXY=${NO_PROXY}
       - no_proxy=${NO_PROXY}            

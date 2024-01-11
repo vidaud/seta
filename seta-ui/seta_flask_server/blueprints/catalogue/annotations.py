@@ -14,7 +14,7 @@ annotation_catalogue_ns = Namespace(
 annotation_catalogue_ns.models.update(dto.ns_models)
 
 
-@annotation_catalogue_ns.route("/annotations", endpoint="annotations", methods=["GET"])
+@annotation_catalogue_ns.route("", endpoint="annotations", methods=["GET"])
 class AnnotationListResource(Resource):
     """Handles HTTP requests to URL: /catalogue/annotations."""
 

@@ -19,7 +19,7 @@ library_ns.models[library_model.name] = library_model
 library_ns.models[library_items.name] = library_items
 
 
-@library_ns.route("/library", endpoint="library_tree", methods=["GET", "POST"])
+@library_ns.route("", endpoint="library_tree", methods=["GET", "POST"])
 class LibraryItemsResource(Resource):
     """Get a list of library items of the authorized user and expose POST for new application"""
 
@@ -103,7 +103,7 @@ class LibraryItemsResource(Resource):
 
 
 @library_ns.route(
-    "/library/<string:item_id>", endpoint="library_item", methods=["PUT", "DELETE"]
+    "/<string:item_id>", endpoint="library_item", methods=["PUT", "DELETE"]
 )
 @library_ns.param("item_id", "Item identifier")
 class LibraryItemResource(Resource):
