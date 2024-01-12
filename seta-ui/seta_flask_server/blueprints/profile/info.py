@@ -17,7 +17,7 @@ account_info_ns.models[provider_model.name] = provider_model
 account_info_ns.models[account_model.name] = account_model
 
 
-@account_info_ns.route("/user-info", endpoint="me_user_info", methods=["GET"])
+@account_info_ns.route("user-info", endpoint="me_user_info", methods=["GET"])
 class UserInfo(Resource):
     @inject
     def __init__(self, users_broker: IUsersBroker, *args, api=None, **kwargs):
@@ -63,7 +63,7 @@ class UserInfo(Resource):
         }
 
 
-@account_info_ns.route("/", endpoint="my_account", methods=["GET", "DELETE"])
+@account_info_ns.route("", endpoint="my_account", methods=["GET", "DELETE"])
 class SetaAccount(Resource):
     @inject
     def __init__(

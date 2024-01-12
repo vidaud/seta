@@ -14,7 +14,7 @@ role_catalogue_ns.models[role_model.name] = role_model
 role_catalogue_ns.models[roles_model.name] = roles_model
 
 
-@role_catalogue_ns.route("/roles", endpoint="roles_catalogue", methods=["GET"])
+@role_catalogue_ns.route("", endpoint="roles_catalogue", methods=["GET"])
 class RoleCatalogue(Resource):
     @inject
     def __init__(self, catalogue_broker: ICatalogueBroker, *args, api=None, **kwargs):
@@ -41,7 +41,7 @@ CATEGORIES = [str(s) for s in RoleCategory]
 
 
 @role_catalogue_ns.route(
-    "/roles/<string:category>", endpoint="roles_category_catalogue", methods=["GET"]
+    "/<string:category>", endpoint="roles_category_catalogue", methods=["GET"]
 )
 @role_catalogue_ns.param("category", "Roles category", enum=CATEGORIES)
 class RoleCatalogueByCategory(Resource):

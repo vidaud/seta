@@ -21,7 +21,7 @@ scopes_ns.models[data_source_scopes_model.name] = data_source_scopes_model
 scopes_ns.models[user_scopes_model.name] = user_scopes_model
 
 
-@scopes_ns.route("/permissions", endpoint="user_permission_list", methods=["GET"])
+@scopes_ns.route("", endpoint="user_permission_list", methods=["GET"])
 class UserPermissionList(Resource):
     """Get a list of all user scopes"""
 

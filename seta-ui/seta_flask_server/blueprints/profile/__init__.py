@@ -36,12 +36,13 @@ profile_api = Api(
     doc=DOC,
     authorizations=authorizations,
     default_swagger_filename="me/swagger_profile.json",
+    prefix="/me",
 )
 
-profile_api.add_namespace(account_info_ns, path="/me")
-profile_api.add_namespace(applications_ns, path="/me/apps")
-profile_api.add_namespace(scopes_ns, path="/me")
-profile_api.add_namespace(library_ns, path="/me")
+profile_api.add_namespace(account_info_ns, path="/")
+profile_api.add_namespace(applications_ns, path="/apps")
+profile_api.add_namespace(scopes_ns, path="/permissions")
+profile_api.add_namespace(library_ns, path="/library")
 
-profile_api.add_namespace(unsearchables_ns, path="/me")
-profile_api.add_namespace(auth_key_ns, path="/me/auth-key")
+profile_api.add_namespace(unsearchables_ns, path="/unsearchables")
+profile_api.add_namespace(auth_key_ns, path="/auth-key")

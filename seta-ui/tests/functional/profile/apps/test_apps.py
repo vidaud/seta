@@ -4,11 +4,7 @@ import pytest
 from flask.testing import FlaskClient
 
 from tests.infrastructure.helpers.authentication import login_user
-from tests.infrastructure.helpers.profile import (
-    create_app,
-    get_user_apps,
-    update_app,
-)
+from tests.functional.profile.apps import api
 
 from tests.infrastructure.helpers.util import get_access_token
 
@@ -26,7 +22,7 @@ def test_create_app(
     )
     access_token = get_access_token(response)
 
-    response = create_app(
+    response = api.create_app(
         client=client,
         access_token=access_token,
         name=app_name,
@@ -45,7 +41,7 @@ def test_get_user_apps(
     )
     access_token = get_access_token(response)
 
-    response = get_user_apps(client=client, access_token=access_token)
+    response = api.get_user_apps(client=client, access_token=access_token)
     assert response.status_code == HTTPStatus.OK
     assert response.json
 
@@ -66,7 +62,7 @@ def test_update_app(
     new_name = app_name + "_updated"
     description = "Test update"
 
-    response = update_app(
+    response = api.update_app(
         client=client,
         access_token=access_token,
         name=app_name,

@@ -12,23 +12,40 @@ new_data_source = {
         "id": "pubsy",
         "title": "Pubsy",
         "description": "Pubsy description",
+        "organisation": "Pubsy",
+        "themes": ["theme1", "theme2"],
+        "contact": {
+            "email": "a@a.com",
+            "person": "Test Person",
+            "website": "http://pubsy.com",
+        },
+        "index": "seta-public-000001",
     },
     "test": {
         "id": "test",
         "title": "_test_",
         "description": "Some test for data source insert",
         "organisation": "Test organisation",
-        "theme": "theme test",
+        "themes": ["theme test"],
         "contact": {
             "email": "a@a.com",
             "person": "Test Person",
             "website": "http://test.com",
         },
+        "index": "seta-public-000001",
     },
     "fail_duplicate_id": {
         "id": "pubsy",
         "title": "Pubsy duplicate",
         "description": "Pubsy duplicate",
+        "organisation": "Pubsy",
+        "themes": ["theme1"],
+        "contact": {
+            "email": "a@a.com",
+            "person": "Test Person",
+            "website": "http://test.com",
+        },
+        "index": "seta-public-000001",
     },
 }
 
@@ -37,12 +54,13 @@ update_data_sources = {
         "title": "test",
         "description": "Some test for data source update",
         "organisation": "Organisation test",
-        "theme": "theme test",
+        "themes": ["theme test"],
         "contact": {
             "email": "bb@bb.com",
             "person": "Test Person Update",
             "website": "http://test.test",
         },
+        "status": "archived",
     }
 }
 
