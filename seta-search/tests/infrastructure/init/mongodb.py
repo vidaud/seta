@@ -1,14 +1,15 @@
 import json
-from pymongo import MongoClient
 from pathlib import Path
-
 import datetime
 import pytz
+from pymongo import MongoClient
 
 from tests.infrastructure.helpers.util import get_public_key
 
 
 def _load_file_data(file_path: str) -> dict:
+    """Load data from file."""
+
     base_path = Path(__file__).parent
     full_path = (base_path / file_path).resolve()
 
@@ -19,15 +20,15 @@ def _load_file_data(file_path: str) -> dict:
 
 
 def load_users_data() -> dict:
+    """Load test users."""
+
     return _load_file_data(file_path="../data/users.json")
 
 
-def load_communities_data() -> dict:
-    return _load_file_data(file_path="../data/communities.json")
+def load_data_sources() -> dict:
+    """Load test data sources."""
 
-
-def load_resources_data() -> dict:
-    return _load_file_data(file_path="../data/resources.json")
+    return _load_file_data(file_path="../data/data_sources.json")
 
 
 class DbTestSetaApi:
@@ -79,51 +80,31 @@ class DbTestSetaApi:
                     {"user_id": user_id, "rsa_value": pub_key, "created_at": created_at}
                 )
 
-            # current_app.logger.debug("Append user: " + su.user_id)
-
         # save user claims
         if "claims" in data:
             collection.insert_many(data["claims"])
-        # save user scopes
-        if "scopes" in data:
-            collection.insert_many(data["scopes"])
         # save user providers
         if "providers" in data:
             collection.insert_many(data["providers"])
 
-        """
-            Load communities:
-        """
-        data = load_communities_data()
-        collection = self.db["communities"]
+        # Load resources:
+        data = load_data_sources()
+        collection = self.db["data-sources"]
 
-        if "communities" in data:
-            for community in data["communities"]:
-                community["created_at"] = created_at
-                community["modified_at"] = None
+        if "dataSources" in data:
+            for data_source in data["dataSources"]:
+                data_source["created_at"] = created_at
+                data_source["modified_at"] = None
 
-                collection.insert_one(community)
+                collection.insert_one(data_source)
 
-        if "memberships" in data:
-            for membership in data["memberships"]:
-                membership["join_date"] = created_at
-                membership["modified_at"] = None
-
-                collection.insert_one(membership)
-
-        """
-            Load resources:
-        """
-        data = load_resources_data()
-        collection = self.db["resources"]
-
-        if "resources" in data:
-            for resource in data["resources"]:
-                resource["created_at"] = created_at
-                resource["modified_at"] = None
-
-                collection.insert_one(resource)
+        collection = self.db["data-source-scopes"]
+        if "scopes" in data:
+            for scope in data["scopes"]:
+                collection.insert_one(scope)
 
     def clear_db(self):
+        """Delete database."""
+
         for c in self.db.list_collection_names():
             self.db.drop_collection(c)

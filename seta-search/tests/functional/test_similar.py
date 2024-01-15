@@ -9,6 +9,8 @@ from tests.infrastructure.helpers.util import get_access_token
 
 
 def get_by_term(client: FlaskClient, access_token: str, term: str, n_term: int = 6):
+    """Gets most similar terms."""
+
     url = f"/seta-search/api/v1/similar?term={term}&n_term={n_term}"
 
     return client.get(
@@ -33,5 +35,4 @@ def test_similar_terms(
 
     response = get_by_term(client=client, access_token=access_token, term=term)
     assert response.status_code == HTTPStatus.OK
-    # TODO: check response
     assert "words" in response.json

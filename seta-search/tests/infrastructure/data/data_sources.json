@@ -1,0 +1,28 @@
+{
+    "dataSources":[
+      {
+        "data_source_id": "cordis",
+        "title": "Cordis",
+        "description": "Cordis",
+        "index_name": "seta-public-000001",
+        "organisation": "unknown",
+        "themes": [
+          "cordis"
+        ],
+        "status": "active",
+        "contact": {
+          "email": "a@a.com",
+          "person": "Unknown",
+          "website": "http://unknown/"
+        },
+        "creator_id": "seta_admin"
+      }
+    ],
+    "scopes": [
+      {
+        "data_source_id": "cordis",
+        "user_id": "seta_admin",
+        "scope": "/seta/data-source/owner"
+      }
+    ]
+}

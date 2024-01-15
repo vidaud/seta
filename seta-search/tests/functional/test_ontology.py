@@ -9,6 +9,8 @@ from tests.infrastructure.helpers.util import get_access_token
 
 
 def get_by_term(client: FlaskClient, access_token: str, term: str):
+    """Gets ontology of the specified term."""
+
     url = f"/seta-search/api/v1/ontology?term={term}"
 
     return client.get(
@@ -17,6 +19,8 @@ def get_by_term(client: FlaskClient, access_token: str, term: str):
 
 
 def get_list_by_term(client: FlaskClient, access_token: str, term: str):
+    """Gets ontology list of the specified term."""
+
     url = f"/seta-search/api/v1/ontology-list?term={term}"
 
     return client.get(
@@ -43,7 +47,7 @@ def test_ontology_term(
 
     response = get_by_term(client=client, access_token=access_token, term=term)
     assert response.status_code == expect
-    # TODO: check response
+
     if response.status_code == HTTPStatus.OK:
         assert "links" in response.json
 
@@ -67,6 +71,6 @@ def test_ontology_list_term(
 
     response = get_by_term(client=client, access_token=access_token, term=term)
     assert response.status_code == expect
-    # TODO: check response
+
     if response.status_code == HTTPStatus.OK:
         assert "nodes" in response.json
