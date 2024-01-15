@@ -11,6 +11,8 @@ from tests.infrastructure.helpers.util import get_access_token
 def get_by_term(
     client: FlaskClient, access_token: str, term: str, n_suggestions: int = 6
 ):
+    """Gets suggestions."""
+
     url = f"/seta-search/api/v1/suggestions?chars={term}&n_suggestions={n_suggestions}"
 
     return client.get(
@@ -34,4 +36,3 @@ def test_suggestions_terms(
 
     response = get_by_term(client=client, access_token=access_token, term=term)
     assert response.status_code == HTTPStatus.OK
-    # TODO: check response

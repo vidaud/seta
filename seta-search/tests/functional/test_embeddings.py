@@ -1,4 +1,6 @@
 from http import HTTPStatus
+
+import requests
 import pytest
 from flask.testing import FlaskClient
 
@@ -8,18 +10,22 @@ from tests.infrastructure.helpers.authentication import login_user
 from tests.infrastructure.helpers.util import get_access_token
 
 
-def post_text(client: FlaskClient, access_token: str):
-    text = "Ocean energy thematic network to present results"
+def post_text(access_token: str, nlp_url: str):
+    """Compute embeddings for a given text."""
 
-    url = f"/seta-search/api/v1/compute_embeddings?text={text}"
+    payload = {"text": "Ocean energy thematic network to present results"}
 
-    return client.post(
-        url, content_type="application/json", headers=auth_headers(access_token)
+    url = f"{nlp_url}compute_embeddings"
+
+    return requests.post(
+        url=url, headers=auth_headers(access_token), json=payload, timeout=10
     )
 
 
 @pytest.mark.parametrize("user_id", ["seta_admin"])
-def test_embeddings_text(client: FlaskClient, user_key_pairs: dict, user_id: str):
+def test_embeddings_text(
+    client: FlaskClient, user_key_pairs: dict, user_id: str, nlp_url: str
+):
     """
     Test related embeddings for a given text
     """
@@ -30,7 +36,6 @@ def test_embeddings_text(client: FlaskClient, user_key_pairs: dict, user_id: str
     )
     access_token = get_access_token(response)
 
-    response = post_text(client=client, access_token=access_token)
+    response = post_text(access_token=access_token, nlp_url=nlp_url)
     assert response.status_code == HTTPStatus.OK
-    # TODO: check response
-    assert "emb_with_chunk_text" in response.json
+    assert "emb_with_chunk_text" in response.json()
