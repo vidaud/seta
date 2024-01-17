@@ -10,3 +10,4 @@ python-jose[cryptography]==3.3.0
 fastapi-jwt==0.2.0
 httpx==0.25.2
 python-magic==0.4.27
+pytest==7.4.3

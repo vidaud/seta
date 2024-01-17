@@ -5,12 +5,6 @@
             "email": "seta_admin@localtest.eu",
             "user_type": "user",
             "status": "active"
-        },
-        {
-            "user_id": "seta_community_manager",
-            "email": "seta_community_manager@localtest.eu",
-            "user_type": "user",
-            "status": "active"
         }
     ],    
     "claims":[
@@ -30,14 +24,6 @@
             "first_name": "Seta",
             "last_name": "Admin",
             "domain": "eu.europa.ec"
-        },
-        {
-            "user_id": "seta_community_manager",
-            "provider_uid": "seta_community_manager",
-            "provider": "ecas",
-            "first_name": "Seta",
-            "last_name": "Manager",
-            "domain": "eu.europa.ec"
-          }
+        }
     ]
 }

@@ -4,11 +4,20 @@ from fastapi import APIRouter, HTTPException, Depends, Security, status
 from nlp import models
 from nlp.internal import sentence_transformer_embeddings as ste
 from nlp.internal import seta_jwt
+from nlp.configuration import configuration
 from nlp.access_security import access_security
 
 router = APIRouter(tags=["Embeddings"])
 
 logger = logging.getLogger(__name__)
+
+
+async def get_embeddings_client():
+    """Creates embeddings client using SetaTransformer"""
+
+    return ste.SentenceTransformerEmbeddings(
+        use_workers=configuration.USE_EMBEDDINGS_WORKER
+    )
 
 
 @router.post(
@@ -18,7 +27,7 @@ logger = logging.getLogger(__name__)
 )
 async def embeddings_from_text(
     text: models.ParserText,
-    client: ste.SentenceTransformerEmbeddings = Depends(ste.get_embeddings_client),
+    client: ste.SentenceTransformerEmbeddings = Depends(get_embeddings_client),
     decoded_token: seta_jwt.JwtDecodedToken = Security(access_security),
 ) -> models.Chunks:
     """Extracts embeddings from text."""
@@ -45,7 +54,7 @@ async def embeddings_from_text(
 )
 async def vector_from_text(
     text: models.ParserText,
-    client: ste.SentenceTransformerEmbeddings = Depends(ste.get_embeddings_client),
+    client: ste.SentenceTransformerEmbeddings = Depends(get_embeddings_client),
     decoded_token: seta_jwt.JwtDecodedToken = Security(access_security),
 ) -> models.Vector:
     """Extracts embedding vector from text."""
