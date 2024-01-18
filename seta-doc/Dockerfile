@@ -1,4 +1,4 @@
-FROM ubuntu:22.04 as docs
+FROM python:3.10-slim as docs
 
 RUN echo "Acquire::http::Proxy \""$HTTP_PROXY"\";" >> /etc/apt/apt.conf
 RUN echo "Acquire::https::Proxy \""$HTTPS_PROXY"\";" >> /etc/apt/apt.conf
@@ -11,10 +11,6 @@ ENV HTTPS_PROXY=$HTTPS_PROXY
 ENV HTTP_PROXY=$HTTP_PROXY
 
 ARG ROOT=/home/seta
-
-RUN apt update -y
-RUN apt install -y  --no-install-recommends python3-pip
-
 RUN useradd seta
 
 COPY requirements.txt $ROOT/requirements.txt

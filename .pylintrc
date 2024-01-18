@@ -17,4 +17,17 @@ disable=
 max-line-length=120
 
 [MASTER]
-extension-pkg-whitelist=pydantic
+extension-pkg-whitelist=pydantic,flask
+
+[TYPECHECK]
+generated-members=
+    logger.debug,
+    logger.info,
+    logger.warning,
+    logger.error,
+    logger.exception,
+    app.logger.debug,
+    app.logger.info,
+    app.logger.warning,
+    app.logger.error,
+    app.logger.exception
