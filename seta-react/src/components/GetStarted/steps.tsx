@@ -104,7 +104,7 @@ export const steps: any = [
     content: (
       <div style={{ textAlign: 'left' }}>
         <Title order={3} mb="sm" color="#228be6">
-          Datasources Page
+          Data Sources Page
         </Title>
         <Text>
           Explore the comprehensive list of available data sources accessible to all users.
@@ -118,12 +118,12 @@ export const steps: any = [
     content: (
       <div style={{ textAlign: 'left' }}>
         <Title order={3} mb="sm" color="#228be6">
-          Datasource List
+          Data Source List
         </Title>
         <Text>
           Each data source includes essential details such as title, organization, ID, themes, and
           more. Customize searchability based on your preferences for enhanced usability:
-          <strong> searchable</strong> or<strong> not searchable</strong> datasource
+          <strong> searchable</strong> or<strong> not searchable</strong> data source
         </Text>
       </div>
     )
@@ -133,7 +133,7 @@ export const steps: any = [
     content: (
       <div style={{ textAlign: 'left' }}>
         <Title order={3} mb="sm" color="#228be6">
-          Datasources Filters
+          Data Sources Filters
         </Title>
         <Text>
           Users can refine data sources via a dropdown, selecting between 'searchable' and

@@ -107,6 +107,7 @@ export const button: ThemedCSS = theme => css`
   border-radius: 4px;
   background-color: transparent;
   transition: color 0.2s ease, background-color 0.2s ease, transform 0.2s ease;
+  margin-left: 0.5rem;
 
   &:hover {
     background-color: ${theme.fn.rgba(theme.colors.gray[1], 0.2)};

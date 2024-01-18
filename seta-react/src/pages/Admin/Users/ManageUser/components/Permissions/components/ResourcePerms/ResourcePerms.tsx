@@ -25,7 +25,7 @@ const ResourcePerms = ({ scopes }: Props) => {
   }
 
   if (!scopes || scopes.length === 0) {
-    return <SuggestionsEmpty message="No scope for datasources!" />
+    return <SuggestionsEmpty message="No scope for data sources!" />
   }
 
   const perms = scopes.map(scope => (

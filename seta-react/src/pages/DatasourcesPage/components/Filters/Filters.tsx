@@ -15,7 +15,7 @@ const Filters = () => {
   const { selected, handleSearchableChange } = useDatasourceListContext()
 
   const searchableOptions = [
-    { label: 'All Datasources', value: 'all' },
+    { label: 'All data sources', value: 'all' },
     { label: 'Searchable', value: 'searchable' },
     { label: 'Not Searchable', value: 'notSearchable' }
   ]

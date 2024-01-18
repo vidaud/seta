@@ -24,7 +24,7 @@ const Tour = () => {
 
     if (type === 'tooltip' && index === 2) {
       handleRunTour(true)
-      navigate('/datasources')
+      navigate('/data-sources')
     }
 
     if (type === 'tooltip' && action === 'update' && index === 5) {
@@ -34,7 +34,7 @@ const Tour = () => {
 
     if (action === 'prev' && lifecycle === 'init') {
       if (index === 4) {
-        navigate('/datasources')
+        navigate('/data-sources')
       }
     }
   }

@@ -1,6 +1,6 @@
 /* eslint-disable complexity */
 import { Navbar, ScrollArea, NavLink, Group, ThemeIcon, Title } from '@mantine/core'
-import { IconGauge, IconUserCog } from '@tabler/icons-react'
+import { IconUserCog } from '@tabler/icons-react'
 import { AiOutlineDatabase } from 'react-icons/ai'
 import { FaWrench } from 'react-icons/fa'
 import { RiMarkupLine } from 'react-icons/ri'
@@ -26,24 +26,6 @@ const SidebarContent = () => {
       </Navbar.Section>
       {/* Title section END*/}
       <Navbar.Section grow component={ScrollArea}>
-        {/* Dashboard START*/}
-        <NavLink
-          label="Dashboard"
-          icon={
-            <ThemeIcon
-              variant={activeLink === ActiveLink.DASHBOARD ? 'outline' : 'light'}
-              size={30}
-            >
-              <IconGauge size="1rem" stroke={1.5} />
-            </ThemeIcon>
-          }
-          component={Link}
-          to="/admin"
-          css={S.linkPrimary}
-          active={activeLink === ActiveLink.DASHBOARD}
-        />
-        {/* Dashboard END*/}
-
         {/* Users START*/}
         <NavLink
           label="Users"
@@ -79,19 +61,19 @@ const SidebarContent = () => {
 
         {/* Datasources START*/}
         <NavLink
-          label="Datasources"
+          label="Data Sources"
           icon={
             <ThemeIcon
-              variant={activeLink === ActiveLink.DATASOURCES ? 'outline' : 'light'}
+              variant={activeLink === ActiveLink.DATA_SOURCES ? 'outline' : 'light'}
               size={30}
             >
               <AiOutlineDatabase size="1rem" stroke="1.5" />
             </ThemeIcon>
           }
           component={Link}
-          to="/admin/datasources"
+          to="/admin/data-sources"
           css={S.linkPrimary}
-          active={activeLink === ActiveLink.DATASOURCES}
+          active={activeLink === ActiveLink.DATA_SOURCES}
         />
         {/* Annotations END*/}
       </Navbar.Section>

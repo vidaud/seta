@@ -27,7 +27,7 @@ const DatasourcesListContent = forwardRef<HTMLDivElement, Props>(
         <SuggestionsError
           size="md"
           mt={MARGIN_TOP}
-          subject="Datasources"
+          subject="Data sources"
           withIcon
           onTryAgain={onTryAgain}
         />
@@ -43,7 +43,7 @@ const DatasourcesListContent = forwardRef<HTMLDivElement, Props>(
     if (!datasources.length) {
       return (
         <>
-          <SuggestionsEmpty size="md" mt={MARGIN_TOP} withIcon message="No datasources found." />
+          <SuggestionsEmpty size="md" mt={MARGIN_TOP} withIcon message="No data source found." />
         </>
       )
     }
@@ -52,7 +52,7 @@ const DatasourcesListContent = forwardRef<HTMLDivElement, Props>(
       <Flex ref={ref} direction="column" css={S.root} id="datasource-list">
         <div>
           <Text fz="md" fw="bold" color="gray.7">
-            DATASOURCES ({data?.length})
+            DATA SOURCES ({data?.length})
           </Text>
         </div>
 
