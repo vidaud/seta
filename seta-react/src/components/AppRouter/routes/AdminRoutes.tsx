@@ -8,7 +8,6 @@ import { UserRole } from '~/types/user'
 
 import RequireAuth from '../components/RequireAuth'
 
-const AdminDashboard = React.lazy(() => import('~/pages/Admin/Dashboard'))
 const ManageUser = React.lazy(() => import('~/pages/Admin/Users/ManageUser'))
 const AdminUsers = React.lazy(() => import('~/pages/Admin/Users/Users'))
 const Datasources = React.lazy(() => import('~/pages/Admin/Datasources/Datasources'))
@@ -21,10 +20,10 @@ const AdminRoutes = (
       </RequireAuth>
     }
   >
-    <Route index element={<AdminDashboard />} />
+    <Route index element={<AdminUsers />} />
     <Route path="users" element={<AdminUsers />} />
     <Route path="users/:id" element={<ManageUser />} />
-    <Route path="datasources" element={<Datasources />} />
+    <Route path="data-sources" element={<Datasources />} />
     <Route path="annotations" element={<Annotations />} />
   </Route>
 )

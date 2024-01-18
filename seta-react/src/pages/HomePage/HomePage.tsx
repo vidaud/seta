@@ -39,7 +39,7 @@ const useStyles = createStyles(theme => ({
   }
 }))
 const TEXTS = [
-  "Connect, Share and Learn: Explore SeTA's Thriving Datasources",
+  "Connect, Share and Learn: Explore SeTA's Thriving Data Sources",
   'Revolutionize Document Analysis with SeTA: Visualize Concepts and Track Development Over Time',
   "Unlock the Power of Textual Data with SeTA's Advanced Text Analysis Techniques"
 ]

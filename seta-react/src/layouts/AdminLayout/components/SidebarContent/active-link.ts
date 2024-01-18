@@ -1,37 +1,21 @@
 export enum ActiveLink {
   DASHBOARD,
   USERS,
-  COMMUNITY_REQUESTS,
-  RESOURCE_REQUESTS,
-  ORPHANED_COMMUNITIES,
-  ORPHANED_RESOURCES,
   ANNOTATIONS,
-  DATASOURCES,
+  DATA_SOURCES,
   NONE
 }
 
 export const getActiveLink = (path: string): ActiveLink => {
   switch (path) {
     case '/admin':
-      return ActiveLink.DASHBOARD
+      return ActiveLink.USERS
 
     case path.startsWith('/admin/users') ? path : '':
       return ActiveLink.USERS
 
-    case '/admin/community-requests':
-      return ActiveLink.COMMUNITY_REQUESTS
-
-    case '/admin/resource-requests':
-      return ActiveLink.RESOURCE_REQUESTS
-
-    case '/admin/orphaned-communities':
-      return ActiveLink.ORPHANED_COMMUNITIES
-
-    case '/admin/orphaned-resources':
-      return ActiveLink.ORPHANED_RESOURCES
-
-    case '/admin/datasources':
-      return ActiveLink.DATASOURCES
+    case '/admin/data-sources':
+      return ActiveLink.DATA_SOURCES
 
     case '/admin/annotations':
       return ActiveLink.ANNOTATIONS

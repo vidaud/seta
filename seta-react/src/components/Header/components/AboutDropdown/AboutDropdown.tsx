@@ -64,7 +64,7 @@ const AboutDropdown = () => {
     <Menu
       shadow="md"
       width={200}
-      position="bottom"
+      position="bottom-start"
       id="about"
       onClose={handleToggleMenu}
       opened={menuOpen}

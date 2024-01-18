@@ -22,10 +22,10 @@ const Datasources = () => {
   return (
     <Box w="100%" pl="md" pr="md" display="grid">
       <Title order={3} mb="sm" mt="-2rem" color="blue.5">
-        SeTA Datasources
+        SeTA Data Sources
       </Title>
       <Text mb="md" c="dimmed">
-        Manage SeTA Datasources
+        Manage SeTA Data Sources
       </Text>
       <DatasourcesTable data={data} isLoading={isLoading} error={error} />
     </Box>

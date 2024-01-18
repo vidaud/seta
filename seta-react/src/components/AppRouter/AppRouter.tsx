@@ -37,7 +37,7 @@ const routes = createRoutesFromElements(
     />
 
     <Route
-      path="datasources"
+      path="data-sources"
       element={
         <RequireAuth>
           <DatasourcesPage />
