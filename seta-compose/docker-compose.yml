@@ -132,6 +132,7 @@ services:
     extends:
       file: common.yml
       service: nlp
+    command: ["--workers=${NLP_GUNICORN_WORKERS:-2}", "--log-level='info'"]
     networks:
       - seta-network
 

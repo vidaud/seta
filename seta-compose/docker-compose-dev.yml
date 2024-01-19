@@ -1,3 +1,4 @@
+version: "3.8"
 services:
   seta-mongo:
     container_name: mongo
@@ -174,6 +175,7 @@ services:
     extends:
       file: common.yml
       service: nlp
+    command: ["--workers=${NLP_GUNICORN_WORKERS:-2}", "--log-level='debug'"]
     networks:
       - seta-network
 

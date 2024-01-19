@@ -16,11 +16,12 @@ ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 ENV TIKA_PATH="tika/tika-app-2.4.1.jar"
 
-RUN apt update -y
-RUN apt install -y --no-install-recommends wget
-RUN apt install -y --no-install-recommends default-jre
-RUN apt install -y gpg
-RUN apt install -y --no-install-recommends libmagic1
+RUN apt update -y   \
+    && apt install -y --no-install-recommends \
+    wget \
+    default-jre \
+    libmagic1 \
+    && apt install -y gpg
 
 RUN useradd seta 
 ARG ROOT=/home/seta
@@ -28,19 +29,19 @@ ARG ROOT=/home/seta
 RUN mkdir -p $ROOT/tika
 WORKDIR $ROOT/tika
 
-RUN wget https://archive.apache.org/dist/tika/2.4.1/tika-app-2.4.1.jar
-RUN wget https://archive.apache.org/dist/tika/2.4.1/tika-app-2.4.1.jar.asc
-RUN wget https://archive.apache.org/dist/tika/KEYS
-RUN gpg --import KEYS
-RUN gpg --verify tika-app-2.4.1.jar.asc tika-app-2.4.1.jar
+RUN wget https://archive.apache.org/dist/tika/2.4.1/tika-app-2.4.1.jar \
+    && wget https://archive.apache.org/dist/tika/2.4.1/tika-app-2.4.1.jar.asc \
+    && wget https://archive.apache.org/dist/tika/KEYS \
+    && gpg --import KEYS \
+    && gpg --verify tika-app-2.4.1.jar.asc tika-app-2.4.1.jar
 
 WORKDIR $ROOT
 
 COPY ./seta-nlp/requirements_model.txt .
 RUN pip install --no-cache-dir -r requirements_model.txt
 
-RUN python3 -m nltk.downloader punkt 
-RUN python3 -c 'from sentence_transformers import SentenceTransformer; SentenceTransformer("all-distilroberta-v1")'
+RUN python3 -m nltk.downloader punkt \
+    && python3 -c 'from sentence_transformers import SentenceTransformer; SentenceTransformer("all-distilroberta-v1")'
 
 COPY ./seta-nlp/requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
@@ -52,4 +53,4 @@ COPY ./seta-config/nlp.conf /etc/seta/
 COPY ./seta-nlp/nlp ./nlp
 COPY ./seta-nlp/*.py .
 
-CMD ["gunicorn", "main:create_app()", "--workers=2", "--worker-class", "uvicorn.workers.UvicornWorker", "--bind=0.0.0.0:8000"]
+ENTRYPOINT ["gunicorn", "main:create_app()", "--worker-class", "uvicorn.workers.UvicornWorker", "--name=nlp", "--bind=0.0.0.0:8000"]
