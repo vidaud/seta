@@ -15,98 +15,91 @@ Docker Desktop is an easy-to-install application for the user environment that e
 
 ## SeTA Docker architecture
 
-The SeTA project has been designed with folder **seta-compose** as the configuration source. 
+The `seta-compose` folder is serving as the central hub for SeTA's Docker architecture.
 
 ### Configuration files
-Inside this folder we can find:
 
-File **common.yml** to set up of all the services:
+The `common.yml` file defines the shared services utilized across all three environments: Production, Development, and Test.
 
 ```
-    services:
-        mongo:
-            restart: always
-            build:
-            context: ../seta-mongo
-            args:
-                - HTTP_PROXY=${HTTP_PROXY}
-                - HTTPS_PROXY=${HTTPS_PROXY}
-            expose:
-            - "27017"
-            environment:
-            - NO_PROXY=${NO_PROXY}
-            - no_proxy=${NO_PROXY}
-
-        es:
-            restart: always
-            build:
-            context: ../seta-es
-            args:
-                - HTTP_PROXY=${HTTP_PROXY}
-                - HTTPS_PROXY=${HTTPS_PROXY}
-            expose:
-            - "9200"
-            - "9300"
-            mem_limit: "4g"
+services:
+  opensearch:
+    restart: always
+    build:
+      context: ../seta-opensearch
+      args:
+        - HTTP_PROXY=${HTTP_PROXY}
+        - HTTPS_PROXY=${HTTPS_PROXY}
+    environment:
+      - bootstrap.memory_lock=true
+      - plugins.security.disabled=true
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 65536 # maximum number of open files for the OpenSearch user, set to at least 65536 on modern systems
+        hard: 65536
     
     cont...
 ```
 
-File **docker-compose.yml** with the base configuration and with reference to file *common.yml*:
+The `docker-compose.yml` file orchestrates the **production** configuration of SeTA's Docker services, networks, volumes, and more, extending the settings defined in the `common.yml` file.
 
 ```
     version: "3.8"
     services:
-    seta-mongo:
-        container_name: mongo
-        extends:
-        file: common.yml
-        service: mongo
-        networks:
-        - seta-network
-        volumes:
-        - seta-mongo:/data/db
+        seta-opensearch:
+            container_name: opensearch
+            extends:
+                file: common.yml
+                service: opensearch
+            environment:
+                - discovery.type=single-node
+            volumes:
+                - opensearch-data:/usr/share/opensearch/data
+            expose:
+                - "9200"
+                - "9600"
+            networks:
+                - seta-network  
 
     cont...
 ```
+
+The `docker-compose-dev.yml` and `docker-compose-test.yml` files manage the configuration of SeTA's Docker architecture for the development and test environments, respectively.
+
+The `.env.example` file contains the definition of the environment variables used in containers that you have to define in a separate text file for each environment.
+For example,  create an `.env` file that is picked-up by default on `docker compose build` and `docker compose up` for production environment.
+
 ### Containers
-For SeTA we are using two types of containers:     
+SeTA utilizes two categories of Docker containers:
 
-- **Stateless Containers**: These types of containers do not persist data, i.e., their data is deleted as soon as they are stopped.    In SeTA the containers of this type are:    
+- **Stateless Containers**: These types of containers do not persist data, i.e., their data is deleted as soon as they are shutdown.
 
-    a) **seta-search**: service that communicates with the docker client in order to elaborate the queries to the Elasticsearch  engine that come from the web app.   It includes the functions by which this raw data is parsed, normalized, and enriched before it is indexed in Elasticsearch .   The process of index in Elasticsearch  is also included in this container. 
+    a) **seta-search**:  This service interacts with the OpenSearch API to process queries originating from the web app or web service clients.  It encompasses functions for parsing, normalizing, and enriching raw data before indexing it in OpenSearch.
 
-    b) **seta-auth**: it hosts the web service for authentication for register users. Also, for the external as well internal applications. This service is intended for the communication from the web service that has authorization through a public driver key defined by register users and also a second part used for internal communication.                   
+    b) **seta-auth**: It hosts the authorization service for registered users.
 
-    c)  **seta-doc**: contains the documentation files, is not a dynamic container.                   
+    c) **seta-doc**: This container houses the documentation project built with MkDocs.
 
-    d) **seta-es**: contains the image where the Elasticsearch  engine is stored.  The Elasticsearch  engine is fast, and with its logic of placing documents distributed across different containers, it provides redundant copies of the data in case of hardware failure. It has a number of powerful built-in features that make storing and searching data even more efficient, such as data rollup and index lifecycle management.
+    e) **seta-nginx**: This container holds the proxy server configurations, enabling all endpoints to be accessible externally, particularly for web services.
 
-    e) **seta-nginx**: contains the proxy server configurations for all the endpoints to be reachable outside, in particular for web services.
+    f) **seta-ui**: This container hosts the web API that serves the web application.
 
-    f) **seta-ui**: contains the configuration that enables the access to the web app. In this folder the code to support the seta-search container and the code to support the seta-search to validate the authentication token are included.
+    g) **seta-ui-react**: This container houses the web application developed with React.
 
-    g) **seta-react**: contains the react code of the web app interface.
+    h) **seta-nlp**: This container provides web services for natural language processing, serving as a critical resource for both the Search API and the web application.
+
+    i) **seta-admin**: This service functions as an internal administrative web interface, accessible exclusively within the Docker network.
 
 - **Stateful Containers**: These types of containers persist data and are typically used to run stateful applications such as databases, message queues, and file servers. The data stored inside the container is persistent even if the container is stopped or recreated.  In SeTA the containers are:    
 
-    a) **seta-data**: this container functions mainly to populate de Elasticsearch  database. If the database is empty at the beginning, it will fill the Elasticsearch  database.
+    a) **seta-opensearch**: OpenSearch engine and data store.
 
-    b) **seta-mongo**: contains the operational databases for SETA web services and web application, and also includes users management, datasource management and other operational data.
+    b) **seta-mongo**: It hosts the operational databases for the SETA web application and services.
 
-
-
-## SETA Docker desktop
-
-The docker desktop in SeTA displays the containers mentioned above. Please note that the displayed names are just labels, for the deployment we use the services names as per file **common.yml**:  
-
-<figure markdown>
-![Image title](../img/docker-desktop.png){ width="900" }
-<figcaption>SeTA Docker desktop</figcaption>
-</figure>
-
-
-
+    c) **seta-data**: This container functions mainly to initialize the OpenSearch data store.
 
 
 

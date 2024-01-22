@@ -4,7 +4,7 @@ Seta-ui is using pytest for functional and unit testing.
 
 ### Usage
     For testing in docker run: 
-    pytest -s tests/ --db_host=seta-mongo-test --db_port=27017 --db_name=seta-test --api_root=seta-api-test:8081 --auth_root=seta-auth-test:8082
+    pytest -s tests/ --db_host=seta-mongo-test --db_port=27017 --db_name=seta-test --admin_root=seta-amin-test:8080 --auth_root=seta-auth-test:8082
 
 ### Configuration
 

@@ -78,32 +78,6 @@ From the root folder move to folder **seta-compose**:
     cd ./seta-compose
 ```    
 
-Follow these instructions:
-
-In the **common.yml** file make sure in service **es** the memory limit in var mem_limit is 4g
-
-```
-    es:
-        restart: always
-        build:
-        context: ../seta-es
-        args:
-            - HTTP_PROXY=${HTTP_PROXY}
-            - HTTPS_PROXY=${HTTPS_PROXY}
-        expose:
-        - "9200"
-        - "9300"
-        mem_limit: "4g"
-        environment:
-        - NO_PROXY=${NO_PROXY}
-        - no_proxy=${NO_PROXY}
-        - xpack.security.enabled=false
-        - discovery.type=single-node
-        - xpack.security.http.ssl.enabled=false
-        - xpack.security.transport.ssl.enabled=false
-        - ingest.geoip.downloader.enabled=false
-```
-
 In the ***.env*** file change the necessary information, where is required, for the variables:  
 
 ```
@@ -113,12 +87,10 @@ In the ***.env*** file change the necessary information, where is required, for 
 
 
     # set-up of no proxy control for docker containers 
-    NO_PROXY="seta-es,seta-data,seta-mongo,seta-search,seta-nginx,seta-ui,seta-ui-react,seta-auth"
+    NO_PROXY="seta-data,seta-mongo,seta-nginx,seta-ui,seta-ui-react,seta-auth,seta-opensearch,seta-admin,seta-nlp,seta-search,seta-doc"
 
-
-    ##### Seta-UI variables  ####
-     # Set-up of the administrators emails, the system create local users. There should be always at least one admin user defined always. It cannot be empty.  The emails - separated by semicolon   
-    ROOT_USERS="ROOT_USERS="email@emailDomain"
+    # Set-up of the administrators emails, the system create local users. There should be always at least one admin user defined always. It cannot be empty.  The emails - separated by semicolon   
+    ROOT_USERS="email1@domain;email2@domain"
 ```
 
 ### Models

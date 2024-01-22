@@ -7,15 +7,11 @@ theme:
   name: material
   custom_dir: overrides
   features:
-    #- header.autohide
     - navigation.instant
-    #- navigation.tabs
     - navigation.tracking
     - navigation.path
-    #- navigation.expand
     - navigation.prune
     - toc.follow
-    #- toc.integrate
     - navigation.top
     - search.suggest
     - search.highlight
@@ -37,8 +33,7 @@ theme:
         bug: octicons/bug-16
         example: octicons/beaker-16
         quote: octicons/quote-16
-    logo: material/book-open-variant
-    favicon: img/SeTA-logo.png
+  favicon: img/SeTA-logo.png
   palette:
     - scheme: seta
 plugins:
@@ -79,40 +74,26 @@ markdown_extensions:
 
 extra:
   homepage: /docs
-  setaUrls: 
+  setaUrls:     
     home: /
     contact: /contact
-    apiDatasources: /seta-ui/api/v1/data-sources/doc
-    apiUserProfile: /seta-ui/api/v1/me/doc
-    apiSysAdmin: /seta-ui/api/v1/admin/doc
-    apiCatalogue: /seta-ui/api/v1/catalogue/doc
-    apiSeta: /seta-search/doc
-    jwtToken: /authentication/v1/doc
-    docs: /docs
-    login: /login
-    auth_decode_Token: /authorization/v1/token_info
-    auth_Token: /authorization/v1/doc
+    jwtToken: /authentication/v1
   setaNames:
     homeName: Seta WebApp
-  seTALogo: material/home
   
 extra_css:
   - stylesheets/extra.css
  
 nav:
   - Introduction: index.md
-  - Who should use it and why: general/who_use_it_and_why.md   
-  - Using SeTA:
-    - Configuration:
-      - Web App: user-guide/configuration/webApp.md
-      - Swagger: user-guide/configuration/swagger.md
-      - APIs: user-guide/configuration/apis.md
-    - Web App:
-      - Data Sources:
-        - SeTA Data Sources: user-guide/datasources/datasources.md
+  - Who should use it and why: general/use-case.md   
+  - SeTA User Guide:
+    - Web App: 
+      - About: user-guide/web-app.md
+      - Data Sources: user-guide/data-sources.md
       - Search: 
         - Methodology: user-guide/search/methodology.md
-        - Web Interface: user-guide/search/searchWebApp.md
+        - Web Interface: user-guide/search/web-interface.md
       - User Profile:
         - Profile: user-guide/user-profile/profile.md
         - Authentication Key: user-guide/user-profile/authentication-key.md
@@ -120,20 +101,13 @@ nav:
       - Administration Panel:
         - Users: user-guide/administration-panel/user-management.md
         - Annotations: user-guide/administration-panel/annotations.md
-        - Data Sources: user-guide/administration-panel/datasources.md
-    - APIs: 
-      - JWT Token Authentication: apis/jwt_token/jwt_token_api.md
-      - SeTA Search API: apis/seta_api/seta_api.md
-      - SeTA Catalogue API: apis/seta_catalogue_api/seta_catalogue_api.md
-      - SeTA User Profile API: apis/seta_user_profile_api/seta_user_profile_api.md
-      - SeTA Sys Admin API: apis/seta_sys_admin_api/seta_sys_admin_api.md
-      - SeTA Data Sources API: apis/seta_datasources_api/seta_datasources_api.md
+        - Data Sources: user-guide/administration-panel/data-sources.md
+    - Web APIs: 
+      - Concepts: apis/concepts.md
+      - Access Token: apis/access-token.md
+      - APIs: apis/api.md
   - Install SeTA:
     - Docker: setup/docker-architecture.md
-    - MongoDB Migration: setup/db_migration.md
-    - Deployment: setup/deployment.md 
-    - Release: setup/release-notes.md
+    - Upgrade: setup/db-migration.md
+    - Testing: setup/testing.md
   - License: license/license_v1.md
-  
-
-
