@@ -32,7 +32,6 @@ const DocumentInfo = ({ document, queryTerms }: Props) => {
     source,
     collection,
     date,
-    taxonomy,
     chunk_text,
     chunk_number
   } = document
@@ -51,7 +50,7 @@ const DocumentInfo = ({ document, queryTerms }: Props) => {
 
   const [titleHl, abstractHl] = useHighlightWords(queryTerms, title, abstract)
 
-  const hasDetails = !!taxonomy?.length || !!chunk_text
+  const hasDetails = !!chunk_text
 
   const scorePercent = score.toLocaleString(undefined, {
     style: 'percent',
@@ -102,7 +101,6 @@ const DocumentInfo = ({ document, queryTerms }: Props) => {
       css={S.details}
       documentId={document_id}
       documentTitle={title}
-      taxonomy={taxonomy}
       chunkText={chunk_text}
       chunkNumber={chunk_number}
       queryTerms={queryTerms}
