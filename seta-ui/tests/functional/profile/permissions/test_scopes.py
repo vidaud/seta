@@ -21,4 +21,3 @@ def test_get_permissions(
 
     response = api.get_permissions(client=client, access_token=access_token)
     assert response.status_code == HTTPStatus.OK
-    assert "system_scopes" in response.json

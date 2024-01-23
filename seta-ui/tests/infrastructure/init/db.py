@@ -80,7 +80,8 @@ class DbTestSetaApi:
         # save user claims
         user_collection.insert_many(data["claims"])
         # save user scopes
-        user_collection.insert_many(data["scopes"])
+        if data["scopes"]:
+            user_collection.insert_many(data["scopes"])
         # save user providers
         user_collection.insert_many(data["providers"])
 
