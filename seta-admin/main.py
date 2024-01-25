@@ -4,7 +4,10 @@ import random
 import string
 from fastapi import FastAPI, Request
 
+from admin.internal import configuration
+
 from admin.routers.indexes import router as indexes_router
+from admin.routers.testing import router as testing_router
 
 # setup loggers
 logging.config.fileConfig("/etc/seta/logging.conf", disable_existing_loggers=False)
@@ -42,6 +45,9 @@ def create_app() -> FastAPI():
         return response
 
     app.include_router(indexes_router, tags=["indexes"])
+
+    if configuration.stage.lower() == "test":
+        app.include_router(testing_router, tags=["testing"])
 
     logger.info("FastAPI initialized.")
 

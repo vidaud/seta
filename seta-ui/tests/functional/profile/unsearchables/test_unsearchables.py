@@ -3,10 +3,7 @@ import pytest
 from flask.testing import FlaskClient
 
 from tests.infrastructure.helpers.authentication import login_user
-from tests.infrastructure.helpers.profile import (
-    get_unsearchable_resources,
-    manage_unsearchable_resources,
-)
+from tests.functional.profile.unsearchables import api
 
 from tests.infrastructure.helpers.util import get_access_token
 
@@ -26,21 +23,21 @@ def test_restricted_resources(
     )
     access_token = get_access_token(response)
 
-    response = manage_unsearchable_resources(
+    response = api.manage_unsearchable_resources(
         client=client, access_token=access_token, resource_ids=resources.split(",")
     )
     assert response.status_code == HTTPStatus.OK
 
-    response = get_unsearchable_resources(client=client, access_token=access_token)
+    response = api.get_unsearchable_resources(client=client, access_token=access_token)
     assert response.status_code == HTTPStatus.OK
     assert len(response.json) == 2
 
     # delete resources
-    response = manage_unsearchable_resources(
+    response = api.manage_unsearchable_resources(
         client=client, access_token=access_token, resource_ids=[]
     )
     assert response.status_code == HTTPStatus.OK
 
-    response = get_unsearchable_resources(client=client, access_token=access_token)
+    response = api.get_unsearchable_resources(client=client, access_token=access_token)
     assert response.status_code == HTTPStatus.OK
     assert not response.json

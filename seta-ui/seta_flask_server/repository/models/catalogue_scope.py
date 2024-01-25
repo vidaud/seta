@@ -23,7 +23,6 @@ class CatalogueScope:
 @dataclass
 class ScopeCatalogues:
     system: list[CatalogueScope] = None
-    community: list[CatalogueScope] = None
     resource: list[CatalogueScope] = None
 
 

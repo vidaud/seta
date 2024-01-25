@@ -63,7 +63,8 @@ class UserInfo(Resource):
         }
 
 
-@account_info_ns.route("/", endpoint="my_account", methods=["GET", "DELETE"])
+@account_info_ns.route("/", endpoint="my_account_with_slash", methods=["GET", "DELETE"])
+@account_info_ns.route("", endpoint="my_account", methods=["GET", "DELETE"])
 class SetaAccount(Resource):
     @inject
     def __init__(

@@ -4,6 +4,8 @@ from pathlib import Path
 import pytz
 
 from pymongo import MongoClient
+
+# pylint: disable-next=no-name-in-module
 from seta_flask_server.repository.models import SetaUser, RsaKey
 
 from migrations.catalogues import (
@@ -11,6 +13,7 @@ from migrations.catalogues import (
     roles_catalogue_builder as roles_builder,
 )
 
+# pylint: disable-next=no-name-in-module
 from tests.infrastructure.helpers.util import get_public_key
 
 
@@ -77,20 +80,27 @@ class DbTestSetaApi:
         # save user claims
         user_collection.insert_many(data["claims"])
         # save user scopes
-        user_collection.insert_many(data["scopes"])
+        if data["scopes"]:
+            user_collection.insert_many(data["scopes"])
         # save user providers
         user_collection.insert_many(data["providers"])
 
         catalogue_collection = self.db["catalogues"]
 
-        catalogue_collection.insert_many(
-            scopes_builder.ScopesCatalogueBuilder.build_system_scopes("system-scopes")
+        system_scopes = scopes_builder.ScopesCatalogueBuilder.build_system_scopes(
+            "system-scopes"
         )
-        catalogue_collection.insert_many(
+        if system_scopes:
+            catalogue_collection.insert_many(system_scopes)
+
+        data_source_scopes = (
             scopes_builder.ScopesCatalogueBuilder.build_data_source_scopes(
                 "data-source-scopes"
             )
         )
-        catalogue_collection.insert_many(
-            roles_builder.RolesCatalogueBuilder.build_app_roles("app-roles")
-        )
+        if data_source_scopes:
+            catalogue_collection.insert_many(data_source_scopes)
+
+        app_roles = roles_builder.RolesCatalogueBuilder.build_app_roles("app-roles")
+        if app_roles:
+            catalogue_collection.insert_many(app_roles)

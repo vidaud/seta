@@ -2,11 +2,17 @@ import { Badge, Group, clsx, createStyles, useMantineTheme } from '@mantine/core
 import { useDisclosure } from '@mantine/hooks'
 import { FaChevronDown } from 'react-icons/fa'
 
+import type { ApplicationModel } from '~/api/types/applications-permissions-types'
+
 import * as S from './styles'
 
 import ApplicationDetails from '../ApplicationDetails'
 import DeleteApplication from '../DeleteApplication'
 import UpdateApplication from '../UpdateApplication'
+
+type Props = {
+  props: ApplicationModel
+}
 
 const statusColors: Record<string, string> = {
   active: 'green',
@@ -28,7 +34,7 @@ const useStyles = createStyles(() => ({
   }
 }))
 
-const ApplicationsRow = ({ props }) => {
+const ApplicationsRow = ({ props }: Props) => {
   const { classes } = useStyles()
   const theme = useMantineTheme()
   const [detailsOpen, { toggle }] = useDisclosure()
@@ -44,9 +50,9 @@ const ApplicationsRow = ({ props }) => {
     <>
       <tr onClick={toggle}>
         <td>{toggleIcon}</td>
+        <td>{props.provider}</td>
         <td>{props.name}</td>
         <td className={classes.td}>{props.description}</td>
-        <td>{props.user_id}</td>
         <td>
           <Badge
             size="md"

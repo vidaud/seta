@@ -40,10 +40,6 @@ const GeneralInformation = ({ details }) => {
             </td>
           </tr>
           <tr>
-            <td className={classes.td}>User Identifier</td>
-            <td className={classes.value}>{details?.username}</td>
-          </tr>
-          <tr>
             <td className={classes.td}>First Name</td>
             <td className={classes.value}>{user?.firstName}</td>
           </tr>

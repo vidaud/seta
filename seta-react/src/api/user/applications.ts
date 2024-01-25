@@ -30,6 +30,13 @@ const getApplications = async (): Promise<ApplicationModel[]> => {
     ...config
   })
 
+  // Set provider to 'SETA' if empty
+  data.forEach(app => {
+    if (!app.provider) {
+      app.provider = 'SETA'
+    }
+  })
+
   return data
 }
 

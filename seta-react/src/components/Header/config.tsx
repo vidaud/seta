@@ -6,6 +6,7 @@ type MenuItem = {
   label: string
   hidden?: boolean
   collapse?: boolean
+  tabId?: string
 }
 
 export type DropdownItem =
@@ -23,12 +24,14 @@ export const getMenuItems = (authenticated: boolean): MenuItem[] => [
   {
     to: '/search',
     label: 'Search',
-    hidden: !authenticated
+    hidden: !authenticated,
+    tabId: 'search-tab'
   },
   {
-    to: '/datasources',
-    label: 'Datasources',
-    hidden: !authenticated
+    to: '/data-sources',
+    label: 'Data Sources',
+    hidden: !authenticated,
+    tabId: 'datasource-tab'
   }
 ]
 

@@ -46,6 +46,11 @@ class OpenSearchEngine(implements(search_engine.ISearchEngineAsync)):
 
         await self.client.indices.delete(index=name)
 
+    async def cleanup(self):
+        """Cleanup all data in OpenSearch storage."""
+
+        await self.client.delete_by_query(index="*", body={"query": {"match_all": {}}})
+
     async def close(self):
         """Close connection."""
 

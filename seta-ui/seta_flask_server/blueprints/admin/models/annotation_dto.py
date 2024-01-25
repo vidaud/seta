@@ -9,7 +9,7 @@ annotation_model = Model(
             description="Hex color. regex=^#(?:[0-9a-fA-F]{3}){1,2}$",
             attribute="color",
         ),
-        "category": fields.String(description="Identifier."),
+        "category": fields.String(description="Category."),
     },
 )
 
@@ -19,7 +19,7 @@ update_annotation_model = Model(
         "color": fields.String(
             description="Hex color. regex=^#(?:[0-9a-fA-F]{3}){1,2}$"
         ),
-        "category": fields.String(description="Identifier."),
+        "category": fields.String(description="Category."),
     },
 )
 

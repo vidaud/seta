@@ -14,23 +14,6 @@
             "claim_value": "Administrator"
         }
     ],
-    "scopes":[
-        {
-            "user_id": "seta_admin",
-            "resource_scope": "/seta/resource/edit",
-            "resource_id": "cordis"
-        },
-        {
-            "user_id": "seta_admin",
-            "resource_scope": "/seta/resource/data/add",
-            "resource_id": "cordis"
-        },
-        {
-            "user_id": "seta_admin",
-            "resource_scope": "/seta/resource/data/delete",
-            "resource_id": "cordis"
-        }
-    ],
     "providers":[
         {
             "user_id": "seta_admin",

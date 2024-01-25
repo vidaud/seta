@@ -4,21 +4,19 @@
 Usage:
 
     For testing in docker run: 
-    pytest -s tests/ --db_host=seta-mongo-test --db_port=27017 --db_name=seta-test --api_root=seta-api-test:8081 --auth_root=seta-auth-test:8082
+    pytest -s tests/ --db_host=seta-mongo-test --db_port=27017 --db_name=seta-test --admin_root=seta-amin-test:8080 --auth_root=seta-auth-test:8082
 """
 
 import os
 import configparser
 from pathlib import Path
 import pytest
-import requests
-
-from Crypto.PublicKey import RSA
 
 from seta_flask_server.config import Config
 from seta_flask_server.factory import create_app
 
 from tests.infrastructure.init.db import DbTestSetaApi, load_users_data
+from tests.infrastructure.helpers.util import generate_rsa_pair
 
 
 def pytest_addoption(parser):
@@ -32,10 +30,10 @@ def pytest_addoption(parser):
         "--db_name", action="store", default="seta-test", help="database name"
     )
     parser.addoption(
-        "--api_root", action="store", default="localhost:8080", help="seta-api url"
+        "--auth_root", action="store", default="localhost:8080", help="seta-auth url"
     )
     parser.addoption(
-        "--auth_root", action="store", default="localhost:8080", help="seta-auth url"
+        "--admin_root", action="store", default="localhost:8080", help="seta-admin url"
     )
 
 
@@ -58,15 +56,19 @@ def db_name(request):
 
 
 @pytest.fixture(scope="session")
-def api_root(request):
-    """Root of seta-api web service."""
-    return request.config.getoption("--api_root")
+def authentication_url(request):
+    """Authentication URL."""
+
+    auth_root = request.config.getoption("--auth_root")
+    return f"http://{auth_root}/authentication/v1/token"
 
 
 @pytest.fixture(scope="session")
-def auth_root(request):
-    """Root of seta-auth web service."""
-    return request.config.getoption("--auth_root")
+def admin_url(request):
+    """Root of seta-admin web service."""
+    admin_root = request.config.getoption("--admin_root")
+
+    return f"http://{admin_root}/"
 
 
 @pytest.fixture(scope="session", autouse=True)
@@ -92,12 +94,6 @@ def init_os(db_host, db_port, db_name):
 
 
 @pytest.fixture(scope="session")
-def authentication_url(auth_root):
-    """Authentication URL."""
-    return f"http://{auth_root}/authentication/v1/token"
-
-
-@pytest.fixture(scope="session")
 def user_key_pairs():
     """Generate rsa pair for a user list."""
 
@@ -106,7 +102,7 @@ def user_key_pairs():
     data = load_users_data()
 
     for user in data["users"]:
-        user_key_pairs[user["user_id"]] = _generate_rsa_pair()
+        user_key_pairs[user["user_id"]] = generate_rsa_pair()
 
     yield user_key_pairs
 
@@ -130,10 +126,11 @@ def db(db_host, db_port, db_name, user_key_pairs):
 
 
 @pytest.fixture(scope="module")
-def app(api_root):
+def app(admin_url):
     """Initialize test application."""
 
     config = TestConfig()
+    config.INTERNAL_ADMIN_API = admin_url
 
     app = create_app(config)
     app.testing = True
@@ -148,34 +145,6 @@ def client(app):
 
     with app.test_client() as client:
         yield client
-
-
-@pytest.fixture(scope="module")
-def seta_api_corpus(api_root: str):
-    """Corpus endpoint."""
-
-    seta_api_corpus = f"http://{api_root}/seta-api-test/corpus"
-
-    yield seta_api_corpus
-
-    # remove everything from ES
-    cleanup_url = f"http://{api_root}/seta-api-test/cleanup"
-    requests.post(cleanup_url, timeout=30)
-
-
-def _generate_rsa_pair() -> dict:
-    key_pair = RSA.generate(bits=4096)
-
-    # public key
-    pub_key = key_pair.public_key()
-    pub_key_pem = pub_key.export_key()
-    decoded_pub_key_pem = pub_key_pem.decode("ascii")
-
-    # private key
-    priv_key_pem = key_pair.export_key()
-    decoded_priv_key_pem = priv_key_pem.decode("ascii")
-
-    return {"privateKey": decoded_priv_key_pem, "publicKey": decoded_pub_key_pem}
 
 
 class TestConfig(Config):

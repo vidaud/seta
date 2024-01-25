@@ -107,18 +107,8 @@ const Header = () => {
               <Image alt="SeTa Logo" src="/img/SeTA-logocut-negative.png" width={120} />
             </Link>
 
-            {visibleMenuItems.map(({ to, label }) => (
-              <S.MenuLink
-                key={to}
-                to={to}
-                id={
-                  label === 'Datasources'
-                    ? 'datasource-tab'
-                    : label === 'Search'
-                    ? 'search-tab'
-                    : undefined
-                }
-              >
+            {visibleMenuItems.map(({ to, label, tabId }) => (
+              <S.MenuLink key={to} to={to} id={tabId}>
                 {label}
               </S.MenuLink>
             ))}

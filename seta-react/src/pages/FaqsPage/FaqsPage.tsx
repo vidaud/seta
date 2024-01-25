@@ -44,11 +44,7 @@ const FaqsPage = () => {
                   On the left side of the Search results area, there are filters that can be applied
                   to refine the search of the results:
                 </Text>
-                <Text italic>
-                  {}
-                  by Data Range, Data Sources, Taxonomies, etc.
-                  {}
-                </Text>
+                <Text italic>by Data Range, Data Sources, Taxonomies, etc.</Text>
               </Accordion.Panel>
             </Accordion.Item>
 
@@ -61,8 +57,8 @@ const FaqsPage = () => {
               </Accordion.Control>
               <Accordion.Panel>
                 <Text>
-                  You have both options to upload documents, by drag and drop or selecting the path
-                  where the document is located.
+                  You can upload documents either by dragging and dropping them, or by selecting
+                  their location path.
                 </Text>
               </Accordion.Panel>
             </Accordion.Item>
@@ -70,14 +66,17 @@ const FaqsPage = () => {
             <Accordion.Item className={classes.item} value="api">
               <Accordion.Control className={classes.control}>
                 <Text fw={700}>
-                  How can the Datasources and Search tool be accessed through API's?
+                  How can the data sources and the search tool be accessed through API's?
                 </Text>
               </Accordion.Control>
               <Accordion.Panel>
                 <Text>
-                  The SeTA REST APIs are created with support of Swagger which allows to generate
-                  interactive API documentation that lets users try out the API calls directly in
-                  the browser. You can access through our links:
+                  <Text>
+                    The SeTA REST APIs are created with the support of Swagger, which allows for the
+                    generation of interactive API documentation. This documentation enables users to
+                    try out API calls directly in their browser. You can access the API
+                    documentation through the following links:
+                  </Text>
                 </Text>
                 <Text
                   variant="link"
@@ -87,7 +86,7 @@ const FaqsPage = () => {
                   underline
                   align="center"
                 >
-                  Datasources API
+                  Data Sources API
                 </Text>
                 <br />
                 <Text

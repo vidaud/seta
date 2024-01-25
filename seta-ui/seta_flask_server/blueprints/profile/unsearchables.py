@@ -20,9 +20,7 @@ unsearchables_ns = Namespace(
 unsearchables_ns.models.update(dto.ns_models)
 
 
-@unsearchables_ns.route(
-    "/unsearchables", endpoint="me_unsearchables", methods=["GET", "POST"]
-)
+@unsearchables_ns.route("", endpoint="me_unsearchables", methods=["GET", "POST"])
 class UnsearchablesResource(Resource):
     """Handles HTTP requests to URL: /me/unsearchables."""
 

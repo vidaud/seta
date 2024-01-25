@@ -1,27 +1,34 @@
-import pytest
-import os
+# pylint: disable=W0621, C0301, C0116
+"""Seta-search testing with pytest.
 
-from Crypto.PublicKey import RSA
+Usage:
+
+    For testing in docker run: 
+    pytest -s tests/ --es_host="seta-es-test:9200" --db_host=seta-mongo-test --db_port=27017 --db_name=seta-test 
+                    --admin_root=seta-amin-test:8080 --auth_root=seta-auth-test:8082 --nlp_root=seta-nlp-test:8000
+"""
+
+import os
+import pytest
 
 from search.config import Config
 from search.factory import create_app
 
 from tests.infrastructure.init.mongodb import DbTestSetaApi, load_users_data
 from tests.infrastructure.init.es import SetaES
-
-
-"""
-    For testing in docker run: pytest -s tests/ --es_host="seta-es-test:9200" --db_host="seta-mongo-test" --dp_port=27017 --db_name="seta-test" --auth_root="seta-auth-test:8080"
-"""
+from tests.infrastructure.helpers.util import generate_rsa_pair
 
 
 def pytest_addoption(parser):
+    """Command line options."""
+
     parser.addoption(
         "--es_host",
         action="store",
         default="localhost:9200",
-        help="database host server",
+        help="search host server",
     )
+
     parser.addoption(
         "--db_host", action="store", default="localhost", help="database host server"
     )
@@ -31,6 +38,12 @@ def pytest_addoption(parser):
     )
     parser.addoption(
         "--auth_root", action="store", default="localhost:8080", help="seta-auth url"
+    )
+    parser.addoption(
+        "--admin_root", action="store", default="localhost:8080", help="seta-admin url"
+    )
+    parser.addoption(
+        "--nlp_root", action="store", default="localhost:8080", help="seta-nlp url"
     )
 
 
@@ -59,6 +72,22 @@ def auth_root(request):
     return request.config.getoption("--auth_root")
 
 
+@pytest.fixture(scope="session")
+def nlp_url(request):
+    """Root of seta-nlp web service."""
+
+    nlp_root = request.config.getoption("--nlp_root")
+    return f"http://{nlp_root}/seta-nlp/"
+
+
+@pytest.fixture(scope="session")
+def admin_url(request):
+    """Root of seta-admin web service."""
+    admin_root = request.config.getoption("--admin_root")
+
+    return f"http://{admin_root}/"
+
+
 @pytest.fixture(scope="session", autouse=True)
 def init_os(es_host, db_host, db_port, db_name):
     os.environ["ES_HOST"] = es_host
@@ -71,7 +100,7 @@ def init_os(es_host, db_host, db_port, db_name):
 
 @pytest.fixture(scope="session", autouse=True)
 def es(es_host):
-    config = TestConfig()
+    config = TestConfig(auth_root="localhost:8080", nlp_url="localhost:8080")
 
     es = SetaES(host=es_host, index=config.INDEX_PUBLIC)
     es.cleanup()
@@ -91,7 +120,7 @@ def user_key_pairs():
     data = load_users_data()
 
     for user in data["users"]:
-        user_key_pairs[user["user_id"]] = _generate_rsa_pair()
+        user_key_pairs[user["user_id"]] = generate_rsa_pair()
 
     yield user_key_pairs
 
@@ -114,14 +143,11 @@ def db(db_host, db_port, db_name, user_key_pairs):
 
 
 @pytest.fixture(scope="module")
-def app(auth_root):
-    config = TestConfig()
-
-    config.JWT_TOKEN_INFO_URL = f"http://{auth_root}/authorization/v1/token_info"
+def app(auth_root, nlp_url):
+    config = TestConfig(auth_root=auth_root, nlp_url=nlp_url)
 
     app = create_app(config)
     app.testing = True
-    app.config["JWT_TOKEN_AUTH_URL"] = f"http://{auth_root}/authentication/v1/token"
 
     with app.app_context():
         yield app
@@ -133,23 +159,8 @@ def client(app):
         yield client
 
 
-def _generate_rsa_pair() -> dict:
-    key_pair = RSA.generate(bits=4096)
-
-    # public key
-    pub_key = key_pair.public_key()
-    pub_key_pem = pub_key.export_key()
-    decoded_pub_key_pem = pub_key_pem.decode("ascii")
-
-    # private key
-    priv_key_pem = key_pair.export_key()
-    decoded_priv_key_pem = priv_key_pem.decode("ascii")
-
-    return {"privateKey": decoded_priv_key_pem, "publicKey": decoded_pub_key_pem}
-
-
 class TestConfig(Config):
-    def __init__(self) -> None:
+    def __init__(self, auth_root: str, nlp_url: str) -> None:
         current_dir = os.path.dirname(__file__)
 
         Config.CONFIG_APP_FILE = os.path.join(
@@ -160,3 +171,9 @@ class TestConfig(Config):
         )
 
         super().__init__(section_name="Test")
+
+        TestConfig.JWT_TOKEN_INFO_URL = (
+            f"http://{auth_root}/authorization/v1/token_info"
+        )
+        TestConfig.JWT_TOKEN_AUTH_URL = f"http://{auth_root}/authentication/v1/token"
+        TestConfig.NLP_API_ROOT_URL = nlp_url

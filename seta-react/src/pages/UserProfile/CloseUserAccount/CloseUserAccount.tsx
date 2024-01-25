@@ -10,7 +10,7 @@ const CloseUserAccount = () => {
         <Text>Are you sure you want to close your account? </Text>You'll lose everything:
         <ul>
           <li>Username</li>
-          <li>Access to other's datasources</li>
+          <li>Access to other's data sources</li>
         </ul>
         <Text>
           Notice: Your account will be saved for a short period. You will not be able to recreate

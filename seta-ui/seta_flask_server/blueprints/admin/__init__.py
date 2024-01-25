@@ -21,9 +21,10 @@ admin_api = Api(
     doc=DOC,
     authorizations=authorizations,
     default_swagger_filename="admin/swagger_admin.json",
+    prefix="/admin",
 )
 
-admin_api.add_namespace(stats_ns, path="/admin/stats")
-admin_api.add_namespace(users_ns, path="/admin/users")
-admin_api.add_namespace(data_sources_ns, path="/admin/data-sources")
-admin_api.add_namespace(annotations_ns, path="/admin/annotations")
+admin_api.add_namespace(stats_ns, path="/stats")
+admin_api.add_namespace(users_ns, path="/users")
+admin_api.add_namespace(data_sources_ns, path="/data-sources")
+admin_api.add_namespace(annotations_ns, path="/annotations")

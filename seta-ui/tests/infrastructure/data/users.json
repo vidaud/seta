@@ -18,34 +18,9 @@
             "user_id": "seta_admin",
             "claim_type": "roles",
             "claim_value": "Administrator"
-        },
-        {
-            "user_id": "seta_community_manager",
-            "claim_type": "roles",
-            "claim_value": "User"
         }
     ],
     "scopes":[
-        {
-            "user_id": "seta_admin",
-            "area": "community",
-            "system_scope": "/seta/community/change_request/approve"
-        },
-        {
-            "user_id": "seta_admin",
-            "area": "resource",
-            "system_scope": "/seta/resource/change_request/approve"
-        },
-        {
-            "user_id": "seta_admin",
-            "system_scope": "/seta/community/create",
-            "area": "community"
-        },
-        {
-            "user_id": "seta_community_manager",
-            "system_scope": "/seta/community/create",
-            "area": "community"
-        }
     ],
     "providers":[
         {

@@ -13,10 +13,11 @@ from nlp.internal.interfaces import embeddings as iemb
 
 logger = logging.getLogger(__name__)
 
-SBERT_MODEL = None
+SBERT_MODEL = SentenceTransformer("all-distilroberta-v1")
+SBERT_MODEL.max_seq_length = 512
 
 
-def create_model():
+def _create_model():
     """Creates global model."""
     global SBERT_MODEL  # pylint: disable=global-statement
 
@@ -25,7 +26,7 @@ def create_model():
 
 
 # if you try to run all predicts concurrently, it will result in CPU trashing.
-pool = ProcessPoolExecutor(max_workers=1, initializer=create_model)
+pool = ProcessPoolExecutor(max_workers=1, initializer=_create_model)
 
 
 def _model_predict(text: str, convert_to_numpy: bool = True):
@@ -33,7 +34,7 @@ def _model_predict(text: str, convert_to_numpy: bool = True):
     return vector
 
 
-async def _execute_predict(text: str, convert_to_numpy: bool = True):
+async def _execute_predict_async(text: str, convert_to_numpy: bool = True):
     loop = asyncio.get_event_loop()
 
     return await loop.run_in_executor(
@@ -42,11 +43,25 @@ async def _execute_predict(text: str, convert_to_numpy: bool = True):
     )
 
 
+def _execute_predict(text: str, convert_to_numpy: bool = True):
+    """
+    Cannot re-initialize CUDA in forked subprocess.
+    To use CUDA with multiprocessing, you must use the 'spawn' start method
+    """
+
+    if SBERT_MODEL is None:
+        _create_model()
+
+    vector = SBERT_MODEL.encode(text, convert_to_numpy=convert_to_numpy)
+    return vector
+
+
 class SentenceTransformerEmbeddings(implements(iemb.IEmbeddingsAsync)):
     CHUNK_SIZE = 300
 
-    def __init__(self):
+    def __init__(self, use_workers: bool = False):
         self.version = "sbert model all-distilroberta-v1"
+        self.use_workers = use_workers
 
     async def chunks_and_embeddings_from_doc_fields(
         self, title: str, abstract: str, text: str
@@ -76,7 +91,10 @@ class SentenceTransformerEmbeddings(implements(iemb.IEmbeddingsAsync)):
     async def embedding_vector_from_text(self, text: str) -> models.Vector:
         """Compute vector from text"""
 
-        vector = await _execute_predict(text)
+        if self.use_workers:
+            vector = await _execute_predict_async(text)
+        else:
+            vector = _execute_predict(text)
         vector_list = vector.tolist()
 
         return models.Vector(vector=vector_list)
@@ -94,7 +112,11 @@ class SentenceTransformerEmbeddings(implements(iemb.IEmbeddingsAsync)):
 
             sent = " ".join([str(w) for w in ww])
 
-            vector = await _execute_predict(sent)
+            if self.use_workers:
+                vector = await _execute_predict_async(sent)
+            else:
+                vector = _execute_predict(sent)
+
             vector_list = vector.tolist()
 
             embeddings.append(
@@ -110,9 +132,3 @@ class SentenceTransformerEmbeddings(implements(iemb.IEmbeddingsAsync)):
             high += self.CHUNK_SIZE
 
         return embeddings
-
-
-async def get_embeddings_client():
-    """Creates embeddings client using SetaTransformer"""
-
-    return SentenceTransformerEmbeddings()

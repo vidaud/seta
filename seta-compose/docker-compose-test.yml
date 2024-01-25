@@ -1,6 +1,7 @@
 version: "3.8"
 name: seta-test
 services:
+
   seta-mongo-test:
     container_name: mongo-test
     extends:
@@ -32,48 +33,12 @@ services:
     networks:
       - seta-network-test
 
-  seta-search-test:
-    container_name: search-test
+  seta-nlp-test:
+    container_name: nlp-test
+    restart: "no"
     extends:
       file: common.yml
-      service: search
-    restart: "no"
-    build:
-      dockerfile: seta-search/Dockerfile
-    networks:
-      - seta-network-test
-    depends_on:
-      - "seta-mongo-test"
-      - "seta-opensearch-test"
-
-  seta-nginx-test:
-    container_name: nginx-test
-    extends:
-      file: common.yml
-      service: nginx
-    restart: "no"
-    build: 
-       args:
-        - PROJECT_CONF=project_test
-    ports:
-      - "8080:8080"
-    depends_on:
-      - "seta-auth-test"
-      - "seta-ui-test"
-      - "seta-admin-test"
-    networks:
-      - seta-network-test
-
-  seta-ui-test:
-    container_name: ui-test
-    extends:
-      file: common.yml
-      service: ui
-    restart: "no"
-    build: 
-      dockerfile: seta-ui/dockerfiles/Dockerfile-ui
-    depends_on:
-      - "seta-auth-test"
+      service: nlp
     networks:
       - seta-network-test
 
@@ -88,6 +53,32 @@ services:
       - seta-models3-test:/home/seta/models
     networks:
       - seta-network-test
+
+  seta-search-test:
+    container_name: search-test
+    extends:
+      file: common.yml
+      service: search
+    restart: "no"
+    build:
+      dockerfile: seta-search/Dockerfile
+    networks:
+      - seta-network-test
+    depends_on:
+      - "seta-opensearch-test"
+
+  seta-ui-test:
+    container_name: ui-test
+    extends:
+      file: common.yml
+      service: ui
+    restart: "no"
+    build: 
+      dockerfile: seta-ui/dockerfiles/Dockerfile-ui
+    depends_on:
+      - "seta-auth-test"
+    networks:
+      - seta-network-test  
 
   seta-auth-test:
     container_name: auth-test
@@ -114,6 +105,26 @@ services:
       - seta-network-test
     depends_on:
       - "seta-opensearch-test"
+
+  seta-nginx-test:
+    container_name: nginx-test
+    extends:
+      file: common.yml
+      service: nginx
+    restart: "no"
+    build: 
+       args:
+        - PROJECT_CONF=project_test
+    ports:
+      - "8080:8080"
+    depends_on:
+      - "seta-auth-test"
+      - "seta-ui-test"
+      - "seta-admin-test"
+      - "seta-search-test"
+      - "seta-nlp-test"
+    networks:
+      - seta-network-test
 
 networks:
   seta-network-test:

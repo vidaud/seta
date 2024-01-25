@@ -10,8 +10,8 @@ import { DatasourceListProvider } from './contexts/datasource-list.context'
 const DatasourcesPage = () => {
   const breadcrumbs: Crumb[] = [
     {
-      title: 'Datasources',
-      path: '/datasources'
+      title: 'Data Sources',
+      path: '/data-sources'
     }
   ]
 

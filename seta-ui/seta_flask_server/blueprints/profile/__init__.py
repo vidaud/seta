@@ -40,8 +40,8 @@ profile_api = Api(
 
 profile_api.add_namespace(account_info_ns, path="/me")
 profile_api.add_namespace(applications_ns, path="/me/apps")
-profile_api.add_namespace(scopes_ns, path="/me")
-profile_api.add_namespace(library_ns, path="/me")
+profile_api.add_namespace(scopes_ns, path="/me/permissions")
+profile_api.add_namespace(library_ns, path="/me/library")
 
-profile_api.add_namespace(unsearchables_ns, path="/me")
+profile_api.add_namespace(unsearchables_ns, path="/me/unsearchables")
 profile_api.add_namespace(auth_key_ns, path="/me/auth-key")

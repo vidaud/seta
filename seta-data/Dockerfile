@@ -1,4 +1,4 @@
-FROM ubuntu:22.04
+FROM python:3.10-slim
 
 RUN echo "Acquire::http::Proxy \""$HTTP_PROXY"\";" >> /etc/apt/apt.conf
 RUN echo "Acquire::https::Proxy \""$HTTPS_PROXY"\";" >> /etc/apt/apt.conf
@@ -10,27 +10,20 @@ ENV http_proxy=$HTTP_PROXY
 ENV HTTPS_PROXY=$HTTPS_PROXY
 ENV HTTP_PROXY=$HTTP_PROXY
 
-RUN apt update -y
-RUN apt install -y  --no-install-recommends python3-pip
-RUN apt install -y  --no-install-recommends python3-dev
-RUN apt install -y  --no-install-recommends wget
-RUN pip install --upgrade pip
-
 RUN useradd seta 
 
 ARG ROOT=/home/seta
 
 WORKDIR $ROOT
-COPY ./seta-data/requirements.txt $ROOT/requirements.txt
-RUN pip install --upgrade pip
-RUN pip install -r $ROOT/requirements.txt 
+COPY ./seta-data/requirements.txt ./requirements.txt
 
-COPY ./seta-data/src $ROOT
-RUN mkdir $ROOT/models_docker
-COPY ./seta-data/models $ROOT/models_docker
+RUN pip install --no-cache-dir -r requirements.txt 
 
 #copy configuration file
 COPY ./seta-config/data.conf /etc/seta/
 
-#CMD "ls -l /home/seta &&  python /home/seta/app.py"
+COPY ./seta-data/src ./
+RUN mkdir $ROOT/models_docker
+COPY ./seta-data/models ./models_docker
+
 CMD ["python3", "/home/seta/app.py"]

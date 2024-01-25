@@ -4,6 +4,7 @@ from flask import Blueprint, current_app
 from .scopes import scope_catalogue_ns
 from .roles import role_catalogue_ns
 from .fields import field_catalogue_ns
+from .annotations import annotation_catalogue_ns
 
 authorizations = {
     "Bearer": {
@@ -33,8 +34,10 @@ catalogue_api = Api(
     doc=DOC,
     authorizations=authorizations,
     default_swagger_filename="catalogue/swagger_catalogue.json",
+    prefix="/catalogue",
 )
 
-catalogue_api.add_namespace(scope_catalogue_ns, path="/catalogue")
-catalogue_api.add_namespace(role_catalogue_ns, path="/catalogue")
-catalogue_api.add_namespace(field_catalogue_ns, path="/catalogue")
+catalogue_api.add_namespace(scope_catalogue_ns, path="/scopes")
+catalogue_api.add_namespace(role_catalogue_ns, path="/roles")
+catalogue_api.add_namespace(field_catalogue_ns, path="/fields")
+catalogue_api.add_namespace(annotation_catalogue_ns, path="/annotations")
