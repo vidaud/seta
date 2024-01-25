@@ -4,7 +4,7 @@
 Usage:
 
     For testing in docker run: 
-    pytest -s tests/ --es_host="seta-es-test:9200" --db_host=seta-mongo-test --db_port=27017 --db_name=seta-test 
+    pytest -s tests/ --es_host="seta-opensearch-test:9200" --db_host=seta-mongo-test --db_port=27017 --db_name=seta-test 
                     --admin_root=seta-amin-test:8080 --auth_root=seta-auth-test:8082 --nlp_root=seta-nlp-test:8000
 """
 
