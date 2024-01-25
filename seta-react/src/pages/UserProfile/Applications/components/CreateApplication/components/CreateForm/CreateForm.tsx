@@ -68,7 +68,7 @@ const CreateForm = ({ close }) => {
       <ApplicationFormProvider form={form}>
         <form className={cx(classes.form)} onSubmit={form.onSubmit(handleSubmit)}>
           <TextInput
-            label="Name"
+            label="Username"
             {...form.getInputProps('name')}
             className={cx(classes.input)}
             placeholder="Enter application name ..."
