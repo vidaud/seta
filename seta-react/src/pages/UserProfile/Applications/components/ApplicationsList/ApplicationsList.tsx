@@ -41,9 +41,9 @@ const ApplicationsList = ({ onChange }) => {
             <thead>
               <tr>
                 <th />
-                <th>Name</th>
+                <th>Provider</th>
+                <th>Username</th>
                 <th>Description</th>
-                <th>User</th>
                 <th>Status</th>
                 <th>Action</th>
               </tr>

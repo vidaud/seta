@@ -40,7 +40,7 @@ const ExternalProviders = ({ details }) => {
         <thead>
           <tr>
             <th />
-            <th className={classes.th}>Identifier</th>
+            <th className={classes.th}>Username</th>
             <th className={classes.th}>Provider</th>
             <th className={classes.th}>Domain</th>
           </tr>

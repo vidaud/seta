@@ -15,4 +15,5 @@ export type ApplicationModel = {
   name: string
   description: string
   status: string
+  provider: string
 }
