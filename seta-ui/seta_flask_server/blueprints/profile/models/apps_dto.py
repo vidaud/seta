@@ -13,6 +13,9 @@ app_model = Model(
         "status": fields.String(
             "Status", enum=[UserStatusConstants.Active, UserStatusConstants.Disabled]
         ),
+        "provider": fields.String(
+            description="Authentication provider to use for getting access token"
+        ),
     },
 )
 

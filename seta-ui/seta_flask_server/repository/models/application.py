@@ -2,6 +2,7 @@
 from dataclasses import dataclass, asdict
 
 from .seta_user import SetaUser
+from seta_flask_server.infrastructure.constants import ExternalProviderConstants
 
 
 @dataclass(kw_only=True)
@@ -15,6 +16,8 @@ class SetaApplication:
     user: SetaUser = None
     # parent user object
     parent_user: SetaUser = None
+
+    provider: str = ExternalProviderConstants.SETA
 
     _status: str = None
 
