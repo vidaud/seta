@@ -59,24 +59,21 @@ taxonomy_search = {}
 taxonomy_search["path"] = fields.List(fields.String())
 
 taxonomy = {}
-taxonomy["classifier"] = fields.String
 taxonomy["code"] = fields.String
+taxonomy["long_code"] = fields.String
 taxonomy["label"] = fields.String
-taxonomy["longLabel"] = fields.String
-taxonomy["name_in_path"] = fields.String
-taxonomy["validated"] = fields.String
-taxonomy["version"] = fields.String
-taxonomy["subcategories"] = fields.List(fields.Raw())
+taxonomy["long_label"] = fields.String
+taxonomy["type"] = fields.String
+taxonomy["taxonomy_name"] = fields.String
 
 taxonomy_agg = {}
 taxonomy_agg["doc_count"] = fields.Integer
-taxonomy_agg["classifier"] = fields.String
 taxonomy_agg["code"] = fields.String
+taxonomy_agg["long_code"] = fields.String
 taxonomy_agg["label"] = fields.String
-taxonomy_agg["longLabel"] = fields.String
-taxonomy_agg["name_in_path"] = fields.String
-taxonomy_agg["validated"] = fields.String
-taxonomy_agg["version"] = fields.String
+taxonomy_agg["long_label"] = fields.String
+taxonomy_agg["type"] = fields.String
+taxonomy_agg["taxonomy_name"] = fields.String
 taxonomy_agg["subcategories"] = fields.List(fields.Raw())
 
 post_get_response = {}
@@ -107,7 +104,7 @@ corpus_put_params["link_reference"] = fields.List(fields.String())
 corpus_put_params["mime_type"] = fields.String()
 corpus_put_params["in_force"] = fields.String()
 corpus_put_params["language"] = fields.String()
-corpus_put_params["taxonomy"] = None
+corpus_put_params["taxonomy"] = fields.List(fields.String(description= "taxonomy is defined as taxonomy_name:taxonomy_code"))
 corpus_put_params["keywords"] = None
 corpus_put_params["other"] = None
 
@@ -142,7 +139,7 @@ corpus_chunk_id_put_params["link_reference"] = fields.List(fields.String())
 corpus_chunk_id_put_params["mime_type"] = fields.String()
 corpus_chunk_id_put_params["in_force"] = fields.String()
 corpus_chunk_id_put_params["language"] = fields.String()
-corpus_chunk_id_put_params["taxonomy"] = None
+corpus_chunk_id_put_params["taxonomy"] = fields.List(fields.String())
 corpus_chunk_id_put_params["keywords"] = None
 corpus_chunk_id_put_params["other"] = None
 corpus_chunk_id_put_params["chunk_text"] = fields.String()
@@ -166,7 +163,7 @@ corpus_chunk_post_params["link_reference"] = fields.List(fields.String())
 corpus_chunk_post_params["mime_type"] = fields.String()
 corpus_chunk_post_params["in_force"] = fields.String()
 corpus_chunk_post_params["language"] = fields.String()
-corpus_chunk_post_params["taxonomy"] = None
+corpus_chunk_post_params["taxonomy"] = fields.List(fields.String(description= "taxonomy is defined as taxonomy_name:taxonomy_code"))
 corpus_chunk_post_params["keywords"] = None
 corpus_chunk_post_params["other"] = None
 corpus_chunk_post_params["chunk_text"] = fields.String()
@@ -185,7 +182,7 @@ corpus_post_params["source"] = fields.List(fields.String(),
                                            description="By default contains all the corpus: eurlex,cordis,pubsy. It is possible to choose from which corpus retrieve documents.")
 corpus_post_params["reference"] = fields.List(fields.String(), description="eurlex metadata reference")
 corpus_post_params["collection"] = fields.List(fields.String(), description="eurlex metadata collection")
-corpus_post_params["taxonomy_path"] = fields.List(fields.String(), description="list of taxonomy path, delimiter ':'")
+corpus_post_params["taxonomy"] = fields.List(fields.String(), description="list of taxonomy, taxonomy is defined as taxonomy_name:taxonomy_code")
 corpus_post_params["in_force"] = fields.String(description="eurlex metadata into_force")
 corpus_post_params["sort"] = fields.List(fields.String(), description="sort results field:order")
 corpus_post_params["semantic_sort_id_list"] = fields.List(fields.String(),
@@ -197,7 +194,7 @@ corpus_post_params["date_range"] = fields.List(fields.String, description="examp
                                                                           "gt:yyyy-mm-dd,lt:yyyy-mm-dd")
 corpus_post_params["aggs"] = fields.List(fields.String, description="field to be aggregated, allowed fields are:"
                                                                     '"source", "date_year", "source_collection_reference", '
-                                                                    '"taxonomy:taxonomyname", "taxonomies", "taxonomy_path_years-path:to:taxonomy"')
+                                                                    '"taxonomies", "taxonomy_years-taxonomy" (taxonomy is defined as taxonomy_name:taxonomy_code)')
 corpus_post_params["other"] = None
 corpus_post_params["annotation"] = fields.List(fields.String(),
                                                description="annotation list. Annotation are defined using this format 'group:label',"
@@ -253,18 +250,6 @@ xsd_string = """<?xml version="1.0" encoding="UTF-8"?>
       <xs:element type="xs:string" name="version"/>
     </xs:choice>
   </xs:complexType>
-  <xs:complexType name="taxonomyType">
-    <xs:choice minOccurs="0" maxOccurs="unbounded">
-      <xs:element type="xs:string" name="classifier"/>
-      <xs:element type="xs:string" name="code"/>
-      <xs:element type="xs:string" name="label"/>
-      <xs:element type="xs:string" name="longLabel"/>
-      <xs:element type="xs:string" name="name_in_path"/>
-      <xs:element type="xs:string" name="validated"/>
-      <xs:element type="xs:string" name="version"/>
-      <xs:element type="subcategoriesType" name="subcategories" maxOccurs="unbounded" minOccurs="0"/>
-    </xs:choice>
-  </xs:complexType>
   <xs:complexType name="documentType">
     <xs:choice minOccurs="0" maxOccurs="unbounded">
       <xs:element type="xs:string" name="id"/>
@@ -290,7 +275,7 @@ xsd_string = """<?xml version="1.0" encoding="UTF-8"?>
       <xs:element name="taxonomy">
         <xs:complexType>
             <xs:sequence>
-                <xs:element name="item" type="taxonomyType" minOccurs="0" maxOccurs="unbounded"/>
+                <xs:element name="item" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
             </xs:sequence>
         </xs:complexType>
       </xs:element>
@@ -339,10 +324,7 @@ xsd_string = """<?xml version="1.0" encoding="UTF-8"?>
 class Variable:
     def __init__(self, namespace):
         self.namespace = namespace
-        taxonomy_model = self.namespace.model("taxonomy", taxonomy)
-
-        taxonomy["subcategories"] = fields.List(fields.Nested(taxonomy_model))
-        self.taxonomy_model_tree = self.namespace.model("taxonomy_tree", taxonomy)
+        self.taxonomy_model = self.namespace.model("taxonomy", taxonomy)
 
         taxonomy_agg_model = self.namespace.model("taxonomy_agg", taxonomy_agg)
         taxonomy_agg["subcategories"] = fields.List(fields.Nested(taxonomy_agg_model))
@@ -352,7 +334,7 @@ class Variable:
         self.other_model = self.namespace.model("other", other)
 
         document["keywords"] = fields.List(fields.Nested(self.keywords_model))
-        document["taxonomy"] = fields.List(fields.Nested(self.taxonomy_model_tree))
+        document["taxonomy"] = fields.List(fields.Nested(self.taxonomy_model))
         document["other"] = fields.Nested(self.other_model)
         post_get_response["documents"] = fields.List(fields.Nested(self.namespace.model("document", document)))
 
@@ -366,9 +348,8 @@ class Variable:
                            fields.Nested(
                                self.namespace.model("source_collection_reference_agg",
                                                     source_collection_reference_agg))),
-                       "taxonomy": fields.List(fields.Nested(self.taxonomy_agg_model_tree)),
                        "taxonomies": fields.List(fields.Nested(self.taxonomy_agg_model_tree)),
-                       "taxonomy_path_years": fields.List(
+                       "taxonomy_years": fields.List(
                            fields.Nested(self.namespace.model("date_year_agg", date_year_agg)))
                        }
         post_get_response["aggregations"] = fields.List(fields.Nested(self.namespace.model("aggregation", aggregation)))
@@ -376,13 +357,13 @@ class Variable:
 
     def get_corpus_get_id_response(self):
         corpus_get_id_response["keywords"] = fields.List(fields.Nested(self.keywords_model))
-        corpus_get_id_response["taxonomy"] = fields.List(fields.Nested(self.taxonomy_model_tree))
+        corpus_get_id_response["taxonomy"] = fields.List(fields.Nested(self.taxonomy_model))
         corpus_get_id_response["other"] = fields.Nested(self.other_model)
         return self.namespace.model("corpus_get_id_response", corpus_get_id_response)
 
     def corpus_get_id_document_response(self):
         corpus_get_id_response["keywords"] = fields.List(fields.Nested(self.keywords_model))
-        corpus_get_id_response["taxonomy"] = fields.List(fields.Nested(self.taxonomy_model_tree))
+        corpus_get_id_response["taxonomy"] = fields.List(fields.Nested(self.taxonomy_model))
         corpus_get_id_response["other"] = fields.Nested(self.other_model)
         corpus_get_id_response_model = self.namespace.model("corpus_get_id_response_model", corpus_get_id_response)
         corpus_get_id_document_response = {"chunk_list": fields.List(fields.Nested(corpus_get_id_response_model)),
@@ -412,19 +393,16 @@ class Variable:
         return self.namespace.model("corpus_doc_chunk_post_response", corpus_doc_chunk_post_response)
 
     def get_put_request_model(self):
-        corpus_put_params["taxonomy"] = fields.List(fields.Nested(self.taxonomy_model_tree))
         corpus_put_params["keywords"] = fields.List(fields.Nested(self.keywords_model))
         corpus_put_params["other"] = fields.Nested(self.other_model)
         return self.namespace.model("corpus_put_request", corpus_put_params)
 
     def corpus_chunk_id_put_request_model(self):
-        corpus_chunk_id_put_params["taxonomy"] = fields.List(fields.Nested(self.taxonomy_model_tree))
         corpus_chunk_id_put_params["keywords"] = fields.List(fields.Nested(self.keywords_model))
         corpus_chunk_id_put_params["other"] = fields.Nested(self.other_model)
         return self.namespace.model("corpus_chunk_id_put_params", corpus_chunk_id_put_params)
 
     def corpus_chunk_post_request_model(self):
-        corpus_chunk_post_params["taxonomy"] = fields.List(fields.Nested(self.taxonomy_model_tree))
         corpus_chunk_post_params["keywords"] = fields.List(fields.Nested(self.keywords_model))
         corpus_chunk_post_params["other"] = fields.Nested(self.other_model)
         return self.namespace.model("corpus_chunk_post_params", corpus_chunk_post_params)

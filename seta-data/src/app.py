@@ -122,6 +122,12 @@ def seta_es_init_map(es):
     mapping_crc_file_suggestion = configuration.MODELS_PATH + configuration.CRC_ES_SUGGESTION_INIT_DATA_CONFIG_FILE
     check_index_exists_or_create_it(configuration.ES_HOST, mapping_file_suggestion, mapping_crc_file_suggestion, es_session,
                                     configuration.INDEX_SUGGESTION, es)
+    # taxonomy index
+    mapping_file_taxonomy = configuration.MODELS_PATH + configuration.ES_TAXONOMY_INIT_DATA_CONFIG_FILE
+    mapping_crc_file_taxonomy = configuration.MODELS_PATH + configuration.CRC_ES_TAXONOMY_INIT_DATA_CONFIG_FILE
+    check_index_exists_or_create_it(configuration.ES_HOST, mapping_file_taxonomy, mapping_crc_file_taxonomy,
+                                    es_session,
+                                    configuration.INDEX_TAXONOMY, es)
 
 
 def verify_data_mapping(host, index, es_session, data_format, headers, mapping_crc_file, es):
@@ -208,6 +214,14 @@ def copy_models_files():
 
     dst = configuration.MODELS_PATH + configuration.ES_SUGGESTION_INIT_DATA_CONFIG_FILE
     src = configuration.MODELS_DOCKER_PATH + configuration.ES_SUGGESTION_INIT_DATA_CONFIG_FILE
+    shutil.copyfile(src, dst)
+
+    dst = configuration.MODELS_PATH + configuration.CRC_ES_TAXONOMY_INIT_DATA_CONFIG_FILE
+    src = configuration.MODELS_DOCKER_PATH + configuration.CRC_ES_TAXONOMY_INIT_DATA_CONFIG_FILE
+    shutil.copyfile(src, dst)
+
+    dst = configuration.MODELS_PATH + configuration.ES_TAXONOMY_INIT_DATA_CONFIG_FILE
+    src = configuration.MODELS_DOCKER_PATH + configuration.ES_TAXONOMY_INIT_DATA_CONFIG_FILE
     shutil.copyfile(src, dst)
 
 

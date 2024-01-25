@@ -123,7 +123,7 @@ class Config:
 
         Config.INDEX_SUGGESTION = config_section.get("INDEX_SUGGESTION")
         Config.INDEX_PUBLIC = config_section.get("INDEX_PUBLIC")
-        Config.INDEX_PRIVATE = config_section.get("INDEX_PRIVATE")
+        Config.INDEX_TAXONOMY = config_section.get("INDEX_TAXONOMY")
 
         Config.EXAMPLE_GUEST = config_section.get("EXAMPLE_GUEST")
         Config.EXAMPLE_USER = config_section.get("EXAMPLE_USER")

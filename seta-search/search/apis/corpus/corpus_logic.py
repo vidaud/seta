@@ -3,7 +3,7 @@ from search.infrastructure.ApiLogicError import ApiLogicError
 
 from .corpus_build import build_corpus_request, compose_request_for_msearch
 from .corpus_response import handle_corpus_response
-from .taxonomy import Taxonomy
+from search.apis.taxonomies import taxonomy
 from .variables import xsd_string
 
 import yaml
@@ -15,13 +15,12 @@ import requests
 
 
 def chunk_by_id(doc_id, es, index):
-    tax = Taxonomy()
+    tax = taxonomy.Taxonomy(index, es)
     try:
         q = es.get(index=index, id=doc_id)
         doc = q['_source']
         doc['_id'] = q['_id']
-        tax.create_tree_from_elasticsearch_format(is_field_in_doc(doc, "taxonomy"), is_field_in_doc(doc, "taxonomy_path"))
-        doc['taxonomy'] = tax.tree
+        doc['taxonomy'] = tax.enrich(is_field_in_doc(doc['_source'], "taxonomy"))
         return doc
     except:
         raise ApiLogicError("ID not found.")
@@ -44,7 +43,7 @@ def update_chunk(id, es, fields, index):
 
 
 def document_by_id(doc_id, n_docs, from_doc, current_app):
-    tax = Taxonomy()
+    tax = taxonomy.Taxonomy(current_app.config["INDEX_TAXONOMY"], current_app.es)
     resp = {"chunk_list": []}
     if n_docs is None:
         n_docs = current_app.config["DEFAULT_DOCS_NUMBER"]
@@ -67,9 +66,7 @@ def document_by_id(doc_id, n_docs, from_doc, current_app):
             for doc in response["hits"]["hits"]:
                 document = doc["_source"]
                 document['_id'] = doc['_id']
-                tax.create_tree_from_elasticsearch_format(is_field_in_doc(document, "taxonomy"),
-                                                          is_field_in_doc(document, "taxonomy_path"))
-                document["taxonomy"] = tax.tree
+                document["taxonomy"] = tax.enrich(is_field_in_doc(document, "taxonomy"))
                 resp["chunk_list"].append(document)
             resp["num_chunks"] = response["hits"]["total"]["value"]
     except:
@@ -103,8 +100,7 @@ def insert_chunk(args, es, index, current_app, request):
     new_doc["mime_type"] = is_field_in_doc(args, "mime_type")
     new_doc["in_force"] = is_field_in_doc(args, "in_force")
     new_doc["language"] = is_field_in_doc(args, "language")
-    new_doc["taxonomy"], new_doc["taxonomy_path"] = Taxonomy.from_tree_to_elasticsearch_format(
-        is_field_in_doc(args, "taxonomy"))
+    new_doc["taxonomy"] = is_field_in_doc(args, "taxonomy")
     new_doc["other"] = is_field_in_doc(args, "other")
     new_doc["keywords"] = is_field_in_doc(args, "keywords")
     new_doc["chunk_text"] = is_field_in_doc(args, "chunk_text")
@@ -175,7 +171,7 @@ def insert_doc(args, es, index, current_app, request):
     new_doc["mime_type"] = is_field_in_doc(args, "mime_type")
     new_doc["in_force"] = is_field_in_doc(args, "in_force")
     new_doc["language"] = is_field_in_doc(args, "language")
-    new_doc["taxonomy"], new_doc["taxonomy_path"] = Taxonomy.from_tree_to_elasticsearch_format(is_field_in_doc(args, "taxonomy"))
+    new_doc["taxonomy"] = is_field_in_doc(args, "taxonomy")
     new_doc["other"] = is_field_in_doc(args, "other")
     new_doc["keywords"] = is_field_in_doc(args, "keywords")
     new_doc["annotation"] = is_field_in_doc(args, "annotation")
@@ -204,7 +200,7 @@ def insert_doc(args, es, index, current_app, request):
     return doc_id
 
 
-def corpus(term, n_docs, from_doc, sources, collection, reference, in_force, sort, taxonomy_path, semantic_sort_id_list,
+def corpus(term, n_docs, from_doc, sources, collection, reference, in_force, sort, taxonomy, semantic_sort_id_list,
            emb_vector_list, author, date_range, aggs, search_type, other, annotation, current_app):
     if search_type is None or search_type not in current_app.config["SEARCH_TYPES"]:
         search_type = "CHUNK_SEARCH"
@@ -215,14 +211,13 @@ def corpus(term, n_docs, from_doc, sources, collection, reference, in_force, sor
     elif from_doc + n_docs > current_app.config["PAGINATION_DOC_LIMIT"]:
         return {"total_docs": 0, "documents": []}
 
-    body = build_corpus_request(term, n_docs, from_doc, sources, collection, reference, in_force, sort, taxonomy_path,
+    body = build_corpus_request(term, n_docs, from_doc, sources, collection, reference, in_force, sort, taxonomy,
                                 semantic_sort_id_list, emb_vector_list, author, date_range, aggs, search_type, other,
                                 annotation, current_app)
     # import json
     # print(json.dumps(body))
     request = compose_request_for_msearch(body, current_app)
     res = current_app.es.msearch(body=request)
-    print(res)
     documents = handle_corpus_response(aggs, res, search_type, term, current_app, semantic_sort_id_list, emb_vector_list)
     return documents
 
@@ -244,6 +239,7 @@ def get_id_and_source(args, current_app):
     if resource_id is None:
         raise ApiLogicError("Resource id not found")
     return document_id, resource_id
+
 
 def from_xml_to_json(xml_string):
     xml_obj = xmltodict.parse(xml_string)

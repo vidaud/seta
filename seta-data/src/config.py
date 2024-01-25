@@ -33,6 +33,8 @@ class Config:
         Config.CRC_ES_INIT_DATA_CONFIG_FILE = config_section["CRC_ES_INIT_DATA_CONFIG_FILE"]
         Config.ES_SUGGESTION_INIT_DATA_CONFIG_FILE = config_section["ES_SUGGESTION_INIT_DATA_CONFIG_FILE"]
         Config.CRC_ES_SUGGESTION_INIT_DATA_CONFIG_FILE = config_section["CRC_ES_SUGGESTION_INIT_DATA_CONFIG_FILE"]
+        Config.ES_TAXONOMY_INIT_DATA_CONFIG_FILE = config_section["ES_TAXONOMY_INIT_DATA_CONFIG_FILE"]
+        Config.CRC_ES_TAXONOMY_INIT_DATA_CONFIG_FILE = config_section["CRC_ES_TAXONOMY_INIT_DATA_CONFIG_FILE"]
         Config.DELETE_INDEX_ON_CRC_CHECK = config_section.getboolean("DELETE_INDEX_ON_CRC_CHECK", False)
 
         index = config_section.get("INDEX", fallback="")
@@ -40,6 +42,7 @@ class Config:
 
         Config.INDEX_SUGGESTION = config_section["INDEX_SUGGESTION"]
         Config.INDEX_PUBLIC = config_section["INDEX_PUBLIC"]
+        Config.INDEX_TAXONOMY = config_section["INDEX_TAXONOMY"]
 
         Config.MODELS_DOCKER_PATH = config_section["MODELS_DOCKER_PATH"]
         Config.MODELS_PATH = config_section["MODELS_PATH"]

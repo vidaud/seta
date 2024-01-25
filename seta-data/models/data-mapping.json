@@ -1,18 +1,5 @@
 {"settings": {
-    "index.number_of_shards": 5,
-    "analysis": {
-      "analyzer": {
-        "custom_path_tree": {
-          "tokenizer": "custom_hierarchy"
-        }
-      },
-      "tokenizer": {
-        "custom_hierarchy": {
-          "type": "path_hierarchy",
-          "delimiter": ":"
-        }
-      }
-    }
+    "index.number_of_shards": 5
   },
 "mappings":
     {"properties":
@@ -46,15 +33,7 @@
       ,"link_reference":{"type":"text","fields":{"keyword":{"type":"keyword","ignore_above":256}}}
       ,"link_related":{"type":"text","fields":{"keyword":{"type":"keyword","ignore_above":256}}}
       ,"mime_type":{"type":"text","fields":{"keyword":{"type":"keyword","ignore_above":256}}}
-      ,"taxonomy":{"type":"nested","dynamic":"false","properties":{"classifier":{"type":"keyword"}
-                                                                       ,"label":{"type":"keyword"}
-                                                                       ,"code":{"type":"keyword"}
-                                                                       ,"longLabel":{"type":"keyword"}
-                                                                       ,"validated":{"type":"keyword"}
-                                                                       ,"version":{"type":"keyword"}
-                                                                       ,"name_in_path":{"type":"keyword"}
-                                                                       ,"name":{"type":"keyword"} }}
-      ,"taxonomy_path": {"type":"text", "analyzer": "custom_path_tree", "search_analyzer": "keyword", "fielddata": true}
+      ,"taxonomy":{"type":"keyword","fields":{"keyword":{"type":"keyword"}}}
       ,"sbert_embedding":{"type": "knn_vector", "dimension": 768, "method": {"name": "hnsw", "space_type": "innerproduct", "engine": "faiss","parameters": {"ef_search": 256, "ef_construction": 256,"m": 48}}}
       ,"other":{"type":"flat_object"}
       ,"annotation":{"type":"text","fields":{"keyword":{"type":"keyword"}}}

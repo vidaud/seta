@@ -1,0 +1,13 @@
+{
+  "mappings": {
+    "properties": {
+      "crc_data_mapping": {"type": "keyword"},
+      "code": {"type": "keyword"},
+      "long_code": {"type": "keyword"},
+      "label": {"type": "keyword"},
+      "long_label": {"type": "keyword"},
+      "type": {"type": "keyword"},
+      "taxonomy_name": {"type": "keyword"}
+    }
+  }
+}

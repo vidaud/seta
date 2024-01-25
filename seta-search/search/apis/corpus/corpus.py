@@ -372,7 +372,7 @@ class CorpusQuery(Resource):
                 is_field_in_doc(args, "reference"),
                 is_field_in_doc(args, "in_force"),
                 is_field_in_doc(args, "sort"),
-                is_field_in_doc(args, "taxonomy_path"),
+                is_field_in_doc(args, "taxonomy"),
                 is_field_in_doc(args, "semantic_sort_id_list"),
                 is_field_in_doc(args, "sbert_embedding_list"),
                 is_field_in_doc(args, "author"),

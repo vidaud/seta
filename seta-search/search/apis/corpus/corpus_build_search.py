@@ -3,11 +3,11 @@ import re
 
 
 def build_search_query(search_term, sources, collection, reference, in_force, author, date_range, search_type, other,
-                       taxonomy_path, annotation):
+                       taxonomy, annotation):
     query = build_search_query_json(search_term)
 
     metadata_param_blocks = build_metadata_param_blocks(collection, reference, in_force, author, date_range,
-                                                        sources, search_type, other, taxonomy_path, annotation)
+                                                        sources, search_type, other, taxonomy, annotation)
 
     query = add_metadata_block_to_query(metadata_param_blocks, query)
     return query
@@ -25,7 +25,7 @@ def add_metadata_block_to_query(metadata_param_blocks, query):
 
 
 def build_metadata_param_blocks(collection, reference, in_force, author, date_range, sources, search_type, other,
-                                taxonomy_path, annotation):
+                                taxonomy, annotation):
     full_block = []
     if sources:
         or_block = {"bool": {"should": []}}
@@ -76,10 +76,10 @@ def build_metadata_param_blocks(collection, reference, in_force, author, date_ra
             block = {"match": {"other." + k: other[k]}}
             or_block['bool']['should'].append(block)
         full_block.append(or_block)
-    if taxonomy_path:
+    if taxonomy:
         or_block = {"bool": {"should": []}}
-        for param in taxonomy_path:
-            block = {"match": {"taxonomy_path": param}}
+        for param in taxonomy:
+            block = {"match": {"taxonomy": param}}
             or_block['bool']['should'].append(block)
         full_block.append(or_block)
     return full_block

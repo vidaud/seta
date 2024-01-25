@@ -30,19 +30,18 @@ def create_knn_query(semantic_sort_id_list, emb_vector_list, current_app, k, que
     return knn
 
 
-def build_corpus_request(term, n_docs, from_doc, sources, collection, reference, in_force, sort, taxonomy_path,
+def build_corpus_request(term, n_docs, from_doc, sources, collection, reference, in_force, sort, taxonomy,
                          semantic_sort_id_list, emb_vector_list, author, date_range, aggs, search_type, other,
                          annotation, current_app):
     query = build_search_query(term, sources, collection, reference, in_force, author, date_range, search_type,
-                               other, taxonomy_path, annotation)
+                               other, taxonomy, annotation)
     body = {
         "size": n_docs,
         "from": from_doc,
         "track_total_hits": True,
         "_source": ["id", "id_alias", "document_id", "source", "title", "abstract", "chunk_text", "chunk_number",
                     "collection", "reference", "author", "date", "link_origin", "link_alias", "link_related",
-                    "link_reference", "mime_type", "in_force", "language", "taxonomy", "taxonomy_path",
-                    "keywords", "other", "annotation"]
+                    "link_reference", "mime_type", "in_force", "language", "taxonomy", "keywords", "other", "annotation"]
     }
     if search_type == "CHUNK_SEARCH":
         body["collapse"] = {"field": "document_id"}
@@ -89,21 +88,20 @@ def fill_body_for_aggregations(aggs, body, current_app, search_type):
     for agg in aggs:
         match agg:
             case agg if agg.startswith("taxonomy:"):
-                agg_body = {"terms": {"field": "taxonomy_path", "size": aggregation_size}}
+                agg_body = {"terms": {"field": "taxonomy", "size": aggregation_size}}
                 check_search_type_for_unique_aggs(agg_body, search_type)
                 body = add_aggs(agg_body, "taxonomy", body)
             case "taxonomies":
-                agg_body = {"terms": {"field": "taxonomy_path", "size": aggregation_size}}
+                agg_body = {"terms": {"field": "taxonomy", "size": aggregation_size}}
                 check_search_type_for_unique_aggs(agg_body, search_type)
                 body = add_aggs(agg_body, agg, body)
-            case agg if agg.startswith("taxonomy_path_years-"):
-                agg_body = {"terms": {"field": "taxonomy_path", "size": aggregation_size}}
-                #TODO add check for unique value in years
+            case agg if agg.startswith("taxonomy_years-"):
+                agg_body = {"terms": {"field": "taxonomy", "size": aggregation_size}}
                 agg_body["aggs"] = {
                     "years": {"date_histogram": {"field": "date", "calendar_interval": "year", "format": "yyyy"},
                               "aggs": {"unique_values": {"cardinality": {"field": "document_id"}}}}}
                 check_search_type_for_unique_aggs(agg_body, search_type)
-                body = add_aggs(agg_body, "taxonomy_path_years", body)
+                body = add_aggs(agg_body, "taxonomy_years", body)
             case "source":
                 agg_body = {"terms": {"field": agg + '.keyword', "size": aggregation_size}}
                 check_search_type_for_unique_aggs(agg_body, search_type)
