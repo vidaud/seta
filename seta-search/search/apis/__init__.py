@@ -7,6 +7,7 @@ from .similar.similar import similar_api
 from .ontology.ontology import ontology_api
 from .term_enrichment.term_enrichment import term_enrichment_api
 from .export.export import export_api
+from .taxonomies.taxonomies import taxonomy_api
 
 authorizations = {
     'apikey': {
@@ -44,3 +45,4 @@ api.add_namespace(similar_api, path="/")
 api.add_namespace(ontology_api, path="/")
 api.add_namespace(term_enrichment_api, path="/")
 api.add_namespace(export_api, path="/")
+api.add_namespace(taxonomy_api, path="/")

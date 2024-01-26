@@ -44,61 +44,6 @@
     "ELLINOGERMANIKI AGOGI SCHOLI PANAGEA SAVVA AE"
   ],
   "collection": "project;Project",
-  "taxonomy": [
-    {
-      "classifier": "cordis",
-      "code": "00",
-      "label": "euro_sci_voc",
-      "longLabel": "euro_sci_voc",
-      "name_in_path": "euro_sci_voc",
-      "validated": "true",
-      "version": "1",
-      "subcategories": [
-        {
-          "classifier": "cordis",
-          "code": "/29",
-          "label": "social sciences",
-          "longLabel": "/social sciences",
-          "validated": "true",
-          "name_in_path": "social_sciences",
-          "version": "1",
-          "subcategories": [
-            {
-              "classifier": "cordis",
-              "code": "/29/105",
-              "label": "educational sciences",
-              "longLabel": "/social sciences/educational sciences",
-              "validated": "true",
-              "name_in_path": "educational_sciences",
-              "version": "1",
-              "subcategories": [
-                {
-                  "classifier": "cordis",
-                  "code": "/29/105/573",
-                  "label": "didactics",
-                  "longLabel": "/social sciences/educational sciences/didactics",
-                  "validated": "true",
-                  "name_in_path": "didactics",
-                  "version": "1",
-                  "subcategories": []
-                },
-                {
-                  "classifier": "cordis",
-                  "code": "/29/105/571",
-                  "label": "pedagogy",
-                  "longLabel": "/social sciences/educational sciences/pedagogy",
-                  "validated": "true",
-                  "name_in_path": "pedagogy",
-                  "version": "1",
-                  "subcategories": []
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    }
-  ],
   "link_origin": "https://cordis.europa.eu/project/rcn/96953",
   "other": {
     "crc": "abb1657dcb2723a5fd63d2b79fee0e3e850c80c6cd54f18af9130ec9967648e9",

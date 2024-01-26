@@ -1,7 +1,7 @@
 from search.infrastructure.helpers import is_field_in_doc
 from search.infrastructure.ApiLogicError import ApiLogicError
 
-from search.apis.corpus import taxonomy
+from search.apis.taxonomies import taxonomy
 import math
 import requests
 
@@ -19,7 +19,7 @@ def sigmoid(x):
 
 def handle_corpus_response(aggs, res, search_type, term, current_app, semantic_sort_id_list, emb_vector_list):
     documents = {"total_docs": None, "documents": []}
-    tax = taxonomy.Taxonomy()
+    tax = taxonomy.Taxonomy(current_app.config["INDEX_TAXONOMY"], current_app.es)
     for response in res["responses"]:
         if "error" in response:
             raise ApiLogicError('Malformed query.')
@@ -29,8 +29,6 @@ def handle_corpus_response(aggs, res, search_type, term, current_app, semantic_s
             abstract = document['_source']['abstract'] if isinstance(document['_source']['abstract'], str) else ""
             text = is_field_in_doc(document['_source'], "chunk_text")
             concordance_field = compute_concordance(abstract, term, text, current_app)
-            tax.create_tree_from_elasticsearch_format(is_field_in_doc(document['_source'], "taxonomy"),
-                                                      is_field_in_doc(document['_source'], "taxonomy_path"))
             documents["documents"].append({"_id": document['_id'],
                                            "id": is_field_in_doc(document['_source'], "id"),
                                            "id_alias": is_field_in_doc(document['_source'], "id_alias"),
@@ -48,7 +46,7 @@ def handle_corpus_response(aggs, res, search_type, term, current_app, semantic_s
                                            "collection": is_field_in_doc(document['_source'], "collection"),
                                            "reference": is_field_in_doc(document['_source'], "reference"),
                                            "author": is_field_in_doc(document['_source'], "author"),
-                                           "taxonomy": tax.tree,
+                                           "taxonomy": tax.enrich(is_field_in_doc(document['_source'], "taxonomy")),
                                            "keywords": is_field_in_doc(document['_source'], "keywords"),
                                            "other": is_field_in_doc(document['_source'], "other"),
                                            "annotation": is_field_in_doc(document['_source'], "annotation"),
@@ -114,20 +112,10 @@ def compose_source_collection_reference_response_tree(response_buckets, current_
     return tree
 
 
-def compose_response_tree_given_a_taxonomy(response_buckets, aggs, current_app, search_type):
-    taxonomy_arg = aggs.split(":")[1]
-    tax = taxonomy.Taxonomy()
-    tax.create_tree_from_aggregation_given_a_taxonomy(es=current_app.es, index=current_app.config["INDEX"],
-                                                      response=response_buckets, taxonomy=taxonomy_arg,
-                                                      search_type=search_type)
-    return tax.tree
-
-
 def compose_taxonomies_response_tree(response_buckets, current_app, search_type):
-    tax = taxonomy.Taxonomy()
-    tax.create_tree_from_aggregation(es=current_app.es, index=current_app.config["INDEX"], response=response_buckets,
-                                     search_type=search_type)
-    return tax.tree
+    tax = taxonomy.Taxonomy(current_app.config["INDEX_TAXONOMY"], current_app.es)
+    tax.create_tree_from_aggregation(response_buckets, search_type)
+    return tax.tree_to_json()
 
 
 def handle_aggs_response(aggs, response, documents, current_app, search_type):
@@ -148,8 +136,6 @@ def handle_aggs_response(aggs, response, documents, current_app, search_type):
                     documents["aggregations"][agg].append(y)
             case "source_collection_reference":
                 documents["aggregations"][agg] = compose_source_collection_reference_response_tree(response["aggregations"][agg]["buckets"], current_app, search_type)
-            case agg if agg.startswith("taxonomy:"):
-                documents["aggregations"]["taxonomy"] = compose_response_tree_given_a_taxonomy(response["aggregations"]["taxonomy"]["buckets"], agg, current_app, search_type)
             case "taxonomies":
                 documents["aggregations"][agg] = compose_taxonomies_response_tree(response["aggregations"]["taxonomies"]["buckets"], current_app, search_type)
             case "source":
@@ -162,18 +148,18 @@ def handle_aggs_response(aggs, response, documents, current_app, search_type):
                         count = source["doc_count"]
                     y = {"key": source["key"], "doc_count": count}
                     documents["aggregations"][agg].append(y)
-            case agg if agg.startswith("taxonomy_path_years-"):
-                taxonomy_path = agg.split("-")[1]
-                documents["aggregations"]["taxonomy_path_years"] = []
-                for path in response["aggregations"]["taxonomy_path_years"]["buckets"]:
-                    if path["key"] == taxonomy_path:
-                        for year in path["years"]["buckets"]:
+            case agg if agg.startswith("taxonomy_years-"):
+                searched_taxonomy = agg.split("-")[1]
+                documents["aggregations"]["taxonomy_years"] = []
+                for tax in response["aggregations"]["taxonomy_years"]["buckets"]:
+                    if tax["key"] == searched_taxonomy:
+                        for year in tax["years"]["buckets"]:
                             if search_type == "CHUNK_SEARCH":
                                 count = year["unique_values"]["value"]
                             else:
                                 count = year["doc_count"]
                             y = {"key": year["key_as_string"], "doc_count": count}
-                            documents["aggregations"]["taxonomy_path_years"].append(y)
+                            documents["aggregations"]["taxonomy_years"].append(y)
     return documents
 
 
