@@ -104,9 +104,6 @@ class Taxonomy:
 
     def from_eurovoc_tree_to_index_format(self, json_tree):
         taxonomy_name = list(json_tree.keys())[0]
-        print("taxonomy_name", taxonomy_name)
-        print("json_tree.keys()", json_tree.keys())
-        # print(json_tree)
         taxonomies = []
         long_code = ""
         long_label = ""

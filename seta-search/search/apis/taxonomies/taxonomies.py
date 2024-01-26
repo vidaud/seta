@@ -28,12 +28,12 @@ model = taxonomy_api.model('Taxonomy', {
     security="apikey",
 )
 class CreateTaxonomy(Resource):
-    @taxonomy_api.doc(params={'file': "JSON file to be uploaded. JSON schema is described in documentation (ADD LINK)."})
+    # TODO add link to documentation
+    @taxonomy_api.doc(params={'file': "JSON file to be uploaded. JSON schema is described in SEARCH API documentation."})
     @taxonomy_api.expect(upload_parser)
     @auth_validator()
     def post(self):
         try:
-            print("request.files", request.files)
             if 'file' in request.files:
                 file = request.files['file']
             else:
@@ -51,7 +51,10 @@ class CreateTaxonomy(Resource):
             tax = Taxonomy(app.config["INDEX_TAXONOMY"], app.es)
             tax.from_eurovoc_tree_to_index_format(json_data)
             return {"ok": "Success"}, 201
-        except json.JSONDecodeError as e:
+        except jsonschema.exceptions.ValidationError as e:
+            message = e.schema.get("error_msg", e.message)
+            abort(400, f"JSON Validation failed: {message}")
+        except json.JSONDecodeError:
             abort(400, 'Invalid JSON file format')
         except ApiLogicError as aex:
             abort(400, str(aex))
@@ -91,7 +94,8 @@ json_schema = {
                     }
                 }
             },
-            "required": ["data"]
+            "required": ["data"],
+            "additionalProperties": False
         }
     },
     "definitions": {
@@ -108,7 +112,8 @@ json_schema = {
                 },
                 "uuid": {"type": "string"}
             },
-            "required": ["label", "notation"]
+            "required": ["label", "notation"],
+            "additionalProperties": False
         }
     }
 }
