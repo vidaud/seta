@@ -12,6 +12,7 @@ from seta_flask_server.infrastructure.auth_helpers import (
     create_session,
     validate_public_key,
 )
+from seta_flask_server.infrastructure.constants import ExternalProviderConstants
 
 from seta_flask_server.repository import interfaces
 
@@ -25,41 +26,31 @@ auth_api = Api(
     doc="/doc",
     description="JWT authentication for user and guests",
 )
-ns_auth = auth_api.namespace("", "Authentication endpoints")
+ns_auth = auth_api.namespace("", "Authentication endpoints", validate=True)
 
-AUTH_PROVIDERS = ["ECAS", "GitHub", "SeTA"]
+AUTH_PROVIDERS = [
+    provider.lower()
+    for provider in current_app.config.get("SETA_IDENTITY_PROVIDERS", [])
+]
+AUTH_PROVIDERS.append(ExternalProviderConstants.SETA.lower())
 
-auth_data = ns_auth.parser()
-auth_data.add_argument(
-    "username",
-    required=True,
-    nullable=False,
-    case_sensitive=False,
-    location="json",
-    help="User or application name",
-)
-auth_data.add_argument(
-    "provider",
-    choices=AUTH_PROVIDERS,
-    case_sensitive=False,
-    required=True,
-    nullable=False,
-    location="json",
-    help="Authentication provider",
-)
-auth_data.add_argument(
-    "rsa_original_message",
-    required=True,
-    nullable=False,
-    location="json",
-    help="Any random message",
-)
-auth_data.add_argument(
-    "rsa_message_signature",
-    required=True,
-    nullable=False,
-    location="json",
-    help="Signature using hex format, string of hexadecimal numbers.",
+auth_data = ns_auth.model(
+    "AuthData",
+    {
+        "username": fields.String(
+            required=True, description="User or application name"
+        ),
+        "provider": fields.String(
+            required=True, description="Authentication provider", enum=AUTH_PROVIDERS
+        ),
+        "rsa_original_message": fields.String(
+            required=True, description="Any random message"
+        ),
+        "rsa_message_signature": fields.String(
+            required=True,
+            description="Signature using hex format, string of hexadecimal numbers.",
+        ),
+    },
 )
 
 auth_model = ns_auth.model(
@@ -90,7 +81,9 @@ class JWTUserToken(Resource):
         self.sessions_broker = sessions_broker
 
     @ns_auth.doc(
-        description="JWT token for users",
+        description="Generates JWT (JSON Web Token) access and refresh tokens for authenticated users or user applications. \n \
+                    The RSA signature is used to confirm the user's identity. \
+                    Visit the /docs/apis/access-token/ webpage for an example of how to programmatically generate random signatures.",
         responses={
             int(HTTPStatus.OK): "Success",
             int(HTTPStatus.UNAUTHORIZED): "Invalid User",
@@ -100,9 +93,9 @@ class JWTUserToken(Resource):
     @ns_auth.expect(auth_data)
     @ns_auth.marshal_with(auth_model)
     def post(self):
-        """Authenticate user."""
+        """Generates JWT (JSON Web Token) access and refresh tokens for a valid signature."""
 
-        args = auth_data.parse_args()
+        args = ns_auth.payload
 
         user = self.users_broker.get_user_by_provider(
             provider_uid=args["username"].lower(), provider=args["provider"].lower()
@@ -168,7 +161,7 @@ class JWTRefreshToken(Resource):
         self.sessions_broker = sessions_broker
 
     @ns_auth.doc(
-        description="JWT refresh access token",
+        description="Generates a new JWT access token using the original refresh token, which should be included in the `Authorization` header in the format: `Bearer <refresh_token>`.",
         responses={
             int(HTTPStatus.OK): "Success",
             int(HTTPStatus.UNAUTHORIZED): "Refresh token verification failed",
@@ -178,7 +171,7 @@ class JWTRefreshToken(Resource):
     @ns_auth.marshal_with(auth_model)
     @jwt_required(refresh=True)
     def post(self):
-        """Refresh access token."""
+        """Generates new access token using original refresh token."""
 
         identity = get_jwt_identity()
 
