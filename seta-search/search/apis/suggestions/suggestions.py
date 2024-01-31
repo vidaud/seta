@@ -13,11 +13,12 @@ suggestions_parser.add_argument("n_suggestions", type=int)
 
 @suggestions_api.route("suggestions")
 @suggestions_api.doc(
-    description="Retrieve terms by initial letters. By default it returns 6 terms,"
-    " with the parameter n_suggestions is possible to set the number of suggestions to be shown.",
+    description="This endpoint provides autocomplete suggestions for search queries"
+                " based on the provided characters (chars) and the desired number of suggestions "
+                "(n_suggestions). ",
     params={
-        "chars": "Initial letters.",
-        "n_suggestions": "Number of terms to be returned (default 6).",
+        "chars": "The characters entered by the user for which suggestions are requested.",
+        "n_suggestions": "The number of suggestions to be returned. (default 6).",
     },
     security="apikey",
 )

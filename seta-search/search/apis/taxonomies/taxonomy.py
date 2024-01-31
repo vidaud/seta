@@ -30,7 +30,7 @@ def read_tree(tree, taxonomies, long_code, long_label, taxonomy_name):
 
 
 def convert_tree_to_json(node):
-    if not node["children"]:
+    if "children" not in node:
         return {"code": node["code"],
                 "long_code": node["long_code"],
                 "label": node["label"],
@@ -135,4 +135,6 @@ class Taxonomy:
         return taxonomy
 
     def tree_to_json(self):
+        if self.root is None:
+            return {}
         return convert_tree_to_json(self.root)

@@ -19,8 +19,9 @@ term_enrichment_response_model = term_enrichment_api.model(
 
 
 @term_enrichment_api.doc(
-    description="Given a list of terms, and the enrichment type a list of term is returned. "
-    "The list of term is created using api given with enrichment type parameter.",
+    description="Given a list of terms, and the enrichment type the API call returns an enriched list of terms. "
+    "The resulting list is generated using the method specified by the enrichment type parameter. "
+    "The available methods for enrichment are 'similar' and 'ontology'.",
     params={
         "terms": "List of terms.",
         "enrichment_type": 'enrichment type can be "similar" or "ontology", default "similar"',

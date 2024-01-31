@@ -15,16 +15,11 @@ taxonomy_api = Namespace("Taxonomy")
 upload_parser = reqparse.RequestParser()
 upload_parser.add_argument('file', type='file', location='files', required=True, help='JSON file to be uploaded')
 
-# Define the model using api.model
-model = taxonomy_api.model('Taxonomy', {
-    'field1': fields.String(required=True, description='Description for field1'),
-    'field2': fields.Integer(required=True, description='Description for field2')
-})
-
 
 @taxonomy_api.route("taxonomy")
 @taxonomy_api.doc(
-    description="Add new Taxonomy tree",
+    description="This endpoint will add new taxonomies in the taxonomy index. "
+                "Tree format is required, JSON schema is described in SEARCH API documentation.",
     security="apikey",
 )
 class CreateTaxonomy(Resource):
