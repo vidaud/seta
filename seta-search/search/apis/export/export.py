@@ -38,8 +38,9 @@ export_request_model = export_api.model("export_req_model", export_req)
 @export_api.route("export")
 class Export(Resource):
     @export_api.doc(
-        description="Given a list of ids and a list of fields to be exported, "
-        "export of related documents is returned",
+        description="Given a list of ids and a list of fields for export, "
+        "this endpoint returns the export of specified documents. "
+        "If 'path' is provided, it will be included in the exported document.",
         responses={200: "Success", 404: "Not Found Error"},
         security="apikey",
     )

@@ -25,7 +25,7 @@ similar_response_model = similar_api.model("similar_response_model", similar_res
 @similar_api.doc(
     description="Given a term, return the 20 most similar terms (semantic similarity). "
     "For each term similarity and cardinality (number of occurrences in documents) are reported."
-    "When a list of terms is provided the in the returned list similarity values are set to zero",
+    "When a list of terms is provided similarity values are set to zero.",
     params={
         "term": "A term.",
         "n_term": "Number of similar terms to be extracted (default 20).",

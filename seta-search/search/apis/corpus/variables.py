@@ -1,7 +1,7 @@
 from flask_restx import fields
 
 other = {}
-other["*"] = fields.String()
+other["*"] = fields.String(description="Other field")
 
 keywords = {}
 keywords["keyword"] = fields.String()
@@ -178,26 +178,25 @@ corpus_post_params["from_doc"] = fields.Integer(description="Defines the number 
 corpus_post_params["search_type"] = fields.String(description="search type to be used, possible values are "
                                                               "DOCUMENT_SEARCH, CHUNK_SEARCH, ALL_CHUNKS_SEARCH, "
                                                               "default is CHUNK_SEARCH")
-corpus_post_params["source"] = fields.List(fields.String(),
-                                           description="By default contains all the corpus: eurlex,cordis,pubsy. It is possible to choose from which corpus retrieve documents.")
+corpus_post_params["source"] = fields.List(fields.String(), description="Source of data")
 corpus_post_params["reference"] = fields.List(fields.String(), description="eurlex metadata reference")
 corpus_post_params["collection"] = fields.List(fields.String(), description="eurlex metadata collection")
 corpus_post_params["taxonomy"] = fields.List(fields.String(), description="list of taxonomy, taxonomy is defined as taxonomy_name:taxonomy_code")
 corpus_post_params["in_force"] = fields.String(description="eurlex metadata into_force")
-corpus_post_params["sort"] = fields.List(fields.String(), description="sort results field:order")
+corpus_post_params["sort"] = fields.List(fields.String(), description='Sort results accordingly to the specified field. Usage "field:order", where order can be "desc" or "asc"')
 corpus_post_params["semantic_sort_id_list"] = fields.List(fields.String(),
-                                                          description="sort results by semantic distance among documents")
+                                                          description="List of chunk _id to be use for semantic search.")
 corpus_post_params["sbert_embedding_list"] = fields.List(fields.List(fields.Raw,
-                                                                     description="list of embeddings vector"))
-corpus_post_params["author"] = fields.List(fields.String(description="author"))
-corpus_post_params["date_range"] = fields.List(fields.String, description="examples: gte:yyyy-mm-dd,lte:yyyy-mm-dd,"
-                                                                          "gt:yyyy-mm-dd,lt:yyyy-mm-dd")
-corpus_post_params["aggs"] = fields.List(fields.String, description="field to be aggregated, allowed fields are:"
+                                                                     description="List of embeddings vector to be use for semantic search."))
+corpus_post_params["author"] = fields.List(fields.String(description="List of author"))
+corpus_post_params["date_range"] = fields.List(fields.String, description="Result will be filter using date range. Examples: gte:yyyy-mm-dd (greater then, equal), lte:yyyy-mm-dd (less then, equal),"
+                                                                          "gt:yyyy-mm-dd (greater then), lt:yyyy-mm-dd (less then)")
+corpus_post_params["aggs"] = fields.List(fields.String, description="List of aggregations, allowed entries are:"
                                                                     '"source", "date_year", "source_collection_reference", '
                                                                     '"taxonomies", "taxonomy_years-taxonomy" (taxonomy is defined as taxonomy_name:taxonomy_code)')
 corpus_post_params["other"] = None
 corpus_post_params["annotation"] = fields.List(fields.String(),
-                                               description="annotation list. Annotation are defined using this format 'group:label',"
+                                               description="Annotation list. Annotation are defined using this format 'group:label',"
                                                            " to select all labels belonging to the same group type 'group:'. "
                                                            "To search for a label in any group use ':label'")
 

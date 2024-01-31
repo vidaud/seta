@@ -14,16 +14,13 @@ term_parser.add_argument("term", required=True)
 
 @ontology_api.route("ontology")
 @ontology_api.doc(
-    description="Return a graph that describes the ontology of the specified term. "
-    "A set of nodes and relative links are provided."
-    "For each node depth, id, size and graph size are returned, "
-    "depth indicates the depth of the node in the graph, id is the identifier of the term for the node,"
-    " size indicates the number of occurrences of the term in the document corpus "
-    "and graph size is useful to visualize the graph."
-    "For each link source, target and value are returned, "
-    "source indicates the node (its id) from which the link starts, "
-    "target is the node (its id) linked to source"
-    "and value is used to visualize the graph.",
+    description="Return a graph illustrating  the ontology of the specified term. "
+    "The output includes a set of nodes and their corresponding links"
+    "Each node provides information on its depth within the graph, "
+    "identifier (id) representing the term, frequency (size) of occurrences in the document index,"
+    " and graph size for visualization purposes. "
+    "Links include details such as source (id of the starting node), target (id of the linked node),"
+    " and value for graph visualization",
     params={"term": "The term from which build the ontology graph."},
     responses={200: "Success", 404: "Not Found Error"},
     security="apikey",
@@ -51,13 +48,14 @@ ontology_list_response_model = ontology_api.model(
 
 @ontology_api.route("ontology-list")
 @ontology_api.doc(
-    description="Return a list of lists of similar terms that describes the ontology of the specified term. "
-    "Lists are ranked by the relation strenght to a query term. The first node in each list is"
-    " direct relation to query term. The following terms in each sublist have relation to"
-    " the first node in a sublist."
-    "The result should be interpretd as follows: the first item in each sublist is first level"
-    " connection to the query term. The following terms in sublists have second level relation"
-    " to the main query term and direct connection to the head of sublist.",
+    description="Return a ranked list of lists containing similar terms that represent the ontology of the specified "
+                "term. The lists are ordered by the strength of their relation to a query term. "
+                "The initial node in each list represents a direct relation to the query term, "
+                "with subsequent terms in the sublist having a relation to the first node. "
+                "Interpret the results as follows: the first item in each sublist signifies a first-level "
+                "connection to the query term, while the subsequent terms in the sublists denote "
+                "second-level relations to the main query term and maintain a direct connection to the "
+                "head of the sublist.",
     params={"term": "The term from which build the ontology tree."},
     responses={200: "Success", 404: "Not Found Error"},
     security="apikey",
