@@ -73,6 +73,7 @@ const ActionIconExtended = forwardRef<HTMLButtonElement, Props>(
       isActive,
       toggledColor,
       toggledVariant,
+      className,
       toggled,
       isToggleButton = toggled !== undefined,
       toggledIcon,
@@ -147,7 +148,7 @@ const ActionIconExtended = forwardRef<HTMLButtonElement, Props>(
       <S.StyledActionIcon
         ref={ref}
         {...props}
-        className="seta-ActionIconExtended-root"
+        className={[className, 'seta-ActionIconExtended-root'].join(' ')}
         variant={currentVariant}
         color={currentColor}
         onClick={handleClick}

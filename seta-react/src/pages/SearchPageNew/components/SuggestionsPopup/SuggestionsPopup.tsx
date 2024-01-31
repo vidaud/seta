@@ -80,6 +80,8 @@ const SuggestionsPopup = ({ opened, enrichQuery, onOpenChange, onEnrichToggle }:
     }
   }, [enrichType, enrichQuery, onEnrichToggle])
 
+  const highlightUploadButton = popupOpen && popupTarget === PopupTarget.Upload
+
   const handlePopupChange = (value: boolean) => {
     setPopupOpen(value)
     onOpenChange?.(value)
@@ -174,6 +176,7 @@ const SuggestionsPopup = ({ opened, enrichQuery, onOpenChange, onEnrichToggle }:
           value={inputValue}
           allowSearching={allowSearching}
           enrichQuery={enrichQuery}
+          highlightUploadButton={highlightUploadButton}
           onClick={handleInputClick}
           onKeyDown={handleInputKeyDown}
           onDeferredChange={handleInputChange}

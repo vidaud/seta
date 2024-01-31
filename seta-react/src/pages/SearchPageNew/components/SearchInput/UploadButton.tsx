@@ -1,18 +1,27 @@
-import { ActionIcon, Indicator, Loader, Tooltip } from '@mantine/core'
-import { IconCloudUp } from '@tabler/icons-react'
+import type { DefaultMantineColor } from '@mantine/core'
+import { Indicator, Loader, Tooltip } from '@mantine/core'
+import { IconPaperclip } from '@tabler/icons-react'
 
+import ActionIconExtended from '~/components/ActionIconExtended'
 import { useUploadDocuments } from '~/pages/SearchPageNew/contexts/upload-documents-context'
+
+import type { Variant } from '~/types/lib-props'
 
 import * as S from './styles'
 
 type Props = {
+  active?: boolean
+  inputFocused?: boolean
   onClick?: () => void
 }
 
-const UploadButton = ({ onClick }: Props) => {
+const UploadButton = ({ active, inputFocused, onClick }: Props) => {
   const { loading, documents } = useUploadDocuments()
 
   const count = documents.length
+
+  const color: DefaultMantineColor = active ? 'blue' : 'gray.5'
+  const variant: Variant = active ? 'light' : 'outline'
 
   return (
     <Indicator
@@ -24,17 +33,21 @@ const UploadButton = ({ onClick }: Props) => {
       position="top-start"
       style={{ zIndex: '10' }}
     >
-      <Tooltip label="Upload files or enter large amounts of text" disabled={!!count}>
-        <ActionIcon
+      <Tooltip label="Attach files or enter large amounts of text" disabled={!!count}>
+        <ActionIconExtended
           css={S.uploadButton}
-          color="blue"
+          className="upload-button"
+          color={color}
+          variant={variant}
+          hoverColor="blue"
+          hoverVariant="light"
           size="xl"
-          variant="filled"
           onClick={onClick}
           id="search-upload"
+          data-input-focused={inputFocused}
         >
-          {loading ? <Loader color="blue.0" size="sm" /> : <IconCloudUp />}
-        </ActionIcon>
+          {loading ? <Loader color="blue.4" size="sm" /> : <IconPaperclip />}
+        </ActionIconExtended>
       </Tooltip>
     </Indicator>
   )

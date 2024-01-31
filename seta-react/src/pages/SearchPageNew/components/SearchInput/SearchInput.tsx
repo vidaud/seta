@@ -1,5 +1,5 @@
 import type { KeyboardEvent } from 'react'
-import { forwardRef, useEffect, useRef } from 'react'
+import { forwardRef, useEffect, useRef, useState } from 'react'
 import { Button, Flex, Tooltip } from '@mantine/core'
 import { IconSearch } from '@tabler/icons-react'
 
@@ -17,6 +17,7 @@ type Props = {
   value?: string
   allowSearching?: boolean
   enrichQuery?: boolean
+  highlightUploadButton?: boolean
   onDeferredChange?: (value: string) => void
   onClick?: () => void
   onKeyDown?: (event: KeyboardEvent<HTMLInputElement>) => void
@@ -31,6 +32,7 @@ const SearchInput = forwardRef<HTMLDivElement, Props>(
       value,
       allowSearching,
       enrichQuery,
+      highlightUploadButton,
       onDeferredChange,
       onClick,
       onKeyDown,
@@ -39,6 +41,8 @@ const SearchInput = forwardRef<HTMLDivElement, Props>(
     },
     ref
   ) => {
+    const [inputFocused, setInputFocused] = useState(false)
+
     const isMounted = useIsMounted()
     const wasMountedHandled = useRef(false)
 
@@ -68,7 +72,11 @@ const SearchInput = forwardRef<HTMLDivElement, Props>(
 
     return (
       <Flex ref={ref} className={className} id="search-query">
-        <UploadButton onClick={onUploadClick} />
+        <UploadButton
+          active={highlightUploadButton}
+          inputFocused={inputFocused}
+          onClick={onUploadClick}
+        />
 
         <TokensInput
           className="flex-1"
@@ -80,10 +88,12 @@ const SearchInput = forwardRef<HTMLDivElement, Props>(
           onClick={onClick}
           onKeyDown={onKeyDown}
           onChange={onDeferredChange}
+          onFocus={() => setInputFocused(true)}
+          onBlur={() => setInputFocused(false)}
         />
 
         <Tooltip
-          label="Type a keyword or upload a document to enable searching"
+          label="Type a keyword or attach a document to enable searching"
           multiline
           width={300}
           disabled={allowSearching}
