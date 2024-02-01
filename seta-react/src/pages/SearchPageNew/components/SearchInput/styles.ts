@@ -2,14 +2,33 @@ import { css } from '@emotion/react'
 
 const INPUT_HEIGHT = '45px'
 
-export const uploadButton = css`
+export const uploadButton: ThemedCSS = theme => css`
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
   min-height: ${INPUT_HEIGHT};
   min-width: ${INPUT_HEIGHT};
   height: ${INPUT_HEIGHT};
   width: ${INPUT_HEIGHT};
+  border-color: ${theme.colors.gray[4]};
   z-index: 1;
+
+  &[data-input-focused='true'] {
+    border-top-color: ${theme.colors.blue[6]};
+    border-left-color: ${theme.colors.blue[6]};
+    border-bottom-color: ${theme.colors.blue[6]};
+    border-right-color: transparent;
+
+    // Prevent the right border from cutting off the input's border
+    &::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: -1px;
+      bottom: 0;
+      width: 1px;
+      background-color: ${theme.colors.gray[4]};
+    }
+  }
 `
 
 export const input = css`
@@ -20,6 +39,7 @@ export const input = css`
     min-height: ${INPUT_HEIGHT};
     height: ${INPUT_HEIGHT};
     border-radius: 0;
+    transition: none;
   }
 
   .renderer {
