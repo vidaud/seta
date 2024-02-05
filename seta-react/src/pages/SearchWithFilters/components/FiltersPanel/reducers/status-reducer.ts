@@ -1,9 +1,9 @@
 /* eslint-disable complexity */
-import keysDiff from '../../custom/array-diffs'
-import type { FilterStatusInfo } from '../../types/filter-info'
-import { ViewFilterInfo, FilterStatus } from '../../types/filter-info'
-import type { RangeValue } from '../../types/filters'
-import { OtherItemStatus } from '../../types/other-filter'
+import keysDiff from '~/pages/SearchWithFilters/custom/array-diffs'
+import type { FilterStatusInfo } from '~/pages/SearchWithFilters/types/filter-info'
+import { ViewFilterInfo, FilterStatus } from '~/pages/SearchWithFilters/types/filter-info'
+import type { RangeValue } from '~/pages/SearchWithFilters/types/filters'
+import { OtherItemStatus } from '~/pages/SearchWithFilters/types/other-filter'
 
 const compareRanges = (range1?: RangeValue, range2?: RangeValue | null): boolean => {
   //both undefined or null
@@ -11,7 +11,7 @@ const compareRanges = (range1?: RangeValue, range2?: RangeValue | null): boolean
     return true
   }
 
-  //one of them udefined or null
+  //one of them undefined or null
   if (range1 === undefined || range1 === null || range2 === undefined || range2 === null) {
     return false
   }
@@ -69,6 +69,25 @@ const taxonomyChanged = (info: FilterStatusInfo, values) => {
   }
 }
 
+const labelsChanged = (info: FilterStatusInfo, values) => {
+  const keys = info.appliedFilter?.labels?.map(s => s.id)
+  const valueKeys = values?.map(v => v.id)
+
+  const { removed, added } = keysDiff(keys, valueKeys)
+
+  info.labelsModified = removed.length + added.length
+
+  if (!info.currentFilter) {
+    info.currentFilter = new ViewFilterInfo()
+  }
+
+  if (!values?.length) {
+    info.currentFilter.labels = undefined
+  } else {
+    info.currentFilter.labels = values
+  }
+}
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const statusReducer = (status: FilterStatusInfo, action: any): FilterStatusInfo => {
   if (action.type === 'replace') {
@@ -104,6 +123,12 @@ export const statusReducer = (status: FilterStatusInfo, action: any): FilterStat
 
     case 'taxonomy_changed': {
       taxonomyChanged(info, action.value)
+
+      break
+    }
+
+    case 'labels_changed': {
+      labelsChanged(info, action.value)
 
       break
     }

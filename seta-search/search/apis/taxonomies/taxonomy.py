@@ -113,6 +113,9 @@ class Taxonomy:
             self.__insert_taxonomy(taxonomy)
 
     def enrich(self, taxonomies):
+        if taxonomies is None:
+            return []
+
         enriched_taxonomies = []
         for tax in taxonomies:
             taxonomy = tax.split(":")

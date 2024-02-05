@@ -49,7 +49,7 @@ const _StyledActionIcon = styled(
         transition: `outline-color 100ms ease, outline-offset 100ms ease, ${baseTransition}`
       },
 
-      '&:hover': {
+      '&:hover, &:focus:focus-visible': {
         color: hoverColors.color,
         backgroundColor: hoverColors.background
       },

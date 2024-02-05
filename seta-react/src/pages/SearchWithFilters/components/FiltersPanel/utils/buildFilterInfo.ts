@@ -1,10 +1,10 @@
-import type { FilterData } from '../../types/filter-data'
-import { ViewFilterInfo } from '../../types/filter-info'
-import type { RangeValue, SelectionKeys } from '../../types/filters'
-import { TextChunkValues } from '../../types/filters'
-import type { OtherItem } from '../../types/other-filter'
+import type { FilterData } from '~/pages/SearchWithFilters/types/filter-data'
+import { ViewFilterInfo } from '~/pages/SearchWithFilters/types/filter-info'
+import type { RangeValue, SelectionKeys } from '~/pages/SearchWithFilters/types/filters'
+import { TextChunkValues } from '~/pages/SearchWithFilters/types/filters'
+import type { OtherItem } from '~/pages/SearchWithFilters/types/other-filter'
 
-type Props = {
+type Args = {
   chunkText: TextChunkValues
   rangeValue?: RangeValue
   resourceSelectedKeys?: SelectionKeys | null
@@ -22,7 +22,7 @@ export const buildFilterInfo = ({
   otherItems,
   resources,
   taxonomies
-}: Props): ViewFilterInfo => {
+}: Args): ViewFilterInfo => {
   const fi = new ViewFilterInfo()
 
   fi.chunkValue = TextChunkValues[chunkText]

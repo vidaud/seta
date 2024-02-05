@@ -33,6 +33,7 @@ export enum ClearCategory {
   DATE = 'date',
   SOURCE = 'source',
   TAXONOMY = 'taxonomy',
+  LABELS = 'labels',
   OTHER = 'other'
 }
 

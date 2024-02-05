@@ -6,7 +6,7 @@ import { useSearch } from '~/pages/SearchPageNew/contexts/search-context'
 import { useSearchInput } from '~/pages/SearchPageNew/contexts/search-input-context'
 import { useTermsSelection } from '~/pages/SearchPageNew/contexts/terms-selection-context'
 
-import useSpacebarAction from '~/hooks/use-spacebar-action'
+import useKeyboardAction from '~/hooks/use-spacebar-action'
 
 import * as S from './styles'
 
@@ -113,7 +113,8 @@ const TermsCluster = ({ className, terms, clickable = false }: TermsClusterProps
     }
   }
 
-  const { preventKeyDownScroll, handleKeyUp: handleRootKeyUp } = useSpacebarAction(handleRootClick)
+  const { preventKeyDownScroll, handleActionKeyUp: handleRootKeyUp } =
+    useKeyboardAction(handleRootClick)
 
   const isSelected = (term: string) => values.includes(term)
 

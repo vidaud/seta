@@ -2,9 +2,10 @@ import type { MantineStyleSystemProps } from '@mantine/core'
 import { Anchor, Flex, Text } from '@mantine/core'
 import { BiErrorAlt } from 'react-icons/bi'
 
+import type { SizeProp } from '~/types/size'
+import { IconSize } from '~/types/size'
+
 import * as S from './styles'
-import type { SizeProp } from './types'
-import { IconSize } from './types'
 
 type Props = {
   message?: string

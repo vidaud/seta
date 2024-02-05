@@ -7,7 +7,7 @@ import { HiUpload } from 'react-icons/hi'
 import CancelButton from '~/components/CancelButton'
 
 import { useImportAnnotations } from '~/api/admin/annotations'
-import useSpacebarAction from '~/hooks/use-spacebar-action'
+import useKeyboardAction from '~/hooks/use-spacebar-action'
 import type { ClassNameProp } from '~/types/children-props'
 import { notifications } from '~/utils/notifications'
 
@@ -64,7 +64,7 @@ const JSONImport = ({ editing, onEdit, onCancel }: Props) => {
     onCancel?.()
   }
 
-  const { handleKeyUp, preventKeyDownScroll } = useSpacebarAction(handleRootClick)
+  const { handleActionKeyUp, preventKeyDownScroll } = useKeyboardAction(handleRootClick)
 
   if (editing) {
     return (
@@ -108,7 +108,7 @@ const JSONImport = ({ editing, onEdit, onCancel }: Props) => {
       ta="center"
       tabIndex={0}
       onClick={handleRootClick}
-      onKeyUp={handleKeyUp}
+      onKeyUp={handleActionKeyUp}
       onKeyDown={preventKeyDownScroll}
     >
       <GrTextAlignLeft css={S.icon} preserveAspectRatio="none" style={{ width: '42px' }} />

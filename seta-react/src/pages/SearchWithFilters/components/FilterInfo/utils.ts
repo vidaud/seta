@@ -52,6 +52,27 @@ export const getTaxonomyLists = (status?: FilterStatusInfo) => {
   return { taxonomyApplied, taxonomyDeleted, taxonomyAdded }
 }
 
+export const getLabelsLists = (status?: FilterStatusInfo) => {
+  const idsAdded = status?.currentFilter?.labels?.map(l => l.id)
+  const idsRemoved = status?.appliedFilter?.labels?.map(l => l.id)
+
+  const { removed, added } = keysDiff(idsRemoved, idsAdded)
+
+  const labelsApplied: NodeInfo[] | undefined = status?.appliedFilter?.labels
+    ?.filter(n => removed?.findIndex(r => r === n.id) === -1)
+    .map(l => ({ key: l.id, label: l.name, longLabel: '' }))
+
+  const labelsDeleted: NodeInfo[] | undefined = status?.appliedFilter?.labels
+    ?.filter(n => removed?.findIndex(r => r === n.id) !== -1)
+    .map(l => ({ key: l.id, label: l.name, longLabel: '' }))
+
+  const labelsAdded: NodeInfo[] | undefined = status?.currentFilter?.labels
+    ?.filter(n => added?.findIndex(r => r === n.id) !== -1)
+    .map(l => ({ key: l.id, label: l.name, longLabel: '' }))
+
+  return { labelsApplied, labelsDeleted, labelsAdded }
+}
+
 export const getOtherLists = (status?: FilterStatusInfo) => {
   const items = status?.appliedFilter?.otherItems
 

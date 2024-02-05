@@ -1,7 +1,7 @@
-import type { OtherItem } from '../../types/other-filter'
-import { OtherItemStatus } from '../../types/other-filter'
+import type { OtherItem } from '~/pages/SearchWithFilters/types/other-filter'
+import { OtherItemStatus } from '~/pages/SearchWithFilters/types/other-filter'
 
-type Action = {
+export type OtherItemsAction = {
   type: string
   value?: OtherItem
 }
@@ -99,7 +99,7 @@ const deleteItem = (items: OtherItem[], value?: OtherItem): OtherItem[] => {
 
 export const itemsReducer = (
   items: OtherItem[] | undefined,
-  action: Action
+  action: OtherItemsAction
 ): OtherItem[] | undefined => {
   switch (action.type) {
     case 'added': {

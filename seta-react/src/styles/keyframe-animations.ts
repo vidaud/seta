@@ -55,3 +55,8 @@ export const turnAndGrow = keyframes({
   '50%': { transform: 'rotate(180deg) scale(0.7)' },
   '100%': { transform: 'rotate(360deg) scale(1)' }
 })
+
+export const fadeIn = keyframes({
+  '0%': { opacity: 0 },
+  '100%': { opacity: 1 }
+})

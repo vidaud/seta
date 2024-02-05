@@ -8,7 +8,7 @@ import { MdClose } from 'react-icons/md'
 
 import ChevronToggleIcon from '~/components/ChevronToggleIcon'
 
-import useSpacebarAction from '~/hooks/use-spacebar-action'
+import useKeyboardAction from '~/hooks/use-spacebar-action'
 import type { ChunkInfo, EmbeddingInfo, EmbeddingType } from '~/types/embeddings'
 
 import * as S from './styles'
@@ -39,7 +39,7 @@ const DocumentInfo = ({ document, onViewChunkDetails, onRemoveChunk, onRemoveDoc
 
   const headerRef = useRef<HTMLDivElement>(null)
 
-  const { preventKeyDownScroll, handleKeyUp } = useSpacebarAction(toggle)
+  const { preventKeyDownScroll, handleActionKeyUp } = useKeyboardAction(toggle)
 
   const { id, type, name, chunks } = document
 
@@ -57,7 +57,7 @@ const DocumentInfo = ({ document, onViewChunkDetails, onRemoveChunk, onRemoveDoc
     onRemoveDocument?.()
   }
 
-  const { handleKeyUp: handleRemoveKeyUp } = useSpacebarAction(handleRemoveClick)
+  const { handleActionKeyUp: handleRemoveKeyUp } = useKeyboardAction(handleRemoveClick)
 
   const chunksCount = chunks?.length === 1 ? '1 chunk' : `${chunks?.length} chunks`
 
@@ -68,7 +68,7 @@ const DocumentInfo = ({ document, onViewChunkDetails, onRemoveChunk, onRemoveDoc
         ref={headerRef}
         onClick={handleHeaderClick}
         onKeyDown={preventKeyDownScroll}
-        onKeyUp={handleKeyUp}
+        onKeyUp={handleActionKeyUp}
         data-open={open}
         tabIndex={0}
       >

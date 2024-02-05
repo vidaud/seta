@@ -56,6 +56,12 @@ export const queryKey = {
   ) => [queryKey.root, { query }, { embeddings }, { page, perPage }, { searchOptions }]
 }
 
+/**
+ * Retrieves documents based on the provided payload.
+ * @param payload - The payload containing the search criteria.
+ * @param config - Optional configuration for the API request.
+ * @returns A promise that resolves to the response containing the documents.
+ */
 const getDocuments = async (
   payload: DocumentsPayload,
   config?: AxiosRequestConfig

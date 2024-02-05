@@ -3,6 +3,7 @@ import { forwardRef, useEffect, useState } from 'react'
 import { Transition, type ActionIcon } from '@mantine/core'
 
 import type { Color, Variant } from '~/types/lib-props'
+import cx from '~/utils/cx'
 
 import * as S from './styles'
 
@@ -43,7 +44,7 @@ const getHoverColor = (
   { color, hoverColor, toggledColor }: Colors
 ): Color => (isToggled ? toggledColor ?? hoverColor ?? color : hoverColor ?? color)
 
-type Props = ComponentProps<typeof ActionIcon<'button'>> & {
+export type ActionIconExtendedProps = ComponentProps<typeof ActionIcon<'button'>> & {
   hoverVariant?: Variant
   hoverColor?: Color
   activeVariant?: Variant
@@ -61,7 +62,7 @@ type Props = ComponentProps<typeof ActionIcon<'button'>> & {
  * A wrapper around ActionIcon that changes its variant and color on hover and active states.
  * It also supports toggling.
  */
-const ActionIconExtended = forwardRef<HTMLButtonElement, Props>(
+const ActionIconExtended = forwardRef<HTMLButtonElement, ActionIconExtendedProps>(
   (
     {
       variant,
@@ -148,7 +149,7 @@ const ActionIconExtended = forwardRef<HTMLButtonElement, Props>(
       <S.StyledActionIcon
         ref={ref}
         {...props}
-        className={[className, 'seta-ActionIconExtended-root'].join(' ')}
+        className={cx(className, 'seta-ActionIconExtended-root')}
         variant={currentVariant}
         color={currentColor}
         onClick={handleClick}

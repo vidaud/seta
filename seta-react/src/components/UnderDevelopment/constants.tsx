@@ -12,7 +12,7 @@ export const TITLE: Record<Variant, string> = {
 export const TEXT: Record<Variant, string> = {
   'under-development':
     'This feature is under development and should be used for demo purposes only.',
-  'coming-soon': 'This feature will bee available soon.'
+  'coming-soon': 'This feature will be available soon.'
 }
 
 export const COLOR: Record<Variant, DefaultMantineColor> = {

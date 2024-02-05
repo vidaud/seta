@@ -47,6 +47,7 @@ export type AdvancedFiltersContract = {
   collection?: string[]
   reference?: string[]
   taxonomy_path?: string[]
+  annotation?: string[]
   other?: OtherType[]
 }
 

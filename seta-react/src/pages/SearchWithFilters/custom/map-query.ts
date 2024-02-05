@@ -1,3 +1,5 @@
+import type { Label } from '~/types/filters/label'
+
 import type { AdvancedFiltersContract } from '../types/contracts'
 import type { RangeValue, SelectionKeys } from '../types/filters'
 import { TextChunkValues } from '../types/filters'
@@ -59,11 +61,12 @@ const mapSelectedDataSources = (
   return { dsIds, cIds, rIds }
 }
 
-type Props = {
+type Args = {
   searchType: TextChunkValues
   yearsRange?: RangeValue
   selectedResources?: SelectionKeys | null
   selectedTaxonomies?: SelectionKeys | null
+  selectedLabels?: Label[]
   otherItems?: OtherItem[]
 }
 
@@ -72,8 +75,9 @@ export const buildFiltersContract = ({
   yearsRange,
   selectedResources,
   selectedTaxonomies,
+  selectedLabels,
   otherItems
-}: Props): AdvancedFiltersContract => {
+}: Args): AdvancedFiltersContract => {
   const contract: AdvancedFiltersContract = {
     search_type: mapSearchTypeToQuery(searchType)
   }
@@ -90,6 +94,10 @@ export const buildFiltersContract = ({
         contract.taxonomy_path.push(tKey)
       }
     }
+  }
+
+  if (selectedLabels) {
+    contract.annotation = selectedLabels.map(l => l.name)
   }
 
   if (selectedResources) {
