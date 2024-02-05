@@ -16,14 +16,15 @@ from .ns import annotations_ns
 
 
 @annotations_ns.route(
-    "/<string:label>",
+    "/<string:category>/<string:label>",
     endpoint="admin_annotation",
     methods=["GET", "PUT", "DELETE"],
 )
+@annotations_ns.param("category", "Annotation category")
 @annotations_ns.param("label", "Annotation label")
 @annotations_ns.response(int(HTTPStatus.BAD_REQUEST), "", dto.response_dto.error_model)
 class AnnotationResource(Resource):
-    """Handles HTTP requests to URL: /admin/annotations/{label}."""
+    """Handles HTTP requests to URL: /admin/annotations/{category}/{label}."""
 
     @inject
     def __init__(
@@ -40,7 +41,7 @@ class AnnotationResource(Resource):
         super().__init__(api, *args, **kwargs)
 
     @annotations_ns.doc(
-        description="Get annotation by label",
+        description="Get annotation by category and label.",
         responses={
             int(HTTPStatus.OK): "Retrieved annotation.",
             int(HTTPStatus.NOT_FOUND): "Annotation not found.",
@@ -55,7 +56,7 @@ class AnnotationResource(Resource):
     )
     @annotations_ns.marshal_with(dto.annotation_model, mask="*", skip_none=True)
     @jwt_required()
-    def get(self, label: str):
+    def get(self, category: str, label: str):
         """
         Retrieve annotation, available to sysadmin
 
@@ -70,7 +71,7 @@ class AnnotationResource(Resource):
         if not user_logic.is_admin(user):
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
 
-        annotation = self.annotations_broker.get_by_label(label)
+        annotation = self.annotations_broker.get(category=category, label=label)
 
         if annotation is None:
             abort(HTTPStatus.NOT_FOUND, message="Annotation not found.")
@@ -92,7 +93,7 @@ class AnnotationResource(Resource):
     )
     @annotations_ns.expect(dto.update_annotation_model)
     @jwt_required()
-    def put(self, label: str):
+    def put(self, category: str, label: str):
         """
         Updates an annotation, available to sysadmin
 
@@ -106,12 +107,13 @@ class AnnotationResource(Resource):
         if not user_logic.is_admin(user):
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
 
-        annotation = self.annotations_broker.get_by_label(label)
+        annotation = self.annotations_broker.get(category=category, label=label)
         if annotation is None:
             abort(HTTPStatus.NOT_FOUND, message="Annotation not found.")
 
         try:
             payload = annotations_ns.payload
+            payload["category"] = category
             payload["label"] = label
 
             update_annotation = annotations_logic.build_update_annotation(
@@ -139,9 +141,9 @@ class AnnotationResource(Resource):
         security="CSRF",
     )
     @jwt_required()
-    def delete(self, label: str):
+    def delete(self, category: str, label: str):
         """
-        Delete annotation, available to sysadmin
+        Deletes annotation, available to sysadmin
 
         Permissions: "Administrator" role
         """
@@ -153,9 +155,9 @@ class AnnotationResource(Resource):
         if not user_logic.is_admin(user):
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
 
-        if not self.annotations_broker.label_exists(label):
+        if not self.annotations_broker.exists(category=category, label=label):
             abort(HTTPStatus.NOT_FOUND, message="Annotation not found.")
 
-        self.annotations_broker.delete(label)
+        self.annotations_broker.delete(category=category, label=label)
 
         return jsonify(status="success", message="Annotation deleted.")

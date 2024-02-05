@@ -10,6 +10,7 @@ disable=
     missing-module-docstring,
     missing-class-docstring,
     import-error,
+    no-name-in-module,
 
 [FORMAT]
 

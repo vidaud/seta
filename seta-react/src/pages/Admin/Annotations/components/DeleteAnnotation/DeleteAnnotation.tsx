@@ -21,7 +21,7 @@ const useStyles = createStyles(theme => ({
 const DeleteAnnotation = ({ annotation }) => {
   const { classes, cx } = useStyles()
   const [opened, setOpened] = useState(false)
-  const setDeleteAnnotationMutation = useDeleteAnnotation(annotation?.label)
+  const setDeleteAnnotationMutation = useDeleteAnnotation(annotation?.category, annotation?.label)
 
   const deleteAnnotation = () => {
     setDeleteAnnotationMutation.mutate(annotation?.label, {

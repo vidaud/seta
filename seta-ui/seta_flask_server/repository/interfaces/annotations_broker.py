@@ -13,12 +13,12 @@ class IAnnotationsBroker(Interface):
 
         pass
 
-    def delete(self, label: str) -> None:
-        """Deletes an annotation by label."""
+    def delete(self, category: str, label: str) -> None:
+        """Deletes an annotation by category & label."""
         pass
 
-    def get_by_label(self, label: str) -> AnnotationModel:
-        """Retrieves annotation by label."""
+    def get(self, category: str, label: str) -> AnnotationModel:
+        """Retrieves an annotation."""
 
         pass
 
@@ -27,8 +27,8 @@ class IAnnotationsBroker(Interface):
 
         pass
 
-    def label_exists(self, label: str) -> bool:
-        """Checks existing label."""
+    def exists(self, category: str, label: str) -> bool:
+        """Checks existing annotation."""
 
         pass
 
