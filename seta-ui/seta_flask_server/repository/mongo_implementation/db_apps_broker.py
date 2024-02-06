@@ -174,15 +174,6 @@ class AppsBroker(implements(IAppsBroker)):
         user_id = app.user_id
 
         with self.db.client.start_session(causal_consistency=True) as session:
-            # delete application scopes
-            self.collection.delete_many(
-                {
-                    "user_id": user_id,
-                    "resource_scope": {"$exists": True},
-                },
-                session=session,
-            )
-
             # delete rsa key
             self.collection.delete_one(
                 {"user_id": user_id, "rsa_value": {"$exists": True}}, session=session

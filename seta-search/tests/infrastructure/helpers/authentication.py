@@ -1,10 +1,11 @@
-from Crypto.Hash import SHA256
-from Crypto.PublicKey import RSA
-from Crypto.Signature import pkcs1_15
 import random
 import string
 from typing import Tuple
 import requests
+
+from Crypto.Hash import SHA256
+from Crypto.PublicKey import RSA
+from Crypto.Signature import pkcs1_15
 
 from flask import json
 
@@ -32,10 +33,12 @@ def generate_signature(private_key: str) -> Tuple[str, str]:
 def login_user(
     auth_url: str, user_id: str, user_key_pairs: dict, provider: str = "ECAS"
 ):
+    """Gets authorization token for a user."""
+
     private_key = get_private_key(user_id, user_key_pairs)
 
     if not private_key:
-        raise Exception(f"{user_id} not found in the test rsa pairs!")
+        raise ValueError(f"{user_id} not found in the test rsa pairs!")
 
     message, signature = generate_signature(private_key)
 
@@ -48,5 +51,5 @@ def login_user(
 
     data = json.dumps(payload)
     return requests.post(
-        auth_url, data=data, headers={"Content-Type": "application/json"}
+        auth_url, data=data, headers={"Content-Type": "application/json"}, timeout=30
     )

@@ -1,3 +1,6 @@
+from datetime import datetime
+import pytz
+
 from pydantic import ValidationError
 from flask import current_app
 
@@ -13,6 +16,7 @@ def build_new_annotation(payload: dict) -> models.AnnotationModel:
 
     try:
         annotation = models.AnnotationModel(**payload)
+        annotation.created_at = datetime.now(tz=pytz.utc)
     except ValidationError as e:
         has_errors = True
         current_app.logger.debug(e)

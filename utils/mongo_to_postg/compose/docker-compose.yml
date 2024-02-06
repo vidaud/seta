@@ -1,0 +1,52 @@
+version: "3.8"
+name: mongo-to-postgres
+
+services:
+  mongo-export:
+    container_name: mongo-export
+    restart: "no"
+    build:
+      context: ../mongo
+      args:
+        - HTTP_PROXY=${HTTP_PROXY}
+        - HTTPS_PROXY=${HTTPS_PROXY}
+    ports:
+      - "27017:27017"
+    environment:
+      - NO_PROXY=${NO_PROXY}
+      - no_proxy=${NO_PROXY}
+    networks:
+      - seta-network
+    volumes:
+      - seta-compose_seta-mongo:/data/db
+
+  postgres-import:
+    container_name: postgres-import
+    build:
+      context: ../postgres_import
+      args:
+        - HTTP_PROXY=${HTTP_PROXY}
+        - HTTPS_PROXY=${HTTPS_PROXY}
+    environment:
+      - NO_PROXY=${NO_PROXY}
+      - no_proxy=${NO_PROXY}
+      - DB_NAME
+      - MONGODB_HOST
+      - MONGODB_PORT
+      - POSTGRES_HOST
+      - POSTGRES_PORT
+      - POSTGRES_USER
+      - POSTGRES_PASSWORD
+    depends_on:
+      - mongo-export
+    networks:
+      - seta-network
+
+networks:
+  seta-network:
+    external: true
+
+
+volumes:
+  seta-compose_seta-mongo:
+    external: true

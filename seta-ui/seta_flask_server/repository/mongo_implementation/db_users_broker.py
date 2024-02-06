@@ -1,4 +1,5 @@
 # pylint: disable=missing-function-docstring
+from calendar import c
 from datetime import datetime
 import pytz
 
@@ -63,7 +64,7 @@ class UsersBroker(implements(IUsersBroker)):
                 )
 
                 seta_user.authenticated_provider = auth_provider
-                self.collection.insert_one(auth_provider.to_json())
+                self.provider_broker.create(auth_provider)
         else:
             seta_user = self._create_new_user(auth_user)
 
@@ -174,6 +175,7 @@ class UsersBroker(implements(IUsersBroker)):
             self.collection.insert_one(user.to_json(), session=session)
 
             # insert provider records
+            user.authenticated_provider.user_id = user.user_id
             self.collection.insert_one(
                 user.authenticated_provider.to_json(), session=session
             )
@@ -181,11 +183,14 @@ class UsersBroker(implements(IUsersBroker)):
             # insert claims
             if user.claims:
                 for claim in user.claims:
+                    claim.user_id = user.user_id
                     self.collection.insert_one(claim.to_json(), session=session)
 
             # insert default system scopes
             if user.system_scopes:
-                self.collection.insert_many(user.system_scopes, session=session)
+                for scope in user.system_scopes:
+                    scope.user_id = user.user_id
+                    self.collection.insert_one(scope.to_json(), session=session)
 
         return user
 

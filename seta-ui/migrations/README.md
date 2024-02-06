@@ -1,17 +1,24 @@
-## Mongo Migrations
+In seta-ui container run the commands bellow for generating new migrations and apply script to database:
 
-### Documentation: 
+New migration:
 
-[mongodb-migrations](https://github.com/DoubleCiti/mongodb-migrations)
-
-### Command
-
-Run in the terminal of the ***seta-ui*** docker container:
 ```
-MONGODB_MIGRATIONS_CONFIG=migrations/config.ini mongodb-migrate
+flask --app app_ui/app db migrate -m "init"
 ```
 
-For Downgrading the migrations to a specific migration in the past, you need to pass a command line switch --downgrade --to_datetime <datetime>:
+Apply changes:
+
 ```
-MONGODB_MIGRATIONS_CONFIG=migrations/config.ini mongodb-migrate --downgrade --to_datetime 20241030000000
+flask --app app_ui/app db upgrade
+```
+
+Downgrade:
+
+```
+flask --app app_ui/app db downgrade <revision>
+```
+
+Creates an an empty revision script:
+```
+flask --app app_ui/app db revision
 ```

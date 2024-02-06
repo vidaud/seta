@@ -1,12 +1,14 @@
 # pylint: disable=W0621, C0301
-"""Seta-ui testing with pytest.
+"""Seta-NLP testing with pytest.
 
 Usage:
 
     For testing in docker run: 
-    pytest -s tests/ --db_host=seta-mongo-test --db_port=27017 --db_name=seta-test --auth_root=seta-auth-test:8082 --nlp_root=seta-nlp-test:8000
+    pytest -s tests/ --settings=LOCAL
 """
 import os
+import configparser
+from pathlib import Path
 import logging
 import logging.config
 import pytest
@@ -16,7 +18,8 @@ from fastapi.testclient import TestClient
 from nlp import configuration
 from nlp.factory import create_fastapi_app
 
-from tests.infrastructure.init.mongodb import DbTestSetaApi, load_users_data
+from tests.infrastructure.init.postgresql import PostgDbTest, PostgDBConnection
+from tests.infrastructure.helpers.users_data import load_users_data
 from tests.infrastructure.helpers.util import generate_rsa_pair
 
 
@@ -24,72 +27,68 @@ def pytest_addoption(parser):
     """Command line options."""
 
     parser.addoption(
-        "--db_host", action="store", default="localhost", help="database host server"
-    )
-    parser.addoption("--db_port", action="store", default="27018", help="database port")
-    parser.addoption(
-        "--db_name", action="store", default="seta-test", help="database name"
-    )
-    parser.addoption(
-        "--auth_root", action="store", default="localhost:8080", help="seta-auth url"
-    )
-    parser.addoption(
-        "--nlp_root", action="store", default="localhost:8080", help="seta-nlp url"
+        "--settings",
+        action="store",
+        default="LOCAL",
+        help="Section name from 'test.conf' file. LOCAL, REMOTE",
     )
 
 
 @pytest.fixture(scope="session")
-def db_host(request):
-    """Database host."""
-    return request.config.getoption("--db_host")
+def settings(request):
+    """Settings from command line."""
+
+    return request.config.getoption("--settings")
+
+
+@pytest.fixture(scope="session", autouse=True)
+def init_os(settings):
+    """Initialize environment variables for config."""
+
+    base_path = Path(__file__).parent
+    conf_path = (base_path / "test.conf").resolve()
+
+    config = configparser.ConfigParser()
+    config.read(conf_path)
+    config_section = config[settings]
+
+    os.environ["STAGE"] = "Test"
+
+    os.environ["DB_HOST"] = config_section["DB_HOST"]
+    os.environ["DB_NAME"] = config_section["DB_NAME"]
+    os.environ["DB_PORT"] = config_section["DB_PORT"]
+
+    os.environ["DB_USER"] = config_section["DB_USER"]
+    os.environ["DB_PASSWORD"] = config_section["DB_PASSWORD"]
+
+    os.environ["AUTH_ROOT"] = config_section["AUTH_ROOT"]
+    os.environ["NLP_ROOT"] = config_section["NLP_ROOT"]
+
+    return True
 
 
 @pytest.fixture(scope="session")
-def db_port(request):
-    """Database port."""
-    return request.config.getoption("--db_port")
-
-
-@pytest.fixture(scope="session")
-def db_name(request):
-    """Database name."""
-    return request.config.getoption("--db_name")
-
-
-@pytest.fixture(scope="session")
-def authorization_url(request):
+def authorization_url():
     """Authorization URL."""
 
-    auth_root = request.config.getoption("--auth_root")
+    auth_root = os.environ["AUTH_ROOT"]
     return f"http://{auth_root}/authorization/v1/token_info"
 
 
 @pytest.fixture(scope="session")
-def authentication_url(request):
+def authentication_url():
     """Authentication URL."""
 
-    auth_root = request.config.getoption("--auth_root")
+    auth_root = os.environ["AUTH_ROOT"]
     return f"http://{auth_root}/authentication/v1/token"
 
 
 @pytest.fixture(scope="session")
-def nlp_url(request):
+def nlp_url():
     """Root of seta-nlp web service."""
 
-    nlp_root = request.config.getoption("--nlp_root")
+    nlp_root = os.environ["NLP_ROOT"]
     return f"http://{nlp_root}/seta-nlp"
-
-
-@pytest.fixture(scope="session", autouse=True)
-def init_os(db_host, db_port, db_name):
-    """Initialize environment variables for config."""
-
-    os.environ["STAGE"] = "Test"
-    os.environ["DB_HOST"] = db_host
-    os.environ["DB_NAME"] = db_name
-    os.environ["DB_PORT"] = db_port
-
-    return True
 
 
 @pytest.fixture(scope="session")
@@ -106,26 +105,8 @@ def user_key_pairs():
     yield user_key_pairs
 
 
-@pytest.fixture(scope="module", autouse=True)
-def db(db_host, db_port, db_name, user_key_pairs):
-    """Initialize test database."""
-
-    db = DbTestSetaApi(
-        db_host=db_host,
-        db_port=int(db_port),
-        db_name=db_name,
-        user_key_pairs=user_key_pairs,
-    )
-    db.clear_db()
-    db.init_db()
-
-    yield db
-
-    db.clear_db()
-
-
-@pytest.fixture(scope="module")
-def app(authorization_url):
+@pytest.fixture(scope="session")
+def app(authorization_url, user_key_pairs):
     """Initialize test application."""
 
     current_dir = os.path.dirname(__file__)
@@ -141,7 +122,23 @@ def app(authorization_url):
 
     app = create_fastapi_app()
 
+    db_test = PostgDbTest(
+        db_connection=PostgDBConnection(
+            db_host=os.environ["DB_HOST"],
+            db_port=int(os.environ["DB_PORT"]),
+            db_name=os.environ["DB_NAME"],
+            db_user=os.environ["DB_USER"],
+            db_pass=os.environ["DB_PASSWORD"],
+        ),
+        user_key_pairs=user_key_pairs,
+    )
+
+    db_test.clear_db()
+    db_test.init_db()
+
     yield app
+
+    db_test.clear_db()
 
 
 @pytest.fixture(scope="module")

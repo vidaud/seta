@@ -1,4 +1,5 @@
 """flask server configuration."""
+
 import os
 import configparser
 
@@ -13,6 +14,11 @@ class Config:
     def MONGO_URI(self):  # pylint: disable=invalid-name
         """Mongo connection URI"""
         return f"mongodb://{Config.DB_HOST}:{Config.DB_PORT}/{Config.DB_NAME}"
+
+    @property
+    def SQLALCHEMY_DATABASE_URI(self):  # pylint: disable=invalid-name
+        """Postgresql connection URI"""
+        return f"postgresql://{Config.DB_USER}:{Config.DB_PASSWORD}@{Config.DB_HOST}:{Config.DB_PORT}/{Config.DB_NAME}"
 
     def __init__(self, section_name: str) -> None:
         config = configparser.ConfigParser()
@@ -138,11 +144,14 @@ class Config:
         # read database env variables
         Config.DB_HOST = os.environ.get("DB_HOST")
         Config.DB_NAME = os.environ.get("DB_NAME")
-        Config.DB_PORT = 27017
+        Config.DB_PORT = 5432
 
         port = os.environ.get("DB_PORT")
         if port:
             Config.DB_PORT = int(port)
+
+        Config.DB_USER = os.environ.get("DB_USER")
+        Config.DB_PASSWORD = os.environ.get("DB_PASSWORD")
 
         # ============Flask-GitHub Configuration========#
         # https://github-flask.readthedocs.io/en/latest/

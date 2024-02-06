@@ -1,4 +1,5 @@
 """seta-search web server configuration."""
+
 import configparser
 import os
 
@@ -8,10 +9,6 @@ class Config:
 
     CONFIG_APP_FILE = "/etc/seta/search.conf"
     CONFIG_LOGS_FILE = "/etc/seta/logs.conf"
-
-    @property
-    def MONGO_URI(self):
-        return f"mongodb://{Config.DB_HOST}:{Config.DB_PORT}/{Config.DB_NAME}"
 
     def __init__(self, section_name: str) -> None:
         config = configparser.ConfigParser()
@@ -152,10 +149,3 @@ class Config:
         # ===== Read environment variables ======#
 
         Config.ES_HOST = os.environ.get("ES_HOST")
-        Config.DB_HOST = os.environ.get("DB_HOST")
-        Config.DB_NAME = os.environ.get("DB_NAME")
-        Config.DB_PORT = 27017
-
-        port = os.environ.get("DB_PORT")
-        if port:
-            Config.DB_PORT = int(port)

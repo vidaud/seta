@@ -19,9 +19,6 @@ class LogSetup:
 
         log_type = app.config.get("LOG_TYPE", "stream")
         logging_level = app.config.get("LOG_LEVEL", "DEBUG")
-        db_host = app.config.get("DB_HOST")
-        db_port = app.config.get("DB_PORT")
-
         if log_type != "stream":
             try:
                 log_directory = app.config["LOG_DIR"]
@@ -30,6 +27,7 @@ class LogSetup:
                 scheduler_log_file = app.config["SCHEDULER_LOG_NAME"]
             except KeyError as e:
                 exit(code=f"{e} is a required parameter for log_type '{log_type}'")
+
             app_log = "/".join([log_directory, app_log_file_name])
             www_log = "/".join([log_directory, access_log_file_name])
             scheduler_log = "/".join([log_directory, scheduler_log_file])
@@ -73,13 +71,6 @@ class LogSetup:
             }
         }
 
-        if not app.testing:
-            std_logger["loggers"]["mongo"] = {
-                "level": logging_level,
-                "handlers": ["default", "mongo_logs"],
-                "propagate": False,
-            }
-
         if log_type == "stream":
             logging_handler = {
                 "handlers": {
@@ -100,18 +91,6 @@ class LogSetup:
                     },
                 }
             }
-
-            if not app.testing:
-                logging_handler["handlers"]["mongo_logs"] = {
-                    "level": logging_level,
-                    "class": "log4mongo.handlers.MongoHandler",
-                    "host": db_host,
-                    "port": db_port,
-                    "database_name": "seta-logs",
-                    "collection": "logs",
-                    "reuse": False,
-                    "connect": False,
-                }
 
         elif log_type == "watched":
             logging_handler = {
@@ -139,18 +118,6 @@ class LogSetup:
                     },
                 }
             }
-
-            if not app.testing:
-                logging_handler["handlers"]["mongo_logs"] = {
-                    "level": logging_level,
-                    "class": "log4mongo.handlers.BufferedMongoHandler",
-                    "host": db_host,
-                    "port": db_port,
-                    "database_name": "seta-logs",
-                    "collection": "logs",
-                    "reuse": False,
-                    "connect": False,
-                }
 
         else:
             logging_handler = {
@@ -184,20 +151,6 @@ class LogSetup:
                     },
                 }
             }
-
-            if not app.testing:
-                logging_handler["handlers"]["mongo_logs"] = {
-                    "level": logging_level,
-                    "class": "log4mongo.handlers.BufferedMongoHandler",
-                    "host": db_host,
-                    "port": db_port,
-                    "database_name": "seta-logs",
-                    "collection": "logs",
-                    "capped": True,
-                    "capped_size": 1000000,
-                    "reuse": False,
-                    "connect": False,
-                }
 
         log_config = {
             "version": 1,

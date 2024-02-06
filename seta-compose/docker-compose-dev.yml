@@ -1,13 +1,13 @@
 services:
-  seta-mongo:
-    container_name: mongo
+  seta-postgres:
+    container_name: postgres
     extends:
       file: common.yml
-      service: mongo
+      service: postgres
     volumes:
-      - seta-mongo:/data/db
+      - postgres-data:/var/lib/postgresql/data
     ports:
-      - "27017:27017"
+      - "5432:5432"
     networks:
       - seta-network
 
@@ -93,8 +93,8 @@ services:
       - ../seta-config:/etc/seta
     depends_on:
       - "seta-auth"
-      - "seta-mongo"
       - "seta-admin"
+      - "seta-postgres"
     networks:
       - seta-network
 
@@ -153,7 +153,7 @@ services:
       - ../seta-ui:/home/seta
       - ../seta-config:/etc/seta
     depends_on:
-      - "seta-mongo"
+      - "seta-postgres"
     networks:
       - seta-network
 
@@ -183,6 +183,6 @@ networks:
     driver: bridge
 
 volumes:
-  seta-mongo:
   seta-models3:
   opensearch-data:
+  postgres-data:

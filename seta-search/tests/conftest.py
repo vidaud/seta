@@ -4,111 +4,84 @@
 Usage:
 
     For testing in docker run: 
-    pytest -s tests/ --es_host="seta-opensearch-test:9200" --db_host=seta-mongo-test --db_port=27017 --db_name=seta-test 
-                    --admin_root=seta-amin-test:8080 --auth_root=seta-auth-test:8082 --nlp_root=seta-nlp-test:8000
+    pytest -s tests/ --settings=LOCAL
 """
 
 import os
+import configparser
+from pathlib import Path
 import pytest
 
 from search.config import Config
 from search.factory import create_app
 
-from tests.infrastructure.init.mongodb import DbTestSetaApi, load_users_data
+from tests.infrastructure.init.postgresql import PostgDbTest, PostgDBConnection
 from tests.infrastructure.init.es import SetaES
 from tests.infrastructure.helpers.util import generate_rsa_pair
+from tests.infrastructure.helpers.data_loader import load_users_data
 
 
 def pytest_addoption(parser):
     """Command line options."""
 
     parser.addoption(
-        "--es_host",
+        "--settings",
         action="store",
-        default="localhost:9200",
-        help="search host server",
-    )
-
-    parser.addoption(
-        "--db_host", action="store", default="localhost", help="database host server"
-    )
-    parser.addoption("--db_port", action="store", default="27018", help="database port")
-    parser.addoption(
-        "--db_name", action="store", default="seta-test", help="database name"
-    )
-    parser.addoption(
-        "--auth_root", action="store", default="localhost:8080", help="seta-auth url"
-    )
-    parser.addoption(
-        "--admin_root", action="store", default="localhost:8080", help="seta-admin url"
-    )
-    parser.addoption(
-        "--nlp_root", action="store", default="localhost:8080", help="seta-nlp url"
+        default="LOCAL",
+        help="Section name from 'test.conf' file. LOCAL, REMOTE",
     )
 
 
 @pytest.fixture(scope="session")
-def es_host(request):
-    return request.config.getoption("--es_host")
-
-
-@pytest.fixture(scope="session")
-def db_host(request):
-    return request.config.getoption("--db_host")
-
-
-@pytest.fixture(scope="session")
-def db_port(request):
-    return request.config.getoption("--db_port")
-
-
-@pytest.fixture(scope="session")
-def db_name(request):
-    return request.config.getoption("--db_name")
-
-
-@pytest.fixture(scope="session")
-def auth_root(request):
-    return request.config.getoption("--auth_root")
-
-
-@pytest.fixture(scope="session")
-def nlp_url(request):
-    """Root of seta-nlp web service."""
-
-    nlp_root = request.config.getoption("--nlp_root")
-    return f"http://{nlp_root}/seta-nlp/"
-
-
-@pytest.fixture(scope="session")
-def admin_url(request):
-    """Root of seta-admin web service."""
-    admin_root = request.config.getoption("--admin_root")
-
-    return f"http://{admin_root}/"
+def settings(request):
+    return request.config.getoption("--settings")
 
 
 @pytest.fixture(scope="session", autouse=True)
-def init_os(es_host, db_host, db_port, db_name):
-    os.environ["ES_HOST"] = es_host
-    os.environ["DB_HOST"] = db_host
-    os.environ["DB_NAME"] = db_name
-    os.environ["DB_PORT"] = db_port
+def init_os(settings):
+    """Initialize environment variables for config."""
+
+    base_path = Path(__file__).parent
+    conf_path = (base_path / "test.conf").resolve()
+
+    config = configparser.ConfigParser()
+    config.read(conf_path)
+    config_section = config[settings]
+
+    os.environ["ES_HOST"] = config_section["ES_HOST"]
+    os.environ["DB_HOST"] = config_section["DB_HOST"]
+    os.environ["DB_NAME"] = config_section["DB_NAME"]
+    os.environ["DB_PORT"] = config_section["DB_PORT"]
+
+    os.environ["DB_USER"] = config_section["DB_USER"]
+    os.environ["DB_PASSWORD"] = config_section["DB_PASSWORD"]
+
+    os.environ["AUTH_ROOT"] = config_section["AUTH_ROOT"]
+    os.environ["NLP_ROOT"] = config_section["NLP_ROOT"]
+    os.environ["ADMIN_ROOT"] = config_section["ADMIN_ROOT"]
 
     return True
 
 
-@pytest.fixture(scope="session", autouse=True)
-def es(es_host):
-    config = TestConfig(auth_root="localhost:8080", nlp_url="localhost:8080")
+@pytest.fixture(scope="session")
+def auth_root():
+    return os.environ["AUTH_ROOT"]
 
-    es = SetaES(host=es_host, index=config.INDEX_PUBLIC)
-    es.cleanup()
-    # es.init_es()
 
-    yield es
+@pytest.fixture(scope="session")
+def nlp_url():
+    """Root of seta-nlp web service."""
 
-    es.cleanup()
+    nlp_root = os.environ["NLP_ROOT"]
+    return f"http://{nlp_root}/seta-nlp/"
+
+
+@pytest.fixture(scope="session")
+def admin_url():
+    """Root of seta-admin web service."""
+    admin_root = os.environ["ADMIN_ROOT"]
+
+    return f"http://{admin_root}/"
 
 
 @pytest.fixture(scope="session")
@@ -125,32 +98,40 @@ def user_key_pairs():
     yield user_key_pairs
 
 
-@pytest.fixture(scope="session", autouse=True)
-def db(db_host, db_port, db_name, user_key_pairs):
-    db = DbTestSetaApi(
-        db_host=db_host,
-        db_port=int(db_port),
-        db_name=db_name,
-        user_key_pairs=user_key_pairs,
-    )
-
-    db.clear_db()
-    db.init_db()
-
-    yield db
-
-    db.clear_db()
-
-
-@pytest.fixture(scope="module")
-def app(auth_root, nlp_url):
+@pytest.fixture(scope="session")
+def app(auth_root, nlp_url, user_key_pairs):
     config = TestConfig(auth_root=auth_root, nlp_url=nlp_url)
 
     app = create_app(config)
     app.testing = True
 
+    db_test = PostgDbTest(
+        db_connection=PostgDBConnection(
+            db_host=config.DB_HOST,
+            db_port=config.DB_PORT,
+            db_name=config.DB_NAME,
+            db_user=config.DB_USER,
+            db_pass=config.DB_PASSWORD,
+        ),
+        user_key_pairs=user_key_pairs,
+    )
+
+    es = SetaES(host=config.ES_HOST, index=config.INDEX_PUBLIC)
+
     with app.app_context():
+
+        db_test.clear_db()
+        db_test.init_db()
+
+        es.cleanup()
+
+        # TODO: Add data to ES, init_es is failing
+        # es.init_es()
+
         yield app
+
+        db_test.clear_db()
+        es.cleanup()
 
 
 @pytest.fixture(scope="module")
@@ -177,3 +158,14 @@ class TestConfig(Config):
         )
         TestConfig.JWT_TOKEN_AUTH_URL = f"http://{auth_root}/authentication/v1/token"
         TestConfig.NLP_API_ROOT_URL = nlp_url
+
+        TestConfig.DB_HOST = os.environ.get("DB_HOST")
+        TestConfig.DB_NAME = os.environ.get("DB_NAME")
+        TestConfig.DB_PORT = 5432
+
+        port = os.environ.get("DB_PORT")
+        if port:
+            TestConfig.DB_PORT = int(port)
+
+        TestConfig.DB_USER = os.environ.get("DB_USER")
+        TestConfig.DB_PASSWORD = os.environ.get("DB_PASSWORD")

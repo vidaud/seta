@@ -3,6 +3,18 @@ from seta_flask_server.repository.models import ExternalProvider
 
 
 class IExternalProviderBroker(Interface):
+
+    def create(self, provider: ExternalProvider):
+        """Create new external provider.
+
+        Args:
+            provider: External provider to create.
+
+        Returns:
+            Created external provider.
+        """
+        pass
+
     def get_by_uid(self, provider_uid: str, provider: str) -> ExternalProvider:
         """External provider by external identifier and provider.
 

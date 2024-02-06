@@ -1,16 +1,25 @@
 """Flask seta-ui application factory"""
 
-import logging
-
 from flask import Flask, Response, request
+from sqlalchemy import text
 from werkzeug.middleware.proxy_fix import ProxyFix
 from flask_jwt_extended import get_jwt_identity
 from flask_injector import FlaskInjector
 
-from seta_flask_server.infrastructure.extensions import scheduler, jwt, logs
-from seta_flask_server.infrastructure.helpers import MongodbJSONProvider
+from seta_flask_server.infrastructure.extensions import (
+    scheduler,
+    jwt,
+    logs,
+    db,
+    migrate,
+)
 
-from seta_flask_server.dependency import MongoDbClientModule
+from seta_flask_server.postg_dependency import PostgresDbClientModule
+
+
+#! used by flask-migration
+# pylint: disable-next=wildcard-import, unused-wildcard-import
+from seta_flask_server.repository.orm_models import *
 
 
 def create_app(config_object):
@@ -23,12 +32,19 @@ def create_app(config_object):
     app.config.from_object(config_object)
 
     # use flask.json in all modules instead of python built-in json
-    app.json_provider_class = MongodbJSONProvider
+    # app.json_provider_class = MongodbJSONProvider
 
     register_extensions(app)
 
     with app.app_context():
         register_blueprints(app)
+
+        try:
+            db.session.execute(text("SELECT 1"))
+
+            app.logger.info("Database connection established.")
+        except Exception as e:
+            app.logger.error("Database connection failed: %s", e)
 
     request_endswith_ignore_list = [
         ".js",
@@ -68,26 +84,18 @@ def create_app(config_object):
         except Exception:
             pass  # suppress all exceptions
 
-        try:
-            logger_db = logging.getLogger("mongo")
-            if logger_db:
-                log_message = "seta-ui request " + request.path
-                logger_db.info(
-                    log_message,
-                    extra={
-                        "user_id": user_id,
-                        "address": request.remote_addr,
-                        "method": request.method,
-                        "path": request.full_path,
-                        "status": response.status,
-                        "content_length": response.content_length,
-                        "referrer": request.referrer,
-                        "user_agent": repr(request.user_agent),
-                    },
-                )
-        except Exception:
-            # pylint: disable-next=no-member
-            app.logger.exception("seta-ui logger db exception")
+        log_json = {
+            "user_id": user_id,
+            "address": request.remote_addr,
+            "method": request.method,
+            "path": request.full_path,
+            "status": response.status,
+            "content_length": response.content_length,
+            "referrer": request.referrer,
+            "user_agent": repr(request.user_agent),
+        }
+
+        app.logger.info(log_json)
 
         return response
 
@@ -104,7 +112,7 @@ def create_app(config_object):
 
     FlaskInjector(
         app=app,
-        modules=[MongoDbClientModule()],
+        modules=[PostgresDbClientModule()],
     )
 
     return app
@@ -133,10 +141,12 @@ def register_blueprints(app):
 def register_extensions(app: Flask):
     """Register application extensions"""
 
+    db.init_app(app)
+    migrate.init_app(app, db)
     scheduler.init_app(app)
     jwt.init_app(app)
 
     try:
         logs.init_app(app)
-    except Exception:
-        app.logger.error("logs config failed")
+    except Exception as e:
+        app.logger.error("logs config failed", e)

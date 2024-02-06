@@ -35,7 +35,7 @@ def get_data_source_permissions(
 
         if any(
             scope.data_source_id == data_source_id
-            and scope.scope == DataSourceScopeEnum.DATA_OWNER
+            and scope.scope == DataSourceScopeEnum.DATA_OWNER.value
             for scope in user_scopes
         ):
             permissions["ownership"].append(

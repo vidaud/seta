@@ -11,6 +11,6 @@ class DataSourceScopeEnum(str, Enum):
 class DataSourceScopeModel(BaseModel):
     data_source_id: str
     user_id: str
-    scope: DataSourceScopeEnum
+    scope: str
 
     user: UserInfo | None = Field(default=None, exclude=True)

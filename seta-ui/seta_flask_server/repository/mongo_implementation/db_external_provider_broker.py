@@ -13,6 +13,9 @@ class ExternalProviderBroker(implements(IExternalProviderBroker)):
         self.db = config.get_db()
         self.collection = self.db["users"]
 
+    def create(self, provider: ExternalProvider):
+        self.collection.insert_one(provider.to_json())
+
     def get_by_uid(self, provider_uid: str, provider: str) -> ExternalProvider:
         provider = self.collection.find_one(
             {"provider_uid": provider_uid, "provider": provider}

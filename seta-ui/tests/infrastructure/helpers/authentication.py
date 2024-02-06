@@ -1,4 +1,3 @@
-# pylint: disable=missing-function-docstring
 import random
 import string
 from typing import Tuple
@@ -35,6 +34,8 @@ def generate_signature(private_key: str) -> Tuple[str, str]:
 def login_user(
     auth_url: str, user_id: str, user_key_pairs: dict, provider: str = "ECAS"
 ):
+    """Gets authorization token for a user."""
+
     private_key = get_private_key(user_id, user_key_pairs)
 
     if not private_key:
@@ -56,4 +57,6 @@ def login_user(
 
 
 def logout_user(client: FlaskClient, access_token: str):
+    """Logs out a user."""
+
     return client.post("/logout", headers={"Authorization": f"Bearer {access_token}"})

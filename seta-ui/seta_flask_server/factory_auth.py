@@ -9,12 +9,11 @@ from werkzeug.middleware.proxy_fix import ProxyFix
 from flask_injector import FlaskInjector
 
 from seta_flask_server.infrastructure.clients.cas_client import SetaCasClient
-from seta_flask_server.infrastructure.extensions import jwt, logs, github
+from seta_flask_server.infrastructure.extensions import jwt, logs, github, db
 
-from seta_flask_server.infrastructure.helpers import MongodbJSONProvider
 from seta_flask_server.infrastructure.constants import ExternalProviderConstants
 
-from seta_flask_server.dependency import MongoDbClientModule
+from seta_flask_server.postg_dependency import PostgresDbClientModule
 from seta_flask_server.repository.interfaces import ISessionsBroker
 
 
@@ -27,9 +26,6 @@ def create_app(config_object):
 
     app.config.from_object(config_object)
     app.home_route = app.config.get("HOME_ROUTE")
-
-    # use flask.json in all modules instead of python built-in json
-    app.json_provider_class = MongodbJSONProvider
 
     register_extensions(app)
 
@@ -57,7 +53,7 @@ def create_app(config_object):
 
     app_injector = FlaskInjector(
         app=app,
-        modules=[MongoDbClientModule()],
+        modules=[PostgresDbClientModule()],
     )
 
     return app
@@ -94,6 +90,7 @@ def register_blueprints(app: Flask):
 def register_extensions(app: Flask):
     """Register application extensions"""
 
+    db.init_app(app)
     github.init_app(app)
     jwt.init_app(app)
 
