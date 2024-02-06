@@ -31,11 +31,11 @@ def create_annotation(client: FlaskClient, access_token: str, payload: dict):
 
 
 def update_annotation(
-    client: FlaskClient, access_token: str, label: str, payload: dict
+    client: FlaskClient, access_token: str, category: str, label: str, payload: dict
 ):
     """Client for updating annotation."""
 
-    url = API_V1 + "/" + label
+    url = f"{API_V1}/{category}/{label}"
 
     data = json.dumps(payload)
     return client.put(
@@ -46,10 +46,12 @@ def update_annotation(
     )
 
 
-def delete_annotation(client: FlaskClient, access_token: str, label: str):
+def delete_annotation(
+    client: FlaskClient, access_token: str, category: str, label: str
+):
     """Client for deleting annotation."""
 
-    url = API_V1 + "/" + label
+    url = f"{API_V1}/{category}/{label}"
 
     return client.delete(
         url, content_type="application/json", headers=auth_headers(access_token)

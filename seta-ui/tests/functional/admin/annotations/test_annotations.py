@@ -73,8 +73,9 @@ def test_update_annotation(
     response = api.update_annotation(
         client=client,
         access_token=access_token,
+        category="test",
         label="test",
-        payload={"color": "#ccc", "category": "test1"},
+        payload={"color": "#ccc"},
     )
     assert response.status_code == HTTPStatus.OK
     assert response.json["status"] == "success"
@@ -93,7 +94,7 @@ def test_delete_annotation(
     access_token = get_access_token(response)
 
     response = api.delete_annotation(
-        client=client, access_token=access_token, label="test"
+        client=client, access_token=access_token, category="test", label="test"
     )
     assert response.status_code == HTTPStatus.OK
     assert response.json["status"] == "success"

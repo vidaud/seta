@@ -68,7 +68,7 @@ class AnnotationsResource(Resource):
         responses={
             int(HTTPStatus.CREATED): "Created annotation.",
             int(HTTPStatus.BAD_REQUEST): "Errors in request payload",
-            int(HTTPStatus.CONFLICT): "Label already exists.",
+            int(HTTPStatus.CONFLICT): "Annotation already exists.",
             int(HTTPStatus.FORBIDDEN): "Insufficient rights",
         },
         security="CSRF",
@@ -95,10 +95,14 @@ class AnnotationsResource(Resource):
             abort(HTTPStatus.FORBIDDEN, "Insufficient rights.")
 
         payload = annotations_ns.payload
-        if "label" in payload.keys() and self.annotations_broker.label_exists(
-            payload["label"]
+        if (
+            "label" in payload.keys()
+            and "category" in payload.keys()
+            and self.annotations_broker.exists(
+                category=payload["category"], label=payload["label"]
+            )
         ):
-            abort(HTTPStatus.CONFLICT, "Label already exists")
+            abort(HTTPStatus.CONFLICT, "Annotation already exists")
 
         try:
             annotation = annotations_logic.build_new_annotation(payload=payload)

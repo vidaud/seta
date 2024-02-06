@@ -15,7 +15,7 @@ class AnnotationsBroker(implements(IAnnotationsBroker)):
         self.collection = self.db["annotations"]
 
     def create(self, model: AnnotationModel) -> None:
-        if not self.label_exists(model.label):
+        if not self.exists(category=model.category, label=model.label):
             model.created_at = datetime.now(tz=pytz.utc)
 
             self.collection.insert_one(model.model_dump())
@@ -23,14 +23,16 @@ class AnnotationsBroker(implements(IAnnotationsBroker)):
     def update(self, model: AnnotationModel) -> None:
         model.modified_at = datetime.now(tz=pytz.utc)
 
-        json = model.model_dump(exclude={"label", "created_at"})
-        self.collection.update_one({"label": model.label}, {"$set": json})
+        json = model.model_dump(exclude={"category", "label", "created_at"})
+        self.collection.update_one(
+            _find_annotation_query(model.category, model.label), {"$set": json}
+        )
 
-    def delete(self, label: str) -> None:
-        self.collection.delete_one({"label": label})
+    def delete(self, category: str, label: str) -> None:
+        self.collection.delete_one(_find_annotation_query(category, label))
 
-    def get_by_label(self, label: str) -> AnnotationModel:
-        annotation = self.collection.find_one({"label": label})
+    def get(self, category: str, label: str) -> AnnotationModel:
+        annotation = self.collection.find_one(_find_annotation_query(category, label))
 
         if annotation is not None:
             return _annotation_from_db_json(annotation)
@@ -41,8 +43,10 @@ class AnnotationsBroker(implements(IAnnotationsBroker)):
         annotations = self.collection.find()
         return [_annotation_from_db_json(a) for a in annotations]
 
-    def label_exists(self, label: str) -> bool:
-        exists_count = self.collection.count_documents({"label": label})
+    def exists(self, category: str, label: str) -> bool:
+        exists_count = self.collection.count_documents(
+            _find_annotation_query(category, label)
+        )
         return exists_count > 0
 
     def get_categories(self) -> list[str]:
@@ -74,3 +78,10 @@ def _annotation_from_db_json(json_dict: dict) -> AnnotationModel:
     )
 
     return annotation
+
+
+def _find_annotation_query(category: str, label: str) -> dict:
+    return {
+        "category": {"$regex": f"^{category}$", "$options": "i"},
+        "label": {"$regex": f"^{label}$", "$options": "i"},
+    }
