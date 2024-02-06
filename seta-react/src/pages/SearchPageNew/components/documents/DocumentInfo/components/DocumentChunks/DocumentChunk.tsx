@@ -1,28 +1,55 @@
-import { forwardRef, type ReactNode } from 'react'
+import { forwardRef } from 'react'
 import { Tooltip } from '@mantine/core'
+
+import AnnotatedText from '~/components/AnnotatedText'
+import { KEYWORD_SELECTED_ID } from '~/pages/SearchPageNew/components/AnnotationsPreview/AnnotationsPreview'
+
+import { useHighlightWords } from '~/hooks/use-highlight'
+import type { Chunk } from '~/types/search/documents'
 
 import * as S from './styles'
 
 type Props = {
+  chunk: Chunk
+  selectedAnnotationId?: string
   isCurrent?: boolean
-  chunkNumber: number
-  children: ReactNode
+  queryTerms?: string[]
 }
 
 const DocumentChunk = forwardRef<HTMLDivElement, Props>(
-  ({ isCurrent, chunkNumber, children }, ref) => (
-    <div ref={ref} css={S.chunkRoot}>
-      {isCurrent && (
-        <Tooltip label="Current chunk" position="right">
-          <div css={S.currentChunkMarker} />
-        </Tooltip>
-      )}
+  ({ chunk, selectedAnnotationId, isCurrent, queryTerms }, ref) => {
+    const { chunk_number: chunkNumber, chunk_text: chunkText, other } = chunk
 
-      <div css={S.chunkNumber}>- {chunkNumber} -</div>
+    const annotations = other?.annotation_position
 
-      {children}
-    </div>
-  )
+    const chunkTextHl = useHighlightWords(queryTerms, chunkText ?? '')
+
+    const content =
+      selectedAnnotationId === KEYWORD_SELECTED_ID ? (
+        <div css={S.chunk}>{chunkTextHl}</div>
+      ) : (
+        <AnnotatedText
+          css={S.chunk}
+          text={chunkText}
+          annotations={annotations}
+          visibleAnnotationId={selectedAnnotationId}
+        />
+      )
+
+    return (
+      <div ref={ref} css={S.chunkRoot}>
+        {isCurrent && (
+          <Tooltip label="Current chunk" position="right">
+            <div css={S.currentChunkMarker} />
+          </Tooltip>
+        )}
+
+        <div css={S.chunkNumber}>- {chunkNumber} -</div>
+
+        {content}
+      </div>
+    )
+  }
 )
 
 export default DocumentChunk

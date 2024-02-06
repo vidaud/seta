@@ -6,7 +6,7 @@ import ClearButton from '~/components/ClearButton'
 import { useHighlightStart } from '~/hooks/use-highlight'
 import useKeyboardAction from '~/hooks/use-spacebar-action'
 import type { ClassNameProp } from '~/types/children-props'
-import type { Label } from '~/types/filters/label'
+import type { Label } from '~/types/search/annotations'
 
 import * as S from './styles'
 

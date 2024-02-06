@@ -1,4 +1,4 @@
-import type { Label } from '~/types/filters/label'
+import type { Label } from '~/types/search/annotations'
 
 import type { AdvancedFiltersContract } from '../types/contracts'
 import type { RangeValue, SelectionKeys } from '../types/filters'
@@ -97,7 +97,7 @@ export const buildFiltersContract = ({
   }
 
   if (selectedLabels) {
-    contract.annotation = selectedLabels.map(l => l.name)
+    contract.annotation = selectedLabels.map(({ category, name }) => `${category}:${name}`)
   }
 
   if (selectedResources) {

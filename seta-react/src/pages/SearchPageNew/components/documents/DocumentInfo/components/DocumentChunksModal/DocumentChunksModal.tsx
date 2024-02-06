@@ -1,14 +1,17 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
-import { Button, Group, Tooltip } from '@mantine/core'
+import { Button, Group, Stack, Tooltip } from '@mantine/core'
 import { useScrollIntoView } from '@mantine/hooks'
 import { CgFileDocument } from 'react-icons/cg'
 import { RiArrowGoBackLine } from 'react-icons/ri'
 
 import ScrollModal from '~/components/ScrollModal'
+import AnnotationsPreview from '~/pages/SearchPageNew/components/AnnotationsPreview'
+import { KEYWORD_SELECTED_ID } from '~/pages/SearchPageNew/components/AnnotationsPreview/AnnotationsPreview'
 
 import { useChunks } from '~/api/search/chunks'
 import usePaginator from '~/hooks/use-paginator'
 import type { ModalStateProps } from '~/types/lib-props'
+import type { Annotation } from '~/types/search/annotations'
 
 import * as S from './styles'
 
@@ -22,6 +25,7 @@ const SCROLL_OFFSET = 12
 type Props = {
   title: string
   documentId: string
+  documentAnnotations?: Annotation[]
   chunkNumber: number
   queryTerms?: string[]
 } & ModalStateProps
@@ -29,10 +33,20 @@ type Props = {
 const getCurrentChunkPage = (chunkNumber: number, perPage = CHUNKS_PER_PAGE) =>
   Math.floor(chunkNumber / perPage) + 1
 
-const DocumentChunksModal = ({ documentId, chunkNumber, queryTerms, opened, ...props }: Props) => {
+const DocumentChunksModal = ({
+  documentId,
+  documentAnnotations,
+  chunkNumber,
+  queryTerms,
+  opened,
+  title,
+  ...props
+}: Props) => {
   const currentChunkPage = getCurrentChunkPage(chunkNumber)
 
   const [page, setPage] = useState(currentChunkPage)
+
+  const [currentAnnotationId, setCurrentAnnotationId] = useState<string>(KEYWORD_SELECTED_ID)
 
   const prevOpenedRef = useRef(opened)
 
@@ -103,6 +117,12 @@ const DocumentChunksModal = ({ documentId, chunkNumber, queryTerms, opened, ...p
     }
   }, [opened, scrollIntoView, cancelScroll])
 
+  useEffect(() => {
+    if (!opened) {
+      setTimeout(() => setCurrentAnnotationId(KEYWORD_SELECTED_ID), SCROLL_DELAY)
+    }
+  }, [opened])
+
   const actions = (
     <Group spacing="lg">
       {page !== currentChunkPage && !isLoading && (
@@ -123,6 +143,20 @@ const DocumentChunksModal = ({ documentId, chunkNumber, queryTerms, opened, ...p
     </Group>
   )
 
+  const titleEl = documentAnnotations?.length ? (
+    <Stack spacing="sm">
+      <div>{title}</div>
+
+      <AnnotationsPreview
+        annotations={documentAnnotations}
+        currentAnnotationId={currentAnnotationId}
+        onAnnotationClick={setCurrentAnnotationId}
+      />
+    </Stack>
+  ) : (
+    title
+  )
+
   const { chunk_list: chunks, num_chunks: chunksCount = 0 } = data ?? {}
 
   return (
@@ -130,6 +164,7 @@ const DocumentChunksModal = ({ documentId, chunkNumber, queryTerms, opened, ...p
       css={S.root}
       scrollableRef={setScrollableRef}
       opened={opened}
+      title={titleEl}
       icon={<CgFileDocument />}
       {...props}
       info={info}
@@ -141,6 +176,7 @@ const DocumentChunksModal = ({ documentId, chunkNumber, queryTerms, opened, ...p
         currentChunkNumber={chunkNumber}
         currentChunkRef={targetRef}
         totalChunks={chunksCount}
+        selectedAnnotationId={currentAnnotationId}
         queryTerms={queryTerms}
         data={chunks}
         isLoading={isLoading}

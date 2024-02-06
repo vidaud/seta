@@ -50,6 +50,20 @@ export const header: ThemedCSS = theme => css`
       margin-top: 2.5rem;
     }
   }
+
+  & .annotations {
+    position: absolute;
+    top: 2.5rem;
+    left: ${PROGRESS_WIDTH};
+    transform: translateX(-100%);
+    color: ${theme.colors.gray[4]};
+    transition: all 200ms ${theme.transitionTimingFunction};
+    cursor: help;
+
+    &:hover {
+      color: ${theme.colors.gray[6]};
+    }
+  }
 `
 
 export const title: ThemedCSS = theme => css`

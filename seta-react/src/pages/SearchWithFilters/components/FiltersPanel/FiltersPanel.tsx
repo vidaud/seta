@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { Container, Flex, Accordion, rem, LoadingOverlay } from '@mantine/core'
 
-import type { Label } from '~/types/filters/label'
+import type { Label } from '~/types/search/annotations'
 
 import DataSourceAccordionItem from './components/DataSourceAccordionItem'
 import LabelsAccordionItem from './components/LabelsAccordionItem'

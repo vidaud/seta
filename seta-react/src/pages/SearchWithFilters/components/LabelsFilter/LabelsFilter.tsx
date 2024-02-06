@@ -5,7 +5,7 @@ import { useDebouncedValue } from '@mantine/hooks'
 import { IconSearch } from '@tabler/icons-react'
 
 import useScrolled from '~/hooks/use-scrolled'
-import type { Label } from '~/types/filters/label'
+import type { Label } from '~/types/search/annotations'
 
 import LabelsSearchModal from './components/LabelsSearchModal'
 import SelectedLabels from './components/SelectedLabels'

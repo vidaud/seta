@@ -1,4 +1,4 @@
-import type { Label } from '~/types/filters/label'
+import type { Label } from '~/types/search/annotations'
 
 import { TextChunkValues, type RangeValue } from './filters'
 import type { OtherItem } from './other-filter'

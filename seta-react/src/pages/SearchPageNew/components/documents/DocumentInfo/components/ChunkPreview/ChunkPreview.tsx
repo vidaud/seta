@@ -2,6 +2,7 @@ import { Text } from '@mantine/core'
 
 import { useHighlightWords } from '~/hooks/use-highlight'
 import useModalState from '~/hooks/use-modal-state'
+import type { Annotation } from '~/types/search/annotations'
 
 import * as S from './styles'
 
@@ -13,10 +14,18 @@ type Props = {
   queryTerms?: string[]
   documentId: string
   documentTitle: string
+  documentAnnotations?: Annotation[]
   chunkNumber: number
 }
 
-const ChunkPreview = ({ text, queryTerms, documentTitle, documentId, chunkNumber }: Props) => {
+const ChunkPreview = ({
+  text,
+  queryTerms,
+  documentTitle,
+  documentId,
+  documentAnnotations,
+  chunkNumber
+}: Props) => {
   const { modalOpen, openModal, closeModal } = useModalState()
 
   const [textHl] = useHighlightWords(queryTerms, text)
@@ -37,6 +46,7 @@ const ChunkPreview = ({ text, queryTerms, documentTitle, documentId, chunkNumber
       <DocumentChunksModal
         title={documentTitle}
         documentId={documentId}
+        documentAnnotations={documentAnnotations}
         chunkNumber={chunkNumber}
         queryTerms={queryTerms}
         opened={modalOpen}

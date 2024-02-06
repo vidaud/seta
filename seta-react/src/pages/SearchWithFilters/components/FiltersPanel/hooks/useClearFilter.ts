@@ -10,7 +10,7 @@ import { ClearCategory, ClearType, TextChunkValues } from '~/pages/SearchWithFil
 import type { OtherItem } from '~/pages/SearchWithFilters/types/other-filter'
 import { OtherItemStatus } from '~/pages/SearchWithFilters/types/other-filter'
 
-import type { Label } from '~/types/filters/label'
+import type { Label } from '~/types/search/annotations'
 
 import { itemsReducer } from '../reducers/items-reducer'
 

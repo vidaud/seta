@@ -9,7 +9,7 @@ import { FiltersAccordionItemName } from '~/pages/SearchWithFilters/components/F
 import LabelsFilter from '~/pages/SearchWithFilters/components/LabelsFilter'
 
 import useThemeColor from '~/hooks/use-theme-color'
-import type { Label } from '~/types/filters/label'
+import type { Label } from '~/types/search/annotations'
 
 import * as S from './styles'
 
