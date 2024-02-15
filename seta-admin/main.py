@@ -13,7 +13,7 @@ from admin.routers.testing import router as testing_router
 logging.config.fileConfig("/etc/seta/logging.conf", disable_existing_loggers=False)
 
 
-def create_app() -> FastAPI():
+def create_app() -> FastAPI:
     """Web service app factory"""
 
     # get root logger

@@ -12,7 +12,7 @@ MIME_BLACKLIST = [
 ]
 
 
-def allowed_extension(file_content: bytes) -> (bool, str):
+def allowed_extension(file_content: bytes) -> tuple[bool, str]:
     """Validates file extension."""
 
     with tempfile.NamedTemporaryFile(delete=False) as fp:

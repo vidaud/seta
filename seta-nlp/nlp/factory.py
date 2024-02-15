@@ -7,7 +7,7 @@ from fastapi import FastAPI, Request
 from nlp import configuration
 
 
-def create_fastapi_app() -> FastAPI():
+def create_fastapi_app() -> FastAPI:
     """Web service app factory"""
 
     # get root logger
