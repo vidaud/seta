@@ -34,7 +34,7 @@ class DataSourceModel(BaseModel):
     )
     organisation: str
     themes: list[str]
-    status: DataSourceStatusConstants = DataSourceStatusConstants.ACTIVE
+    status: str = DataSourceStatusConstants.ACTIVE.value
     contact: DataSourceContactModel
     creator_id: Optional[str] = None
     created_at: Optional[datetime] = None

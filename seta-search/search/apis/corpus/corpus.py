@@ -155,9 +155,11 @@ class CorpusChunkId(Resource):
 @corpus_api.route("corpus/chunk", methods=["POST"])
 class CorpusChunk(Resource):
     @auth_validator()
-    @corpus_api.doc(description="This endpoint enables users to submit and insert individual "
-                                "document chunks into the SeTA index.",
-                    security="apikey")
+    @corpus_api.doc(
+        description="This endpoint enables users to submit and insert individual "
+        "document chunks into the SeTA index.",
+        security="apikey",
+    )
     @corpus_api.response(200, "Success", swagger_doc.get_put_doc_chunk_response_model())
     @corpus_api.response(401, "Forbidden access to the resource")
     @corpus_api.response(400, "Bad Request Error")
@@ -261,8 +263,11 @@ class CorpusDocumentId(Resource):
 @corpus_api.route("corpus/document", methods=["POST"])
 class CorpusDocument(Resource):
     @auth_validator()
-    @corpus_api.doc(description="This endpoint allows users to submit and insert documents into the SeTA index. "
-                                "The system will automatically divide the document into chunks.", security="apikey")
+    @corpus_api.doc(
+        description="This endpoint allows users to submit and insert documents into the SeTA index. "
+        "The system will automatically divide the document into chunks.",
+        security="apikey",
+    )
     @corpus_api.response(200, "Success", swagger_doc.get_put_doc_chunk_response_model())
     @corpus_api.response(401, "Forbidden access to the resource")
     @corpus_api.response(400, "Bad Request Error")
@@ -271,7 +276,7 @@ class CorpusDocument(Resource):
         if not request.content_type == "application/json":
             abort(404, "Invalid content-type. Must be application/json")
         try:
-            args = request.get_json(force=True)
+            args = corpus_api.payload
         except Exception:
             abort(404, str("invalid json"))
         try:
@@ -343,8 +348,8 @@ class CorpusQuery(Resource):
     @auth_validator()
     @corpus_api.doc(
         description="This endpoint allows users to retrieve a curated collection of documents "
-                    "based on specified search criteria. This endpoint supports the retrieval of documents"
-                    " related to a given term, with additional options for refining the search. ",
+        "based on specified search criteria. This endpoint supports the retrieval of documents"
+        " related to a given term, with additional options for refining the search. ",
         security="apikey",
     )
     @corpus_api.response(200, "Success", swagger_doc.get_corpus_post_response_model())

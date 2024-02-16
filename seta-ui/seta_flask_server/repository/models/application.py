@@ -1,8 +1,8 @@
 # pylint: disable=missing-function-docstring
 from dataclasses import dataclass, asdict
 
-from .seta_user import SetaUser
 from seta_flask_server.infrastructure.constants import ExternalProviderConstants
+from .seta_user import SetaUser
 
 
 @dataclass(kw_only=True)

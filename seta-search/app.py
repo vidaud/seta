@@ -8,7 +8,7 @@ configuration = Config(stage)
 
 app = create_app(configuration)
 
-if stage == "Development":
+if stage != "Production":
     app.logger.debug(app.url_map)
 
 

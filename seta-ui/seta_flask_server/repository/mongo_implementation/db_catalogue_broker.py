@@ -49,7 +49,7 @@ class CatalogueBroker(implements(ICatalogueBroker)):
         return catalogues
 
     def get_role(self, code: str) -> CatalogueRole:
-        role = self.collection.find_one({"catalogue": "community-roles", "code": code})
+        role = self.collection.find_one({"catalogue": "app-roles", "code": code})
 
         if role is not None:
             return CatalogueRole.from_db_json(role)

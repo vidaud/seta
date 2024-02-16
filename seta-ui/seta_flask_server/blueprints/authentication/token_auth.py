@@ -72,7 +72,7 @@ class JWTUserToken(Resource):
         sessions_broker: interfaces.ISessionsBroker,
         *args,
         api=None,
-        **kwargs
+        **kwargs,
     ):
         super().__init__(api, *args, **kwargs)
 
@@ -81,9 +81,11 @@ class JWTUserToken(Resource):
         self.sessions_broker = sessions_broker
 
     @ns_auth.doc(
-        description="Generates JWT (JSON Web Token) access and refresh tokens for authenticated users or user applications. \n \
+        description="Generates JWT (JSON Web Token) access and refresh tokens \
+                    for authenticated users or user applications. \n \
                     The RSA signature is used to confirm the user's identity. \
-                    Visit the /docs/apis/access-token/ webpage for an example of how to programmatically generate random signatures.",
+                    Visit the /docs/apis/access-token/ webpage for an example \
+                    of how to programmatically generate random signatures.",
         responses={
             int(HTTPStatus.OK): "Success",
             int(HTTPStatus.UNAUTHORIZED): "Invalid User",
@@ -112,7 +114,8 @@ class JWTUserToken(Resource):
         if not validate_public_key(
             public_key, args["rsa_original_message"], args["rsa_message_signature"]
         ):
-            # return 'Invalid Signature', 502
+            # return 'Invalid Signature'
+
             abort(HTTPStatus.FORBIDDEN, "Invalid Signature")
 
         identity = user.to_identity_json()
@@ -153,7 +156,7 @@ class JWTRefreshToken(Resource):
         sessions_broker: interfaces.ISessionsBroker,
         *args,
         api=None,
-        **kwargs
+        **kwargs,
     ):
         super().__init__(api, *args, **kwargs)
 
@@ -161,7 +164,8 @@ class JWTRefreshToken(Resource):
         self.sessions_broker = sessions_broker
 
     @ns_auth.doc(
-        description="Generates a new JWT access token using the original refresh token, which should be included in the `Authorization` header in the format: `Bearer <refresh_token>`.",
+        description="Generates a new JWT access token using the original refresh token, \
+                    which should be included in the `Authorization` header in the format: `Bearer <refresh_token>`.",
         responses={
             int(HTTPStatus.OK): "Success",
             int(HTTPStatus.UNAUTHORIZED): "Refresh token verification failed",

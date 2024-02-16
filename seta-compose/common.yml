@@ -1,14 +1,18 @@
 services:
-  mongo:
+
+  postgres:
     restart: always
     build:
-      context: ../seta-mongo
+      context: ../seta-postgres
       args:
         - HTTP_PROXY=${HTTP_PROXY}
         - HTTPS_PROXY=${HTTPS_PROXY}
     expose:
-      - "27017"
+      - "5432"
     environment:
+      - POSTGRES_DB=${DB_NAME}
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
       - NO_PROXY=${NO_PROXY}
       - no_proxy=${NO_PROXY}
 
@@ -44,9 +48,6 @@ services:
       - NO_PROXY=${NO_PROXY}
       - no_proxy=${NO_PROXY}
       - ES_HOST
-      - DB_HOST
-      - DB_PORT
-      - DB_NAME
       - STAGE
 
   nginx:
@@ -77,6 +78,8 @@ services:
       - DB_HOST
       - DB_PORT
       - DB_NAME
+      - DB_USER
+      - DB_PASSWORD
       - STAGE
 
   ui-react:
@@ -103,7 +106,6 @@ services:
     environment:
       - NO_PROXY=${NO_PROXY}
       - no_proxy=${NO_PROXY}
-      - DOC_HOST=${DOC_HOST}
 
   data:
     build:
@@ -137,6 +139,8 @@ services:
       - DB_HOST
       - DB_PORT
       - DB_NAME
+      - DB_USER
+      - DB_PASSWORD
       - STAGE
 
   admin:

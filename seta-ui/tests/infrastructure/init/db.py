@@ -1,6 +1,4 @@
 import datetime
-import json
-from pathlib import Path
 import pytz
 
 from pymongo import MongoClient
@@ -8,26 +6,14 @@ from pymongo import MongoClient
 # pylint: disable-next=no-name-in-module
 from seta_flask_server.repository.models import SetaUser, RsaKey
 
-from migrations.catalogues import (
+from mongodb_migrations.catalogues import (
     scopes_catalogue_builder as scopes_builder,
     roles_catalogue_builder as roles_builder,
 )
 
 # pylint: disable-next=no-name-in-module
 from tests.infrastructure.helpers.util import get_public_key
-
-
-def load_users_data() -> dict:
-    """Load test users."""
-
-    base_path = Path(__file__).parent
-    users_file_path = "../data/users.json"
-    users_full_path = (base_path / users_file_path).resolve()
-
-    with open(users_full_path, encoding="utf-8") as fp:
-        data = json.load(fp)
-
-        return data
+from tests.infrastructure.helpers import users_data as ud
 
 
 class DbTestSetaApi:
@@ -57,7 +43,7 @@ class DbTestSetaApi:
         now_date = datetime.datetime.now(tz=pytz.utc)
         user_collection = self.db["users"]
 
-        data = load_users_data()
+        data = ud.load_users_data()
 
         # save users
         for user in data["users"]:
