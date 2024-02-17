@@ -1,6 +1,6 @@
 import { useMemo } from 'react'
 
-import type { GroupedLabels, Label } from '~/types/filters/label'
+import type { GroupedLabels, Label } from '~/types/search/annotations'
 
 const useGroupedLabels = (labels: Label[] | undefined) => {
   // Group labels by category

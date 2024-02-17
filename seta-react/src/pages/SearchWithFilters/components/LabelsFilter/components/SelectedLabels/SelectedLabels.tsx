@@ -1,10 +1,10 @@
 import { Box } from '@mantine/core'
 
+import LabelsGroup from '~/components/LabelsGroup'
 import useGroupedLabels from '~/pages/SearchWithFilters/components/LabelsFilter/hooks/useGroupedLabels'
 
-import type { Label } from '~/types/filters/label'
+import type { Label } from '~/types/search/annotations'
 
-import LabelsGroup from '../LabelsGroup'
 import NoLabelsSelected from '../NoLabelsSelected'
 
 type Props = {

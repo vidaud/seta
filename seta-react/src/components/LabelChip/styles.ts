@@ -14,7 +14,7 @@ const HORIZONTAL_PADDING = '0.75rem'
 const BG_OPACITY = 0.03
 
 type Props = {
-  $color: string
+  $color: string | null
   $selectable?: boolean
   $clearable?: boolean
 }
@@ -33,8 +33,10 @@ export const LabelChip = styled(
 
   const defaultColor = theme.colors.dark[5]
 
-  const bgColorDark = theme.fn.rgba($color, BG_OPACITY * 4)
-  const bgColorLight = theme.fn.rgba($color, BG_OPACITY)
+  const hasColorBand = !!$color
+
+  const bgColorDark = hasColorBand ? theme.fn.rgba($color, BG_OPACITY * 4) : defaultStyle.background
+  const bgColorLight = hasColorBand ? theme.fn.rgba($color, BG_OPACITY) : defaultStyle.background
 
   const activeStyles = $selectable
     ? css`
@@ -47,6 +49,7 @@ export const LabelChip = styled(
 
   const spacing = $selectable ? VERTICAL_SPACING : VERTICAL_SPACING_SMALL
   const fontSize = $selectable ? theme.fontSizes.sm : '13px'
+  const fontWeight = hasColorBand ? 'inherit' : '600'
 
   return css`
     display: flex;
@@ -54,6 +57,7 @@ export const LabelChip = styled(
     align-items: center;
     gap: ${HORIZONTAL_SPACING};
     font-size: ${fontSize};
+    font-weight: ${fontWeight};
     color: ${theme.colors.dark[4]};
     background-color: ${theme.colors.gray[0]};
     box-shadow: 0 0 3px 2px rgba(255, 255, 255, 0.8) inset;
@@ -65,7 +69,7 @@ export const LabelChip = styled(
 
     /* Label's color */
     &::before {
-      content: '';
+      content: ${hasColorBand ? '""' : 'none'};
       display: block;
       position: absolute;
       width: 0;
@@ -109,9 +113,16 @@ export const LabelChip = styled(
     }
 
     /* Selected state */
-    &[aria-checked='true'] {
-      padding-left: calc(${HORIZONTAL_PADDING} * 1.3);
-      padding-right: ${$clearable ? '3px' : `calc(${HORIZONTAL_PADDING} * 0.7)`};
+    &[aria-checked='true'],
+    &[data-selected] {
+      padding-left: ${hasColorBand ? `calc(${HORIZONTAL_PADDING} * 1.3)` : HORIZONTAL_PADDING};
+
+      padding-right: ${$clearable
+        ? '3px'
+        : hasColorBand
+        ? `calc(${HORIZONTAL_PADDING} * 0.7)`
+        : HORIZONTAL_PADDING};
+
       background-color: ${bgColorLight};
       background: linear-gradient(90deg, ${bgColorDark}, ${bgColorLight} 35%);
       box-shadow: 0 0 2px 1px rgba(255, 255, 255, 0.2) inset;
@@ -124,6 +135,12 @@ export const LabelChip = styled(
 
       &::after {
         opacity: 1;
+      }
+    }
+
+    &[data-selected] {
+      &::after {
+        border-color: ${theme.colors.gray[5]};
       }
     }
 

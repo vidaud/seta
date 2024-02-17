@@ -5,7 +5,7 @@ import type { AxiosRequestConfig } from 'axios'
 import api from '~/api'
 import type { AnnotationResponse } from '~/api/types/annotations-types'
 import { environment } from '~/environments/environment'
-import type { Label } from '~/types/filters/label'
+import type { Label } from '~/types/search/annotations'
 
 const cataloguesConfig: AxiosRequestConfig = {
   baseURL: environment.baseUrl
@@ -23,7 +23,7 @@ export const annotationsQueryKey: QueryKey = ['annotations']
  * @returns The label
  */
 const toLabel = ({ label, color, category }: AnnotationResponse): Label => ({
-  id: `${category}-${label}`,
+  id: `${category}:${label}`,
   name: label,
   color,
   category

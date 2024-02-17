@@ -6,7 +6,7 @@ const globalStyles: MantineThemeOverride['globalStyles'] = theme => ({
   'span.highlight': {
     position: 'relative',
     padding: '0 1px',
-    margin: '1px -1px',
+    margin: '0px -1px',
     display: 'inline-block',
     zIndex: 1,
     transition: 'color 300ms ease',

@@ -1,13 +1,13 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { Loader, ScrollArea } from '@mantine/core'
 
+import LabelsGroup from '~/components/LabelsGroup'
 import { SuggestionsError } from '~/pages/SearchPageNew/components/common'
-import LabelsGroup from '~/pages/SearchWithFilters/components/LabelsFilter/components/LabelsGroup'
 import useGroupedLabels from '~/pages/SearchWithFilters/components/LabelsFilter/hooks/useGroupedLabels'
 
 import useScrolled from '~/hooks/use-scrolled'
 import type { DataProps } from '~/types/data-props'
-import type { Label } from '~/types/filters/label'
+import type { Label } from '~/types/search/annotations'
 import { findLabels } from '~/utils/labels-utils'
 
 import * as S from './styles'

@@ -1,3 +1,5 @@
+import type { Annotation } from '~/types/search/annotations'
+
 export type Taxonomy = {
   classifier: string
   code: string
@@ -7,6 +9,10 @@ export type Taxonomy = {
   validated: 'true' | 'false'
   version: string
   subcategories: Taxonomy[]
+}
+
+export type Other = Record<string, unknown> & {
+  annotation_position?: Annotation[]
 }
 
 export type Document = {
@@ -25,7 +31,7 @@ export type Document = {
   keywords: { keyword: string; score: number }[] | null
   language: string
   link_origin: string | null
-  other: Record<string, unknown> | null
+  other: Other | null
   reference: string | null
   score: number
   source: string

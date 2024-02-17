@@ -10,7 +10,7 @@ import { TextChunkValues } from '~/pages/SearchWithFilters/types/filters'
 import type { RangeValue, SelectionKeys } from '~/pages/SearchWithFilters/types/filters'
 import type { OtherItem } from '~/pages/SearchWithFilters/types/other-filter'
 
-import type { Label } from '~/types/filters/label'
+import type { Label } from '~/types/search/annotations'
 
 type KeyLabel = {
   key: string

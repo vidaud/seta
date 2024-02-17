@@ -1,4 +1,4 @@
-import type { Label } from '~/types/filters/label'
+import type { Label } from '~/types/search/annotations'
 
 /**
  * Finds labels that start with the given search string, case-insensitive.

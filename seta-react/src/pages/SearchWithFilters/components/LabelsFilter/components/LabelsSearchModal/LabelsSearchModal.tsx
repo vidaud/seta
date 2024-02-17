@@ -9,8 +9,8 @@ import ClearButton from '~/components/ClearButton'
 import DefaultModal from '~/components/DefaultModal'
 
 import { useAnnotations } from '~/api/catalogues/annotations'
-import type { Label } from '~/types/filters/label'
 import type { ModalStateProps } from '~/types/lib-props'
+import type { Label } from '~/types/search/annotations'
 
 import LabelsModalContent from './components/LabelsModalContent'
 import * as S from './styles'

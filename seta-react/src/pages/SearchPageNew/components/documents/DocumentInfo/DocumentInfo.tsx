@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react'
 import { Progress, Text, clsx, Tooltip, Flex, Anchor } from '@mantine/core'
-import { IconWallet } from '@tabler/icons-react'
+import { IconTag, IconWallet } from '@tabler/icons-react'
 import { FiCheck } from 'react-icons/fi'
 import { GiSaveArrow } from 'react-icons/gi'
 
@@ -33,8 +33,11 @@ const DocumentInfo = ({ document, queryTerms }: Props) => {
     collection,
     date,
     chunk_text,
-    chunk_number
+    chunk_number,
+    other
   } = document
+
+  const { annotation_position } = other ?? {}
 
   const [detailsOpen, setDetailsOpen] = useState(false)
 
@@ -80,9 +83,38 @@ const DocumentInfo = ({ document, queryTerms }: Props) => {
     }
   ]
 
+  const annotationsTooltip = useMemo(
+    () =>
+      annotation_position?.map(annotation => {
+        const [id, text] = annotation.id.split(':')
+
+        return (
+          <div key={annotation.id}>
+            <Text size="sm" color="gray.3" component="span">
+              {id}:
+            </Text>{' '}
+            <Text size="sm" color="white" component="span">
+              {text}
+            </Text>
+          </div>
+        )
+      }),
+    [annotation_position]
+  )
+
+  const annotationsInfo = annotation_position && !detailsOpen && (
+    <div className="annotations">
+      <Tooltip label={annotationsTooltip}>
+        <IconTag size={22} />
+      </Tooltip>
+    </div>
+  )
+
   const header = (
     <div css={S.header}>
       <Progress size="xl" value={score * 100} color="teal" />
+
+      {annotationsInfo}
 
       <Tooltip label="Match score" position="bottom">
         <div className={clsx('score', { visible: detailsOpen })}>{scorePercent}</div>
@@ -101,6 +133,7 @@ const DocumentInfo = ({ document, queryTerms }: Props) => {
       css={S.details}
       documentId={document_id}
       documentTitle={title}
+      documentAnnotations={annotation_position}
       chunkText={chunk_text}
       chunkNumber={chunk_number}
       queryTerms={queryTerms}

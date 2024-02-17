@@ -1,10 +1,11 @@
 import type { MouseEventHandler } from 'react'
-import { Group } from '@mantine/core'
+import { Group, Tooltip } from '@mantine/core'
 
 import ClearButton from '~/components/ClearButton'
 
 import { useHighlightStart } from '~/hooks/use-highlight'
-import type { Label } from '~/types/filters/label'
+import type { ClassNameProp } from '~/types/children-props'
+import type { Label } from '~/types/search/annotations'
 
 import * as S from './styles'
 
@@ -14,18 +15,24 @@ type Props = {
   searchValue?: string
   selectable?: boolean
   clearable?: boolean
+  withTooltip?: boolean
+  noColor?: boolean
   onClick?: MouseEventHandler<HTMLDivElement>
   onRemove?: () => void
-}
+} & ClassNameProp
 
 const LabelChip = ({
   label,
   isSelected,
   selectable,
   clearable,
+  noColor,
+  withTooltip,
   searchValue,
+  className,
   onClick,
   onRemove,
+  // To capture the data-* attributes
   ...rest
 }: Props) => {
   const [nameHl] = useHighlightStart(searchValue, label.name)
@@ -40,21 +47,33 @@ const LabelChip = ({
     <div>{nameHl}</div>
   )
 
-  return (
+  const chip = (
     <S.LabelChip
       key={label.id}
-      $color={label.color}
+      $color={noColor ? null : label.color}
       $selectable={selectable}
       $clearable={clearable}
       tabIndex={selectable ? 0 : undefined}
-      role="checkbox"
-      aria-checked={isSelected}
+      role={selectable ? 'checkbox' : undefined}
+      aria-checked={selectable ? isSelected : undefined}
+      data-selected={selectable ? undefined : true}
+      className={className}
       onClick={onClick}
       // To pass through the data-* attributes
       {...rest}
     >
       {content}
     </S.LabelChip>
+  )
+
+  const tooltip = withTooltip && `${label.category}: ${label.name}`
+
+  return withTooltip ? (
+    <Tooltip label={tooltip} position="top-start">
+      {chip}
+    </Tooltip>
+  ) : (
+    chip
   )
 }
 

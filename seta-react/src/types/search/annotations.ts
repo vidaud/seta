@@ -6,3 +6,11 @@ export type Label = {
 }
 
 export type GroupedLabels = Record<string, Label[]>
+
+export type Annotation = {
+  id: string
+  start: number
+  end: number
+}
+
+export type AnnotationInfo = Label & Annotation
