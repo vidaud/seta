@@ -45,7 +45,7 @@
     "@types/node": "^16.18.3",
     "@types/react": "^18.0.25",
     "@types/react-dom": "^18.0.9",
-    "axios": "^1.2.1",
+    "axios": "^1.6.0",
     "chart.js": "^3.9.1",
     "css-what": "^5.0.1",
     "dayjs": "^1.11.7",
